@@ -44,7 +44,7 @@
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
                   <li v-if="menuItem.path.length > 1">
-                    <NuxtLink :to="menuItem.path" target="_blank">
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -364,7 +364,7 @@ this.$auth.$storage.watchState('loggedIn', newValue => { })
 
 // if ($auth.$storage.getState('id_con')) {
 //const id_con = ref(session.id_con)
-
+/*
 if (session.id_con && session.id_con.length > 0) {
 //  const id_con = session.id_con
   let menu=[]
@@ -416,7 +416,7 @@ if (session.id_con && session.id_con.length > 0) {
     // obtMenu(false)
   }
 }
-
+*/
 const cssVars = computed(() => {
   return {
     '--bg-color': Style.bgColor,
@@ -642,7 +642,7 @@ watch(
     //id_con.value = session.id_con
     let menu=[]
     nom_emp.value = session.nom_emp
-    console.log('watch  lee menu Items', Items,Items.length)
+    //console.log('watch  lee menu Items', Items,Items.length)
 
 
     if (Items.length > 2) {
@@ -667,7 +667,7 @@ watch(
         tooltip: 'Setting',
         icon: 'svg/bx-cog.svg',
         path: '/come9101',
-        target: '',
+        target: '', //'_blank',
         type: 'P',
         system: ''
       })
@@ -685,7 +685,7 @@ watch(
       if (menu[i].tpr_prg === 'S') {
         let link = '#'
         let path = ''
-        let target = '_blank'
+        let target = ''        //'_blank' indica ventana nueva del explorador
         const type = menu[i].tpr_prg
         const system = menu[i].sis_sis
         if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {

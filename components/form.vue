@@ -12,6 +12,7 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
+  <form class="Main">
   <section class="pagina" :style="ThisForm.style">
     <div class='backGround'>
       <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
@@ -126,6 +127,7 @@
  
       />
   </teleport-->
+</form>
 </template>
 
 <script  lang="ts" setup>

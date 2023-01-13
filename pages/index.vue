@@ -39,6 +39,10 @@
   justify-content: center;
   align-items: center;
 }
+div.Main {
+ 
+  
+}
 
 div.imagen {
   align-content: center;

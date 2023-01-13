@@ -20,7 +20,7 @@ import {
  // HttpReader,
   TextReader,
   ZipWriter,
-} from "https://unpkg.com/@zip.js/zip.js/index.js";
+} from  "@zip.js/zip.js"  //"https://unpkg.com/@zip.js/zip.js/index.js";
 
 import { saveAs } from 'file-saver'
 

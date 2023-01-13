@@ -6,6 +6,6 @@
   </VueForm>
 </template>
 <script  lang="ts" setup>
-import VueForm from "/components/form.vue";
+import VueForm from "@/components/form.vue";
 import { THISFORM } from './ThisForm'
 </script>

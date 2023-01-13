@@ -6,7 +6,7 @@
 // Ult.Mod  : 
 /////////////////////////////////////////////
 
-import { MessageBox } from '@/classes/Functions';
+//import { MessageBox } from '@/classes/Functions';
 /////////////////////////////////////////
 // Clase de componentes
 //////////////////////////////////////
@@ -73,7 +73,7 @@ export class THISFORM extends FORM {
       // asignamos en la clase db Cual es la forma
       ThisForm.db.Form = this
       // Reservamos una area de trabajo
-      await ThisForm.db.select(0)
+     
       await ThisForm.db.use('vi_cap_tab')
 //      await ThisForm.db.select(0)
 //      await ThisForm.db.useNodata('vi_cap_ind')
