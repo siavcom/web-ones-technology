@@ -1,0 +1,352 @@
+section.pagina {
+  background: white;
+  color: #b94295;
+  min-width: 375px;
+  min-height: 812px;
+ /* margin-top: 250px; */
+ 
+}
+
+h1 {
+  margin: 40px 0 0;
+}
+
+div.backGround {
+  border: 1px solid green;
+  border-radius: 10px;
+  padding: 60px;
+  background-color: #f2f4f5;
+  /*background-image: url(v-bind("props.backgroundImage"));*/
+  /* opacity: 0.5;*/
+}
+
+
+
+
+
+div.divi{
+  /*display: inline-flex; / recomendado por raul*/
+  display: inline-flex;
+  color:   #18e94c;
+  background: #f7f8f7;
+  position: v-bind("props.posicion.position");
+  left: v-bind("props.posicion.left");
+  top : v-bind("props.posicion.top");
+  z-index: v-bind("props.style.zIndex");
+  text-align: left;
+  margin :auto;
+  height:auto;
+  /*min-width: max-content;*/
+  flex-shrink: 0;  /* adjustment para que funcione el width */
+}
+
+div.mensajes{
+  display: inline-flex; /* recomendado por raul*/
+  width: auto;
+  height: auto;
+
+}
+
+div.img {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px 0, 0 6px 20px 0;
+  box-sizing: border-box;
+  width: 80px;
+  height: auto;
+  border-radius: 10%;
+  padding: 0px;
+  z-index: v-bind("props.style.zIndex");
+
+}
+
+
+label.error {
+  position: relative;
+  background: #f7f8f7;
+  color: #f10c0c;
+  text-align: center;
+  visibility: visible;
+  padding: 5px 0; /*relleno alrededor */
+  border-radius: 1px;
+  border-color: black;
+  z-index: 2;
+ /* bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  */
+  /* Fade in tooltip */
+  opacity: 1;
+
+
+}
+/* Caption del texLabel */
+span.Caption { 
+  color: rgb(0,0,0);
+  width: auto;
+}
+
+span.etiqueta { 
+  margin-right: 3px;
+
+}
+
+input.text {
+  border: 1px solid rgb(0, 5, 2);
+  padding: "5px";
+  border-radius: 5px;
+  text-align: left;
+  width: 96%;
+  margin-top: 2
+  /*min-width: 50%; */
+}
+
+.imgButton{
+  border-radius: 10% ;
+  box-shadow: 0 4px 8px 0, 0 6px 20px 0;
+  box-sizing: border-box;
+  height : 100%;
+  width :100%; 
+}
+
+.img{
+/*filter: invert(1);
+transform: scale(2) translate(0px, 10px);*/
+display: block;
+width :100%;
+}
+
+.button:hover {
+  background-color: rgb(109, 134, 113);
+}
+
+
+input.checkBox {
+  border: 1px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: left;
+  width: 96%;
+  accent-color: rgb(163, 193, 168);
+  
+  /*min-width: 50%; */
+}
+
+
+
+input.date {
+  border: 1px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: left;
+  width: 96%;
+  min-width: max-content;
+ 
+}
+
+input[ class="number"] {
+  border: 1px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: right;
+  width: 96%;
+  }
+
+
+/* Tooltip and error container */
+.mensajes {
+  position: relative;
+/*  display: inline-block;*/
+ /* border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  /*min-width: 50%; */
+}
+
+/* Tooltip text */
+.mensajes .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #76a184 ;/*rgb(115, 181, 243);*/
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  
+}
+
+/* Tooltip arrow */
+.mensajes .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.mensajes:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/* error container */
+.error {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.flipswitch {
+  position: relative;
+  background: white;
+  width: 120px;
+  height: 40px;
+  -webkit-appearance: initial;
+  border-radius: 3px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+  font-size: 14px;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.flipswitch:after {
+  position: absolute;
+  top: 5%;
+  display: block;
+  line-height: 32px;
+  width: 45%;
+  height: 90%;
+  background: #fff;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease-in 0s;
+  color: black;
+  border: #888 1px solid;
+  border-radius: 3px;
+}
+
+.flipswitch:after {
+  left: 2%;
+  content: "OFF";
+}
+
+.flipswitch:checked:after {
+  left: 53%;
+  content: "ON";
+}
+
+[type=checkbox]:checked + span:before {
+  content: '\2714';
+  position: absolute;
+  top: -5px;
+  left: 0;
+}
+
+
+
+
+
+
+
+/*
+.blinking{
+  animation:blinkingText 1.2s infinite;
+}
+@keyframes blinkingText{
+  0%{     color: #000;    }
+  49%{    color: #000; }
+  60%{    color: transparent; }
+  99%{    color:transparent;  }
+  100%{   color: #000;    }
+}
+*/
+
+
+
+/* Erorr text */
+/*.error .errorText { */
+.mensajes .errorText {
+  
+  /* height: fit-content; */
+  /*visibility: visible; */
+  background-color: rgb(255, 255, 255);
+  color: rgb(245, 9, 9);
+  text-align: center;
+ /* padding: 5px 0;*/
+  border-radius: 6px;
+  /*border-color: #f10c0c;*/
+
+  /* Position */
+  position : absolute;
+  z-index: 2;
+   
+  /* arrow*/ 
+  content:"";
+  /* bottom: 110%;
+  top: -100%; */
+  bottom: 3px;
+  left: 7px;
+  margin-left: -5px;
+  border-width: 0 px; 
+  /*border-style: solid; */ 
+  /*background-color: transparent;*/
+  /* border-color: #555 transparent transparent transparent; */
+  
+   /* Fade in tooltip */
+  opacity: .9;
+  transition: opacity 0.2s ease;
+  animation:blinkingText 1.2s infinite;
+ 
+}
+@keyframes blinkingText{
+  0%{     color: rgb(248, 8, 8);    }
+  49%{    color: rgb(248, 7, 7); }
+  60%{    color: transparent; }
+  99%{    color:transparent;  }
+  100%{   color: rgb(248, 4, 4);    }
+}
+
+.footer  {
+
+   /* flex-direction: row-reverse;*/
+
+
+}
+/* Tooltip arrow */
+/*
+.error .errortext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+*/
+/* Show the tooltip text when you mouse over the tooltip container */
+/*
+.error:hover .errortext {
+  visibility: visible;
+  opacity: 1;
+}
+*/
+
+

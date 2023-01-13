@@ -1,0 +1,58 @@
+//////////////////////////////////////////////
+// This Form was generated automatically by web-ones-technology
+// BaseClass : captureForm
+// Class : <<nom_for>>
+// Description : Capture Form 
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : <<fec_cre>>
+// Update Date  : 
+/////////////////////////////////////////////
+
+/////////////////////////////////////////
+// Component import
+//////////////////////////////////////
+
+<<imp_com>>
+
+
+////////////////////////////////////////
+// Function import
+///////////////////////////////////////
+
+import { MessageBox } from '@/clases/Functions';
+
+///////////////////////////////////////
+// Base class 
+///////////////////////////////////////
+
+import { captureForm } from '@/clases/captureForm'
+
+
+export class THISFORM extends captureForm {
+
+////////////////////////////////////
+// component imported
+////////////////////////////////////
+
+<<com_imp>> 
+  
+  constructor() {
+    super()  // inicializa la clase base
+
+    this.Development = false
+    this.prop.Name = '<<nom_for>>'
+    this.prop.textLabel = "Mantenimiento a la tabla <<nom_tab>>"
+    this.prop.RecordSource='<<nom_ind>>'
+    this.prop.nem_pge = "Killo Software"
+    this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
+    this.prop.log_emp = "/img/Logo_Empresa.png"
+    this.prop.Status = 'A'
+    this.style.display = "flex"
+    this.style.background = "white"
+    this.style.color = "#b94295"
+    this.style.fontSize = "13px" 
+    this.style.position = "center"
+    this.style.backgroundImage = "/img/Logo_Empresa.bmp"
+
+  }
+} // End ThisForm

@@ -1,0 +1,57 @@
+====================== SweeAlert2 ====================================
+
+https://github.com/avil13/vue-sweetalert2
+
+
+npm install -S vue-sweetalert2
+
+Add types to TypeScript project
+
+{
+  //...tsconfig.json
+  "types": [
+    "vue-sweetalert2"
+  ],
+}
+
+como funciono ===> https://stackoverflow.com/questions/72261546/add-sweet-alert-2-to-nuxt3-project
+
+
+
+
+====================== Pinia ====================================
+
+https://pinia.vuejs.org/ssr/nuxt.html#installation
+
+Pinia
+
+1) If you're using npm, you might encounter an ERESOLVE unable to resolve dependency tree error. In that case, add the following to your package.json:
+
+"overrides": { 
+  "vue": "latest"
+}
+
+
+
+
+2) npm install pinia @pinia/nuxt
+
+
+
+We supply a module to handle everything for you, you only need to add it to modules in your nuxt.config.js file:
+
+// nuxt.config.js
+export default defineNuxtConfig({
+  // ... other options
+  modules: [
+    // ...
+    '@pinia/nuxt',
+  ],
+})
+
+
+======================= Axios ===================================================
+
+
+https://axios.nuxtjs.org/setup
+

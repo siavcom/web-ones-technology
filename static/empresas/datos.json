@@ -1,0 +1,35 @@
+{
+    "DemoSQL Lupita": {
+        "url": "http://176.16.200.20:38080/",
+        "nem_emp": "Demo ",
+        "nom_sis": "come9101",
+        "path": { "name": "Menu" }
+    },
+
+    "19Zapopan": {
+        "url": "http://176.16.200.20:38080/",
+        "nem_emp": "Demo 19 Zapopan ",
+        "nom_sis": "tomaKms",
+        "path" : { "name": "tomaKms" }
+
+    },
+    "Demo": {
+        "url": "http://176.16.200.20:38080/",
+        "nem_emp": "Demo Postgres",
+        "nom_sis": "Siavcom",
+        "path" : { "name": "Menu" }
+
+    },
+    "19Guzman": {
+        "url": "http://176.16.200.20:38080/",
+        "nem_emp": "Guzman ",
+        "nom_sis": "tomaKms",
+        "path" : { "name": "tomaKms" }
+    },
+    "DemoCome9101": {
+        "url": "http://187.188.142.107:38080/",
+        "nem_emp": "Demo Postgres come9101",
+        "nom_sis": "menu ",
+        "path" : { "name": "Menu" }
+    }
+}

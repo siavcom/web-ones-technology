@@ -1,0 +1,34 @@
+<template>
+  <div>
+    <button @click="showAlert">Hello world</button>
+  </div>
+</template>
+<script lang="ts" setup>
+
+import { Session } from '~/stores/currentSession'
+
+const currentSession = Session()
+
+console.log('Session',currentSession.id_con,currentSession.user)
+/*
+export default {
+  asyncData({ $pinia }) {
+    const store = useStore($pinia)
+  },
+}
+*/
+
+
+const { $swal } = useNuxtApp()
+
+const showAlert = () => {
+
+  // Use sweetalert2
+  $swal.fire({
+    title: 'Hello!',
+    text: 'Do you want to continue',
+    icon: 'error',
+    confirmButtonText: 'Cool'
+  })
+}
+</script>
