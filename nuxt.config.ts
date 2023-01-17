@@ -3,8 +3,8 @@ export default defineNuxtConfig({
     css: ['@/assets/css/styles.css'],
     typescript: { shim: false },
     modules: [
-        '@pinia/nuxt'
-       // '@nuxtjs/axios'
+        '@pinia/nuxt',
+        '@pinia-plugin-persistedstate/nuxt'
       ]
 }
 )

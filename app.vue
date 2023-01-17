@@ -341,11 +341,15 @@ const isRep = ref(false)
 const isPro = ref(false)
 
 // Idicamos si ya esta firmado
+
+
 const isLoggedIn = ref(props.isLoggedIn)
 // const session = getStore('session')
 
 const isOpen = ref(props.isOpened)
 isOpen.value = true
+
+
 /*
 $auth.$storage.setLocalStorage(key, val)
 $auth.$storage.getState(key)
@@ -440,7 +444,7 @@ const mainFormLeft = computed(() => {
 // removeState
 const exit = () => {
   // app.$sessionStorage.removeItem('id_con')
-  session.update('', '', '', '', [])
+  session.update('', '', '', '')
   nom_emp.value = ''
   const tam_act = Items.length
   Items.splice(itemLength, tam_act - itemLength)
@@ -526,125 +530,13 @@ const updateStatus = (loggedIn: boolean) => {
 /// //////////////////////////////////////
 // Obten Menu
 /// ///////////////////////////////////////
-const obtMenu = (sw_ini: boolean) => {
-  let menu = []
-  Items.push(
-    {
-      link: '#',
-      name: 'SQL diccionary',
-      tooltip: 'Setting',
-      icon: 'svg/bx-cog.svg',
-      path: 'come9101',
-      type: 'P',
-      system: ''
-    })
-
-  // agregamos Items pasados en props
-  if (sw_ini) {
-    return
-    for (const item in Prop.value.Items) {
-      Items.push(Prop.value.Items[item])
-    }
-  }
-  // Leemos el menu general en caso de que haya hecho login
-  menu = JSON.parse(session.menu)// lee menu de programas
-  const url = session.url.trim()
-
-  for (let i = 0; menu.length > i; i++) {
-    // solo agrega menu principal
-    if (menu[i].tpr_prg === 'S') {
-      let link = '#'
-      let path = ''
-      const type = menu[i].tpr_prg
-      const system = menu[i].sis_sis
-      if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
-        link = url + '/' + menu[i].prg_prg.trim()
-        path = menu[i].prg_prg.trim()
-      }
-      const item = {
-        link: '#',
-        name: menu[i].des_prg,
-        tooltip: menu[i].des_prg,
-        icon: menu[i].ico_prg,
-        path,
-        type,
-        system
-      }
-      Items.push(item) // anexamos al menu
-    }
-  }
-}
-/// //////////////////////////////////////
-// Obten subMenu
-/// ///////////////////////////////////////
-const obtSubMenu = (system: string) => {
-  isMan.value = false
-
-  isRep.value = false
-
-  isPro.value = false
-
-  subItemsMan.length = 0 // borramos subItems
-  subItemsRep.length = 0 // borramos subItems
-  subItemsPro.length = 0 // borramos subItems
-  const menu=session.menu
-  for (let i = 0; menu.length > i; i++) {
-    // solo agrega menu principal
-    if (menu[i].sis_sis === system) {
-      let link = '#'
-      let path = ''
-      const type = menu[i].tpr_prg
-      const system = menu[i].sis_sis
-      const url = ' '
-      if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
-        link = url + '/' + menu[i].prg_prg.trim()
-        path = menu[i].prg_prg.trim()
-      }
-      const item = {
-        link: '#',
-        name: menu[i].des_prg,
-        tooltip: menu[i].des_prg,
-        icon: menu[i].ico_prg,
-        path,
-        type,
-        system
-      }
-      if (type === 'M') { subItemsMan.push(item) } // anexamos al menu Mantenimiento
-      if (type === 'R') { subItemsRep.push(item) } // anexamos al menu Reporte
-      if (type === 'P') { subItemsPro.push(item) } // anexamos al menu Procesos
-    }
-  }
-  if (subItemsMan.length > 0 ||
-    subItemsRep.length > 0 ||
-    subItemsPro.length > 0) {
-    subMen.value = true
-    isOpen.value = true
-  }
-}
-/// //////////////////////////////////////////////////////
-// watch Value
-//  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
-//          Componente
-/// ///////////////////////////////////////
-
-watch(
-  () => isOpen,
-  (new_val, old_val) => {
-    window.document.body.style.paddingLeft = props.isOpened && props.isPaddingLeft ? props.menuOpenedPaddingLeftBody : props.menuClosedPaddingLeftBody
-  },
-  { deep: false }
-)
-
-watch(
-  () => session.id_con,
-  (new_val, old_val) => {
-
-    //id_con.value = session.id_con
+const obtMenu = (sw_ini?: boolean) => {
+      //id_con.value = session.id_con
     let menu=[]
     nom_emp.value = session.nom_emp
     //console.log('watch  lee menu Items', Items,Items.length)
 
-
+    
     if (Items.length > 2) {
       const num_ele = Items.length - 2
 
@@ -705,6 +597,154 @@ watch(
         Items.push(item) // anexamos al menu
       }
     }
+    console.log('Menu =====>',Items)
+}
+/// //////////////////////////////////////
+// Obten subMenu
+/// ///////////////////////////////////////
+const obtSubMenu = (system: string) => {
+  isMan.value = false
+
+  isRep.value = false
+
+  isPro.value = false
+
+  subItemsMan.length = 0 // borramos subItems
+  subItemsRep.length = 0 // borramos subItems
+  subItemsPro.length = 0 // borramos subItems
+  const menu=session.menu
+  for (let i = 0; menu.length > i; i++) {
+    // solo agrega menu principal
+    if (menu[i].sis_sis === system) {
+      let link = '#'
+      let path = ''
+      const type = menu[i].tpr_prg
+      const system = menu[i].sis_sis
+      const url = ' '
+      if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
+        link = url + '/' + menu[i].prg_prg.trim()
+        path = menu[i].prg_prg.trim()
+      }
+      const item = {
+        link: '#',
+        name: menu[i].des_prg,
+        tooltip: menu[i].des_prg,
+        icon: menu[i].ico_prg,
+        path,
+        type,
+        system
+      }
+      if (type === 'M') { subItemsMan.push(item) } // anexamos al menu Mantenimiento
+      if (type === 'R') { subItemsRep.push(item) } // anexamos al menu Reporte
+      if (type === 'P') { subItemsPro.push(item) } // anexamos al menu Procesos
+    }
+  }
+  if (subItemsMan.length > 0 ||
+    subItemsRep.length > 0 ||
+    subItemsPro.length > 0) {
+    subMen.value = true
+    isOpen.value = true
+  }
+}
+
+
+//////////////////////////////////////////////////
+// Init
+/////////////////////////////////////////////////
+console.log('=========Session============',session.id_con)
+if (session.id_con && session.id_con.length > 0) {
+  obtMenu()
+} 
+
+
+/// //////////////////////////////////////////////////////
+// watch Value
+//  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
+//          Componente
+/// ///////////////////////////////////////
+
+watch(
+  () => isOpen,
+  (new_val, old_val) => {
+    window.document.body.style.paddingLeft = props.isOpened && props.isPaddingLeft ? props.menuOpenedPaddingLeftBody : props.menuClosedPaddingLeftBody
+  },
+  { deep: false }
+)
+
+watch(
+  () => session.id_con,
+  (new_val, old_val) => {
+
+
+    obtMenu()
+    //id_con.value = session.id_con
+ /*
+    let menu=[]
+    nom_emp.value = session.nom_emp
+    //console.log('watch  lee menu Items', Items,Items.length)
+
+    
+    if (Items.length > 2) {
+      const num_ele = Items.length - 2
+
+      Items.splice(2, num_ele)
+    }
+
+    if (session.id_con.length === 0) {
+      isLoggedIn.value = false
+      return
+
+    }
+    isLoggedIn.value = true
+
+
+
+    Items.push(
+      {
+        link: '#',
+        name: 'SQL diccionary',
+        tooltip: 'Setting',
+        icon: 'svg/bx-cog.svg',
+        path: '/come9101',
+        target: '', //'_blank',
+        type: 'P',
+        system: ''
+      })
+
+
+
+    //menu = JSON.parse(session.menu)// lee menu de programas
+    menu =session.menu// lee menu de programas
+   // console.log('Menu completo',menu)
+ 
+    const url = session.url.trim()
+
+    for (let i = 0; menu.length > i; i++) {
+      // solo agrega menu principal
+      if (menu[i].tpr_prg === 'S') {
+        let link = '#'
+        let path = ''
+        let target = ''        //'_blank' indica ventana nueva del explorador
+        const type = menu[i].tpr_prg
+        const system = menu[i].sis_sis
+        if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
+          link = url + '/' + menu[i].prg_prg.trim()
+          path = '/' + menu[i].prg_prg.trim()
+        }
+        const item = {
+          link: '#',
+          name: menu[i].des_prg,
+          tooltip: menu[i].des_prg,
+          icon: menu[i].ico_prg,
+          path,
+          target,
+          type,
+          system
+        }
+        Items.push(item) // anexamos al menu
+      }
+    }
+    */
     console.log('Menu =====>',Items)
 
     // obtMenu(false)

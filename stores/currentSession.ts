@@ -36,7 +36,9 @@ export const Session = defineStore({
     url: '',
     menu: []
   }),
-  //persist : true,
+  persist: {
+    storage: persistedState.sessionStorage,
+  },
   /* {
     return {
       id_con: '',
