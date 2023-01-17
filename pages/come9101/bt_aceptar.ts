@@ -28,7 +28,7 @@ export class bt_aceptar extends COMPONENT {
   } // Fin constructor
 
   async click() {
-    const m = {}
+    const m = {nom_tab : this.Form.nom_tab.prop.Value }
 
     if (this.prop.Disabled) return
     this.prop.Disabled = true
@@ -101,7 +101,7 @@ export class bt_aceptar extends COMPONENT {
         return
       }
 
-      m.nom_tab = this.Form.nom_tab.prop.Value
+
       await this.Form.db.select(0)
       // Si hay nombre de tabla
 
@@ -112,7 +112,8 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_datos.prop.Status = 'A'
           await this.Form.db.use("vi_cap_dat ", m, "vi_cap_dat", ["con_dat"])
           if (await this.Form.db.recCount("vi_cap_dat")===0 ){
-            await this.Form.appendDatos()
+            await this.Form.grid_datos.appendDatos()
+            console.log('Termine de incertar datos ')
           }
           this.Form.grid_datos.prop.Visible = true
           //this.Form.btGenTabla.prop.Visible = true
@@ -138,7 +139,7 @@ export class bt_aceptar extends COMPONENT {
         // Vistas remotas SQL
         if (this.Form.dic_dat.prop.Value == 'V') // Vistas
         {
-
+          console.log('bt_aceptar dic_dat=V  m',m)
           //      if (await this.Form.db.select('lla1_vis') == 0) await this.Form.db.select(0)
           //      await this.Form.db.useNodata("lla1_vis")
 

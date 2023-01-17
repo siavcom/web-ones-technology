@@ -95,10 +95,10 @@ export class VFPDB {
     this.nom_emp = nom_emp
 
     // try {
-    alasql('DROP DATABASE IF EXISTS Now ;')
-    alasql('CREATE DATABASE Now ;')
-    alasql('DROP DATABASE IF EXISTS Last ;')
-    alasql('CREATE DATABASE Last ;')
+    this.localAlaSql('DROP DATABASE IF EXISTS Now ;')
+    this.localAlaSql('CREATE DATABASE Now ;')
+    this.localAlaSql('DROP DATABASE IF EXISTS Last ;')
+    this.localAlaSql('CREATE DATABASE Last ;')
 
     /*
     this.borraLocalDb('New');  // Borra primero toda la Base de datos local
@@ -115,10 +115,10 @@ export class VFPDB {
        );
      } */
 
-    //    alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMP_; \
+    //    this.localAlaSql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMP_; \
     //                  ATTACH INDEXEDDB DATABASE TEMP_;' )
 
-    // alasql("CREATE DATABASE 'new'; CREATE DATABASE 'old'")
+    // this.localAlaSql("CREATE DATABASE 'new'; CREATE DATABASE 'old'")
     // await alasql.promise(`ATTACH INDEXEDDB DATABASE ${dbName};USE DATABASE ${dbName};`);
 
     //   console.log(this.id_con, this.url, this.user)
@@ -180,10 +180,10 @@ export class VFPDB {
 
     if (this.View[alias]) { // si exite ya la vista, solo borra los datos locales
       // console.log('useNodata View ',alias,this.View)
-      // alasql('USE Now ; ')
-      await alasql('delete from Now.' + alias)
-      // alasql('USE Last ; ')
-      await alasql('delete from  Last.' + alias)
+      // this.localAlaSql('USE Now ; ')
+      await this.localAlaSql('delete from Now.' + alias)
+      // this.localAlaSql('USE Last ; ')
+      await this.localAlaSql('delete from  Last.' + alias)
 
       // Inicializamos el alias
       this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
@@ -220,7 +220,7 @@ export class VFPDB {
       await this.genera_tabla(response, alias, true) // generamos la tabla segun la estructura regresada
 
       // abre  la tabla de mantenimiento
-      if (this.View[alias].tip_obj == 'VIEW') {
+      if (this.View[alias].tip_obj.trim() == 'VIEW') {
         // console.log('useNodata VIEW ==> ',alias,this.View[alias].tablaSql)
         await this.useNodata(this.View[alias].tablaSql)
       }
@@ -310,13 +310,13 @@ export class VFPDB {
         }
         des_tab = des_tab + ')'
         // Creamos la tablas
-        alasql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
-        alasql(des_tab)
+        this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
+        this.localAlaSql(des_tab)
 
-        alasql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
-        alasql(des_tab)
+        this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
+        this.localAlaSql(des_tab)
 
-        //   console.log('Vista creada ===', des_tab, alasql('SELECT * from Last.' + alias))
+        //   console.log('Vista creada ===', des_tab, this.localAlaSql('SELECT * from Last.' + alias))
 
         return true;
         // return this.View[alias].new[0]
@@ -359,7 +359,6 @@ export class VFPDB {
       nom_vis,
       where: ''
     }
-    console.log('USE this.View', this.View[alias], dat_vis)
     //    if (this.View[alias].tip_obj = 'VIEW') // si es una VIEW
     //    {
     //      dat_vis['query'] = 'select * from ' + nom_vis
@@ -371,8 +370,10 @@ export class VFPDB {
 
     let exp_ind = ''
     let exp_whe = ''
-    if (this.View[alias].tip_obj == 'VIEW') // si es una VIEW
+    if (this.View[alias].tip_obj.trim() == 'VIEW') // si es una VIEW
     {
+      console.log('USE this.View VIEW', this.View[alias], dat_vis)
+
       dat_vis.query = 'select * from ' + nom_vis
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
@@ -386,7 +387,7 @@ export class VFPDB {
       }
       if (this.View[alias].exp_where.trim().length > 0) {
         console.log('dataBase exp_where', this.View[alias].exp_where)
-        debugger
+      
         const val_eval = '`' + this.View[alias].exp_where.trim() + '`'
         console.log('use eval where ', val_eval, m)
         exp_whe = eval(val_eval)
@@ -410,10 +411,14 @@ export class VFPDB {
       if (this.View[alias].order.trim().length > 0) { dat_vis.query = dat_vis.query + ' order by ' + this.View[alias].order }
     } else { // es un MODEL{
       //      const val_eval = "`"+this.View[alias].exp_indice+"`"
+      console.log('USE this.View MODEL eval exp_indice', this.View[alias], dat_vis)
+
+
       const val_eval = this.View[alias].exp_indice
 
       console.log('use eval dat_vis ===>', val_eval)
       eval('dat_vis.where=' + val_eval)
+
       // eval("dat_vis.where=`" + this.View[alias].exp_indice+"`") // obtenemos la expresion del indice
     }
 
@@ -523,7 +528,7 @@ export class VFPDB {
     }
 
     // lee los datos originales haciendo un LEFT OUTER a los datos nuevos
-    const data = await alasql(` 
+    const data = await this.localAlaSql(` 
        Select Viejo.key_pri,Viejo.recno recnoOld, Nuevo.recno as recnoNew from Last.${alias} Viejo \
        LEFT OUTER JOIN Now.${alias} Nuevo using recno ${where_del}`)
 
@@ -538,12 +543,12 @@ export class VFPDB {
     }
 
     // obtenemos los datos a actualizar
-    // console.log('tableUpdate error recno ',await alasql(` SELECT recno,key_pri FROM Last.${alias} `))
-    // console.log('tableUpdate Now update',await alasql(`
+    // console.log('tableUpdate error recno ',await this.localAlaSql(` SELECT recno,key_pri FROM Last.${alias} `))
+    // console.log('tableUpdate Now update',await this.localAlaSql(`
     //  Select Viejo.* from Now.${alias} Nuevo \
     //  LEFT OUTER JOIN Last.${alias} Viejo using recno ${where}`))
 
-    const datos = await alasql(`SELECT * FROM Now.${alias} ${where}`)
+    const datos = await this.localAlaSql(`SELECT * FROM Now.${alias} ${where}`)
     console.log('tableUpdate lee datos Now', datos)
 
     const dat_act = datos
@@ -577,11 +582,11 @@ export class VFPDB {
 
         dat_vis.tip_llamada = 'UPDATE'
         const ins_sql = `SELECT * FROM Last.${alias}  WHERE recno=${dat_act[row].recno} ;`
-        const datos = await alasql(ins_sql)
+        const datos = await this.localAlaSql(ins_sql)
         // console.log('tableUpdate select Now ',ins_sql,datos)
 
         if (datos.length > 0) { old_dat = datos[0] } else {
-          console.error('tableUpdate error recno ', row, dat_act[row].recno, await alasql(` SELECT * FROM Last.${alias} `))
+          console.error('tableUpdate error recno ', row, dat_act[row].recno, await this.localAlaSql(` SELECT * FROM Last.${alias} `))
           return false
         }
       }
@@ -651,20 +656,21 @@ export class VFPDB {
           // Actualizamos alaSQL
 
           const ins_sql = ' UPDATE Now.' + alias + ` SET timestamp=${response.timestamp},key_pri=${response.key_pri} WHERE recno=${dat_act[0].recno}; ` +
+           
           ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
           ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
-          console.log('tableUpdate INSERT UPDATE', ins_sql)
-          await alasql(ins_sql)
-
+          await this.localAla(ins_sql)
+          console.log('tableUpdate ala Ok INSERT UPDATE =>', ins_sql)
+         
           if (dat_vis.tip_llamada == 'INSERT') { sw_insert = true }
 
           //  ' UPDATE Now.' + alias + ` SET timestamp=${response[0].timestamp},key_pri=${response[0].key_pri} WHERE recno=${recno}; ` +
           //  ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${recno}  ;` +
           //  ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${recno} ;`)
 
-          // console.log('tableUpdate INSERT Old despues', await alasql(`SELECT  FROM Last.${alias} ${where}`))
+          // console.log('tableUpdate INSERT Old despues', await this.localAlaSql(`SELECT  FROM Last.${alias} ${where}`))
 
-          // console.log("7 Table Update Intento ", num_int,await alasql('SELECT * FROM Last.' + alias + ` WHERE recno=${recno}`));
+          // console.log("7 Table Update Intento ", num_int,await this.localAlaSql('SELECT * FROM Last.' + alias + ` WHERE recno=${recno}`));
 
           num_int = 2 // se sale del for
         } else { // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
@@ -677,11 +683,11 @@ export class VFPDB {
               if (force) { // Actualiza el valor de timestamp para tratar de grabar de nuevo
                 dat_vis.dat_act[row].timestamp = respuesta.timestamp
               } else {
-                await alasql('USE Now;\
+                await this.localAlaSql('USE Now;\
                 DELETE Now.' + alias + ` WHERE recno=${dat_act[row].recno};\
                 INSERT INTO ` + alias + ' VALUES ?', [respuesta])
 
-                await alasql('USE Last;\
+                await this.localAlaSql('USE Last;\
                 DELETE Last.' + alias + ` WHERE recno=${dat_act[row].recno};\
                 INSERT INTO ` + alias + ' VALUES ?', [respuesta])
               } // fin else
@@ -701,8 +707,8 @@ export class VFPDB {
     if (sw_update && updateType > 0) {
       //console.log('tableUpdate genera_tabla', dat_act)
       await this.genera_tabla(dat_act, alias)
-      //console.log('tableUpdate genera_tabla Now,Last', await alasql('select * from Now.' + alias)
-      //  , await alasql('select * from Now.' + alias))
+      //console.log('tableUpdate genera_tabla Now,Last', await this.localAlaSql('select * from Now.' + alias)
+      //  , await this.localAlaSql('select * from Now.' + alias))
 
     }
     */
@@ -730,7 +736,7 @@ export class VFPDB {
 
     let recno = 0
     // Obtenemos el valor del siguiente recno
-    const res = await alasql('USE Now; select max(recno)+1 as recno from ' + alias)
+    const res = await this.localAlaSql('USE Now; select max(recno)+1 as recno from ' + alias)
 
     if (res[1] && res[1][0].recno > 0) { // si hay registro
       recno = res[1][0].recno
@@ -750,9 +756,9 @@ export class VFPDB {
     // const val_defa = eval(this.View[alias].val_def)
     console.log('appendBlank alias ', alias, m, this.View[vis_act].val_def, valores)
 
-    await alasql('USE Now;\
+    await this.localAlaSql('USE Now;\
     INSERT INTO Now.' + alias + ' VALUES ?', [valores])
-    await alasql('USE Last;\
+    await this.localAlaSql('USE Last;\
     INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno)
 
     const ult_ele = this.View[alias].recnoVal.length - 1
@@ -764,7 +770,7 @@ export class VFPDB {
     this.View[alias].recnoVal.push({ recno, id }) // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 // asignamos nuevo row
-    // console.log('appendBlank alasql RecnoVal=====>',this.View[alias].recnoVal )
+    console.log('appendBlank alasql RecnoVal=====>',this.View[alias].recnoVal )
 
     return valores
 
@@ -807,16 +813,16 @@ export class VFPDB {
       console.error('Error en delete', error)
       return null
     }
-    const recno = await alasql('USE Last;\
+    const recno = await this.localAlaSql('USE Last;\
     select recno  from Last.' + alias + ' where key_pri=?', key_pri)
 
     //  borra el LolcaDb
-    await alasql(`USE Last;\
+    await this.localAlaSql(`USE Last;\
         delete from Last.${alias} where key_pri=${key_pri}`)
-    await alasql(`USE Now;\
+    await this.localAlaSql(`USE Now;\
         delete from Now.${alias} where key_pri=${key_pri}`)
 
-    // console.log('deleteRow Last ===>', key_pri, recno, await alasql('USE Last;\
+    // console.log('deleteRow Last ===>', key_pri, recno, await this.localAlaSql('USE Last;\
     // select key_pri,recno from '+ alias) )
 
     //  borra en el arreglo de recno
@@ -848,16 +854,16 @@ export class VFPDB {
 
     if (recno <= 0) { return null } // no hay row por borrar
 
-    await alasql(' delete from Now.' + alias + ` where recno=${recno}`)
+    await this.localAlaSql(' delete from Now.' + alias + ` where recno=${recno}`)
 
     console.log(' delete from Now.' + alias + ` where recno=${recno}`)
 
     // Actualizacion inmediata en SQLSERVER
     if (SqlUpdate) {
-      const data = await alasql('USE Last;\
+      const data = await this.localAlaSql('USE Last;\
     select key_pri from Last.' + alias + ' where recno=?', recno)
       const key_pri = data[1][0].key_pri
-      await alasql(' delete from Now.' + alias + ' where recno=?', recno)
+      await this.localAlaSql(' delete from Now.' + alias + ' where recno=?', recno)
 
       // utiliza la tabla de actualizacionde SQL
       // console.log('delete alias DeleteRow',key_pri, alias)
@@ -869,7 +875,7 @@ export class VFPDB {
       }
     }
 
-    const recnoArray = await alasql(' select recno from Now.' + alias + '  order by recno')
+    const recnoArray = await this.localAlaSql(' select recno from Now.' + alias + '  order by recno')
 
     // por reactividad borramos de uno por uno
     while (this.View[alias].recnoVal.length > 0) {
@@ -890,7 +896,7 @@ export class VFPDB {
 
     // console.log('Despues de borrar recnoval ',this.View[alias].recnoVal)
     // console.log('delete despues slice recno reg recnoVal===>',recno,this.View[alias].recnoVal)
-    // console.log('Despues de borrar alaSql',alasql('select recno,key_pri from '+ alias ))
+    // console.log('Despues de borrar alaSql',this.localAlaSql('select recno,key_pri from '+ alias ))
     if (recno > 0) { return await this.goto(recno) } // se va a leer registro
     return []
   }
@@ -922,7 +928,7 @@ export class VFPDB {
     });
    */
 
-    const valores = await alasql('USE Now;\
+    const valores = await this.localAlaSql('USE Now;\
             select from ' + alias + ' where renco=?', recno)
 
     const dat_vis = {
@@ -947,11 +953,11 @@ export class VFPDB {
       /*
       this.insertLocalDb(alias, respuesta);
       */
-      await alasql('USE Now;\
+      await this.localAlaSql('USE Now;\
               UPDATE ' + alias + '\
               set  key_pri=?,set timestamp=? where recno=? ', respuesta.key_pri, respuesta.timestamp, recno)
 
-      await alasql('USE Last;\
+      await this.localAlaSql('USE Last;\
               DELETE Last.' + alias + ' where recno=?;\
               INSERT INTO Last.' + alias + ' SELECT * from Now.' + alias + ' where recno=?', recno, recno)
 
@@ -1015,11 +1021,11 @@ export class VFPDB {
 
       //  console.log('Ejecutara ala con  :', respuesta)
 
-      await alasql(' USE Now ; DROP TABLE IF EXISTS ' + alias + '; ')
+      await this.localAlaSql(' USE Now ; DROP TABLE IF EXISTS ' + alias + '; ')
 
       await this.select(alias)
 
-      await alasql(' CREATE TABLE ' + alias + ' ; \
+      await this.localAlaSql(' CREATE TABLE ' + alias + ' ; \
       SELECT * INTO ' + alias + '  FROM ?', [respuesta])
 
       /*
@@ -1085,7 +1091,7 @@ export class VFPDB {
       //* ******************* */
 
       // console.log('Tabla creada en Now resp ',resp_sql)
-      console.log('Tabla creada en Now  ', await alasql('USE Now ; SELECT * FROM ' + alias))
+      console.log('Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
 
       return respuesta
     } catch (error) {
@@ -1370,10 +1376,10 @@ export class VFPDB {
     if (this.num_are == 0) { // si es una area de trabajo nueva busca si ya existe el alias
       this.are_tra.push(alias) // Se incremente en uno y se asigna que alias tiene
     } else { // Si existe la tabla borra los regisros
-      // alasql('USE Now ; ')
-      await alasql('delete from Now.' + alias + '; ')
-      // alasql('USE Last ; ')
-      await alasql('delete from  Last.' + alias + '; ')
+      // this.localAlaSql('USE Now ; ')
+      await this.localAlaSql('delete from Now.' + alias + '; ')
+      // this.localAlaSql('USE Last ; ')
+      await this.localAlaSql('delete from  Last.' + alias + '; ')
       return
     }
     // Si es una vista nueva
@@ -1449,8 +1455,8 @@ export class VFPDB {
       // this.View[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
 
       // Bora las tablas
-      await alasql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
-      await alasql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
+      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
+      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
 
       await this.select(alias)
 
@@ -1467,7 +1473,7 @@ export class VFPDB {
 
       // revisar despues si al insertar los datos el recno queda como lo habiamos generado
       // o seleccionar los recno para llenar el recnoval
-      // recnoVal=alasql(SELECT recno FROM Now.' + alias)
+      // recnoVal=this.localAlaSql(SELECT recno FROM Now.' + alias)
 
       this.View[alias].recnoVal = [...recnoVal] // utilizamos el spread Operator
       // console.log('RecnoVal===>', this.View[alias].recnoVa)
@@ -1490,10 +1496,10 @@ export class VFPDB {
       this.are_tra.push(alias)
       sw_ini = true
     } else { // Si existe la tabla borra los registros
-      // alasql('USE Now ; ')
-      await alasql('delete from Now.' + alias)
-      // alasql('USE Last ; ')
-      await alasql('delete from  Last.' + alias)
+      // this.localAlaSql('USE Now ; ')
+      await this.localAlaSql('delete from Now.' + alias)
+      // this.localAlaSql('USE Last ; ')
+      await this.localAlaSql('delete from  Last.' + alias)
     }
 
     this.num_are = this.are_tra.indexOf(alias) + 1 // asigna el numero de area de trabajo
@@ -1576,11 +1582,11 @@ export class VFPDB {
 
       // console.log('ALASQL Estructura ===>',des_tab)
       // Creamos la tablas
-      await alasql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
-      await alasql(des_tab)
+      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
+      await this.localAlaSql(des_tab)
 
-      await alasql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
-      await alasql(des_tab)
+      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
+      await this.localAlaSql(des_tab)
     }
 
     // por reactividad borramos de uno por uno
@@ -1625,15 +1631,15 @@ export class VFPDB {
 
       // Borra las tablas
 
-      await alasql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
-      await alasql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
+      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
+      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
 
       await this.select(alias)
 
       try {
-        await alasql('USE Now; CREATE TABLE Now.' + alias + ' ; \
+        await this.localAlaSql('USE Now; CREATE TABLE Now.' + alias + ' ; \
           SELECT * INTO Now.' + alias + '  FROM ?', [respuesta])
-        await alasql('USE Last; CREATE TABLE Last.' + alias + ' ; \
+        await this.localAlaSql('USE Last; CREATE TABLE Last.' + alias + ' ; \
           SELECT * INTO Last.' + alias + '  FROM ?', [respuesta])
       } catch (error) {
         console.error('Error al generar Vis_captura' + alias, error)
@@ -1644,8 +1650,8 @@ export class VFPDB {
 
       console.log('View leida respuesta ===>', alias, respuesta)
 
-      // console.log('genera_tabla View leida Last ===>',alias, await alasql('select * from Last.' + alias))
-      //  console.log('genera_tabla View leida Now ===>',alias, await alasql('select * from Now.' + alias))
+      // console.log('genera_tabla View leida Last ===>',alias, await this.localAlaSql('select * from Last.' + alias))
+      //  console.log('genera_tabla View leida Now ===>',alias, await this.localAlaSql('select * from Now.' + alias))
 
       // si  no hay asignacion a valores de componentes
 
@@ -1716,15 +1722,15 @@ export class VFPDB {
     /*
         alasql.promise("DROP INDEXEDDB DATABASE IF  EXISTS 'New' ;").
                           then(()=>{
-                            alasql(" DROP INDEXEDDB DATABASE IF  EXISTS 'Old'")
+                            this.localAlaSql(" DROP INDEXEDDB DATABASE IF  EXISTS 'Old'")
 
                           }).
                           then(()=>{
-                            alasql("DROP INDEXEDDB DATABASE IF  EXISTS Temp_ ;")
+                            this.localAlaSql("DROP INDEXEDDB DATABASE IF  EXISTS Temp_ ;")
 
                           }).
                           then(()=>{
-                            alasql("CREATE INDEXEDDB DATABASE Temp_ ;")
+                            this.localAlaSql("CREATE INDEXEDDB DATABASE Temp_ ;")
 
                             console.log('Creo Temp_')
                           }).
@@ -1734,12 +1740,12 @@ export class VFPDB {
                           })
     */
 
-    //    alasql("CREATE INDEXEDDB DATABASE IF NOT EXISTS temp_;\
+    //    this.localAlaSql("CREATE INDEXEDDB DATABASE IF NOT EXISTS temp_;\
     //           ATTACH INDEXEDDB DATABASE temp_")
 
     //       ATTACH INDEXEDDB DATABASE 'NEW';")
 
-    // alasql("ATTACH INDEXEDDB DATABASE 'NEW';")
+    // this.localAlaSql("ATTACH INDEXEDDB DATABASE 'NEW';")
 
     //        ATTACH INDEXEDDB DATABASE 'Old'; \
     //        ATTACH INDEXEDDB DATABASE '_Temp';")
@@ -1794,7 +1800,7 @@ return false;
   // Crea tablas en  LocalDb
   /*
     openLocalDb = async () => {
-      // console.log('ALASQL===>',alasql('select * from lla1_tab'))
+      // console.log('ALASQL===>',this.localAlaSql('select * from lla1_tab'))
 
       this.newTables['recno'] =
       {
@@ -1846,7 +1852,7 @@ return false;
 
         //
 
-        // alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMPO ;\
+        // this.localAlaSql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMPO ;\
         //         ATTACH INDEXEDDB DATABASE new;\
         //         ATTACH INDEXEDDB DATABASE old')
 
@@ -2110,13 +2116,44 @@ return false;
     try {
       ins_sql = 'USE ' + DataBase + ' ; ' + ins_sql
       // console.log('localSQL===>',ins_sql)
-      const resultado = await alasql(ins_sql)
+      const resultado = await this.localAlaSql(ins_sql)
       // console.log('Lectura SQL',resultado[1][0])
       return resultado[1]
     } catch (error) {
       console.error('localSql error==>', error)
     }
   }
+
+/// /////////////////////////////////////////////////
+  // Instruccion sql base de datos local
+  // db_name :Base de datos a utilizar
+  // ins_sql : Instruccion SQL
+  /// //////////////////////////////////////
+  public async localAlaSql (ins_sql: string,datos?:any) {
+
+    try {
+      let resultado: []
+      if (!datos)
+         resultado = await alasql(ins_sql)
+      else
+         resultado = await alasql(ins_sql,datos)
+
+      return resultado
+    } catch (error) {
+
+      console.error('localSql error==>', error)
+      this.MessageBox(error , 16,
+        'Error Ala SQL ')
+
+      return false
+    }
+
+  }
+
+
+
+
+
 
   /*
     ////////////////////////////////////////////////////
@@ -2129,7 +2166,7 @@ return false;
 
       try {
         ins_sql = 'USE Now;' + ins_sql
-        const resultado = alasql(ins_sql)
+        const resultado = this.localAlaSql(ins_sql)
         // console.log('Lectura SQL',resultado[1][0])
         return resultado[1]
       }
@@ -2143,7 +2180,7 @@ return false;
     //          CSV(filename,options)
     //          XLSX("restest280b.xlsx")
     try {
-      await alasql(' USE Now ; ')
+      await this.localAlaSql(' USE Now ; ')
 
       if (!alias) { alias = 'sqlresult' }
 
@@ -2160,15 +2197,15 @@ return false;
             console.error('select Into Error:', err)
           })
       } else {
-        await alasql('DROP TABLE IF EXISTS ' + alias + '; ')
+        await this.localAlaSql('DROP TABLE IF EXISTS ' + alias + '; ')
 
-        const resultado = await alasql(ins_sql + ' INTO ' + alias)
+        const resultado = await this.localAlaSql(ins_sql + ' INTO ' + alias)
 
         if (resultado.length) { // el resultado es un arreglo
           this.select(alias)
-          await alasql(' CREATE TABLE IF NOT EXISTS' + alias + ' ; \
+          await this.localAlaSql(' CREATE TABLE IF NOT EXISTS' + alias + ' ; \
         SELECT * INTO ' + alias + '  FROM ?', [resultado])
-          const resp = await alasql('select * from ' + alias)
+          const resp = await this.localAlaSql('select * from ' + alias)
           // console.log('localSql=>>', resp)
         }
       }
@@ -2210,9 +2247,9 @@ return false;
   // Lee Valor de un campo
   /// //////////////////////////////////////
   readValue = async (tabla: string, campos: string, recno: number, DataBase: string) => {
-    // console.log('readValue Select=====>', tabla, campos, recno)
+    //console.log('readValue Select=====>', tabla, campos, recno)
 
-    const data = await alasql('USE ' + DataBase + ' ; SELECT ' + campos + ',key_pri  FROM ' + tabla + ' WHERE recno=? ;', recno)
+    const data = await this.localAlaSql('USE ' + DataBase + ' ; SELECT ' + campos + ',key_pri  FROM ' + tabla + ' WHERE recno=? ;', recno)
 
     if (data.length > 1) {
       for (const campo in data[1][0]) {
@@ -2259,10 +2296,10 @@ return false;
     //    if (typeof Value=='string' || )
 
     try {
-      //     await alasql('USE Now;')
+      //     await this.localAlaSql('USE Now;')
       const ins_sql = `USE Now; UPDATE ${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`
       console.log('update ala===>', ins_sql)
-      await alasql(ins_sql)
+      await this.localAlaSql(ins_sql)
     } catch (error) {
       console.error('AlaSql error==>', error)
     }
@@ -2311,10 +2348,10 @@ return false;
       recno = despla
     } else { // desplazamiento top o bottom
       if (despla == 'top') {
-        data = await alasql('USE Now; SELECT top 1 recno   FROM ' + alias + ' order by recno desc')
+        data = await this.localAlaSql('USE Now; SELECT top 1 recno   FROM ' + alias + ' order by recno desc')
       }
       if (despla == 'bottom') {
-        data = await alasql('USE Now; SELECT top 1 recno   FROM ' + alias + ' order by recno ')
+        data = await this.localAlaSql('USE Now; SELECT top 1 recno   FROM ' + alias + ' order by recno ')
       }
 
       if (data.length > 1) {
@@ -2340,7 +2377,7 @@ return false;
     }
 
     // leedatos
-    data = await alasql('USE Now; SELECT *   FROM ' + alias + '  where recno=?', recno)
+    data = await this.localAlaSql('USE Now; SELECT *   FROM ' + alias + '  where recno=?', recno)
     // console.log('goto data ',data[1][0])
 
     if (data[1].length > 0) {
@@ -2391,9 +2428,9 @@ return false;
     let recno = this.View[alias].recnoVal[row].recno
 
     if (despla > 0) {
-      data = await alasql('USE Now; SELECT top ' + despla.toString + '  FROM ' + alias + ' where recno>' + recno.toString + ' order by recno ')
+      data = await this.localAlaSql('USE Now; SELECT top ' + despla.toString + '  FROM ' + alias + ' where recno>' + recno.toString + ' order by recno ')
     } else {
-      data = await alasql('USE Now; SELECT top ' + despla.toString + '  FROM ' + alias + ' where recno<' + recno.toString + ' order by recno desc')
+      data = await this.localAlaSql('USE Now; SELECT top ' + despla.toString + '  FROM ' + alias + ' where recno<' + recno.toString + ' order by recno desc')
     }
 
     if (data[1].length > 0) // Si regreso datos
@@ -2442,7 +2479,7 @@ return false;
   // portea la funcion alasql a VfpCursor
   /// //////////////////////////////
   VfpCursor = async (query: String) => {
-    const data = await alasql(query)
+    const data = await this.localAlaSql(query)
     // console.log('VfpCursor ==>', data)
     return data
   }

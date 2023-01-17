@@ -1,20 +1,19 @@
-# Framework in Vue 3 for SQL databases. Using typescript programming with out web programming.
-# I'm a old FOX programer with a lot experience in desing and programing for Visual Fox Pro (VFP),MSSQL and Postgres databases. 
+# Framework in Vue 3 with Nuxt for SQL databases. Using typescript programming with out web programming.
+# I'm a old FOX programer with a lot experience in desing and programing in Visual Fox Pro (VFP),MSSQL and Postgres databases. 
 # This Framework is based in VFP functions and instruccions .
 
 # This use:
   - Vue 3 with SFC
-  - Vite
+  - Nuxt 3
   - Native HTML components 
   - Backend with Node express and  VFPnode proyect https://github.com/siavcom/VFP-NODE
   - SQL Data Base Postgres ]12.0 ( MSSQL soon) )
 
-  
 
 # Objetive:
   - Make a simple program in typescript, but with out knowledge of web programming (HTML, CSS, VUE).
 
-  I's based in use a main form (like ThisForn in VFP) made in typescript only,  where  each form has it owns components ( editBox, comboBox,checkBox grid ,etc) forming a component tree.
+  It's based in use a main form (like ThisForn in VFP) made in typescript only,  where  each form has it owns components ( editBox, comboBox,checkBox grid ,etc) forming a component tree.
     
   
                     ThisForm
@@ -37,7 +36,7 @@
 
 
 
-Each component has it own propiertys.
+Each component has it own propierties.
 
 - basic props
 - Style props
@@ -50,13 +49,15 @@ and methods
 - focus
 - interactiveChange
 
-To make a reference to especific propierty you can make by using a complete name reference tree 
+To make a reference to especific propierty you can do by using a complete name reference tree 
 example:
-
+ propierties :
   ThisForm.style.display="inline-block"
   ThisForm.style.width='800px'.
   ThisForn.component1.prop.Type = 'editText'
-  ThisForn.component2.prop.Value='Customer name 1'. 
+  ThisForn.component2.prop.Value='Customer name 1'.
+
+ method:   
   ThisForm.component4.click().
 
 ## web components
@@ -113,7 +114,7 @@ example:
     - SqlUpdate: true   //true, when lost focus component, update field component. When false, update field component since tableUpdate method  
 
     
-    ### Internal properties.
+   ### Internal properties.
     - Capture: true // When capture is true, can't lost focus until Validate or esc
     - First: false
     - Focus: false // When put 1 , take focus this component
@@ -281,21 +282,20 @@ example:
 ## Recommended IDE Setup
 - [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar).
 
-npm run dev
-
-##  Project mannager
-vue ui
-
 ## this project use
 
-  - Vue 3 SFC
-  - Vite
-  - AlaSql
-  - Axios
-  - SweetAlert
-  - vue-router
+   - Vue 3 SFC
+   - Nuxt 3
+   - @nuxtjs/axios
+   - @pinia/nuxt
+   - @zip.js/zip.js
+   - alasql
+   - file-saver
+   - pinia
+   - vue-sweetalert2
+  
   - Back End https://github.com/siavcom/VFP-NODE
-  - SQL Server ( Postgres/MSSQL )
+  - SQL Server ( Postgres or MSSQL soon )
 
 ## Knowledge Necesary  :
    - Object class programing.
@@ -305,7 +305,7 @@ vue ui
 
 ## Notes:
   - To use this Framework, you have to restore a initial SQL backup .  
-  - If you are a VFP programer, clipper, dbase III or IV, this is the right option for programing in web. 
+  - If you are a VFP programer, clipper, dbase III or IV, this is the right option for programing in the web. 
   - If you have a question, let me now by mail or skype siavcom@hotmail.com
   - I can help you if  you want to use this framwork.
   - I use linux (ubuntu 21.04) to make this project. 
@@ -324,12 +324,12 @@ vue ui
 
 
 ##### Other notes :
-Devolop
-npx vite --port=38000
+Development:
+ $ npx nuxi dev --port=3000
+ $ npm run dev
 
-vue ui --dev
+##  Project mannager
 
-Mantenimiento diccionario de datos al definir cualquier where, se deben de sustituir comilla simple (') por comillas dobles (")
-Ejemplo : tpr_prg="${tpr_prg}" or (tpr_prg<>"S" and sis_sis="${sis_sis}")
-
+(vue ui old)
+(npx vite --port=38000 old)
 

@@ -35,15 +35,17 @@ export class dic_dat extends COMPONENT {
     this.style.zIndex=3
   }
   // init del componente 
-  public init = async (form) =>{
+  public init = async (form:any) =>{
    // await super.Init(form)
     this.prop.Value = "T";
     this.Form.nom_tab.Visible=true
+    
   }
   
   public async when() {
   // public setFocus = async () => {
     super.when()
+    console.log('bt_aceptar when')
     this.Form.nom_tab.prop.Visible = false
     this.Form.tip_men.prop.Visible = false
     this.Form.sis_sis.prop.Visible = false
@@ -59,11 +61,12 @@ export class dic_dat extends COMPONENT {
     //this.Form.btGenIndices.prop.Visible = false
     //this.Form.btGenVistas.prop.Visible = false
 
-    return 
+    return !this.prop.ReadOnly
   }
 
   public async valid () {
     super.valid()
+    console.log('bt_aceptar valid')
     const ThisForm = this.Form.value;
 
  

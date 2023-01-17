@@ -31,5 +31,11 @@
         "nem_emp": "Demo Postgres come9101",
         "nom_sis": "menu ",
         "path" : { "name": "Menu" }
+    },
+   "Fba": {
+        "url": "http://187.188.142.107:38080/",
+        "nem_emp": "FutBol Americano",
+        "nom_sis": "menu ",
+        "path" : { "name": "Menu" }
     }
 }

@@ -13,10 +13,19 @@ modules: [
         ]
 */
 
-import { defineStore } from 'pinia'
-
+import { defineStore, acceptHMRUpdate } from 'pinia'
+//import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
 //import store from '../stores/index'
+/*
 
+// make sure to pass the right store definition, `Session` in this case.
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(Session, import.meta.hot))
+}
+
+
+
+*/
 
 export const Session = defineStore({
   id: 'currentSesion',
@@ -27,6 +36,7 @@ export const Session = defineStore({
     url: '',
     menu: []
   }),
+  //persist : true,
   /* {
     return {
       id_con: '',
@@ -63,3 +73,8 @@ export const Session = defineStore({
   }
 }
 )
+
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(Session, import.meta.hot))
+}

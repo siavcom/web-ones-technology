@@ -72,17 +72,95 @@ export class grid_datos extends GRID {
    const con_dat=data[0].con_dat > 0 ? data[0].con_dat+.1 : 1       
    const m = {nom_tab:this.Form.nom_tab.prop.Value,
               con_dat:con_dat,
-              cam_dat: '',
-              des_dat :'',
+              cam_dat: ' ',
+              des_dat :' ',
               tip_dat : 'C',
               lon_dat : 32 ,
               dec_dat : 0,
-              ref_dat : '',
-              val_dat : '',
-              sou_dat : '',
-              vvu_dat : ''
+              ref_dat : ' ',
+              val_dat : ' ',
+              sou_dat : ' ',
+              vvu_dat : ' '
                }
    super.appendRow(m)   // llama a la clase base        
+  }
+
+  async appendDatos() {
+    const m = {nom_tab:this.Form.nom_tab.prop.Value,
+      con_dat: 0,
+      cam_dat: ' ',
+      des_dat :' ',
+      tip_dat : 'C',
+      lon_dat : 32 ,
+      dec_dat : 0,
+      ref_dat : ' ',
+      val_dat : ' ',
+      sou_dat : ' ',
+      vvu_dat : ' '
+       }
+
+    m.con_dat = 11
+    m.cam_dat = "usu_usu"
+   
+    m.tip_dat = "I"
+    m.lon_dat = 4
+    m.dec_dat = 0
+    m.ref_dat = "USUARIO"
+   
+    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+
+    m.con_dat = 12
+    m.cam_dat = "tie_uac"
+   
+    m.tip_dat = "D"
+    m.lon_dat = 8
+    m.dec_dat = 0
+    m.ref_dat = "FECHA ULTIMA ACTUALIZACION"
+  
+    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+
+    m.con_dat = 13
+    m.cam_dat = "usu_cre"
+    m.des_dat = "usu_cre"
+    m.tip_dat = "I"
+    m.lon_dat = 2
+    m.dec_dat = 0
+    m.ref_dat = "USUARIO CREAOOR"
+
+    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+
+    m.con_dat = 14
+    m.cam_dat = "tie_cre"
+    m.des_dat = "tie_cre"
+    m.tip_dat = "D"
+    m.lon_dat = 8
+    m.dec_dat = 0
+    m.ref_dat = "TIEMPO DE CREACION"
+
+    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+
+    m.con_dat = 15
+    m.cam_dat = "timestamp"
+    m.des_dat = "timestamp"
+    m.tip_dat = "T"
+    m.lon_dat = 8
+    m.dec_dat = 0
+    m.ref_dat = "TIMESTAMP"
+ 
+    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+
+
+    m.con_dat = 16
+    m.cam_dat = "key_pri"
+    m.des_dat = "key_pri"
+    m.tip_dat = "I"
+    m.lon_dat = 4
+    m.dec_dat = 0
+    m.ref_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    "
+  
+  await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+  console.log('Grid_datos appendBlank ',await this.Form.db.localSql('select * from vi_cap_dat'))
+   return
   }
 
 
