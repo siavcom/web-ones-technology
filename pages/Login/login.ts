@@ -13,6 +13,8 @@ import { LOG_USU } from './log_usu'
 import { PAS_USU } from './pas_usu'
 import { BT_ACEPTAR } from './bt_aceptar'
 import {FORM} from "@/classes/Form"
+import { Session } from '@/stores/currentSession'
+const session = Session()
 
 export class form extends FORM {
   public emp_emp=new EMP_EMP()
@@ -23,11 +25,17 @@ export class form extends FORM {
   name = 'login'
   classBase = 'form de VFP'
 
-  constructor() {
-    super()
-    this.prop.Login = false
-    this.prop.tag = ''
-  
+  /////////////////////////////////////////////////////////////////////
+  // init
+  // Descripcion: init del componente
+  /////////////////////////////////////////////////////////////////
+  public async init() {
+
+    console.log('login init antes',session.nom_emp,session.user)
+    this.emp_emp.prop.Value=session.nom_emp
+    this.log_usu.prop.Value=session.user
+    console.log('login init ',this.emp_emp.prop.Value,this.log_usu.prop.Value)
   }
- 
+
+
 }

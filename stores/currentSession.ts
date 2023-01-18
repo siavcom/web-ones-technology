@@ -31,8 +31,8 @@ export const Session = defineStore({
   id: 'currentSesion',
   state: () => ({
     id_con: '',
-    user: 'demo',
-    nom_emp: 'demo',
+    user: '',
+    nom_emp: '',
     url: '',
     menu: []
   }),

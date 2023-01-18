@@ -113,7 +113,7 @@ export class bt_aceptar extends COMPONENT {
           await this.Form.db.use("vi_cap_dat ", m, "vi_cap_dat", ["con_dat"])
           if (await this.Form.db.recCount("vi_cap_dat")===0 ){
             await this.Form.grid_datos.appendDatos()
-            console.log('Termine de incertar datos ')
+           
           }
           this.Form.grid_datos.prop.Visible = true
           //this.Form.btGenTabla.prop.Visible = true
@@ -159,8 +159,7 @@ export class bt_aceptar extends COMPONENT {
 
         // Tablas del servidor de SQL 
         if (this.Form.dic_dat.prop.Value == 'T') { // Tablas
-
-          if (await this.Form.db.select('vi_cap_tab') == 0) await this.Form.db.select(0)
+        
           await this.Form.db.use("vi_cap_tab", m)
           this.Form.grid_tablas.prop.Visible = true
           //this.Form.btGenModel.prop.Visible = true
@@ -181,6 +180,7 @@ export class bt_aceptar extends COMPONENT {
         await this.Form.db.useNodata('vi_cap_tab')
         this.prop.Disabled = false
         this.Form.prop.Status = 'A'
+        this.Form.grid_tablas.prop.Visible=false
 
         return
       }
@@ -360,11 +360,11 @@ export class bt_aceptar extends COMPONENT {
         await this.ObtDefTabla()
 
       }
-
+      console.log('bt_aceptar grabaDatos vis_cap,vis_act',vis_cap,vis_act)
       this.Form[grid_captura].prop.Visible = false
       this.Form.db.select(vis_cap)
 
-      if (await this.Form.db.tableUpdate(1, false, vis_cap, vis_act) == true) {  // Actualiza todos los registros
+      if (await this.Form.db.tableUpdate(1, false, vis_cap) == true) {  // Actualiza todos los registros
         MessageBox('Diccionario actualizado')
         return true
       }

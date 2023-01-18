@@ -17,7 +17,7 @@ export class LOG_USU extends COMPONENT {
   constructor() {
     super()
     this.prop.BaseClass = 'editText'
-    this.prop.Value = ''
+    //this.prop.Value = ''
     this.prop.textLabel = "Usuario";
     this.prop.Type = "text";
     this.style.width = '200px'

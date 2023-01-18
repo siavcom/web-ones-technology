@@ -18,7 +18,7 @@ export class EMP_EMP extends COMPONENT {
     super()
     // this.prop.Name='emp_emp'
     this.prop.BaseClass = 'comboBox'
-    this.prop.Value = 'Demo'
+    //this.prop.Value = 'Demo'
     this.prop.textLabel = 'Empresa'
     this.prop.Capture = true
     this.prop.RowSourceType = 5 // 1-Value, 2-Alias, 5-Array

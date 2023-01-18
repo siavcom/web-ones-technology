@@ -10,13 +10,14 @@
 import { OpenDb } from '@/classes/OpenDB'
 import { COMPONENT } from '@/classes/Component'
 
-
 // import dat_emp from '@/static/empresas/datos.json'
 // '@/static/empresas/datos.json' // Empresas del menu
 
 export class BT_ACEPTAR extends COMPONENT {
   num_int = 0
-  OpenDb = new OpenDb('siavcom.com.mx:38080/', 'Demo', 'sa', '*****')
+  OpenDb = new OpenDb()
+
+  // OpenDb = new OpenDb('siavcom.com.mx:38080/', 'Demo', 'sa', '*****')
   constructor () {
     super()
     //  this.name = 'bt_aceptar'

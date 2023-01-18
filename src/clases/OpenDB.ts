@@ -3,7 +3,7 @@
 // Descripcion : Conecta con un servidor node que esta sirviendo los servicios de la base de datos
 // Author : Fernando Cuadras Angulo
 // Creacion : Octubre/2021
-// Ult.Mod  :
+// Ult.Mod  : Enero/18/2023
 //
 /// //////////////////////////////////////////
 // import {inject } from "vue";
@@ -13,7 +13,6 @@ import axios from 'axios'
 //import store from '@/stores/index'
 import { Session } from '@/stores/currentSession'
 import dat_emp from '@/static/empresas/datos.json'
-
 const session = Session()
 
 //const session = Session(store())
@@ -27,11 +26,12 @@ export class OpenDb {
   id_con:string
 
   // Inicializa la conexion
-  constructor (url: string, nom_emp: string, user: string, pass: string) {
-    this.url = url === null ? 'http://176.16.200.20:38080/' : url
-    this.nom_emp = nom_emp === null ? 'Demo' : nom_emp
-    this.user = user === null ? 'demo' : user
-    this.pass = pass === null ? '*******' : pass
+  constructor () {
+  
+    this.url =  session.url
+    this.nom_emp =  session.nom_emp
+    this.user = session.user
+    this.pass = ''
     this.id_con = ''
     /*
         localsession.setItem('id_con','')
@@ -53,17 +53,14 @@ export class OpenDb {
 
     */
     //    const nom_emp:any=localsession.getItem('id_con')
+    
 
     let nom_emp: any = this.nom_emp
     let user: any = this.user
     const pass: any = this.pass
     //  let url: any = this.url
     
-    if (nom_emp.length === 0 || user.length === 0 || pass.length === 0) {
-      nom_emp = session.nom_emp
-      user = session.user
-      //    url = localStorage.getItem('url')
-    }
+       
     const router = useRouter()
     if (nom_emp.length === 0 || user.length === 0 || pass.length === 0) {
      
@@ -72,6 +69,12 @@ export class OpenDb {
 
     this.url = dat_emp[nom_emp].url // obtenemos el url del servidor node
 
+    session.id_con=''
+    session.url=this.url
+    session.nom_emp=nom_emp 
+    session.user=user
+    session.menu=[]
+   
     const def_con = { nom_emp, user, pass }
     const json = JSON.stringify(def_con)
      // console.log('Conexion Axios==>>',this.url,json)
@@ -88,7 +91,6 @@ export class OpenDb {
       session.setItem('nom_emp', this.nom_emp)
       session.setItem('user', this.user)
       session.setItem('url', this.url) */
-    
 
       if (await this.leeMenu()){
         

@@ -468,6 +468,8 @@ const updateIsOpen = () => {
 // Actualiza estatus Login
 /// ///////////////////////////////////////
 const updateStatus = (loggedIn: boolean) => {
+  obtMenu()
+  /*
   if (session.id_con) {
     let menu = []
     //const id_con = session.id_con
@@ -525,6 +527,7 @@ const updateStatus = (loggedIn: boolean) => {
     }
   }
   isLoggedIn.value = false // loggedIn;
+  */
 }
 
 /// //////////////////////////////////////

@@ -80,21 +80,19 @@ export class VFPDB {
     // Revisa si ya se firmo el usuario
     /// //////////////////////////////////////
 
-    const nom_emp: any = session.nom_emp
-    console.log('DataBase nom_emp===', nom_emp)
-
-    if (nom_emp == null) {
-      const router = useRouter()
-      router.push('/Login')
-      return
-    }
     // recupera datos de conexion
     this.id_con = session.id_con
     this.user = session.user
     this.url = session.url // obtenemos el url del servidor node
-    this.nom_emp = nom_emp
+    this.nom_emp = session.nom_emp
+    console.log('DataBase session.id===', this.id)
 
-    // try {
+    if (this.id_con.length < 16 ) {
+      const router = useRouter()
+      router.push('/Login')
+      return
+    }
+
     this.localAlaSql('DROP DATABASE IF EXISTS Now ;')
     this.localAlaSql('CREATE DATABASE Now ;')
     this.localAlaSql('DROP DATABASE IF EXISTS Last ;')
@@ -486,18 +484,24 @@ export class VFPDB {
       alias = this.are_tra[this.num_are - 1] // asigna el nombre de la vista segun el area de trabajo
     }
     if (alias == '') { return true }// no hay alias a actualizar
+    //console.log('tableUpdate View',alias, this.View[alias])
 
-    if (!tab_man) { tab_man = alias }
+    if (!tab_man) {
+      if(this.View[alias].tip_obj=='VIEW')
+         tab_man=this.View[alias].tablaSql
+      else
+       tab_man = alias
+       }
 
     const sw_val = true
     const nom_tab: string = this.View[alias].tablaSql.trim() // obtenemos el nombre model (sequelize) de la vista de mantenimento
+
     if (nom_tab.length < 2) {
       console.warn('No hay nombre de tabla de actualizacion para la vista', alias)
       this.MessageBox('No hay nombre de tabla de actualizacion para la vista ' + alias, 16, 'ERROR')
       return false
     }
 
-    console.log('tableUpdate ', this.View[alias])
     const recno = this.View[alias].recno // obtenemos el recno a actualizar
     const recCount = this.View[alias].recCount // obtenemos el recCount de la vista
 
@@ -576,7 +580,8 @@ export class VFPDB {
       // asignamos key_pri y timestamp del registro
       let old_dat = []
       // Es una actualizacion dedatos, asigna key_pri y timestamp
-      if (dat_act[row].key_pri > 0) {
+        console.log('tableUpdate dat_act[row]',dat_act[row])
+        if (dat_act[row].key_pri > 0) {
         dat_vis.dat_act.key_pri = dat_act[row].key_pri
         dat_vis.dat_act.timestamp = dat_act[row].timestamp
 
@@ -659,7 +664,7 @@ export class VFPDB {
            
           ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
           ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
-          await this.localAla(ins_sql)
+          await this.localAlaSql(ins_sql)
           console.log('tableUpdate ala Ok INSERT UPDATE =>', ins_sql)
          
           if (dat_vis.tip_llamada == 'INSERT') { sw_insert = true }
@@ -2062,11 +2067,15 @@ return false;
     const ThisForm: any = this.Form
 
     if (!(this.id_con > ' ')) {
+      session.id_con=''
       this.MessageBox(
         'No hay conexion con la base de datos', 16,
         'Error SQL Open'
       )
-      window.close()
+      const router = useRouter()
+      router.push('/Login')
+      return
+      
     }
 
     do {
