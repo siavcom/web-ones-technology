@@ -67,6 +67,7 @@ export class EMP_EMP extends COMPONENT {
       // cop_nom: '',
       // cod_nom: ''
     } // :  Record<string, never> ;
+    return true
   } // fin metodo valid
 }
 // export const emp_emp= new EMP_EMP()

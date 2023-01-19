@@ -68,7 +68,7 @@ export class VFPDB {
     };
   */
   // Inicializa la conexion
-  constructor () {
+  constructor() {
     this.Estatus = false
     this.url = ''
     this.nom_emp = ''
@@ -81,11 +81,11 @@ export class VFPDB {
     /// //////////////////////////////////////
 
     // recupera datos de conexion
-    this.id_con = session.id_con
+    this.id_con = session.id_con==undefined ? '': session.id_con
     this.user = session.user
     this.url = session.url // obtenemos el url del servidor node
     this.nom_emp = session.nom_emp
-    console.log('DataBase session.id===', this.id)
+    console.log('DataBase session.id ===>>>>', this.id_con)
 
     if (this.id_con.length < 16 ) {
       const router = useRouter()
@@ -122,7 +122,7 @@ export class VFPDB {
     //   console.log(this.id_con, this.url, this.user)
   } // Fin constructor
 
-  public async Init (Form) {
+  public async Init(Form) {
     this.Form = Form // .value
   }
 
@@ -376,8 +376,14 @@ export class VFPDB {
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
       if (this.View[alias].exp_indice.trim().length > 0) {
+        try{
         exp_ind = eval(this.View[alias].exp_indice.trim())
-        console.log('dataBase exp_ind', m, exp_ind)
+        }catch (error) {
+          console.error(error,'USE '+alias+' exp_ind=',this.View[alias].exp_indice.trim())
+    
+          return false
+        }
+        console.log('USE '+alias+' exp_ind', m, exp_ind)
         if (exp_ind == undefined) {
           this.MessageBox('No se pudo evaluar el indice de la tabla=' + alias + ' indice=' + this.View[alias].exp_indice)
           return false
@@ -385,10 +391,22 @@ export class VFPDB {
       }
       if (this.View[alias].exp_where.trim().length > 0) {
         console.log('dataBase exp_where', this.View[alias].exp_where)
-      
+
         const val_eval = '`' + this.View[alias].exp_where.trim() + '`'
         console.log('use eval where ', val_eval, m)
-        exp_whe = eval(val_eval)
+      
+        try {
+           exp_whe = eval(val_eval)
+        }
+        catch (error) {
+          console.error('eval =',val_eval,error)
+    
+          return false
+        }
+        
+        
+        
+        
         if (exp_whe == undefined) {
           this.MessageBox('No se pudo evaluar el la expresion where de la tabla=' + alias + ' indice=' + this.View[alias].exp_where)
           return false
@@ -415,7 +433,16 @@ export class VFPDB {
       const val_eval = this.View[alias].exp_indice
 
       console.log('use eval dat_vis ===>', val_eval)
+      try {
       eval('dat_vis.where=' + val_eval)
+      }
+      catch (error) {
+        console.error(error)
+  
+        return false
+      }
+
+
 
       // eval("dat_vis.where=`" + this.View[alias].exp_indice+"`") // obtenemos la expresion del indice
     }
@@ -487,11 +514,11 @@ export class VFPDB {
     //console.log('tableUpdate View',alias, this.View[alias])
 
     if (!tab_man) {
-      if(this.View[alias].tip_obj=='VIEW')
-         tab_man=this.View[alias].tablaSql
+      if (this.View[alias].tip_obj == 'VIEW')
+        tab_man = this.View[alias].tablaSql
       else
-       tab_man = alias
-       }
+        tab_man = alias
+    }
 
     const sw_val = true
     const nom_tab: string = this.View[alias].tablaSql.trim() // obtenemos el nombre model (sequelize) de la vista de mantenimento
@@ -580,8 +607,8 @@ export class VFPDB {
       // asignamos key_pri y timestamp del registro
       let old_dat = []
       // Es una actualizacion dedatos, asigna key_pri y timestamp
-        console.log('tableUpdate dat_act[row]',dat_act[row])
-        if (dat_act[row].key_pri > 0) {
+      //console.log('tableUpdate dat_act[row]', dat_act[row])
+      if (dat_act[row].key_pri > 0) {
         dat_vis.dat_act.key_pri = dat_act[row].key_pri
         dat_vis.dat_act.timestamp = dat_act[row].timestamp
 
@@ -621,13 +648,13 @@ export class VFPDB {
           nom_campo != 'usu_cre' &&
           nom_campo != 'key_pri' &&
           nom_campo != 'timestamp' && (
-          dat_vis.tip_llamada == 'INSERT' ||
+            dat_vis.tip_llamada == 'INSERT' ||
             old_dat[campo] != dat_act[row][campo])
         ) {
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
           if (val_def[campo]) {
             dat_vis.dat_act[campo] = dat_act[row][campo]
-            console.log(' tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
+            //console.log(' tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true
           }
         }
@@ -640,8 +667,13 @@ export class VFPDB {
 
         // const where = eval(this.View[nom_tab].exp_indice)
         const where = this.View[nom_tab].exp_indice
-
-        eval('dat_vis.where=' + where)
+        try {
+        eval('dat_vis.where=' + where)}
+        catch (error) {
+          console.error(error)
+    
+          return false
+        }
         // console.log('tableUpdate dat_vis.where',dat_vis.where)
 
         // dat_vis.where =exp_ind    //eval(this.View[nom_tab].exp_indice)
@@ -661,12 +693,12 @@ export class VFPDB {
           // Actualizamos alaSQL
 
           const ins_sql = ' UPDATE Now.' + alias + ` SET timestamp=${response.timestamp},key_pri=${response.key_pri} WHERE recno=${dat_act[0].recno}; ` +
-           
-          ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
-          ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
+
+            ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
+            ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
           await this.localAlaSql(ins_sql)
-          console.log('tableUpdate ala Ok INSERT UPDATE =>', ins_sql)
-         
+          //console.log('tableUpdate ala Ok INSERT UPDATE =>', ins_sql)
+
           if (dat_vis.tip_llamada == 'INSERT') { sw_insert = true }
 
           //  ' UPDATE Now.' + alias + ` SET timestamp=${response[0].timestamp},key_pri=${response[0].key_pri} WHERE recno=${recno}; ` +
@@ -753,7 +785,14 @@ export class VFPDB {
     for (const campo in this.View[vis_act].val_def) {
       // const val_eval="`"+this.View[alias].val_def[valor]+"`"
       const val_eval = this.View[vis_act].val_def[campo]
-      const val_defa = eval(val_eval)
+      let val_defa=null
+      try{
+         val_defa = eval(val_eval)
+      }catch (error) {
+        console.error(error)
+  
+        return false
+      }
       valores[campo] = val_defa
     }
     if (!valores.timestamp) { valores.timestamp = 0 }
@@ -775,7 +814,7 @@ export class VFPDB {
     this.View[alias].recnoVal.push({ recno, id }) // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 // asignamos nuevo row
-    console.log('appendBlank alasql RecnoVal=====>',this.View[alias].recnoVal )
+    console.log('appendBlank alasql RecnoVal=====>', this.View[alias].recnoVal)
 
     return valores
 
@@ -1000,9 +1039,7 @@ export class VFPDB {
 
       console.log('execute alias', alias, this.View)
       if (alias.toUpperCase() == 'MEMVAR') {
-        console.log('execute alias', alias, this.View)
-
-        return respuesta
+           return respuesta
       }
 
       this.View[alias] = {} // Generamos el nuevo alias
@@ -1375,7 +1412,7 @@ export class VFPDB {
   // sw_ini : si es useNodata
   // obs : Borrar si no se utiliza
   /// //////////////////////////////////////////////////
-  async genera_vista (data: {}, alias: string, sw_ini?: boolean) {
+  async genera_vista(data: {}, alias: string, sw_ini?: boolean) {
     this.num_are = this.are_tra.indexOf(alias) + 1 // regresa un -1 si no hay elemento
 
     if (this.num_are == 0) { // si es una area de trabajo nueva busca si ya existe el alias
@@ -1491,7 +1528,7 @@ export class VFPDB {
   // alias : nombre que tendra la tabla
   // sw_ini : si es useNodata
   /// //////////////////////////////////////////////////
-  async genera_tabla (respuesta: any, alias: string, sw_ini?: boolean) {
+  async genera_tabla(respuesta: any, alias: string, sw_ini?: boolean) {
     alias = alias.trim()
     this.num_are = this.are_tra.indexOf(alias) + 1 // regresa un -1 si no hay elemento
 
@@ -1677,7 +1714,7 @@ export class VFPDB {
   /// /////////////  Vfp recCount() /////////////////////
   // alias    : Alias
   /// ////////////////////////////////////////////
-  async recCount (alias?: string) {
+  async recCount(alias?: string) {
     // const vis_act = obj_vis.value;
     console.log('Reccount alias ===', alias)
 
@@ -1700,7 +1737,7 @@ export class VFPDB {
   /// /////////////  Vfp reccno() /////////////////////
   // alias    : Alias
   /// ////////////////////////////////////////////
-  async recno (alias: string) {
+  async recno(alias: string) {
     // const vis_act = obj_vis.value;
 
     if (alias == null) {
@@ -2063,19 +2100,18 @@ return false;
 
   */
 
-  async axiosCall (dat_lla: Record<string, unknown>) {
+  async axiosCall(dat_lla: Record<string, unknown>) {
     const ThisForm: any = this.Form
 
     if (!(this.id_con > ' ')) {
-      session.id_con=''
-      this.MessageBox(
+       this.MessageBox(
         'No hay conexion con la base de datos', 16,
         'Error SQL Open'
       )
       const router = useRouter()
       router.push('/Login')
       return
-      
+
     }
 
     do {
@@ -2113,7 +2149,7 @@ return false;
   // db_name :Base de datos a utilizar
   // ins_sql : Instruccion SQL
   /// //////////////////////////////////////
-  public async localSql (ins_sql: string, DataBase?: string) {
+  public async localSql(ins_sql: string, DataBase?: string) {
     if (!DataBase) { DataBase = 'Now' }
 
     // console.log('localSql===>>', DataBase.toLowerCase)
@@ -2133,25 +2169,25 @@ return false;
     }
   }
 
-/// /////////////////////////////////////////////////
+  /// /////////////////////////////////////////////////
   // Instruccion sql base de datos local
   // db_name :Base de datos a utilizar
   // ins_sql : Instruccion SQL
   /// //////////////////////////////////////
-  public async localAlaSql (ins_sql: string,datos?:any) {
+  public async localAlaSql(ins_sql: string, datos?: any) {
 
     try {
       let resultado: []
       if (!datos)
-         resultado = await alasql(ins_sql)
+        resultado = await alasql(ins_sql)
       else
-         resultado = await alasql(ins_sql,datos)
+        resultado = await alasql(ins_sql, datos)
 
       return resultado
     } catch (error) {
 
       console.error('localSql error==>', error)
-      this.MessageBox(error , 16,
+      this.MessageBox(error, 16,
         'Error Ala SQL ')
 
       return false
@@ -2184,7 +2220,7 @@ return false;
       }
     }
   */
-  public async selectInto (ins_sql: string, alias?: string, filename?: string) {
+  public async selectInto(ins_sql: string, alias?: string, filename?: string) {
     // alias  : TXT(filename)
     //          CSV(filename,options)
     //          XLSX("restest280b.xlsx")
@@ -2493,18 +2529,18 @@ return false;
     return data
   }
 
-  async MessageBox(texto: string, tipo?: number, title?: string, timer?: number ){
+  async MessageBox(texto: string, tipo?: number, title?: string, timer?: number) {
     const { $MessageBox } = useNuxtApp()
 
-    if (!tipo) 
-       return $MessageBox(texto)
+    if (!tipo)
+      return $MessageBox(texto)
 
-    if (!title) 
-       return $MessageBox(texto,tipo)
-    if (!timer) 
-      return  $MessageBox(texto,tipo,title)
+    if (!title)
+      return $MessageBox(texto, tipo)
+    if (!timer)
+      return $MessageBox(texto, tipo, title)
 
-    return  $MessageBox(texto,tipo,title, timer)
+    return $MessageBox(texto, tipo, title, timer)
   }
   // Fin de la clase================================
 }

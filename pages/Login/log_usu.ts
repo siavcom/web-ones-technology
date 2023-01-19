@@ -20,8 +20,8 @@ export class LOG_USU extends COMPONENT {
     //this.prop.Value = ''
     this.prop.textLabel = "Usuario";
     this.prop.Type = "text";
-    this.style.width = '200px'
-    this.prop.style.width ='100px'
+    this.style.width = '230px'
+    this.prop.componentStyle.width ='150px'
 
   }
   public valid = async () => {

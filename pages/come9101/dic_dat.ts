@@ -49,7 +49,6 @@ export class dic_dat extends COMPONENT {
     this.Form.nom_tab.prop.Visible = false
     this.Form.tip_men.prop.Visible = false
     this.Form.sis_sis.prop.Visible = false
-    this.Form.sis_sis.prop.RowSourceType =0
     
     this.Form.grid_datos.prop.Visible=false
     this.Form.grid_indices.prop.Visible = false
@@ -66,7 +65,7 @@ export class dic_dat extends COMPONENT {
 
   public async valid () {
     super.valid()
-    console.log('bt_aceptar valid')
+    console.log('dic_dat valid',this.prop.Value)
     const ThisForm = this.Form.value;
 
  

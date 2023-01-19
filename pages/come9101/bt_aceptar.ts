@@ -219,13 +219,16 @@ export class bt_aceptar extends COMPONENT {
         return
       }
 
-      m.sis_sis = ''
+      m.sis_sis = '    '
 
       // se escogio programas, debe de leer los sistemas  
-      if (this.Form.tip_men.prop.Value == 'P') {
-        m.tpr_prg = ''
+      if (this.Form.tip_men.prop.Value == 'P' &&
+           this.Form.sis_sis.prop.Visible) {
+        m.tpr_prg = '   '
         m.sis_sis = this.Form.sis_sis.prop.Value
-      } else {
+        console.log('bt_aceptar Programas del sistema',m.sis_sis)
+      } 
+      else {
         m.tpr_prg = 'S'
       }
 
@@ -235,6 +238,7 @@ export class bt_aceptar extends COMPONENT {
 
       ///if (await this.Form.db.select('vi_cap_prg') == 0) await this.Form.db.select(0)
       await this.Form.db.use("vi_cap_prg", m)
+
       // es un programa 
 
       // si ya se escogio el sistema , muestra el grid de captura
@@ -247,8 +251,9 @@ export class bt_aceptar extends COMPONENT {
       }
       if (this.Form.tip_men.prop.Value == 'P') {
         if (!this.Form.sis_sis.prop.Visible) {
-          this.Form.sis_sis.prop.RowSourceType = 2
+          //this.Form.sis_sis.prop.RowSourceType = 3
           this.Form.sis_sis.prop.Visible = true
+
         }
         else {
           //this.Form.grid_menu.prg_prg.prop.Visible = true

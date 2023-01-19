@@ -8,7 +8,7 @@
     :style="{ 'width': 'auto' }"
        
     -->
-      <div class="component" :style="prop.style" >
+      <div class="component" :style="prop.componentStyle" >
         <input v-if="prop.Type == 'number'" class="number" type="text" ref="Ref" :disabled="prop.Disabled"
           :min="prop.Min" :max="prop.Max" :value.number="numberStr" :readonly="prop.ReadOnly"
           :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
@@ -121,7 +121,7 @@ const props = defineProps<{
     CurrencyDisplay: 'code'; //to use the ISO currency code.
     Decimals: number;
     Nu: 'arab';//
-    style: {
+    componentStyle: {
       background: "white";
       padding: "5px"; // Relleno
       color: "#b94295";

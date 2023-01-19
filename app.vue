@@ -164,7 +164,7 @@ import {
 
 // import store from '@/stores/index'
 import { Session } from '@/stores/currentSession'
-import consolaGlobalInstance from 'consola';
+//import consolaGlobalInstance from 'consola';
 
 /*
 definePageMeta({

@@ -24,8 +24,8 @@ export class sis_sis extends COMPONENT {
     this.prop.ErrorMessage = ''
     this.prop.Value = "S"
     // Si es un comboBox no olvidar todas estas reglas 
-    this.prop.RowSource = "vi_cap_prg.des_prg,sis_sis"
-    this.prop.RowSourceType = 0 //1-Value, 2-Alias,3-sql, 5-Array
+    this.prop.RowSource = "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S'"
+    this.prop.RowSourceType = 3 //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 2
     this.prop.ColumnWidths = "75%,25%"
