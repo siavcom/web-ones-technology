@@ -17,7 +17,7 @@ export class exp_ind extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Expresión del incice'
+        this.textLabel = 'Expresión del indice'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_ind.exp_ind'
         this.prop.ToolTipText ='Expresión del indice'

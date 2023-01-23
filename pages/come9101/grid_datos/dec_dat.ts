@@ -46,7 +46,7 @@ export class dec_dat extends COLUMN {
 
     this.prop.ReadOnly = await !this.Parent.cam_dat.when()
     return !this.prop.ReadOnly
-    //   super.when(row)
+    //   await super.when(row)
   }
 
 

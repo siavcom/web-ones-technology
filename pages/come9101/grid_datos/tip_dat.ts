@@ -40,7 +40,7 @@ export class tip_dat extends COLUMN {
     async when() { 
       this.prop.ReadOnly=await !this.Parent.cam_dat.when() 
     return !this.prop.ReadOnly
-       //   super.when(row)
+       //   await super.when(row)
   }
 
 

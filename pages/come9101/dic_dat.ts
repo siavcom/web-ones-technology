@@ -44,7 +44,7 @@ export class dic_dat extends COMPONENT {
   
   public async when() {
   // public setFocus = async () => {
-    super.when()
+    await super.when()
     console.log('bt_aceptar when')
     this.Form.nom_tab.prop.Visible = false
     this.Form.tip_men.prop.Visible = false
@@ -64,7 +64,7 @@ export class dic_dat extends COMPONENT {
   }
 
   public async valid () {
-    super.valid()
+    await super.valid()
     console.log('dic_dat valid',this.prop.Value)
     const ThisForm = this.Form.value;
 

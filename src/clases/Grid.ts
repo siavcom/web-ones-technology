@@ -91,12 +91,11 @@ export class GRID extends COMPONENT {
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow(m?: {}) { 
-    console.log('appendRow m',m)
     if (!m) m = {}
     this.Row=-1 // Quitamos donde esta el renglon
-    this.Form.db.select(this.prop.RecordSource) 
+    //this.Form.db.select(this.prop.RecordSource) 
     const values= await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
-    //console.log('bt_aceptar vi_cap_vis', await this.Form.db.localSql('select * from vi_cap_vis'))
+    console.log('======grid Incertamos renglon========>',this.prop.Name,values)
 
   }
 

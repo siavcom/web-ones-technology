@@ -774,11 +774,13 @@ export class VFPDB {
     let recno = 0
     // Obtenemos el valor del siguiente recno
     const res = await this.localAlaSql('USE Now; select max(recno)+1 as recno from ' + alias)
-
+   
     if (res[1] && res[1][0].recno > 0) { // si hay registro
       recno = res[1][0].recno
     } else { recno = 1 } // Si es el primer registro
     // Obtiene valores default para insertar
+   
+
     const valores = { recno }
     const vis_act = this.View[alias].tablaSql
 
@@ -798,7 +800,7 @@ export class VFPDB {
     if (!valores.timestamp) { valores.timestamp = 0 }
 
     // const val_defa = eval(this.View[alias].val_def)
-    console.log('appendBlank alias ', alias, m, this.View[vis_act].val_def, valores)
+    console.log('DataBAse appendBlank alias ', alias,valores)
 
     await this.localAlaSql('USE Now;\
     INSERT INTO Now.' + alias + ' VALUES ?', [valores])
@@ -814,7 +816,7 @@ export class VFPDB {
     this.View[alias].recnoVal.push({ recno, id }) // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 // asignamos nuevo row
-    console.log('appendBlank alasql RecnoVal=====>', this.View[alias].recnoVal)
+    console.log('DataBAse appendBlank RecnoVal=====>',alias, this.View[alias].recnoVal)
 
     return valores
 

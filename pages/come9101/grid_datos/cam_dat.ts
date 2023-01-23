@@ -41,7 +41,7 @@ export class cam_dat extends COLUMN {
        
  
       return !this.prop.ReadOnly
-         //   super.when() no hace falta el super porque en focus.capture lo hace 
+         //   await super.when() no hace falta el super porque en focus.capture lo hace 
     }
 
     async valid() {

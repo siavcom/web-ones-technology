@@ -129,7 +129,7 @@ export class ext_dir extends COMPONENT {
         }
 
         return !this.prop.ReadOnly
-        //   super.when() no hace falta el super porque en focus.capture lo hace 
+        //   await super.when() no hace falta el super porque en focus.capture lo hace 
     }
     
 

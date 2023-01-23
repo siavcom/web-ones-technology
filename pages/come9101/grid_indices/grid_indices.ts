@@ -50,23 +50,22 @@ export class grid_indices extends GRID {
   ///////////////////////////////////////////////////
   public async appendRow() { 
    // Obtiene el consecutivo con_ind del cursor local
-   /*
-   const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_ind\
-   where  (trim(cam_ind) <> 'USU_CRE' and \
-   trim(cam_ind) <> 'USU_USU' and \
-   trim(cam_ind) <> 'TIE_UAC' and \
-   trim(cam_ind) <> 'TIE_CRE' and \
-   trim(cam_ind) <> 'TIMESTAMP' and \
-   trim(cam_ind) <> 'KEY_PRI') ")
+  
+   const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_ind ")
 
-   //console.log('appendRow',data[0])  
-
-   const num_ind=data[0].num_ind+1     
-   */
+   console.log('appendRow',data[0])  
+    
+   let num_ind=data[0].num_ind+1     
+   if (num_ind == undefined ||
+       Number.isNaN(num_ind))
+       num_ind =1
+       
+       
    // asigna campos que no estan en el grid
-   const m = {nom_tab:this.Form.nom_tab.prop.Value,
-              num_ind:this.num_ind.prop.Value}
-   super.appendRow(m)   // llama a la clase base        
+   const m = {nom_tab:this.Form.nom_tab.prop.Value.trim(),
+              num_ind:num_ind}
+              await this.Form.db.appendBlank('vi_cap_ind', m) //Incertamos un renglon en blanc
+  
   }
 
 

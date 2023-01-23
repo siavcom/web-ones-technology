@@ -121,15 +121,12 @@ export class bt_aceptar extends COMPONENT {
 
         // Indices de las tablas del servidor de SQL 
         if (this.Form.dic_dat.prop.Value == 'I') { // Indices
-
-          if (await this.Form.db.select('vi_cap_ind') == 0) await this.Form.db.select(0)
           await this.Form.db.use("vi_cap_ind", m)
 
+          console.log('bt_aceptar grid_indices',await this.Form.db.recCount("vi_cap_ind" ))
           if (await this.Form.db.recCount("vi_cap_ind") == 0) {
-            const m = {
-              nom_tab: this.Form.nom_tab.prop.Value
-            }
-            await this.Form.grid_indices.appendRow(m)
+            
+            await this.Form.grid_indices.appendRow()
 
           }
           this.Form.grid_indices.prop.Visible = true
@@ -226,7 +223,7 @@ export class bt_aceptar extends COMPONENT {
            this.Form.sis_sis.prop.Visible) {
         m.tpr_prg = '   '
         m.sis_sis = this.Form.sis_sis.prop.Value
-        console.log('bt_aceptar Programas del sistema',m.sis_sis)
+        
       } 
       else {
         m.tpr_prg = 'S'

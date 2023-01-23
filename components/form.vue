@@ -13,103 +13,103 @@
 -->
 <template>
   <form class="Main">
-  <section class="pagina" :style="ThisForm.style">
-    <div class='backGround'>
-      <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
-      <slot name="header">
+    <section class="pagina" :style="ThisForm.style">
+      <div class='backGround'>
+        <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
+        <slot name="header">
 
-        <!--template v-slot:header-->
-        <header class="header" float="left">
-          <img class="logoVue" src="@/assets/logo.png" contain />
-          <img class="logoEmp" src="/Iconos/Logo_Empresa.png" contain />
-          <div class="nemPge">
-            <label text-align="left">{{ ThisForm.db.nem_pge }}</label>
-          </div>
-          <div class="fpoPge">
-            <label type="date" text-align="center">{{ ThisForm.prop.fpo_pge + ' ' + ThisForm.prop.Name }}</label>
-          </div>
-          <div class="titFor">
-            <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
-          </div>
-        </header>
-        <div v-for="(compHeader) in ThisForm.header">
+          <!--template v-slot:header-->
+          <header class="header" float="left">
+            <img class="logoVue" src="@/assets/logo.png" contain />
+            <img class="logoEmp" src="/Iconos/Logo_Empresa.png" contain />
+            <div class="nemPge">
+              <label text-align="left">{{ ThisForm.db.nem_pge }}</label>
+            </div>
+            <div class="fpoPge">
+              <label type="date" text-align="center">{{ ThisForm.prop.fpo_pge + ' ' + ThisForm.prop.Name }}</label>
+            </div>
+            <div class="titFor">
+              <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
+            </div>
+          </header>
+          <div v-for="(compHeader) in ThisForm.header">
 
-          <component v-if="ThisForm[compHeader].prop && ThisForm[compHeader].prop.Position == 'header'"
-            :is="impComp(ThisForm[compHeader].prop.BaseClass)" v-bind:Component="ref(ThisForm[compHeader])"
-            v-model:Value="ThisForm[compHeader].prop.Value" v-model:Status="ThisForm[compHeader].prop.Status"
-            v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
-            v-model:Focus="ThisForm[compHeader].Focus" v-model:Recno="ThisForm[compHeader].Recno"
-            v-bind:Registro="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
-            v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
-            v-bind:position="ThisForm[compHeader].position"
-            @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
-            @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
-          </component>
-        </div>
-
-      </slot>
-      <!--/template-->
-      <!--template v-slot:main-->
-      <!-- Despliega todo los componentes de la forma  
-      && comp!='grid_datos'
-      -->
-      <section class="main">
-        <slot name="main">
-
-          <!-- @focus.capture -->
-
-          <div v-for="(compMain) in ThisForm.main">
-            <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
-              v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-              v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
-              v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
-              v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
-              v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
-              v-bind:position="ThisForm[compMain].position" v-bind:db="ref(ThisForm.db)"
-              @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')"
-              @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
-              @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
+            <component v-if="ThisForm[compHeader].prop && ThisForm[compHeader].prop.Position == 'header'"
+              :is="impComp(ThisForm[compHeader].prop.BaseClass)" v-bind:Component="ref(ThisForm[compHeader])"
+              v-model:Value="ThisForm[compHeader].prop.Value" v-model:Status="ThisForm[compHeader].prop.Status"
+              v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
+              v-model:Focus="ThisForm[compHeader].Focus" v-model:Recno="ThisForm[compHeader].Recno"
+              v-bind:Registro="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
+              v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
+              v-bind:position="ThisForm[compHeader].position"
+              @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
+              @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
+            </component>
           </div>
 
         </slot>
-      </section>
+        <!--/template-->
+        <!--template v-slot:main-->
+        <!-- Despliega todo los componentes de la forma  
+      && comp!='grid_datos'
+      -->
+        <section class="main">
+          <slot name="main">
 
-      <!--/template-->
-      <!--template v-slot:footer
+            <!-- @focus.capture -->
+
+            <div v-for="(compMain) in ThisForm.main">
+              <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
+                v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
+                v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
+                v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
+                v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
+                v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
+                v-bind:position="ThisForm[compMain].position" v-bind:db="ref(ThisForm.db)"
+                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')"
+                @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
+                @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
+            </div>
+
+          </slot>
+        </section>
+
+        <!--/template-->
+        <!--template v-slot:footer
                src="/Iconos/BotonRojo.png"
     ThisForm.prop.Status == 'A'
     -->
-      <section class="footer">
-        <div v-show="ThisForm.prop.Status == 'A'">
-          <img src="/Iconos/BotonVerde.png" style="float:left" />
-        </div>
-        <div v-show="ThisForm.prop.Status != 'A'">
-          <img class='botonRojo' src="/Iconos/Stop_arrows.gif" style="float:left" />
-        </div>
-        <slot name="footer">
-
-
-          <div v-for="(compFooter) in ThisForm.footer">
-            <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
-            <component :is="impComp(ThisForm[compFooter].prop.BaseClass)" v-bind:Component="ref(ThisForm[compFooter])"
-              v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-              v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-              v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno" v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 :
-              ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-              v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
-              v-bind:db="ref(ThisForm.db)" @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')"
-              @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
-              @click.stop.prevent="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
+        <section class="footer">
+          <div v-show="ThisForm.prop.Status == 'A'">
+            <img src="/Iconos/BotonVerde.png" style="float:left" />
           </div>
-        </slot>
-      </section>
+          <div v-show="ThisForm.prop.Status != 'A'">
+            <img class='botonRojo' src="/Iconos/Stop_arrows.gif" style="float:left" />
+          </div>
+          <slot name="footer">
 
-      <!--/template-->
-      <!--/VueForm-->
-    </div>
-  </section>
 
-  <!--teleport to="#modal"  >
+            <div v-for="(compFooter) in ThisForm.footer">
+              <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
+              <component :is="impComp(ThisForm[compFooter].prop.BaseClass)" v-bind:Component="ref(ThisForm[compFooter])"
+                v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
+                v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
+                v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno" v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 :
+                ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
+                v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
+                v-bind:db="ref(ThisForm.db)" @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')"
+                @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
+                @click.stop.prevent="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
+            </div>
+          </slot>
+        </section>
+
+        <!--/template-->
+        <!--/VueForm-->
+      </div>
+    </section>
+
+    <!--teleport to="#modal"  >
       <laLogUsu
         v-model:Value="ThisForm.la_log_usu.prop.Value"
         v-bind:prop="ThisForm.la_log_usu.prop"
@@ -127,7 +127,7 @@
  
       />
   </teleport-->
-</form>
+  </form>
 </template>
 
 <script  lang="ts" setup>
@@ -183,7 +183,7 @@ import grid from "@/components/grid.vue"
 
 
 //const editText = defineAsyncComponent(() =>
-  //import('@/components/editText.vue')
+//import('@/components/editText.vue')
 //)
 
 
@@ -350,7 +350,8 @@ const waitEval = async (evento: string) => {
     reject((error) => {
       console.error('Hubo error al ejecutar evento', error)
     })
-  }).
+  })/*
+    .
     then(() => {
       // borramos el evento
 
@@ -359,10 +360,10 @@ const waitEval = async (evento: string) => {
       let num_eve = 0
       if (ThisForm.eventos.length > 1) {
         for (let i = 0; i < ThisForm.eventos.length; i++) {
-          if (ThisForm.eventos[i].length > 0) {
+          if (ThisForm.eventos[i] !='XXXXX' && ThisForm.eventos[i].length > 0) {
             new_arr[num_eve] = ThisForm.eventos[i]
             num_eve++
-            console.log('ejeEvento eventos ', evento, ThisForm.eventos[i], ThisForm.eventos[i].length)
+            console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
 
           }
         }
@@ -373,7 +374,7 @@ const waitEval = async (evento: string) => {
 
       console.log('############Evento terminado ############ ', evento, ThisForm.prop.Status, ThisForm.eventos.length, ThisForm.eventos)
 
-    });
+    }) */
 }
 
 
@@ -398,13 +399,37 @@ watch(
       if (ThisForm.estatus[comp] != 'A') {
         return
       }
-
-      if (ThisForm.eventos[0] > '') {
+      if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
         const evento = ThisForm.eventos[0]
-        ThisForm.eventos[0] = ''
-        if (evento > '')
+        ThisForm.eventos[0] = 'XXXXX'
+        if (evento > '') {
+          console.log('Comienza watch ThisForm.eventos===>>> ', evento)
+
           await waitEval(evento)
-        //await eje_eve(evento)
+          console.log('Borrara evento watch ThisForm.eventos===>>> ', evento)
+    
+
+          // borramos el evento
+          const new_arr = []
+          let num_eve = 0
+          if (ThisForm.eventos.length > 1) {
+            for (let i = 0; i < ThisForm.eventos.length; i++) {
+              if (ThisForm.eventos[i] != 'XXXXX' && ThisForm.eventos[i].length > 0) {
+                new_arr[num_eve] = ThisForm.eventos[i]
+                num_eve++
+                console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
+
+              }
+            }
+          }
+          ThisForm.eventos = [...new_arr]
+          if (ThisForm.eventos.length == 0)
+            ThisForm.prop.Status = 'A'
+
+          console.log('############Evento terminado ############ ', evento, ThisForm.prop.Status, ThisForm.eventos.length, ThisForm.eventos)
+
+          //await eje_eve(evento)
+        }
       }
     }
   }, { deep: true }
@@ -425,13 +450,25 @@ watch(
         return
       }
     }
-    if (ThisForm.eventos.length > 0 && ThisForm.eventos[0] != '') {
+
+    console.log('Form watch status ', ThisForm.eventos[0])
+
+    if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
       if (ThisForm.eventos[0] > '') {
         const evento = ThisForm.eventos[0]
-        ThisForm.eventos[0] = ''
-        if (evento > '')
+        ThisForm.eventos[0] = 'XXXXX'
+        if (evento > '') {
           await waitEval(evento)
-        //await eje_eve(evento)
+
+
+
+
+
+
+
+
+
+        }
       }
       // eje_eve(2)
     }
@@ -479,8 +516,8 @@ const init = async () => {
 
         console.log('ThisForm init ThisForm', ThisForm)
         for (const componente in ThisForm) {
-          
-          if (ThisForm[componente]!== undefined ) {
+
+          if (ThisForm[componente] !== undefined) {
             console.log('ThisForm init componente ', componente)
             if (
               ThisForm[componente].prop &&       // Si tiene propiedades

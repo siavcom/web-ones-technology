@@ -29,7 +29,7 @@ export class nom_for extends COMPONENT {
   public async when() {
     // public setFocus = async () => {
     //  this.Form.nom_tab.prop.Visible= false
-   return  super.when()
+   return  await super.when()
   }
 
 

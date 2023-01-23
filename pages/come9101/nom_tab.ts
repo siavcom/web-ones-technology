@@ -43,7 +43,7 @@ export class nom_tab extends COMPONENT {
   ////////////////////////////////
   public async when() {
     // public setFocus = async () => {
-    super.when()
+    await super.when()
    // console.log('nom_tab when')
     this.Form.grid_datos.prop.Visible = false
     this.Form.grid_vistas.prop.Visible = false
@@ -56,7 +56,7 @@ export class nom_tab extends COMPONENT {
   }
 
 //  public async valid() {
-//    super.valid()
+//    await super.valid()
 
     /*    console.log('this.Value', this.prop.Value)
         if (ThisForm.dic_dat.prop.Value == 'D') {  // Datos

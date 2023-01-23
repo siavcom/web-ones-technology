@@ -4,10 +4,8 @@
 // Creacion : Septiembre/2021
 // Ult.Mod  : Noviembre/2021
 /////////////////////////////////////////////
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* e_slint-disable @typescript-eslint/no-non-null-assertion */
 //import { getCurrentInstance } from "vue";
-
-
 import { EMP_EMP } from './emp_emp'
 import { LOG_USU } from './log_usu'
 import { PAS_USU } from './pas_usu'
@@ -31,7 +29,7 @@ export class form extends FORM {
   /////////////////////////////////////////////////////////////////
   public async init() {
 
-    console.log('login init antes',session.nom_emp,session.user)
+    console.log('login init antes',session.id_con,session.nom_emp,session.user)
     this.emp_emp.prop.Value=session.nom_emp
     this.log_usu.prop.Value=session.user
     console.log('login init ',this.emp_emp.prop.Value,this.log_usu.prop.Value)
