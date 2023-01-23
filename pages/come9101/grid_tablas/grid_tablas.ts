@@ -57,7 +57,7 @@ export class grid_tablas extends GRID {
    const con_tab=data[0].con_tab+.1  
    */    
    const m = {}
-   super.appendRow(m)   // llama a la clase base        
+   await super.appendRow(m)   // llama a la clase base        
   }
 
 

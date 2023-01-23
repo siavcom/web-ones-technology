@@ -19,6 +19,7 @@ import {num_ind} from './num_ind'
 import {exp_ind} from './exp_ind'
 import {des_ind} from './des_ind'
 import {nom_ind} from './nom_ind'
+import {uni_ind} from './uni_ind'
 
 
 export class grid_indices extends GRID {
@@ -29,6 +30,7 @@ export class grid_indices extends GRID {
   public exp_ind = new exp_ind()
   public des_ind = new des_ind()
   public nom_ind = new nom_ind()
+  public uni_ind = new uni_ind()
  
  
   //  constructor(parent: Record<string, never>) {
