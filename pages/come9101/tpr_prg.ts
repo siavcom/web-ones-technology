@@ -8,30 +8,37 @@
 ///////////////////////////////////////
 // Clase base
 ///////////////////////////////////////
-import { COLUMN } from '@/classes/Column'
+import { COMPONENT } from '@/classes/Component'
 
-export class tpr_prg extends COLUMN {
+export class tpr_prg extends COMPONENT {
 
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Tipo de programa'
+        this.prop.textLabel = 'Tipo de menú'
         this.prop.BaseClass = 'comboBox'
         this.prop.ToolTipText ='Tipo de programa'
         this.prop.RowSource = [
-            ["Mantenimiento", "Reporte", "Proceso","Menu "],
+            ["Mantenimiento", "Reporte", "Proceso","Menú principal"],
             ["M", "R", "P","S"],
           ]; // vi_cap_doc.tdo_tdo,des_tdo
-        this.prop.ControlSource = 'vi_cap_prg.tpr_prg'
+        this.prop.ControlSource = ''
 
         this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
         this.prop.ColumnWidths='80%,10%'        
-        this.style.width = '120px' /* width/height  - initial value: auto */
+        //this.style.width = '120px' /* width/height  - initial value: auto */
+        this.style.zIndex=2
         this.prop.Visible=false
       }
+
+      async when() {
+        this.Form.sis_sis.prop.Visible=false
+        this.Form.grid_menu.prop.Visible=false
+        return true  
+        }  
 
   
   }

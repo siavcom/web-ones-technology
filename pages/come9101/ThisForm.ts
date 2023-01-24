@@ -14,7 +14,8 @@
 import { dic_dat } from "./dic_dat"
 import { nom_tab } from "./nom_tab"
 import { sis_sis } from "./sis_sis"
-import { tip_men } from "./tip_men"
+//import { tip_men } from "./tip_men"
+import { tpr_prg } from "./tpr_prg"
 import { bt_aceptar } from "./bt_aceptar"
 //import { BT_GEN_MODEL } from "./bt_gen_model"
 //import { BT_GEN_TABLA } from "./bt_gen_tabla"
@@ -34,8 +35,9 @@ import { FORM } from "@/classes/Form"
 export class THISFORM extends FORM {
   public dic_dat = new dic_dat()
   public nom_tab = new nom_tab()
-  public tip_men = new tip_men()
+  public tpr_prg = new tpr_prg()
   public sis_sis = new sis_sis()
+
 
   //public btGenModel = new BT_GEN_MODEL()
   //public btGenIndices = new BT_GEN_INDICES()

@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : con_ind
+// Clase : num_ind
 // Descripcion : Consecutivo 
 // Obs: es la primer columna 
 // Author : Fernando Cuadras Angulo
@@ -23,7 +23,7 @@ export class num_ind extends COLUMN {
         this.prop.Decimals=1
         this.prop.ControlSource = 'vi_cap_ind.num_ind'
         this.prop.Placeholder = "Consecutivo/Orden "
-        this.prop.ToolTipText = 'Consecutivo/Orden'
+        this.prop.ToolTipText = 'Consecutivo/Orden. El indice 1 se toma como indice principal de captura'
         this.style.width= '35px'
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
   //      this.prop.Autofocus=true

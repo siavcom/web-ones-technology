@@ -30,7 +30,7 @@ export class tip_men extends COMPONENT {
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "75%,25%";
+    //this.prop.ColumnWidths = "75%,25%";
     this.prop.Value = "S";
     this.prop.Visible= false
     this.style.zIndex=2
@@ -38,6 +38,7 @@ export class tip_men extends COMPONENT {
    
 async when() {
   this.Form.sis_sis.prop.Visible=false
+  this.Form.tpr_prg.prop.Visible = false
   this.Form.grid_menu.prop.Visible=false
   return true  
   }  

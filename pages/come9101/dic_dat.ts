@@ -47,8 +47,9 @@ export class dic_dat extends COMPONENT {
     await super.when()
     console.log('bt_aceptar when')
     this.Form.nom_tab.prop.Visible = false
-    this.Form.tip_men.prop.Visible = false
+    //this.Form.tip_men.prop.Visible = false
     this.Form.sis_sis.prop.Visible = false
+    this.Form.tpr_prg.prop.Visible = false
     
     this.Form.grid_datos.prop.Visible=false
     this.Form.grid_indices.prop.Visible = false
@@ -63,12 +64,10 @@ export class dic_dat extends COMPONENT {
     return !this.prop.ReadOnly
   }
 
-  public async valid () {
-    await super.valid()
+  public async valid_old () {
+   // await super.valid()
     console.log('dic_dat valid',this.prop.Value)
-    const ThisForm = this.Form.value;
-
- 
+    
     //const This = this.prop; // Hace referencia a las propiedades del componente
 
     if (this.prop.Value=='D' || 
