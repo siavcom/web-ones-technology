@@ -1,0 +1,70 @@
+const {variable : 'hola'}=defineProps<{variable:string}
+
+const { a,b,c}=someFunction('datos')
+
+
+utilizar 
+
+modules
+
+vuefire
+
+useHead
+
+VueUse
+
+machine learning
+tensorflow.org 
+@tensorflow-models/coco-ssd
+github.com/shivaylamba
+
+
+utilizacion de query para ordenar objetos
+
+polite popup nuxt
+
+
+Vuetify
+https://www.the-koi.com/projects/how-to-set-up-a-project-with-nuxt3-and-vuetify3-with-a-quick-overview/
+
+vapor mode vue
+
+vue draggable 
+npm install nuxt-security
+
+vue test library
+
+build in component :
+
+Teleport
+KeepAlive
+Transition
+TransitionGroup
+Suspense
+
+Vmodal
+thecapati.com
+https://github.com/PCkelley
+
+
+
+<label for='userName'>User NAme</lavel>
+<input> type=text' id='userName'/>
+
+Componentes faciles
+FormKit.com
+
+
+TheHeader.vue
+ThiSidebar.vue
+
+ESLint Plugin
+
+
+
+SupaBase  ??
+
+
+https://vueschool.io/workshops
+
+tRCP Backend 

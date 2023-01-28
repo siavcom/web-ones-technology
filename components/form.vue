@@ -32,6 +32,7 @@
               <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
             </div>
           </header>
+          <!--transition-group> --> 
           <div v-for="(compHeader) in ThisForm.header">
 
             <component v-if="ThisForm[compHeader].prop && ThisForm[compHeader].prop.Position == 'header'"
@@ -57,7 +58,7 @@
           <slot name="main">
 
             <!-- @focus.capture -->
-
+            <transition-group class='Main'>
             <div v-for="(compMain) in ThisForm.main">
               <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                 v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
@@ -70,7 +71,7 @@
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
                 @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
             </div>
-
+          </transition-group>
           </slot>
         </section>
 
@@ -629,7 +630,9 @@ const impComp = ((name: string) => {
   justify-content: center;
   align-items: center;
 }
-
+transition-group.Main {
+  transition: all 0.5s ease;
+}
 /*
 div.contenedor {
   background: white;

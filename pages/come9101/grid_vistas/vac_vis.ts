@@ -9,7 +9,7 @@
 // Clase base
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
-import { MessageBox } from '@/classes/Functions'
+////import { MessageBox } from '@/classes/Functions'
 
 
 export class vac_vis extends COLUMN {

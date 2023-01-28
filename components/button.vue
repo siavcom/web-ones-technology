@@ -6,14 +6,17 @@
       :tabindex="prop.TabIndex"
       >
     <div class="tooltip">
-      <!--button type="submit" :style="imagen" :disabled="prop.ReadOnly" >
-        <img class="imagen" :src="imagen.src" alt="prop.Value" />
-        <label>{{ prop.Value }}</label>
-      </button-->
-      <button
+      <v-btn
+      variant="flat"
+      color="secondary"
+      :icon="imagen.src"
+      size="large"
+      >{{prop.Value}}
+
+      </v-btn>
+      <!--button
         type="submit"
-        :style="imagen"
-      >
+        :style="imagen">
         <img
           class="img"
           :src="imagen.src"
@@ -22,7 +25,7 @@
         <label >{{
           prop.Value
         }}</label>
-      </button>
+      </button-->
 
       <!--input
         type="image"

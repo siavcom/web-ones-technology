@@ -4,6 +4,20 @@
 // Creacion : Julio /2022
 // Ult.Mod  : 
 /////////////////////////////////////////////
+/*
+export class Functions {
+  static Messagebox: any
+*/
+
+export const left = (texto: string, lon: number) => 
+{  return texto.slice(0, lon)}
+
+
+
+export async function left2(texto: string, lon: number) {
+  return texto.slice(0, lon)
+
+}
 
 //////////////////////////////////////////////
 // Clase : MessageBox

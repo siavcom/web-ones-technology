@@ -100,18 +100,18 @@ export class OpenDb {
     } catch (error) {
 
       console.warn('Error llamada Axios',error)
-      const { $MessageBox } = useNuxtApp()
+      //const { $MessageBox } = useNuxtApp()
 
       if (error === 'Error: Network Error') {
         console.log('OpenDb Error SQL===>', error)
-        $MessageBox( error, 16, 'SQL Error ')
+        MessageBox( error, 16, 'SQL Error ')
         //$Swal.fire('Error SQL' + error)
         return ''
       }
 
       // console.log('OpenDb error ===>',error.response.status.toString() + " " + error.response.statusText)
 
-      $MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
+      MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
 
       return ''
     } // Fin de Catch

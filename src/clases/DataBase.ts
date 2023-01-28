@@ -21,7 +21,7 @@
 // import { oldLocalDb } from "@/services/jsstore_con_old";
 // import { Connection } from "jsstore";
 //import workerInjector from 'jsstore/dist/worker_injector'
-//import { this.MessageBox } from '@/src/clases/Functions'
+//import { MessageBox } from '@/src/clases/Functions'
 // import dat_emp from '@/empresas/datos.json' // json con los datos de la empresa, substituye comeemp
 
 import axios from 'axios'
@@ -47,7 +47,7 @@ export class VFPDB {
   num_are: number // numero de area de trabajo que se esta en este momento
   // db: any = {}; // estructura de toda la base de datos
   View: any = {} // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
-  // messagebox = this.MessageBox // asignamos las clases de VueSimpleAlert a messagebox
+  // messagebox = MessageBox // asignamos las clases de VueSimpleAlert a messagebox
   Form = {} // any = getCurrentInstance();
   Ctx = {} // this.Form.ctx; // Contexto
   id_con: string
@@ -56,7 +56,7 @@ export class VFPDB {
   oldTables = []
   Estatus: boolean
   Sql = alasql // portea alasql a this.sql (no quitar)
-  //const { this.MessageBox } = useNuxtApp()
+  //const { MessageBox } = useNuxtApp()
   /*
     newData = {
       name: "New",
@@ -106,7 +106,7 @@ export class VFPDB {
     /* }
      catch (error) {
        console.log('Error borrar Local Db ', error)
-       this.MessageBox.alert(
+       MessageBox.alert(
          error,
          "Error borraLocalDb ",
          "error"
@@ -149,7 +149,7 @@ export class VFPDB {
 
       return true
     } catch (error) {
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
 
@@ -168,7 +168,7 @@ export class VFPDB {
     }
 
     if (nom_vis == null) {
-      this.MessageBox('No se permite nombre de vista en null', 16, 'Error')
+      MessageBox('No se permite nombre de vista en null', 16, 'Error')
       return false
     }
     if (!alias) {
@@ -385,7 +385,7 @@ export class VFPDB {
         }
         console.log('USE '+alias+' exp_ind', m, exp_ind)
         if (exp_ind == undefined) {
-          this.MessageBox('No se pudo evaluar el indice de la tabla=' + alias + ' indice=' + this.View[alias].exp_indice)
+          MessageBox('No se pudo evaluar el indice de la tabla=' + alias + ' indice=' + this.View[alias].exp_indice)
           return false
         }
       }
@@ -408,7 +408,7 @@ export class VFPDB {
         
         
         if (exp_whe == undefined) {
-          this.MessageBox('No se pudo evaluar el la expresion where de la tabla=' + alias + ' indice=' + this.View[alias].exp_where)
+          MessageBox('No se pudo evaluar el la expresion where de la tabla=' + alias + ' indice=' + this.View[alias].exp_where)
           return false
         }
 
@@ -459,7 +459,7 @@ export class VFPDB {
     } catch (error) {
       console.error(error)
 
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL ')
 
@@ -525,7 +525,7 @@ export class VFPDB {
 
     if (nom_tab.length < 2) {
       console.warn('No hay nombre de tabla de actualizacion para la vista', alias)
-      this.MessageBox('No hay nombre de tabla de actualizacion para la vista ' + alias, 16, 'ERROR')
+      MessageBox('No hay nombre de tabla de actualizacion para la vista ' + alias, 16, 'ERROR')
       return false
     }
 
@@ -550,7 +550,7 @@ export class VFPDB {
     if (updateType == 0) { // solo un registro
       // Solo actualiza un registro
       if (!recno) { // No hay registro a actualizar
-        this.MessageBox('No hay recno en ' + alias, 16, 'ERROR')
+        MessageBox('No hay recno en ' + alias, 16, 'ERROR')
         return
       }
       select.where = { recno }
@@ -765,7 +765,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      this.MessageBox(
+      MessageBox(
         'No existe la vista SQL ' + alias, 16,
         'Error SQL '
       )
@@ -837,7 +837,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      this.MessageBox(
+      MessageBox(
         'No existe la vista SQL ' + alias, 16, 'SQL Error')
       return false
     }
@@ -889,7 +889,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      this.MessageBox(
+      MessageBox(
         'No existe la vista SQL ' + alias, 16, 'SQL Error')
       return false
     }
@@ -958,7 +958,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      this.MessageBox('No existe la vista SQL ' + alias, 16, 'SQL Error')
+      MessageBox('No existe la vista SQL ' + alias, 16, 'SQL Error')
       return
     }
     // Leemos los datos a actualizar
@@ -1009,7 +1009,7 @@ export class VFPDB {
 
       return
     } catch (error) {
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
@@ -1140,13 +1140,13 @@ export class VFPDB {
       return respuesta
     } catch (error) {
       console.error('Error SQL', error)
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
 
       console.error('Error SQL', error)
-      /*      this.MessageBox.alert(
+      /*      MessageBox.alert(
               error.response.status.toString() + " " + error,
               "Error SQL ",
               "error"
@@ -1172,12 +1172,12 @@ export class VFPDB {
     try {
       const respuesta = await this.axiosCall(dat_vis)
       if (respuesta.length == 0) {
-        this.MessageBox('Se genero la tabla ' + tabla)
+        MessageBox('Se genero la tabla ' + tabla)
         return true
       }
     } catch (error) {
       console.error('Error SQL', error)
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
@@ -1205,12 +1205,12 @@ export class VFPDB {
     try {
       const respuesta = await this.axiosCall(dat_vis)
       if (respuesta.length == 0) {
-        this.MessageBox('Se genero el indice/indices de la tabla ' + tabla)
+        MessageBox('Se genero el indice/indices de la tabla ' + tabla)
         return true
       }
     } catch (error) {
       console.error('Error SQL', error)
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
@@ -1237,12 +1237,12 @@ export class VFPDB {
     try {
       const respuesta = await this.axiosCall(dat_vis)
       if (respuesta.length == 0) {
-        this.MessageBox('Se genero las vistas remotas SQL  de tabla ' + tabla)
+        MessageBox('Se genero las vistas remotas SQL  de tabla ' + tabla)
         return true
       }
     } catch (error) {
       console.error('Error SQL', error)
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
@@ -1270,13 +1270,13 @@ export class VFPDB {
     try {
       const respuesta = await this.axiosCall(dat_vis)
       if (respuesta.length == 0) {
-        this.MessageBox('Se genero el MODEL para la tabla ' + tabla + respuesta[0])
+        MessageBox('Se genero el MODEL para la tabla ' + tabla + respuesta[0])
 
         return true
       }
     } catch (error) {
       console.error('Error SQL', error)
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
@@ -1336,13 +1336,13 @@ export class VFPDB {
 
       exp_where = con_vis // genera la expresion where
     } catch (error) {
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
 
       console.error('Error SQL', error)
-      /*      this.MessageBox.alert(
+      /*      MessageBox.alert(
               error.response.status.toString() + " " + error,
               "Error SQL ",
               "error"
@@ -1366,12 +1366,12 @@ export class VFPDB {
       return await this.genera_tabla(data, alias)
     } catch (error) {
       console.error('Error SQL', error)
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
 
-      /*      this.MessageBox.alert(
+      /*      MessageBox.alert(
               error.response.status.toString() + " " + error,
               "Error SQL ",
               "error"
@@ -1441,12 +1441,12 @@ export class VFPDB {
       const data = await this.axiosCall(dat_est)
       // console.log('Estructura vistas===>>', data)
     } catch (error) {
-      this.MessageBox(
+      MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL '
       )
 
-      /*      this.MessageBox.alert(
+      /*      MessageBox.alert(
               error.response.status.toString() + " " + error,
               "Error SQL ",
               "error"
@@ -1583,12 +1583,12 @@ export class VFPDB {
           // console.log('Estructura vista===>>', respuesta)
         } catch (error) {
           console.error('Error SQL', error)
-          this.MessageBox(
+          MessageBox(
             error.response.status.toString() + ' ' + error.response.statusText, 16,
             'Error SQL '
           )
 
-          /*      this.MessageBox.alert(
+          /*      MessageBox.alert(
                   error.response.status.toString() + " " + error,
                   "Error SQL ",
                   "error"
@@ -1730,7 +1730,7 @@ export class VFPDB {
       return 0
     }
 
-    //    if (!alias) this.MessageBox('No existe el alias',alias)
+    //    if (!alias) MessageBox('No existe el alias',alias)
     //         return 0
 
     return this.View[alias].recCount
@@ -1830,7 +1830,7 @@ await old.terminate();
 
 }
 catch (error) {
-this.MessageBox.alert(
+MessageBox.alert(
 error,
 "Error clear localDb ",
 "error"
@@ -1904,7 +1904,7 @@ return false;
 
       }
       catch (error) {
-        this.MessageBox.alert(
+        MessageBox.alert(
           error,
           "Error OpenlocalDb ",
           "error"
@@ -2088,7 +2088,7 @@ return false;
         return true;
       }
       catch (error) {
-        this.MessageBox.alert(
+        MessageBox.alert(
           error,
           "Error update localDb ",
           "error"
@@ -2106,7 +2106,7 @@ return false;
     const ThisForm: any = this.Form
 
     if (!(this.id_con > ' ')) {
-       this.MessageBox(
+       MessageBox(
         'No hay conexion con la base de datos', 16,
         'Error SQL Open'
       )
@@ -2129,7 +2129,7 @@ return false;
       } catch (error) {
         console.error('Axios call BacKEnd error', dat_lla, error.response.status, error)
 
-        await this.MessageBox(
+        await MessageBox(
           error.response.status.toString() + ' ' + error.response.statusText, 16,
           'SQL Data Base Error '
         )
@@ -2189,7 +2189,7 @@ return false;
     } catch (error) {
 
       console.error('localSql error==>', error)
-      this.MessageBox(error, 16,
+      MessageBox(error, 16,
         'Error Ala SQL ')
 
       return false

@@ -1,6 +1,7 @@
 <template>
   <div class="divibutton"  v-show="prop.Visible" :style="style">
     <div class="mensajes">
+      
       <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly" :tabindex="prop.TabIndex"
         
         @focusout="focusOut" @focus="onFocus" >
@@ -17,7 +18,19 @@
 </template>
 
 <script setup lang="ts">
+/*
 
+<v-btn
+ 
+      color="yellow"
+      icon><v-icon>prop.Image</v-icon>
+           
+
+      </v-btn>
+
+
+
+*/
 import { 
    //toRefs,
    //defineProps,

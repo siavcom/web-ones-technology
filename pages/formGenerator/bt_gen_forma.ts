@@ -4,7 +4,7 @@
 // Creacion : 22/Noviembre/2022
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
-import { MessageBox } from '@/classes/Functions'
+//import { MessageBox } from '@/classes/Functions'
 
 // importa archivos de texto
 //import Main from '@/static/templates/Main.txt?raw'

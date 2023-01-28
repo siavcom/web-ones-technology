@@ -4,7 +4,7 @@
 // Creacion : Sep/2022
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
-import { MessageBox } from '@/classes/Functions';
+//import { MessageBox } from '@/classes/Functions';
 
 export class BT_GEN_VISTAS extends COMPONENT {
 

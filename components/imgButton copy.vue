@@ -1,6 +1,18 @@
 <template>
   <div class="divbutton"  v-show="prop.Visible" :style="style">
     <div class="mensajes">
+
+      <v-btn
+      variant="flat"
+      color="secondary"
+      :icon="prop.Image"
+      size="large"
+      >{{prop.Value}}
+
+      </v-btn>
+
+
+
       <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly" :tabindex="prop.TabIndex"
         
         @focusout="focusOut" @focus="onFocus" >

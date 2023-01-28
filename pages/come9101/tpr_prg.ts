@@ -15,7 +15,6 @@ export class tpr_prg extends COMPONENT {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.prop.Order = 1
         this.prop.textLabel = 'Tipo de menú'
         this.prop.BaseClass = 'comboBox'
         this.prop.ToolTipText ='Tipo de programa'
@@ -23,8 +22,6 @@ export class tpr_prg extends COMPONENT {
             ["Mantenimiento", "Reporte", "Proceso","Menú principal"],
             ["M", "R", "P","S"],
           ]; // vi_cap_doc.tdo_tdo,des_tdo
-        this.prop.ControlSource = ''
-
         this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
@@ -39,6 +36,5 @@ export class tpr_prg extends COMPONENT {
         this.Form.grid_menu.prop.Visible=false
         return true  
         }  
-
-  
+ 
   }

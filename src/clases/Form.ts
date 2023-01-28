@@ -14,7 +14,7 @@ import {
 */
 import { COMPONENT } from '@/classes/Component'
 import { VFPDB } from "@/classes/DataBase"
-import { MessageBox } from '@/classes/Functions'
+////import { MessageBox } from '@/classes/Functions'
 //import { stringifyQuery } from "vue-router";
 
 
@@ -31,7 +31,7 @@ export class FORM extends COMPONENT {
   main : [] = []
   footer : [] = []
   public db = new VFPDB();  // conexion a la base de datos
-  messageBox = MessageBox
+  //messageBox = MessageBox
 
   //  constructor(parent: Record<string, never>) {
   constructor() {

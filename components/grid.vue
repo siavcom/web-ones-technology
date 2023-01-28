@@ -171,14 +171,14 @@ import {
 
 } from "vue";
 */
-//import { MessageBox } from '@/classes/Functions'
+////import { MessageBox } from '@/classes/Functions'
 
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
 //import Grid from "vue-virtual-scroll-grid";
-const { $MessageBox } = useNuxtApp()
+//const { $MessageBox } = useNuxtApp()
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -715,8 +715,8 @@ const borraRenglon = async (recno?: number) => {
     if (!recno) return
 
   }
-  const { $MessageBox } = useNuxtApp()
-  if (await $MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
+  //const { $MessageBox } = useNuxtApp()
+  if (await MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
     eventos.push(ThisGrid.prop.Map + '.deleteRow(' + recno + ')')
 
     ThisGrid.Row = -1 // Quitamos la posicion del renglon
