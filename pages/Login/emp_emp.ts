@@ -30,6 +30,11 @@ export class EMP_EMP extends COMPONENT {
     this.style.zIndex = 2
     let num_ren = 0
 
+    if (dat_emp == null){
+        this.prop.Visible=false
+        return
+    } 
+
     for (const nom_emp in dat_emp) {
       this.prop.RowSource[0][num_ren] = nom_emp // columna 1,renglon
       this.prop.RowSource[1][num_ren] = dat_emp[nom_emp].nem_emp // columna 2,renglon

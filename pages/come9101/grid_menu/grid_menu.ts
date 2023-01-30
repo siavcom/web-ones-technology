@@ -66,9 +66,9 @@ export class grid_menu extends GRID {
     // asigna campos que no estan en el grid
     
     const m = {sis_sis: '   ',   
-               tpr_prg: 's'}
+               tpr_prg: 'S'}
 
-    if (this.Form.tip_men.prop.Value == 'P') { // Si es programas
+    if (this.Form.tpr_prg.prop.Value != 'S') { // Si es programas
          m.sis_sis=this.Form.sis_sis.prop.Value // 'CXC', 'CON','LOG
          m.tpr_prg=this.Form.tpr_prg.prop.Value
     }

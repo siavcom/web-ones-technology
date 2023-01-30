@@ -34,15 +34,33 @@ export class BT_ACEPTAR extends COMPONENT {
    // console.log('Entro a click=====>',this.Form.emp_emp.prop.Value, this.Form.log_usu.prop.Value, this.Form.pas_usu.prop.Value)
 
     const ThisForm = this.Form
+    let login=ThisForm.log_usu.prop.Value
+    let empresa=ThisForm.emp_emp.prop.Value
+    const pos_arroba=login.indexOf('@',0) 
+    
+    if (login.length == pos_arroba+1 ){
+      ThisForm.log_usu.prop.MessageError = 'usuario@empresa'
+      ThisForm.log_usu.prop.Valid = false
+      ThisForm.log_usu.prop.ShowError = true
+      return false
+    }
 
-    if (!ThisForm.emp_emp.prop.Value || ThisForm.emp_emp.prop.Value.length === 0) {
+    if (pos_arroba>0){
+        const len=login.length-pos_arroba-1
+        empresa=login.substr(-len)
+        login=login.substr(0,pos_arroba)
+ 
+    }
+       
+
+    if (empresa.length == 0) {
       ThisForm.emp_emp.prop.MessageError = 'Escoja una empresa'
       ThisForm.emp_emp.prop.Valid = false
       ThisForm.emp_emp.prop.ShowError = true
       return false
     }
 
-    if (!ThisForm.log_usu.prop.Value || ThisForm.log_usu.prop.Value.length === 0) {
+    if ( login.length == 0) {
       ThisForm.log_usu.prop.MessageError = 'Digite usuario'
       ThisForm.log_usu.prop.Valid = false
       ThisForm.log_usu.prop.ShowError = true
@@ -58,8 +76,8 @@ export class BT_ACEPTAR extends COMPONENT {
 
     const db = this.OpenDb
 
-    db.nom_emp = ThisForm.emp_emp.prop.Value
-    db.user = ThisForm.log_usu.prop.Value
+    db.nom_emp = empresa
+    db.user = login
     // db.url = dat_emp[db.nom_emp].url // obtenemos el url del servidor node
     db.pass = ThisForm.pas_usu.prop.Value
 

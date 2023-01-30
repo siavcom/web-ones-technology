@@ -117,14 +117,13 @@
       </div>
     </div>
 
-    <transition name="moveInUp">
       <div class="mainForm">
         <!--NuxtLayout-->
+        
         <NuxtPage @updateStatus="updateStatus" @updateIsOpen="updateIsOpen" />
         <!--/NuxtLayout-->
 
       </div>
-    </transition>
   </form>
 </template>
 
@@ -1107,7 +1106,7 @@ sidebar li a .links_options {
   position: relative;
   display: flex;
   margin-left: v-bind("mainFormLeft");
-  transition: all 0.5s ease;
+  transition: all 1.5s ease;
 }
 
 #my-scroll {
@@ -1139,10 +1138,7 @@ sidebar li a .links_options {
 
 }
 
-.moveInUp-enter-active {
-  opacity: 0;
-  transition: opacity 1s ease-in;
-}
+
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -12,6 +12,7 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
+  <transition name='Mainform'>
   <form class="Main">
     <section class="pagina" :style="ThisForm.style">
       <div class='backGround'>
@@ -58,8 +59,8 @@
           <slot name="main">
 
             <!-- @focus.capture -->
-            <transition-group class='Main'>
-            <div v-for="(compMain) in ThisForm.main">
+            <TransitionGroup name='detailForm'>
+            <div v-for="(compMain) in ThisForm.main" :key="compMain">
               <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                 v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                 v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
@@ -71,7 +72,7 @@
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
                 @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
             </div>
-          </transition-group>
+          </TransitionGroup>
           </slot>
         </section>
 
@@ -129,6 +130,7 @@
       />
   </teleport-->
   </form>
+</transition>
 </template>
 
 <script  lang="ts" setup>
@@ -630,7 +632,29 @@ const impComp = ((name: string) => {
   justify-content: center;
   align-items: center;
 }
-transition-group.Main {
+
+
+.Mainform-enter-active ,
+.Mainform-leave-active {
+  transition: opacity 1s ease;
+}
+
+.Mainform-enter-from,
+.Mainform-leave-to {
+  opacity: 0;
+}
+
+.detail-form-enter-active,
+.detail-form-leave-active {
+  transition: all 1.5s ease;
+}
+.detail-form-enter-from,
+.detail-form-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.detailForm2-transition-group {
   transition: all 0.5s ease;
 }
 /*

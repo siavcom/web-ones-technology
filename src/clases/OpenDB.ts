@@ -66,8 +66,17 @@ export class OpenDb {
      
       router.push('/Login')
     }
+    try {
+      this.url = dat_emp[nom_emp].url // obtenemos el url del servidor node
+    }
 
-    this.url = dat_emp[nom_emp].url // obtenemos el url del servidor node
+    catch (error) {
+      console.warn('No existe empresa ',nom_emp)
+      MessageBox( 'No esta definida la empresa :'+nom_emp, 16, 'SQL Error ')
+        //$Swal.fire('Error SQL' + error)
+      return ''
+    } 
+
 
     session.id_con=''
     session.url=this.url

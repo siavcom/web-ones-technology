@@ -8,7 +8,7 @@
     :style="{ 'width': 'auto' }"
        
     -->
-      <div class="component" :style="prop.componentStyle" >
+      <div class="component" :style="prop.componentStyle">
         <input v-if="prop.Type == 'number'" class="number" type="text" ref="Ref" :disabled="prop.Disabled"
           :min="prop.Min" :max="prop.Max" :value.number="numberStr" :readonly="prop.ReadOnly"
           :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
@@ -41,9 +41,9 @@
           :type="prop.Type" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
         <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
-    prop.ToolTipText
-}}</span>
-        <span class="errorText" v-show="(prop.ShowError)">{{ prop.ErrorMessage }}</span>
+          prop.ToolTipText
+        }}</span>
+        <span class="errorText" v-show="prop.ShowError" >{{ prop.ErrorMessage }}</span>
       </div>
     </div>
   </div>
@@ -426,7 +426,7 @@ const focusOut = async () => {
   if (props.prop.Type == 'checkBox') {
     Value.value = checkValue.value ? 1 : 0
     //console.log('checkBox focusOut =',checkValue.value,Value.value)
-  } 
+  }
 
   console.log('Valid updateCampo===>', Value.value, props.prop.ControlSource, props.Recno)
   if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 3) {
