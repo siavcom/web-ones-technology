@@ -1,5 +1,5 @@
 <template>
-  <form class="MenuForm">
+  <div class="Menu">
     <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
       <div class="logo-details" style="margin: 6px 14px 0 14px;">
         <img v-if="menuLogo" :src="menuLogo" alt="menu-logo" class="menu-logo icon">
@@ -124,7 +124,7 @@
         <!--/NuxtLayout-->
 
       </div>
-  </form>
+    </div>
 </template>
 
 <script lang="ts" setup>

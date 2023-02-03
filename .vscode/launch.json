@@ -4,18 +4,72 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "type": "firefox",
+        "request": "attach",
+        "name": "Attach Firefox",
+        "url": "http://176.16.200.20:3000",
+        // "url": "http://176.16.200.20:3000/${fileBasename}",
+         // "url": "http://localhost:8080/index.html",
+         "webRoot": "${workspaceFolder}/"
+ 
+    },
         {
-            "type": "chrome",
+        "runtimeArgs": ["--preserve-symlinks"]
+    },
+    {
+        // Start Debug -> Open Firefox, Open Debug console, Click an line in JS File and F5
+        "type": "firefox",
+        "request": "launch",
+        "reAttach": true,
+        "name": "Firefox + Server",
+        "url": "http://176.16.200.20:3000",
+       // "url": "http://176.16.200.20:3000/${fileBasename}",
+        // "url": "http://localhost:8080/index.html",
+        "webRoot": "${workspaceFolder}/"
+    },
+
+        {
+            "name": "Launch Chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3001",
+            "type": "chrome",
+            "url": "http://176.16.200.20:3000",
             "webRoot": "${workspaceFolder}"
         },
+      
         {
             "type": "firefox",
             "request": "launch",
             "name": "vuejs: firefox",
-            "url": "http://localhost:3001/",
+            "url": "http://176.16.200.20:3000/",
             "webRoot": "${workspaceFolder}",
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "server: nuxt",
+            "args": [
+                "dev"
+            ],
+            "osx": {
+                "program": "${workspaceFolder}/node_modules/.bin/nuxt"
+            },
+            "linux": {
+                "program": "${workspaceFolder}/node_modules/.bin/nuxt"
+            },
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/nuxt/bin/nuxt.js"
+            }
         }
+    ],
+    "compounds": [
+        {
+            "name": "fullstack: nuxt",
+            "configurations": [
+                "server: nuxt",
+                "client: chrome"
+            ]
+        }
+    ]
 }

@@ -13,7 +13,7 @@
 -->
 <template>
   <transition name='Mainform'>
-  <form class="Main">
+  <div class="Main">
     <section class="pagina" :style="ThisForm.style">
       <div class='backGround'>
         <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
@@ -90,12 +90,14 @@
           </div>
           <slot name="footer">
 
-
             <div v-for="(compFooter) in ThisForm.footer">
               <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
-              <component :is="impComp(ThisForm[compFooter].prop.BaseClass)" v-bind:Component="ref(ThisForm[compFooter])"
-                v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
+              <component :is="impComp(ThisForm[compFooter].prop.BaseClass)" 
+                v-bind:Component="ref(ThisForm[compFooter])"
+                v-model:Value="ThisForm[compFooter].prop.Value" 
+                v-model:Status="ThisForm[compFooter].prop.Status"
+                v-model:ShowError="ThisForm[compFooter].prop.ShowError" 
+                v-model:Key="ThisForm[compFooter].prop.Key"
                 v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno" v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 :
                 ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
                 v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
@@ -129,7 +131,7 @@
  
       />
   </teleport-->
-  </form>
+</div>
 </transition>
 </template>
 

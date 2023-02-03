@@ -1,35 +1,37 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : rfc_dir
-// Description : RFC  del Cliente
+// Class : cpo_dir
+// Description : CODIGO POSTAL
 // Author : El Fer Blocks
-// Creation : 2022-12-28
+// Creation : 2023-02-02
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from '@/clases/Component'
 
-export class rfc_dir extends COMPONENT {
+export class cpo_dir extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'RFC del Cliente Principal'
+        this.prop.textLabel = 'CODIGO POSTAL'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.rfc_dir'
-        this.prop.Placeholder = 'Pon el RFC '
+        this.prop.ControlSource = 'lla1_dir.cpo_dir'
+        this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=13
+        this.prop.MaxLength=6
+        this.prop.Min="0"
+        this.prop.Max="999"
+        this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=true
-        this.prop.TabIndex= 1
+        this.prop.updateKey=false
         
         // this.RecordSource="" oJo
 
@@ -37,51 +39,51 @@ export class rfc_dir extends COMPONENT {
         // Props 
         /////////////////////////
 
-        // this.Valid=true
-        // this.Capture=false
-        // this.ControlSource=""
-        // this.Status= "I" // I)nitial, P)rocess , A)ctive
+        // this.prop.Valid=true
+        // this.prop.Capture=false
+        // this.prop.ControlSource=""
+        // this.prop.Status= "I" // I)nitial, P)rocess , A)ctive
 
-        // this.textLabel=""
-        // this.ToolTipText=""
-        // this.Value=""
-        // this.Placeholder=""
-        // this.Format=""
-        // this.InputMask=""
-        // this.ReadOnly=false
-        // this.Disabled=false
-        // this.Tag=""
-        // this.Key=0
-        // this.id=0
-        // this.ErrorMessage=""
-        // this.TabIndex=0
-        // this.BaseClass= "editText" //"comboBox","checkBox","label"
-        // this.Type: "text"  // "numeric","date","boolean"
-        // this.Visible=true
-        // this.Row=0
-        // this.Map=""
-        // this.Autofocus=false
-        // this.Position= 'main', // main, header , footer
-        // this.Image=""
-        // this.Focus=false
-        // this.First=false
-        // this.Last=false
-        // this.MaxLength=512
+        // this.prop.textLabel=""
+        // this.prop.ToolTipText=""
+        // this.prop.Value=""
+        // this.prop.Placeholder=""
+        // this.prop.Format=""
+        // this.prop.InputMask=""
+        // this.prop.ReadOnly=false
+        // this.prop.Disabled=false
+        // this.prop.Tag=""
+        // this.prop.Key=0
+        // this.prop.id=0
+        // this.prop.ErrorMessage=""
+        // this.prop.TabIndex=0
+        // this.prop.BaseClass= "editText" //"comboBox","checkBox","label"
+        // this.prop.Type: "text"  // "numeric","date","boolean"
+        // this.prop.Visible=true
+        // this.prop.Row=0
+        // this.prop.Map=""
+        // this.prop.Autofocus=false
+        // this.prop.Position= 'main', // main, header , footer
+        // this.prop.Image=""
+        // this.prop.Focus=false
+        // this.prop.First=false
+        // this.prop.Last=false
+        // this.prop.MaxLength=512
 
         //// Numeric data ////
-        // this.Step="1"
-        // this.Min="0"
-        // this.Max="999999999"
-        // this.Style= 'decimal' // decimal, currency,percent,unit
-        // this.Currency= 'MXN' //USD,EUR,MXN
-        // this.CurrencyDisplay = 'code' //to use the ISO currency code.
-        // this.Decimals = 2
+        // this.prop.Step="1"
+        // this.prop.Min="0"
+        // this.prop.Max="999999999"
+        // this.prop.Style= 'decimal' // decimal, currency,percent,unit
+        // this.prop.Currency= 'MXN' //USD,EUR,MXN
+        // this.prop.CurrencyDisplay = 'code' //to use the ISO currency code.
+        // this.prop.Decimals = 2
 
         //// ComboBox ////
-        // this.RowSourceType=0 //1-Value, 2-Alias, 5-Array
-        // this.prop.RowSource = [] //[["Apple", "Banana"], ["A", "B"]]        // this.ColumnCount= 1
-        // this.BoundColumn= 2
-        // this.ColumnWidths= "50%,50%"
+        // this.prop.RowSourceType=0 //1-Value, 2-Alias, 5-Array
+        // this.prop.prop.RowSource = [] //[["Apple", "Banana"], ["A", "B"]]        // this.prop.ColumnCount= 1
+        // this.prop.BoundColumn= 2
+        // this.prop.ColumnWidths= "50%,50%"
 
 
         //// Column grid ////
@@ -122,8 +124,8 @@ export class rfc_dir extends COMPONENT {
     ///////////////////////////////////
     
   async when() {
+      if (this.prop.ReadOnly) return
       if (this.prop.updateKey){ // Si es llave de actualizacion
-        console.log('====rfc_dir when ===')
         await this.Form.refreshComponent(false)
         }
 

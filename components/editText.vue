@@ -38,7 +38,9 @@
       -->
         <input v-else class="text" ref="Ref" v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled"
           :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          :type="prop.Type" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
+          :type="prop.Type" 
+           v-on:keyup.enter="$event.target.nextElementSibling.focus()"
+           @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
         <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
           prop.ToolTipText
@@ -70,7 +72,8 @@ import {
 
 } from "vue";
 //import { receiveMessageOnPort } from "worker_threads";
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", "update:ShowError"]) //, "update:Ref"
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", "update:ShowError",'customChange']) //, "update:Ref"
+
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -448,9 +451,34 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
-  const key = $event.charCode
-  //console.log('KeyPress===>', Value.value, key)
-  Key.value = key
+
+  if ($event.charCode == 13) {
+    //$event.charCode = 9
+    // window.event.keyCode = 9;
+    Key.value = $event.charCode
+/*
+    let nextElement=$event.explicitOriginalTarget.nextSibling
+    console.log('Edit nextElement ',nextElement)
+
+    while (nextElement && nextElement.tagName!='INPUT'){
+
+      nextElement=nextElement.nextSibling
+      console.log('Edit nextElement',nextElement)
+
+    }   
+    if (nextElement)
+          nextElement.focus()
+
+    console.log('Edit ',nextElement)
+
+*/
+    //$event.target.value=$event.target.value+String.fromCharCode(9)
+    emit('customChange', $event.target.value+String.fromCharCode(9))
+    
+   
+  } else
+
+    Key.value = $event.charCode
 }
 
 

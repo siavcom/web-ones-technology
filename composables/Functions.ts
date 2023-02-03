@@ -16,6 +16,10 @@ export const right = async (texto: string, len: number) => {
   return texto.substring(-len)
 }
 
+export const char = async (ascci: number) => {
+ return String.fromCharCode(ascci)
+}
+
 //////////////////////////////////////////////
 // Clase : MessageBox
 // Author : Fernando Cuadras Angulo

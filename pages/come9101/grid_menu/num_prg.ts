@@ -25,7 +25,7 @@ export class num_prg extends COLUMN {
         this.prop.ControlSource = 'vi_cap_prg.num_prg'
         this.prop.ToolTipText ='Orden del programa dentro del menú'
         this.prop.Placeholder = "Orden del programa"
-        this.style.width='20px'
+        this.style.width='30px'
     }
 
 

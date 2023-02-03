@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
 // BaseClass : captureForm
-// Class : direcciones
+// Class : CapturaDirecciones
 // Description : Capture Form 
 // Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2022-12-28
+// Creation : 2023-02-02
 // Update Date  : 
 /////////////////////////////////////////////
 
@@ -19,7 +19,6 @@ import {cal_dir } from "./cal_dir"
 import {ext_dir } from "./ext_dir" 
 import {int_dir } from "./int_dir" 
 import {cpo_dir } from "./cpo_dir" 
-import {col_dir } from "./col_dir" 
 import {pai_dir } from "./pai_dir" 
 import {gln_dir } from "./gln_dir" 
 import {not_dir } from "./not_dir" 
@@ -30,13 +29,13 @@ import {not_dir } from "./not_dir"
 // Function import
 ///////////////////////////////////////
 
-////import { MessageBox } from '@/classes/Functions';
+import { MessageBox } from '@/clases/Functions';
 
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
 
-import { captureForm } from '@/classes/captureForm'
+import { captureForm } from '@/clases/captureForm'
 
 
 export class THISFORM extends captureForm {
@@ -51,7 +50,6 @@ export class THISFORM extends captureForm {
    public cal_dir = new cal_dir() 
    public ext_dir = new ext_dir() 
    public int_dir = new int_dir() 
-   public col_dir = new col_dir() 
    public cpo_dir = new cpo_dir() 
    public pai_dir = new pai_dir() 
    public gln_dir = new gln_dir() 
@@ -62,7 +60,7 @@ export class THISFORM extends captureForm {
     super()  // inicializa la clase base
 
     this.Development = false
-    this.prop.Name = 'direcciones'
+    this.prop.Name = 'CapturaDirecciones'
     this.prop.textLabel = "Mantenimiento a la tabla COMEDIR"
     this.prop.RecordSource='lla1_dir'
     this.prop.nem_pge = "Killo Software"
