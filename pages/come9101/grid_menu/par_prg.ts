@@ -24,10 +24,5 @@ export class par_prg extends COLUMN {
         this.prop.Placeholder = ""
         this.style.width='100px'
     }
-    async when() {
-        if (this.Form.tpr_prg.prop.Value=='S')
-           this.prop.ReadOnly=true
-       return !this.prop.ReadOnly   
-      }
 
 }

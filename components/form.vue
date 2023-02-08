@@ -504,9 +504,8 @@ watch(
   { deep: true }
 );
 
-
-
 */
+
 const nextFocus = async ($event) => {
 let nextElement=$event.explicitOriginalTarget.nextSibling
     console.log('Edit nextElement ',nextElement)
@@ -557,7 +556,13 @@ const init = async () => {
           }
 
         }
-        console.log("Inicio exitoso ====>", ThisForm)  //ThisForm,
+
+        const router = useRoute()
+        ThisForm.params=router.params
+        //console.warn(router.query.params)
+      //console.warn(router.currentRoute[query])
+
+        console.log("Inicio exitoso ====>",ThisForm.params)  //ThisForm,
         await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
 
       });

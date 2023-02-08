@@ -249,7 +249,7 @@ const props = withDefaults(defineProps<Props>(), {
       name: 'Login',
       tooltip: 'Login',
       icon: 'svg/bx-user.svg',
-      path: '/Login',
+      path: {path :'/Login'},
       type: 'P',
       system: ''
     },
@@ -258,7 +258,7 @@ const props = withDefaults(defineProps<Props>(), {
       name: 'Messages',
       tooltip: 'Messages',
       icon: 'svg/bx-chat.svg',
-      path: '/Message',
+      path: {},
       type: 'L',
       system: ''
     }
@@ -563,7 +563,7 @@ const obtMenu = (sw_ini?: boolean) => {
         name: 'SQL diccionary',
         tooltip: 'Setting',
         icon: 'svg/bx-cog.svg',
-        path: '/come9101',
+        path: { path : '/come9101'},
         target: '', //'_blank',
         type: 'P',
         system: ''
@@ -581,15 +581,16 @@ const obtMenu = (sw_ini?: boolean) => {
       // solo agrega menu principal
       if (menu[i].tpr_prg === 'S') {
         let link = '#'
-        let path = ''
+        let path = {}
         let target = ''        //'_blank' indica ventana nueva del explorador
         const type = menu[i].tpr_prg
         const system = menu[i].sis_sis
         if (menu[i].prg_prg.trim() != 'null' && menu[i].prg_prg.trim() > ' ') {
           link = url + '/' + menu[i].prg_prg.trim()
-          path = '/' + menu[i].prg_prg.trim()
+          path.path = '/'+menu[i].prg_prg.trim()
           if (menu[i].par_prg != null && menu[i].par_prg.trim().length > 0)
-             path = path + '/' + menu[i].par_prg.trim()
+//             path.params = {par_uno : menu[i].par_prg.trim()}
+             path.query = {params : menu[i].par_prg.trim()}
 
         }
         const item = {
@@ -602,12 +603,10 @@ const obtMenu = (sw_ini?: boolean) => {
           type :type,
           system :system 
         }
-        console.log('Menu item',item)
 
         Items.push(item) // anexamos al menu
       }
     }
-    console.log('Menu =====>',Items)
 }
 /// //////////////////////////////////////
 // Obten subMenu
@@ -627,15 +626,16 @@ const obtSubMenu = (system: string) => {
     // solo agrega menu principal
     if (menu[i].sis_sis === system) {
       let link = '#'
-      let path = ''
+      let path = {}
       const type = menu[i].tpr_prg
       const system = menu[i].sis_sis
       const url = ' '
       if (menu[i].prg_prg.trim() != null && menu[i].prg_prg.trim() > ' ') {
         link = url + '/' + menu[i].prg_prg.trim()
-        path = menu[i].prg_prg.trim()
+        path = {path : '/'+menu[i].prg_prg.trim()}
+
         if (menu[i].par_prg != null && menu[i].par_prg.trim().length > 0)
-             path = path + '/' + menu[i].par_prg.trim()
+             path.params = { par_uno : menu[i].par_prg.trim()}
 
       }
       const item = {
@@ -758,7 +758,7 @@ watch(
       }
     }
     */
-    console.log('Menu =====>',Items)
+   // console.log('Menu =====>',Items)
 
     // obtMenu(false)
   },

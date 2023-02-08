@@ -76,5 +76,6 @@ export class THISFORM extends captureForm {
     this.style.position = "center"
     this.style.backgroundImage = "/img/Logo_Empresa.bmp"
 
+    
   }
 } // End ThisForm

@@ -30,7 +30,9 @@ export class FORM extends COMPONENT {
   header = []
   main : [] = []
   footer : [] = []
+  params = ''
   public db = new VFPDB();  // conexion a la base de datos
+
   //messageBox = MessageBox
 
   //  constructor(parent: Record<string, never>) {
