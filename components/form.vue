@@ -507,6 +507,26 @@ watch(
 
 
 */
+const nextFocus = async ($event) => {
+let nextElement=$event.explicitOriginalTarget.nextSibling
+    console.log('Edit nextElement ',nextElement)
+
+    while (nextElement && nextElement.tagName!='INPUT'){
+
+      nextElement=nextElement.nextSibling
+      console.log('Edit nextElement',nextElement)
+
+    }   
+    if (nextElement)
+          nextElement.focus()
+
+    console.log('Edit ',nextElement)
+
+  }
+
+
+
+
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
 const init = async () => {

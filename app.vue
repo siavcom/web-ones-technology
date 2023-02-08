@@ -30,10 +30,13 @@
             <span v-for="(menuItem, index) in Items" :key="index">
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
-                <NuxtLink :to="menuItem.path" :target="menuItem.target">
+                <NuxtLink  :to="menuItem.path" :target="menuItem.target">
                   <img class="bx" :src="'/Iconos/' + menuItem.icon" :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
+
+              
+              
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
               </li>
 
@@ -582,20 +585,25 @@ const obtMenu = (sw_ini?: boolean) => {
         let target = ''        //'_blank' indica ventana nueva del explorador
         const type = menu[i].tpr_prg
         const system = menu[i].sis_sis
-        if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
+        if (menu[i].prg_prg.trim() != 'null' && menu[i].prg_prg.trim() > ' ') {
           link = url + '/' + menu[i].prg_prg.trim()
           path = '/' + menu[i].prg_prg.trim()
+          if (menu[i].par_prg != null && menu[i].par_prg.trim().length > 0)
+             path = path + '/' + menu[i].par_prg.trim()
+
         }
         const item = {
           link: '#',
           name: menu[i].des_prg,
           tooltip: menu[i].des_prg,
           icon: menu[i].ico_prg,
-          path,
-          target,
-          type,
-          system
+          path :path,
+          target : target,
+          type :type,
+          system :system 
         }
+        console.log('Menu item',item)
+
         Items.push(item) // anexamos al menu
       }
     }
@@ -623,16 +631,19 @@ const obtSubMenu = (system: string) => {
       const type = menu[i].tpr_prg
       const system = menu[i].sis_sis
       const url = ' '
-      if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
+      if (menu[i].prg_prg.trim() != null && menu[i].prg_prg.trim() > ' ') {
         link = url + '/' + menu[i].prg_prg.trim()
         path = menu[i].prg_prg.trim()
+        if (menu[i].par_prg != null && menu[i].par_prg.trim().length > 0)
+             path = path + '/' + menu[i].par_prg.trim()
+
       }
       const item = {
         link: '#',
         name: menu[i].des_prg,
         tooltip: menu[i].des_prg,
         icon: menu[i].ico_prg,
-        path,
+        path : path,
         type,
         system
       }
