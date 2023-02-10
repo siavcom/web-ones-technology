@@ -30,7 +30,7 @@ export class FORM extends COMPONENT {
   header = []
   main : [] = []
   footer : [] = []
-  params = ''
+  params = []
   public db = new VFPDB();  // conexion a la base de datos
 
   //messageBox = MessageBox
@@ -46,6 +46,20 @@ export class FORM extends COMPONENT {
     this.style.maxWidth = '920px'
     //    this.style.maxHeight='920px'    
 
+    // asigna los parametros pasados
+    const router = useRoute()
+    const { params } = useRoute()
+    
+    for (const par in router.query){
+       this.params.push(router.query[par])
+
+    }
+    console.log('ThisForm router==>',this.params)
+    
+    if (router.query.params ){
+     // this.params=eval('['+router.query.params+']')
+    console.log('ThisForm router Params===>',this.params)   
+    }
   }
 
   /*

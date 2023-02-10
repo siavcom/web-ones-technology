@@ -557,8 +557,6 @@ const init = async () => {
 
         }
 
-        const router = useRoute()
-        ThisForm.params=router.params
         //console.warn(router.query.params)
       //console.warn(router.currentRoute[query])
 
