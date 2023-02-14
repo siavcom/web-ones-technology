@@ -18,17 +18,20 @@ export class nom_for extends COMPONENT {
     super()
     
     this.prop.BaseClass = 'editText'
-    this.prop.textLabel = "Path/nombre de la vista VUE en el Servidor de Vue";
-    this.prop.ToolTipText = "Path/nombre de la vista VUE en el Servidor de Vue";
+    this.prop.textLabel = "Nombre de la pagina (Vue View) ";
+    this.prop.ToolTipText = "Nombre de la pagina ";
     this.prop.ErrorMessage = ''
 
     this.prop.Value = ""
-    this.prop.Placeholder="View name"
+    this.prop.Placeholder="Page name"
+    this.prop.componentStyle.width='300px'
+    this.style.width='500px'
   }
 
   public async when() {
     // public setFocus = async () => {
     //  this.Form.nom_tab.prop.Visible= false
+    this.Form.bt_gen_forma.prop.Visible= false
    return  await super.when()
   }
 

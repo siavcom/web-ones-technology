@@ -32,6 +32,7 @@ export class ext_dir extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
+        this.prop.TabIndex= 5
         
         // this.RecordSource="" oJo
 

@@ -32,6 +32,7 @@ export class col_dir extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
+        this.prop.TabIndex= 7
         
         // this.RecordSource="" oJo
 

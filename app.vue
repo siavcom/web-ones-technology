@@ -30,7 +30,9 @@
             <span v-for="(menuItem, index) in Items" :key="index">
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
-                <NuxtLink :to="menuItem.path" :target="menuItem.target">
+                <NuxtLink :to="menuItem.path" 
+                          :target="menuItem.target"
+                          @click="titleName=menuItem.name">
                   <img class="bx" :src="'/Iconos/' + menuItem.icon" :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
@@ -47,7 +49,9 @@
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
                   <li v-if="menuItem.path.length > 1">
-                    <NuxtLink :to="menuItem.path" :target="menuItem.target">
+                    <NuxtLink :to="menuItem.path"
+                              :target="menuItem.target" 
+                              @click="titleName=menuItem.name" >
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -64,7 +68,9 @@
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                   <li v-if="menuItem.path.length > 1">
-                    <NuxtLink :to="menuItem.path">
+                    <NuxtLink :to="menuItem.path"   
+                              :target="menuItem.target"
+                               @click="titleName=menuItem.name">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -80,7 +86,9 @@
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
                   <li v-if="menuItem.path.length > 1">
-                    <NuxtLink :to="menuItem.path">
+                    <NuxtLink :to="menuItem.path"
+                              :target="menuItem.target" 
+                              @click="titleName=menuItem.name">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -351,6 +359,22 @@ const isLoggedIn = ref(props.isLoggedIn)
 const isOpen = ref(props.isOpened)
 isOpen.value = true
 
+/* ***********Titulos en las pestañas****************** */
+const titleName=ref()
+titleName.value=' Technologies'
+
+const Title=computed(()=>{
+   return ` Titulo del programa`
+   //${menuItem.name}
+
+})
+
+useHead({
+  titleTemplate: (title) => `Web-Ones ${titleName.value}`,
+});
+
+
+
 
 /*
 $auth.$storage.setLocalStorage(key, val)
@@ -471,65 +495,7 @@ const updateIsOpen = () => {
 /// ///////////////////////////////////////
 const updateStatus = (loggedIn: boolean) => {
   obtMenu()
-  /*
-  if (session.id_con) {
-    let menu = []
-    //const id_con = session.id_con
-    nom_emp.value = session.nom_emp
-
-    if (session.id_con.length > 0) {
-      // Agregamos el diccionario de datos
-      Items.push(
-        {
-          link: '#',
-          name: 'SQL diccionary',
-          tooltip: 'Setting',
-          icon: 'svg/bx-cog.svg',
-          path: 'come9101',
-          type: 'P',
-          system: ''
-        })
-
-      // agregamos Items pasados en props
-      for (const item in Prop.value.Items) {
-        Items.push(Prop.value.Items[item])
-      }
-      // Leemos el menu general en caso de que haya hecho login
-      console.log('session ===>', session)
-
-      if (session.menu.length > 0)
-        menu = JSON.parse(session.menu)// lee menu de programas
-      const url = session.url.trim()
-
-      for (let i = 0; menu.length > i; i++) {
-        // solo agrega menu principal
-        if (menu[i].tpr_prg === 'S') {
-          let link = '#'
-          let path = ''
-          const type = menu[i].tpr_prg
-          const system = menu[i].sis_sis
-          if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
-            link = url + '/' + menu[i].prg_prg.trim()
-            path = menu[i].prg_prg.trim()
-          }
-          const item = {
-            link: '#',
-            name: menu[i].des_prg,
-            tooltip: menu[i].des_prg,
-            icon: menu[i].ico_prg,
-            path,
-            type,
-            system
-          }
-          Items.push(item) // anexamos al menu
-        }
-      }
-    } else {
-      isLoggedIn.value = false
-    }
-  }
-  isLoggedIn.value = false // loggedIn;
-  */
+  
 }
 
 /// //////////////////////////////////////

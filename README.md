@@ -106,7 +106,23 @@ example:
     - ToolTipText: 'Principal name ',.
     - Visible: true
 
- 
+### Input component Style
+ componentStyle 
+  {
+      background: "white",
+      color: "#b94295",
+      width: "auto",
+      height: "auto",
+      MaxHeigth: 'auto',
+      MaxWidth: 'auto',
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left",
+
+    },
+
+
+
  ### Data Base properties.
     # each prop.Value component can be taked from a field of local SQL where :
     - ControlSource: "tableName.fieldName // Name of sql field.
@@ -328,7 +344,9 @@ Development:
  $ npx nuxi dev --port=3000
  $ npm run dev
 
-##  Project mannager
+##  Project manager
+
+
 
 (vue ui old)
 (npx vite --port=38000 old)

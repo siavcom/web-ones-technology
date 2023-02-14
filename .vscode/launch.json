@@ -4,31 +4,32 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    {
-        "type": "firefox",
-        "request": "attach",
-        "name": "Attach Firefox",
-        "url": "http://176.16.200.20:3000",
-        // "url": "http://176.16.200.20:3000/${fileBasename}",
-         // "url": "http://localhost:8080/index.html",
-         "webRoot": "${workspaceFolder}/"
- 
-    },
         {
-        "runtimeArgs": ["--preserve-symlinks"]
-    },
-    {
-        // Start Debug -> Open Firefox, Open Debug console, Click an line in JS File and F5
-        "type": "firefox",
-        "request": "launch",
-        "reAttach": true,
-        "name": "Firefox + Server",
-        "url": "http://176.16.200.20:3000",
-       // "url": "http://176.16.200.20:3000/${fileBasename}",
-        // "url": "http://localhost:8080/index.html",
-        "webRoot": "${workspaceFolder}/"
-    },
-
+            "type": "firefox",
+            "request": "attach",
+            "name": "Attach Firefox",
+            "url": "http://176.16.200.20:3000",
+            "webRoot": "${workspaceFolder}/"
+        },
+        {
+            "runtimeArgs": [
+                "--preserve-symlinks"
+            ]
+        },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "name": "Firefox + Server",
+            "url": "http://176.16.200.20:3000",
+            "webRoot": "${workspaceFolder}/",
+            "pathMappings": [
+                {
+                    "url": "file://",
+                    "path": "vscode-remote://ssh-remote%2B176.16.200.20"
+                },
+            ]
+        },
         {
             "name": "Launch Chrome",
             "request": "launch",
@@ -36,15 +37,13 @@
             "url": "http://176.16.200.20:3000",
             "webRoot": "${workspaceFolder}"
         },
-      
         {
             "type": "firefox",
             "request": "launch",
             "name": "vuejs: firefox",
             "url": "http://176.16.200.20:3000/",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}"
         },
-
         {
             "type": "node",
             "request": "launch",

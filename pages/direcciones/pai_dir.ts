@@ -32,6 +32,7 @@ export class pai_dir extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
+        this.prop.TabIndex= 9
         
         // this.RecordSource="" oJo
 

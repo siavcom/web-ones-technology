@@ -82,11 +82,6 @@ export class THISFORM extends FORM {
   //public Init = async (Form) => {
   async init() {
     try {
-      const ThisForm = this
-
-      // asignamos en la clase db Cual es la forma
-      ThisForm.db.Form = this
-      // Reservamos una area de trabajo
       console.log("ThisForm.init")
     } catch (error) {
       console.log("======Error Init=====" + this.prop.Name, error)

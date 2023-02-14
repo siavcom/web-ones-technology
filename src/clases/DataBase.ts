@@ -69,7 +69,7 @@ export class VFPDB {
   */
   // Inicializa la conexion
   constructor() {
-    this.Estatus = false
+    this.Estatus = true
     this.url = ''
     this.nom_emp = ''
     this.user = ''

@@ -16,8 +16,9 @@ export class captureForm extends FORM {
 
   async init () { // (Form)
     // super.init() // corre el init de la clase para asignar los valores this a todos los componentes
+
+
     try {
-      // this.Form.db.Form = this
       // if (this.prop.RecordSource.length > 1) {
       await this.refreshComponent(false)
 
