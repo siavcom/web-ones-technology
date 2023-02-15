@@ -1,0 +1,67 @@
+
+//////////////////////////////////////////////
+// This Form was generated automatically by web-ones-technology
+// BaseClass : Grid
+// Class : <<nom_for>>
+// Description : Capture Grid
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : <<fec_cre>>
+// Update Date  : 
+/////////////////////////////////////////////
+
+///////////////////////////////////////
+// Clase base
+///////////////////////////////////////
+
+import {GRID} from  '@/classes/Grid'
+
+/////////////////////////////////////////
+// Component import
+//////////////////////////////////////
+
+<<imp_com>>
+
+export class grid extends GRID {
+ 
+<<com_imp >> 
+ 
+  //  constructor(parent: Record<string, never>) {
+  constructor() {
+    super()
+    //this.prop.Name = '<<nom_for>>'
+    this.prop.textLabel= 'Mantenimiento a la tabla <<nom_tab>>'
+    this.prop.RecordSource='<<nom_tab>>'
+    this.prop.Visible= false
+    this.prop.ReadOnly = false;
+    this.prop.ColumnCount=8
+    this.num_ind.prop.First=true // primer elemento
+    this.nom_ind.prop.Last= true // ultimo elemento
+     }
+
+  //////////////////////////////////////////////////
+  // Incerta renglon
+  // m : valiables de memoria
+  ///////////////////////////////////////////////////
+  public async appendRow() { 
+   // Obtiene el consecutivo con_ind del cursor local
+  
+   const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_ind ")
+
+   console.log('appendRow',data[0])  
+    
+   let num_ind=data[0].num_ind+1     
+   if (num_ind == undefined ||
+       Number.isNaN(num_ind))
+       num_ind =1
+       
+       
+   // asigna campos que no estan en el grid
+   const m = {nom_tab:this.Form.nom_tab.prop.Value.trim(),
+              num_ind:num_ind}
+              await this.Form.db.appendBlank('vi_cap_ind', m) //Incertamos un renglon en blanc
+  
+  }
+
+
+
+}
