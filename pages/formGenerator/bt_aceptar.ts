@@ -48,6 +48,8 @@ export class bt_aceptar extends COMPONENT {
 
     // En el area de trabajo reservada , generamos un select a SQL server a una vista de captura
     // y le asignamos el nombre 'vi_cap_tab' a a tabla en el SQL local
+    if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C' ){
+
     const nom_tab = this.Form.nom_tab.prop.Value.trim()
     // console.log('bt_aceptar controlSource this.Form.nom_ind.prop',this.Form.nom_ind.prop)  
     const controlSource = `'${this.Form.nom_ind.prop.Value.trim()}.'||trim(lower(cam_dat))`
@@ -84,9 +86,10 @@ export class bt_aceptar extends COMPONENT {
       `update vi_cap_for set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
 
     // CHARINDEX(cam_dat,'${exp_ind}')>0    ${exp_ind} like trim(cam_dat)
-
-    this.Form.grid_components.prop.Visible = true
-    if (this.Form.tip_for.prop.Value == 'G') {
+          this.Form.grid_components.prop.Visible = true
+  }
+    // Si es captura de Grid o Compuesta
+    if (this.Form.tip_for.prop.Value == 'C' || this.Form.tip_for.prop.Value == 'G' ) {
       const vis_cap = this.Form.vis_cap.prop.Value.trim()
       const controlSource = `'${vis_cap.trim()}.'||trim(lower(cam_dat))`
 

@@ -1,10 +1,9 @@
 //////////////////////////////////////////////
-// Clase : Gridd
+// Clase : Grid
 // Author : Fernando Cuadras Angulo
 // Creacion : Febrero/2022
-// Ult.Mod  :  23/Agosto/2022
+// Ult.Mod  :  16/Febrero/2023
 /////////////////////////////////////////////
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { COMPONENT } from '@/classes/Component'
 //import { nextTick} from "vue"
@@ -68,6 +67,38 @@ export class GRID extends COMPONENT {
     console.log('Grid base main',this.elements)
   }
 
+  async validKey(){
+    if (this.prop.Valid)
+       return true
+
+    const db=this.Form.db 
+    const View= db.View[this.Parent.prop.RecordSource]
+    const Recno =View.Recno
+    const valid=false
+    let where =' where '
+    for (let i=0;i<this.elements.length;i++){
+      const column=this.elements[i].Name
+      if (this[column].prop.updateKey) {
+        if (!this[column].Valid) return true
+         
+        const comillas = this[column].prop.Type=='numeric' ?'':"'"
+        where=where+this[column].prop.ControlSource.trim()+'='+comillas+this[column].prop.Value+comillas+' and '
+        
+          }
+        } 
+        where=where+` recno<>${Recno} `
+        const select=`select exists(select recno from ${this.Parent.prop.RecordSource} ${where})`        
+        console.log('Grid select exists=',select)
+
+        const data=await db.localSql(select)
+        console.log('Grid ',data)
+        if (data[0].exists)
+          this.prop.Valid=false
+        else
+           this.prop.Valid=true
+
+        return this.prop.Valid
+  }
 
   ///////////////////////////////////////////////////// 
   // asignaRenglon 
@@ -95,6 +126,7 @@ export class GRID extends COMPONENT {
     this.Row=-1 // Quitamos donde esta el renglon
     //this.Form.db.select(this.prop.RecordSource) 
     const values= await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
+    this.prop.Valid=false
     console.log('======grid Incertamos renglon========>',this.prop.Name,values)
 
   }

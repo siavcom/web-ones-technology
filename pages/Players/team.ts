@@ -1,37 +1,37 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : nom_dir
-// Description : NOMBRE
+// Class : team
+// Description : Equipo
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class nom_dir extends COMPONENT {
+export class team extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'NOMBRE'
+        this.prop.textLabel = 'Equipo'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.nom_dir'
+        this.prop.ControlSource = 'Index1_Team.team'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=254
+        this.prop.MaxLength=12
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=false
+        this.prop.updateKey=true
         
         // this.RecordSource="" oJo
 

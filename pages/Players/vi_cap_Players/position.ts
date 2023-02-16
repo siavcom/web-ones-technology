@@ -1,37 +1,37 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : num_dir
-// Description : NUMERO DE DIRECCION
+// Class : position
+// Description : Posicion
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class num_dir extends COMPONENT {
+export class position extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'NUMERO DE DIRECCION'
-        this.prop.Type ='numeric'
+        this.prop.textLabel = 'Posicion'
+        this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.num_dir'
+        this.prop.ControlSource = 'vi_cap_Players.position'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=2
+        this.prop.MaxLength=32
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=true
+        this.prop.updateKey=false
         
         // this.RecordSource="" oJo
 

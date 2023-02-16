@@ -25,8 +25,8 @@ export class tip_for extends COMPONENT {
     this.prop.Valid = false;
     this.prop.ErrorMessage = ''
     this.prop.RowSource = [
-      ["Forma de Captura", "Grid/Tabla", "Reporte"],
-      ["F", "G", "R"],
+      ["Forma de Captura", "Grid/Tabla","Form/Grid compuesto", "Reporte"],
+      ["F", "G","C","R"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;

@@ -8,7 +8,7 @@
 import { COMPONENT } from './Component'
 import { FORM } from '@/classes/Form'
 
-export class captureForm extends FORM {
+export class gridForm extends FORM {
   /// //////////////////////////////////////////////////
   // Metodo init
   // Aqui se deben de asignar las areas de trabajo de los archivos
@@ -59,9 +59,8 @@ export class captureForm extends FORM {
         let Recno = 0
     let sw_bor= false
     if (data.length ===0) { // No existe el registro
-      m = await this.db.appendBlank(this.prop.RecordSource, m)
-    //  console.log('Valid appendBlank ', m)
-      Recno = m.recno
+       MessageBox('No existe el registro')
+
     } else {
       Recno = data[0].recno
 
@@ -182,7 +181,7 @@ export class captureForm extends FORM {
       this.Parent.bt_borra.prop.Visible = true
 
     }
-  }()
+  }
 
   public bt_borra = new class extends COMPONENT {
     constructor () {
@@ -228,5 +227,5 @@ export class captureForm extends FORM {
 
       }
     }
-  }()
+  }
 }

@@ -54,7 +54,7 @@ export class bt_gen_forma extends COMPONENT {
       await this.generaForma(zipWriter)
       this.Form.grid_components.prop.Visible = false
 
-      if (this.Form.tip_for.prop.Value == 'G') {
+      if (this.Form.tip_for.prop.Value == 'G' || this.Form.tip_for.prop.Value == 'C') {
         await this.generaGrid(zipWriter)
         this.Form.grid_captura.prop.Visible = false
       }
@@ -91,10 +91,12 @@ export class bt_gen_forma extends COMPONENT {
     ThisForm = ThisForm.replaceAll('<<nom_ind>>', this.Form.nom_ind.prop.Value.trim())
     ThisForm = ThisForm.replaceAll('<<nom_tab>>', this.Form.nom_tab.prop.Value.trim())
 
+
+
     const renglon = await this.Form.db.localSql('select * from vi_cap_for order by con_dat')
     // recorremos todos los renglones
-    for (let i = 0; i < renglon.length; i++) {
 
+    for (let i = 0; i < renglon.length; i++) {
       const cam_dat = renglon[i]['cam_dat']
       imp_com = imp_com + `import {${cam_dat.trim()} } from "./${cam_dat.trim()}" ` + String.fromCharCode(10)
       com_imp = com_imp + `   public ${cam_dat.trim()} = new ${cam_dat.trim()}() ` + String.fromCharCode(10)
@@ -159,8 +161,24 @@ export class bt_gen_forma extends COMPONENT {
 
       await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/${cam_dat.trim()}.ts`, new TextReader(row_com))
     }
+    let init=''
+    if (this.Form.tip_for.prop.Value == 'G' || this.Form.tip_for.prop.Value == 'C'){
+      const grid=this.Form.vis_cap.prop.Value.trim()
+      ThisForm = ThisForm.replace('<<grid>>', "'"+grid+"'")
+      imp_com = imp_com + `import {grid} from "./${grid}/Grid" ` + String.fromCharCode(10)
+      com_imp = com_imp + `   public ${grid} = new grid() ` + String.fromCharCode(10)
+      if (this.Form.tip_for.prop.Value == 'G'){
+         init='this.Form.bt_graba.lee_grid()'
+      }
+      ThisForm = ThisForm.replace('<<init>>', init)
+
+    }
+
+
     ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
     ThisForm = ThisForm.replace('<<imp_com>>', imp_com)
+
+
     await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/ThisForm.ts`, new TextReader(ThisForm))
 
 //    const zipFileBlob = await zipFileWriter.getData()
@@ -185,13 +203,14 @@ export class bt_gen_forma extends COMPONENT {
     var ThisGrid: string = Grid
     ThisGrid = ThisGrid.replaceAll('<<nom_for>>', this.Form.vis_cap.prop.Value.trim())
     ThisGrid = ThisGrid.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
-    ThisGrid = ThisGrid.replaceAll('<<nom_ind>>', this.Form.vis_cap.prop.Value.trim())
-    ThisGrid = ThisGrid.replaceAll('<<nom_tab>>', this.Form.nom_tab.prop.Value.trim())
+//    ThisGrid = ThisGrid.replaceAll('<<nom_ind>>', this.Form.vis_cap.prop.Value.trim())
+    ThisGrid = ThisGrid.replaceAll('<<nom_tab>>', this.Form.vis_cap.prop.Value.trim())
 
     const renglon = await this.Form.db.localSql('select * from vi_cap_grd order by con_dat')
     // recorremos todos los renglones
+    let col_count=0
     for (let i = 0; i < renglon.length; i++) {
-
+      col_count++
       const cam_dat = renglon[i]['cam_dat']
       imp_com = imp_com + `import {${cam_dat.trim()} } from "./${cam_dat.trim()}" ` + String.fromCharCode(10)
       com_imp = com_imp + `   public ${cam_dat.trim()} = new ${cam_dat.trim()}() ` + String.fromCharCode(10)
@@ -258,6 +277,8 @@ export class bt_gen_forma extends COMPONENT {
     }
     ThisGrid = ThisGrid.replace('<<com_imp>>', com_imp)
     ThisGrid = ThisGrid.replace('<<imp_com>>', imp_com)
+    ThisGrid = ThisGrid.replace('<<col_count>>', col_count.toString())
+
     await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/${this.Form.vis_cap.prop.Value.trim()}/Grid.ts`, new TextReader(ThisGrid))
 
 

@@ -1,37 +1,37 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : not_dir
-// Description : NOTA DE LA DIRECCION
+// Class : name
+// Description : Nombre
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class not_dir extends COMPONENT {
+export class name extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'NOTA DE LA DIRECCION'
-        this.prop.Type ='textArea'
+        this.prop.textLabel = 'Nombre'
+        this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.not_dir'
+        this.prop.ControlSource = 'vi_cap_Players.name'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=512
+        this.prop.MaxLength=64
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=false
+        this.prop.updateKey=true
         
         // this.RecordSource="" oJo
 

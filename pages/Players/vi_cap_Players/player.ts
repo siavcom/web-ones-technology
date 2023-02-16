@@ -1,32 +1,32 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : cpo_dir
-// Description : CODIGO POSTAL
+// Class : player
+// Description : Numero de Jugador
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class cpo_dir extends COMPONENT {
+export class player extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'CODIGO POSTAL'
-        this.prop.Type ='text'
+        this.prop.textLabel = 'Numero de Jugador'
+        this.prop.Type ='numeric'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.cpo_dir'
+        this.prop.ControlSource = 'vi_cap_Players.player'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=6
+        this.prop.MaxLength=2
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0

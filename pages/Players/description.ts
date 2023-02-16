@@ -1,32 +1,32 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : pai_dir
-// Description : PAIS de la
+// Class : description
+// Description : Descripcion
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class pai_dir extends COMPONENT {
+export class description extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'PAIS de la'
+        this.prop.textLabel = 'Descripcion'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.pai_dir'
+        this.prop.ControlSource = 'Index1_Team.description'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=20
+        this.prop.MaxLength=32
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0

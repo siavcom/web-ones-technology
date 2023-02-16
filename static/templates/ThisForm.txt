@@ -15,17 +15,11 @@
 <<imp_com>>
 
 
-////////////////////////////////////////
-// Function import
-///////////////////////////////////////
-
-import { MessageBox } from '@/clases/Functions';
-
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
 
-import { captureForm } from '@/clases/captureForm'
+import { captureForm } from '@/classes/captureForm'
 
 
 export class THISFORM extends captureForm {
@@ -53,6 +47,14 @@ export class THISFORM extends captureForm {
     this.style.fontSize = "13px" 
     this.style.position = "center"
     this.style.backgroundImage = "/img/Logo_Empresa.bmp"
+    this.grid=[<<grid>>]
+   
 
   }
+async init(){
+   <<init>>
+
+}
+
+
 } // End ThisForm

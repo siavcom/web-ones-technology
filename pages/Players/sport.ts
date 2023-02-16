@@ -1,32 +1,32 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : int_dir
-// Description : INTERIOR
+// Class : sport
+// Description : Deporte
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class int_dir extends COMPONENT {
+export class sport extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'INTERIOR'
+        this.prop.textLabel = 'Deporte'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.int_dir'
+        this.prop.ControlSource = 'Index1_Team.sport'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=120
+        this.prop.MaxLength=2
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0

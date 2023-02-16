@@ -1,32 +1,32 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : cal_dir
-// Description : CALLE
+// Class : nickname
+// Description : Apodo
 // Author : El Fer Blocks
-// Creation : 2023-02-02
+// Creation : 2023-02-16
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
-export class cal_dir extends COMPONENT {
+export class nickname extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'CALLE'
+        this.prop.textLabel = 'Apodo'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'lla1_dir.cal_dir'
+        this.prop.ControlSource = 'vi_cap_Players.nickname'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=120
+        this.prop.MaxLength=32
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0

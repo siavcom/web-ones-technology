@@ -11,7 +11,7 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/clases/Component'
+import { COMPONENT } from '@/classes/Component'
 
 export class <<cam_dat>> extends COMPONENT {
 

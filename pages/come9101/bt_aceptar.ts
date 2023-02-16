@@ -335,9 +335,8 @@ export class bt_aceptar extends COMPONENT {
     let resultado = 0
     resultado = await MessageBox(men_txt, 4, '')
     console.log('bt_aceptar Messagebox resultado', resultado)
-    //    if (await MessageBox(men_txt, 4, '') == 6) {
-    if (resultado == 6) {
 
+    if (resultado == 6) {
       if (vis_cap == 'vi_cap_dat') { // para obtener el con_dat definitivo
         await this.ObtDefTabla()
 

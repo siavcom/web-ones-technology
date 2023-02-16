@@ -133,6 +133,7 @@ export class captureForm extends FORM {
   // Descripcion : Graba los datos de la forma
   /// //////////////////////////////
   public bt_graba = new class extends COMPONENT {
+    grid=[]
     constructor () {
       super()
       this.prop.Name = 'bt_graba'
@@ -149,13 +150,19 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     async click () {
+      
       if (!this.prop.Visible) return
       this.prop.Disabled = true
+      this.prop.Valid=false
+
       this.Parent.bt_borra.prop.Disabled = true
+      const  m={} //Record<string, never>
 
       // Recorremos toda la forma y revisamos si estan validados
+      
       for (const i in this.Parent.main) {
         const comp = this.Parent.main[i]
+        m[comp]=this.Parent[comp].prop.Value // asignamos variables de memoria
 
        // console.log('bt_graba ', comp, this.Parent[comp].prop.Valid)
 
@@ -170,19 +177,38 @@ export class captureForm extends FORM {
 
       if (result) {
         MessageBox('Datos actualizados')
+
       } else {
         MessageBox('Error al actualizar Datos', 16)
-
-        return
+        return 
       }
+      this.prop.Valid=true
       this.prop.Disabled = false
       this.prop.Visible = true
       this.Parent.sw_ini = false
       this.Parent.bt_borra.prop.Disabled = false
       this.Parent.bt_borra.prop.Visible = true
+       // hay grid de captura
+       await this.lee_grid()
+       
+
+      return   
+      }
+
+      public async lee_grid(){
+        for (let i=0;i<this.grid.length;i++){
+          if (this.Form[this.grid[i]].prop.RecordSource.trim()>'  ')
+          await this.db.use(this.Form[this.grid[i]].prop.RecordSource,m )
+          this.Form[this.grid[i]].prop.Visible=true
+       }
+        }
+      
+
 
     }
-  }()
+
+
+
 
   public bt_borra = new class extends COMPONENT {
     constructor () {
@@ -228,5 +254,6 @@ export class captureForm extends FORM {
 
       }
     }
-  }()
+  }
 }
+

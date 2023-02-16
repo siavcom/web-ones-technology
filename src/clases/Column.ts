@@ -14,24 +14,42 @@ import { COMPONENT } from '@/classes/Component'
 export class COLUMN extends COMPONENT {
 
   //  constructor(parent: Record<string, never>) {
-  textLabel = ''
-
+  
  // Segun Vfp
   //componente = new COMPONENT
   //header = new COMPONENT
 
   Order = 1
-  
+  BaseClass = 'Column'
   constructor() {
     super()
-    this.BaseClass = 'Column'
     this.prop.Capture = true;
-    this.prop.Sw_val = false;
+    this.prop.Valid = false;
 // Segun Vfp
 //    this.header.BaseClass = 'Header'
 //    this.header.prop.Name = 'header'
 //    this.componente.BaseClass = 'Component'
 //    this.componente.prop.Name = 'component'
+  }
+
+async valid(){
+  this.prop.Valid=true
+
+    if (this.prop.updateKey) {
+      console.log('Column valid updateKey ',this.prop.Name)
+      this.Parent.Valid=false
+      if (this.prop.Value.trim().length==0){
+          this.prop.ErrorMessage='No permite datos en blanco'
+          this.prop.ShowError=true
+          this.prop.Valid=false
+        } 
+     if (await this.Parent.ValidKey()== false){
+        this.prop.ErrorMessage='Dato duplicado'
+        this.prop.ShowError=true
+        this.prop.Valid=false
+      }
+    }
+    return this.prop.Valid
   }
 /*
   ///////////////////////////////////////////////////// 

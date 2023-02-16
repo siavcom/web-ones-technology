@@ -173,6 +173,7 @@ input[ class="number"] {
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
+  zIndex: 2;
 
   /* Position the tooltip text */
   position: absolute;
