@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : sport
-// Description : Deporte
+// Class : jerseyno
+// Description : No Jersey/Playera
 // Author : El Fer Blocks
-// Creation : 2023-02-16
+// Creation : 2023-02-17
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -13,17 +13,17 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class sport extends COMPONENT {
+export class jerseyno extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Deporte'
-        this.prop.Type ='text'
+        this.prop.textLabel = 'No Jersey/Playera'
+        this.prop.Type ='numeric'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'Index1_Team.sport'
+        this.prop.ControlSource = 'vi_cap_Players.jerseyno'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
         this.prop.MaxLength=2
@@ -32,6 +32,7 @@ export class sport extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
+        
         
         // this.RecordSource="" oJo
 

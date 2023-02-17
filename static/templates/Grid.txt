@@ -28,7 +28,7 @@ export class grid extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    //this.prop.Name = '<<nom_for>>'
+    this.prop.Name = '<<nom_for>>'
     this.prop.textLabel= 'Mantenimiento a la tabla <<nom_tab>>'
     this.prop.RecordSource='<<nom_tab>>'
     this.prop.Visible= false

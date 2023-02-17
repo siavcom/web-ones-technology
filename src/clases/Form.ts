@@ -158,6 +158,8 @@ export class FORM extends COMPONENT {
         id++
       }
     }
+
+
     this.header = header
     this.main = main
     this.elements = elements
@@ -168,8 +170,16 @@ export class FORM extends COMPONENT {
         TabIndex++
     }
 
-    console.log('ThisForm  ',this.Name,this.elements,this.header, this.main, this.footer)
+
+
     this.footer = footer.reverse()
+
+    console.log('Form init header',this.header)
+    console.log('Form init main',this.main)
+    console.log('Form init footer',this.footer)
+    console.log('Form init elements',this.elements)
+
+
 
   }
 

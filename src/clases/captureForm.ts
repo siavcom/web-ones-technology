@@ -9,6 +9,7 @@ import { COMPONENT } from './Component'
 import { FORM } from '@/classes/Form'
 
 export class captureForm extends FORM {
+  public grid:[]=[]
   /// //////////////////////////////////////////////////
   // Metodo init
   // Aqui se deben de asignar las areas de trabajo de los archivos
@@ -26,6 +27,7 @@ export class captureForm extends FORM {
     } catch (error) {
       console.log('======Error Init=====' + this.prop.Name, error)
     }
+    this.bt_graba.Grid=this.grid // asignamos el arreglo de grid
   }
 
   /// /////////////////////////////////////
@@ -133,7 +135,7 @@ export class captureForm extends FORM {
   // Descripcion : Graba los datos de la forma
   /// //////////////////////////////
   public bt_graba = new class extends COMPONENT {
-    grid=[]
+    public Grid=[]
     constructor () {
       super()
       this.prop.Name = 'bt_graba'
@@ -147,6 +149,7 @@ export class captureForm extends FORM {
       this.prop.Image = '/Iconos/svg/bx-check-circle.svg'
       this.prop.TabIndex= 20
       this.style.width = '20px'
+
     } // Fin constructor
 
     async click () {
@@ -196,10 +199,11 @@ export class captureForm extends FORM {
       }
 
       public async lee_grid(){
-        for (let i=0;i<this.grid.length;i++){
-          if (this.Form[this.grid[i]].prop.RecordSource.trim()>'  ')
-          await this.db.use(this.Form[this.grid[i]].prop.RecordSource,m )
-          this.Form[this.grid[i]].prop.Visible=true
+        
+        for (let i=0;i<this.Grid.length;i++){
+          if (this.Form[this.Grid[i]].prop.RecordSource.trim()>'  ')
+          await this.db.use(this.Form[this.Grid[i]].prop.RecordSource,m )
+          this.Form[this.Grid[i]].prop.Visible=true
        }
         }
       

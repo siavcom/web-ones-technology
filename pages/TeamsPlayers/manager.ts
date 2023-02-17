@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : <<cam_dat>>
-// Description : <<ref_dat>>
+// Class : manager
+// Description : Administrador
 // Author : El Fer Blocks
-// Creation : <<fec_cre>>
+// Creation : 2023-02-17
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -13,25 +13,25 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class <<cam_dat>> extends COMPONENT {
+export class manager extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = '<<textLabel>>'
-        this.prop.Type ='<<Type>>'
-        this.prop.BaseClass = '<<BaseClass>>'
-        this.prop.ControlSource = '<<ControlSource>>'
-        this.prop.Placeholder = '<<PlaceHolder>>'
-        this.prop.ToolTipText ='<<ToolTipText>>'
-        this.prop.MaxLength=<<MaxLength>>
-        this.prop.Min="<<Min>>"
-        this.prop.Max="<<Max>>"
-        this.prop.Decimals=<<Decimals>>
-        this.prop.Capture=<<Capture>>
-        this.prop.updateKey=<<updateKey>>
+        this.prop.textLabel = 'Administrador'
+        this.prop.Type ='text'
+        this.prop.BaseClass = 'editText'
+        this.prop.ControlSource = 'Index1_Team.manager'
+        this.prop.Placeholder = ''
+        this.prop.ToolTipText =''
+        this.prop.MaxLength=32
+        this.prop.Min="0"
+        this.prop.Max="999"
+        this.prop.Decimals=0
+        this.prop.Capture=true
+        this.prop.updateKey=false
         
         
         // this.RecordSource="" oJo

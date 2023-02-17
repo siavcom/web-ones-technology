@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : nickname
-// Description : Apodo
+// Class : player
+// Description : Numero de Jugador
 // Author : El Fer Blocks
-// Creation : 2023-02-16
+// Creation : 2023-02-17
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -13,25 +13,26 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class nickname extends COMPONENT {
+export class player extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Apodo'
-        this.prop.Type ='text'
+        this.prop.textLabel = 'Numero de Jugador'
+        this.prop.Type ='numeric'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_Players.nickname'
+        this.prop.ControlSource = 'vi_cap_Players.player'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=32
+        this.prop.MaxLength=2
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=false
+        this.prop.updateKey=true
+        
         
         // this.RecordSource="" oJo
 

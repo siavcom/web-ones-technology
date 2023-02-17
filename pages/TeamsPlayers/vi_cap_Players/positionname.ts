@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : name
-// Description : Nombre
+// Class : positionname
+// Description : Nombre de posicion
 // Author : El Fer Blocks
-// Creation : 2023-02-16
+// Creation : 2023-02-17
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -13,25 +13,26 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class name extends COMPONENT {
+export class positionname extends COMPONENT {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Nombre'
+        this.prop.textLabel = 'Nombre de posicion'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_Players.name'
+        this.prop.ControlSource = 'vi_cap_Players.positionname'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=64
+        this.prop.MaxLength=32
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=true
+        this.prop.updateKey=false
+        
         
         // this.RecordSource="" oJo
 

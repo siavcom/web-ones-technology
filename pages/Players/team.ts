@@ -2,9 +2,9 @@
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
 // Class : team
-// Description : Equipo
+// Description : Team
 // Author : El Fer Blocks
-// Creation : 2023-02-16
+// Creation : 2023-02-17
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -20,10 +20,10 @@ export class team extends COMPONENT {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Equipo'
+        this.prop.textLabel = 'Team'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'Index1_Team.team'
+        this.prop.ControlSource = 'Index1_Players.team'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
         this.prop.MaxLength=12
@@ -32,6 +32,7 @@ export class team extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=true
+        
         
         // this.RecordSource="" oJo
 

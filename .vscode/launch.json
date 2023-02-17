@@ -25,9 +25,13 @@
             "webRoot": "${workspaceFolder}/",
             "pathMappings": [
                 {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/src/clases",
+                    "path": "${workspaceFolder}/classes"
+                },
+                {
                     "url": "file://",
                     "path": "vscode-remote://ssh-remote%2B176.16.200.20"
-                },
+                }
             ]
         },
         {

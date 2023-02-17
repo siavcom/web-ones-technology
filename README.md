@@ -338,16 +338,16 @@ example:
   - http://siavcom.com.mx 
   skype & e-mail : siavcom@hotmail.com
 
+## Reserved Word
+position
 
-##### Other notes :
+## Other notes :
 Development:
  $ npx nuxi dev --port=3000
  $ npm run dev
 
 ##  Project manager
-
-
-
+Old with vite
 (vue ui old)
 (npx vite --port=38000 old)
 

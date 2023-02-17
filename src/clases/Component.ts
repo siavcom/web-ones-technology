@@ -178,7 +178,7 @@ export class COMPONENT {
     this.Form = Form  // asigna la forma a la propiedad Form 
     //console.log('Init form ====>', this.prop.Name)
     this.prop.Status = 'A'
-    console.log('Componente Inicializado=========> ', this.prop.Name, this.elements)
+    console.log('Componente Inicializado =========> ', this.prop.Name, this.elements)
     // console.log('Init Componente this.Form',this.Form)
   }
 
