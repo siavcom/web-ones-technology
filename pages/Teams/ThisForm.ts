@@ -57,12 +57,12 @@ export class THISFORM extends captureForm {
     this.style.fontSize = "13px" 
     this.style.position = "center"
     this.style.backgroundImage = "/img/Logo_Empresa.bmp"
-    this.grid=[<<grid>>]
+   // this.grid=[<<grid>>]
    
 
   }
 async init(){
-   <<init>>
+  // <<init>>
 
 }
 

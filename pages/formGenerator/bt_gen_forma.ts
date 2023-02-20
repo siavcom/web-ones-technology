@@ -162,19 +162,18 @@ export class bt_gen_forma extends COMPONENT {
       await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/${cam_dat.trim()}.ts`, new TextReader(row_com))
     }
     let init=''
+    let grid=''
     if (this.Form.tip_for.prop.Value == 'G' || this.Form.tip_for.prop.Value == 'C'){
-      const grid=this.Form.vis_cap.prop.Value.trim()
-      ThisForm = ThisForm.replace('<<grid>>', "'"+grid+"'")
+      grid=this.Form.vis_cap.prop.Value.trim()
       imp_com = imp_com + `import {grid} from "./${grid}/Grid" ` + String.fromCharCode(10)
       com_imp = com_imp + `   public ${grid} = new grid() ` + String.fromCharCode(10)
       if (this.Form.tip_for.prop.Value == 'G'){
          init='this.Form.bt_graba.lee_grid()'
       }
-      ThisForm = ThisForm.replace('<<init>>', init)
 
     }
-
-
+    ThisForm = ThisForm.replace('<<grid>>', "'"+grid+"'")
+    ThisForm = ThisForm.replace('<<init>>', init)
     ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
     ThisForm = ThisForm.replace('<<imp_com>>', imp_com)
 

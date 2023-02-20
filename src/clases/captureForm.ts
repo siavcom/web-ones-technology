@@ -39,7 +39,7 @@ export class captureForm extends FORM {
   /// /////////////////////////////////////
 
   async valid () {
-    let m = {}
+    var m = {}
     // Generamos variables de memoria
     for (const i in this.main) {
       const comp = this.main[i]
@@ -48,22 +48,24 @@ export class captureForm extends FORM {
         if (!this[comp].prop.Valid) { return }
 
         // asignamos variables de memoria
-        if (this[comp].prop.Type ==='numeric') { m[comp] = +this[comp].prop.Value } else { m[comp] = this[comp].prop.Value }
+        if (this[comp].prop.Type ==='numeric') { m[comp] = +this[comp].prop.Value } 
+        else {
+           m[comp] = this[comp].prop.Value }
       }
     }
     // Leemos datos
-    //console.log('Leemos datos use ', m)
     const data = await this.db.use(this.prop.RecordSource, m)
 
     //console.log('capture form valid data', data)
-    if (!data || data=='400') { return false } // Hubo error al leer los datos
+    if (!data || data=='400') 
+    { return false } // Hubo error al leer los datos
     
-        let Recno = 0
+    let Recno = 0
     let sw_bor= false
     if (data.length ===0) { // No existe el registro
-      m = await this.db.appendBlank(this.prop.RecordSource, m)
-    //  console.log('Valid appendBlank ', m)
-      Recno = m.recno
+      const result = await this.db.appendBlank(this.prop.RecordSource, m)
+      console.log('Valid appendBlank ', result)
+      Recno = result.recno
     } else {
       Recno = data[0].recno
 
@@ -210,9 +212,6 @@ export class captureForm extends FORM {
 
 
     }
-
-
-
 
   public bt_borra = new class extends COMPONENT {
     constructor () {

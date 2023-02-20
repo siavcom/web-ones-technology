@@ -80,7 +80,7 @@ export class grid_datos extends GRID {
               ref_dat : ' ',
               val_dat : ' ',
               sou_dat : ' ',
-              vvu_dat : ' '
+              vue_dat : ' '
                }
    await super.appendRow(m)   // llama a la clase base        
   }
@@ -96,7 +96,7 @@ export class grid_datos extends GRID {
       ref_dat : ' ',
       val_dat : ' ',
       sou_dat : ' ',
-      vvu_dat : ' '
+      vue_dat : ' '
        }
 
     m.con_dat = 11

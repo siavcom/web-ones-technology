@@ -20,7 +20,7 @@ export class exp_ind extends COLUMN {
         this.textLabel = 'Expresión del indice'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_ind.exp_ind'
-        this.prop.ToolTipText ='Expresión del indice'
+        this.prop.ToolTipText ='Expresión del indice. Si es principal debe ser Variable VUE'
         this.prop.Placeholder = "Expresión del indice"
 
         this.style.flexBasis = '30%' /* width/height  - initial value: auto */

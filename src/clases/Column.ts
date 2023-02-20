@@ -21,6 +21,7 @@ export class COLUMN extends COMPONENT {
 
   Order = 1
   BaseClass = 'Column'
+  textLabel=''
   constructor() {
     super()
     this.prop.Capture = true;

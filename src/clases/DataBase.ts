@@ -581,10 +581,10 @@ export class VFPDB {
     //  Select Viejo.* from Now.${alias} Nuevo \
     //  LEFT OUTER JOIN Last.${alias} Viejo using recno ${where}`))
 
-    const datos = await this.localAlaSql(`SELECT * FROM Now.${alias} ${where}`)
-    console.log('tableUpdate lee datos Now', datos)
+    const dat_act = await this.localAlaSql(`SELECT * FROM Now.${alias} ${where}`)
+    console.log('tableUpdate lee datos Now', dat_act)
 
-    const dat_act = datos
+    //const dat_act = datos
     // console.log('DataBase definicion '+tab_man,this.View[tab_man].val_def)
     const val_def = this.View[tab_man].val_def // estructura de campos
 
@@ -619,7 +619,9 @@ export class VFPDB {
         const datos = await this.localAlaSql(ins_sql)
         // console.log('tableUpdate select Now ',ins_sql,datos)
 
-        if (datos.length > 0) { old_dat = datos[0] } else {
+        if (datos.length > 0) { 
+          old_dat = datos[0] }
+           else {
           console.error('tableUpdate error recno ', row, dat_act[row].recno, await this.localAlaSql(` SELECT * FROM Last.${alias} `))
           return false
         }
@@ -627,7 +629,9 @@ export class VFPDB {
 
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
       const m = {} // valiables en memoria
-      for (const campo in dat_act[row]) { //  recorremos todos los campos del registro  actualizar
+      //  recorremos todos los campos del registro  actualizar
+      for (const campo in dat_act[row]) { 
+         console.log('DataBAse campo=',campo)
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
         switch (typeof dat_act[row][campo]) {
