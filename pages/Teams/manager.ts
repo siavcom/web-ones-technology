@@ -24,8 +24,8 @@ export class manager extends COMPONENT {
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'Index1_Team.manager'
-        this.prop.Placeholder = ''
-        this.prop.ToolTipText =''
+        this.prop.Placeholder = 'Usuario administrador del equipo'
+        this.prop.ToolTipText ='Administrador el equipo'
         this.prop.MaxLength=32
         this.prop.Min="0"
         this.prop.Max="999"

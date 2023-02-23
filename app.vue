@@ -129,10 +129,10 @@
     </div>
 
     <div class="mainForm">
-      <!--NuxtLayout-->
+      <NuxtLayout name='header'/>
 
       <NuxtPage @updateStatus="updateStatus" @updateIsOpen="updateIsOpen" />
-      <!--/NuxtLayout-->
+      <NuxtLayout name='footer'/>
 
     </div>
   </div>
@@ -529,7 +529,7 @@ const obtMenu = (sw_ini?: boolean) => {
       name: 'SQL diccionary',
       tooltip: 'Setting',
       icon: 'svg/bx-cog.svg',
-      path: { path: '/come9101' },
+      path: { path: '/SqlDictionary' },
       target: '', //'_blank',
       type: 'P',
       system: ''

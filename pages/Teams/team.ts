@@ -20,11 +20,11 @@ export class team extends COMPONENT {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Equipo'
+        this.prop.textLabel = 'Nombre del Equipo'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'Index1_Team.team'
-        this.prop.Placeholder = ''
+        this.prop.Placeholder = 'Nombre corto'
         this.prop.ToolTipText =''
         this.prop.MaxLength=12
         this.prop.Min="0"

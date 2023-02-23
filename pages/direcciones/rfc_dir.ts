@@ -30,6 +30,8 @@ export class rfc_dir extends COMPONENT {
         this.prop.Capture=true
         this.prop.updateKey=true
         this.prop.TabIndex= 1
+        this.prop.componentStyle.textTransform='uppercase'
+
         
         // this.RecordSource="" oJo
 

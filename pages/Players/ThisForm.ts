@@ -4,7 +4,7 @@
 // Class : Players
 // Description : Capture Form 
 // Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2023-02-17
+// Creation : 2023-02-20
 // Update Date  : 
 /////////////////////////////////////////////
 
@@ -18,6 +18,7 @@ import {name } from "./name"
 import {nickname } from "./nickname" 
 import {jerseyno } from "./jerseyno" 
 import {positionname } from "./positionname" 
+import {birthday } from "./birthday" 
 
 
 
@@ -40,6 +41,7 @@ export class THISFORM extends captureForm {
    public nickname = new nickname() 
    public jerseyno = new jerseyno() 
    public positionname = new positionname() 
+   public birthday = new birthday() 
  
   
   constructor() {
@@ -59,12 +61,12 @@ export class THISFORM extends captureForm {
     this.style.fontSize = "13px" 
     this.style.position = "center"
     this.style.backgroundImage = "/img/Logo_Empresa.bmp"
-  //  this.grid=[<<grid>>]
+    this.grid=['']
    
 
   }
 async init(){
-  // <<init>>
+   
 
 }
 

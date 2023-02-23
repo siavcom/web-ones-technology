@@ -73,7 +73,7 @@ export class COMPONENT {
     MaxLength: 256,
     componentStyle: {
       background: "white",
-      color: "#b94295",
+      color: "black",
       width: "auto",
       height: "auto",
       MaxHeigth: 'auto',
@@ -81,7 +81,7 @@ export class COMPONENT {
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: "left",
-
+      textTransform: "none"
     },
 
   }

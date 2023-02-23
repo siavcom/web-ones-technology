@@ -6,11 +6,11 @@
         "path": { "name": "Menu" }
     },
 
-    "19Zapopan": {
-        "url": "http://176.16.200.20:38080/",
-        "nem_emp": "Demo 19 Zapopan ",
-        "nom_sis": "tomaKms",
-        "path" : { "name": "tomaKms" }
+    "condominos": {
+        "url": "http://187.188.142.107:38080/",
+        "nem_emp": "Condominos SC ",
+        "nom_sis": "menu",
+        "path" : { "name": "Menu" }
 
     },
     "Demo": {

@@ -22,6 +22,8 @@ export class cam_vis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_vis.cam_vis'
         this.prop.ToolTipText ='Campos que contiene'
         this.prop.Placeholder = "Campos que contiene"
+        this.prop.componentStyle.textTransform='lowercase'
+
 
         this.style.width='200px'
     }

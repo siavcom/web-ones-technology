@@ -17,13 +17,14 @@ export class PAS_USU extends COMPONENT {
    super()
     //    this.Parent=Parent.value
     this.prop.BaseClass='editText'
-    this.prop.textLabel = "Contraseña";
-    this.prop.Type = "password";
-    this.prop.Capture = false;
-    this.prop.Sw_val = false;
+    this.prop.textLabel = "Contraseña"
+    this.prop.Type = "password"
+    this.prop.Capture = false
+    this.prop.Sw_val = false
     this.prop.Status = 'A'
     this.num_int=0
-    this.style.width = '200px';  
+    //this.style.width = '200px'
+    this.prop.componentStyle.width= "130px"
   
   }
   public valid = async () => {

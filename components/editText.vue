@@ -8,27 +8,39 @@
     :style="{ 'width': 'auto' }"
        
     -->
-      <div class="component" :style="prop.componentStyle">
-        <input v-if="prop.Type == 'number'" class="number" type="text" ref="Ref" :disabled="prop.Disabled"
+      <div class="component" >
+        <input v-if="prop.Type == 'number'" class="number"
+           type="text" 
+           :style="prop.componentStyle"
+           ref="Ref" :disabled="prop.Disabled"
           :min="prop.Min" :max="prop.Max" :value.number="numberStr" :readonly="prop.ReadOnly"
           :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
           @focus="onFocus" @input="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
         <!--spinner" -->
-        <input v-else-if="prop.Type == 'spinner'" class="number" type="number" ref="Ref" :min="prop.Min" :max="prop.Max"
+        <input v-else-if="prop.Type == 'spinner'" class="number"
+          type="number"
+          :style="prop.componentStyle" ref="Ref" :min="prop.Min" :max="prop.Max"
           :disabled="prop.Disabled" :value="numberStr" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
           :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur" @focus="onFocus" @input="onInput">
         <!--textArea" -->
-        <textarea v-else-if="prop.Type == 'textArea'" class="text" ref="Ref" v-model.trim="Value"
+        <textarea v-else-if="prop.Type == 'textArea'" class="text"
+          :style="prop.componentStyle"
+          ref="Ref" v-model.trim="Value"
           :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
           :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength" @keypress="keyPress($event)"
           @focusout="focusOut" @focus="onFocus"></textarea>
         <!--fecha  -->
-        <input v-else-if="prop.Type == 'date'" class="date" ref="Ref" :type="prop.Type" v-model.trim="Value"
+        <input v-else-if="prop.Type == 'date'" class="date"
+         :style="prop.componentStyle"
+          ref="Ref" :type="prop.Type" v-model.trim="Value"
           :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
           @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
         <!--checkBox-->
 
-        <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" ref="Ref" :value="checkValue"
+        <input v-else-if="prop.Type == 'checkBox'" class="checkBox"
+          :type="prop.Type"
+          :style="prop.componentStyle"
+           ref="Ref" :value="checkValue"
           :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex"
           @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
 
@@ -36,7 +48,9 @@
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-        <input v-else class="text" ref="Ref" v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled"
+        <input v-else class="text" ref="Ref" 
+          :style="prop.componentStyle" 
+          v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled"
           :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
           :type="prop.Type" 
            v-on:keyup.enter="$event.target.nextElementSibling.focus()"
