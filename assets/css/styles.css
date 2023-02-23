@@ -36,7 +36,7 @@ div.divi{
   position: v-bind("props.posicion.position");
   left: v-bind("props.posicion.left");
   top : v-bind("props.posicion.top");
-  z-index: v-bind("props.style.zIndex");
+  /*z-index: v-bind("props.style.zIndex");*/
   text-align: left;
   margin :auto;
   height:auto;
@@ -100,7 +100,8 @@ input.text {
   border-radius: 5px;
   text-align: left;
   width: 96%;
-  margin-top: 2
+  margin-top: 2;
+  z-index: 1;
   /*min-width: 50%; */
 }
 
@@ -131,6 +132,7 @@ input.checkBox {
   text-align: left;
   width: 96%;
   accent-color: rgb(163, 193, 168);
+  z-index: 1;
   
   /*min-width: 50%; */
 }
@@ -144,6 +146,7 @@ input.date {
   text-align: left;
   width: 96%;
   min-width: max-content;
+  z-index: 1;
  
 }
 
@@ -153,6 +156,7 @@ input[ class="number"] {
   border-radius: 5px;
   text-align: right;
   width: 96%;
+  z-index: 1;
   }
 
 
@@ -173,7 +177,7 @@ input[ class="number"] {
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
-  zIndex: 2;
+  z-index: 2;
 
   /* Position the tooltip text */
   position: absolute;
@@ -285,7 +289,6 @@ input[ class="number"] {
 
 
 /* Erorr text */
-/*.error .errorText { */
 .mensajes .errorText {
   
   /* height: fit-content; */
@@ -299,13 +302,12 @@ input[ class="number"] {
 
   /* Position */
   position : absolute;
+  bottom: 100%;
+  border-style: double;
   z-index: 2;
    
   /* arrow*/ 
-  content:"";
-  /* bottom: 110%;
-  top: -100%; */
-  bottom: 3px;
+  content:" ";
   left: 7px;
   margin-left: -5px;
   border-width: 0 px; 

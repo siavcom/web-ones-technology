@@ -32,8 +32,15 @@ export class COLUMN extends COMPONENT {
 //    this.componente.BaseClass = 'Component'
 //    this.componente.prop.Name = 'component'
   }
+  async init(){
+    
+    this.prop.componentStyle.width='95%'
+    //this.prop.componentStyle.maxWidth=this.style.width
 
-async valid(){
+  }
+
+
+  async valid(){
   this.prop.Valid=true
 
     if (this.prop.updateKey) {

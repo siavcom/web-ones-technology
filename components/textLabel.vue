@@ -1,5 +1,5 @@
 <template>
-  <div v-if="prop.Visible" class="divi" :style="style">
+  <div v-if="prop.Visible" class="divi" :style="prop.Style">
     <div class="mensajes">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
       <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->

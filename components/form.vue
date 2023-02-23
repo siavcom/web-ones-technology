@@ -20,8 +20,7 @@
         <slot name="header">
 
           <!--template v-slot:header-->
-          <header class="header" float="left">
-            <img class="logoVue" src="@/assets/logo.png" contain />
+          <h2 class="header" float="left">
             <img class="logoEmp" src="/Iconos/Logo_Empresa.png" contain />
             <div class="nemPge">
               <label text-align="left">{{ ThisForm.db.nem_pge }}</label>
@@ -32,7 +31,7 @@
             <div class="titFor">
               <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
             </div>
-          </header>
+          </h2>
           <!--transition-group> --> 
           <div v-for="(compHeader) in ThisForm.header">
 
@@ -60,7 +59,7 @@
 
             <!-- @focus.capture -->
             <TransitionGroup name='detailForm'>
-            <div v-for="(compMain) in ThisForm.main" :key="compMain">
+            <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
               <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                 v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                 v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
@@ -90,7 +89,7 @@
           </div>
           <slot name="footer">
 
-            <div v-for="(compFooter) in ThisForm.footer">
+            <div v-for="(compFooter) in ThisForm.footer" style="zIndex:0">
               <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
               <component :is="impComp(ThisForm[compFooter].prop.BaseClass)" 
                 v-bind:Component="ref(ThisForm[compFooter])"

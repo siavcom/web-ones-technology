@@ -164,7 +164,7 @@ const props = withDefaults(defineProps<Props>(), {
     textAlign: "left",
     borderColor: "#000a01",
     borderWidth: "1px",
-    zIndex: 2,
+    zIndex: 1,
 
     // inputWidth: "inherit"
   },

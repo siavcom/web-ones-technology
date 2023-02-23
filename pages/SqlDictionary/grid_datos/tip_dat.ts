@@ -32,7 +32,8 @@ export class tip_dat extends COLUMN {
         this.prop.BoundColumn = 2;
         this.prop.ColumnWidths='80%,10%'        
         this.style.width = '100px' /* width/height  - initial value: auto */
-    }
+        this.style.zIndex = 2
+      }
 
     ////////////////////////////////// 
     // Evento When

@@ -76,8 +76,8 @@ export class COMPONENT {
       color: "black",
       width: "auto",
       height: "auto",
-      MaxHeigth: 'auto',
-      MaxWidth: 'auto',
+      maxHeigth: 'auto',
+      maxWidth: 'auto',
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: "left",
@@ -108,6 +108,7 @@ export class COMPONENT {
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
+    
 
     textAlign: "left",
     position: "relative",

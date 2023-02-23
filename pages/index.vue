@@ -1,15 +1,12 @@
 <template>
   <div class="Main">
-    <img class="logoVue" src="@/assets/logo.png" contain>
+    <!--img class="logoVue" src="@/assets/logo.png" contain-->
     <div>
       AMAZING WEB SOFTWARE BY
     </div>
     <div class="imagen" />
     <div>
       <span>Made with</span>
-    </div>
-    <div>
-      <span>WEB-ONES technologies</span>
     </div>
     <div>
       VUE front-end Framework and SQL Db.

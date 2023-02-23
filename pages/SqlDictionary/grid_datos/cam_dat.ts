@@ -25,7 +25,7 @@ export class cam_dat extends COLUMN {
         this.prop.componentStyle.textTransform='lowercase'
         this.style.flexBasis = '10%' /* width/height  - initial value: auto */
         this.style.width='100px'
-       
+      
         
     }
 
