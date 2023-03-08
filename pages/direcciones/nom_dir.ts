@@ -26,14 +26,14 @@ export class nom_dir extends COMPONENT {
         this.prop.ControlSource = 'lla1_dir.nom_dir'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
-        this.prop.MaxLength=254
+        this.prop.MaxLength=64
         this.prop.Min="0"
         this.prop.Max="999"
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
         this.prop.TabIndex= 3
-        
+        this.style.width='100px'        
         // this.RecordSource="" oJo
 
         ///////////////////////// 

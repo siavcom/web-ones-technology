@@ -20,10 +20,9 @@
         <slot name="header">
 
           <!--template v-slot:header-->
-          <h2 class="header" float="left">
-            <img class="logoEmp" src="/Iconos/Logo_Empresa.png" contain />
+          <h2 class="header2" float="left">
             <div class="nemPge">
-              <label text-align="left">{{ ThisForm.db.nem_pge }}</label>
+              <label text-align="left">{{ ThisForm.prop.nem_pge }}</label>
             </div>
             <div class="fpoPge">
               <label type="date" text-align="center">{{ ThisForm.prop.fpo_pge + ' ' + ThisForm.prop.Name }}</label>
@@ -173,6 +172,8 @@ import { INIT } from "@/classes/Init";
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
+import browse from "@/components/browse.vue"
+
 
 import textLabel from "@/components/textLabel.vue"
 import grid from "@/components/grid.vue"
@@ -626,6 +627,13 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+
+    case 'browse': {
+      return browse
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
 
 
 

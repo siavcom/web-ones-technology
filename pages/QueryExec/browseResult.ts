@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : jerseyno
-// Description : No Jersey/Playera
+// Class : team
+// Description : Equipo
 // Author : El Fer Blocks
 // Creation : 2023-02-17
 // Update Date  : 
@@ -13,25 +13,22 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class jerseyno extends COMPONENT {
+export class browseResult extends COMPONENT {
 
     constructor() {
         super()
-   
-       // const nom_ind=renglon[i]['nom_ind']
-         
-        this.prop.textLabel = 'No Jersey/Playera'
-        this.prop.Type ='numeric'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_Players.jerseyno'
-        this.prop.Placeholder = ''
-        this.prop.ToolTipText =''
-        this.prop.MaxLength=2
-        this.prop.Min="0"
-        this.prop.Max="999"
-        this.prop.Decimals=0
-        this.prop.Capture=true
-        this.prop.updateKey=false
+        
+ //       this.prop.textLabel = 'Resultado'
+        //this.prop.Type ='textArea'
+        this.prop.BaseClass = 'browse'
+        this.prop.RowSource = ''
+        //this.prop.MaxLength=12
+        //this.prop.Min="0"
+        //this.prop.Max="999"
+        //this.prop.Decimals=0
+        // this.prop.Capture=true
+        //this.prop.Visible=false
+        //this.prop.updateKey=true
         
         
         // this.RecordSource="" oJo
@@ -120,21 +117,7 @@ export class jerseyno extends COMPONENT {
 
     }
 
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-      if (this.prop.ReadOnly) return
-      if (this.prop.updateKey){ // Si es llave de actualizacion
-        await this.Form.refreshComponent(false)
-        }
-
-        return !this.prop.ReadOnly
-        //   await super.when() no hace falta el super porque en focus.capture lo hace 
-    }
-    
-
+   
     ////////////////////////////////// 
     // event click 
     ///////////////////////////////////

@@ -77,10 +77,10 @@ export class lon_dat extends COLUMN {
 
         if (this.Parent.tip_dat.prop.Value == 'C') {
             if (this.prop.Value > 8000) {
-                this.prop.ErrorMessage = 'Maximo valor permitido 10485760'
+                this.prop.ErrorMessage = 'Maximo valor permitido 8000'
                 this.prop.Valid = false
             }
-            if (this.prop.Value > 8000) {
+            if (this.prop.Value =0) {
                 this.prop.ErrorMessage = 'El valor debe ser mayor a 0'
                 this.prop.Valid = false
             }

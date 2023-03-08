@@ -1099,7 +1099,7 @@ sidebar li a .links_options {
 
 .mainForm {
   position: relative;
-  display: flex;
+  display: block;
   margin-left: v-bind("mainFormLeft");
   transition: all 1.5s ease;
 }

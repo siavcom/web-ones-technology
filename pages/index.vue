@@ -6,12 +6,22 @@
     </div>
     <div class="imagen" />
     <div>
-      <span>Made with</span>
-    </div>
-    <div>
-      VUE front-end Framework and SQL Db.
+      <span>Made with </span>
     </div>
 
+    <div>
+      Web-Ones Technology Framework developed with :
+     </div>
+
+    <div>
+      VUE 3/NUXT 3 front-end Framework and
+    </div>
+    <div>
+      NODE/EXPRESS back-end and
+    </div>
+    <div>
+      Postres or MSSQL data base
+    </div>
     <div>
       <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub </a>
     </div>

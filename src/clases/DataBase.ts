@@ -35,6 +35,7 @@ const session = Session()
 
 export class VFPDB {
   // propiedades de las clases
+  AlaSql= alasql
   name: string = 'VFPDB'
   url: string
   nom_emp: string
@@ -1050,7 +1051,12 @@ export class VFPDB {
            return respuesta
       }
 
-      this.View[alias] = {} // Generamos el nuevo alias
+      if (alias.toUpperCase() == 'JSON') {
+      const json = JSON.parse(respuesta);  ;  
+        return json
+   }
+
+   this.View[alias] = {} // Generamos el nuevo alias
       this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
       this.View[alias].data = {} // asignamos el valor del ultimo registro
       this.View[alias].recCount = 0 // Total de registros de la vista
@@ -2204,10 +2210,6 @@ return false;
   }
 
 
-
-
-
-
   /*
     ////////////////////////////////////////////////////
     // Instruccion sql base de datos local
@@ -2531,11 +2533,24 @@ return false;
   /// //////////////////////////////
   // portea la funcion alasql a VfpCursor
   /// //////////////////////////////
-  VfpCursor = async (query: String) => {
+  public VfpCursor = async (query: String) => {
     const data = await this.localAlaSql(query)
     // console.log('VfpCursor ==>', data)
     return data
   }
+
+/// /////////////////////////////////////////////////
+// porteo directo con alasql
+// query : Instruccion SQL
+/// //////////////////////////////////////
+   AlaSql_ant=(query: string)=> {
+      return alasql(query)
+  }
+
+
+
+
+
 
   async MessageBox(texto: string, tipo?: number, title?: string, timer?: number) {
     const { $MessageBox } = useNuxtApp()

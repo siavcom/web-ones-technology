@@ -49,7 +49,7 @@ export class THISFORM extends FORM {
     this.prop.textLabel = "Generador de Formas de mantenimiento ";
     this.prop.Status = 'A'
     this.style.width = "auto"
-    this.style.height = "920px"
+  
   }
   
   async init() {

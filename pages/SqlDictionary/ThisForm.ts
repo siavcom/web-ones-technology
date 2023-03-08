@@ -17,11 +17,6 @@ import { sis_sis } from "./sis_sis"
 //import { tip_men } from "./tip_men"
 import { tpr_prg } from "./tpr_prg"
 import { bt_aceptar } from "./bt_aceptar"
-//import { BT_GEN_MODEL } from "./bt_gen_model"
-//import { BT_GEN_TABLA } from "./bt_gen_tabla"
-//import { BT_GEN_VISTAS } from "./bt_gen_vistas"
-//import { BT_GEN_MENU } from "./bt_gen_menu"
-
 import { grid_datos } from "./grid_datos/grid_datos"
 import { grid_indices } from "./grid_indices/grid_indices"
 import { grid_vistas } from "./grid_vistas/grid_vistas"
@@ -37,13 +32,6 @@ export class THISFORM extends FORM {
   public nom_tab = new nom_tab()
   public tpr_prg = new tpr_prg()
   public sis_sis = new sis_sis()
-
-
-  //public btGenModel = new BT_GEN_MODEL()
-  //public btGenIndices = new BT_GEN_INDICES()
-  //public btGenTabla = new BT_GEN_TABLA()
-
-  //public btGenVistas = new BT_GEN_VISTAS()
   public bt_aceptar = new bt_aceptar()
 
   public grid_datos = new grid_datos()
@@ -55,13 +43,12 @@ export class THISFORM extends FORM {
   constructor() {
     super() // inicializa la clase base
     this.Development = false
-    this.prop.Name = "come9101"
+    this.prop.Name = "SqlDictionary"
     this.prop.Login = false
     this.prop.tag = ""
     this.prop.textLabel = "Mantenimiento al diccionario de datos"
     this.prop.nem_pge = "Killo Software"
     this.prop.fpo_pge = new Date().toISOString().substring(0, 10) //  Fecha actual de la computadora cliente
-    this.prop.log_emp = "/img/Logo_Empresa.png"
     this.prop.Status = "A"
 
     this.style.display = "inline-flex"

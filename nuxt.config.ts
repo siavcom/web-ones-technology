@@ -8,7 +8,9 @@ export default defineNuxtConfig({
       }
     }
   },
-
+  plugins:[
+  ],
+  
   typescript: { shim: false },
   css: ['@/assets/css/styles.css'],
   /*

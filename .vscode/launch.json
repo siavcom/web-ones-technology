@@ -7,7 +7,7 @@
         {
             "type": "firefox",
             "request": "attach",
-            "name": "Attach Firefox",
+            "name": "Attach Firefox ",
             "url": "http://176.16.200.20:3000",
             "webRoot": "${workspaceFolder}/"
         },
@@ -20,10 +20,18 @@
             "type": "firefox",
             "request": "launch",
             "reAttach": true,
-            "name": "Firefox + Server",
+            "name": "Firefox (dev)",
             "url": "http://176.16.200.20:3000",
             "webRoot": "${workspaceFolder}/",
             "pathMappings": [
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/pages",
+                    "path": "${workspaceFolder}/pages"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/pages/Login/bt_aceptar.ts",
+                    "path": "${workspaceFolder}/pages/QueryExec/bt_aceptar.ts"
+                },
                 {
                     "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/pages/SqlDictionary/grid_datos",
                     "path": "${workspaceFolder}/pages/SqlDictionary/grid_datos"
