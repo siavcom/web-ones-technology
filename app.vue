@@ -534,6 +534,19 @@ const obtMenu = (sw_ini?: boolean) => {
       type: 'P',
       system: ''
     })
+    Items.push(
+
+    {
+      // link: 'http://siavcom.com.mx:38000/Login',
+      name: 'SQL Query',
+      tooltip: 'SQL Query',
+      icon: 'svg/sql-query.svg',
+      path: { path: '/QueryExec' },
+      type: 'P',
+      system: ''
+    })
+
+
   //menu = JSON.parse(session.menu)// lee menu de programas
   menu = session.menu// lee menu de programas
   // console.log('Menu completo',menu)

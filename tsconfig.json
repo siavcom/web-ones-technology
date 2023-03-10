@@ -6,4 +6,5 @@
     "@nuxt/types",
     "@nuxtjs/axios"
   ]
+ 
 }

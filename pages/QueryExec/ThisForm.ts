@@ -40,7 +40,7 @@ export class THISFORM extends FORM {
 
     this.Development = false
     this.prop.Name = 'browseResult'
-    this.prop.textLabel = "Query SQL"
+    this.prop.textLabel = "SQL Query"
     this.prop.Status = 'A'
     this.style.display = "flex"
     this.style.background = "white"
@@ -48,7 +48,10 @@ export class THISFORM extends FORM {
     this.style.fontSize = "13px" 
     this.style.position = "center"
     this.style.backgroundImage = "/img/Logo_Empresa.bmp"
-   // this.grid=[<<grid>>]
+    //this.style.height='400px'
+    //this.style.maxHeight='400px'
+
+    // this.grid=[<<grid>>]
    
 
   }

@@ -22,6 +22,7 @@ export class browseResult extends COMPONENT {
         //this.prop.Type ='textArea'
         this.prop.BaseClass = 'browse'
         this.prop.RowSource = ''
+        this.prop.Visible= false
         //this.prop.MaxLength=12
         //this.prop.Min="0"
         //this.prop.Max="999"
