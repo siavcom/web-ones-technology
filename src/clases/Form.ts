@@ -20,16 +20,13 @@ import { VFPDB } from "@/classes/DataBase"
 
 export class FORM extends COMPONENT {
   //Dom: any = getCurrentInstance();
-  Development = false
-  sw_ini = false
-  Parent = {} //this.Dom.ctx; // Contexto
-  Form = {} //this.Parent.ThisForm // Thisform
+  //Development = false
+  //sw_ini = false
+  //Parent = {} //this.Dom.ctx; // Contexto
+  //Form = {} //this.Parent.ThisForm // Thisform
 
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
-  header = []
-  main : [] = []
-  footer : [] = []
   params = []
   public db = new VFPDB();  // conexion a la base de datos
   //messageBox = MessageBox
@@ -107,7 +104,7 @@ export class FORM extends COMPONENT {
   ////////////////////////////////////////////////
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
-  public async Init() {  //Form est?: any
+  public async Init_ant() {  //Form est?: any
     this.init() // Corre el init de la forma
     let  TabIndex= 1
     let maxTabIndex =1
@@ -127,11 +124,12 @@ export class FORM extends COMPONENT {
         this[componente].prop &&
         this[componente].InitForm) {
         const name = this[componente].prop.Name
-
-        if (this[componente].prop && this[componente].prop.Position == 'header')
+        const Position= this[componente].prop.Position.trim().toLowerCase()
+        
+        if (Position == 'header')
           header.push(name)
 
-        if (this[componente].prop && this[componente].prop.Position == 'main'){
+        if (Position == 'main'){
           main.push(name)
           if (this[componente].prop.TabIndex==0) {
             this[componente].prop.TabIndex=TabIndex
@@ -142,27 +140,28 @@ export class FORM extends COMPONENT {
 
           if (maxTabIndex<TabIndex)
               maxTabIndex=TabIndex
-
         }
-        if (this[componente].prop && this[componente].prop.Position == 'footer')
+
+        if (Position == 'footer')
           footer.push(name)
       
-          elements.push({
+        elements.push({
             Name: this[componente].prop.Name,
-            Id: this[componente].prop.Order
+            Id: this[componente].prop.Order,
+            Position : Position
           })
 
         this[componente]['Parent'] = this // ref(this)
         this[componente]['InitForm'](this)  // Corre el InitForm en todos los componentes
-        if (this[componente]['init']) await this[componente]['init'] // Init del componente
+        if (this[componente]['init'])
+          await this[componente]['init'] // Init del componente
         id++
       }
     }
 
-
+    this.elements = elements
     this.header = header
     this.main = main
-    this.elements = elements
     TabIndex=maxTabIndex  // asignamos el TabIndex maximo de elementos
     for (let i=footer.length-1;i>=0;i--){
         //console.log('Form footer ',footer[i])
@@ -173,14 +172,13 @@ export class FORM extends COMPONENT {
 
 
     this.footer = footer.reverse()
+    this.prop.Status = 'A'
+
 
     console.log('Form init header',this.header)
     console.log('Form init main',this.main)
     console.log('Form init footer',this.footer)
     console.log('Form init elements',this.elements)
-
-
-
   }
 
 

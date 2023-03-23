@@ -5,8 +5,10 @@
       <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly" :tabindex="prop.TabIndex"
         
         @focusout="focusOut" @focus="onFocus" >
-        <img class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly" 
-         
+        <img class="img" :src="prop.Image" 
+            :alt="prop.Value" 
+            :disabled="prop.ReadOnly" 
+            
         />
         <label v-if="prop.Image.length > 0" :style="{'word-wrap':'break-word','font-size':style.fontSize,'color':style.color }"
            :disabled="prop.ReadOnly"
@@ -31,11 +33,11 @@
 
 
 */
-import { 
+/*import { 
    //toRefs,
    //defineProps,
    ref, watch } from "vue";
-
+*/
 const props = defineProps<{
   //Value: string;
   prop: {
@@ -59,7 +61,16 @@ const props = defineProps<{
     Visible: boolean;
     TabIndex: number;
     BaseClass: "imgButton";
-    Image: ""
+    Image: "";
+
+    componentStyle: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "30px";
+      height: "30px";
+    };
+
   };
 
   style: {

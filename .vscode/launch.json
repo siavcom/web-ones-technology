@@ -5,13 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "firefox",
-            "request": "attach",
-            "name": "Attach Firefox ",
-            "url": "http://176.16.200.20:3000",
-            "webRoot": "${workspaceFolder}/"
-        },
-        {
             "runtimeArgs": [
                 "--preserve-symlinks"
             ]
@@ -51,13 +44,6 @@
             "request": "launch",
             "type": "chrome",
             "url": "http://176.16.200.20:3000",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "type": "firefox",
-            "request": "launch",
-            "name": "vuejs: firefox",
-            "url": "http://176.16.200.20:3000/",
             "webRoot": "${workspaceFolder}"
         },
         {

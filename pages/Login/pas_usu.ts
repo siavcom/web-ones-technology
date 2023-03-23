@@ -6,9 +6,8 @@
 /////////////////////////////////////////////
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {COMPONENT} from '@/classes/Component'
-export class PAS_USU extends COMPONENT {
 
-  name='pas_usu'
+export class pas_usu extends COMPONENT {
   num_int: number;
 //  Instance: any = getCurrentInstance();
 //  OpenDb = new OpenDb("siavcom.com.mx:58000/", "Demo", "sa", "*****")
@@ -39,7 +38,7 @@ export class PAS_USU extends COMPONENT {
         ThisForm.pas_usu.prop.ErrorMessage = 'Digite contraseña'
         return false    
       }
-*/    
+*/  console.log('pas_usu.....This',this)  
     return this.Form.bt_aceptar.Click()
 
   }; // fin metodo valid

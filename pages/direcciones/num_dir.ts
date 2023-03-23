@@ -32,7 +32,7 @@ export class num_dir extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=true
-        this.prop.TabIndex= 2
+        //this.prop.TabIndex= 2
         this.style.width='50px'
         
         // this.RecordSource="" oJo

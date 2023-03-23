@@ -6,22 +6,22 @@
 /////////////////////////////////////////////
 /* e_slint-disable @typescript-eslint/no-non-null-assertion */
 //import { getCurrentInstance } from "vue";
-import { EMP_EMP } from './emp_emp'
-import { LOG_USU } from './log_usu'
-import { PAS_USU } from './pas_usu'
-import { BT_ACEPTAR } from './bt_aceptar'
-import {FORM} from "@/classes/Form"
+import {COMPONENT} from "@/classes/Component"
+import { emp_emp } from './emp_emp'
+import { log_usu } from './log_usu'
+import { pas_usu } from './pas_usu'
+import { bt_aceptar } from './bt_aceptar'
 import { Session } from '@/stores/currentSession'
 const session = Session()
+ 
+export class form extends COMPONENT {
+  public emp_emp=new emp_emp()
+  public log_usu=new log_usu()
+  public pas_usu=new pas_usu()
+  public bt_aceptar=new bt_aceptar()
 
-export class form extends FORM {
-  public emp_emp=new EMP_EMP()
-  public log_usu=new LOG_USU()
-  public pas_usu=new PAS_USU()
-  public bt_aceptar=new BT_ACEPTAR()
-
-  name = 'login'
-  classBase = 'form de VFP'
+  Name = 'login'
+ // classBase = 'form de VFP'
 
   /////////////////////////////////////////////////////////////////////
   // init
@@ -29,11 +29,10 @@ export class form extends FORM {
   /////////////////////////////////////////////////////////////////
   public async init() {
 
-    console.log('login init antes',session.id_con,session.nom_emp,session.user)
+   // console.log('login init antes',session.id_con,session.nom_emp,session.user)
     this.emp_emp.prop.Value=session.nom_emp
     this.log_usu.prop.Value=session.user
-    console.log('login init ',this.emp_emp.prop.Value,this.log_usu.prop.Value)
+    console.log('login init emp_emp,log_usu',this.emp_emp.prop.Value,this.log_usu.prop.Value)
   }
-
 
 }

@@ -32,10 +32,9 @@
             </div>
           </h2>
           <!--transition-group> --> 
-          <div v-for="(compHeader) in ThisForm.header">
+          <div v-for="(compHeader) in ThisForm.header" :key="compHeader" >
 
-            <component v-if="ThisForm[compHeader].prop && ThisForm[compHeader].prop.Position == 'header'"
-              :is="impComp(ThisForm[compHeader].prop.BaseClass)" v-bind:Component="ref(ThisForm[compHeader])"
+            <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')" v-bind:Component="ref(ThisForm[compHeader])"
               v-model:Value="ThisForm[compHeader].prop.Value" v-model:Status="ThisForm[compHeader].prop.Status"
               v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
               v-model:Focus="ThisForm[compHeader].Focus" v-model:Recno="ThisForm[compHeader].Recno"
@@ -59,7 +58,7 @@
             <!-- @focus.capture -->
             <TransitionGroup name='detailForm'>
             <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
-              <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
+              <component :is="impComp(ThisForm[compMain].prop.BaseClass,'main')" v-bind:Component="ref(ThisForm[compMain])"
                 v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                 v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
                 v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
@@ -90,7 +89,7 @@
 
             <div v-for="(compFooter) in ThisForm.footer" style="zIndex:0">
               <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
-              <component :is="impComp(ThisForm[compFooter].prop.BaseClass)" 
+              <component :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')" 
                 v-bind:Component="ref(ThisForm[compFooter])"
                 v-model:Value="ThisForm[compFooter].prop.Value" 
                 v-model:Status="ThisForm[compFooter].prop.Status"
@@ -172,11 +171,11 @@ import { INIT } from "@/classes/Init";
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
-import browse from "@/components/browse.vue"
-
-
 import textLabel from "@/components/textLabel.vue"
 import grid from "@/components/grid.vue"
+import browse from "@/components/browse.vue"
+import container from "@/components/container.vue"
+
 // import grid from "/components/GridScrollStatic.vue"
 // import grid from "/components/gridVirtualList.vue"  Dejo de utilizar el item mode
 //import grid from "/components/GridScrollInfinite.vue"
@@ -207,13 +206,6 @@ const props = defineProps<{
 }>();
 
 const ThisForm = reactive(new props.THISFORM);
-//var num_eve = 0
-//var eventos=[]
-
-//const refe = reactive({})
-
-//const estatus = reactive({}); //estatus de proceso de cada componente actualizable de la base de datos
-//const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 
 
 
@@ -240,6 +232,8 @@ function sleep(sleepDuration: number) {
 ////////////////////////////////////////////
 // Metodos propios
 ////////////////////////////////////////////
+
+
 /////////////////////////////////////////////////////
 // Ejecuta los eventos que hay en la pila de eventos
 async function eje_eve(numero: number) {
@@ -465,14 +459,6 @@ watch(
         if (evento > '') {
           await waitEval(evento)
 
-
-
-
-
-
-
-
-
         }
       }
       // eje_eve(2)
@@ -530,7 +516,13 @@ const Init = new INIT();  // solo se puso para evitar de errores que tenia
 
 const init = async () => {
   try {
-    console.log('Comenzamos====>', ThisForm.prop.Name)
+
+    console.log('This Form init elements===>', ThisForm.elements)
+
+    console.log('This Form init header===>', ThisForm.header)
+    console.log('This Form init main===>', ThisForm.main)
+    console.log('This Form init footer===>',ThisForm.footer)
+
     await Init.Init()
       .then(() => {
       })
@@ -571,7 +563,7 @@ const init = async () => {
   }
 
 }
-
+console.log( 'This Form',ThisForm)
 init()
 
 //var result = x === true ? "passed" : "failed";
@@ -604,14 +596,26 @@ else return 0}
 //////////////////////////////////////
 //  Importa componentes dinamicos
 ////////////////////////////////////// 
-const impComp = ((name: string) => {
-  switch (name) {
-    case 'editText': {
+const impComp = ((name: string,pos:string) => {
+  console.log('Form impComp  "'+name+'"',pos)
+ 
+   
+/*
+  if (pos=='header')
+      console.log('Form impComp header ',ThisForm.header)
+  if (pos=='main')
+      console.log('Form impComp main ',ThisForm.main)
+  if (pos=='footer')
+        console.log('Form impComp footer 'ThisForm.footer)
+*/
+
+  switch (name.toLowerCase().trim()) {
+    case 'edittext': {
       //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       return editText
       break;
     }
-    case 'comboBox': {
+    case 'combobox': {
       return comboBox
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
@@ -622,7 +626,8 @@ const impComp = ((name: string) => {
       break;
     }
 
-    case 'imgButton': {
+    case 'imgbutton': {
+      console.log('Entre a case imgButton')
       return imgButton
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
@@ -633,10 +638,18 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+    case 'textlabel': {
+      return textLabel
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break
+    }
+    case 'container': {
+      console.log('Form impComp Start container')
+      return container
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
 
-
-
-
+      break
+    }
     default: {
       return editText
       //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))

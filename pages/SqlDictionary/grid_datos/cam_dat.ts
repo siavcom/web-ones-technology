@@ -33,8 +33,8 @@ export class cam_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     async when() { 
-        let Value=this.prop.Value
-        Value=Value.trim() 
+        const Value=this.prop.Value.trim().toUpperCase()
+        
         if (Value=='USU_USU' || Value=='USU_CRE' ||
             Value=='TIE_UAC' || Value=='TIE_CRE' ||
             Value=='TIMESTAMP' || Value=='KEY_PRI') this.prop.ReadOnly=true
@@ -42,7 +42,6 @@ export class cam_dat extends COLUMN {
        
  
       return !this.prop.ReadOnly
-         //   await super.when() no hace falta el super porque en focus.capture lo hace 
     }
 
     async valid() {

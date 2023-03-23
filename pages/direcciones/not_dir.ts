@@ -32,7 +32,7 @@ export class not_dir extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
-        this.prop.TabIndex= 11
+        //this.prop.TabIndex= 11
         
         // this.RecordSource="" oJo
 

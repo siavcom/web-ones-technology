@@ -2191,6 +2191,7 @@ return false;
   public async localAlaSql(ins_sql: string, datos?: any) {
 
     try {
+      console.log('DataBase localAlaSql=====>>',ins_sql)
       let resultado: []
       if (!datos)
         resultado = await alasql(ins_sql)

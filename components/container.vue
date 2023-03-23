@@ -1,0 +1,612 @@
+<!--   
+&& ----------------------------------------------------------------------------------------------
+&&              Siavcom Software S. de R.L. de C.V.
+&& ----------------------------------------------------------------------------------------------
+&& Autor    	: Ing. Fernando Cuadras Angulo
+&& Sistema  	: Siavcom  							Version : 10.0  VUE
+&& Programa 	: Forma prinncipal   		Mnemo   : form.VUE
+&& Ult. mod.	: Fernando Cuadras  				Fecha   : 13/Dic/2022
+&& Evento		: 
+&& Objeto		: VUE
+&& Comentarios	: Genera la forma dinamicamente en base al THISFORM que se pasa del comeponente padre
+&& ----------------------------------------------------------------------------------------------
+-->
+<template>
+  <transition name='Container'>
+    <div class='container' :style="style">
+      <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
+
+      <!--template v-slot:header-->
+      <!--transition-group> -->
+      <div class='header'>
+        <div v-for="(compHeader) in This.header">
+
+          <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
+            :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
+            v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
+            v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
+            v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno"
+            v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
+            v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
+            v-bind:position="This[compHeader].position" @focusout="This.eventos.push('This.' + compHeader + '.valid()')"
+            @focus.capture="This.eventos.push('This.' + compHeader + '.when()')">
+          </component>
+        </div>
+      </div>
+      <div class='main'>
+        <TransitionGroup name='detailForm'>
+          <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
+            <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+            v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+            v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
+            v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno"
+              v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno" v-bind:prop="This[compMain].prop"
+              v-bind:style="This[compMain].style" v-bind:position="This[compMain].position" v-bind:db="ref(This.db)"
+              @focusout="This.eventos.push('This.' + compMain + '.valid()')"
+              @focus.capture="This.eventos.push('This.' + compMain + '.when()')"
+              @click="This.eventos.push('This.' + compMain + '.click()')"></component>
+          </div>
+        </TransitionGroup>
+      </div>
+      <!--/template-->
+      <!--template v-slot:footer
+                   src="/Iconos/BotonRojo.png"
+        This.prop.Status == 'A'
+        -->
+      <div class="footer">
+        <div v-show="This.prop.Status == 'A'">
+          <img src="/Iconos/BotonVerde.png" style="float:left" />
+        </div>
+        <div v-show="This.prop.Status != 'A'">
+          <img class='botonRojo' src="/Iconos/Stop_arrows.gif" style="float:left" />
+        </div>
+
+        <div v-for="(compFooter) in This.footer" style="zIndex:0">
+          <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"-->
+          <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
+            v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+            v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+            v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Registro="This[compFooter].Recno == null ? 0 :
+              This[compFooter].Recno" v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
+            v-bind:position="This[compFooter].position" v-bind:db="ref(This.db)"
+            @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
+            @focus.capture="This.eventos.push('This.' + compFooter + '.when()')"
+            @click.stop.prevent="This.eventos.push('This.' + compFooter + '.click()')"></component>
+        </div>
+      </div>
+    </div>
+  </transition>
+</template>
+
+
+
+<script setup lang="ts">
+/*
+import {
+  //  defineEmits,
+  //  defineProps,
+  //  defineExpose,
+  ref,
+  reactive,
+  //  onUnmounted,
+  watch,
+  // toRefs,
+  toRef,
+  // onMounted,
+  // onBeforeUpdate,
+  // onUpdated,
+  // onUnmounted,
+
+} from "vue";
+*/
+
+import imgButton from "@/components/imgButton.vue"
+import comboBox from "@/components/comboBox.vue"
+import editText from "@/components/editText.vue"
+import textLabel from "@/components/textLabel.vue"
+import grid from "@/components/grid.vue"
+
+import browse from "@/components/browse.vue"
+import container from "@/components/container.vue"
+const emit = defineEmits([ //"update", 
+  "update:Value",
+  "update:Status",
+  "update:ErrorMessage",
+  "update:Key",
+  "update:Focus"]);
+
+///////////////////////////////////////
+// Propiedades del componente reactivas
+////////////////////////////////////
+const props = defineProps<{
+  prop: {
+    ToolTipText: string;
+    View: "";
+    Field: "";
+    Value: string;
+    Placeholder: "";
+    Format: "";
+    InputMask: "";
+    MaxLenght: 0;
+    ReadOnly: false;
+    Tag: "";
+    Sw_val: false;
+    Capture: true;
+    Name: "";
+    textLabel: "";
+    Type: "text";
+    Visible: true;
+    ControlSource: string;
+    Status: string;
+    ErrorMessage: string;
+    TabIndex: number;
+    Key: string;
+    BaseClass: "EditText";
+    This: false;
+    Autofocus: false;
+    RecordSource: string;
+    Rows: number;
+    //    SetFocus:false;
+    //compAddress: any;
+  };
+
+  style: {
+    background: "white";
+    padding: "5px"; // Relleno
+    color: "#b94295";
+    width: "500px";
+    height: "30px";
+    fontFamily: "Arial";
+    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left";
+  };
+  position: {
+    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
+    left: number;
+    Top: number;
+  };
+  Recno: 0;
+  Component: null;
+  db: any
+
+}>();
+// Valores componente padre
+const Component = ref(props.Component)
+const This = Component.value
+
+console.log(' Container This =====>', This)
+This['estatus'] = []
+var load_data = false //Verdadero cuando se debe cargar datos a la pagina
+const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
+
+const Db = props.db.value
+
+// Valores propios
+const Value = ref(props.prop.Value);
+const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
+const Status = ref(props.prop.Status);
+const ErrorMessage = ref(props.prop.ErrorMessage)
+const Key = ref(props.prop.Key)
+defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
+const Error = ref(false)
+const Focus = ref(false)
+
+
+const scroll = reactive({
+  controls: false,
+  dataPage: [],  // Elementos que compone la pagina Db.View[props.prop.RecordSource].recnoVal[elementNo]
+  top: true,     //Pprincipio de la pagina
+  bottom: false,  // Final de pagina
+  page: 0,        // Numero de pagina desplegada
+  rows: props.prop.Rows // Renglones que puede tener la pagina
+})
+
+
+
+//const LocalDb = new localDb();
+/////////////////////////////////////////////////////////////////////
+// emitValue
+// Descripcion: emite hacia el componente padre el nuavo valor asignado
+/////////////////////////////////////////////////////////////////
+const emitValue = async () => {
+  Status.value = 'A'
+  //console.log('EditBox antes emit Value ====>', props.prop.Value, Value.value)
+  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  //emit("update") // emite un update en el componente padre
+  //console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
+  return true;
+};
+
+
+
+/*
+/////////////////////////////////////////////////////////////////////
+// focusOut
+// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
+/////////////////////////////////////////////////////////////////
+const focusOut = async () => {
+  const valor = Value.value;
+  if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
+    // actualiza valor en localDb
+    await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
+    //await LocalDb.update(valor).then(() => { 
+    // })
+  }
+  console.log('editBox focusout ', props.prop.Name)
+  return await emitValue()
+}
+*/
+//console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
+//return true;
+
+
+
+/*
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+watch(
+  () => Focus.value,
+  (new_val, old_val) => {
+    console.log('EditText Set Focus', props.prop.Name)
+    if (Focus.value) {
+      Ref.value.focus()
+      Ref.value.select()
+      Focus.value = false
+      emit("update:Focus", false)
+    }
+  },
+  { deep: false }
+);
+
+*/
+
+///////////////////////////////////////////////
+// Cuando cambia el estatus de Inicial a Activo, emite valores  
+///////////////////////////////////////////////
+
+watch(
+  () => props.prop.Status,
+  (new_val, old_val) => {
+
+    if (new_val == 'A') {
+      if (old_val == 'I') {
+        emitValue()
+      }
+      console.log('This.vue watch Status load_data', load_data)
+      // si hay carga de datos
+      if (load_data) {
+        loadData()
+      }
+
+    }
+
+
+  },
+  { deep: false }
+);
+
+///////////////////////////////////////////////
+// Cuando se cambia el RecordSource  
+///////////////////////////////////////////////
+watch(
+  () => props.prop.RecordSource,
+  (new_val, old_val) => {
+    console.log('RecordSource scroll===>', scroll)
+  }
+  ,
+  { deep: false }
+);
+
+watch(
+  () => props.prop.Visible,
+  async (new_val, old_val) => {
+    /*   
+      // Si no hay renglones , aumenta un renglon
+      if (props.prop.Visible && Db.View[props.prop.RecordSource].recnoVal.length == 0){
+         await appendRow()
+         console.log('<=======Watch grid append Row Visible =======>', new_val,props.prop.Visible && Db.View[props.prop.RecordSource].recnoVal)
+      }
+   */
+
+    if (props.prop.Visible && !old_val &&
+      props.prop.RecordSource.length > 3) {
+      //console.log('watch Visible ===>', scroll)
+      for (const componet in This) {
+
+
+
+      }
+
+
+
+    }
+  },
+  { deep: false }
+);
+
+
+
+/************************************************************************************ */
+////////////////////////////////
+// revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
+// no ejecuta el evento
+/////////////////////////////////
+
+
+watch(
+  () => eventos,
+  (new_val, old_val) => {
+
+    for (const comp in This.estatus) {
+      //console.log('Watch estatus ===>', comp, This.estatus[comp])
+
+      if (This.estatus[comp] != 'A' && Status.value == 'A') {
+        Status.value = 'P';  // Cambia el estatus del grid a Proceso
+        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+        return
+      }
+      if (eventos.length == 0) {
+        // Status.value = 'A';  // Cambia el estatus del grid a Proceso
+        // emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+        //aqui voy
+        //  console.log('This Watch eventos ===>', load_data, This.Form.eventos.length)
+        return
+      }
+      const evenEjecutar = eventos[0]
+      eventos.length = 0 // borramos los eventos
+      This.Form.eventos.push(evenEjecutar) // emitimos los eventos a la forma padre
+
+    }
+  }, { deep: true }
+);
+
+//////////////////////////////////////////////
+// Revisa la pila de eventos de procesos a ejecutar.
+//  Cuando ya no hay procesos a ejecutar y hay carga de datos, 
+// carga los datos de la pagina
+/////////////////////////////////////////////////
+watch(
+  () => This.Form.eventos,
+  () => {
+    if (!load_data) return
+    if (This.Form.eventos.length == 0) {
+      if (This.Form.prop.Status != 'A')
+        return
+      console.log('=====watch thisform.eventos loadData()=======')
+      loadData()
+
+    }
+  },
+  { deep: false }
+);
+
+//////////////////////////////////////////////
+// revisa los estatus de todos los componentes
+watch(
+  () => This.estatus,
+  (new_val, old_val) => {
+    console.log('<=======Watch estatus componentes =======>', This.estatus)
+
+    for (const comp in This.estatus) { // Recorre todos los estatus del grid
+
+      if (This.estatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
+        Status.value = 'P';  // Cambia el estatus del gri a Proceso
+        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+        return
+      }
+    }
+    Status.value = 'A';  // Todos los componentes del grid esta Activo
+    emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+    if (eventos.length == 0) return
+    for (let i = 0; i < eventos.length; i++)
+      This.Form.eventos.push(eventos[i])
+
+    eventos.length = 0 // borramos los eventos
+
+  },
+  { deep: true }
+);
+
+
+const loadData = async () => {
+  console.log('container load Data')
+
+}
+/////////////////////////////////////////
+// Metodo init Vfp
+// Aqui debemos de asignar todos los Valores inciales del componente
+// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
+// Se tiene que emitir para que cambie el Valor en el template
+/////////////////////////////////////////
+
+const init = async () => {
+
+  for (const componente in This) {
+    if (This[componente] !== undefined) {
+      if (
+        This[componente].prop &&       // Si tiene propiedades
+        This[componente].prop.Capture &&  // Si es componete de captura
+        This[componente].prop.Capture == true
+      ) {
+        This.estatus[componente] = toRef(This[componente].prop, "Status"); // stack de estatus de componentes
+      }
+    }
+  }
+  console.log('Fin Container.vue Init This==>', This)
+
+
+}
+
+init() // Ejecuta el init
+
+//////////////////////////////////////
+//  Importa componentes dinamicos
+////////////////////////////////////// 
+const impComp = ((name: string) => {
+  console.log('Container import', name)
+
+  switch (name.toLowerCase().trim()) {
+    case 'edittext': {
+      //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+      return editText
+      break;
+    }
+    case 'combobox': {
+      return comboBox
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+    case 'grid': {
+      return grid
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
+    case 'imgbutton': {
+      return imgButton
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
+    case 'browse': {
+      return browse
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
+    case 'textLabel': {
+      return textLabel
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+    case 'container': {
+      return container
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+    default: {
+      return editText
+      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+  }
+
+  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+})
+
+
+
+
+</script>
+<style scoped>
+div.container {
+  
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(0, 5, 2);
+  
+  border-radius: 5px;
+  padding:10px 10px 10px 10px;
+}
+
+/*
+div.contenedor {
+  background: white;
+  color: #b94295;
+  min-width: 375px;
+  min-height: 812px;
+  background-image: "/img/Logo_Empresa.bmp";
+  margin-top: 30%;
+
+}
+*/
+header {
+  color: #9ef1a5;
+  height: 75px;
+  border: black;
+  border-width: 1px;
+  padding: 0 10x;
+}
+
+
+
+
+.modal {
+  width: 300px;
+  margin: 0px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px 3px;
+  transition: all 0.2s ease-in;
+  font-family: Helvetica, Arial, sans-serif;
+  /*z-index: 999;*/
+}
+
+.fadeIn-enter {
+  opacity: 0;
+}
+
+.fadeIn-leave-active {
+  opacity: 0;
+  transition: all 0.2s step-end;
+}
+
+.fadeIn-enter .modal,
+.fadeIn-leave-active.modal {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #00000094;
+  z-index: 999;
+  transition: opacity 0.2s ease;
+}
+
+
+div.footer {
+  display: flex;
+  /*  flex;*/
+  /*flex-direction: column; */
+  align-items: last baseline;
+  /*center;*/
+  justify-content: space-around;
+  /*width: 100%;*/
+  height: 65px;
+  background-color: #c8e0ce;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 6px;
+  z-index: 0;
+  /*flex-direction: row-reverse; */
+}
+
+div.main {
+  /*display: flex;*/
+  /*  flex;*/
+  /*flex-direction: column; */
+  /*align-items: left; */
+  /*center;*/
+  /*justify-content: space-around;
+   width: 100%;
+   height: 100%;
+  */
+  text-align: left;
+  background-color: #f2f4ef;
+  /*border: 1px solid rgb(0, 0, 0);
+  border-radius: 6px; */
+  z-index: 1;
+}
+</style>

@@ -22,7 +22,8 @@ export class fil_vis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_vis.fil_vis'
         this.prop.ToolTipText ='Filtro de la vista'
         this.prop.Placeholder = "Variables filtro"
-        this.style.width='120px'
+        this.style.width='250px'
+        
         this.prop.componentStyle.textTransform='lowercase'
 
     }

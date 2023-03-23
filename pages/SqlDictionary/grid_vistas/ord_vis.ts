@@ -22,6 +22,6 @@ export class ord_vis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_vis.ord_vis'
         this.prop.ToolTipText ='Variables que dan el orden de la vista'
         this.prop.Placeholder = "Orden de la vista"
-        this.style.width='120px'
+        this.style.width='30px'
     }
 }

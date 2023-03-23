@@ -11,7 +11,7 @@
 
     <div>
       Web-Ones Technology Framework developed with :
-     </div>
+    </div>
 
     <div>
       VUE 3/NUXT 3 front-end Framework and
@@ -23,13 +23,30 @@
       Postres or MSSQL data base
     </div>
     <div>
-      <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub </a>
+      Packages :
     </div>
     <div>
-      <a href="https://github.com/siavcom/VFP-NODE">back-end git-hub</a>
+      <a href="https://www.npmjs.com/package/@zip.js/zip.js/v/2.6.3">zip</a>
     </div>
-    <div>
-      <a href="http://www.siavcom.com.mx">http://www.siavcom.com.mx</a>
+    <div> <a href="https://www.npmjs.com/package/alasql">alasql </a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/axios">axios</a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/file-saver/v/1.3.2">file-saver </a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/pinia/v/0.5.2"> pinia </a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/vue-good-table-next">vue-good-table-next </a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/vue-sweetalert2">vue-sweetalert2</a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/vue3-table-lite">vue3-table-lite</a>
+    </div>
+    <div> <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub </a>
+    </div>
+    <div> <a href="https://github.com/siavcom/VFP-NODE">back-end git-hub</a>
+    </div>
+    <div> <a href="http://www.siavcom.com.mx">ERP Siavcom</a>
     </div>
   </div>
 </template>

@@ -32,7 +32,7 @@ export class gln_dir extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
-        this.prop.TabIndex= 10
+        //this.prop.TabIndex= 10
         
         // this.RecordSource="" oJo
 

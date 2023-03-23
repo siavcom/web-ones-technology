@@ -6,60 +6,50 @@
 
       <!--mensajes de error y tooltip
     :style="{ 'width': 'auto' }"
-       
+       :value.number="numberStr"
     -->
-      <div class="component" >
-        <input v-if="prop.Type == 'number'" class="number"
-           type="text" 
-           :style="prop.componentStyle"
-           ref="Ref" :disabled="prop.Disabled"
-          :min="prop.Min" :max="prop.Max" :value.number="numberStr" :readonly="prop.ReadOnly"
+      <div class="component">
+        <input v-if="prop.Type == 'number'" class="number" type="text" :style="prop.componentStyle" ref="Ref"
+          :disabled="prop.Disabled" 
+          :min="prop.Min" 
+          :max="prop.Max" 
+          :value="numberStr" 
+          :readonly="prop.ReadOnly"
           :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
           @focus="onFocus" @input="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
         <!--spinner" -->
-        <input v-else-if="prop.Type == 'spinner'" class="number"
-          type="number"
-          :style="prop.componentStyle" ref="Ref" :min="prop.Min" :max="prop.Max"
-          :disabled="prop.Disabled" :value="numberStr" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
-          :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur" @focus="onFocus" @input="onInput">
+        <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="prop.componentStyle" ref="Ref"
+          :min="prop.Min" :max="prop.Max" :disabled="prop.Disabled" :value="numberStr" :readonly="prop.ReadOnly"
+          :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur"
+          @focus="onFocus" @input="onInput">
         <!--textArea" -->
-        <textarea v-else-if="prop.Type == 'textArea'" class="text"
-          :style="prop.componentStyle"
-          ref="Ref" v-model.trim="Value"
-          :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength" @keypress="keyPress($event)"
-          @focusout="focusOut" @focus="onFocus"></textarea>
+        <textarea v-else-if="prop.Type == 'textArea'" class="text" :style="prop.componentStyle" ref="Ref"
+          v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
+          :tabindex="prop.TabIndex" :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength"
+          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
         <!--fecha  -->
-        <input v-else-if="prop.Type == 'date'" class="date"
-         :style="prop.componentStyle"
-          ref="Ref" :type="prop.Type" v-model.trim="Value"
-          :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
+        <input v-else-if="prop.Type == 'date'" class="date" :style="prop.componentStyle" ref="Ref" :type="prop.Type"
+          v-model.trim="Value" :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
+          :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
         <!--checkBox-->
 
-        <input v-else-if="prop.Type == 'checkBox'" class="checkBox"
-          :type="prop.Type"
-          :style="prop.componentStyle"
-           ref="Ref" :value="checkValue"
-          :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex"
-          @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
+        <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" :style="prop.componentStyle"
+          ref="Ref" :value="checkValue" :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly"
+          :tabindex="prop.TabIndex" @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
 
         <!--Si es texto
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-        <input v-else class="text" ref="Ref" 
-          :style="prop.componentStyle" 
-          v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled"
-          :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          :type="prop.Type" 
-           v-on:keyup.enter="$event.target.nextElementSibling.focus()"
-           @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
+        <input v-else class="text" ref="Ref" :style="prop.componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
+          :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
+          :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
+          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
         <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
           prop.ToolTipText
         }}</span>
-        <span class="errorText" v-show="prop.ShowError" >{{ prop.ErrorMessage }}</span>
+        <span class="errorText" v-show="prop.ShowError">{{ prop.ErrorMessage }}</span>
       </div>
     </div>
   </div>
@@ -86,7 +76,7 @@ import {
 
 } from "vue" */
 //import { receiveMessageOnPort } from "worker_threads";
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", "update:ShowError",'customChange']) //, "update:Ref"
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", "update:ShowError", 'customChange']) //, "update:Ref"
 
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -184,7 +174,12 @@ const ToolTipText = ref(true)
 Status.value = 'I'
 const Key = ref(props.prop.Key)
 const Focus = ref(props.prop.Focus)
-Focus.value = false
+// Focus.value = false
+const First = ref(props.prop.First)
+
+
+
+
 var oldVal = Value.value
 const ShowError = ref(props.prop.ShowError)
 const checkValue = ref(false)
@@ -381,7 +376,7 @@ const emitValue = async () => {
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update:Valid", Valid.value)
   emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
-  emit("update") // emite un update en el componente padre
+  // emit("update") // emite un update en el componente padre
   // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
@@ -470,26 +465,26 @@ const keyPress = ($event) => {
     //$event.charCode = 9
     // window.event.keyCode = 9;
     Key.value = $event.charCode
-/*
-    let nextElement=$event.explicitOriginalTarget.nextSibling
-    console.log('Edit nextElement ',nextElement)
-
-    while (nextElement && nextElement.tagName!='INPUT'){
-
-      nextElement=nextElement.nextSibling
-      console.log('Edit nextElement',nextElement)
-
-    }   
-    if (nextElement)
-          nextElement.focus()
-
-    console.log('Edit ',nextElement)
-
-*/
-    //$event.target.value=$event.target.value+String.fromCharCode(9)
-    emit('customChange', $event.target.value+String.fromCharCode(9))
+    /*
+        let nextElement=$event.explicitOriginalTarget.nextSibling
+        console.log('Edit nextElement ',nextElement)
     
-   
+        while (nextElement && nextElement.tagName!='INPUT'){
+    
+          nextElement=nextElement.nextSibling
+          console.log('Edit nextElement',nextElement)
+    
+        }   
+        if (nextElement)
+              nextElement.focus()
+    
+        console.log('Edit ',nextElement)
+    
+    */
+    //$event.target.value=$event.target.value+String.fromCharCode(9)
+    emit('customChange', $event.target.value + String.fromCharCode(9))
+
+
   } else
 
     Key.value = $event.charCode
@@ -530,14 +525,15 @@ const onFocus = async () => {
 
   if (props.prop.Type == 'number') {
     numberStr.value = props.prop.Value //Value.value
-    typeNumber.value = 'number';
+    typeNumber.value = 'number'
+
   };
 
   if (Status.value == 'P') return // ya se habia hecho el foco
   Status.value = 'P';  // en foco
   //console.log('onFocus elemento ===>', props.prop.Name, 'P')
   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-  emit("update")
+  //emit("update")
 }
 
 
@@ -557,17 +553,16 @@ const readCampo = async (recno: number) => {
   }
 
   if (props.prop.Type == 'number')
+  console.log('editText readCampo Value', Value.value)
+
     numberStr.value = toNumberStr(Value.value)
+    console.log('editText readCampo numberStr', numberStr.value)
+
 
   if (props.prop.Type == 'checkBox') {
     checkValue.value = Value.value == 1 ? true : false
     //console.log('checkBox ReadValue =',props.prop.Name,checkValue.value,Value.value)
   }
-
-
-
-
-
   emitValue()
 
 }
@@ -704,16 +699,14 @@ watch(
 // Hacer el set focus 
 ///////////////////////////////////////
 watch(
-  () => Focus.value,
+  () => props.prop.Focus,
   (new_val, old_val) => {
-    if (!Focus.value) return
-    //console.log('EditText Set Focus', props.prop.Name)
-    if (Focus.value) {
-      Ref.value.focus()
+    if (!props.prop.Focus) return
+    console.log('EditText Set Focus', props.prop.Name)
+    Ref.value.focus()
       //      Ref.value.select()
-      Focus.value = false
-      emit("update:Focus", false)
-    }
+    Focus.value = false
+    emit("update:Focus", false)
   },
   { deep: false }
 );
@@ -774,8 +767,9 @@ const init = async () => {
 
   // si es el primer elemento a posicionarse
   if (props.prop.First) {
+    First.value=false
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-    emit("update") // emite un update en el componente padre
+    //emit("update") // emite un update en el componente padre
     // onFocus()
     Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()

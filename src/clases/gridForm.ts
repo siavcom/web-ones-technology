@@ -143,7 +143,7 @@ export class gridForm extends FORM {
       this.prop.Visible = false
       // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = '/Iconos/svg/bx-check-circle.svg'
-      this.prop.TabIndex= 20
+      //this.prop.TabIndex= 20
       this.style.width = '20px'
     } // Fin constructor
 
@@ -195,7 +195,7 @@ export class gridForm extends FORM {
       this.prop.Visible = false
       // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = '/Iconos/svg/bx-eraser.svg'
-      this.prop.TabIndex= 21
+      //this.prop.TabIndex= 21
       this.style.width = '20px'
     } // Fin constructor
 

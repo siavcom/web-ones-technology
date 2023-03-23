@@ -11,7 +11,7 @@
 
       <div style="vertical-align:middle; text-align:right;">
         {{ nomEmp }}
-        <img class="logoEmp" :src="LogoEmp" style="width:50px;height:50px;" />
+        <img class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
 
       </div>
 
@@ -28,9 +28,9 @@ const props = defineProps<{
   nomEmp: string;
 }>()
 
-const LogoEmp = ref(props.logoEmp)
-LogoEmp.value = "/img/Logo_Empresa.png"
+const logoEmp = ref(props.logoEmp)
+logoEmp.value = "/img/Logo_Empresa.png"
 const nomEmp = ref(props.nomEmp)
-//nomEmp.value = "Siavcom Software"
+nomEmp.value = "Siavcom Software"
 
 </script>

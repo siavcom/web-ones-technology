@@ -47,13 +47,18 @@
                   <div v-show="ThisGrid[col.Name].prop.Status != 'I' && ThisGrid[col.Name].prop.Visible">
                     <!--template style="ThisGrid[col.Name].style" -->
                     <!--focus.capture.stop para que solo ejecute el evento en el componente actual
-                      al obtener el foco asigna el renglon de captura-->
-                    <div v-show="item.id != ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
+                      al obtener el foco asigna el renglon de captura
+                      @focus.capture.stop="eventos.push(ThisGrid.prop.Map + '.asignaRenglon(' + item.id + ','+col.Name+')')"
+
+                    
+                    -->
+
+                      <div v-show="item.id != ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
                       <Transition name="columntext">
                       <textLabel v-bind:Show="item.id != ThisGrid.Row" v-bind:Recno="item.recno" v-bind:Id="item.id"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:position="ThisGrid[col.Name].position"
                         v-bind:style="ThisGrid[col.Name].style" v-bind:db="db"
-                        @focus.capture.stop="eventos.push(ThisGrid.prop.Map + '.asignaRenglon(' + item.id + ')')"
+                        @focus.capture.stop="eventos.push(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
                         @click.stop @focusout.stop>
                       </textLabel>
                      </Transition>

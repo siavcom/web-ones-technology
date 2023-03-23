@@ -26,7 +26,7 @@ import {birthday } from "./birthday"
 // Base class 
 ///////////////////////////////////////
 
-import { captureForm } from '@/classes/captureForm'
+import { captureForm } from '@/classes/CaptureForm'
 
 
 export class THISFORM extends captureForm {

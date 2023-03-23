@@ -9,7 +9,7 @@ import dat_emp from '@/static/empresas/datos.json'
 
 import { COMPONENT } from '@/classes/Component'
 
-export class EMP_EMP extends COMPONENT {
+export class emp_emp extends COMPONENT {
   // name = 'emp_emp'
 
   //  constructor(parent: Record<string, never>) {

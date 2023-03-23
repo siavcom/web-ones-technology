@@ -13,7 +13,7 @@ export class GRID extends COMPONENT {
   // Tenemos que utilizar renglon o data
   data = [{}]    // arreglo donde esta el data 
   Row = -1
-  elements = [{}]
+  //elements = [{}]
   constructor() {
     super()
     this.prop.Name = 'Grid'
@@ -25,19 +25,19 @@ export class GRID extends COMPONENT {
     this.prop.textLabel ='Grid de datos'
     this.prop.SqlUpdate= false  //Si es verdadero actualiza automaticamente
   }
-   
 
-  public async Init() {
+  public async Init_ant(Form:any) {
+    super.Init(Form)
     console.log('Grid Init ======',this.prop.Name)
-    let elements=[]
+    //let elements=[]
     for (const columna in this) {
       if (this[columna] != null &&
         this[columna] !=undefined && 
         this[columna].prop &&
         this[columna].prop.Order){
-        elements.push({ 
-        Name :this[columna].prop.Name,
-        Id : this[columna].prop.Order})
+       // elements.push({ 
+       // Name :this[columna].prop.Name,
+       // Id : this[columna].prop.Order})
        
         this[columna].prop.Grid = true  // indicamos que la columna pertenece a un grid de datos 
         switch (this[columna].prop.BaseClass) {
@@ -63,7 +63,7 @@ export class GRID extends COMPONENT {
 
       }
     }
-    this.elements=elements
+    //this.elements=elements
     console.log('Grid base main',this.elements)
   }
 
@@ -104,13 +104,14 @@ export class GRID extends COMPONENT {
   // asignaRenglon 
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
-  public async asignaRenglon(row: number) {
+  public async asignaRenglon(row: number,colName:string) {
  //   console.log('asignaRenglon row ',row,this.Form.db.View[this.prop.RecordSource].recnoVal)
 //    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1) 
 //      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
 
-
     this.Row=row
+    console.log('Grid asignaRenglon ',this)
+    this[colName].prop.First=true 
     
     //nextTick(() => 
     //    this.Row=row

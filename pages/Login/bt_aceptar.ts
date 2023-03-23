@@ -13,7 +13,7 @@ import { COMPONENT } from '@/classes/Component'
 // import dat_emp from '@/static/empresas/datos.json'
 // '@/static/empresas/datos.json' // Empresas del menu
 
-export class BT_ACEPTAR extends COMPONENT {
+export class bt_aceptar extends COMPONENT {
   num_int = 0
   OpenDb = new OpenDb()
 
@@ -26,6 +26,7 @@ export class BT_ACEPTAR extends COMPONENT {
     this.style.width = '30%'
     // this.prop.Image = "/Iconos/Accept.png";
     this.prop.Image = '/Iconos/svg/bx-check-circle.svg'
+  //  this.prop.Position='footer'
   }
 
   //  public click = async () => {

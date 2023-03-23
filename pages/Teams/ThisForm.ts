@@ -24,7 +24,7 @@ import {manager } from "./manager"
 // Base class 
 ///////////////////////////////////////
 
-import { captureForm } from '@/classes/captureForm'
+import { captureForm } from '@/classes/CaptureForm'
 
 
 export class THISFORM extends captureForm {

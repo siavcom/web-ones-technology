@@ -29,7 +29,7 @@ export class rfc_dir extends COMPONENT {
         this.prop.MaxLength=13
         this.prop.Capture=true
         this.prop.updateKey=true
-        this.prop.TabIndex= 1
+        //this.prop.TabIndex= 1
         this.prop.componentStyle.textTransform='uppercase'
 
         

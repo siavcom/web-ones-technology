@@ -24,7 +24,7 @@ export class vac_vis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_vis.vac_vis'
         this.prop.ToolTipText ='Vista remota SQL de actualización'
         this.prop.Placeholder = "vista remota SQL"
-        this.style.width='120px'
+        this.style.width='200px'
     }
 
 Valid(){

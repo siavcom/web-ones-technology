@@ -10,7 +10,7 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class LOG_USU extends COMPONENT {
+export class log_usu extends COMPONENT {
 
   //name='log_usu'
   //  constructor(parent: Record<string, never>) {

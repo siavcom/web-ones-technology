@@ -2,7 +2,7 @@
 // Clase : Componente Base
 // Author : Fernando Cuadras Angulo
 // Creacion : Noviembre/2021
-// Ult.Mod  : 22/Junio/2022
+// Ult.Mod  : 20/Marzo/2023
 /////////////////////////////////////////////
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -16,10 +16,15 @@ export class COMPONENT {
   db: any
   Recno: number
   Ref: null | undefined
-  Focus: boolean = false
+  //Focus: boolean = false
   Index!: number
+  header: [] = []
+  main: [] = []
+  footer: [] = []
+
   elements: [] = []
   prop = {
+    This: {},
     Name: "",
     textLabel: "",
     ToolTipText: '',
@@ -108,7 +113,7 @@ export class COMPONENT {
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
-    
+
 
     textAlign: "left",
     position: "relative",
@@ -136,14 +141,127 @@ export class COMPONENT {
     this.Name = this.constructor.name  //.toLowerCase()
     this.prop.Name = this.Name //.toLowerCase()
     this.Recno = 0
+    this.prop.This = this
+  }
+
+  ///////////////////////////////////////////////////////////
+  // Init
+  ////////////////////////////////////////////////
+  //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
+  //    async Init(Form) {
+  public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
+    console.log('Init TabIndex', this.Name, TabIndex)
+    if (!Form) { // Inicializamos el this.Form
+      Form = this
+      this.Name = 'ThisForm'
+      //      console.log('Init ThisForm', this.Name, this.Form)
+      TabIndex = 1
+    }
+    this.Form = Form
+    await this.init() // Corre el init principal
+    let maxTabIndex = 1
+    let id = 0
+    //let comp = {}
+    let header: [] = []
+    let main: [] = []
+    let footer: [] = []
+    const elements: [] = []
+    // asigna el mapa donde esta  ubicado el componente
+    if (this.Name != 'ThisForm' && this.Parent.prop) { // Si tiene propiedades 
+      this.prop.Map = this.Parent.prop.Map + '.' + this.prop.Name
+    }
+    for (const componente in this) {
+      if (componente != 'Parent' &&
+        componente != 'ThisForm' &&
+        componente != 'Form' &&
+        this[componente] != null &&
+        this[componente] != undefined &&
+        this[componente] &&
+        this[componente].prop &&
+        this[componente].Init) {
+        const name = this[componente].prop.Name
+        const Position = this[componente].prop.Position.trim().toLowerCase()
+
+        if (Position == 'header')
+          header.push(name)
+
+        if (Position == 'main') 
+          main.push(name)
+
+        if (Position == 'footer')
+          footer.push(name)
+
+        const component = {
+          Name: name,
+          Id: id, // this[componente].prop.Order,
+          Position: Position
+        }
+        elements.push(component)
+
+        this[componente]['Parent'] = this // ref(this)
+
+        id++
+      }
+
+    }
+
+    for (const i in header) {
+      const comp=header[i]
+      this[comp].prop.TabIndex = TabIndex
+      TabIndex++
+      TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
+      // Se quito de aqui ya que el Init corre el init de c/componente
+    }
+
+    for (const i in main) {
+      const comp=main[i]
+      console.log('for next',comp)
+      this[comp].prop.TabIndex = TabIndex
+      TabIndex++
+      TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex)
+        maxTabIndex = TabIndex
+
+    }
+
+    for (let i = footer.length - 1; i >= 0; i--) {
+      const comp=footer[i]
+      this[comp].prop.TabIndex = TabIndex
+      TabIndex++
+      TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex)
+        maxTabIndex = TabIndex
+
+    }
+    this.footer = footer.reverse()
 
 
+    this.elements = elements
+    this.header = header
+    this.main = main
+    /*
+    TabIndex = maxTabIndex  // asignamos el TabIndex maximo de elementos
+    if (footer.length > 0) {
+      for (let i = footer.length - 1; i >= 0; i--) {
+        const footerName = footer[i]
+
+        this[footerName].prop.TabIndex = TabIndex
+        TabIndex++
+      }
+    }
+    this.footer = footer.reverse()
+
+    */
+    this.prop.Status = 'A'
+
+    console.log('Component init', this.Name, this.prop.Map)
+    return TabIndex
   }
 
   ///////////////////////////////////////////////////////////
   // InitForm : Iicializa los valores de toda la forma en cada/componente 
   ////////////////////////////////////////////////
-  public async InitForm(Form) {
+  public async InitForm_ant(Form: any) {
     const elements: [] = []
     //console.log('Inicializando componente Parent ===> ', this.prop.Name,this.Parent)
 
@@ -163,10 +281,12 @@ export class COMPONENT {
         this[componente].prop &&
         this[componente].InitForm
       ) {
-        elements.push({
+        const component = {
           Name: this[componente].prop.Name,
-          Id: this[componente].prop.Order
-        })
+          Id: this[componente].prop.Order,
+          Position: this[componente].prop.Position
+        }
+        elements.push(component)
 
         this[componente]['Parent'] = this // ref(this) Pasamos el padre al componente hijo
         await this[componente]['InitForm'](Form) //Hacemos el InitForm a cada componente hijo
@@ -182,6 +302,10 @@ export class COMPONENT {
     console.log('Componente Inicializado =========> ', this.prop.Name, this.elements)
     // console.log('Init Componente this.Form',this.Form)
   }
+
+
+
+
 
   /////////////////////////////////////////////////////////////////////
   // init

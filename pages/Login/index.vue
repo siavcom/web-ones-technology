@@ -79,21 +79,19 @@ import {
 // ///////////////////////////////////////////////
 // Componentes
 // ///////////////////////////////////////////////
-// import EmpEmp from "/components/comboBox.vue"
-// import LogUsu from "/components/editText.vue";
-// import PasUsu from "/components/editText.vue";
-
 import imgButton from '@/components/imgButton.vue'
 import comboBox from '@/components/comboBox.vue'
 import editText from '@/components/editText.vue'
-import textLabel from '@/components/textLabel.vue'
-import grid from '@/components/grid.vue'
+// import textLabel from '@/components/textLabel.vue'
+
 
 // ////////////////////////////////////////////
 // Clases Externas typescript
 // ////////////////////////////////////////////
+
+
 import { INIT } from '@/classes/Init'
-import { form } from '/pages/Login/login'
+import { form } from './login'
 
 // ////////////////////////////////////////////////
 // Propiedades de los componentes
@@ -123,14 +121,13 @@ watch(
 const Init = new INIT() // solo se puso para evitar de errores que tenia
 
 const init = async () => {
-  await
-  Init.Init()
-    .then(() => {
+     await Init.Init()
+    .then(async () => {
       //        ThisForm.Init(ref(ThisForm))  // Pasamos por referencia  al init de la clase el ThisForm
-      ThisForm.Init() // Pasamos por referencia  al init de la clase el ThisForm
+      await ThisForm.Init() 
     })
     .finally(async () => {
-      console.log('Inicio exitoso', ThisForm.prop.name)
+      console.log('Fin Login Form exitoso', ThisForm)
     })
 }
 

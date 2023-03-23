@@ -18,6 +18,7 @@ export class wjs_vis extends COLUMN {
         this.prop.Order = 3
         this.textLabel = 'Where SQL '
         this.prop.BaseClass = 'editText'
+        this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_vis.wjs_vis'
         this.prop.ToolTipText ='Where SQL con macro sustitucion para TypeScript'
         this.prop.Placeholder = "Where SQL"
