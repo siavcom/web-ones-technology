@@ -22,7 +22,7 @@ export class tab_vis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_vis.tab_vis'
         this.prop.ToolTipText ='Tablas/Join'
         this.prop.Placeholder = "Tablas"
-        this.style.width='200px'
+        this.style.width='300px'
         }
 
 

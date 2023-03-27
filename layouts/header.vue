@@ -9,15 +9,14 @@
         <img class="logoVue" src="@/assets/logo.png" style="width:50px;height:50px;" />eb-Ones Technology
       </div>
 
-      <div style="vertical-align:middle; text-align:right;">
+      <div v-if="nomEmp" style="vertical-align:middle; text-align:right;">
         {{ nomEmp }}
-        <img class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
+        <img v-if="logoEmp" class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
 
       </div>
 
     </div>
-    <slot />
-  </div>
+   </div>
 </template>
 
 

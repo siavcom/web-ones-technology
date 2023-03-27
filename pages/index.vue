@@ -14,41 +14,68 @@
     </div>
 
     <div>
-      VUE 3/NUXT 3 front-end Framework and
+      <a href="https://vuejs.org/">VUE 3,</a>
+    </div> 
+    <div>
+      <a href="https://nuxt.com/">NUXT 3 for front-end Framework,</a> </div>
+    <div>
+      <a href="https://nodejs.org/en/">NODE,</a>
+      
     </div>
     <div>
-      NODE/EXPRESS back-end and
+      <a href="http://expressjs.com/">EXPRESS for back-end </a>
+      
     </div>
     <div>
-      Postres or MSSQL data base
+      and 
     </div>
     <div>
-      Packages :
+      Postgres or MSSQL as Data Bases
     </div>
     <div>
-      <a href="https://www.npmjs.com/package/@zip.js/zip.js/v/2.6.3">zip</a>
+      npm Packages for VUE/NUXT :
     </div>
-    <div> <a href="https://www.npmjs.com/package/alasql">alasql </a>
+    <div>
+      <a href="https://www.npmjs.com/package/@zip.js/zip.js/v/2.6.3">zip,</a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/axios">axios</a>
+    <div> <a href="https://www.npmjs.com/package/alasql">alasql, </a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/file-saver/v/1.3.2">file-saver </a>
+    <div> <a href="https://www.npmjs.com/package/axios">axios,</a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/pinia/v/0.5.2"> pinia </a>
+    <div> <a href="https://www.npmjs.com/package/file-saver/v/1.3.2">file-saver, </a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/vue-good-table-next">vue-good-table-next </a>
+    <div> <a href="https://www.npmjs.com/package/pinia/v/0.5.2"> pinia, </a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/vue-sweetalert2">vue-sweetalert2</a>
+    <div> <a href="https://www.npmjs.com/package/vue-good-table-next">vue-good-table-next, </a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/vue3-table-lite">vue3-table-lite</a>
+    <div> <a href="https://www.npmjs.com/package/vue-sweetalert2">vue-sweetalert2,</a>
     </div>
-    <div> <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub </a>
+    <div> <a href="https://www.npmjs.com/package/vue3-table-lite">vue3-table-lite,</a>
     </div>
-    <div> <a href="https://github.com/siavcom/VFP-NODE">back-end git-hub</a>
+    <div> <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub, </a>
+    </div>
+    <div> <a href="https://github.com/siavcom/VFP-NODE">back-end git-hub,</a>
     </div>
     <div> <a href="http://www.siavcom.com.mx">ERP Siavcom</a>
     </div>
-  </div>
+    <div>
+      npm Packages for node/Express :
+    </div>
+    <div>
+      <a href="https://sequelize.org/">sequelize</a>
+    </div>
+    <div>
+      <a href="https://sourceforge.net/projects/jasperreports/">Jasper reports library</a>
+    </div>
+    <div>
+      <a href="https://www.npmjs.com/package/node-jasper-report">node jasper</a>
+    </div>
+
+
+
+
+
+</div>
 </template>
 
 <style scoped>

@@ -770,7 +770,6 @@ const init = async () => {
     First.value=false
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     //emit("update") // emite un update en el componente padre
-    // onFocus()
     Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()
     return

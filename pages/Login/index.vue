@@ -148,11 +148,7 @@ const impComp = (name: string) => {
       // return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break
     }
-    case 'grid': {
-      return grid
-      // return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break
-    }
+
 
     case 'imgButton': {
       return imgButton

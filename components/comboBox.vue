@@ -212,6 +212,8 @@ Status.value = 'I'
 const toggle = ref(false)
 const hover = ref(false)
 const Focus = ref(props.prop.Focus)
+const First = ref(props.prop.First)
+
 const showError = ref(false)
 
 
@@ -1005,8 +1007,9 @@ const init = async () => {
   // si es el primer elemento a posicionarse
   renderComboBox()
   if (props.prop.First) {
+    First.value=false
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-    emit("update") // emite un update en el componente padre
+    //emit("update") // emite un update en el componente padre
     // onFocus()
     Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()

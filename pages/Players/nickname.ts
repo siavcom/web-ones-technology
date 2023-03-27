@@ -20,7 +20,7 @@ export class nickname extends COMPONENT {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Apodo'
+        this.prop.textLabel = 'Apodo del muchacho'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'Index1_Players.nickname'
