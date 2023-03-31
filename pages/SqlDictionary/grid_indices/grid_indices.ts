@@ -16,9 +16,10 @@ import {GRID} from  '@/classes/Grid'
 
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
 import {num_ind} from './num_ind'
-import {exp_ind} from './exp_ind'
-import {des_ind} from './des_ind'
 import {nom_ind} from './nom_ind'
+import {des_ind} from './des_ind'
+
+import {exp_ind} from './exp_ind'
 import {uni_ind} from './uni_ind'
 
 
@@ -27,9 +28,9 @@ export class grid_indices extends GRID {
  // Columna que tiene el grid
  // public con_ind = new COLUMN()
   public num_ind = new num_ind()
-  public exp_ind = new exp_ind()
-  public des_ind = new des_ind()
   public nom_ind = new nom_ind()
+  public des_ind = new des_ind()
+  public exp_ind = new exp_ind()
   public uni_ind = new uni_ind()
  
  

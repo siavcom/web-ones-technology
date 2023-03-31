@@ -12,6 +12,7 @@
 
 //import { CONTAINER } from '@/classes/Container'
 import { COMPONENT } from '@/classes/Component'
+import { mensaje } from './mensaje'
 import {num_con} from './num_con'
 import { query } from './query'
 import { table } from './table/table'
@@ -25,6 +26,7 @@ export class queryGen extends COMPONENT {
   ////////////////////////////////////
   // component imported
   ////////////////////////////////////
+  public mensaje=new mensaje()
   public query = new query()
   public num_con= new num_con()
   public table = new table()
@@ -38,13 +40,13 @@ export class queryGen extends COMPONENT {
 
   constructor() {
     super()
-
     this.prop.Visible=true
     this.prop.BaseClass='container'
     this.prop.textLabel='Query Generator'
     //this.style.maxWidth='400px'
     this.style.display='block'
-
-  }
+    
+    this.query.prop.Visible=false
+     }
 
 }

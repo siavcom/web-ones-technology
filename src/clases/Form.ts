@@ -20,20 +20,21 @@ import { VFPDB } from "@/classes/DataBase"
 
 export class FORM extends COMPONENT {
   //Dom: any = getCurrentInstance();
-  //Development = false
+  
   //sw_ini = false
   //Parent = {} //this.Dom.ctx; // Contexto
   //Form = {} //this.Parent.ThisForm // Thisform
 
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
-  params = []
+  Params = []
   public db = new VFPDB();  // conexion a la base de datos
   //messageBox = MessageBox
 
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
+    
     this.prop.BaseClass = 'Form'
     this.prop.Name = 'ThisForm'
     this.prop.Map = 'ThisForm'
@@ -52,15 +53,16 @@ export class FORM extends COMPONENT {
     const router = useRoute()
     const { params } = useRoute()
     
+    
     for (const par in router.query){
-       this.params.push(router.query[par])
+       this.Params.push(router.query[par])
 
     }
     //console.log('ThisForm router params ==>',this.params)
     
     if (router.query.params ){
      // this.params=eval('['+router.query.params+']')
-    console.log('ThisForm router Params===>',this.params)   
+    console.log('ThisForm router Params===>',params,this.params)   
     }
 
     // asignamos en la clase db esta forma

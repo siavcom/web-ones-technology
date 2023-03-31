@@ -19,13 +19,14 @@ export class bt_add extends COMPONENT {
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
-    this.prop.Value ='Nueva'
+   // this.prop.Value ='Nueva'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/add-color.svg";
     this.prop.TabIndex = 1
     this.prop.RecordSource=''
-    this.style.width='40px'
+    this.style.fontSize='10px'
+    this.style.width='20px'
 
 
   } // Fin constructor

@@ -33,39 +33,36 @@ export class num_con extends COMPONENT {
     this.prop.Decimals = 0
     this.prop.Capture = true
     this.prop.componentStyle.width='40px'
+    this.prop.usu_que=''
     //this.style.width='30px'
 
 
 
   }
 
+  async valid(){
+    this.interactiveChange()
+  }
   ////////////////////////////////// 
   // Interactive Change 
   ///////////////////////////////////
 
   async interactiveChange() {
-    this.Parent.browseResult.prop.RowSource = ''
+    console.log('num_con interactiveChange this',this)
     const ThisForm = this.Form
     const vfp = ThisForm.db
-    ThisForm.query.prop.Value = ''
-    if (this.Form.num_con.Value==0)
+    const tabla=this.Parent.tabla
+    this.Parent.query.prop.Value = ''
+    this.Parent.query.prop.Visible = false
+
+    if (this.prop.Value==0)
        return
        
-    let m = {
-      nom_rep: '',
-      par_que: '',
-      
-    }
-    m.nom_rep = this.Form.name.trim()
-    m.par_que = this.Form.params.par_que.trim()
+    const RecordSource=this.Parent.prop.RecordSource
+    const ins_sql = `select * From 'vi_cap_query_db'  \
+          where num_con=${this.prop.Value} `
 
-    const ins_sql = `select * From man_comeque \
-          left outer join vi_schema_views view on \
-          view.nom_vis=${m.nom_rep} \
-          view.cam_dat=cam_que \   
-          where rep_que=${m.nom_rep} and (par_que=${m.par_que} ) order by nco_que,ren_que`
-
-    const data = await vfp.execute(ins_sql, 'querys')
+    const data = await vfp.localSql(ins_sql,RecordSource)
 
     if (data.length == 0) {
       this.Form.query = ''
@@ -73,11 +70,10 @@ export class num_con extends COMPONENT {
     } // Endif (
 
     let sig_uni = ' '
-
-    m = {}
+    this.Parent.query.prop.Value=''
     for (let i = 0; i < data.length; i++) {
 
-      m = data[i] //Scatter Memvar
+      const m = data[i] //Scatter Memvar
 
       sig_uni = 'Y'
 
@@ -139,14 +135,15 @@ export class num_con extends COMPONENT {
           break
 
       }
-      this.Form.query.prop.Value = this.Form.query.prop.Value + m.pai_que + m.des_dat.trim() + con_uni + m.val_que.trim() + m.pad_que + sig_uni
+      this.Parent.query.prop.Value = this.Form.query.prop.Value + m.pai_que + m.des_dat.trim() + con_uni + m.val_que.trim() + m.pad_que + sig_uni
     } // Endif (
 
     if (sig_uni.length > 2) {
       this.Form.query.prop.Value = left(this.Form.query.prop.Value, this.Form.prop.tex_con.prop.Value.length - 5)
     } // Endif (
-    this.Parent.browseResult.prop.RowSource = ''
 
+
+    
     return true
   }
 

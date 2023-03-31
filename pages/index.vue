@@ -33,7 +33,7 @@
       Postgres or MSSQL as Data Bases
     </div>
     <div>
-      npm Packages for VUE/NUXT :
+      VUE/NUXT npm Packages:
     </div>
     <div>
       <a href="https://www.npmjs.com/package/@zip.js/zip.js/v/2.6.3">zip,</a>
@@ -59,7 +59,7 @@
     <div> <a href="http://www.siavcom.com.mx">ERP Siavcom</a>
     </div>
     <div>
-      npm Packages for node/Express :
+      NODE/Express npm Packages:
     </div>
     <div>
       <a href="https://sequelize.org/">sequelize</a>

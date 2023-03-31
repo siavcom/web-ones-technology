@@ -2,7 +2,7 @@
 // Clase : Grid
 // Author : Fernando Cuadras Angulo
 // Creacion : Febrero/2022
-// Ult.Mod  :  16/Febrero/2023
+// Ult.Mod  :  28/Marzo/2023
 /////////////////////////////////////////////
 
 import { COMPONENT } from '@/classes/Component'
@@ -13,6 +13,7 @@ export class GRID extends COMPONENT {
   // Tenemos que utilizar renglon o data
   data = [{}]    // arreglo donde esta el data 
   Row = -1
+
   //elements = [{}]
   constructor() {
     super()
@@ -24,8 +25,16 @@ export class GRID extends COMPONENT {
     this.prop.Row = 0
     this.prop.textLabel ='Grid de datos'
     this.prop.SqlUpdate= false  //Si es verdadero actualiza automaticamente
-  }
+    this.prop.addButton=true
+    this.prop.deleteButton=true
+    this.prop.saveData=true
+    this.prop.updated=false
 
+    this.prop.messageUpdate='Grabamos la tabla'
+
+    
+  }
+/*
   public async Init_ant(Form:any) {
     super.Init(Form)
     console.log('Grid Init ======',this.prop.Name)
@@ -66,7 +75,7 @@ export class GRID extends COMPONENT {
     //this.elements=elements
     console.log('Grid base main',this.elements)
   }
-
+ */
   async validKey(){
     if (this.prop.Valid)
        return true
@@ -159,6 +168,53 @@ export class GRID extends COMPONENT {
     this.Row=-1
     //await this.asignaRenglon(recno)
   }
+
+  //////////////////////////////////
+  // Graba Tabla
+  // vis_cap: Vista de captura
+  /////////////////////////////////
+  async grabaTabla() {
+    let resultado = 0
+    resultado = await MessageBox(this.prop.messageUpdate, 4, '')
+    console.log('bt_aceptar Messagebox resultado', resultado)
+
+    this.Form.prop.Visible = false
+
+
+    if (await this.Form.db.tableUpdate(1, false, this.prop.RecordSource) == true) {  // Actualiza todos los registros
+        MessageBox('Datos grabados')
+        return true
+      }
+      else {
+        MessageBox('No se grabaron los datos', 16, 'ERROR')
+        return false
+      }
+
+    }
+
+  //////////////////////////////////
+  // Graba Renglon
+  // 
+  /////////////////////////////////
+  async grabaRenglon() {
+    let resultado = 0
+    resultado = await MessageBox(this.prop.messageUpdate, 4, '')
+    console.log('bt_aceptar Messagebox resultado', resultado)
+
+    this.Form.prop.Visible = false
+
+
+    if (await this.Form.db.tableUpdate(1, false, this.prop.RecordSource) == true) {  // Actualiza todos los registros
+        MessageBox('Datos grabados')
+        return true
+      }
+      else {
+        MessageBox('No se grabaron los datos', 16, 'ERROR')
+        return false
+      }
+
+    }
+
 }
 
 

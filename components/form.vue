@@ -80,10 +80,10 @@
     -->
         <section class="footer">
           <div v-show="ThisForm.prop.Status == 'A'">
-            <img src="/Iconos/BotonVerde.png" style="float:left" />
+            <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
           </div>
           <div v-show="ThisForm.prop.Status != 'A'">
-            <img class='botonRojo' src="/Iconos/Stop_arrows.gif" style="float:left" />
+            <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
           </div>
           <slot name="footer">
 
@@ -815,7 +815,9 @@ img.logoEmp {
   padding: 1px;
   width: 64px;
 }
-
+img.circle{
+  width: 18px;
+}
 section.footer {
   display: flex;
   /*  flex;*/
@@ -824,7 +826,7 @@ section.footer {
   /*center;*/
   justify-content: space-around;
   /*width: 100%;*/
-  height: 90px;
+  height: fit-content;
   background-color: #c8e0ce;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 6px;

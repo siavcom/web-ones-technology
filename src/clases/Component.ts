@@ -24,6 +24,7 @@ export class COMPONENT {
 
   elements: [] = []
   prop = {
+    Development : false,
     This: {},
     Name: "",
     textLabel: "",
@@ -150,15 +151,18 @@ export class COMPONENT {
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
-    console.log('Init TabIndex', this.Name, TabIndex)
     if (!Form) { // Inicializamos el this.Form
       Form = this
       this.Name = 'ThisForm'
       //      console.log('Init ThisForm', this.Name, this.Form)
       TabIndex = 1
     }
+    console.log('Init TabIndex', this.Name, TabIndex,this)
+
     this.Form = Form
-    await this.init() // Corre el init principal
+    if(this.init)
+        await this.init() // Corre el init principal
+        
     let maxTabIndex = 1
     let id = 0
     //let comp = {}
@@ -212,7 +216,7 @@ export class COMPONENT {
       TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
       // Se quito de aqui ya que el Init corre el init de c/componente
     }
-
+    console.log('Component class main',main)
     for (const i in main) {
       const comp=main[i]
       console.log('for next',comp)
@@ -303,17 +307,7 @@ export class COMPONENT {
     // console.log('Init Componente this.Form',this.Form)
   }
 
-
-
-
-
-  /////////////////////////////////////////////////////////////////////
-  // init
-  // Descripcion: init del componente
-  /////////////////////////////////////////////////////////////////
-  public async init() {
-
-  }
+  
   /////////////////////////////////////////////////////////////////////
   // Valid
   // Descripcion: Cuando pierde el foco valida

@@ -19,7 +19,7 @@ export class bt_delete extends COMPONENT {
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
-    this.prop.Value = "Borrar"
+    //this.prop.Value = "Borrar"
     this.prop.Visible=false
 
     this.prop.Capture = false
@@ -27,7 +27,9 @@ export class bt_delete extends COMPONENT {
     this.prop.Image = "/Iconos/svg/delete2-color.svg";
 
     this.prop.TabIndex = 1
-    this.style.width='40px'
+    this.style.fontSize='10px'
+    this.style.width='20px'
+
 
   } // Fin constructor
 

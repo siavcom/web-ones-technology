@@ -55,10 +55,10 @@
         -->
       <div class="footer">
         <div v-show="This.prop.Status == 'A'">
-          <img src="/Iconos/BotonVerde.png" style="float:left" />
+          <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
         </div>
         <div v-show="This.prop.Status != 'A'">
-          <img class='botonRojo' src="/Iconos/Stop_arrows.gif" style="float:left" />
+          <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
         </div>
 
         <div v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -77,8 +77,6 @@
     </div>
   </transition>
 </template>
-
-
 
 <script setup lang="ts">
 /*
@@ -448,48 +446,56 @@ init() // Ejecuta el init
 //  Importa componentes dinamicos
 ////////////////////////////////////// 
 const impComp = ((name: string) => {
-  console.log('Container import', name)
+
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
+      console.log('Container import  edittext', name)
       //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       return editText
       break;
     }
     case 'combobox': {
+      console.log('Container import combobox', name)
       return comboBox
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'grid': {
+      console.log('Container import grid', name)
       return grid
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'imgbutton': {
+      console.log('Container import imgbutton', name)
       return imgButton
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'browse': {
+      console.log('Container import browse', name)
       return browse
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
-    case 'textLabel': {
+    case 'textlabel': {
+      console.log('Container import texLabel', name)
       return textLabel
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'container': {
+      console.log('Container import container', name)
       return container
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     default: {
+      console.log('Container import default', name)
       return editText
       //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       break;
@@ -527,7 +533,7 @@ div.contenedor {
 */
 header {
   color: #9ef1a5;
-  height: 75px;
+  height: 20px;
   border: black;
   border-width: 1px;
   padding: 0 10x;
@@ -585,10 +591,11 @@ div.footer {
   /*center;*/
   justify-content: space-around;
   /*width: 100%;*/
-  height: 65px;
+  height: auto;
   background-color: #c8e0ce;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 6px;
+  height: fit-content;
   z-index: 0;
   /*flex-direction: row-reverse; */
 }
@@ -608,5 +615,11 @@ div.main {
   /*border: 1px solid rgb(0, 0, 0);
   border-radius: 6px; */
   z-index: 1;
+}
+
+img.circle{
+  width: 18 px;
+  max-height: 18px;
+
 }
 </style>

@@ -33,41 +33,41 @@
             <!-------------  Renglones  -----------------------
               item.id + 1-->
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-              <tr v-for="item in scroll.dataPage" :key="item.id">
+            <tr v-for="item in scroll.dataPage" :key="item.id">
 
-                <td class='renNumber' style="min-width:20;max-width:20px; ">{{ item.recno }}</td>
-                <!-------------  Columnas  ------------------------->
-                <!--
+              <td class='renNumber' style="min-width:20;max-width:20px; ">{{ item.recno }}</td>
+              <!-------------  Columnas  ------------------------->
+              <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != ThisGrid.Row"
                     -->
 
-                <td v-for="col in ThisGrid.elements" :key="col.Id" style="padding:0">
+              <td v-for="col in ThisGrid.elements" :key="col.Id" style="padding:0">
 
-                  <div v-show="ThisGrid[col.Name].prop.Status != 'I' && ThisGrid[col.Name].prop.Visible">
-                    <!--template style="ThisGrid[col.Name].style" -->
-                    <!--focus.capture.stop para que solo ejecute el evento en el componente actual
+                <div v-show="ThisGrid[col.Name].prop.Status != 'I' && ThisGrid[col.Name].prop.Visible">
+                  <!--template style="ThisGrid[col.Name].style" -->
+                  <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
                       @focus.capture.stop="eventos.push(ThisGrid.prop.Map + '.asignaRenglon(' + item.id + ','+col.Name+')')"
 
                     
                     -->
 
-                      <div v-show="item.id != ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
-                      <Transition name="columntext">
+                  <div v-show="item.id != ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
+                    <Transition name="columntext">
                       <textLabel v-bind:Show="item.id != ThisGrid.Row" v-bind:Recno="item.recno" v-bind:Id="item.id"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:position="ThisGrid[col.Name].position"
                         v-bind:style="ThisGrid[col.Name].style" v-bind:db="db"
                         @focus.capture.stop="eventos.push(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
                         @click.stop @focusout.stop>
                       </textLabel>
-                     </Transition>
-                    </div>
-                    <!--Componentes de captura
+                    </Transition>
+                  </div>
+                  <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
                               y el when del componente typescript-->
-                      <Transition name="columninput">
-                      <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
+                  <Transition name="columninput">
+                    <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
                       <component :is="impComp(ThisGrid[col.Name].prop.BaseClass)"
                         v-model:Value="ThisGrid[col.Name].prop.Value" v-model:Status="ThisGrid[col.Name].prop.Status"
                         v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Focus="ThisGrid[col.Name].Focus"
@@ -76,24 +76,24 @@
                         v-bind:Component="ref(ThisGrid.Form[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:style="ThisGrid[col.Name].style"
                         v-bind:position="ThisGrid[col.Name].position" v-bind:db="db"
-                        @focusout="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
+                        @focusout.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
                         @focus.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
                         :style="{ 'width': ThisGrid[col.Name].style.width }">
 
                       </component>
                     </div>
                   </Transition>
-                  </div>
-                </td>
+                </div>
+              </td>
 
-                <!--td>
+              <!--td>
                 <div class="left-btn hide-in-print" @click="borraRenglon(item.recno)">
                   <img src="/Iconos/delete.jpeg" width="23">
 
                 </div>
               </td-->
-              </tr>
-            
+            </tr>
+
             <tr>
               <td>
                 <!-------------  Si el numero de Columnas es menor que 2 y da un click genera nuevo registro
@@ -126,16 +126,12 @@
       <div class="break">
         <div class="controles" :disabled="!scroll.controls">
 
-          <span v-if="scroll.bottom" width="40" @click="appendRow()">
-            <img src="/Iconos/plus.jpeg" width="35">
-          </span>
-
-          <span v-show="ThisGrid.Row >= 0" width="40" class="left-btn hide-in-print"
-            @click.capture.stop="borraRenglon()">
-            <img src="/Iconos/delete.jpeg" width="35">
+          <span v-show="prop.addButton && scroll.bottom" width="40" @click="appendRow()">
+            <img src="/Iconos/add-color.svg" width="35">
           </span>
 
           <span v-show="scroll.page > 0">
+
             <span @click.capture.stop="first()">
               <img src="/Iconos/first.png" width="30">
             </span>
@@ -153,6 +149,16 @@
               <img src="/Iconos/last.png" width="30">
             </span>
           </span>
+
+          <span v-show="prop.deleteButton && ThisGrid.Row >= 0" width="40" class="left-btn hide-in-print"
+            @click.capture.stop="borraRenglon()">
+            <img src="/Iconos/delete-row.svg" width="45">
+          </span>
+
+          <span v-show="prop.saveData" @click.capture.stop="saveTable()">
+              <img src="/Iconos/save-color1.svg" width="45">
+          </span>
+
         </div>
       </div> <!-- break to a new row -->
     </form>
@@ -186,8 +192,9 @@ import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
+import container from "@/components/container.vue"
 //import Grid from "vue-virtual-scroll-grid";
-//const { $MessageBox } = useNuxtApp()
+
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -195,6 +202,7 @@ const emit = defineEmits(["update", "update:Value", "update:Status", "update:Err
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
+
   prop: {
     ToolTipText: string;
     View: "";
@@ -222,8 +230,10 @@ const props = defineProps<{
     Autofocus: false;
     RecordSource: string;
     Rows: number;
-    //    SetFocus:false;
-    //compAddress: any;
+    deleteButton: true;
+    addButton: true;
+    saveData:true;
+    updated:false;
   };
 
   style: {
@@ -249,7 +259,6 @@ const props = defineProps<{
 // Valores componente padre
 const Component = ref(props.Component)
 const ThisGrid = Component.value
-console.log('Gridd ThisGrid=====>', ThisGrid)
 ThisGrid['estatus'] = []
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
@@ -263,7 +272,7 @@ const Db = props.db.value // Vista que utilizara el grid
 
 // Valores propios
 const Value = ref(props.prop.Value);
-const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
+const Ref = ref(null) // Se necesita para tener referencia del :ref del componente  ref(props.prop.Ref)
 const Status = ref(props.prop.Status);
 const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
@@ -281,9 +290,6 @@ const scroll = reactive({
   rows: props.prop.Rows // Renglones que puede tener la pagina
 })
 
-
-
-
 /*  position
 static	Elements renders in order, as they appear in the document flow. ThisGrid is default.
 absolute	The element is positioned relative to its first positioned (not static) ancestor element
@@ -297,56 +303,6 @@ initial	Sets this property to its default value. Read about initial
 inherit	Inherits this property from its parent element. Read about inherit
 */
 
-// funciona para cualquier comoponente de este componente
-
-/////////////////////////////////////////
-// Metodo KeyPres Vfp
-// Este metodo se corre cada ves que se teclea cualquier cosa en el componente
-// Similar al keypress si  no esta el lasy
-/////////////////////////////////////////
-
-// string : String,
-//texto: Number,
-//boleano: Boolean,
-// arreglo: Array,
-// objeto: Object,
-//fecha: Date,
-//simbolo: Symbol,
-// valida: Function,
-
-// arreglo1: Object,
-// default: () => {},
-//    arreglo2: Array,
-//    default: () => [],
-
-// Vue dice no utilizar "this" dentro del setup segun Vue
-// al pasarle props se podra tomar todos los Valuees de props anteriormente definidos
-// como props.Value
-//The second argument passed to the setup function is the context. The context is a normal JavaScript object that exposes
-// three component properties:
-// Attributes (Non-reactive object)
-//    console.log(context.attrs)
-// Slots (Non-reactive object)
-//    console.log(context.slots)
-// Emit Events (Method)
-//    console.log(context.emit)
-//setup(props,context)
-//setup(props, { attrs, slots, emit })
-// Setup funciona de la misma forma que el actual data(), devolviendo un objeto con las propiedades
-// que serán usadas en el template:
-// Inicio Setup
-
-
-/////////////////////////////////////////
-// Metodo Release Vfp
-/////////////////////////////////////////
-/*
-const onUnmounted = () => {
-  //  console.log("Component unmounted!");
-};
-*/
-
-//const LocalDb = new localDb();
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
@@ -360,7 +316,6 @@ const emitValue = async () => {
   //console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
-
 
 
 /*
@@ -396,25 +351,6 @@ const keyPress = ($event) => {
   Key.value = key
 }
 
-/*
-////////////////////////////////////////
-// Hacer el set focus 
-///////////////////////////////////////
-watch(
-  () => Focus.value,
-  (new_val, old_val) => {
-    console.log('EditText Set Focus', props.prop.Name)
-    if (Focus.value) {
-      Ref.value.focus()
-      Ref.value.select()
-      Focus.value = false
-      emit("update:Focus", false)
-    }
-  },
-  { deep: false }
-);
-
-*/
 
 ///////////////////////////////////////////////
 // Cuando cambia el estatus de Inicial a Activo, emite valores  
@@ -475,14 +411,10 @@ watch(
   { deep: false }
 );
 
-
-
-/************************************************************************************ */
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
 // no ejecuta el evento
 /////////////////////////////////
-
 
 watch(
   () => eventos,
@@ -621,10 +553,8 @@ const loadData = async () => {
         }
         scroll.bottom = true
 
-
         break
       }
-
 
     }
 
@@ -734,6 +664,43 @@ const borraRenglon = async (recno?: number) => {
 
   }
 }
+
+const saveRow = async (recno?: number) => {
+  scroll.controls = false
+  if (!recno) {
+    //console.log('borraRenglon data Page====>',ThisGrid.Row,scroll.dataPage)
+
+    if (ThisGrid.Row < 0) return
+    // busca a cual recno pertenece el ThisGrid.Row
+    for (let i = 0; scroll.dataPage.length - 1; i++) {
+
+      if (scroll.dataPage[i].id == ThisGrid.Row) {
+        recno = scroll.dataPage[i].recno
+        break
+      }
+    }
+    if (!recno) return
+
+  }
+  //const { $MessageBox } = useNuxtApp()
+  if (await MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
+    eventos.push(ThisGrid.prop.Map + '.deleteRow(' + recno + ')')
+
+    ThisGrid.Row = -1 // Quitamos la posicion del renglon
+    console.log('delete borramos load_data', load_data)
+    load_data = true
+
+  }
+}
+
+const saveTable = async () => {
+  if (ThisGrid.Row < 0) return
+  scroll.controls = false
+  //const { $MessageBox } = useNuxtApp()
+  eventos.push(ThisGrid.prop.Map + '.grabaTabla()')
+  load_data = true
+}
+
 
 /////////////////////////////////////////
 // Metodo init Vfp

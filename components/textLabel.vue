@@ -1,10 +1,10 @@
 <template>
   <div v-if="prop.Visible" class="divi" :style="prop.Style">
     <div class="mensajes">
-      <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
+      <span class="etiqueta" :v-show="props.prop.textLabel>' '">{{ prop.textLabel + " " }}</span>
       <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
         <input v-if="prop.Type == 'checkBox'" :class="prop.Type" readonly="true" type="checkBox" :checked="checked" />
-        <input v-else readonly="true" :class="prop.Type" :v-show="Text > ' '" v-model="Text" />
+        <input v-else readonly="true" :class="prop.Type" :v-show="Text >' '" v-model="Text" />
     </div>
   </div>
 </template>
@@ -325,7 +325,7 @@ const renderComboBox = async () => {
   // toma el tamaño del arreglo solo de la primer columna
   var valor = null
 
-  if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
+  if (props.prop.ControlSource > '  ')  // Si Hay controSource asigna el valor leido
     valor = Text.value // null
   //valor = Value.value // null
 

@@ -213,6 +213,7 @@ export class VFPDB {
     try {
       // const response = await this.axiosCall(dat_vis)
       const response: any = await this.axiosCall(dat_vis)
+      
       if (response == null) {
         console.error('==== . No existe la tabla===>', alias)
         return false
@@ -325,7 +326,7 @@ export class VFPDB {
     } catch (error) {
       console.error(error)
 
-      return false
+      return null
       //  this.errorSql(error)
     }
   }
@@ -2529,6 +2530,52 @@ return false;
     }
     if (data[1].length > 0) { return data[1] }
     return null
+  }
+
+  /// //////////////////////////////
+  // Clona una vista local
+  // oldAlias: Vista local la cual se va clonar
+  // alias: Vista en donde quedara la vista clonada
+  // filters: Variables que filtraran la vista clonada
+  /// //////////////////////////////
+  public localClone = async (oldAlias:string,alias:string,filters:any) => {
+    
+    let where=''
+    console.log('DataBAse LocalCLone filters',filters)
+    for (const variable in filters){
+        if (where>' ')
+           where=where+' and '
+        
+        var cam=filters[variable]
+        var campo=''
+        const tipo=typeof cam
+        var comillas=''
+
+        switch (tipo) {
+          case "number":
+            campo=cam.toString()
+            break; 
+          case "bigint":
+            campo=cam.toString()
+            break;
+          case "boolean":
+            campo=cam ? '1':'0'
+            break;
+          case "string":
+            comillas="'"
+            campo=cam
+          break;
+        }
+          
+        where = where+`${variable}=${comillas}${campo}${comillas}`   
+    }    
+    if (where>'') where=' where '+where
+    const query=`DROP TABLE IF EXISTS ${alias} ;\
+              insert INTO ${alias} select * from ${oldAlias}  ${where}`
+ 
+     await this.localSql(query,'NEW')
+     await this.localSql(query,'OLD')
+     this.View[alias]=this.View[oldAlias]
   }
 
   /// //////////////////////////////

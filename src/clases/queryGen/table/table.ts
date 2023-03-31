@@ -43,7 +43,6 @@ export class table extends GRID {
     this.prop.BaseClass = 'Grid'
     this.prop.Position = 'main'
     this.prop.RecordSource=''
-    //this.prop.Image = "/Iconos/exit.png"
     this.style.fontSize = '16px'
     this.style.color = 'green'
     this.style.backgroundColor = 'white'
