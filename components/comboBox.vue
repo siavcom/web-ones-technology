@@ -1,6 +1,6 @@
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
-  <div class="divi" :style="style" v-if="prop.Visible" :disabled="prop.Disabled || prop.ReadOnly">
+  <div class="divi" :style="style" v-if="prop.Visible" :disabled="prop.Disabled || ReadOnly">
     <!--Etiqueta del componente -->
     <div class="mensajes">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -23,30 +23,30 @@
       <!--ComboBox -->
 
       <div v-else class="comboBox" :style='prop.componentStyle'>
-        <input class="text" ref="Ref" :readonly="prop.Style == 2 || prop.ReadOnly" type="text" :value="Resultado"
+        <input class="text" ref="Ref" :readonly="prop.Style == 2 || ReadOnly" type="text" :value="Resultado"
           @focusout="focusOut" stype="prop.style" />
 
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
-        <div class="toggle" v-if="toggle && !prop.ReadOnly">
+        <div class="toggle" v-if="toggle && !ReadOnly">
           <!--CheckBox -->
           <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
-            @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="prop.ReadOnly">
+            @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="ReadOnly">
             <!--Imprime Columnas -->
-            <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
+            <div class="columna" :disabled="ReadOnly" v-for="(text, col) in option.text" :key="col"
               :style="{ 'width': width[col], 'text-align': 'left' }">
               <label class="label" v-text="text" />
             </div>
           </div>
         </div>
-        <img class="imagen" v-if="!prop.Disabled && !prop.ReadOnly"
+        <img class="imagen" v-if="!prop.Disabled && !ReadOnly"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'"
-          @click.prevent="toggle = prop.ReadOnly == false ? !toggle.value : toggle.value" :tabindex="prop.TabIndex" />
+          @click.prevent="toggle = ReadOnly == false ? !toggle.value : toggle.value" :tabindex="prop.TabIndex" />
       </div>
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
         prop.ToolTipText
       }}</span>
-      <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && showError">{{ prop.ErrorMessage }}</span>
+      <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     </div>
     <span v-if="prop.ShowValue">{{ prop.Value }}</span>
   </div>
@@ -103,8 +103,9 @@ const props = withDefaults(defineProps<Props>(), {
   // Value: string;
   Recno: 0,
   Registro: 0,
-  //Component: null;
+  Component: null,
   prop: {
+    This:null,
     Name: "",
     textLabel: "",
     ToolTipText: "",
@@ -199,12 +200,15 @@ const Valid = ref(props.prop.Valid)
 Valid.value = true
 const ToolTipText = ref(true)
 
-//const This = Component.value
+const Component = ref(props.prop.This)
+const This = Component.value
+
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 const Resultado = ref("");
 //const width = reactive([{}]);
 const width = reactive(['60%', '20%', '20%']);
 
+const ReadOnly=ref(props.prop.ReadOnly)
 const Ref = ref(null)
 
 const Status = ref(props.prop.Status);
@@ -214,7 +218,7 @@ const hover = ref(false)
 const Focus = ref(props.prop.Focus)
 const First = ref(props.prop.First)
 
-const showError = ref(false)
+const ShowError = ref(false)
 
 
 Focus.value = false
@@ -265,6 +269,10 @@ const focusOut = async () => {
   ToolTipText.value = true  // Activamos el ToolTipText
   toggle.value = false
   console.log('ComboBox  focusOut===>', Value.value,Resultado.Value)
+
+  if (This.valid && await This.valid()==false)
+    ShowError.value=true
+
   return
 };
 
@@ -334,7 +342,7 @@ const validList = async () => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
   ToolTipText.value = false
-  showError.value = false
+  ShowError.value = false
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
 
@@ -365,6 +373,7 @@ const onFocus = async () => {
       }
       Valid.value = true
     }
+    ReadOnly.value=await !This.when()
     emit("update:Valid", true)
   }
   /*
@@ -702,7 +711,7 @@ watchSyncEffect(() => {
 watch(
   () => props.prop.Valid,
   (new_val, old_val) => {
-    if (!props.prop.Valid) showError.value = true
+    if (!props.prop.Valid) ShowError.value = true
   },
   { deep: false }
 );

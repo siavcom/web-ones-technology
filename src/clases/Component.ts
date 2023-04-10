@@ -25,7 +25,7 @@ export class COMPONENT {
   elements: [] = []
   prop = {
     Development : false,
-    This: {},
+    This: null,
     Name: "",
     textLabel: "",
     ToolTipText: '',
@@ -157,7 +157,7 @@ export class COMPONENT {
       //      console.log('Init ThisForm', this.Name, this.Form)
       TabIndex = 1
     }
-    console.log('Init TabIndex', this.Name, TabIndex,this)
+    //console.log('Init TabIndex', this.Name, TabIndex,this)
 
     this.Form = Form
     if(this.init)
@@ -216,10 +216,10 @@ export class COMPONENT {
       TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
       // Se quito de aqui ya que el Init corre el init de c/componente
     }
-    console.log('Component class main',main)
+   // console.log('Component class main',main)
     for (const i in main) {
       const comp=main[i]
-      console.log('for next',comp)
+      //console.log('for next',comp)
       this[comp].prop.TabIndex = TabIndex
       TabIndex++
       TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
@@ -265,6 +265,7 @@ export class COMPONENT {
   ///////////////////////////////////////////////////////////
   // InitForm : Iicializa los valores de toda la forma en cada/componente 
   ////////////////////////////////////////////////
+  /*
   public async InitForm_ant(Form: any) {
     const elements: [] = []
     //console.log('Inicializando componente Parent ===> ', this.prop.Name,this.Parent)
@@ -307,7 +308,7 @@ export class COMPONENT {
     // console.log('Init Componente this.Form',this.Form)
   }
 
-  
+  */
   /////////////////////////////////////////////////////////////////////
   // Valid
   // Descripcion: Cuando pierde el foco valida

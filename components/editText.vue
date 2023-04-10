@@ -44,12 +44,12 @@
         <input v-else class="text" ref="Ref" :style="prop.componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
           :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
           :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
-          @keypress="keyPress($event)" @focusout.capture="focusOut" @focus="onFocus">
+          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
         <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
           prop.ToolTipText
         }}</span>
-        <span class="errorText" v-show="prop.ShowError">{{ prop.ErrorMessage }}</span>
+        <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage }}</span>
       </div>
     </div>
   </div>
@@ -76,7 +76,7 @@ import {
 
 } from "vue" */
 //import { receiveMessageOnPort } from "worker_threads";
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", "update:ShowError", 'customChange']) //, "update:Ref"
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", 'customChange']) //, "update:ShowError", "update:Ref"
 
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -90,8 +90,9 @@ const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Stat
 const props = defineProps<{
   Recno: number;
   Registro: number;  // Se pone para el manejo de grid
-  Component: null;
+ // Component: null;
   prop: {
+    This:null;
     ToolTipText: string;
     View: "";
     Field: "";
@@ -162,8 +163,8 @@ const props = defineProps<{
   };
   db: any
 }>();
-const Component = ref(props.Component)
-//const This = Component.value
+const Component = ref(props.prop.This)
+const This = Component.value
 const Value = ref(props.prop.Value)
 const Recno = ref(props.Recno)
 const Valid = ref(props.prop.Valid)
@@ -176,12 +177,13 @@ const Key = ref(props.prop.Key)
 const Focus = ref(props.prop.Focus)
 // Focus.value = false
 const First = ref(props.prop.First)
+const ReadOnly=ref(props.prop.ReadOnly)
 
 
 
 
 var oldVal = Value.value
-const ShowError = ref(props.prop.ShowError)
+const ShowError =ref(false) //ref(props.prop.ShowError)
 const checkValue = ref(false)
 
 //var sw_dec = false // 
@@ -440,7 +442,6 @@ const focusOut = async () => {
     //console.log('checkBox focusOut =',checkValue.value,Value.value)
   }
 
-  console.log('Valid updateCampo===>', Value.value, props.prop.ControlSource, props.Recno)
   if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 3) {
     // actualiza valor en localDb
     const valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +Value.value : Value.value
@@ -450,7 +451,16 @@ const focusOut = async () => {
     // })
   }
   ToolTipText.value = true  // Activamos el ToolTipText
-  return await emitValue()
+  console.log('Valid updateCampo===>', Value.value, This)
+ 
+  await emitValue()
+
+  if (This.valid  ){
+    const error=await This.valid()
+    ShowError.value=!error
+    console.log('EditText valid',ShowError)
+  }
+  return 
 
 };
 /////////////////////////////////////////////////////////////////////
@@ -500,7 +510,7 @@ const onFocus = async () => {
   console.log('editText onFocus ', props.prop.Name, props.prop.ReadOnly)
   ToolTipText.value = false
   ShowError.value = false
-  emit("update:ShowError", false)
+ // emit("update:ShowError", false)
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
 
@@ -534,6 +544,8 @@ const onFocus = async () => {
   //console.log('onFocus elemento ===>', props.prop.Name, 'P')
   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
   //emit("update")
+  if (This.when  )
+    ReadOnly.value=await !This.when()
 }
 
 
@@ -667,7 +679,7 @@ watch(
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
 //          Componente
 //////////////////////////////////////////
-
+/*
 watch(
   () => props.prop.ShowError,
   (new_val, old_val) => {
@@ -676,7 +688,7 @@ watch(
   },
   { deep: false }
 );
-
+*/
 
 /////////////////////////////////////////////////////////
 // watch Value

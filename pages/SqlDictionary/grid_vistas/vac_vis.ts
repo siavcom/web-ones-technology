@@ -30,33 +30,32 @@ export class vac_vis extends COLUMN {
   }
 
   public async valid() {
-    console.log('vac_vis valid ', this.prop.Value)
-
+ 
     if (await super.valid()) {
       if (this.prop.Value.trim() == '') {
         this.prop.ErrorMessage='Dato en blanco'
-        this.prop.ShowError=true
-        this.prop.Valid=false
         return false
       }
-      const ins_sql=`select key_pri from vi_cap_ind where nom_ind='${this.prop.Value.trim()}'`
+      const indice=this.prop.Value.trim()
+      const ins_sql=`select key_pri from Now.vi_cap_ind where trim(nom_ind)='${indice}'`
       
       const res = await this.Form.db.localAlaSql(ins_sql)
 
-      console.log('vac_vis localSql ===>',ins_sql,res)
+     // console.log('vac_vis  valid indice ===>',indice,
+     // await this.Form.db.localAlaSql('select key_pri,nom_ind from Now.vi_cap_ind'))
 
 
       if (res.length==0){
-        this.prop.ErrorMessage='No existe este indice'
-        this.prop.ShowError=true
+        this.prop.ErrorMessage='No existe el indice'
+//        this.prop.ShowError=true
         this.prop.Valid=false
+
         return false
 
 
-      }  console.log('vac_vis res ===>', res)
-      return true
+      }  
     }
-    return false
+    return true
   }
 
 }

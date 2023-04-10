@@ -25,12 +25,7 @@ export class log_usu extends COMPONENT {
     this.prop.componentStyle.width ='150px'
 
   }
-  public valid = async () => {
-    console.log('Log_usu valid value', this.prop.Value)
-    const m = {};
-  }; // fin metodo valid
-
-
+  
   //////////////////////////
   // KeyPress
   // Descripcion: Cada tecla que se presiona en el input

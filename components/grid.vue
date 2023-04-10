@@ -49,6 +49,7 @@
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
                       @focus.capture.stop="eventos.push(ThisGrid.prop.Map + '.asignaRenglon(' + item.id + ','+col.Name+')')"
+                      v-model:Focus="ThisGrid[col.Name].Focus"
 
                     
                     -->
@@ -65,18 +66,20 @@
                   </div>
                   <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
-                              y el when del componente typescript-->
+                              y el when del componente typescript
+                     @focusout="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
+                       v-model:ShowError="ThisGrid[col.Name].prop.ShowError"
+
+                            -->
                   <Transition name="columninput">
                     <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
                       <component :is="impComp(ThisGrid[col.Name].prop.BaseClass)"
                         v-model:Value="ThisGrid[col.Name].prop.Value" v-model:Status="ThisGrid[col.Name].prop.Status"
-                        v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Focus="ThisGrid[col.Name].Focus"
+                        v-model:Key="ThisGrid[col.Name].prop.Key" 
                         v-model:Recno="ThisGrid[col.Name].Recno" v-model:Valid="ThisGrid[col.Name].prop.Valid"
-                        v-model:ShowError="ThisGrid[col.Name].prop.ShowError"
-                        v-bind:Component="ref(ThisGrid.Form[col.Name])" v-bind:Registro="item.recno"
+                        v-bind:Component="ref(ThisGrid[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:style="ThisGrid[col.Name].style"
                         v-bind:position="ThisGrid[col.Name].position" v-bind:db="db"
-                        @focusout.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
                         @focus.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
                         :style="{ 'width': ThisGrid[col.Name].style.width }">
 

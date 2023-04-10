@@ -6,6 +6,9 @@
 && Sistema  	: Siavcom  							Version : 10.0  VUE
 && Programa 	: Forma prinncipal   		Mnemo   : form.VUE
 && Ult. mod.	: Fernando Cuadras  				Fecha   : 13/Dic/2022
+&&            : Fdo Cuadras. 3/04/2023 - Se quita    @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
+&&                                        v-model:ShowError="ThisForm[compFooter].prop.ShowError" 
+&&                                        v-model:Focus="ThisForm[compHeader].Focus" 
 && Evento		: 
 && Objeto		: VUE
 && Comentarios	: Genera la forma dinamicamente en base al THISFORM que se pasa del comeponente padre
@@ -34,14 +37,13 @@
           <!--transition-group> --> 
           <div v-for="(compHeader) in ThisForm.header" :key="compHeader" >
 
-            <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')" v-bind:Component="ref(ThisForm[compHeader])"
+            <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
+             v-bind:Component="ref(ThisForm[compHeader])"
               v-model:Value="ThisForm[compHeader].prop.Value" v-model:Status="ThisForm[compHeader].prop.Status"
-              v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
-              v-model:Focus="ThisForm[compHeader].Focus" v-model:Recno="ThisForm[compHeader].Recno"
+              v-model:Recno="ThisForm[compHeader].Recno"
               v-bind:Registro="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
               v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
               v-bind:position="ThisForm[compHeader].position"
-              @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
               @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
             </component>
           </div>
@@ -60,12 +62,10 @@
             <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
               <component :is="impComp(ThisForm[compMain].prop.BaseClass,'main')" v-bind:Component="ref(ThisForm[compMain])"
                 v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
-                v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
+                v-model:Recno="ThisForm[compMain].Recno"
                 v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
                 v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                 v-bind:position="ThisForm[compMain].position" v-bind:db="ref(ThisForm.db)"
-                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
                 @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
             </div>
@@ -93,12 +93,13 @@
                 v-bind:Component="ref(ThisForm[compFooter])"
                 v-model:Value="ThisForm[compFooter].prop.Value" 
                 v-model:Status="ThisForm[compFooter].prop.Status"
-                v-model:ShowError="ThisForm[compFooter].prop.ShowError" 
                 v-model:Key="ThisForm[compFooter].prop.Key"
-                v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno" v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 :
-                ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
+                v-model:Recno="ThisForm[compFooter].Recno" 
+                v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 :
+                ThisForm[compFooter].Recno" 
+                v-bind:prop="ThisForm[compFooter].prop"
                 v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
-                v-bind:db="ref(ThisForm.db)" @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')"
+                v-bind:db="ref(ThisForm.db)"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                 @click.stop.prevent="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
             </div>

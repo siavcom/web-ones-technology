@@ -106,6 +106,7 @@ export class FORM extends COMPONENT {
   ////////////////////////////////////////////////
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
+   /* 
   public async Init_ant() {  //Form est?: any
     this.init() // Corre el init de la forma
     let  TabIndex= 1
@@ -182,7 +183,7 @@ export class FORM extends COMPONENT {
     console.log('Form init footer',this.footer)
     console.log('Form init elements',this.elements)
   }
-
+*/
 
   public Salir = new class extends COMPONENT {
 
