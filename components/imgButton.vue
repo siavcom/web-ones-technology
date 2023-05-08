@@ -1,20 +1,17 @@
 <template>
-  <div class="divibutton"  v-show="prop.Visible" :style="style">
+  <div class="divibutton" v-show="prop.Visible" :style="style">
     <div class="mensajes">
-      
+
       <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly" :tabindex="prop.TabIndex"
-        
-        @focusout="focusOut" @focus="onFocus" >
-        <img class="img" :src="prop.Image" 
-            :alt="prop.Value" 
-            :disabled="prop.ReadOnly" 
-            
-        />
-        <label v-if="prop.Image.length > 0" :style="{'word-wrap':'break-word','font-size':style.fontSize,'color':style.color }"
-           :disabled="prop.ReadOnly"
-          v-show="prop.Visible">{{prop.Value}}</label>
+        @focusout="focusOut" @focus="onFocus">
+        <img class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly" />
+        <label v-if="prop.Image.length > 0"
+          :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
+          :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
       </button>
-      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{ prop.ToolTipText }}</span>
+      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
+        prop.ToolTipText
+      }}</span>
     </div>
   </div>
 </template>
@@ -135,13 +132,67 @@ const onFocus = async () => {
 </script>
 <style scoped >
 
-.divibutton{
-  border-radius: 10% ; 
+/* Tooltip and error container */
+div.mensajes {
+  position: relative;
+/*  display: inline-block;*/
+ /* border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  /*min-width: 50%; */
+}
+
+/* Tooltip text */
+div.mensajes .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #76a184 ;/*rgb(115, 181, 243);*/
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  z-index: 2;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  
+}
+
+/* Tooltip arrow */
+div.mensajes .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+div.mensajes:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+.divibutton {
+  border-radius: 10%;
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
   box-sizing: "border-box";
 }
-.button{
-  background-color:bind("props.style.backgroundColor")
+
+.button {
+  background-color: bind("props.style.backgroundColor")
 }
 </style>
 

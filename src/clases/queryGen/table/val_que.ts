@@ -16,12 +16,11 @@ export class val_que extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.prop.Order = 1
         this.textLabel = 'Valor'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'text'
-        this.prop.ReadOnly = true
-        this.prop.ControlSource = 'query.val_que'
-//        this.style.width = '15px'
+ //       this.prop.ControlSource = 'query.val_que'
+        this.style.width = '200px'
     }
+
 }

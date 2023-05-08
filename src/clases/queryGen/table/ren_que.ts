@@ -16,13 +16,12 @@ export class ren_que extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.prop.Order = 1
-        this.textLabel = 'Renglon'
+        this.textLabel = 'Ren'
         this.prop.BaseClass = 'editText'
-        this.prop.Type = 'numeric'
+        this.prop.Type = 'number'
         this.prop.ReadOnly = true
-        this.prop.ControlSource = 'query.recno'
-//        this.style.width = '15px'
+        this.prop.Decimals=0
+        this.style.width = '25px'
+        
     }
-
 }

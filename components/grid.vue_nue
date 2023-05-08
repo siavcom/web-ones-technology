@@ -1,12 +1,17 @@
+<!-- Grid  
+&& props.db.value
+props.db.value
+
+-->
 <template>
-  <div class="divi" v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && Db.View[prop.RecordSource]"
-     :style="style" ref="Ref">
+  <div v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && Db.View[prop.RecordSource]" class="divi"
+    :style="style" ref="Ref">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <form class="gridDatos">
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
-      <h2 v-if="prop.textLabel.length>0 ">{{ prop.textLabel }}</h2>
+      <h2>{{ prop.textLabel }}</h2>
       <div class="tabla">
         <table>
           <thead>
@@ -47,8 +52,11 @@
                   <!--template style="ThisGrid[col.Name].style" -->
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
-                        @focus.capture.stop="eventos.push(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+                      @focus.capture.stop="eventos.push(ThisGrid.prop.Map + '.asignaRenglon(' + item.id + ','+col.Name+')')"
+                      @focus.capture.stop="eventos.push(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+"ejeEvento(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
 
+                      v-bind:db="db"
                     
                     -->
 
@@ -56,15 +64,21 @@
                     <Transition name="columntext">
                       <textLabel v-bind:Show="item.id != ThisGrid.Row" v-bind:Recno="item.recno" v-bind:Id="item.id"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:position="ThisGrid[col.Name].position"
-                        v-bind:style="ThisGrid[col.Name].style" 
-                        @focus.capture.stop="ejeEvento(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
-                        @click.stop @focusout.stop>
+                        v-bind:style="ThisGrid[col.Name].style"
+                        @click.capture.stop="evento=`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`"
+                        @focus.stop
+                        @focusout.stop>
                       </textLabel>
                     </Transition>
                   </div>
                   <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
-                              y el when del componente typescript-->
+                              y el when del componente typescript
+                      v-bind:db="db"      
+                            
+                            
+                            
+                            -->
                   <Transition name="columninput">
                     <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
                       <component :is="impComp(ThisGrid[col.Name].prop.BaseClass)"
@@ -72,12 +86,11 @@
                         v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Focus="ThisGrid[col.Name].Focus"
                         v-model:Recno="ThisGrid[col.Name].Recno" v-model:Valid="ThisGrid[col.Name].prop.Valid"
                         v-model:ShowError="ThisGrid[col.Name].prop.ShowError"
-                        v-bind:Show="true"
                         v-bind:Component="ref(ThisGrid.Form[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:style="ThisGrid[col.Name].style"
-                        v-bind:position="ThisGrid[col.Name].position" 
-                        @focusout.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
-                        @focus.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
+                        v-bind:position="ThisGrid[col.Name].position"
+                        @focusout.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
+                        @focus.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
                         :style="{ 'width': ThisGrid[col.Name].style.width }">
 
                       </component>
@@ -156,7 +169,7 @@
           </span>
 
           <span v-show="prop.saveData" @click.capture.stop="saveTable()">
-              <img src="/Iconos/save-color1.svg" width="45">
+            <img src="/Iconos/save-color1.svg" width="45">
           </span>
 
         </div>
@@ -232,8 +245,8 @@ const props = defineProps<{
     Rows: number;
     deleteButton: true;
     addButton: true;
-    saveData:true;
-    updated:false;
+    saveData: true;
+    updated: false;
   };
 
   style: {
@@ -253,7 +266,7 @@ const props = defineProps<{
   };
   Recno: 0;
   Component: null;
-  //db: any
+  //  db: any
 
 }>();
 // Valores componente padre
@@ -263,8 +276,9 @@ ThisGrid['estatus'] = []
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
+const evento = ref('')
+const formEventos=ref(ThisGrid.Form.eventos)
 
-//const Db = props.db.value // Vista que utilizara el grid
 const Db = ThisGrid.Form.db // Vista que utilizara el grid
 
 //console.log('grid  view.value Db ====>',Db)
@@ -353,6 +367,33 @@ const keyPress = ($event) => {
 }
 
 
+
+///////////////////////////////////////////////
+// Cuando cambia el estatus de Inicial a Activo, emite valores  
+///////////////////////////////////////////////
+
+watch(
+  () => evento.value,
+  (new_val, old_val) => {
+    if (new_val == '')
+      return
+  
+    for (const comp in ThisGrid.estatus) {
+      //console.log('Watch estatus ===>', comp, ThisGrid.estatus[comp])
+
+      if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') {
+        Status.value = 'P';  // Cambia el estatus del grid a Proceso
+        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+      }
+    }
+    formEventos.value.push(new_val) // emitimos los eventos a la forma padre
+
+    console.log('Grid watch evento 2 ====>>>',new_val)
+
+  },
+  { deep: false }
+);
+
 ///////////////////////////////////////////////
 // Cuando cambia el estatus de Inicial a Activo, emite valores  
 ///////////////////////////////////////////////
@@ -377,6 +418,11 @@ watch(
   },
   { deep: false }
 );
+
+
+
+
+
 
 ///////////////////////////////////////////////
 // Cuando se cambia el RecordSource  
@@ -403,7 +449,7 @@ watch(
 
     if (props.prop.Visible && !old_val &&
       props.prop.RecordSource.length > 3) {
-      //  console.log('watch Visible ===>',This.Parent.Name)
+      //console.log('watch Visible ===>', scroll)
 
       loadData()
 
@@ -420,7 +466,7 @@ watch(
 watch(
   () => eventos,
   (new_val, old_val) => {
-
+    console.log('Grid watch eventos', new_val)
     for (const comp in ThisGrid.estatus) {
       //console.log('Watch estatus ===>', comp, ThisGrid.estatus[comp])
 
@@ -497,14 +543,15 @@ watch(
 );
 
 
-
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal
 // En caso que hay una estatus de un componente
 // no ejecuta el evento
 /////////////////////////////////
-const ejeEvento = (newEvento: string) => {
-  console.log('Grid ejeEvento', newEvento)
+const ejeEvento = (eventoEjecutar: string) => {
+  if (eventos.length == 0)
+    return
+  console.log('Grid ejeEvento', eventoEjecutar)
 
   for (const comp in ThisGrid.estatus) {
 
@@ -516,8 +563,7 @@ const ejeEvento = (newEvento: string) => {
     }
   }
 
-  ThisGrid.Form.eventos.push(newEvento) // emitimos los eventos a la forma padre
-
+  ThisGrid.Form.eventos.push(evenEjecutar) // emitimos los eventos a la forma padre
 }
 
 

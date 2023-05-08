@@ -197,7 +197,7 @@ div.imagen {
   width: 180px;
   /* se quita el directorio /public
   background-image: url("/public/img/Logo_Empresa.png");*/
-  background-image: url("/Iconos/Logo_Empresa.png");
+  background-image: url("/public/Iconos/Logo_Empresa.png");
   /* opacity: 0.5;*/
 }
 

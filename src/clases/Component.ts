@@ -16,13 +16,15 @@ export class COMPONENT {
   db: any
   Recno: number
   Ref: null | undefined
+  Show: true
   //Focus: boolean = false
   Index!: number
-  header: [] = []
-  main: [] = []
-  footer: [] = []
-
-  elements: [] = []
+  header: [] = [] // elementos que tiene el componente en header
+  main: [] = []   // elementos que tiene el componente en main
+  footer: [] = [] // elementos que tiene el componente en footer
+  //elements: [] = [] // elementos que tiene el componente
+  status: null | undefined   // status de todos los hijos del componente
+  
   prop = {
     Development : false,
     This: null,
@@ -44,6 +46,7 @@ export class COMPONENT {
     Status: "I",
     ErrorMessage: '',
     ShowError: false,
+    ShowValue: false,
     TabIndex: 0,
     BaseClass: "editText",
     Type: "text",
@@ -160,9 +163,7 @@ export class COMPONENT {
     //console.log('Init TabIndex', this.Name, TabIndex,this)
 
     this.Form = Form
-    if(this.init)
-        await this.init() // Corre el init principal
-        
+           
     let maxTabIndex = 1
     let id = 0
     //let comp = {}
@@ -258,7 +259,12 @@ export class COMPONENT {
     */
     this.prop.Status = 'A'
 
-    console.log('Component init', this.Name, this.prop.Map)
+//    console.log('Component init', this.Name, this.prop.Map)
+    
+    if(this.init){
+      console.log('Component init', this.Name, this.prop.Map)
+      await this.init() // Corre el init principal
+    }
     return TabIndex
   }
 
@@ -317,6 +323,15 @@ export class COMPONENT {
     this.prop.Valid = true
     return true
   }
+
+/////////////////////////////////////////////////////////////////////
+// interactiveChange
+// Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
+////////////////////////////////////////////////////////////////////
+
+ public async interactiveChange() {
+ }
+
 
   /////////////////////////////////////////////////////////////////////
   // Click

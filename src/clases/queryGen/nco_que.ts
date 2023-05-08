@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // BaseClass : component
-// Class : num_con
+// Class : nco_que
 // Description : Numero de Condicion
 // Author : El Fer Blocks
 // Creation : 2023-03-13
@@ -12,21 +12,18 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class num_con extends COMPONENT {
+export class nco_que extends COMPONENT {
 
   constructor() {
     super()
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = 'Número de condición'
+  
     this.prop.Type = 'spinner'
     this.prop.BaseClass = 'editText'
-    this.prop.textLabel='Número de condición'
+    this.prop.textLabel='Número'
     this.prop.Value=0
-    this.prop.ControlSource = ''
-    this.prop.Placeholder = ''
-    this.prop.ToolTipText = ''
     this.prop.Position = 'main'
     this.prop.Min = "0"
     this.prop.Max = "999"
@@ -34,50 +31,68 @@ export class num_con extends COMPONENT {
     this.prop.Capture = true
     this.prop.componentStyle.width='40px'
     this.prop.usu_que=''
+    this.prop.Visible=false
     //this.style.width='30px'
-
-
-
   }
 
-  async valid(){
+  public async valid(){
     this.interactiveChange()
+    return true
   }
   ////////////////////////////////// 
   // Interactive Change 
   ///////////////////////////////////
 
   async interactiveChange() {
-    console.log('num_con interactiveChange this',this)
-    const ThisForm = this.Form
-    const vfp = ThisForm.db
+    console.log('InteractiveChange ',this.Parent.Name,this.Name)
     const tabla=this.Parent.tabla
     this.Parent.query.prop.Value = ''
+    this.Parent.bt_edit.prop.Visible=false
+    this.Parent.bt_delete.prop.Visible=false
+    this.Parent.table.prop.Visible=false
     this.Parent.query.prop.Visible = false
+    var query=''
+    if (this.prop.Value<=0){
+      this.prop.Value=1
+    }
+ 
+    const q = {
+      usu_que: this.Parent.prop.usu_que,
+      nco_que: this.Parent.nco_que.prop.Value,
+      prg_prg: this.Parent.prop.Name,
+    }
 
-    if (this.prop.Value==0)
-       return
-       
-    const RecordSource=this.Parent.prop.RecordSource
-    const ins_sql = `select * From 'vi_cap_query_db'  \
-          where num_con=${this.prop.Value} `
+    const RecordSource=this.Parent.table.prop.RecordSource
+    console.log('nco_que localSql',await this.Form.db.localSql('select * from vi_cap_query_db'))
 
-    const data = await vfp.localSql(ins_sql,RecordSource)
+    const ins_sql = `select * From vi_cap_query_db  \
+          where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`
+
+    const data = await this.Form.db.localSql(ins_sql)
+
+   // console.log('nco_que interactiveChange data',data)
 
     if (data.length == 0) {
-      this.Form.query = ''
+      if (this.prop.Value==1)
+         return 
+
+      this.prop.Value=this.prop.Value-1
+      this.interactiveChange()
       return
     } // Endif (
-
+    this.prop.ReadOnly= false
+    
     let sig_uni = ' '
-    this.Parent.query.prop.Value=''
+    
+ 
+
     for (let i = 0; i < data.length; i++) {
 
       const m = data[i] //Scatter Memvar
 
       sig_uni = 'Y'
 
-      switch (m.uni_que) {
+      switch (m.uni_que.trim()) {
         case "AND":
           sig_uni = ' "Y" '
           break
@@ -89,7 +104,8 @@ export class num_con extends COMPONENT {
       }
 
       let con_uni = ' '
-      switch (m.con_que) {
+      
+      switch (m.con_que.trim()) {
         case '> ':
           con_uni = ' MAYOR QUE '
           break
@@ -127,7 +143,7 @@ export class num_con extends COMPONENT {
           break
 
         case '<>':
-          ' Dif (ERENTE QUE '
+          ' DIFERENTE QUE '
           break
 
         case 'NOCHAR':
@@ -135,21 +151,20 @@ export class num_con extends COMPONENT {
           break
 
       }
-      this.Parent.query.prop.Value = this.Form.query.prop.Value + m.pai_que + m.des_dat.trim() + con_uni + m.val_que.trim() + m.pad_que + sig_uni
+      query = query + m.pai_que + m.ref_dat.trim() + con_uni + m.val_que.trim() + m.pad_que + sig_uni
+    } // EndFor (
+
+    if (sig_uni.length > 0) {
+      query = await left(query, query.length - sig_uni.length)
     } // Endif (
-
-    if (sig_uni.length > 2) {
-      this.Form.query.prop.Value = left(this.Form.query.prop.Value, this.Form.prop.tex_con.prop.Value.length - 5)
-    } // Endif (
-
-
     
+
+    this.Parent.query.prop.Value=query
+    this.Parent.query.prop.Visible = true
+    this.Parent.bt_edit.prop.Visible=true
+
     return true
   }
-
-
-
-
 
   ////////////////////////////////// 
   // event when 
@@ -157,7 +172,7 @@ export class num_con extends COMPONENT {
 
   async when() {
 //    this.prop.Parent.browseResult.prop.RowSource = ''
-    this.Parent.table.RecordSource=''
+    //this.Parent.table.RecordSource=''
 
     return true
   }
@@ -173,14 +188,5 @@ export class num_con extends COMPONENT {
   }
   */
 
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
+  
 }

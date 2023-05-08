@@ -35,7 +35,7 @@ const session = Session()
 
 export class VFPDB {
   // propiedades de las clases
-  AlaSql= alasql
+  AlaSql = alasql
   name: string = 'VFPDB'
   url: string
   nom_emp: string
@@ -82,13 +82,13 @@ export class VFPDB {
     /// //////////////////////////////////////
 
     // recupera datos de conexion
-    this.id_con = session.id_con==undefined ? '': session.id_con
+    this.id_con = session.id_con == undefined ? '' : session.id_con
     this.user = session.user
     this.url = session.url // obtenemos el url del servidor node
     this.nom_emp = session.nom_emp
     console.log('DataBase session.id ===>>>>', this.id_con)
 
-    if (this.id_con.length < 16 ) {
+    if (this.id_con.length < 16) {
       const router = useRouter()
       router.push('/Login')
       return
@@ -213,7 +213,7 @@ export class VFPDB {
     try {
       // const response = await this.axiosCall(dat_vis)
       const response: any = await this.axiosCall(dat_vis)
-      
+
       if (response == null) {
         console.error('==== . No existe la tabla===>', alias)
         return false
@@ -380,14 +380,14 @@ export class VFPDB {
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
       if (this.View[alias].exp_indice.trim().length > 0) {
-        try{
-        exp_ind = eval(this.View[alias].exp_indice.trim())
-        }catch (error) {
-          console.error(error,'USE '+alias+' exp_ind=',this.View[alias].exp_indice.trim())
-    
+        try {
+          exp_ind = eval(this.View[alias].exp_indice.trim())
+        } catch (error) {
+          console.error(error, 'USE ' + alias + ' exp_ind=', this.View[alias].exp_indice.trim())
+
           return false
         }
-        console.log('USE '+alias+' exp_ind', m, exp_ind)
+        console.log('USE ' + alias + ' exp_ind', m, exp_ind)
         if (exp_ind == undefined) {
           MessageBox('No se pudo evaluar el indice de la tabla=' + alias + ' indice=' + this.View[alias].exp_indice)
           return false
@@ -398,19 +398,19 @@ export class VFPDB {
 
         const val_eval = '`' + this.View[alias].exp_where.trim() + '`'
         console.log('use eval where ', val_eval, m)
-      
+
         try {
-           exp_whe = eval(val_eval)
+          exp_whe = eval(val_eval)
         }
         catch (error) {
-          console.error('eval =',val_eval,error)
-    
+          console.error('eval =', val_eval, error)
+
           return false
         }
-        
-        
-        
-        
+
+
+
+
         if (exp_whe == undefined) {
           MessageBox('No se pudo evaluar el la expresion where de la tabla=' + alias + ' indice=' + this.View[alias].exp_where)
           return false
@@ -438,11 +438,11 @@ export class VFPDB {
 
       console.log('use eval dat_vis ===>', val_eval)
       try {
-      eval('dat_vis.where=' + val_eval)
+        eval('dat_vis.where=' + val_eval)
       }
       catch (error) {
         console.error(error)
-  
+
         return false
       }
 
@@ -621,9 +621,10 @@ export class VFPDB {
         const datos = await this.localAlaSql(ins_sql)
         // console.log('tableUpdate select Now ',ins_sql,datos)
 
-        if (datos.length > 0) { 
-          old_dat = datos[0] }
-           else {
+        if (datos.length > 0) {
+          old_dat = datos[0]
+        }
+        else {
           console.error('tableUpdate error recno ', row, dat_act[row].recno, await this.localAlaSql(` SELECT * FROM Last.${alias} `))
           return false
         }
@@ -632,8 +633,8 @@ export class VFPDB {
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
       const m = {} // valiables en memoria
       //  recorremos todos los campos del registro  actualizar
-      for (const campo in dat_act[row]) { 
-         console.log('DataBAse campo=',campo)
+      for (const campo in dat_act[row]) {
+        console.log('DataBAse campo=', campo)
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
         switch (typeof dat_act[row][campo]) {
@@ -676,10 +677,11 @@ export class VFPDB {
         // const where = eval(this.View[nom_tab].exp_indice)
         const where = this.View[nom_tab].exp_indice
         try {
-        eval('dat_vis.where=' + where)}
+          eval('dat_vis.where=' + where)
+        }
         catch (error) {
           console.error(error)
-    
+
           return false
         }
         // console.log('tableUpdate dat_vis.where',dat_vis.where)
@@ -782,12 +784,12 @@ export class VFPDB {
     let recno = 0
     // Obtenemos el valor del siguiente recno
     const res = await this.localAlaSql('USE Now; select max(recno)+1 as recno from ' + alias)
-   
+
     if (res[1] && res[1][0].recno > 0) { // si hay registro
       recno = res[1][0].recno
     } else { recno = 1 } // Si es el primer registro
     // Obtiene valores default para insertar
-   
+
 
     const valores = { recno }
     const vis_act = this.View[alias].tablaSql
@@ -795,12 +797,12 @@ export class VFPDB {
     for (const campo in this.View[vis_act].val_def) {
       // const val_eval="`"+this.View[alias].val_def[valor]+"`"
       const val_eval = this.View[vis_act].val_def[campo]
-      let val_defa=null
-      try{
-         val_defa = eval(val_eval)
-      }catch (error) {
+      let val_defa = null
+      try {
+        val_defa = eval(val_eval)
+      } catch (error) {
         console.error(error)
-  
+
         return false
       }
       valores[campo] = val_defa
@@ -808,7 +810,7 @@ export class VFPDB {
     if (!valores.timestamp) { valores.timestamp = 0 }
 
     // const val_defa = eval(this.View[alias].val_def)
-    console.log('DataBAse appendBlank alias ', alias,valores)
+    console.log('DataBAse appendBlank alias ', alias, valores)
 
     await this.localAlaSql('USE Now;\
     INSERT INTO Now.' + alias + ' VALUES ?', [valores])
@@ -824,7 +826,7 @@ export class VFPDB {
     this.View[alias].recnoVal.push({ recno, id }) // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 // asignamos nuevo row
-    console.log('DataBAse appendBlank RecnoVal=====>',alias, this.View[alias].recnoVal)
+    console.log('DataBAse appendBlank RecnoVal=====>', alias, this.View[alias].recnoVal)
 
     return valores
 
@@ -1049,15 +1051,15 @@ export class VFPDB {
 
       console.log('execute alias', alias, this.View)
       if (alias.toUpperCase() == 'MEMVAR') {
-           return respuesta
+        return respuesta
       }
 
       if (alias.toUpperCase() == 'JSON') {
-      const json = JSON.parse(respuesta);  ;  
+        const json = JSON.parse(respuesta);;
         return json
-   }
+      }
 
-   this.View[alias] = {} // Generamos el nuevo alias
+      this.View[alias] = {} // Generamos el nuevo alias
       this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
       this.View[alias].data = {} // asignamos el valor del ultimo registro
       this.View[alias].recCount = 0 // Total de registros de la vista
@@ -1580,6 +1582,7 @@ export class VFPDB {
       this.View[alias].row = -1 // Renglon posicionado el registro
 
       // agregamos toda la definicion de la tabla
+
       if (!respuesta.est_tabla) { // Si no hay estructura de la tabla
         /// ///   Obtiene la Estructura
         const dat_est = {
@@ -1612,6 +1615,8 @@ export class VFPDB {
 
         /// /////////////////////////////
       }
+      this.View[alias].est_tabla = respuesta.est_tabla  // estructura de la tabla
+
       // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
       let des_tab = ' CREATE TABLE ' + alias + ' (recno INT PRIMARY KEY'
 
@@ -2119,7 +2124,7 @@ return false;
     const ThisForm: any = this.Form
 
     if (!(this.id_con > ' ')) {
-       MessageBox(
+      MessageBox(
         'No hay conexion con la base de datos', 16,
         'Error SQL Open'
       )
@@ -2192,7 +2197,7 @@ return false;
   public async localAlaSql(ins_sql: string, datos?: any) {
 
     try {
-      console.log('DataBase localAlaSql=====>>',ins_sql)
+      console.log('DataBase localAlaSql=====>>', ins_sql)
       let resultado: []
       if (!datos)
         resultado = await alasql(ins_sql)
@@ -2203,7 +2208,7 @@ return false;
     } catch (error) {
 
       console.error('localSql error==>', error)
-      MessageBox(error, 16,
+      MessageBox(ins_sql + ' ' + error, 16,
         'Error Ala SQL ')
 
       return false
@@ -2534,48 +2539,125 @@ return false;
 
   /// //////////////////////////////
   // Clona una vista local
-  // oldAlias: Vista local la cual se va clonar
+  // baseAlias: Vista local la cual se va clonar
   // alias: Vista en donde quedara la vista clonada
   // filters: Variables que filtraran la vista clonada
   /// //////////////////////////////
-  public localClone = async (oldAlias:string,alias:string,filters:any) => {
-    
-    let where=''
-    console.log('DataBAse LocalCLone filters',filters)
-    for (const variable in filters){
-        if (where>' ')
-           where=where+' and '
-        
-        var cam=filters[variable]
-        var campo=''
-        const tipo=typeof cam
-        var comillas=''
+  public localClone = async (baseAlias: string, alias: string, filters: any,force?:boolean) => {
+    alias = alias.trim()
+    let where = ''
+    console.log('DataBAse LocalCLone filters', filters)
+    for (const variable in filters) {
+      if (where > ' ')
+        where = where + ' and '
 
-        switch (tipo) {
-          case "number":
-            campo=cam.toString()
-            break; 
-          case "bigint":
-            campo=cam.toString()
-            break;
-          case "boolean":
-            campo=cam ? '1':'0'
-            break;
-          case "string":
-            comillas="'"
-            campo=cam
+      var cam = filters[variable]
+      var campo = ''
+      const tipo = typeof cam
+      var comillas = ''
+      var com_trim = ''
+      var ter_trim = ''
+      switch (tipo) {
+        case "number":
+          campo = cam.toString()
           break;
-        }
-          
-        where = where+`${variable}=${comillas}${campo}${comillas}`   
-    }    
-    if (where>'') where=' where '+where
-    const query=`DROP TABLE IF EXISTS ${alias} ;\
-              insert INTO ${alias} select * from ${oldAlias}  ${where}`
- 
-     await this.localSql(query,'NEW')
-     await this.localSql(query,'OLD')
-     this.View[alias]=this.View[oldAlias]
+        case "bigint":
+          campo = cam.toString()
+          break;
+        case "boolean":
+          campo = cam ? '1' : '0'
+          break;
+        case "string":
+          comillas = "'"
+          campo = cam.trim()
+          com_trim = 'trim('
+          ter_trim = ')'
+          break;
+      }
+
+      where = where + `${com_trim} ${variable} ${ter_trim}=${comillas}${campo}${comillas}`
+    }
+    if (where > '') where = ' where ' + where
+    
+    console.log('DataBase Clone where ', where)
+
+    if (!this.View[alias] || force) { // si no existe el alias
+      this.View[alias] = this.View[baseAlias] // Copiamos su definicion
+
+      // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
+      let des_tab = ' CREATE TABLE ' + alias + ' (recno INT PRIMARY KEY'
+      const est_tabla = this.View[alias].est_tabla
+      for (const nom_ele in est_tabla) { // genera la descripcion de la tabla para generarla en alasql
+        des_tab = des_tab + ',' + nom_ele + ' ' + est_tabla[nom_ele].tip_cam
+      }
+
+      des_tab = des_tab + ');'
+      // Creamos la tablas
+      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ' + des_tab + '; ')
+
+      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ' + des_tab + '; ')
+
+      //console.log('clone DB ',    await this.localAlaSql('select * from '+ alias ))
+
+    }
+
+    // borramos los datos
+    this.useNodata(alias)
+    /*
+        this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
+        this.View[alias].data = {} // asignamos el valor del ultimo registro
+        this.View[alias].recCount = 0 // Total de registros de la vista
+        this.View[alias].recno = 0 // Registro en cero
+        this.View[alias].eof = false // Fin de archivo
+        this.View[alias].bof = false // Principio de archivo
+        this.View[alias].row = -1 // Renglon posicionado el registro
+    */
+    /////////////////
+
+
+    //console.log('Clone Datos  ',baseAlias,alias,await this.localSql(`select * from Now.${baseAlias}  ${where}`))
+
+    // var query = `select * INTO ${alias} from Now.${baseAlias}  ${where}`
+    var query = `select *  from Now.${baseAlias}  ${where}`
+
+    const respuesta = await this.localSql(query)
+    console.log('Clone respuesta ', query, respuesta)
+    //query = `select *  from Now.${alias} `
+    //const respuesta = await this.localSql(query)
+
+    // Generamos el campo recno
+    if (respuesta.length > 0) {
+      const recnoVal = []
+      for (let i = 0; i < respuesta.length; i++) {
+        const recno = respuesta[i].recno
+        respuesta[i].recno = i + 1
+        /*  if (respuesta[i].recno!=recno){
+           query = `update Now.${alias} set recno=${respuesta[i].recno} where recno=${recno} `
+           await this.localSql(query)
+         }
+        */
+
+
+        recnoVal[i] = { recno: i + 1, id: i }
+        await this.localAlaSql('INSERT INTO Now.' + alias + ' VALUES ?', [respuesta[i]])
+        await this.localAlaSql('INSERT INTO Last.' + alias + ' VALUES ?', [respuesta[i]])
+
+      }
+
+      console.log('Clone Last ', await this.localSql('select * from Last.' + alias))
+
+      //Generamos el Last
+      //query = `select * INTO Last.${alias} from New.${alias}`
+      // await this.localSql(query)
+
+      // console.log('Clone Datos  Last',await this.localSql(`select * from Last.${alias} `))
+      this.View[alias].recno = respuesta.length // asignamos el ultimo numero registro de trabajo
+      this.View[alias].recCount = respuesta.length // registros totales
+      //    this.View[alias]["tablaSql"] = alias // tabla en servidor SQL
+      this.View[alias].data = respuesta[respuesta.length - 1] // asignamos el valor del ultimo registro
+      this.View[alias].recnoVal = [...recnoVal] // utilizamos el spread Operator
+    }
+  
   }
 
   /// //////////////////////////////
@@ -2586,18 +2668,6 @@ return false;
     // console.log('VfpCursor ==>', data)
     return data
   }
-
-/// /////////////////////////////////////////////////
-// porteo directo con alasql
-// query : Instruccion SQL
-/// //////////////////////////////////////
-   AlaSql_ant=(query: string)=> {
-      return alasql(query)
-  }
-
-
-
-
 
 
   async MessageBox(texto: string, tipo?: number, title?: string, timer?: number) {

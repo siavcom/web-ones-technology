@@ -45,7 +45,8 @@ export class FORM extends COMPONENT {
     this.prop.nem_pge = "Siavcom Software "
     this.prop.fpo_pge = new Date().toISOString().substring(0, 10); //  Fecha actual de la computadora cliente
     this.prop.log_emp = "/img/Logo_Empresa.png"
-    
+    this.prop.ReportView=' '
+
     this.style.maxWidth = '920px'
     //    this.style.maxHeight='920px'    
 
@@ -56,13 +57,13 @@ export class FORM extends COMPONENT {
     
     for (const par in router.query){
        this.Params.push(router.query[par])
+       console.log('ThisForm.Params ==>',this.Params)
 
     }
-    //console.log('ThisForm router params ==>',this.params)
     
     if (router.query.params ){
      // this.params=eval('['+router.query.params+']')
-    console.log('ThisForm router Params===>',params,this.params)   
+    console.log('ThisForm router Params===>',params,router.query.params)   
     }
 
     // asignamos en la clase db esta forma

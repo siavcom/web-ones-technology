@@ -13,7 +13,8 @@ export class GRID extends COMPONENT {
   // Tenemos que utilizar renglon o data
   data = [{}]    // arreglo donde esta el data 
   Row = -1
-
+ // declare variable:string='Hola'
+  
   //elements = [{}]
   constructor() {
     super()
@@ -138,7 +139,6 @@ export class GRID extends COMPONENT {
     const values= await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
     this.prop.Valid=false
     console.log('======grid Incertamos renglon========>',this.prop.Name,values)
-
   }
 
 /*
@@ -174,22 +174,24 @@ export class GRID extends COMPONENT {
   // vis_cap: Vista de captura
   /////////////////////////////////
   async grabaTabla() {
-    let resultado = 0
-    resultado = await MessageBox(this.prop.messageUpdate, 4, '')
-    console.log('bt_aceptar Messagebox resultado', resultado)
-
+    let resultado = true
+    
+    //resultado =
+    if (await MessageBox(this.prop.messageUpdate, 4, '')!=6)
+       return false
+ 
     this.Form.prop.Visible = false
-
-
-    if (await this.Form.db.tableUpdate(1, false, this.prop.RecordSource) == true) {  // Actualiza todos los registros
+   
+    resultado=await this.Form.db.tableUpdate(1, false, this.prop.RecordSource) 
+    if (resultado) {  // Actualiza todos los registros
         MessageBox('Datos grabados')
-        return true
+        
       }
       else {
         MessageBox('No se grabaron los datos', 16, 'ERROR')
-        return false
+        
       }
-
+    return resultado 
     }
 
   //////////////////////////////////

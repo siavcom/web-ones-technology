@@ -42,7 +42,7 @@ export class THISFORM extends FORM {
 
   constructor() {
     super() // inicializa la clase base
-    this.Development = false
+    
     this.prop.Name = "SqlDictionary"
     this.prop.Login = false
     this.prop.tag = ""

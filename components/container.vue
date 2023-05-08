@@ -4,76 +4,84 @@
 && ----------------------------------------------------------------------------------------------
 && Autor    	: Ing. Fernando Cuadras Angulo
 && Sistema  	: Siavcom  							Version : 10.0  VUE
-&& Programa 	: Forma prinncipal   		Mnemo   : form.VUE
-&& Ult. mod.	: Fernando Cuadras  				Fecha   : 13/Dic/2022
+&& Programa 	: Contenedor de componentes   		Mnemo   : container.vue
+&& Ult. mod.	: Fernando Cuadras  				Fecha   : 25/Abr/2023
 && Evento		: 
 && Objeto		: VUE
-&& Comentarios	: Genera la forma dinamicamente en base al THISFORM que se pasa del comeponente padre
+&& Comentarios	: 
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
   <transition name='Container'>
-    <div class='container' :style="style">
-      <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
+    <div class='container' :style="style" >
+      <details class='details' :open='This.prop.Visible' >
 
-      <!--template v-slot:header-->
-      <!--transition-group> -->
-      <div class='header'>
-        <div v-for="(compHeader) in This.header">
+        <summary>{{ This.prop.textLabel }}</summary>
+        <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
 
-          <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
-            :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
-            v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
-            v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-            v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno"
-            v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
-            v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
-            v-bind:position="This[compHeader].position" @focusout="This.eventos.push('This.' + compHeader + '.valid()')"
-            @focus.capture="This.eventos.push('This.' + compHeader + '.when()')">
-          </component>
-        </div>
-      </div>
-      <div class='main'>
-        <TransitionGroup name='detailForm'>
-          <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
-            <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
-            v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-            v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-            v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno"
-              v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno" v-bind:prop="This[compMain].prop"
-              v-bind:style="This[compMain].style" v-bind:position="This[compMain].position" v-bind:db="ref(This.db)"
-              @focusout="This.eventos.push('This.' + compMain + '.valid()')"
-              @focus.capture="This.eventos.push('This.' + compMain + '.when()')"
-              @click="This.eventos.push('This.' + compMain + '.click()')"></component>
+        <!--template v-slot:header-->
+        <!--transition-group> -->
+        <div class='header'>
+          <div v-for="(compHeader) in This.header">
+
+            <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
+              :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
+              v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
+              v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
+              v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno" v-bind:Show="true"
+              v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
+              v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
+              v-bind:position="This[compHeader].position" @focusout="This.eventos.push('This.' + compHeader + '.valid()')"
+              @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
+              @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
           </div>
-        </TransitionGroup>
-      </div>
-      <!--/template-->
-      <!--template v-slot:footer
+        </div>
+        <div class='main'>
+          <TransitionGroup name='detailForm'>
+            <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
+              <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
+            -->
+              <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+                v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+                v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
+                v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno" v-bind:Show="true"
+                v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno"
+                v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
+                v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
+                @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
+            </div>
+          </TransitionGroup>
+        </div>
+        <!--/template-->
+        <!--template v-slot:footer
                    src="/Iconos/BotonRojo.png"
         This.prop.Status == 'A'
         -->
-      <div class="footer">
-        <div v-show="This.prop.Status == 'A'">
-          <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
-        </div>
-        <div v-show="This.prop.Status != 'A'">
-          <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-        </div>
+        <div class="footer">
+          <div v-show="This.prop.Status == 'A'">
+            <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
+          </div>
+          <div v-show="This.prop.Status != 'A'">
+            <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+          </div>
 
-        <div v-for="(compFooter) in This.footer" style="zIndex:0">
-          <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"-->
-          <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
-            v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-            v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-            v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Registro="This[compFooter].Recno == null ? 0 :
-              This[compFooter].Recno" v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-            v-bind:position="This[compFooter].position" v-bind:db="ref(This.db)"
-            @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
-            @focus.capture="This.eventos.push('This.' + compFooter + '.when()')"
-            @click.stop.prevent="This.eventos.push('This.' + compFooter + '.click()')"></component>
+          <div v-for="(compFooter) in This.footer" style="zIndex:0">
+            <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
+          
+                      @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
+          
+          -->
+            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
+              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+              v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
+              v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
+              v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
+              v-bind:position="This[compFooter].position" @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+              @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
+          </div>
         </div>
-      </div>
+      </details>
     </div>
   </transition>
 </template>
@@ -117,6 +125,9 @@ const emit = defineEmits([ //"update",
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
+  Recno: 0;
+  Show: true;
+  Component: null;
   prop: {
     ToolTipText: string;
     View: "";
@@ -163,9 +174,7 @@ const props = defineProps<{
     left: number;
     Top: number;
   };
-  Recno: 0;
-  Component: null;
-  db: any
+  // db: any
 
 }>();
 // Valores componente padre
@@ -177,7 +186,7 @@ This['estatus'] = []
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 
-const Db = props.db.value
+const Db = This.Form.db
 
 // Valores propios
 const Value = ref(props.prop.Value);
@@ -336,9 +345,12 @@ watch(
 watch(
   () => eventos,
   (new_val, old_val) => {
+    if (eventos.length == 0)
+      return
+
+    console.log('Watch estatus eventos,status This===>', new_val, This.estatus)
 
     for (const comp in This.estatus) {
-      //console.log('Watch estatus ===>', comp, This.estatus[comp])
 
       if (This.estatus[comp] != 'A' && Status.value == 'A') {
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
@@ -346,17 +358,17 @@ watch(
 
         return
       }
-      if (eventos.length == 0) {
-        // Status.value = 'A';  // Cambia el estatus del grid a Proceso
-        // emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-        //aqui voy
-        //  console.log('This Watch eventos ===>', load_data, This.Form.eventos.length)
-        return
-      }
-      const evenEjecutar = eventos[0]
-      eventos.length = 0 // borramos los eventos
-      This.Form.eventos.push(evenEjecutar) // emitimos los eventos a la forma padre
+    }
 
+    const evenEjecutar = [...eventos]
+
+    eventos.length = 0 // borramos los eventos
+    console.log('Watch estatus eventos===>', evenEjecutar)
+
+    for (let i = 0; i < evenEjecutar.length; i++) {
+      console.log('Container watch ThisForm.eventos', This.Form.eventos)
+      if (evenEjecutar[i].length > 0)
+        This.Form.eventos.push(evenEjecutar[i]) // emitimos los eventos a la forma padre
     }
   }, { deep: true }
 );
@@ -415,6 +427,36 @@ const loadData = async () => {
   console.log('container load Data')
 
 }
+
+
+
+////////////////////////////////
+// Aumenta la pila de eventos a ejecutar de la forma principal
+// En caso que hay una estatus de un componente
+// no ejecuta el evento
+/////////////////////////////////
+const ejeEvento = (newEvento: string) => {
+  console.log('Container ejeEvento', newEvento)
+
+  for (const comp in This.estatus) {
+
+    if (This.estatus[comp] != 'A' && Status.value == 'A') {
+      Status.value = 'P';  // Cambia el estatus del grid a Proceso
+      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+      //        return
+    }
+  }
+
+  This.Form.eventos.push(newEvento) // emitimos los eventos a la forma padre
+
+}
+
+
+
+
+
+
 /////////////////////////////////////////
 // Metodo init Vfp
 // Aqui debemos de asignar todos los Valores inciales del componente
@@ -511,13 +553,13 @@ const impComp = ((name: string) => {
 </script>
 <style scoped>
 div.container {
-  
+
   justify-content: center;
   align-items: center;
   border: 1px solid rgb(0, 5, 2);
-  
+
   border-radius: 5px;
-  padding:10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
 }
 
 /*
@@ -617,7 +659,7 @@ div.main {
   z-index: 1;
 }
 
-img.circle{
+img.circle {
   width: 18 px;
   max-height: 18px;
 

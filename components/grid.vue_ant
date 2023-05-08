@@ -1,12 +1,14 @@
+
 <template>
-  <div class="divi" v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && Db.View[prop.RecordSource]"
-     :style="style" ref="Ref">
+  <!--&& props.db.value && props.db.value.View[prop.RecordSource]  -->
+
+  <div v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && Db && Db.View[prop.RecordSource]" class="divi"
+    :style="style" ref="Ref">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
-    <!--div class="tooltip"-->
     <!-- Grid  -->
     <form class="gridDatos">
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
-      <h2 v-if="prop.textLabel.length>0 ">{{ prop.textLabel }}</h2>
+      <h2>{{ prop.textLabel }}</h2>
       <div class="tabla">
         <table>
           <thead>
@@ -47,8 +49,10 @@
                   <!--template style="ThisGrid[col.Name].style" -->
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
-                        @focus.capture.stop="eventos.push(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+                      @focus.capture.stop="eventos.push(ThisGrid.prop.Map + '.asignaRenglon(' + item.id + ','+col.Name+')')"
+                      v-model:Focus="ThisGrid[col.Name].Focus"
 
+                      "eventos.push(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
                     
                     -->
 
@@ -56,28 +60,32 @@
                     <Transition name="columntext">
                       <textLabel v-bind:Show="item.id != ThisGrid.Row" v-bind:Recno="item.recno" v-bind:Id="item.id"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:position="ThisGrid[col.Name].position"
-                        v-bind:style="ThisGrid[col.Name].style" 
-                        @focus.capture.stop="ejeEvento(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+                        v-bind:style="ThisGrid[col.Name].style"
+                        @focus.stop
                         @click.stop @focusout.stop>
                       </textLabel>
                     </Transition>
                   </div>
-                  <!--Componentes de captura
+                  <!--Componentes de captura  
+                      @focus.capture.stop="ejeEvento(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
-                              y el when del componente typescript-->
+                              y el when del componente typescript
+
+                        @focus.capture="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
+
+                        @focusout="eventos.push(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
+                     
+                            -->
                   <Transition name="columninput">
                     <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
                       <component :is="impComp(ThisGrid[col.Name].prop.BaseClass)"
                         v-model:Value="ThisGrid[col.Name].prop.Value" v-model:Status="ThisGrid[col.Name].prop.Status"
-                        v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Focus="ThisGrid[col.Name].Focus"
-                        v-model:Recno="ThisGrid[col.Name].Recno" v-model:Valid="ThisGrid[col.Name].prop.Valid"
-                        v-model:ShowError="ThisGrid[col.Name].prop.ShowError"
-                        v-bind:Show="true"
-                        v-bind:Component="ref(ThisGrid.Form[col.Name])" v-bind:Registro="item.recno"
-                        v-bind:prop="ThisGrid[col.Name].prop" v-bind:style="ThisGrid[col.Name].style"
-                        v-bind:position="ThisGrid[col.Name].position" 
-                        @focusout.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
-                        @focus.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
+                        v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Recno="ThisGrid[col.Name].Recno"
+                        v-model:Valid="ThisGrid[col.Name].prop.Valid" v-bind:Component="ref(ThisGrid[col.Name])"
+                        v-bind:Registro="item.recno" v-bind:prop="ThisGrid[col.Name].prop"
+                        v-bind:style="ThisGrid[col.Name].style" v-bind:position="ThisGrid[col.Name].position"
+                        @focus.capture="ejeEventos(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
+                        @focusout="ejeEventos(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
                         :style="{ 'width': ThisGrid[col.Name].style.width }">
 
                       </component>
@@ -156,7 +164,7 @@
           </span>
 
           <span v-show="prop.saveData" @click.capture.stop="saveTable()">
-              <img src="/Iconos/save-color1.svg" width="45">
+            <img src="/Iconos/save-color1.svg" width="45">
           </span>
 
         </div>
@@ -202,7 +210,9 @@ const emit = defineEmits(["update", "update:Value", "update:Status", "update:Err
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-
+  Recno: 0;
+  Show: false;
+  Component: null;
   prop: {
     ToolTipText: string;
     View: "";
@@ -232,8 +242,8 @@ const props = defineProps<{
     Rows: number;
     deleteButton: true;
     addButton: true;
-    saveData:true;
-    updated:false;
+    saveData: true;
+    updated: false;
   };
 
   style: {
@@ -251,8 +261,6 @@ const props = defineProps<{
     left: number;
     Top: number;
   };
-  Recno: 0;
-  Component: null;
   //db: any
 
 }>();
@@ -260,16 +268,15 @@ const props = defineProps<{
 const Component = ref(props.Component)
 const ThisGrid = Component.value
 ThisGrid['estatus'] = []
+
+const FormEventos = ref(ThisGrid.Form.eventos)
+
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 
-//const Db = props.db.value // Vista que utilizara el grid
 const Db = ThisGrid.Form.db // Vista que utilizara el grid
 
-//console.log('grid  view.value Db ====>',Db)
-//const View=Db.View[props.prop.RecordSource] // Vista de captura de db
-//console.log('grid  View ====>',props.prop.RecordSource,View)
 
 // Valores propios
 const Value = ref(props.prop.Value);
@@ -317,6 +324,30 @@ const emitValue = async () => {
   //console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
+
+
+////////////////////////////////
+// Aumenta la pila de eventos a ejecutar de la forma principal
+// En caso que hay una estatus de un componente
+// no ejecuta el evento
+/////////////////////////////////
+const ejeEvento = async (eventoEjecutar: string) => {
+  if (eventos.length == 0)
+    return
+  console.log('Grid ejeEvento',eventoEjecutar) 
+
+  for (const comp in ThisGrid.estatus) {
+
+    if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') {
+      Status.value = 'P';  // Cambia el estatus del grid a Proceso
+      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+      //        return
+    }
+  }
+
+  ThisGrid.Form.eventos.push(evenEjecutar) // emitimos los eventos a la forma padre
+}
 
 
 /*
@@ -403,7 +434,7 @@ watch(
 
     if (props.prop.Visible && !old_val &&
       props.prop.RecordSource.length > 3) {
-      //  console.log('watch Visible ===>',This.Parent.Name)
+      //console.log('watch Visible ===>', scroll)
 
       loadData()
 
@@ -420,7 +451,44 @@ watch(
 watch(
   () => eventos,
   (new_val, old_val) => {
+    if (eventos.length == 0)
+      return
 
+    console.log('Watch grid eventos,status This===>', new_val)
+
+    for (const comp in ThisGrid.estatus) {
+
+      if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') {
+        Status.value = 'P';  // Cambia el estatus del grid a Proceso
+        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+        return
+      }
+    }
+
+    const evenEjecutar = eventos[0]
+
+    eventos.length = 0 // borramos los eventos
+    console.log('Watch estatus eventos===>', evenEjecutar)
+
+    for (let i = 0; i < evenEjecutar.length; i++) {
+      if (evenEjecutar[i].length > 0)
+        ThisGrid.Form.eventos.push(evenEjecutar[i]) // emitimos los eventos a la forma padre
+
+    }
+    console.log('watch Grid  ThisForm.eventos', ThisGrid.Form.eventos)
+
+  }, { deep: true }
+)
+
+
+
+
+/*
+watch(
+  () => eventos,
+  (new_val, old_val) => {
+    console.log('grid eventos',ThisGrid.estatus)
     for (const comp in ThisGrid.estatus) {
       //console.log('Watch estatus ===>', comp, ThisGrid.estatus[comp])
 
@@ -444,7 +512,7 @@ watch(
     }
   }, { deep: true }
 );
-
+*/
 //////////////////////////////////////////////
 // Revisa la pila de eventos de procesos a ejecutar.
 //  Cuando ya no hay procesos a ejecutar y hay carga de datos, 
@@ -495,31 +563,6 @@ watch(
   },
   { deep: true }
 );
-
-
-
-////////////////////////////////
-// Aumenta la pila de eventos a ejecutar de la forma principal
-// En caso que hay una estatus de un componente
-// no ejecuta el evento
-/////////////////////////////////
-const ejeEvento = (newEvento: string) => {
-  console.log('Grid ejeEvento', newEvento)
-
-  for (const comp in ThisGrid.estatus) {
-
-    if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') {
-      Status.value = 'P';  // Cambia el estatus del grid a Proceso
-      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-      //        return
-    }
-  }
-
-  ThisGrid.Form.eventos.push(newEvento) // emitimos los eventos a la forma padre
-
-}
-
 
 /////////////////////////////////////////
 // Metodo loadDataFromServer

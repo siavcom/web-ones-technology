@@ -16,20 +16,19 @@ export class pai_que extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.prop.Order = 1
         this.textLabel = '('
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'text'
-        this.prop.ReadOnly = true
-        this.prop.ControlSource = 'query.pai_que'
-//        this.style.width = '15px'
+        this.prop.ReadOnly=true
+//        this.prop.ControlSource = 'query.pai_que'
+        this.style.width = '15px'
     }
 
     async click() {
-        if (this.prop.Value='') 
+        if (this.prop.Value!='(') 
              this.prop.Value='('
         else 
-            this.prop.Value=''
+            this.prop.Value=' '
     }
 
 

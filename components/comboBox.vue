@@ -1,8 +1,8 @@
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
-  <div class="divi" :style="style" v-if="prop.Visible" :disabled="prop.Disabled || ReadOnly">
+  <div class="divi" :style="style"  :disabled="prop.Disabled || ReadOnly">
     <!--Etiqueta del componente -->
-    <div class="mensajes">
+    <div class="mensajes" v-show="This.prop.Visible">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
       <!--List Box -->
       <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
@@ -50,7 +50,6 @@
     </div>
     <span v-if="prop.ShowValue">{{ prop.Value }}</span>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -87,11 +86,12 @@ const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Stat
 interface Props {
   Recno: number;
   Registro: number;
+  Show: false;
   //Component: object;
   prop: {};
   style: {};
   position: {};
-  db: any;
+  //  db: any;
 }
 
 
@@ -105,7 +105,7 @@ const props = withDefaults(defineProps<Props>(), {
   Registro: 0,
   Component: null,
   prop: {
-    This:null,
+    This: null,
     Name: "",
     textLabel: "",
     ToolTipText: "",
@@ -174,7 +174,7 @@ const props = withDefaults(defineProps<Props>(), {
     left: 0,
     Top: 0,
   },
-  db: null,
+  // db: null,
 
   // colStyle: [
   //   {
@@ -208,7 +208,7 @@ const Resultado = ref("");
 //const width = reactive([{}]);
 const width = reactive(['60%', '20%', '20%']);
 
-const ReadOnly=ref(props.prop.ReadOnly)
+const ReadOnly = ref(props.prop.ReadOnly)
 const Ref = ref(null)
 
 const Status = ref(props.prop.Status);
@@ -264,14 +264,17 @@ const focusOut = async () => {
   const valor = Value.value;
 
   if (props.prop.ControlSource && props.prop.ControlSource.length > 3) {
-    await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
+    // await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
+    console.log('comboBox updateCampo',valor,props.prop.ControlSource, props.Recno)
+    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+
   }
   ToolTipText.value = true  // Activamos el ToolTipText
   toggle.value = false
-  console.log('ComboBox  focusOut===>', Value.value,Resultado.Value)
+  console.log('ComboBox  focusOut===>', Value.value, Resultado.Value)
 
-  if (This.valid && await This.valid()==false)
-    ShowError.value=true
+  if (This.valid && await This.valid() == false)
+    ShowError.value = true
 
   return
 };
@@ -290,7 +293,7 @@ const valid = async (num_ren: number) => {
   // emit("update:Value", columnas[num_ren].value); // actualiza el valor Value en el componente padre 
   // emit("update") // emite un update en el componente padre
   focusOut()
-  
+
 
   // await emitValue()
   //Ref.value.select()
@@ -347,7 +350,7 @@ const onFocus = async () => {
     //   Valid.value = true
 
     if (props.Recno > 0) {
-      const data = await props.db.value.readCampo(props.prop.ControlSource, props.Recno, 'Old')
+      const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno, 'Old')
       let valor = ''
       let sw_key = false
 
@@ -373,7 +376,7 @@ const onFocus = async () => {
       }
       Valid.value = true
     }
-    ReadOnly.value=await !This.when()
+    //ReadOnly.value=await !This.when()
     emit("update:Valid", true)
   }
   /*
@@ -397,7 +400,7 @@ const readCampo = async (recno: number) => {
     Status.value = 'P'
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
   }
-  const data = await props.db.value.readCampo(props.prop.ControlSource, recno)
+  const data = await This.Form.db.readCampo(props.prop.ControlSource, recno)
   if (Recno.value != recno) Recno.value = recno
 
   for (const campo in data) {
@@ -449,30 +452,37 @@ const asignaResultado = (valor?: string) => {
       }
     }
   }
-  else {  //aqui me quede checar cuando es por arreglo genra el value con array
+  else {  //aqui me quede checar cuando es por arreglo genera el value con array
     // console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.prop.Name,Value.value,columnas)
 
+   
     for (let i = 0; i < columnas.length; i++) {
-      //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
-      if (Value.value == columnas[i]['value'][0] || Value.value == columnas[i]['value']) {  // { // El objeto columna tiene dos campos value y text
-        // if (Value.value == columnas[i]['value']) { // El objeto columna tiene dos campos value y text
+      try {
+        console.log('comboBox columna',i,This.Name,columnas[i])        //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
+        if (Value.value == columnas[i]['value'] ){
+           //|| Value.value == columnas[i]['value'][0]  ) {  // { // El objeto columna tiene dos campos value y text
+          // if (Value.value == columnas[i]['value']) { // El objeto columna tiene dos campos value y text
 
-        // console.log("Busca Value =======>", i, new_val);
+          // console.log("Busca Value =======>", i, new_val);
 
-        // Encontro la posicion del value
-        // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
+          // Encontro la posicion del value
+          // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
-        //Resultado.value = columnas[i].text[0];
-        // console.log("ComboBox AsignaResultado columnas =======>", props.prop.Name,props.prop.Value,columnas[i].text[0])
+          //Resultado.value = columnas[i].text[0];
+          // console.log("ComboBox AsignaResultado columnas =======>", props.prop.Name,props.prop.Value,columnas[i].text[0])
 
 
-        Resultado.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
-        //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
-        //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
+          Resultado.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
+          //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
+          //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
+        }
+      } catch (error) {
+        console.error('comboBox ', error)
       }
+
     }
   }
-  
+
   emitValue()
 }
 
@@ -512,7 +522,7 @@ const renderComboBox = async () => {
 
     let val_col: any = [];  // valores de columna
     const tip_rst = props.prop.RowSourceType;
-    const sql = props.db
+    //const sql = props.db
     let data = []
     switch (tip_rst) {
 
@@ -546,13 +556,12 @@ const renderComboBox = async () => {
           break;
         }
 
-
-
       case 2: { // Alias
 
         // aqui me quede (arreglar lectura por alias)
         const ins_sql = 'select ' + RowSource + ' from ' + alias
-        data = await sql.value.localSql(ins_sql)
+        data = await This.Form.db.localSql(ins_sql)
+        console.log('comboBox data ===>',ins_sql, data)
         /*
           for (const nom_obj in data[0]) {
             const renglon = []
@@ -568,7 +577,7 @@ const renderComboBox = async () => {
         //const data = await sql.value.localSql(props.prop.RowSource)
         // llama la vista en el servidor de SQL
         //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
-        data = await sql.value.execute(props.prop.RowSource, 'MEMVAR')
+        data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
 
 
         /*
@@ -656,7 +665,6 @@ const renderComboBox = async () => {
     //console.log('ComboBox Renderiza column ===>', props.prop.Name, columnas)
 
     Value.value = valor
-
     asignaResultado(valor)
 
 
@@ -1016,7 +1024,7 @@ const init = async () => {
   // si es el primer elemento a posicionarse
   renderComboBox()
   if (props.prop.First) {
-    First.value=false
+    First.value = false
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     //emit("update") // emite un update en el componente padre
     // onFocus()

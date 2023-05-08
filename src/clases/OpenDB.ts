@@ -23,13 +23,13 @@ export class OpenDb {
   nom_emp: string
   user: string
   pass: string
-  id_con:string
+  id_con: string
 
   // Inicializa la conexion
-  constructor () {
-  
-    this.url =  session.url
-    this.nom_emp =  session.nom_emp
+  constructor() {
+
+    this.url = session.url
+    this.nom_emp = session.nom_emp
     this.user = session.user
     this.pass = ''
     this.id_con = ''
@@ -53,17 +53,17 @@ export class OpenDb {
 
     */
     //    const nom_emp:any=localsession.getItem('id_con')
-    
+
 
     let nom_emp: any = this.nom_emp
     let user: any = this.user
     const pass: any = this.pass
     //  let url: any = this.url
-    
-       
+
+
     const router = useRouter()
     if (nom_emp.length === 0 || user.length === 0 || pass.length === 0) {
-     
+
       router.push('/Login')
     }
     try {
@@ -71,57 +71,60 @@ export class OpenDb {
     }
 
     catch (error) {
-      console.warn('No existe empresa ',nom_emp)
-      MessageBox( 'No esta definida la empresa :'+nom_emp, 16, 'SQL Error ')
-        //$Swal.fire('Error SQL' + error)
+      console.warn('No existe empresa ', nom_emp)
+      MessageBox('No esta definida la empresa :' + nom_emp, 16, 'SQL Error ')
+      //$Swal.fire('Error SQL' + error)
       return ''
-    } 
+    }
 
 
-    session.id_con=''
-    session.url=this.url
-    session.nom_emp=nom_emp 
-    session.user=user
-    session.menu=[]
-   
+    session.id_con = ''
+    session.url = this.url
+    session.nom_emp = nom_emp
+    session.user = user
+    session.menu = []
+
     const def_con = { nom_emp, user, pass }
     const json = JSON.stringify(def_con)
-     // console.log('Conexion Axios==>>',this.url,json)
+    // console.log('Conexion Axios==>>',this.url,json)
     try {
       const response = await axios.get(
         this.url + 'login?json=' + json
         // { headers: { "Content-type": "application/json" } }
       )
-   
+
       this.id_con = response.data.id // asignamos a su conexion de base de datos
-//      console.log("ID de conexion", this.id_con);
+      //      console.log("ID de conexion", this.id_con);
 
       /*session.setItem('id_con', this.id_con)
       session.setItem('nom_emp', this.nom_emp)
       session.setItem('user', this.user)
       session.setItem('url', this.url) */
 
-      if (await this.leeMenu()){
-        
-        session.update (this.id_con, this.user, this.nom_emp , this.url)
+      if (await this.leeMenu()) {
+
+        session.update(this.id_con, this.user, this.nom_emp, this.url)
         return this.id_con
       }
     } catch (error) {
 
-      console.warn('Error llamada Axios',error)
+      console.warn('Error llamada Axios', error)
       //const { $MessageBox } = useNuxtApp()
 
       if (error === 'Error: Network Error') {
         console.log('OpenDb Error SQL===>', error)
-        MessageBox( error, 16, 'SQL Error ')
+        MessageBox(error, 16, 'SQL Error ')
         //$Swal.fire('Error SQL' + error)
         return ''
       }
 
       // console.log('OpenDb error ===>',error.response.status.toString() + " " + error.response.statusText)
+      if (error )
+          MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
+      else
+          MessageBox('Back-end comunication error', 16, 'ERROR')
 
-      MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
-
+      
       return ''
     } // Fin de Catch
   }
@@ -141,7 +144,7 @@ export class OpenDb {
     // va hacer una consulta para ver si sigue activa la conexion
     const id_con: any = session.id_con
 
-    const nom_emp :any = session.nom_emp
+    const nom_emp: any = session.nom_emp
     const url = dat_emp[nom_emp].url // obtenemos el url del servidor node
 
     const dat_vis = {
@@ -172,7 +175,7 @@ export class OpenDb {
   public leeMenu = async () => {
     //console.log('======leeMenu=====')
     //  sin no se ha inicilizado la conexion aborta todo
-    
+
     if (this.id_con === '') {
       const router = useRouter()
       router.push('/Login')
@@ -195,19 +198,39 @@ export class OpenDb {
       const response = await axios.post(url + 'sql', dat_vis, {
         headers: { 'Content-type': 'application/json' }
       })
+      
+      var data= []
+      
       for (let i = 0; i < response.data.length; i++) {
+
+        const registro={}
+        for (const nom_cam in response.data[i]) {
+          registro[nom_cam.toLowerCase()] = response.data[i][nom_cam]
+        }
+        data.push(registro)
+
+        const pre = data[i].tpr_prg === 'S' ? '' : '-'
+        let des_prg = data[i].des_prg.replace(String.raw`\<`, '')
+        des_prg = des_prg == null ? '' : des_prg
+        data[i].des_prg = pre + des_prg
+
+
+        /*
         const pre = response.data[i].tpr_prg === 'S' ? '' : '-'
-        response.data[i].des_prg = pre + response.data[i].des_prg.replace(String.raw`\<`, '')
+         let des_prg= response.data[i].des_prg.replace(String.raw`\<`, '')
+         des_prg= des_prg==null ?'': des_prg
+         response.data[i].des_prg = pre + des_prg
+          */
+        // response.data[i].des_prg = pre + response.data[i].des_prg.replace(String.raw`\<`, '')
       }
       //const menu = JSON.stringify(response.data)
-      const menu = (response.data)
-      
-      session.updateMenu( menu) // guardamos el menu en la sesion local
+      const menu = (data)
+
+      session.updateMenu(menu) // guardamos el menu en la sesion local
       return true
     } catch (error) {
-      console.warn(error)
-      console.warn(error.response)
-
+      console.error(error)
+      MessageBox(error, 16, 'Back-End error')
       // si no es un error de desconexion
       if (error.response.status.toString() != 401) {
         return true

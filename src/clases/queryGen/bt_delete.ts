@@ -27,21 +27,19 @@ export class bt_delete extends COMPONENT {
     this.prop.Image = "/Iconos/svg/delete2-color.svg";
 
     this.prop.TabIndex = 1
+    this.prop.ToolTipText='Borra'
+
     this.style.fontSize='10px'
-    this.style.width='20px'
+    this.style.width='30px'
 
 
   } // Fin constructor
 
   async click() {
-    this.Form.browseResult.prop.RowSource = ''
-    console.log('bt_aceptar click===>>>',this.Form.browseResult.prop.RowSource)  
-    if (this.Form.query.prop.Value.trim()>'   ' ){
-      const result=await this.Form.db.execute(this.Form.query.prop.Value.trim(),'sqlresult') 
-      if (result) this.Form.browseResult.prop.RowSource = 'sqlresult'
-      console.log('bt_aceptar ===>>> Datos leidos del SQL Server',this.Form.browseResult.prop.RowSource)  
-      }
-
+    await this.Form.db.localAlaSql(`delete from ${this.Parent.prop.RecordSource}` )
+    this.Parent.table.grabaTabla()
+    this.prop.Visible=false
+        
   }
 
 

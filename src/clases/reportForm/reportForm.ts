@@ -2,64 +2,118 @@
 // Clase : Forma para generar reportes
 // Author : Fernando Cuadras Angulo
 // Creacion : Marzo/2023
-// Ult.Mod  : 16/Marzo/2023
+// Ult.Mod  : 28/Abril/2023
 /////////////////////////////////////////////
 //import { COMPONENT } from './Component'
 import { FORM } from '@/classes/Form'
-import { queryGen } from '@/classes/queryGen/queryGen'
+import { queryGen as query } from '@/classes/queryGen/queryGen'
 import { bt_print } from './bt_print'
 
 export class reportForm extends FORM {
-    public queryPri = new queryGen()
-    public queryUsu = new queryGen()
-    public queryGen = new queryGen()
+  public queryPri = new query()
+  public queryUsu = new query()
+  public queryGen = new query()
 
-    public bt_print = new bt_print()
-    //  constructor(){
-    //    super()
-    //  }
-    init = async ()=> {
-        console.log('reportForm init()')
-        const db = this.Form.db
-        // Query Principal
-        const m = {
-            prg_prg: this.Form.Name,
-            par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg:'' ,
-//            usu_que: 'MAIN'
-        }
-
-        db.use('vi_cap_query_db', m) // todos los querys del reporte
-
-        const filter={usu_que: 'MAIN'}
-        db.localClone('vi_cap_query_db','query_main',filter)
-        this.Form.queryPri.prop.usu_que = 'MAIN'
-        this.Form.queryPri.prop.RecordSource = 'query_main'
-        console.log('reportForm querypri',this.Form.queryPri)
-        this.Form.queryPri.mensaje.prop.textLabel='Condiciones principales'
-        this.Form.queryPri.num_con.prop.Value=1
-        this.Form.queryPri.num_con.interactiveChange('query_main')
-
-        if (this.Form.prop.Development==false) {
-            this.Form.queryPri.prop.appendRow=false
-            this.Form.queryPri.prop.saveData=false
-        }
-        // Query Usuario
-        filter.usu_que = this.Form.usu_usu
-        db.localClone('vi_cap_query_db','query_user',filter)
-        this.Form.queryUser.mensaje.prop.textLabel='Condicion Usuario'
-
-        this.Form.queryUser.num_con.prop.Value=0
-        this.Form.queryUser.prop.RecordSource = 'query_user'
-        this.Form.queryUser.num_con.interactiveChange('query_user')
-
-        // Query Usuario
-        filter.usu_que = 'ALL'
-
-        db.localClone('vi_cap_query_db','query_all',filter)
+  public bt_print = new bt_print()
  
-        this.Form.queryGen.num_con.prop.Value=0
-        this.Form.queryGen.mensaje.prop.textLabel='Condiciones generales'
-        this.Form.queryGen.prop.RecordSource = 'query_all'
+  constructor() {
+    super()
+    this.queryPri.Name = 'queryPri'
+    this.queryPri.prop.Name = 'queryPri'
+    this.queryUsu.Name = 'queryUsu'
+    this.queryUsu.prop.Name = 'queryUsu'
+    this.queryGen.Name = 'queryGen'
+    this.queryGen.prop.Name = 'queryGen'
+    
+  
+  }
+
+  public async init() {
+    //   init = async ()=> {
+  
+ 
+    this.queryUsu.prop.Visible=false
+ 
+    this.queryGen.prop.Visible=false
+   
+    const db = this.db
+    
+    // vi_schema_views nos trae los campos que podemos utilizar en las condiciones
+   
+    await db.execute(`select ref_dat,cam_dat,tip_dat from vi_schema_views where nom_vis='${this.prop.ReportView}' order by nom_tab,ref_dat `,'campos') 
+    
+    //console.log('reportForm campos',await  db.localAlaSql('select * from campos'))  
+    
+
+    // todos los querys del reporte
+ 
+    const m = {
+      prg_prg: this.prop.Name,
+      par_prg: this.Params.par_prg ? this.Params.par_prg : ' ',
+      nom_vis: this.prop.ReportView
+    }
+ 
+    await db.use('vi_cap_query_db', m) // todos los querys del reporte
+
+    // Query Principal
+    const filter = { usu_que: 'MAIN' }
+    // await db.localClone('vi_cap_query_db', 'query_main', filter)
+
+    //this.queryPri.table.prop.RecordSource = 'query_main'
+    await this.asignaRecordSource('queryPri', 'query_main')
+
+    this.queryPri.prop.textLabel = 'Condiciones principales'
+
+    this.queryPri.prop.usu_que = 'MAIN'
+
+      // await this.queryPri.nco_que.interactiveChange()
+
+    if (this.prop.Development == false) {
+      this.queryPri.bt_add.prop.Visible = false
+      this.queryPri.table.prop.saveData = false
+    }
+
+    // Query Usuario
+    filter.usu_que = this.db.user
+    //await db.localClone('vi_cap_query_db', 'query_user', filter)
+
+    
+    this.queryUsu.prop.textLabel = 'Condiciones usuario :' + this.db.user
+
+    //this.queryUsu.table.prop.RecordSource = 'query_user'
+    await this.asignaRecordSource('queryUsu', 'query_user')
+    this.queryUsu.prop.usu_que = this.db.user
+
+    // Query Todos
+    filter.usu_que = 'ALL'
+
+    //await db.localClone('vi_cap_query_db', 'query_all', filter)
+
+    this.queryGen.prop.textLabel = 'Condiciones generales'
+
+    //this.queryGen.table.prop.RecordSource = 'query_all'
+    await this.asignaRecordSource('queryGen', 'query_all')
+    this.queryGen.prop.usu_que = 'ALL'
+
+    this.queryPri.activa.prop.Value=1
+    this.queryPri.nco_que.prop.Value=1
+
+  }
+
+  // asignamos RecordSource y ControlSource de cada columna
+  async asignaRecordSource(nom_que: string, RecordSource: string) {
+  
+    const tabla = this[nom_que].table
+    tabla.prop.RecordSource=RecordSource
+    for (let i=0; i<tabla.elements.length; i++) {
+
+      const column=tabla.elements[i].Name
+      tabla[column].prop.RecordSource = RecordSource
+      tabla[column].prop.ControlSource = RecordSource+'.'+column
+    }
+      //  this.prop.ControlSource =this.Parent.prop.RecordSource.trim()+'.ren_que'
+      console.log('table asigna',nom_que,this[nom_que].table)
+
     }
 
 }

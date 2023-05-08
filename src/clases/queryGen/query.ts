@@ -20,18 +20,17 @@ export class query extends COMPONENT {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = 'Query/Condiciones'
+   // this.prop.textLabel = 'Filtro'
     this.prop.Type = 'textArea'
     this.prop.BaseClass = 'editText'
     this.prop.ControlSource = ''
     this.prop.Placeholder = ''
     this.prop.ToolTipText = ''
     this.prop.Position = 'main'
-    //this.prop.MaxLength=12
-    //this.prop.Min="0"
-    //this.prop.Max="999"
-    //this.prop.Decimals=0
-    this.prop.Capture = true
+    this.prop.Capture = false
+    this.prop.ReadOnly= true
+    this.prop.Visible= false
+    
     //this.prop.updateKey=true
 
 
@@ -121,33 +120,5 @@ export class query extends COMPONENT {
 
   }
 
-    ////////////////////////////////// 
-  // event when 
-  ///////////////////////////////////
-
-  async when() {
-    this.Parent.browseResult.prop.RowSource = ''
-
-    return true
-  }
-
-  ////////////////////////////////// 
-  // event click 
-  ///////////////////////////////////
-  /*
-  async click() {
-
-  }
-  */
-
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
+  
 }
