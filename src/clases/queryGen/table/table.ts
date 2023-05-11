@@ -4,7 +4,7 @@
 // Description : Equipo
 // Author : El Fer Blocks
 // Creation : 2023-03-13
-// Update Date  : 13/Mrzo/2023
+// Update Date  : 09/Mayo/2023
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
@@ -62,11 +62,13 @@ export class table extends GRID {
     
     const db = this.Form.db
     const data=await db.localAlaSql(`select max(ren_que)+1 as max_ren from ${this.prop.RecordSource} `)
+    console.log('appendRow table Ala ===>',this.prop.RecordSource,await db.localAlaSql(`select * from ${this.prop.RecordSource} `))
+        
     if( data[0] && data[0].max_ren && data[0].max_ren!=null)
        m.ren_que=data[0].max_ren
       else
        m.ren_que=1
-    console.log('appendRow table m ===>',m)
+    console.log('appendRow table m ===>',m,data,)
     await super.appendRow(m) 
     /*   
     if (!m) m = {}
@@ -80,12 +82,14 @@ export class table extends GRID {
  //////////////////////////////////
   // Graba Tabla
 /////////////////////////////////
-  public async grabaTabla() {
+  async grabaTabla() {
     let resultado=false
-    if (await super.grabaTabla){
+
+    if (await super.grabaTabla()){
+      console.log('grabaTabla super exito')
       const m = {
-        prg_prg: this.prop.Name,
-        par_prg: this.Params.par_prg ? this.Params.par_prg : '',
+        prg_prg: this.Form.prop.Name,
+        par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       }
    
       await this.Form.db.use('vi_cap_query_db', m) // todos los querys del reporte

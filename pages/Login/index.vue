@@ -195,7 +195,7 @@ div.imagen {
   background-color: #f2f4f5;
   height: 220x;
   width: 180px;
-  /* se quita el directorio /public
+  /* 
   background-image: url("/public/img/Logo_Empresa.png");*/
   background-image: url("/public/Iconos/Logo_Empresa.png");
   /* opacity: 0.5;*/

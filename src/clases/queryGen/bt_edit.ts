@@ -31,22 +31,25 @@ export class bt_edit extends COMPONENT {
 
   } // Fin constructor
 
-  async click() {
-    
-    this.prop.Visible=false  
+  async click(add?:boolean) {
+    if (this.Parent.nco_que.prop.Value==0)
+        this.Parent.nco_que.prop.Value=1
 
+    this.prop.Visible=false  
  
     const filter = {
       usu_que: this.Parent.prop.usu_que,
       nco_que: this.Parent.nco_que.prop.Value
     }
-    //console.log('bt_edit  click',filter,await this.Form.db.localSql('select * from vi_cap_query_db') )
+ 
    // if (this.Form.db.View[this.Parent.table.prop.RecordSource])
    //     await this.Form.db.useNodata(this.Parent.table.prop.RecordSource)
    // else    
     await this.Form.db.localClone('vi_cap_query_db', this.Parent.table.prop.RecordSource, filter)
 
-    if (this.Form.db.View[this.Parent.table.prop.RecordSource].RecCount==0){
+    console.log('bt_edit click filter View',filter,this.Form.db.View[this.Parent.table.prop.RecordSource] )
+
+    if (add || this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0){
 
       const m = {
         prg_prg: this.Form.prop.Name,
@@ -60,16 +63,16 @@ export class bt_edit extends COMPONENT {
          and usu_que='${m.usu_que}' `)
 
         if (data[0] && data[0].max_que && data[0].max_que != null) {
-          this.Parent.nco_que.prop.Value = data[0].max_que
+          m.nco_que = data[0].max_que
         } 
-      await this.Parent.table.appendRow(m)
-    }  
-    console.log('bt_edit this.Parent',this.Parent) 
+        console.log('bt_edit  click append Rowfilter m ',filter ,m)
+        await this.Parent.table.appendRow(m)
+        this.Parent.nco_que.prop.Value = m.nco_que
+      }  
+    
     this.Parent.table.prop.Visible = true
 //    this.Parent.bt_delete.prop.Visible=true
     this.Parent.query.prop.Visible = false
-     
-
 
 }
 

@@ -218,12 +218,12 @@ export class VFPDB {
         console.error('==== . No existe la tabla===>', alias)
         return false
       }
-
+      
       await this.genera_tabla(response, alias, true) // generamos la tabla segun la estructura regresada
-
+      
       // abre  la tabla de mantenimiento
       if (this.View[alias].tip_obj.trim() == 'VIEW') {
-        // console.log('useNodata VIEW ==> ',alias,this.View[alias].tablaSql)
+         console.log('useNodata VIEW ==> ',alias,this.View[alias].tablaSql)
         await this.useNodata(this.View[alias].tablaSql)
       }
       //  this.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
@@ -451,7 +451,7 @@ export class VFPDB {
       // eval("dat_vis.where=`" + this.View[alias].exp_indice+"`") // obtenemos la expresion del indice
     }
 
-    console.log(' use dat_vis.where========>', dat_vis.where)
+    //console.log(' use dat_vis========>', dat_vis)
 
     try {
       const data = await this.axiosCall(dat_vis)
@@ -461,8 +461,8 @@ export class VFPDB {
       if (data.length > 0) // genera tabla Now y Last
       { return await this.genera_tabla(data, alias) } else { return data }
     } catch (error) {
-      console.error(error)
-
+      console.error('Axios error :',dat_vis,error)
+      
       MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL ')
@@ -487,6 +487,8 @@ export class VFPDB {
     }
 
     const response = await this.axiosCall(dat_vis)
+    if (response==null)
+       return
 
     if (response.data) {
       const respuesta = response.data
@@ -524,7 +526,7 @@ export class VFPDB {
         tab_man = alias
     }
 
-    const sw_val = true
+    var sw_val = true
     const nom_tab: string = this.View[alias].tablaSql.trim() // obtenemos el nombre model (sequelize) de la vista de mantenimento
 
     if (nom_tab.length < 2) {
@@ -696,6 +698,7 @@ export class VFPDB {
       // Tratara 2 veces en caso de que haya un force
       for (let num_int = 0; num_int < 2 && sw_update; num_int++) { // tratara 3 veces de actualiar el dato
         const response = await this.axiosCall(dat_vis)
+        
         if (response && response.key_pri && response.key_pri > 0) // No hay error
         {
           // dat_act[row].timestamp = response[0].timestamp
@@ -722,7 +725,7 @@ export class VFPDB {
           num_int = 2 // se sale del for
         } else { // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
           console.error('No se pudo actualizar el registro en tabla ' + alias, dat_vis)
-
+          sw_val=false
           if (dat_act[row].key_pri > 0) { // si es un dato existennte
             const respuesta = await this.obtRegistro(nom_tab, dat_act[row].key_pri) // se trae de nuevo los datos
             if (respuesta.key_pri) {
@@ -740,7 +743,6 @@ export class VFPDB {
               } // fin else
             }
           } // Fin si es un dato existente
-          console.warn('Fin updateTable con error')
           if (updateType < 2) {
             num_int = 2
             // no sigue la actualizacion
@@ -864,7 +866,11 @@ export class VFPDB {
     try {
       //  console.log('deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
       const response = await this.axiosCall(dat_vis)
+      if (response==null)
+         return null
+
       const respuesta = response.data
+
     } catch (error) {
       console.error('Error en delete', error)
       return null
@@ -998,6 +1004,8 @@ export class VFPDB {
 
     try {
       const response = await this.axiosCall(dat_vis)
+      if (response==null)
+         return 
 
       /*
             const response = await axios.post(this.url + "sql", dat_vis, {
@@ -1048,6 +1056,8 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
+      if (respuesta==null)
+          return null
 
       console.log('execute alias', alias, this.View)
       if (alias.toUpperCase() == 'MEMVAR') {
@@ -1186,6 +1196,8 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
+      if (respuesta==null) 
+         return null
       if (respuesta.length == 0) {
         MessageBox('Se genero la tabla ' + tabla)
         return true
@@ -1219,6 +1231,8 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
+      if (respuesta==null)
+         return null
       if (respuesta.length == 0) {
         MessageBox('Se genero el indice/indices de la tabla ' + tabla)
         return true
@@ -1251,6 +1265,7 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
+      if (respuesta==null) return
       if (respuesta.length == 0) {
         MessageBox('Se genero las vistas remotas SQL  de tabla ' + tabla)
         return true
@@ -1284,6 +1299,7 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
+      if (respuesta==null) return
       if (respuesta.length == 0) {
         MessageBox('Se genero el MODEL para la tabla ' + tabla + respuesta[0])
 
@@ -1325,6 +1341,7 @@ export class VFPDB {
     // obtenemos el filtro de la vista
     try {
       const data = await this.axiosCall(dat_vis)
+      if (data==null) return null
       // console.log('Respuesta axios data===>', data)
       const respuesta = data[0]
       // console.log('Axios gen_vista data[]==>data,m ',data,m)
@@ -1376,6 +1393,7 @@ export class VFPDB {
     // console.log('Axios ==>' + nom_vis, exp_where, replacements)
     try {
       const data = await this.axiosCall(dat_sel)
+      if (data==null) return null
       console.log('Axios genera vistas===>>>', data)
       // Aumentamos a la rspuesta el regitro recno
       return await this.genera_tabla(data, alias)
@@ -1454,6 +1472,7 @@ export class VFPDB {
     //    console.log('Axios ==>' + nom_vis, exp_where, replacements)
     try {
       const data = await this.axiosCall(dat_est)
+      if (data==null) return null
       // console.log('Estructura vistas===>>', data)
     } catch (error) {
       MessageBox(
@@ -1593,6 +1612,7 @@ export class VFPDB {
         //    console.log('Axios ==>' + nom_vis, exp_where, replacements)
         try {
           const estructura = await this.axiosCall(dat_est)
+          if (estructura==null) return null
           // console.log('Data vista===>>', respuesta)
 
           respuesta.est_tabla = estructura
@@ -2136,25 +2156,23 @@ return false;
 
     do {
       try {
-        console.log('Axios call llamada  ======>>>', dat_lla, this.url)
+        // console.log('Axios call llamada  ======>>>', dat_lla, this.url)
 
         const response = await axios.post(this.url + 'sql', dat_lla, {
           headers: { 'Content-type': 'application/json' }
         })
         const respuesta = response.data
-        console.log('Axios call response  ======>>>', 'respuesta', respuesta)
+        console.log('Axios call response  ======>>>',dat_lla, 'respuesta', respuesta)
         return respuesta
       } catch (error) {
-        console.error('Axios call BacKEnd error', dat_lla, error.response.status, error)
+        console.error('Axios call BacKEnd error', dat_lla, error.response.statusText)
 
-        await MessageBox(
-          error.response.status.toString() + ' ' + error.response.statusText, 16,
-          'SQL Data Base Error '
-        )
+         await MessageBox( error.response.statusText, 16,'SQL Data Base Error ')
 
         // si no es un error de desconexion
         if (error.response.status.toString() != '401') {
-          return error.response.status
+          
+          return null
         }
 
         ThisForm.prop.login = false

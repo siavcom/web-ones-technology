@@ -587,6 +587,28 @@ const readCampo = async (recno: number) => {
 
 }
 
+const changeValue=(new_val:number)=>{
+    if (new_val!=Value.value)
+          Value.value=new_val 
+
+   if (props.prop.Type == 'checkBox') {
+
+      checkValue.value = new_val == 1 ? true : false
+      emitValue()
+      console.log('textLabel Watch value checkBox ',props.prop.Name,new_val,Value.value,checkValue.value)
+      This.interactiveChange()
+    }
+
+    if (props.prop.Type == 'spinner') {
+     
+      emitValue()
+      console.log('textLabel Watch value spinner ',props.prop.Name,new_val,Value.value)
+
+      This.interactiveChange()
+    }
+
+  }
+
 ////////////////////////////////////////
 // Watchers : Triggers de templates
 // Descripcion : Cuando cambia el Value de la propiedad del ControlSource, asigna el Value de
@@ -600,29 +622,31 @@ const readCampo = async (recno: number) => {
 //          Componente
 //////////////////////////////////////////
 
+// Si se cambia de afuera
 watch(
-  () => Value.value,
+  () =>props.prop.Value, //Value.value,
   (new_val, old_val) => {
-   // if (props.prop.Value != Value.value)
+    // if (props.prop.Value != Value.value)
    //   Value.value = props.prop.Value
-
-    if (props.prop.Type == 'checkBox') {
-      checkValue.value = Value.value == 1 ? true : false
-      emitValue()
-      console.log('textLabel Watch value checkBox ',props.prop.Name,Value.value,checkValue.value)
-      This.interactiveChange()
-    }
-
-    if (props.prop.Type == 'spinner') {
-      emitValue()
-      console.log('textLabel Watch value spinner ',props.prop.Name,Value.value)
-
-      This.interactiveChange()
-    }
+   
+   changeValue(new_val)
     
   },
   { deep: false }
 );
+
+watch(
+  () =>Value.value,
+  (new_val, old_val) => {
+   // if (props.prop.Value != Value.value)
+   //   Value.value = props.prop.Value
+  changeValue(new_val)
+    
+  },
+  { deep: false }
+);
+
+
 
 
 

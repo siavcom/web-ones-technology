@@ -40,9 +40,15 @@ export class reportForm extends FORM {
     
     // vi_schema_views nos trae los campos que podemos utilizar en las condiciones
    
-    await db.execute(`select ref_dat,cam_dat,tip_dat from vi_schema_views where nom_vis='${this.prop.ReportView}' order by nom_tab,ref_dat `,'campos') 
-    
-    //console.log('reportForm campos',await  db.localAlaSql('select * from campos'))  
+    await db.execute(`select ref_dat,cam_dat,tip_dat, CASE \
+                        WHEN lower(cam_dat)='key_pri' or lower(cam_dat)='timestamp' or \ 
+                         lower(cam_dat)='usu_usu' or lower(cam_dat)='tie_uac'  or \
+                         lower(cam_dat)='usu_cre' or lower(cam_dat)='tie_cre' \
+                         THEN 'zzzzzzzzzzz' \
+                         ELSE nom_tab END as nom_tab \
+        from vi_schema_views where nom_vis='${this.prop.ReportView}' order by nom_tab,ref_dat `,'campos') 
+
+    console.log('reportForm campos',await  db.localAlaSql('select * from campos'))  
     
 
     // todos los querys del reporte
@@ -54,7 +60,7 @@ export class reportForm extends FORM {
     }
  
     await db.use('vi_cap_query_db', m) // todos los querys del reporte
-
+    
     // Query Principal
     const filter = { usu_que: 'MAIN' }
     // await db.localClone('vi_cap_query_db', 'query_main', filter)
@@ -97,7 +103,7 @@ export class reportForm extends FORM {
 
     this.queryPri.activa.prop.Value=1
     this.queryPri.nco_que.prop.Value=1
-
+    console.log('reportForm Init ',this.queryPri,this.queryPri.activa.prop.Value,this.queryPri.nco_que.prop.Value)
   }
 
   // asignamos RecordSource y ControlSource de cada columna

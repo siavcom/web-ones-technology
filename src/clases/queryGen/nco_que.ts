@@ -44,7 +44,7 @@ export class nco_que extends COMPONENT {
   ///////////////////////////////////
 
   async interactiveChange() {
-    console.log('InteractiveChange ',this.Parent.Name,this.Name)
+   
     const tabla=this.Parent.tabla
     this.Parent.query.prop.Value = ''
     this.Parent.bt_edit.prop.Visible=false
@@ -59,14 +59,15 @@ export class nco_que extends COMPONENT {
     const q = {
       usu_que: this.Parent.prop.usu_que,
       nco_que: this.Parent.nco_que.prop.Value,
-      prg_prg: this.Parent.prop.Name,
+      prg_prg: this.Form.prop.Name,
     }
 
     const RecordSource=this.Parent.table.prop.RecordSource
-    console.log('nco_que localSql',await this.Form.db.localSql('select * from vi_cap_query_db'))
-
+    
     const ins_sql = `select * From vi_cap_query_db  \
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`
+
+    console.log('nco_que localSql resultado',ins_sql,await this.Form.db.localSql(ins_sql))
 
     const data = await this.Form.db.localSql(ins_sql)
 
@@ -106,11 +107,11 @@ export class nco_que extends COMPONENT {
       let con_uni = ' '
       
       switch (m.con_que.trim()) {
-        case '> ':
+        case '>':
           con_uni = ' MAYOR QUE '
           break
 
-        case '< ':
+        case '<':
           con_uni = ' MENOR QUE '
           break
 
@@ -122,19 +123,19 @@ export class nco_que extends COMPONENT {
           con_uni = ' MENOR O IGUAL QUE '
           break
 
-        case '= ':
+        case '=':
           con_uni = ' IGUAL A '
           break
 
-        case 'BETWEEN ':
+        case 'BETWEEN':
           con_uni = ' ENTRE '
           break
 
-        case 'IN ':
+        case 'IN':
           con_uni = ' ESTE EN '
           break
 
-        case ' NOT IN ':
+        case ' NOT IN':
           con_uni = ' NO ESTE EN '
           break
 

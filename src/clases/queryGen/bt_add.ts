@@ -34,7 +34,7 @@ export class bt_add extends COMPONENT {
 
   async click() {
 
-      await this.Parent.bt_edit.click()
+      await this.Parent.bt_edit.click(true)
       
     /*
       const m = {
