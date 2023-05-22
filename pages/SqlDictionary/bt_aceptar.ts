@@ -23,7 +23,8 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Value = "Aceptar"
     this.prop.Capture = false
     // this.prop.Image = "/Iconos/Accept.png";
-    this.prop.Image = "/Iconos/svg/bx-check-circle.svg"
+    this.prop.Image = "/Iconos/svg/ok-accept.svg"
+    this.style.width='30px'
 
   } // Fin constructor
 
@@ -44,11 +45,15 @@ export class bt_aceptar extends COMPONENT {
         && this.Form.grid_tablas.prop.Visible == false
         && this.Form.grid_vistas.prop.Visible == false
         && this.Form.nom_tab.prop.Visible == false) {
+          this.Form.bt_gen_model.prop.Visible = false
+          this.Form.bt_gen_indices.prop.Visible = false
+          this.Form.bt_gen_vistas.prop.Visible = false
 
         const valor = this.Form.dic_dat.prop.Value
         // Si es Datos , Vistas o Indices
         if (valor == 'D' || valor == 'V' || valor == 'I') {
           this.Form.nom_tab.prop.Visible = true
+          this.Form.bt_gen_all_models.Visible=false
           this.Form.nom_tab.setFocus()
         }
 
@@ -125,6 +130,8 @@ export class bt_aceptar extends COMPONENT {
           }
 
           this.Form.grid_datos.prop.Visible = true
+          this.Form.bt_gen_model.prop.Visible = true
+
 
           // Indices SQL
           await this.Form.db.use("vi_cap_ind", m)
@@ -135,6 +142,8 @@ export class bt_aceptar extends COMPONENT {
 
           }
           this.Form.grid_indices.prop.Visible = true
+          this.Form.bt_gen_indices.prop.Visible = true
+
 
           // Vistas remota de captura SQL 
           await this.Form.db.use("vi_cap_vis", m)
@@ -146,6 +155,8 @@ export class bt_aceptar extends COMPONENT {
 
           }
           this.Form.grid_vistas.prop.Visible = true
+          this.Form.bt_gen_vistas.prop.Visible = true
+
           // this.Form.btGenVistas.prop.Visible = true
         }
 
@@ -312,7 +323,6 @@ export class bt_aceptar extends COMPONENT {
 
     }
 
-
     if (vis_cap == 'vi_cap_prg') {
       men_txt = 'Quieres grabar el MENU del sistema'
       vis_act = 'lla1_prg'
@@ -330,8 +340,6 @@ export class bt_aceptar extends COMPONENT {
 
       }
       console.log('bt_aceptar grabaDatos vis_cap,vis_act', vis_cap, vis_act)
-      this.Form[grid_captura].prop.Visible = false
-      this.Form.db.select(vis_cap)
 
       if (await this.Form.db.tableUpdate(1, false, vis_cap) == true) {  // Actualiza todos los registros
         MessageBox('Diccionario actualizado')

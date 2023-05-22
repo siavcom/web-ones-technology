@@ -1,13 +1,12 @@
 
 //////////////////////////////////////////////
-// Clase : come9101
+// Page: SqlDictionary
 // Clase base : ThisForm
 // Author : Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
-// Ult.Mod  : Septiembre/2022
+// Ult.Mod  : Mayo/2023
 /////////////////////////////////////////////
 
-////import { MessageBox } from '@/classes/Functions'
 /////////////////////////////////////////
 // Clase de componentes
 //////////////////////////////////////
@@ -17,6 +16,11 @@ import { sis_sis } from "./sis_sis"
 //import { tip_men } from "./tip_men"
 import { tpr_prg } from "./tpr_prg"
 import { bt_aceptar } from "./bt_aceptar"
+import { bt_gen_indices } from "./bt_gen_indices"
+import { bt_gen_model } from "./bt_gen_model"
+import { bt_gen_vistas } from "./bt_gen_vistas"
+import { bt_gen_all_models } from "./bt_gen_all_models"
+
 import { grid_datos } from "./grid_datos/grid_datos"
 import { grid_indices } from "./grid_indices/grid_indices"
 import { grid_vistas } from "./grid_vistas/grid_vistas"
@@ -26,14 +30,18 @@ import { grid_tablas } from "./grid_tablas/grid_tablas"
 // Clase base
 ///////////////////////////////////////
 import { FORM } from "@/classes/Form"
-//import router from "@/router"
+
 export class THISFORM extends FORM {
   public dic_dat = new dic_dat()
   public nom_tab = new nom_tab()
   public tpr_prg = new tpr_prg()
   public sis_sis = new sis_sis()
   public bt_aceptar = new bt_aceptar()
-
+  public bt_gen_indices = new bt_gen_indices()
+  public bt_gen_model = new bt_gen_model()
+  public bt_gen_vistas = new bt_gen_vistas()
+  public bt_gen_all_models = new bt_gen_all_models()
+  
   public grid_datos = new grid_datos()
   public grid_indices = new grid_indices()
   public grid_vistas = new grid_vistas()

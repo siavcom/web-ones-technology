@@ -102,7 +102,7 @@ div.imagen {
     width: 220px;
   se quita el directorio /public
   background-image: url("/public/img/Logo_Empresa.png");*/
-  background-image: url("/Iconos/Logo_Empresa.png");
+  background-image: url("/img/Logo_Empresa.png");
   /* opacity: 0.5;*/
 
   background-position: center;

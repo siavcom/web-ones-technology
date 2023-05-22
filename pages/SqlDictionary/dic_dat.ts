@@ -62,9 +62,11 @@ export class dic_dat extends COMPONENT {
     this.Form.grid_menu.prop.Visible = false
     this.Form.grid_tablas.prop.Visible = false
 
-    //this.Form.btGenModel.prop.Visible = false
-    //this.Form.btGenIndices.prop.Visible = false
-    //this.Form.btGenVistas.prop.Visible = false
+    this.Form.bt_gen_model.prop.Visible = false
+    this.Form.bt_gen_indices.prop.Visible = false
+    this.Form.bt_gen_vistas.prop.Visible = false
+    this.Form.bt_gen_all_models.Visible=true
+
 
     return !this.prop.ReadOnly
   }

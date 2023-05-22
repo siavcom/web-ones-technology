@@ -34,7 +34,7 @@
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
             <tr v-for="item in scroll.dataPage" :key="item.id">
 
-              <td class='renNumber' style="min-width:20;max-width:20px; ">{{ item.recno }}</td>
+              <td class='renNumber' style="min-width:30;max-width:30px; ">{{ item.recno }}</td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
@@ -133,20 +133,20 @@
           <span v-show="scroll.page > 0">
 
             <span @click.capture.stop="first()">
-              <img src="/Iconos/first.png" width="30">
+              <img src="/Iconos/first.svg" width="30">
             </span>
 
             <span @click.capture.stop="previous()">
-              <img src="/Iconos/previous.png" width="30">
+              <img src="/Iconos/previous.svg" width="30">
             </span>
 
           </span>
           <span v-show="!scroll.bottom">
             <span @click.capture.stop="next()">
-              <img src="/Iconos/next.png" width="30">
+              <img src="/Iconos/next.svg" width="30">
             </span>
             <span @click.capture.stop="last()">
-              <img src="/Iconos/last.png" width="30">
+              <img src="/Iconos/last.svg" width="30">
             </span>
           </span>
 
@@ -158,6 +158,22 @@
           <span v-show="prop.saveData" @click.capture.stop="saveTable()">
               <img src="/Iconos/save-color1.svg" width="45">
           </span>
+
+          <div v-for="(compFooter) in This.footer" style="zIndex:0">
+            <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
+          
+                      @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
+          
+          -->
+            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
+              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+              v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
+              v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
+              v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
+              v-bind:position="This[compFooter].position" @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+              @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
+          </div>
 
         </div>
       </div> <!-- break to a new row -->
@@ -259,6 +275,7 @@ const props = defineProps<{
 // Valores componente padre
 const Component = ref(props.Component)
 const ThisGrid = Component.value
+const This = Component.value
 ThisGrid['estatus'] = []
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon

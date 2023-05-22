@@ -218,13 +218,16 @@ export class VFPDB {
         console.error('==== . No existe la tabla===>', alias)
         return false
       }
-      
-      await this.genera_tabla(response, alias, true) // generamos la tabla segun la estructura regresada
-      
+
+      if (await this.genera_tabla(response, alias, true)==null) // generamos la tabla segun la estructura regresada
+        return false
       // abre  la tabla de mantenimiento
-      if (this.View[alias].tip_obj.trim() == 'VIEW') {
-         console.log('useNodata VIEW ==> ',alias,this.View[alias].tablaSql)
-        await this.useNodata(this.View[alias].tablaSql)
+      console.log('useNodata VIEW despues de generar_tabla==> ', alias, this.View[alias])
+      if (this.View[alias] && this.View[alias].tip_obj.trim() == 'VIEW') {
+        alias=this.View[alias].tablaSql
+        await this.useNodata(alias)
+        console.log('useNodata VIEW salir useNodata==> ', alias)
+
       }
       //  this.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
@@ -374,9 +377,19 @@ export class VFPDB {
     let exp_whe = ''
     if (this.View[alias].tip_obj.trim() == 'VIEW') // si es una VIEW
     {
-      console.log('USE this.View VIEW', this.View[alias], dat_vis)
+      // console.log('USE this.View VIEW', this.View[alias], dat_vis)
+      // cambiar el * por los campos de la View en minusculas
+     /*
+      var campos=''
+      var coma=''
+      for (const field in this.View[alias].est_tabla){
+          campos=campos+coma+field.toLowerCase()
+          coma=','
+      }    
 
-      dat_vis.query = 'select * from ' + nom_vis
+     // dat_vis.query = `select ${campos} from ${nom_vis}`
+     */
+     dat_vis.query = 'select * from ' + nom_vis
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
       if (this.View[alias].exp_indice.trim().length > 0) {
@@ -428,7 +441,8 @@ export class VFPDB {
         if (exp_ind.length == 0 && exp_whe.length > 0) { dat_vis.query = dat_vis.query + exp_whe }
       }
       // Si hay orden de la vista
-      if (this.View[alias].order.trim().length > 0) { dat_vis.query = dat_vis.query + ' order by ' + this.View[alias].order }
+      if (this.View[alias].order.trim().length > 0)
+       { dat_vis.query = dat_vis.query + ' order by ' + this.View[alias].order }
     } else { // es un MODEL{
       //      const val_eval = "`"+this.View[alias].exp_indice+"`"
       console.log('USE this.View MODEL eval exp_indice', this.View[alias], dat_vis)
@@ -461,8 +475,8 @@ export class VFPDB {
       if (data.length > 0) // genera tabla Now y Last
       { return await this.genera_tabla(data, alias) } else { return data }
     } catch (error) {
-      console.error('Axios error :',dat_vis,error)
-      
+      console.error('Axios error :', dat_vis, error)
+
       MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'Error SQL ')
@@ -487,8 +501,8 @@ export class VFPDB {
     }
 
     const response = await this.axiosCall(dat_vis)
-    if (response==null)
-       return
+    if (response == null)
+      return
 
     if (response.data) {
       const respuesta = response.data
@@ -616,7 +630,10 @@ export class VFPDB {
       //console.log('tableUpdate dat_act[row]', dat_act[row])
       if (dat_act[row].key_pri > 0) {
         dat_vis.dat_act.key_pri = dat_act[row].key_pri
+
         dat_vis.dat_act.timestamp = dat_act[row].timestamp
+       
+
 
         dat_vis.tip_llamada = 'UPDATE'
         const ins_sql = `SELECT * FROM Last.${alias}  WHERE recno=${dat_act[row].recno} ;`
@@ -636,7 +653,7 @@ export class VFPDB {
       const m = {} // valiables en memoria
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
-        console.log('DataBAse campo=', campo)
+       // console.log('DataBAse campo=', campo)
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
         switch (typeof dat_act[row][campo]) {
@@ -674,7 +691,7 @@ export class VFPDB {
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = ''
       if (sw_update && dat_vis.tip_llamada == 'INSERT') {
-        console.log('tableUpdate exp_indice m', m, this.View[nom_tab].exp_indice)
+       // console.log('tableUpdate exp_indice m', m, this.View[nom_tab].exp_indice)
 
         // const where = eval(this.View[nom_tab].exp_indice)
         const where = this.View[nom_tab].exp_indice
@@ -698,7 +715,7 @@ export class VFPDB {
       // Tratara 2 veces en caso de que haya un force
       for (let num_int = 0; num_int < 2 && sw_update; num_int++) { // tratara 3 veces de actualiar el dato
         const response = await this.axiosCall(dat_vis)
-        
+
         if (response && response.key_pri && response.key_pri > 0) // No hay error
         {
           // dat_act[row].timestamp = response[0].timestamp
@@ -725,7 +742,7 @@ export class VFPDB {
           num_int = 2 // se sale del for
         } else { // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
           console.error('No se pudo actualizar el registro en tabla ' + alias, dat_vis)
-          sw_val=false
+          sw_val = false
           if (dat_act[row].key_pri > 0) { // si es un dato existennte
             const respuesta = await this.obtRegistro(nom_tab, dat_act[row].key_pri) // se trae de nuevo los datos
             if (respuesta.key_pri) {
@@ -866,8 +883,8 @@ export class VFPDB {
     try {
       //  console.log('deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
       const response = await this.axiosCall(dat_vis)
-      if (response==null)
-         return null
+      if (response == null)
+        return null
 
       const respuesta = response.data
 
@@ -1004,8 +1021,8 @@ export class VFPDB {
 
     try {
       const response = await this.axiosCall(dat_vis)
-      if (response==null)
-         return 
+      if (response == null)
+        return
 
       /*
             const response = await axios.post(this.url + "sql", dat_vis, {
@@ -1056,8 +1073,8 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
-      if (respuesta==null)
-          return null
+      if (respuesta == null)
+        return null
 
       console.log('execute alias', alias, this.View)
       if (alias.toUpperCase() == 'MEMVAR') {
@@ -1196,8 +1213,8 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
-      if (respuesta==null) 
-         return null
+      if (respuesta == null)
+        return null
       if (respuesta.length == 0) {
         MessageBox('Se genero la tabla ' + tabla)
         return true
@@ -1231,8 +1248,8 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
-      if (respuesta==null)
-         return null
+      if (respuesta == null)
+        return null
       if (respuesta.length == 0) {
         MessageBox('Se genero el indice/indices de la tabla ' + tabla)
         return true
@@ -1265,7 +1282,7 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis)
-      if (respuesta==null) return
+      if (respuesta == null) return
       if (respuesta.length == 0) {
         MessageBox('Se genero las vistas remotas SQL  de tabla ' + tabla)
         return true
@@ -1286,25 +1303,31 @@ export class VFPDB {
   //  Genera MODEL en el backEnd
   /// ///////////////////////////////////////////
 
-  genModelo = async (tabla: string) => {
+  genModel = async (tabla: string) => {
     if (!tabla) {
       return
     }
-
+    
     const dat_vis = {
       id_con: this.id_con,
-      tip_llamada: 'GENMODELO',
+      tip_llamada: 'GENMODEL',
       nom_tab: tabla
     }
-
+    
+    if (tabla=='ALL') {
+      dat_vis.tip_llamada= 'GENMODELS'
+     }
+    
     try {
       const respuesta = await this.axiosCall(dat_vis)
-      if (respuesta==null) return
-      if (respuesta.length == 0) {
+      if (respuesta == null) return
+      if (respuesta.length == 0 && dat_vis.tip_llamada== 'GENMODEL') 
         MessageBox('Se genero el MODEL para la tabla ' + tabla + respuesta[0])
+      else
+        MessageBox('Se generaron todos los sequelize MODELS' + tabla + respuesta[0])
 
         return true
-      }
+      
     } catch (error) {
       console.error('Error SQL', error)
       MessageBox(
@@ -1341,7 +1364,7 @@ export class VFPDB {
     // obtenemos el filtro de la vista
     try {
       const data = await this.axiosCall(dat_vis)
-      if (data==null) return null
+      if (data == null) return null
       // console.log('Respuesta axios data===>', data)
       const respuesta = data[0]
       // console.log('Axios gen_vista data[]==>data,m ',data,m)
@@ -1393,7 +1416,7 @@ export class VFPDB {
     // console.log('Axios ==>' + nom_vis, exp_where, replacements)
     try {
       const data = await this.axiosCall(dat_sel)
-      if (data==null) return null
+      if (data == null) return null
       console.log('Axios genera vistas===>>>', data)
       // Aumentamos a la rspuesta el regitro recno
       return await this.genera_tabla(data, alias)
@@ -1472,7 +1495,7 @@ export class VFPDB {
     //    console.log('Axios ==>' + nom_vis, exp_where, replacements)
     try {
       const data = await this.axiosCall(dat_est)
-      if (data==null) return null
+      if (data == null) return
       // console.log('Estructura vistas===>>', data)
     } catch (error) {
       MessageBox(
@@ -1511,7 +1534,7 @@ export class VFPDB {
     this.View[alias].recCount = 0 // registros totales
     this.View[alias].tablaSql = alias // tabla en servidor SQL
 
-    // if (sw_ini) return  // es la inicializacion de la tabla (useNodata)
+
 
     if (!sw_ini || data.length > 0) { // si hay datos
       // Generamos el campo recno
@@ -1564,7 +1587,8 @@ export class VFPDB {
   // alias : nombre que tendra la tabla
   // sw_ini : si es useNodata
   /// //////////////////////////////////////////////////
-  async genera_tabla(respuesta: any, alias: string, sw_ini?: boolean) {
+  
+  genera_tabla= async (respuesta: any, alias: string, sw_ini?: boolean) =>{
     alias = alias.trim()
     this.num_are = this.are_tra.indexOf(alias) + 1 // regresa un -1 si no hay elemento
 
@@ -1600,6 +1624,7 @@ export class VFPDB {
       this.View[alias].bof = false // Principio de archivo
       this.View[alias].row = -1 // Renglon posicionado el registro
 
+
       // agregamos toda la definicion de la tabla
 
       if (!respuesta.est_tabla) { // Si no hay estructura de la tabla
@@ -1612,7 +1637,7 @@ export class VFPDB {
         //    console.log('Axios ==>' + nom_vis, exp_where, replacements)
         try {
           const estructura = await this.axiosCall(dat_est)
-          if (estructura==null) return null
+          if (estructura == null) return null
           // console.log('Data vista===>>', respuesta)
 
           respuesta.est_tabla = estructura
@@ -1630,7 +1655,7 @@ export class VFPDB {
                   "error"
                 );
            */
-          return
+          return null
         }
 
         /// /////////////////////////////
@@ -1685,9 +1710,11 @@ export class VFPDB {
         this.View[alias]["exp_where"] =respuesta.exp_where
         this.View[alias]["tip_obj"] = respuesta.tip_obj
     */
-    // if (sw_ini) console.log('View creada ===>', alias, this.View[alias])
     // console.log('Genera_tabla final==>',this.View[alias],alias)
-    if (sw_ini) { return } // es la inicializacion de la tabla (useNodata o genera_vista)
+    if (sw_ini) {
+      console.log('genera_tabla View creada', alias, this.View[alias])
+      return true
+    }
 
     // console.log('Genera_tabla datos==>', respuesta)
 
@@ -1708,9 +1735,6 @@ export class VFPDB {
       //    this.View[alias]["tablaSql"] = alias // tabla en servidor SQL
       this.View[alias].data = respuesta[respuesta.length - 1] // asignamos el valor del ultimo registro
 
-      // console.log('genera_tabla ==>', this.View[alias])
-      // console.log('genera_tabla ==>',await this.recCount(alias))
-
       // Borra las tablas
 
       await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
@@ -1725,16 +1749,14 @@ export class VFPDB {
           SELECT * INTO Last.' + alias + '  FROM ?', [respuesta])
       } catch (error) {
         console.error('Error al generar Vis_captura' + alias, error)
-        return
+        return null
       }
 
       this.View[alias].recnoVal = [...recnoVal] // utilizamos el spread Operator
 
-      console.log('View leida respuesta ===>', alias, respuesta)
+      //console.log('View leida respuesta ===>', alias, respuesta)
 
-      // console.log('genera_tabla View leida Last ===>',alias, await this.localAlaSql('select * from Last.' + alias))
-      //  console.log('genera_tabla View leida Now ===>',alias, await this.localAlaSql('select * from Now.' + alias))
-
+      
       // si  no hay asignacion a valores de componentes
 
       if (!this.View[alias].componente) { return respuesta }
@@ -1756,7 +1778,7 @@ export class VFPDB {
   /// ////////////////////////////////////////////
   async recCount(alias?: string) {
     // const vis_act = obj_vis.value;
-    console.log('Reccount alias ===', alias)
+    //console.log('Reccount alias ===', alias)
 
     if (!alias) {
       // alias = this.are_tra[-1]; // buscamos a cual alias pertenece
@@ -2162,16 +2184,16 @@ return false;
           headers: { 'Content-type': 'application/json' }
         })
         const respuesta = response.data
-        console.log('Axios call response  ======>>>',dat_lla, 'respuesta', respuesta)
+        console.log('Axios call response  ======>>>', dat_lla, 'respuesta', respuesta)
         return respuesta
       } catch (error) {
         console.error('Axios call BacKEnd error', dat_lla, error.response.statusText)
 
-         await MessageBox( error.response.statusText, 16,'SQL Data Base Error ')
+        await MessageBox(error.response.statusText, 16, 'SQL Data Base Error ')
 
         // si no es un error de desconexion
         if (error.response.status.toString() != '401') {
-          
+
           return null
         }
 
@@ -2215,7 +2237,7 @@ return false;
   public async localAlaSql(ins_sql: string, datos?: any) {
 
     try {
-      console.log('DataBase localAlaSql=====>>', ins_sql)
+      //console.log('DataBase localAlaSql=====>>', ins_sql)
       let resultado: []
       if (!datos)
         resultado = await alasql(ins_sql)
@@ -2561,7 +2583,7 @@ return false;
   // alias: Vista en donde quedara la vista clonada
   // filters: Variables que filtraran la vista clonada
   /// //////////////////////////////
-  public localClone = async (baseAlias: string, alias: string, filters: any,force?:boolean) => {
+  public localClone = async (baseAlias: string, alias: string, filters: any, force?: boolean) => {
     alias = alias.trim()
     let where = ''
     console.log('DataBAse LocalCLone filters', filters)
@@ -2596,7 +2618,7 @@ return false;
       where = where + `${com_trim} ${variable} ${ter_trim}=${comillas}${campo}${comillas}`
     }
     if (where > '') where = ' where ' + where
-    
+
     console.log('DataBase Clone where ', where)
 
     if (!this.View[alias] || force) { // si no existe el alias
@@ -2620,7 +2642,7 @@ return false;
     }
 
     // borramos los datos
-    this.useNodata(alias)
+    await this.useNodata(alias)
     /*
         this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
         this.View[alias].data = {} // asignamos el valor del ultimo registro
@@ -2675,7 +2697,7 @@ return false;
       this.View[alias].data = respuesta[respuesta.length - 1] // asignamos el valor del ultimo registro
       this.View[alias].recnoVal = [...recnoVal] // utilizamos el spread Operator
     }
-  
+
   }
 
   /// //////////////////////////////

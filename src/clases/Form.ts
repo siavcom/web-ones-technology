@@ -197,9 +197,10 @@ export class FORM extends COMPONENT {
       this.prop.Valid = false;
       this.prop.BaseClass = 'imgButton'
       this.prop.Position = 'footer'
-      this.prop.Image = "/Iconos/svg/bx-exit.svg";
+      this.prop.Image = "/Iconos/exit4-color.svg";
       //this.prop.Image = "/Iconos/exit.png"
-      this.style.fontSize = '16px'
+      this.style.width='30px'
+      this.style.fontSize = '13px'
       this.style.color = 'green'
       this.style.backgroundColor = 'white'
       this.prop.TabIndex = 50

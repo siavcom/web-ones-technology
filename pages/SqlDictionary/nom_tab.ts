@@ -51,6 +51,12 @@ export class nom_tab extends COMPONENT {
     await this.Form.db.useNodata('vi_cap_dat')
     await this.Form.db.useNodata('vi_cap_ind')
     await this.Form.db.useNodata('vi_cap_vis')
+    this.Form.bt_gen_model.prop.Visible = false
+    this.Form.bt_gen_indices.prop.Visible = false
+    this.Form.bt_gen_vistas.prop.Visible = false
+
+
+
     
    return
   }

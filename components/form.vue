@@ -193,10 +193,28 @@ import container from "@/components/container.vue"
 
 
 /////////////////////////////////////////
-// Programa base en typeScript
+// Manejo de errores personalizados 
 /////////////////////////////////////////
+/*
+// desde cualquier parte de la aplicacion
+if (!data.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+}
 
-//import { THISFORM } from '/src/views/come9101/ThisForm.ts'
+
+// Manejador de errores 
+export default eventHandler(() => {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page Not Found'
+  })
+}
+
+
+
+*/
+
+
 ///////////////////////////////////////
 // Propiedades del componente .
 //  Obtiene ThisForm  base desde Main.vue en cada directorio de cada pagina 
