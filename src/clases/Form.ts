@@ -95,7 +95,7 @@ export class FORM extends COMPONENT {
       marginLeft: 'auto',
       left: 0,
       Top: 0,
-      backgroundImage: "/img/Logo_Empresa.bmp",
+      backgroundImage: "/img/Logo_Empresa.png",
       textAlign: 'start',
     };
   

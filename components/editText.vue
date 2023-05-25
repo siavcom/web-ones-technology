@@ -587,24 +587,22 @@ const readCampo = async (recno: number) => {
 
 }
 
-const changeValue=(new_val:number)=>{
+const changeValue=async (new_val:number)=>{
     if (new_val!=Value.value)
           Value.value=new_val 
 
    if (props.prop.Type == 'checkBox') {
 
       checkValue.value = new_val == 1 ? true : false
+      await This.interactiveChange()
       emitValue()
-      console.log('textLabel Watch value checkBox ',props.prop.Name,new_val,Value.value,checkValue.value)
-      This.interactiveChange()
+
     }
 
     if (props.prop.Type == 'spinner') {
-     
+      await This.interactiveChange()
       emitValue()
-      console.log('textLabel Watch value spinner ',props.prop.Name,new_val,Value.value)
 
-      This.interactiveChange()
     }
 
   }
@@ -628,7 +626,7 @@ watch(
   (new_val, old_val) => {
     // if (props.prop.Value != Value.value)
    //   Value.value = props.prop.Value
-   
+   console.log('editText watch props.prop.Value',This.Name,new_val)
    changeValue(new_val)
     
   },
@@ -640,7 +638,9 @@ watch(
   (new_val, old_val) => {
    // if (props.prop.Value != Value.value)
    //   Value.value = props.prop.Value
-  changeValue(new_val)
+   console.log('editText watch Value.value',This.Name,new_val)
+
+   changeValue(new_val)
     
   },
   { deep: false }

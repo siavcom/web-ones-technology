@@ -36,7 +36,29 @@ export class bt_edit extends COMPONENT {
         this.Parent.nco_que.prop.Value=1
 
     this.prop.Visible=false  
- 
+
+   // || this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0
+
+   const m = {
+    prg_prg: this.Form.prop.Name,
+    par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
+    usu_que: this.Parent.prop.usu_que,
+    ren_que: 1,
+    nco_que: this.Parent.nco_que.prop.Value
+  }
+
+   if (add ){
+      this.Parent.nco_que.prop.sw_add=true
+      const data = await this.Form.db.execute(`select max(nco_que)+1 as max_que from man_query_db \
+      where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
+         and usu_que='${m.usu_que}' `)
+         m.nco_que=1 
+        if (data[0] && data[0].max_que && data[0].max_que != null) {
+          m.nco_que = data[0].max_que
+        } 
+         this.Parent.nco_que.prop.Value = m.nco_que
+      }  
+
     const filter = {
       usu_que: this.Parent.prop.usu_que,
       nco_que: this.Parent.nco_que.prop.Value
@@ -47,32 +69,12 @@ export class bt_edit extends COMPONENT {
    // else    
     await this.Form.db.localClone('vi_cap_query_db', this.Parent.table.prop.RecordSource, filter)
 
-    console.log('bt_edit click filter View',filter,this.Form.db.View[this.Parent.table.prop.RecordSource] )
-
-    if (add || this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0){
-
-      const m = {
-        prg_prg: this.Form.prop.Name,
-        par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
-        usu_que: this.Parent.prop.usu_que,
-        ren_que: 1,
-        nco_que: this.Parent.nco_que.prop.Value
-      }
-      const data = await this.Form.db.execute(`select max(nco_que)+1 as max_que from man_query_db \
-      where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
-         and usu_que='${m.usu_que}' `)
-
-        if (data[0] && data[0].max_que && data[0].max_que != null) {
-          m.nco_que = data[0].max_que
-        } 
-        console.log('bt_edit  click append Rowfilter m ',filter ,m)
-        await this.Parent.table.appendRow(m)
-        this.Parent.nco_que.prop.Value = m.nco_que
-      }  
-    
+    if (this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0){
+      await this.Parent.table.appendRow(m)
+    }
+    this.Parent.query.prop.Visible=false 
     this.Parent.table.prop.Visible = true
 //    this.Parent.bt_delete.prop.Visible=true
-    this.Parent.query.prop.Visible = false
 
 }
 

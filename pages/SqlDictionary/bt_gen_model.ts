@@ -36,6 +36,7 @@ export class bt_gen_model extends COMPONENT {
     }
     this.prop.Disabled = false
     
+    
     return
   }
 

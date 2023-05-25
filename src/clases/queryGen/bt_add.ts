@@ -19,6 +19,7 @@ export class bt_add extends COMPONENT {
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
+    this.prop.ToolTipText='Nueva condición'
     // this.prop.Value ='Nueva'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
@@ -34,7 +35,7 @@ export class bt_add extends COMPONENT {
 
   async click() {
 
-      await this.Parent.bt_edit.click(true)
+      await this.Parent.bt_edit.click(true) // se ppn en true para sumar nueva condicion
       
     /*
       const m = {

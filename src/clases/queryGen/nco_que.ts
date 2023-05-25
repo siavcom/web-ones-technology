@@ -32,6 +32,7 @@ export class nco_que extends COMPONENT {
     this.prop.componentStyle.width='40px'
     this.prop.usu_que=''
     this.prop.Visible=false
+    this.prop.sw_add=false
     //this.style.width='30px'
   }
 
@@ -44,18 +45,25 @@ export class nco_que extends COMPONENT {
   ///////////////////////////////////
 
   async interactiveChange() {
-   
+
     const tabla=this.Parent.tabla
-    this.Parent.query.prop.Value = ''
     this.Parent.bt_edit.prop.Visible=false
     this.Parent.bt_delete.prop.Visible=false
     this.Parent.table.prop.Visible=false
     this.Parent.query.prop.Visible = false
+    this.Parent.query.prop.Value = ''
     var query=''
-    if (this.prop.Value<=0){
+      
+    if (this.prop.sw_add)
+       return
+   // if (this.Parent.prop.usu_que = 'MAIN'){
+   //     this.Parent.bt_edit.click()
+   //     return 
+    //}
+
+       if (this.prop.Value<=0){
       this.prop.Value=1
     }
- 
     const q = {
       usu_que: this.Parent.prop.usu_que,
       nco_que: this.Parent.nco_que.prop.Value,
@@ -76,19 +84,18 @@ export class nco_que extends COMPONENT {
     if (data.length == 0) {
       if (this.prop.Value==1)
          return 
-
-      this.prop.Value=this.prop.Value-1
-      this.interactiveChange()
+      if (this.prop.Value>1){
+        this.prop.Value=this.prop.Value-1
+        this.interactiveChange()
+      }
       return
     } // Endif (
     this.prop.ReadOnly= false
     
     let sig_uni = ' '
-    
  
-
     for (let i = 0; i < data.length; i++) {
-
+ 
       const m = data[i] //Scatter Memvar
 
       sig_uni = 'Y'
@@ -163,6 +170,11 @@ export class nco_que extends COMPONENT {
     this.Parent.query.prop.Value=query
     this.Parent.query.prop.Visible = true
     this.Parent.bt_edit.prop.Visible=true
+
+    if (this.Parent.Name=='queryPri') // solamente query Principal
+       this.Form.var_ord.prop.Value =data[0].cam_dat 
+
+    console.log('asigna interactive nco_que Parent.Name',this.Parent.Name,this.Form.var_ord.prop.Value)
 
     return true
   }

@@ -2,19 +2,24 @@
 // Clase : Forma para generar reportes
 // Author : Fernando Cuadras Angulo
 // Creacion : Marzo/2023
-// Ult.Mod  : 28/Abril/2023
+// Ult.Mod  : 25/Mayo/2023
 /////////////////////////////////////////////
 //import { COMPONENT } from './Component'
 import { FORM } from '@/classes/Form'
 import { queryGen as query } from '@/classes/queryGen/queryGen'
-import { bt_print } from './bt_print'
+import { bt_obtener } from './bt_obtener'
+import {var_ord} from './var_ord'
+import {for_imp} from './for_imp'
+import {report} from './report/report'
 
 export class reportForm extends FORM {
+  public var_ord = new var_ord()
   public queryPri = new query()
   public queryUsu = new query()
   public queryGen = new query()
-
-  public bt_print = new bt_print()
+  public for_imp = new for_imp()
+  public bt_obtener = new bt_obtener()
+  public report = new report()
  
   constructor() {
     super()
@@ -24,6 +29,8 @@ export class reportForm extends FORM {
     this.queryUsu.prop.Name = 'queryUsu'
     this.queryGen.Name = 'queryGen'
     this.queryGen.prop.Name = 'queryGen'
+    this.prop.vis_rep=''
+    
     
   
   }
@@ -49,6 +56,7 @@ export class reportForm extends FORM {
         from vi_schema_views where nom_vis='${this.prop.ReportView}' order by nom_tab,ref_dat `,'campos') 
 
     console.log('reportForm campos',await  db.localAlaSql('select * from campos'))  
+    
     
 
     // todos los querys del reporte
@@ -103,7 +111,9 @@ export class reportForm extends FORM {
 
     this.queryPri.activa.prop.Value=1
     this.queryPri.nco_que.prop.Value=1
-    console.log('reportForm Init ',this.queryPri,this.queryPri.activa.prop.Value,this.queryPri.nco_que.prop.Value)
+
+    this.var_ord.prop.RowSource = "campos.ref_dat,cam_dat"
+    // console.log('reportForm Init ',this.queryPri,this.queryPri.activa.prop.Value,this.queryPri.nco_que.prop.Value)
   }
 
   // asignamos RecordSource y ControlSource de cada columna

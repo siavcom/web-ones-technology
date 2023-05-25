@@ -426,6 +426,7 @@ const asignaResultado = (valor?: string) => {
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
+  console.log('comboBox asignaResultado entrar RowSource',props.prop.RowSource)
   if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
 
   const BoundColumn =
@@ -435,55 +436,38 @@ const asignaResultado = (valor?: string) => {
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
 
   if (valor) {
-    //  console.log("ComboBox AsignaResultado valor columnas =======>", props.prop.Name,valor,columnas)
+    valor=valor.trim()
 
 
     for (let i = 0; i < columnas.length; i++) {
-      if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
-        // console.log("Busca Value =======>", i, new_val);
-
-        // Encontro la posicion del value
+      if (valor == columnas[i].value.trim()) { // El objeto columna tiene dos campos value y text
         // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
-        //Resultado.value = columnas[i].text[0];
         Resultado.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
-        //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
-        //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
       }
     }
+   // emit("update:Value", Resultado.value)
   }
   else {  //aqui me quede checar cuando es por arreglo genera el value con array
-    // console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.prop.Name,Value.value,columnas)
-
-   
     for (let i = 0; i < columnas.length; i++) {
       try {
         console.log('comboBox columna',i,This.Name,columnas[i])        //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
         if (Value.value == columnas[i]['value'] ){
-           //|| Value.value == columnas[i]['value'][0]  ) {  // { // El objeto columna tiene dos campos value y text
           // if (Value.value == columnas[i]['value']) { // El objeto columna tiene dos campos value y text
-
-          // console.log("Busca Value =======>", i, new_val);
-
-          // Encontro la posicion del value
-          // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
-
-          //Resultado.value = columnas[i].text[0];
-          // console.log("ComboBox AsignaResultado columnas =======>", props.prop.Name,props.prop.Value,columnas[i].text[0])
-
 
           Resultado.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
           //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
-          //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
         }
       } catch (error) {
         console.error('comboBox ', error)
       }
 
     }
+    emitValue()
   }
+//console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
 
-  emitValue()
+ 
 }
 
 //////////////////////////////////////////////////////
@@ -494,7 +478,7 @@ const renderComboBox = async () => {
   if (props.prop.RowSourceType < 1) return
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
+  if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
   try {
     const RowSource: string = props.prop.RowSource
     const pos = RowSource.indexOf(".") // posicion del punto
@@ -502,7 +486,7 @@ const renderComboBox = async () => {
     // Obtenemos el alias
     const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
 
-    ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
+    ColumnWidth(props.prop.ColumnWidths) // asigna tamaÃ±o de columnas
 
     //console.log('ComboBox renderiza  ===>>', props.prop.Name,props.prop.Status)
 
@@ -619,7 +603,7 @@ const renderComboBox = async () => {
     }
 
     // recorremos todas los renglones si es solo un columna val_col.length si no 
-    // toma el tamaño del arreglo solo de la primer columna
+    // toma el tamaÃ±o del arreglo solo de la primer columna
     var valor = null
 
     if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
@@ -782,10 +766,12 @@ watch(
 //Value
 watch(
   () => props.prop.Value,
-  (new_val, old_val, onClean) => {
-    //console.log('Watch prop.Value ComboBox===>', new_val)
+  (new_val, old_val) => {
+    console.log('Watch prop.Value ComboBox===>', new_val,old_val)
+
     // asigna la columna que tiene el resultado
-    asignaResultado()
+    asignaResultado(new_val)
+
 
   },
   { deep: false }
@@ -911,7 +897,7 @@ watch(
 
 //ColumWidth
 const ColumnWidth = (new_val) => {
-  //console.log('Tamaño Columnas =',new_val)
+  //console.log('TamaÃ±o Columnas =',new_val)
   const columnWidth = eval('["' + new_val.replace(",", '","') + '"]');
 
 
@@ -933,7 +919,7 @@ watch(
 
       for (let col = 0; col < columnWidth.length; col++) {
         width[col] = columnWidth[col] + "%";
-      console.log("Cambio tamaño de columnas==>", width[col]);
+      console.log("Cambio tamaÃ±o de columnas==>", width[col]);
       }
       */
     }
@@ -962,13 +948,13 @@ watch(
   () => props.style.width,
 
   (new_val, old_val) => {
-    console.log("Cambio tamaño ", inputWidth.value);
+    console.log("Cambio tamaÃ±o ", inputWidth.value);
     if (new_val != old_val) {
       if (props.style.width.substr(-2, 2) == 'px') {
         const len = props.style.width.length - 2
         const width: number = +props.style.width.substr(0, len) - 30
         inputWidth.value = width.toString() + 'px'
-        console.log("Cambio tamaño 2", inputWidth.value);
+        console.log("Cambio tamaÃ±o 2", inputWidth.value);
       }
 
 

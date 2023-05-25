@@ -32,7 +32,7 @@ export class bt_gen_vistas extends COMPONENT {
         console.error('Error al generar/regenerar las vistas remotas de la tabla:'+this.Form.nom_tab.prop.Value)
     }
     this.prop.Disabled = false
-    this.Form.grid_vistas.prop.Visible=true
+    
     return
   }
 

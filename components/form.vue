@@ -727,7 +727,7 @@ div.contenedor {
   color: #b94295;
   min-width: 375px;
   min-height: 812px;
-  background-image: "/img/Logo_Empresa.bmp";
+  background-image: "/img/Logo_Empresa.png";
   margin-top: 30%;
 
 }

@@ -60,7 +60,7 @@ export class THISFORM extends captureForm {
     this.style.color = "#b94295"
     this.style.fontSize = "13px" 
     this.style.position = "center"
-    this.style.backgroundImage = "/img/Logo_Empresa.bmp"
+    this.style.backgroundImage = "/img/Logo_Empresa.png"
     this.grid=['']
    
 

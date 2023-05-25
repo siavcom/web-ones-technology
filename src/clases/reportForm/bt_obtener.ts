@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : bt_print
+// Clase : bt_obtener
 // Author : Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 /////////////////////////////////////////////
@@ -11,16 +11,16 @@ import { COMPONENT } from '@/classes/Component'
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
-export class bt_print extends COMPONENT {
+export class bt_obtener extends COMPONENT {
 
   constructor() {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
-    this.prop.Value ='Imprimir'
+    this.prop.Value ='Obtener'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
-    this.prop.Image = "/Iconos/svg/print-color3.svg";
+    this.prop.Image = "/Iconos/svg/report-document.svg"        //print-color3.svg";
     this.prop.TabIndex = 1
     this.style.width='40px'
 
