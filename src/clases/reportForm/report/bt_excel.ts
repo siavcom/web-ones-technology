@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : bt_obtener
 // Author : Fernando Cuadras Angulo
-// Creacion : Marzo/2023
+// Creacion : 25/Mayo/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
 /**
@@ -11,7 +11,7 @@ import { COMPONENT } from '@/classes/Component'
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
-export class bt_obtener extends COMPONENT {
+export class bt_excel extends COMPONENT {
 
   constructor() {
     super()
@@ -22,6 +22,7 @@ export class bt_obtener extends COMPONENT {
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/excel-file.svg"  
     this.prop.TabIndex = 1
+    this.prop.Visible=false
     this.style.width='40px'
 
   } // Fin constructor

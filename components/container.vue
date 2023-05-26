@@ -14,7 +14,7 @@
 <template>
   <transition name='Container'>
     <div class='container' :style="style" >
-      <details class='details' :open='This.prop.Visible' >
+      <details class='details' :open='!This.prop.Disabled' >
 
         <summary>{{ This.prop.textLabel }}</summary>
         <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
@@ -145,6 +145,7 @@ const props = defineProps<{
     textLabel: "";
     Type: "text";
     Visible: true;
+    Disabled: boolean;
     ControlSource: string;
     Status: string;
     ErrorMessage: string;

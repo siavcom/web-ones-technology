@@ -42,6 +42,7 @@ export class queryGen extends COMPONENT {
   constructor() {
     super()
     this.prop.Visible=true
+    this.prop.Disabled=true
     this.prop.BaseClass='container'
     this.prop.textLabel='Query Generator'
     //this.style.maxWidth='400px'

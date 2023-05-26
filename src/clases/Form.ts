@@ -45,7 +45,7 @@ export class FORM extends COMPONENT {
     this.prop.nem_pge = "Siavcom Software "
     this.prop.fpo_pge = new Date().toISOString().substring(0, 10); //  Fecha actual de la computadora cliente
     this.prop.log_emp = "/img/Logo_Empresa.png"
-    this.prop.ReportView=' '
+    //this.prop.ReportView=' '
 
     this.style.maxWidth = '920px'
     //    this.style.maxHeight='920px'    

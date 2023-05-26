@@ -1076,7 +1076,7 @@ export class VFPDB {
       if (respuesta == null)
         return null
 
-      console.log('execute alias', alias, this.View)
+    //  console.log('execute alias query,respuesta', dat_vis.query,respuesta)
       if (alias.toUpperCase() == 'MEMVAR') {
         return respuesta
       }
@@ -1178,6 +1178,9 @@ export class VFPDB {
 
       // console.log('Tabla creada en Now resp ',resp_sql)
       console.log('Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
+      if (tip_res.toUpperCase()=='NULL')
+      return true
+
 
       return respuesta
     } catch (error) {

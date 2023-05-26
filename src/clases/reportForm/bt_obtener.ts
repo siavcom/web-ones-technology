@@ -27,8 +27,24 @@ export class bt_obtener extends COMPONENT {
   } // Fin constructor
 
   async click() {
-    this.Form.tabla.prop.RowSource = ''
-    console.log('bt_print===>>>',this.Form.browseResult.prop.RowSource)  
+
+    const ins_sql=await this.Form.gen_query()
+
+    if ( ! await this.Form.db.execute(ins_sql,'result','null'))
+        return
+
+    if (this.Form.db.View.result && this.Form.db.View.result.recCount==0) // si no hay datos
+       return 
+
+
+    this.Form.reporte.broweResult.prop.RowSource = 'result'
+    this.Form.reporte.broweResult.prop.Visible = true  // indica que despliega la información
+    this.Form.bt_excel.prop.Visible=true
+    this.Form.bt_pdf.prop.Visible=true
+               // Mostramos el reporte
+    this.Form.reporte.prop.Visible=false
+    this.Form.reporte.prop.Disabled=false
+
   }
 
 

@@ -22,13 +22,14 @@ export class bt_pdf extends COMPONENT {
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/pdf-file.svg"        //print-color3.svg";
     this.prop.TabIndex = 1
+    this.prop.Visible=false
     this.style.width='40px'
 
   } // Fin constructor
 
   async click() {
     this.Form.tabla.prop.RowSource = ''
-    console.log('bt_print===>>>',this.Form.browseResult.prop.RowSource)  
+    console.log('bt_pdf===>>>',this.Form.browseResult.prop.RowSource)  
   }
 
 
