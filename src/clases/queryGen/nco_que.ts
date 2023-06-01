@@ -30,7 +30,7 @@ export class nco_que extends COMPONENT {
     this.prop.Decimals = 0
     this.prop.Capture = true
     this.prop.componentStyle.width='40px'
-    this.prop.usu_que=''
+    
     this.prop.Visible=false
     this.prop.sw_add=false
     //this.style.width='30px'
@@ -56,18 +56,14 @@ export class nco_que extends COMPONENT {
       
     if (this.prop.sw_add)
        return
-   // if (this.Parent.prop.usu_que = 'MAIN'){
-   //     this.Parent.bt_edit.click()
-   //     return 
-    //}
+   
 
        if (this.prop.Value<=0){
       this.prop.Value=1
     }
     const q = {
-      usu_que: this.Parent.prop.usu_que,
+      usu_que: this.Parent.usu_que,
       nco_que: this.Parent.nco_que.prop.Value,
-      prg_prg: this.Form.prop.Name,
     }
 
     const RecordSource=this.Parent.table.prop.RecordSource

@@ -28,6 +28,8 @@ import axios from 'axios'
 import alasql from 'alasql'
 import { Session } from '@/stores/currentSession'
 const session = Session()
+//alasql["private"].externalXlsxLib = require('xlsx');
+
 //const $MMessageBox = useNuxtApp()
 
 // import { Global } from "@/Global";

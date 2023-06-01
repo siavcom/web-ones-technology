@@ -15,6 +15,7 @@ import { COMPONENT } from '@/classes/Component'
 import { browseResult } from './browseResult'
 import { bt_excel } from './bt_excel'
 import { bt_pdf } from './bt_pdf'
+import { bt_close} from './bt_close'
 
 export class report extends COMPONENT {
 
@@ -24,9 +25,10 @@ export class report extends COMPONENT {
   //public mensaje=new mensaje()
   
   public browseResult = new browseResult()
+  public bt_close= new bt_close()
   public bt_excel = new bt_excel()
   public bt_pdf = new bt_pdf()
- 
+  
  
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
@@ -44,6 +46,6 @@ export class report extends COMPONENT {
 
     //this.prop.appendRow=true
     //this.prop.deleteRow=true
-    //this.prop.usu_que=''
+    //this.usu_que=''
      }
 }

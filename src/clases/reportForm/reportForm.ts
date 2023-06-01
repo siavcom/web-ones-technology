@@ -20,9 +20,9 @@ export class reportForm extends FORM {
   public for_imp = new for_imp()
   public bt_obtener = new bt_obtener()
   public report = new report()
-  vis_rep :string = ''   // nombre de la vista sql a utilizar en el reporte
-  ord_vis :string = ''   // variables extras para el orden del select
-  query :string = ''     // query para ejecutar el reporte
+  vis_rep: string = ''   // nombre de la vista sql a utilizar en el reporte
+  ord_vis: string = ''   // variables extras para el orden del select
+  query: string = ''     // query para ejecutar el reporte
 
   constructor() {
     super()
@@ -46,7 +46,7 @@ export class reportForm extends FORM {
     const db = this.db
 
     // vi_schema_views nos trae los campos que podemos utilizar en las condiciones
-   const vis_rep= this.vis_rep 
+    const vis_rep = this.vis_rep
 
     await db.execute(`select ref_dat,cam_dat,tip_dat, CASE \
                         WHEN lower(cam_dat)='key_pri' or lower(cam_dat)='timestamp' or \ 
@@ -54,17 +54,17 @@ export class reportForm extends FORM {
                          lower(cam_dat)='usu_cre' or lower(cam_dat)='tie_cre' \
                          THEN 'zzzzzzzzzzz' \
                          ELSE nom_tab END as nom_tab \
-        from vi_schema_views where nom_vis='${vis_rep}' order by nom_tab,ref_dat `, 'campos','NULL')
+        from vi_schema_views where nom_vis='${vis_rep}' order by nom_tab,ref_dat `, 'campos', 'NULL')
 
-        if (!db.View.campos || db.View.campos.recCount==0){
-          MessageBox('No existe la vista Sql :'+vis_rep,16,'Error  ')
-   
-          return
-       }
+    if (!db.View.campos || db.View.campos.recCount == 0) {
+      MessageBox('No existe la vista Sql :' + vis_rep, 16, 'Error  ')
+
+      return
+    }
 
 
 
-  console.log('reportForm campos ',vis_rep, await db.localAlaSql('select * from campos'))
+    console.log('reportForm campos ', vis_rep, await db.localAlaSql('select * from campos'))
 
 
 
@@ -87,8 +87,8 @@ export class reportForm extends FORM {
 
     this.queryPri.prop.textLabel = 'Condiciones principales'
 
-    this.queryPri.prop.usu_que = 'MAIN'
-    this.queryPri.prop.Disabled=false
+    this.queryPri.usu_que = 'MAIN'
+    this.queryPri.prop.Disabled = false
 
 
 
@@ -108,7 +108,7 @@ export class reportForm extends FORM {
 
     //this.queryUsu.table.prop.RecordSource = 'query_user'
     await this.asignaRecordSource('queryUsu', 'query_user')
-    this.queryUsu.prop.usu_que = this.db.user
+    this.queryUsu.usu_que = this.db.user
 
     // Query Todos
     filter.usu_que = 'ALL'
@@ -119,7 +119,7 @@ export class reportForm extends FORM {
 
     //this.queryGen.table.prop.RecordSource = 'query_all'
     await this.asignaRecordSource('queryGen', 'query_all')
-    this.queryGen.prop.usu_que = 'ALL'
+    this.queryGen.usu_que = 'ALL'
 
     this.queryPri.activa.prop.Value = 1
     this.queryPri.nco_que.prop.Value = 1
@@ -144,67 +144,98 @@ export class reportForm extends FORM {
 
   }
 
+  /////////////////////////////////////
+  // gwn_where : genera la parte del where de cada modulo de condicion
+  // where : where ya generado y que se le amentara el resultado de este
+  // tip_con : tipo de condicion puede ser queryUsu,queryPri, queryGen
+  ////////////////////////////////////////
 
-  public async gen_where(where: string, tip_con: string) {
-    if (this[tip_con].prop.Disabled) return where
-    
-    const view=this[tip_con].table.prop.RecordSource
-   
-    const  usu_que= this.Parent.prop.usu_que
-    const  nco_que= this[tip_con].nco_que.prop.Value
-   
+  async gen_where(tip_con: string) {
 
-    const ins_sql=`select * from vi_cap_query_db where usu_que='${usu_que}'' and nco_que={nco_que}`
-    console.log('gen_where ins_sql',ins_sql)
-   
-    console.log('nco_que localSql resultado', ins_sql, await this.db.localAlaSql(ins_sql))
+    console.log('where ===>>>', tip_con, this[tip_con])
+    var where = ''
+    if (this[tip_con].activa.prop.Value == 0) return where
 
+    if (this[tip_con].table.prop.Visible && !await this[tip_con].table.grabaTabla()) // si esta en edicion, graba la tabla
+      return where
+
+    const view = this[tip_con].table.prop.RecordSource
+
+    const usu_que = this[tip_con].usu_que
+    const nco_que = this[tip_con].nco_que.prop.Value
+
+    const ins_sql = `select * from vi_cap_query_db where trim(usu_que)='${usu_que}' and nco_que=${nco_que} order by ren_que`
     const data = await this.Form.db.localAlaSql(ins_sql)
 
     // console.log('nco_que interactiveChange data',data)
 
-    if (data.length == 0) return where
+    if (data.length == 0) return where  // No hay condición 
 
     let query = '('
     let sig_uni = ' '
 
     for (let i = 0; i < data.length; i++) {
-
       const m = data[i] //Scatter Memvar
+      m.cam_dat = m.cam_dat.trim()
+      m.con_que = m.con_que.trim()
+      m.val_que = m.val_que.trim()
 
-      query = query + `${sig_uni} ${m.pai_que} ${m.nom_cam} ${m.con_que} ${m.val_que} ${m.pad_que} ${sig_uni} `
+      const data1 = await this.Form.db.localAlaSql(`select trim(tip_dat) as tip_dat from campos where trim(cam_dat)='${m.cam_dat}' `)
+      console.log('where tipo campo', data1, await this.Form.db.localAlaSql('select * from campos'))
+
+      const tip_dat = data1[0].tip_dat
+
+      if (tip_dat == 'character' || tip_dat == 'date' || tip_dat.slice(0, 8) == "timestamp")
+        m.val_que = "'" + m.val_que + "'"
+
+        
+      query = query + `${sig_uni} ${m.pai_que} ${m.cam_dat} ${m.con_que} ${m.val_que} ${m.pad_que} `
       sig_uni = m.uni_que.trim()
-
-
-    } // EndFor (
+      if (sig_uni.trim()=='')
+           sig_uni=' AND '
+    } // EndFor 
     query = query + ')'
     return query
   }
 
-
   public async gen_query() {
-    var where :string = ''
-    var orden :string = ' order by ' + this.var_ord.prop.Value   // variable de orden principal de la vista
-    var query_gen :string = 'select * from '+ this.vis_rep
- 
+    var where: string = ''
+    var orden: string = ' order by ' + this.var_ord.prop.Value   // variable de orden principal de la vista
+    var query_gen: string = 'select * from ' + this.vis_rep
+
     if (this.ord_vis.length > 1) { // variables extras para el orden del select
       orden = orden + ',' + this.ord_vis
     }
- 
+
     if (this.query.length > 1)
       query_gen = this.query
 
-    where=await this.gen_where('','queryPri')
-    
-    if (this.queryUsu.prop.Visible)
-       where=where.length>0? where:'' +'and '+await this.gen_where('','queryUsu')
+    where = await this.gen_where('queryPri')
 
-    if (this.queryGen.prop.Visible)
-       where=where.length>0? where:'' +'and '+await this.gen_where('','queryMain')
+    if (this.queryUsu.prop.Visible) {
+      const where_usu = await this.gen_where('queryUsu')
+      if (where_usu.length > 3) {
+        if (where.length == 0)
+          where = where_usu
+        else
+          where = where + ' and ' + where_usu
+      }
+    }
+    if (this.queryGen.prop.Visible) {
+      const where_gen = await this.gen_where('queryGen')
+      if (where_gen.length > 3) {
+        if (where.length == 0)
+          where = where_gen
+        else
+          where = where + ' and ' + where_gen
+      }
+    }
 
-   return query_gen+where+orden
+    console.log('reportForm query', query_gen + where + orden)
+  if (where.length>2 )
+      where=' where '+where
+   
+    return query_gen + where + orden
     //   init = async ()=> {
   }
-
-
 }

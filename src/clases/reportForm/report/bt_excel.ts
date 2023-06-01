@@ -17,19 +17,20 @@ export class bt_excel extends COMPONENT {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
-    this.prop.Value ='Excel type'
+    this.prop.Value ='File'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/excel-file.svg"  
-    this.prop.TabIndex = 1
-    this.prop.Visible=false
+    this.prop.TabIndex = 2
+    this.prop.Visible=true
     this.style.width='40px'
 
   } // Fin constructor
 
   async click() {
-   
-    console.log('bt_print===>>>',this.Form.browseResult.prop.RowSource)  
+    await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from result`) 
+   // await this.Form.db.localAlaSql(`select * into XLS("restest257a",?) from result`) 
+
   }
 
 

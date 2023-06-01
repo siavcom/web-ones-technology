@@ -99,9 +99,15 @@ const props = defineProps<{
   };
   Recno: 0;
   Component: null;
-  db: null
 
 }>()
+
+// Valores componente padre
+const Component = ref(props.Component)
+const This = Component.value
+console.log('browse This',This)
+
+
 
 const table = reactive({
   columns: [
@@ -169,7 +175,7 @@ const doSearch = async () => {
   // Start use axios to get data from Server
   //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
 
-  const data = await props.db.value.localAlaSql('select * from ' + props.prop.RowSource)
+  const data = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource)
   const rows = []
   if (data.length > 0) {
     visible.value=true

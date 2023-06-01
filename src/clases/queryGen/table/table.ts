@@ -57,7 +57,7 @@ export class table extends GRID {
      
     m.prg_prg= this.Form.prop.Name
     m.par_prg= this.Form.Params.par_prg ? this.Form.Params.par_prg:'' 
-    m.usu_que= this.Parent.prop.usu_que
+    m.usu_que= this.Parent.usu_que
     m.ren_que= 1
     
     const db = this.Form.db

@@ -42,7 +42,7 @@ export class bt_edit extends COMPONENT {
    const m = {
     prg_prg: this.Form.prop.Name,
     par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
-    usu_que: this.Parent.prop.usu_que,
+    usu_que: this.usu_que,
     ren_que: 1,
     nco_que: this.Parent.nco_que.prop.Value
   }
@@ -60,7 +60,7 @@ export class bt_edit extends COMPONENT {
       }  
 
     const filter = {
-      usu_que: this.Parent.prop.usu_que,
+      usu_que: this.Parent.usu_que,
       nco_que: this.Parent.nco_que.prop.Value
     }
  
