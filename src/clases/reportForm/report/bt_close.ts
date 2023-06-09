@@ -30,11 +30,15 @@ export class bt_close extends COMPONENT {
   async click() {
 
     this.Form.report.browseResult.prop.RowSource = ''
+    this.Form.report.displayPdf.prop.Source = ''
+
+    this.Form.report.browseResult.prop.Visible = false
+    this.Form.report.displayPdf.prop.Visible = false
+
     this.Form.bt_obtener.prop.Visible=true
     this.Form.var_ord.prop.Visible=true
 
-//    this.Form.report.bt_excel.prop.Visible=false
-//    this.Form.report.bt_pdf.prop.Visible=false
+   
                // Mostramos el reporte
     this.Form.report.prop.Visible=false
     this.Form.report.prop.Disabled=true
@@ -45,6 +49,13 @@ export class bt_close extends COMPONENT {
     this.Form.queryGen.prop.Visible=true   
 
     this.Form.for_imp.prop.Visible=true
+    this.Form.bt_obtener.prop.Visible=true
+    this.Form.bt_pdf.prop.Visible=true
+
+    this.Form.report.bt_excel.prop.Visible=true
+    this.Form.report.bt_json.prop.Visible=true
+
+
   
   }
 

@@ -11,6 +11,7 @@ import { bt_obtener } from './bt_obtener'
 import { var_ord } from './var_ord'
 import { for_imp } from './for_imp'
 import { report } from './report/report'
+import { bt_pdf } from './bt_pdf'
 
 export class reportForm extends FORM {
   public var_ord = new var_ord()   // variable de orden principal de la vista
@@ -19,11 +20,14 @@ export class reportForm extends FORM {
   public queryGen = new query()
   public for_imp = new for_imp()
   public bt_obtener = new bt_obtener()
+  public bt_pdf = new bt_pdf()
+ 
+  
   public report = new report()
   vis_rep: string = ''   // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ''   // variables extras para el orden del select
   query: string = ''     // query para ejecutar el reporte
-
+ 
   constructor() {
     super()
     this.queryPri.Name = 'queryPri'
@@ -32,13 +36,13 @@ export class reportForm extends FORM {
     this.queryUsu.prop.Name = 'queryUsu'
     this.queryGen.Name = 'queryGen'
     this.queryGen.prop.Name = 'queryGen'
-
+ 
   }
 
   public async init() {
     //   init = async ()=> {
 
-
+    this.for_imp.prop.Value=this.prop.Name
     this.queryUsu.prop.Disabled = true
 
     this.queryGen.prop.Disabled = true

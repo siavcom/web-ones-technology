@@ -13,79 +13,79 @@
 -->
 <template>
   <transition name='Container'>
-    <div class='container' :style="style">
-      <div class="mensajes" v-show="This.prop.Visible">
-        <details class='details' :open='!This.prop.Disabled'>
+    <div v-show="This.prop.Visible">
+      <div class='container' :style="style">
+          <details class='details' :open='!This.prop.Disabled' :width='style.width'>
 
-          <summary>{{ This.prop.textLabel }}</summary>
-          <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
+            <summary>{{ This.prop.textLabel }}</summary>
+            <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
 
-          <!--template v-slot:header-->
-          <!--transition-group> -->
-          <div class='header'>
-            <div v-for="(compHeader) in This.header">
+            <!--template v-slot:header-->
+            <!--transition-group> -->
+            <div class='header'>
+              <div v-for="(compHeader) in This.header">
 
-              <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
-                :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
-                v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
-                v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-                v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno" v-bind:Show="true"
-                v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
-                v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
-                v-bind:position="This[compHeader].position"
-                @focusout="This.eventos.push('This.' + compHeader + '.valid()')"
-                @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
-                @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
-            </div>
-          </div>
-          <div class='main'>
-            <TransitionGroup name='detailForm'>
-              <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
-                <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
-            -->
-                <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
-                  v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-                  v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-                  v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno" v-bind:Show="true"
-                  v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno"
-                  v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-                  v-bind:position="This[compMain].position"
-                  @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
-                  @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
+                <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
+                  :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
+                  v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
+                  v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
+                  v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno" v-bind:Show="true"
+                  v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
+                  v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
+                  v-bind:position="This[compHeader].position"
+                  @focusout="This.eventos.push('This.' + compHeader + '.valid()')"
+                  @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
+                  @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
               </div>
-            </TransitionGroup>
-          </div>
-          <!--/template-->
-          <!--template v-slot:footer
+            </div>
+            <div class='main'>
+              <TransitionGroup name='detailForm'>
+                <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
+                  <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
+            -->
+                  <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+                    v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+                    v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
+                    v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno" v-bind:Show="true"
+                    v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno"
+                    v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
+                    v-bind:position="This[compMain].position"
+                    @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
+                    @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
+                </div>
+              </TransitionGroup>
+            </div>
+            <!--/template-->
+            <!--template v-slot:footer
                    src="/Iconos/BotonRojo.png"
         This.prop.Status == 'A'
         -->
-          <div class="footer">
-            <div v-show="This.prop.Status == 'A'">
-              <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
-            </div>
-            <div v-show="This.prop.Status != 'A'">
-              <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-            </div>
+            <div class="footer">
+              <div v-show="This.prop.Status == 'A'">
+                <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
+              </div>
+              <div v-show="This.prop.Status != 'A'">
+                <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+              </div>
 
-            <div v-for="(compFooter) in This.footer" style="zIndex:0">
-              <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
+              <div v-for="(compFooter) in This.footer" style="zIndex:0">
+                <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
           
           -->
-              <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
-                v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-                v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-                v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
-                v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
-                v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-                v-bind:position="This[compFooter].position"
-                @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
-                @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
+                <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
+                  v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+                  v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+                  v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
+                  v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
+                  v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
+                  v-bind:position="This[compFooter].position"
+                  @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+                  @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
+              </div>
             </div>
-          </div>
-        </details>
+          </details>
       </div>
     </div>
   </transition>
@@ -111,14 +111,15 @@ import {
 } from "vue";
 */
 
-import imgButton from "@/components/imgButton.vue"
-import comboBox from "@/components/comboBox.vue"
-import editText from "@/components/editText.vue"
-import textLabel from "@/components/textLabel.vue"
-import grid from "@/components/grid.vue"
+const imgButton = resolveComponent('imgButton')
+const comboBox = resolveComponent('comboBox')
+const editText = resolveComponent('editText')
+const textLabel = resolveComponent('textLabel')
+const grid = resolveComponent('grid')
+const browse = resolveComponent('browse')
+const container = resolveComponent('container')
+const embedPdf = resolveComponent('embedPdf')
 
-import browse from "@/components/browse.vue"
-import container from "@/components/container.vue"
 const emit = defineEmits([ //"update", 
   "update:Value",
   "update:Status",
@@ -542,6 +543,13 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+    case 'embedpdf': {
+
+      return embedPdf
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
+      break
+    }
     default: {
       console.log('Container import default', name)
       return editText
@@ -669,4 +677,5 @@ img.circle {
   width: 18 px;
   max-height: 18px;
 
-}</style>
+}
+</style>

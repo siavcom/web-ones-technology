@@ -28,9 +28,12 @@ import axios from 'axios'
 import alasql from 'alasql'
 import { Session } from '@/stores/currentSession'
 const session = Session()
-//alasql["private"].externalXlsxLib = require('xlsx');
 
-//const $MMessageBox = useNuxtApp()
+/*
+import * as XLSX from 'xlsx';
+
+import * as fs from 'fs';
+*/
 
 // import { Global } from "@/Global";
 // import moment from 'moment'  // manejo de fechas
@@ -221,12 +224,12 @@ export class VFPDB {
         return false
       }
 
-      if (await this.genera_tabla(response, alias, true)==null) // generamos la tabla segun la estructura regresada
+      if (await this.genera_tabla(response, alias, true) == null) // generamos la tabla segun la estructura regresada
         return false
       // abre  la tabla de mantenimiento
       console.log('useNodata VIEW despues de generar_tabla==> ', alias, this.View[alias])
       if (this.View[alias] && this.View[alias].tip_obj.trim() == 'VIEW') {
-        alias=this.View[alias].tablaSql
+        alias = this.View[alias].tablaSql
         await this.useNodata(alias)
         console.log('useNodata VIEW salir useNodata==> ', alias)
 
@@ -381,17 +384,17 @@ export class VFPDB {
     {
       // console.log('USE this.View VIEW', this.View[alias], dat_vis)
       // cambiar el * por los campos de la View en minusculas
-     /*
-      var campos=''
-      var coma=''
-      for (const field in this.View[alias].est_tabla){
-          campos=campos+coma+field.toLowerCase()
-          coma=','
-      }    
-
-     // dat_vis.query = `select ${campos} from ${nom_vis}`
-     */
-     dat_vis.query = 'select * from ' + nom_vis
+      /*
+       var campos=''
+       var coma=''
+       for (const field in this.View[alias].est_tabla){
+           campos=campos+coma+field.toLowerCase()
+           coma=','
+       }    
+ 
+      // dat_vis.query = `select ${campos} from ${nom_vis}`
+      */
+      dat_vis.query = 'select * from ' + nom_vis
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
       if (this.View[alias].exp_indice.trim().length > 0) {
@@ -443,8 +446,7 @@ export class VFPDB {
         if (exp_ind.length == 0 && exp_whe.length > 0) { dat_vis.query = dat_vis.query + exp_whe }
       }
       // Si hay orden de la vista
-      if (this.View[alias].order.trim().length > 0)
-       { dat_vis.query = dat_vis.query + ' order by ' + this.View[alias].order }
+      if (this.View[alias].order.trim().length > 0) { dat_vis.query = dat_vis.query + ' order by ' + this.View[alias].order }
     } else { // es un MODEL{
       //      const val_eval = "`"+this.View[alias].exp_indice+"`"
       console.log('USE this.View MODEL eval exp_indice', this.View[alias], dat_vis)
@@ -634,7 +636,7 @@ export class VFPDB {
         dat_vis.dat_act.key_pri = dat_act[row].key_pri
 
         dat_vis.dat_act.timestamp = dat_act[row].timestamp
-       
+
 
 
         dat_vis.tip_llamada = 'UPDATE'
@@ -655,7 +657,7 @@ export class VFPDB {
       const m = {} // valiables en memoria
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
-       // console.log('DataBAse campo=', campo)
+        // console.log('DataBAse campo=', campo)
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
         switch (typeof dat_act[row][campo]) {
@@ -693,7 +695,7 @@ export class VFPDB {
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = ''
       if (sw_update && dat_vis.tip_llamada == 'INSERT') {
-       // console.log('tableUpdate exp_indice m', m, this.View[nom_tab].exp_indice)
+        // console.log('tableUpdate exp_indice m', m, this.View[nom_tab].exp_indice)
 
         // const where = eval(this.View[nom_tab].exp_indice)
         const where = this.View[nom_tab].exp_indice
@@ -1078,7 +1080,7 @@ export class VFPDB {
       if (respuesta == null)
         return null
 
-    //  console.log('execute alias query,respuesta', dat_vis.query,respuesta)
+      //  console.log('execute alias query,respuesta', dat_vis.query,respuesta)
       if (alias.toUpperCase() == 'MEMVAR') {
         return respuesta
       }
@@ -1180,8 +1182,8 @@ export class VFPDB {
 
       // console.log('Tabla creada en Now resp ',resp_sql)
       console.log('Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
-      if (tip_res.toUpperCase()=='NULL')
-      return true
+      if (tip_res.toUpperCase() == 'NULL')
+        return true
 
 
       return respuesta
@@ -1312,27 +1314,27 @@ export class VFPDB {
     if (!tabla) {
       return
     }
-    
+
     const dat_vis = {
       id_con: this.id_con,
       tip_llamada: 'GENMODEL',
       nom_tab: tabla
     }
-    
-    if (tabla=='ALL') {
-      dat_vis.tip_llamada= 'GENMODELS'
-     }
-    
+
+    if (tabla == 'ALL') {
+      dat_vis.tip_llamada = 'GENMODELS'
+    }
+
     try {
       const respuesta = await this.axiosCall(dat_vis)
       if (respuesta == null) return
-      if (respuesta.length == 0 && dat_vis.tip_llamada== 'GENMODEL') 
+      if (respuesta.length == 0 && dat_vis.tip_llamada == 'GENMODEL')
         MessageBox('Se genero el MODEL para la tabla ' + tabla + respuesta[0])
       else
         MessageBox('Se generaron todos los sequelize MODELS' + tabla + respuesta[0])
 
-        return true
-      
+      return true
+
     } catch (error) {
       console.error('Error SQL', error)
       MessageBox(
@@ -1592,8 +1594,8 @@ export class VFPDB {
   // alias : nombre que tendra la tabla
   // sw_ini : si es useNodata
   /// //////////////////////////////////////////////////
-  
-  genera_tabla= async (respuesta: any, alias: string, sw_ini?: boolean) =>{
+
+  genera_tabla = async (respuesta: any, alias: string, sw_ini?: boolean) => {
     alias = alias.trim()
     this.num_are = this.are_tra.indexOf(alias) + 1 // regresa un -1 si no hay elemento
 
@@ -1761,7 +1763,7 @@ export class VFPDB {
 
       //console.log('View leida respuesta ===>', alias, respuesta)
 
-      
+
       // si  no hay asignacion a valores de componentes
 
       if (!this.View[alias].componente) { return respuesta }
@@ -2176,7 +2178,7 @@ return false;
         'Error SQL Open'
       )
       const router = useRouter()
-      router.push('/Login')
+      router.push('/')
       return
 
     }
@@ -2704,6 +2706,39 @@ return false;
     }
 
   }
+
+  public async jasperReport(query: string, for_rep: string) {
+
+    const dat_rep = {
+      id_con: this.id_con,
+      tip_llamada: 'JASPERREPORT',
+      jrxml: for_rep,
+      query
+    }
+    console.log('JasperReport Llamada', dat_rep)
+    // display contruyendo reporte  
+
+    
+    try {
+      const response = await axios.post(this.url + 'sql', dat_rep, { responseType: 'arraybuffer' })
+      console.log
+      return response.data
+    } catch (error) {
+ 
+      await MessageBox(error.response.statusText, 16, 'Report Server Error  ')
+      return null 
+    }
+
+
+
+
+
+ //   const buffer=await this.axiosCall(dat_rep)
+ //   return buffer
+  }
+
+
+
 
   /// //////////////////////////////
   // portea la funcion alasql a VfpCursor

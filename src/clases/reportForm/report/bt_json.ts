@@ -1,9 +1,10 @@
 //////////////////////////////////////////////
-// Clase : bt_excel
+// Clase : bt_json
 // Author : Fernando Cuadras Angulo
 // Creacion : 25/Mayo/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
+import { saveAs } from 'file-saver'
 /**
  *
  *
@@ -11,16 +12,16 @@ import { COMPONENT } from '@/classes/Component'
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
-export class bt_excel extends COMPONENT {
+export class bt_json extends COMPONENT {
 
   constructor() {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
-    this.prop.Value ='File'
+    this.prop.Value ='JSON File'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
-    this.prop.Image = "/Iconos/svg/excel-file.svg"  
+    this.prop.Image = "/Iconos/svg/json.svg"  
     this.prop.TabIndex = 2
     this.prop.Visible=true
     this.style.width='40px'
@@ -28,7 +29,13 @@ export class bt_excel extends COMPONENT {
   } // Fin constructor
 
   async click() {
-    await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from result`) 
+    const result=await this.Form.db.localAlaSql(`select * from result`) 
+    if (result.length==0)
+       return
+
+    let json =JSON.stringify(result)
+
+    await saveAs(json, `${this.Form.for_imp.prop.Value.trim()}.json`)
    // await this.Form.db.localAlaSql(`select * into XLS("restest257a",?) from result`) 
 
   }

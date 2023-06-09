@@ -58,7 +58,7 @@
             <!-- @focus.capture -->
             <TransitionGroup name='detailForm'>
             <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
-              <component :is="impComp(ThisForm[compMain].prop.BaseClass,'main')" v-bind:Component="ref(ThisForm[compMain])"
+              <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                 v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                 v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
                 v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
@@ -168,7 +168,7 @@ import { INIT } from "@/classes/Init";
 /////////////////////////////////////////////////
 // Componentes
 /////////////////////////////////////////////////
-
+/*
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
@@ -176,6 +176,16 @@ import textLabel from "@/components/textLabel.vue"
 import grid from "@/components/grid.vue"
 import browse from "@/components/browse.vue"
 import container from "@/components/container.vue"
+*/
+const imgButton=resolveComponent('imgButton')
+const comboBox=resolveComponent('comboBox')
+const editText=resolveComponent('editText')
+const textLabel=resolveComponent('textLabel')
+const grid=resolveComponent('grid')
+const browse=resolveComponent('browse')
+const container=resolveComponent('container')
+const embedPdf=resolveComponent('embedPdf')
+
 
 // import grid from "/components/GridScrollStatic.vue"
 // import grid from "/components/gridVirtualList.vue"  Dejo de utilizar el item mode
@@ -615,56 +625,47 @@ else return 0}
 //////////////////////////////////////
 //  Importa componentes dinamicos
 ////////////////////////////////////// 
-const impComp = ((name: string,pos:string) => {
-  console.log('Form impComp  "'+name+'"',pos)
- 
-   
-/*
-  if (pos=='header')
-      console.log('Form impComp header ',ThisForm.header)
-  if (pos=='main')
-      console.log('Form impComp main ',ThisForm.main)
-  if (pos=='footer')
-        console.log('Form impComp footer 'ThisForm.footer)
-*/
+const impComp = ((name: string,pos?:string) => {
 
+  //return eval(name)
+  
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-      //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       return editText
       break;
     }
     case 'combobox': {
       return comboBox
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'grid': {
       return grid
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'imgbutton': {
       console.log('Entre a case imgButton')
       return imgButton
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'browse': {
       return browse
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'textlabel': {
       return textLabel
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break
     }
     case 'container': {
-      console.log('Form impComp Start container')
       return container
+      break
+    }
+
+
+    case 'embedpdf': {
+      
+      return embedPdf
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
 
       break
@@ -674,7 +675,7 @@ const impComp = ((name: string,pos:string) => {
       //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       break;
     }
-  }
+  } 
 
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
