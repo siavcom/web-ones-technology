@@ -18,7 +18,7 @@ export class bt_json extends COMPONENT {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
-    this.prop.Value ='JSON File'
+    this.prop.Value ='File'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/json.svg"  
@@ -34,10 +34,9 @@ export class bt_json extends COMPONENT {
        return
 
     let json =JSON.stringify(result)
-
-    await saveAs(json, `${this.Form.for_imp.prop.Value.trim()}.json`)
-   // await this.Form.db.localAlaSql(`select * into XLS("restest257a",?) from result`) 
-
+    const blob = new Blob([json], {type: 'text/plain'})
+    await saveAs(blob, `${this.Form.for_imp.prop.Value.trim()}.json`)
+  
   }
 
 
