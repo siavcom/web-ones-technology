@@ -19,11 +19,16 @@ export class sis_sis extends COLUMN {
         this.prop.Order = 1
         this.textLabel = 'Sistema '
         this.prop.BaseClass = 'editText'
-        
         this.prop.ControlSource = 'vi_cap_prg.sis_sis'
-        this.prop.ToolTipText ='Sistema a cual pertenece el programa'
+        this.prop.ToolTipText ='Nemonico a utilizar en el submenú'
         this.style.width='40px'
     }
+public async when(){
+    if (this.Form.tpr_prg.prop.Value == 'S') { // Si es menu principal del sistema
+       return true
+    }
+    return false
 
+}
 
 }

@@ -30,7 +30,7 @@
       and 
     </div>
     <div>
-      Postgres or MSSQL as Data Bases
+      Postgres or MSSQL as DataBase
     </div>
     <div>
       VUE/NUXT npm Packages:

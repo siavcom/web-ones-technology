@@ -64,7 +64,10 @@
                   </div>
                   <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
-                              y el when del componente typescript-->
+                              y el when del componente typescript
+                      Se quita el @focusout porque se hace el valid desde el componente
+                      @focusout.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
+                            -->
                   <Transition name="columninput">
                     <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
                       <component :is="impComp(ThisGrid[col.Name].prop.BaseClass)"
@@ -76,7 +79,6 @@
                         v-bind:Component="ref(ThisGrid.Form[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:style="ThisGrid[col.Name].style"
                         v-bind:position="ThisGrid[col.Name].position" 
-                        @focusout.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.valid()')"
                         @focus.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
                         :style="{ 'width': ThisGrid[col.Name].style.width }">
 
@@ -713,7 +715,7 @@ const saveRow = async (recno?: number) => {
   if (!recno) {
     //console.log('borraRenglon data Page====>',ThisGrid.Row,scroll.dataPage)
 
-    if (ThisGrid.Row < 0) return
+    // if (ThisGrid.Row < 0) return
     // busca a cual recno pertenece el ThisGrid.Row
     for (let i = 0; scroll.dataPage.length - 1; i++) {
 
@@ -737,7 +739,8 @@ const saveRow = async (recno?: number) => {
 }
 
 const saveTable = async () => {
-  if (ThisGrid.Row < 0) return
+  console.log('Grid ',ThisGrid.Name,'SaveTable',ThisGrid.Row)
+  //if (ThisGrid.Row < 0) return
   scroll.controls = false
   //const { $MessageBox } = useNuxtApp()
   eventos.push(ThisGrid.prop.Map + '.grabaTabla()')

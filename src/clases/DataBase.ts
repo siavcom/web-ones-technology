@@ -219,7 +219,7 @@ export class VFPDB {
 
     dat_vis.nom_vis = nom_vis // Nombre de la vista
     try {
-      // const response = await this.axiosCall(dat_vis)
+      
       const response: any = await this.axiosCall(dat_vis)
 
       if (response == null) {
@@ -560,7 +560,7 @@ export class VFPDB {
       return false
     }
 
-    const recno = this.View[alias].recno // obtenemos el recno a actualizar
+    var recno = this.View[alias].recno // obtenemos el recno a actualizar
     const recCount = this.View[alias].recCount // obtenemos el recCount de la vista
 
     if (recCount == 0) { // la vista no tiene registros a actualizar
@@ -629,7 +629,7 @@ export class VFPDB {
     let sw_insert = false
 
     for (const row in dat_act) {
-      // recno=dat_act[row].recno
+      recno=dat_act[row].recno
       dat_vis.tip_llamada = 'INSERT'
       dat_vis.dat_act = {} // Inicilizamos el arreglo de datos
       let sw_update = false
@@ -639,15 +639,15 @@ export class VFPDB {
       let old_dat = []
       // Es una actualizacion dedatos, asigna key_pri y timestamp
       //console.log('Db tableUpdate dat_act[row]', dat_act[row])
+      
       if (dat_act[row].key_pri > 0) {
         dat_vis.dat_act.key_pri = dat_act[row].key_pri
 
         dat_vis.dat_act.timestamp = dat_act[row].timestamp
-
-
+        //recno=dat_act[row].recno
 
         dat_vis.tip_llamada = 'UPDATE'
-        const ins_sql = `SELECT * FROM Last.${alias}  WHERE recno=${dat_act[row].recno} ;`
+        const ins_sql = `SELECT * FROM Last.${alias}  WHERE recno=${recno} ;`
         const datos = await this.localAlaSql(ins_sql)
         // console.log('Db tableUpdate select Now ',ins_sql,datos)
 
@@ -655,7 +655,7 @@ export class VFPDB {
           old_dat = datos[0]
         }
         else {
-          console.error('tableUpdate error recno ', row, dat_act[row].recno, await this.localAlaSql(` SELECT * FROM Last.${alias} `))
+          console.error('tableUpdate error recno ', row, recno, await this.localAlaSql(` SELECT * FROM Last.${alias} `))
           return false
         }
       }
@@ -718,17 +718,15 @@ export class VFPDB {
 
         // dat_vis.where =exp_ind    //eval(this.View[nom_tab].exp_indice)
       }
-      //      if (sw_update) console.log('Db  tableUpdate insertara dados=====>', dat_vis.dat_act)
-
+  
       // this.View[alias].recCount = +row; // actualiza el recCount de la vista
       // const recno = dat_act[row].recno;
 
       // Tratara 2 veces en caso de que haya un force
       for (let num_int = 0; num_int < 2 && sw_update; num_int++) { // tratara 3 veces de actualiar el dato
         console.log('Db TableUpdate dat_vis', dat_vis)
-
-        const response = await this.axiosCall(dat_vis)
-        console.log('Db TableUpdate response', response)
+        // llama el backEnd a grabar los datos
+        const response = await this.axiosCall(dat_vis) 
 
         if (response && response.key_pri && response.key_pri > 0) // No hay error
         {
@@ -737,14 +735,16 @@ export class VFPDB {
                       ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
                       ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
           */
-          const ins_sql = ' UPDATE Now.' + alias + ` SET timestamp=?,key_pri=? WHERE recno=${dat_act[0].recno}; ` +
-            ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
-            ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
+          const ins_sql = ' UPDATE Now.' + alias + ` SET timestamp=?,key_pri=? WHERE recno=${recno}; ` +
+            ' USE Last ; DELETE from Last.' + alias + ` WHERE recno=${recno}  ;` +
+            ' INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${recno} ;`
 
           //            console.log('1 Db tableUpdate ala Ok INSERT UPDATE =>', await this.localAlaSql(`select timestamp from ${alias} where recno=${dat_act[0].recno} ` ))
 
           await this.localAlaSql(ins_sql, [response.timestamp, response.key_pri])
           //          console.log('2 Db tableUpdate ala Ok INSERT UPDATE =>',await this.localAlaSql(`select timestamp from ${alias} where recno=${dat_act[0].recno} ` ))
+
+          console.log('Db TableUpdate response.timestamp',response.timestamp,' alasql.timestamp.',await this.localAlaSql(`select timestamp from Now.${alias} where recno=${recno}`))
 
           if (dat_vis.tip_llamada == 'INSERT') { sw_insert = true }
 
@@ -1227,7 +1227,7 @@ export class VFPDB {
         return true
       }
     } catch (error) {
-      console.error('SQL Error', error)
+      console.log('SQL Error', error.response)
       MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'SQL Error ')

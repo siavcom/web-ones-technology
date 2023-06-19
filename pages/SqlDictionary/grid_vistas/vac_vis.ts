@@ -32,7 +32,7 @@ export class vac_vis extends COLUMN {
   public async valid() {
  
     if (await super.valid()) {
-      if (this.prop.Value.trim() == '') {
+      if (this.prop.Value==null || this.prop.Value.trim() == '') {
         this.prop.ErrorMessage='Dato en blanco'
         return false
       }

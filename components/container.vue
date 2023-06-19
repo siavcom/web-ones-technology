@@ -22,6 +22,8 @@
 
             <!--template v-slot:header-->
             <!--transition-group> -->
+            <!-- @focusout="This.eventos.push('This.' + compHeader + '.valid()')"-->
+
             <div class='header'>
               <div v-for="(compHeader) in This.header">
 
@@ -33,7 +35,6 @@
                   v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
                   v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
                   v-bind:position="This[compHeader].position"
-                  @focusout="This.eventos.push('This.' + compHeader + '.valid()')"
                   @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
                   @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
               </div>

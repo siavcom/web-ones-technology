@@ -454,14 +454,14 @@ const focusOut = async () => {
 //    await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
   }
   ToolTipText.value = true  // Activamos el ToolTipText
-  console.log('Valid updateCampo===>', Value.value, This)
+  console.log('EditText Valid ==>',This.Name,'Value=', Value.value)
  
   await emitValue()
 
   if (This.valid  ){
     const error=await This.valid()
     ShowError.value=!error
-    console.log('EditText valid',ShowError)
+    console.log('EditText Valid',This.Name,'ShowError=',ShowError.value)
   }
   return 
 

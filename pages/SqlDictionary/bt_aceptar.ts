@@ -30,7 +30,7 @@ export class bt_aceptar extends COMPONENT {
 
   async click() {
     const m = { nom_tab: this.Form.nom_tab.prop.Value }
-
+    console.log('bt_click this.prop.Disabled',this.prop.Disabled)
     if (this.prop.Disabled) return
     this.prop.Disabled = true
 
@@ -66,10 +66,18 @@ export class bt_aceptar extends COMPONENT {
       let dataUpdate = false
       let data = false
       if (this.Form.grid_datos.prop.Visible &&
-        await this.Form.db.recCount('vi_cap_dat') > 0) {
+        await this.Form.db.recCount('vi_cap_dat') > 4) {
         data = true
+        this.Form.grid_datos.prop.Disabled=true
+        this.Form.grid_indices.prop.Disabled=true
+        this.Form.grid_vistas.prop.Disabled=true
+        this.Form.bt_gen_model.prop.Visible = false
+        this.Form.bt_gen_indices.prop.Visible = false
+        this.Form.bt_gen_vistas.prop.Visible = false
+
+
         dataUpdate = await this.grabaDatos('vi_cap_dat')
-        await this.Form.db.useNodata('vi_cap_dat')
+       
 
         // return
       }
@@ -77,32 +85,32 @@ export class bt_aceptar extends COMPONENT {
       // Indices
       // Hay datos capturados, grabara informacion 
       if (this.Form.grid_indices.prop.Visible) {
-        data = true
+    //    data = true
 
-        if (await this.Form.db.recCount('vi_cap_ind') > 0) {
+        if (data && await this.Form.db.recCount('vi_cap_ind') > 0) {
           if (!await this.grabaDatos('vi_cap_ind'))
             dataUpdate = false
 
         } else
           dataUpdate = false
 
-        await this.Form.db.useNodata('vi_cap_ind')
+       // await this.Form.db.useNodata('vi_cap_ind')
 
       }
 
       // Vistas
       // Hay datos capturados, grabara informacion
-      if (this.Form.grid_vistas.prop.Visible &&
+      if (data && this.Form.grid_vistas.prop.Visible &&
         await this.Form.db.recCount('vi_cap_vis') > 0) {
-        data = true
+       // data = true
         if (!await this.grabaDatos('vi_cap_vis'))
           dataUpdate = false
 
-        await this.Form.db.useNodata('vi_cap_vis')
+      //  await this.Form.db.useNodata('vi_cap_vis')
       }
 
       if (data) {
-        if (dataUpdate &&
+        if (//dataUpdate &&
           await MessageBox('Generamos en Servidor SQL Server la tabla:' + this.Form.nom_tab.prop.Value, 4, '') == 6) {
           if (! await this.Form.db.genTabla(this.Form.nom_tab.prop.Value)) {
             MessageBox('Error al generar la tabla :' + this.Form.nom_tab.prop.Value + ' en el Servidor SQL', 16, 'SQL ERROR')
@@ -111,8 +119,23 @@ export class bt_aceptar extends COMPONENT {
           }
         }
 
-        this.prop.Disabled = false
+      
         this.Form.prop.Status = 'A'
+        await this.Form.db.useNodata('vi_cap_dat')
+        await this.Form.db.useNodata('vi_cap_ind')
+        await this.Form.db.useNodata('vi_cap_vis')
+        this.Form.grid_datos.prop.Visible=false
+        this.Form.grid_indices.prop.Visible=false
+        this.Form.grid_vistas.prop.Visible=false
+        this.Form.grid_datos.prop.Disabled=false
+        this.Form.grid_indices.prop.Disabled=false
+        this.Form.grid_vistas.prop.Disabled=false
+
+        this.Form.grid_datos.prop.RecordSource=this.Form.grid_datos.prop.RecordSource
+        this.Form.grid_indices.prop.RecordSource=this.Form.grid_indices.prop.RecordSource
+        this.Form.grid_vistas.prop.RecordSource=this.Form.grid_vistas.prop.RecordSource
+        this.prop.Disabled = false
+
         return
       }
 
@@ -130,7 +153,9 @@ export class bt_aceptar extends COMPONENT {
           }
 
           this.Form.grid_datos.prop.Visible = true
+          this.Form.grid_datos.prop.textLabel ='Definicion de campos de la tabla '+this.Form.nom_tab.prop.Value
           this.Form.bt_gen_model.prop.Visible = true
+
 
 
           // Indices SQL
@@ -226,7 +251,7 @@ export class bt_aceptar extends COMPONENT {
         return
       }
 
-      if (this.Form.tpr_prg.prop.Value != 'S') { // Tipo de menu Mantenimientos,Procesos,Reportes
+      if (this.Form.tpr_prg.prop.Value != 'S' && !this.Form.sis_sis.prop.Visible) { // Tipo de menu Mantenimientos,Procesos,Reportes
         this.Form.sis_sis.prop.Visible = true
         this.prop.Disabled = false
         return
@@ -247,7 +272,14 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_menu.prop.textLabel = 'Menú de Procesos'
       }
       // Leemos menu de programas
+      console.log('grid_menu m=',m)
+
       await this.Form.db.use("vi_cap_prg", m)
+      console.log('grid_menu recno=',await this.Form.db.recCount("vi_cap_prg"))
+
+      if (await this.Form.db.recCount("vi_cap_prg") == 0) {
+        await this.Form.grid_menu.appendRow(m)
+      } 
       this.Form.grid_menu.prop.Visible = true
 
 

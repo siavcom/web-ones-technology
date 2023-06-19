@@ -32,6 +32,8 @@
             </div>
           </h2>
           <!--transition-group> --> 
+          <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
+
           <div v-for="(compHeader) in ThisForm.header" :key="compHeader" >
 
             <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')" v-bind:Component="ref(ThisForm[compHeader])"
@@ -41,7 +43,6 @@
               v-bind:Registro="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
               v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
               v-bind:position="ThisForm[compHeader].position"
-              @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
               @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
             </component>
           </div>
@@ -56,6 +57,7 @@
           <slot name="main">
 
             <!-- @focus.capture -->
+            <!--                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')" -->
             <TransitionGroup name='detailForm'>
             <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
               <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
@@ -66,7 +68,6 @@
                 v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
                 v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                 v-bind:position="ThisForm[compMain].position" v-bind:db="ref(ThisForm.db)"
-                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
                 @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
             </div>
@@ -87,6 +88,7 @@
             <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
           </div>
           <slot name="footer">
+            <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" -->
 
             <div v-for="(compFooter) in ThisForm.footer" style="zIndex:0">
               <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
@@ -99,7 +101,7 @@
                 v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno"
                 v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 :ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
                 v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
-                v-bind:db="ref(ThisForm.db)" @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')"
+                v-bind:db="ref(ThisForm.db)"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                 @click.stop.prevent="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
             </div>

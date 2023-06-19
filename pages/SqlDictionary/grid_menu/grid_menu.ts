@@ -16,7 +16,7 @@ import {prg_prg} from './prg_prg'
 import {des_prg} from './des_prg'
 import {num_prg} from './num_prg'
 import {par_prg} from './par_prg'
-//import {sis_sis} from './sis_sis'
+import {sis_sis} from './sis_sis'
 //import {tpr_prg} from './tpr_prg'
 import {ico_prg} from './ico_prg'
 
@@ -29,7 +29,7 @@ export class grid_menu extends GRID {
   public prg_prg = new prg_prg()
   public num_prg = new num_prg()
   public par_prg = new par_prg()
-  //public sis_sis = new sis_sis()
+  public sis_sis = new sis_sis()
   public ico_prg = new ico_prg()
  
   //  constructor(parent: Record<string, never>) {
@@ -72,7 +72,9 @@ export class grid_menu extends GRID {
          m.sis_sis=this.Form.sis_sis.prop.Value // 'CXC', 'CON','LOG
          m.tpr_prg=this.Form.tpr_prg.prop.Value
     }
-    await super.appendRow(m)   // llama a la clase base        
+
+    await super.appendRow(m)   // llama a la clase base
+     
    }
  
 

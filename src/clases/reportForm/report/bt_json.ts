@@ -34,8 +34,15 @@ export class bt_json extends COMPONENT {
        return
 
     let json =JSON.stringify(result)
-    const blob = new Blob([json], {type: 'text/plain'})
-    await saveAs(blob, `${this.Form.for_imp.prop.Value.trim()}.json`)
+    const blobJson = new Blob([json], {type: 'text/plain'})
+    /*
+    const canvas = document.getElementById("my-canvas");
+    canvas.toBlob(blob=> {
+        // saveAs(blob, "pretty image.png")
+        saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`)
+    });
+    */
+    await saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`)
   
   }
 

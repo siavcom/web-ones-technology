@@ -426,14 +426,12 @@ const asignaResultado = (valor?: string) => {
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
-  console.log('comboBox asignaResultado entrar RowSource',props.prop.RowSource)
   if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
   // recorre todo los renglones en columnas
 
-  // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
 
   if (valor) {
     valor=valor.trim()
@@ -441,14 +439,18 @@ const asignaResultado = (valor?: string) => {
 
     for (let i = 0; i < columnas.length; i++) {
       if (valor == columnas[i].value.trim()) { // El objeto columna tiene dos campos value y text
-        // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
-
         Resultado.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
+        console.log("Encontro el Value =======>",Resultado.value,Value.value);
+
       }
     }
    // emit("update:Value", Resultado.value)
   }
   else {  //aqui me quede checar cuando es por arreglo genera el value con array
+    console.log('comoBox ',This.Name,'value=',Value.value )
+    if ((Value.value=='' || Value.value==null) && columnas.length>0) 
+        Value.value=columnas[0]['value']
+        
     for (let i = 0; i < columnas.length; i++) {
       try {
         console.log('comboBox columna',i,This.Name,columnas[i])        //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
@@ -466,7 +468,7 @@ const asignaResultado = (valor?: string) => {
     emitValue()
   }
 //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
-
+emitValue()
  
 }
 
