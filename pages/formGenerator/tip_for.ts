@@ -47,23 +47,4 @@ export class tip_for extends COMPONENT {
     return true
   }
 
-  async valid() {
-    if (this.prop.Value == 'F') {
-
-
-
-    } 
-    
-    if (this.prop.Value == 'F') {
-      this.Form.vis_cap.prop.Visible = true
-    }
-
-    if (this.prop.Value == 'R') {
-      //this.Form.vis_cap.prop.Visible = true
-    }
-
-
-
-    return true
   }
-}

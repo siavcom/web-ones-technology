@@ -21,7 +21,7 @@ export class des_tab extends COLUMN {
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_tab.des_tab'
         this.prop.ToolTipText ='Descripción de la tabla'
-        this.style.width='400px'
+        this.style.width='600px'
     }
 
 }

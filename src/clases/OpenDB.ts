@@ -24,6 +24,7 @@ export class OpenDb {
   user: string
   pass: string
   id_con: string
+  dialect:string=''
 
   // Inicializa la conexion
   constructor() {
@@ -33,6 +34,7 @@ export class OpenDb {
     this.user = session.user
     this.pass = ''
     this.id_con = ''
+   // this.dialect=''
     /*
         localsession.setItem('id_con','')
         localsession.setItem('nom_emp','')
@@ -46,17 +48,10 @@ export class OpenDb {
   // comunica con el servidor de SQL
   /// ////////////////////////////////////////
   open = async () => {
-    /*  localsession.removeItem('id_con')
-        localsession.removeItem('nom_emp')
-        localsession.removeItem('log_usu')
-        localsession.removeItem('url')
-
-    */
-    //    const nom_emp:any=localsession.getItem('id_con')
-
-
+    
     let nom_emp: any = this.nom_emp
     let user: any = this.user
+    
     const pass: any = this.pass
     //  let url: any = this.url
 
@@ -94,7 +89,8 @@ export class OpenDb {
       )
 
       this.id_con = response.data.id // asignamos a su conexion de base de datos
-      //      console.log("ID de conexion", this.id_con);
+      this.dialect= response.data.dialect
+      console.log("ID de conexion=", this.id_con,'dialect=',this.dialect);
 
       /*session.setItem('id_con', this.id_con)
       session.setItem('nom_emp', this.nom_emp)
@@ -103,7 +99,7 @@ export class OpenDb {
 
       if (await this.leeMenu()) {
 
-        session.update(this.id_con, this.user, this.nom_emp, this.url)
+        session.update(this.id_con, this.user, this.nom_emp, this.url,this.dialect)
         return this.id_con
       }
     } catch (error) {

@@ -46,6 +46,8 @@ export class VFPDB {
   nom_emp: string
   user: string
   pass: any
+  id_con: string
+  dialect: string
   // vis_tra: any = []; // guarda nombre de las vistas de trabajo en el servidor SQL
   are_tra: string[] = [''] // Las areas de trabajo donde cada vista tendra.
   // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
@@ -56,7 +58,7 @@ export class VFPDB {
   // messagebox = MessageBox // asignamos las clases de VueSimpleAlert a messagebox
   Form = {} // any = getCurrentInstance();
   Ctx = {} // this.Form.ctx; // Contexto
-  id_con: string
+  
   event: any
   newTables = []
   oldTables = []
@@ -90,8 +92,9 @@ export class VFPDB {
     this.id_con = session.id_con == undefined ? '' : session.id_con
     this.user = session.user
     this.url = session.url // obtenemos el url del servidor node
+    this.dialect=session.dialect
     this.nom_emp = session.nom_emp
-    console.log('Db DataBase session.id ===>>>>', this.id_con)
+    console.log('Db DataBase session.id ===>>>>', this.id_con,'dilect=',this.dialect)
 
     if (this.id_con.length < 16) {
       const router = useRouter()

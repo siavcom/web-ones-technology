@@ -47,13 +47,18 @@ export class nom_tab extends COMPONENT {
 
   public async valid() {
 
-    this.Form.nom_ind.prop.RowSourceType = 0
-    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `, 'vi_cap_ind')
-    this.Form.nom_ind.prop.RowSourceType = 2
+//    this.Form.nom_ind.prop.RowSourceType = 0
+//    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `, 'vi_cap_ind')
+//    this.Form.nom_ind.prop.RowSourceType = 2
 
-    if (this.Form.tip_for == 'G') {
-      this.Form.vis_cap.prop.Visible = true
-    }
+    if (this.Form.tip_for.prop.Value == 'G' || this.Form.tip_for.prop.Value =='C') {
+      this.Form.vis_cap.prop.RowSourceType = 0
+      const nom_tab=this.Form.nom_tab.prop.Value.trim()
+      console.log('nom_tab valid',nom_tab)
+       this.Form.vis_cap.prop.RowSource = `select des_vis,nom_vis from vi_cap_vis where nom_tab='${nom_tab}' `
+       this.Form.vis_cap.prop.RowSourceType = 3
+       this.Form.vis_cap.prop.Visible = true
+      }
 
     //await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `,'vi_cap_ind')
     // this.Form.nom_ind.prop.RowSource = `select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `

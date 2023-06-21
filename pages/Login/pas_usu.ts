@@ -26,7 +26,7 @@ export class pas_usu extends COMPONENT {
     this.prop.componentStyle.width= "130px"
   
   }
-  public valid = async () => {
+  public valid2 = async () => {
     //console.log('pas_usu====>',this.Form)
     const ThisForm = this.Form;
  

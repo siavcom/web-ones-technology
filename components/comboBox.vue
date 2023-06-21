@@ -481,7 +481,7 @@ const renderComboBox = async () => {
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
-  try {
+  //try {
     const RowSource: string = props.prop.RowSource
     const pos = RowSource.indexOf(".") // posicion del punto
 
@@ -564,7 +564,7 @@ const renderComboBox = async () => {
         // llama la vista en el servidor de SQL
         //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
         data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
-
+        console.log('CononBox render data',data) 
 
         /*
               // Recorremos las columnas que traiga el resultado 
@@ -661,11 +661,13 @@ const renderComboBox = async () => {
       Valid.value = true
 
     }
-  }
+ /* }
+  
   catch (error) {
     console.error('ComboBox ', error)
 
   }
+  */
 }
 
 
@@ -786,7 +788,7 @@ watch(
 watch(
   () => props.prop.ControlSource,
   (new_val, old_val) => {
-
+    
     if (new_val != old_val) {
       // console.log('Watch comboBox ControlSource=')
       if (props.Recno > 0 && props.prop.ControlSource > ' ') {
@@ -846,8 +848,10 @@ watch(
 // RowSoure
 watch(
   () => props.prop.RowSource,
-
   (new_val, old_val) => {
+    if (new_val.length<2 || props.prop.RowSourceType<1)
+        return
+
     if (new_val != old_val) {
       //console.log('ComboBox renderiza por cambio enRowSource ===>>', new_val)
       renderComboBox()
@@ -860,7 +864,8 @@ watch(
   () => props.prop.RowSourceType,
 
   (new_val, old_val) => {
-    if (props.prop.RowSourceType < 1) return
+    if (props.prop.RowSourceType < 1 || props.prop.RowSource.length<2 ) return
+
     // console.log('ComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {
       //console.log('ComboBox renderiza por cambio enRowSourceType ===>>', new_val)

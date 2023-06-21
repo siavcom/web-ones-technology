@@ -88,12 +88,15 @@ export class bt_gen_forma extends COMPONENT {
     var ThisForm: string = Form
     ThisForm = ThisForm.replaceAll('<<nom_for>>', this.Form.nom_for.prop.Value.trim())
     ThisForm = ThisForm.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
-    ThisForm = ThisForm.replaceAll('<<nom_ind>>', this.Form.nom_ind.prop.Value.trim())
+//    ThisForm = ThisForm.replaceAll('<<nom_ind>>', this.Form.nom_ind.prop.Value.trim())
+    ThisForm = ThisForm.replaceAll('<<vis_cap>>', this.Form.vis_cap.prop.Value.trim())
+
     ThisForm = ThisForm.replaceAll('<<nom_tab>>', this.Form.nom_tab.prop.Value.trim())
 
-
-
-    const renglon = await this.Form.db.localSql('select * from vi_cap_for order by con_dat')
+    let vis_cap='vi_cap_for'
+    if (this.Form.tip_for.prop.Value=='F')
+       vis_cap='vi_cap_for'
+    const renglon = await this.Form.db.localSql(`select * from ${vi_cap} order by con_dat`)
     // recorremos todos los renglones
 
     for (let i = 0; i < renglon.length; i++) {
@@ -203,7 +206,7 @@ export class bt_gen_forma extends COMPONENT {
     ThisGrid = ThisGrid.replaceAll('<<nom_for>>', this.Form.vis_cap.prop.Value.trim())
     ThisGrid = ThisGrid.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
 //    ThisGrid = ThisGrid.replaceAll('<<nom_ind>>', this.Form.vis_cap.prop.Value.trim())
-    ThisGrid = ThisGrid.replaceAll('<<nom_tab>>', this.Form.vis_cap.prop.Value.trim())
+    ThisGrid = ThisGrid.replaceAll('<<nom_vis>>', this.Form.vis_cap.prop.Value.trim())
 
     const renglon = await this.Form.db.localSql('select * from vi_cap_grd order by con_dat')
     // recorremos todos los renglones

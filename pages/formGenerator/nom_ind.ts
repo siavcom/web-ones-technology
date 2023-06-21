@@ -18,7 +18,7 @@ export class nom_ind extends COMPONENT {
     super()
 
     this.prop.BaseClass = 'comboBox'
-    this.prop.Visible = true
+    this.prop.Visible = false
     this.prop.textLabel = "Indices de la Tabla";
     this.prop.Capture = true // al quitarlo, quito reactividad oJo
     this.prop.Valid = false
@@ -30,7 +30,7 @@ export class nom_ind extends COMPONENT {
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 1
     this.prop.ColumnWidths = "50%,50%"
-    this.prop.Visible = true
+    this.prop.Visible = false
     this.prop.Style = '2' //0=DropDown Combo 2=DropDown List
     this.style.zIndex=3
   }
