@@ -19,15 +19,10 @@ export class controlSource extends COLUMN {
         this.textLabel = 'Control Source'
         this.prop.BaseClass = 'editText'
         this.prop.Type ='text'
-        this.prop.ControlSource = 'vi_cap_for.controlsource'
+        //this.prop.ControlSource = 'vi_cap_for.controlsource'
         this.prop.ToolTipText ='Control Source'
         this.prop.Placeholder = "table.field"
         this.style.width='250px'
     }
-
-async init(){
-    this.prop.Value =this.Form.nom_tab.prop.Value+'.'+this.Parent.prop.Value
-    console.log('Init Control source ',this.prop.Value)
-}
 
 }

@@ -16,8 +16,8 @@ import {tip_for} from "./tip_for"
 import {bt_aceptar} from "./bt_aceptar"
 import {bt_gen_forma} from "./bt_gen_forma"
 
-import {grid_components} from "./grid_components/grid"
-import {grid_captura} from "./grid_captura/grid_captura"
+import {grid} from "./grid/grid"
+//import {grid_captura} from "./grid_captura/grid_captura"
 
 ///////////////////////////////////////
 // Clase base
@@ -37,8 +37,8 @@ export class THISFORM extends FORM {
   public bt_aceptar = new bt_aceptar()
   public bt_gen_forma = new bt_gen_forma()
 
-  public grid_components = new grid_components()
-  public grid_captura = new grid_captura()
+  public grid_components = new grid()
+  public grid_captura = new grid()
 
  
   constructor() {
@@ -49,7 +49,14 @@ export class THISFORM extends FORM {
     this.prop.textLabel = "Generador de Formas de mantenimiento ";
     this.prop.Status = 'A'
     this.style.width = "auto"
-  
+    this.grid_components.Name='grid_components'
+    this.grid_components.prop.Name='grid_components'
+    this.grid_components.prop.textLabel= 'Campos del form'
+
+    this.grid_captura.Name='grid_captura'
+    this.grid_captura.prop.Name='grid_captura'
+    this.grid_captura.prop.textLabel= 'Campos del grid'
+ 
   }
   
   async init() {

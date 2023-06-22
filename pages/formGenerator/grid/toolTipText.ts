@@ -20,14 +20,10 @@ export class toolTipText extends COLUMN {
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_for.tooltiptext'
         this.prop.ToolTipText ='valor tool tip text'
-        this.style.maxWidth='150px'
+        this.style.width='200px'
        // this.style.flexBasis = '30%' /* width/height  - initial value: auto */
     }
 
-    init() {
-        this.prop.Value = this.Parent.ref_dat.prop.Value
-     }
- 
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////

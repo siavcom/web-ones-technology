@@ -40,8 +40,9 @@ export class tip_for extends COMPONENT {
   async when() {
     this.Form.vis_cap.prop.Visible = false
     this.Form.bt_gen_forma.prop.Visible= false
-    this.Form.grid_captura.prop.Visible = false
+    //this.Form.grid_captura.prop.Visible = false
     this.Form.grid_components.prop.Visible = false
+    this.Form.bt_aceptar.prop.Visible=true
     //this.Form.tab_grd.prop.Visible=false
 
     return true

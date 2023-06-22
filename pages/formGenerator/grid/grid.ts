@@ -32,7 +32,7 @@ import {maxLen} from './maxLen'
 import {placeHolder} from './placeHolder'
 import {toolTipText} from './toolTipText'
 
-export class grid_components extends GRID {
+export class grid extends GRID {
  
  // Columna que tiene el grid
  // public con_dat = new COLUMN()
@@ -62,7 +62,7 @@ export class grid_components extends GRID {
     super()
     this.prop.Name = 'grid_components'
     this.prop.textLabel= 'Campos de la forma'
-    this.prop.RecordSource='vi_cap_for'
+    this.prop.RecordSource='vi_cap_form'
     this.prop.Visible= false
     this.prop.ReadOnly = false;
     //this.prop.ColumnCount=8
@@ -77,21 +77,23 @@ export class grid_components extends GRID {
   ///////////////////////////////////////////////////
   public async appendRow() { 
    // Obtiene el consecutivo con_dat del cursor local
-   const data=await this.Form.db.VfpCursor("select max(con_dat) as con_dat from vi_cap_dat\
+   let vis_cap='vi_cap_form'
+   if (this.Name='grid_captura')
+      vis_cap='vi_cap_grid'
+
+   const data=await this.Form.db.VfpCursor(`select max(con_dat) as con_dat from ${vis_cap}\
    where  (trim(cam_dat) <> 'USU_CRE' and \
    trim(cam_dat) <> 'USU_USU' and \
    trim(cam_dat) <> 'TIE_UAC' and \
    trim(cam_dat) <> 'TIE_CRE' and \
    trim(cam_dat) <> 'TIMESTAMP' and \
-   trim(cam_dat) <> 'KEY_PRI') ")
+   trim(cam_dat) <> 'KEY_PRI') `)
 
    //console.log('appendRow',data[0])    
    const con_dat=data[0].con_dat+.1      
    const m = {nom_tab:this.Form.nom_tab.prop.Value,
+              nom_vis:this.Form.vis_cap.prop.Value,
               con_dat:con_dat}
    super.appendRow(m)   // llama a la clase base        
   }
-
-
-
 }
