@@ -406,6 +406,7 @@ export class VFPDB {
       dat_vis.query = 'select * from ' + nom_vis
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
+         
       if (this.View[alias].exp_indice.trim().length > 0) {
         try {
           exp_ind = eval(this.View[alias].exp_indice.trim())
@@ -487,7 +488,7 @@ export class VFPDB {
 
       if (data.length) // No hubo error
       { return await this.genera_tabla(data, alias) }
-      else { return null }
+      else { return [] }
     } catch (error) {
       console.error('Axios error :', dat_vis, error)
 
@@ -547,8 +548,8 @@ export class VFPDB {
     if (alias == '') { return true }// no hay alias a actualizar
     //console.log('Db tableUpdate View',alias, this.View[alias])
 
-    if (!tab_man) {
-      if (this.View[alias].tip_obj == 'VIEW')
+    if (!tab_man) {  // asigna vista de mantenimiento de la vistas
+      if (this.View[alias].tip_obj.trim() == 'VIEW')
         tab_man = this.View[alias].tablaSql.trim()
       else
         tab_man = alias
@@ -597,7 +598,8 @@ export class VFPDB {
        Select Viejo.key_pri,Viejo.recno recnoOld, Nuevo.recno as recnoNew from Last.${alias} Viejo \
        LEFT OUTER JOIN Now.${alias} Nuevo using recno ${where_del}`)
 
-    for (let row = 0; row < data.length; row++) {
+     // recorre registro por registro para buscar renglones borrados 
+       for (let row = 0; row < data.length; row++) {
       // Si no existe el recno New borra de la base de datos
       if (data[row].recnoNew == null || data[row].recnoNew != data[row].recnoOld) {
         const key_pri = data[row].key_pri
@@ -614,7 +616,7 @@ export class VFPDB {
     //  LEFT OUTER JOIN Last.${alias} Viejo using recno ${where}`))
 
     const dat_act = await this.localAlaSql(`SELECT * FROM Now.${alias} ${where}`)
-    console.log('Db tableUpdate lee datos Now', dat_act)
+    console.log('Db tableUpdate lee datos Now', dat_act,'where ',where)
 
     //const dat_act = datos
     // console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
@@ -705,19 +707,22 @@ export class VFPDB {
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = ''
       if (sw_update && dat_vis.tip_llamada == 'INSERT') {
-        // console.log('Db tableUpdate exp_indice m', m, this.View[nom_tab].exp_indice)
 
         // const where = eval(this.View[nom_tab].exp_indice)
-        const where = this.View[nom_tab].exp_indice
+
+
+        // Aqui me quede  Ojo Junio 2023
+        const where = this.View[nom_tab].exp_indice.toLowerCase()
+        console.log('Db tableUpdate exp_indice m', m,'where', where,'dat_vis.where',dat_vis.where)
         try {
-          eval('dat_vis.where=' + where)
+          eval(`dat_vis.where=${where}`)
         }
         catch (error) {
           console.error(error)
 
           return false
         }
-        // console.log('Db tableUpdate dat_vis.where',dat_vis.where)
+        console.log('Db tableUpdate dat_vis.where',dat_vis.where)
 
         // dat_vis.where =exp_ind    //eval(this.View[nom_tab].exp_indice)
       }

@@ -32,7 +32,7 @@ export class tip_for extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%";
-    this.prop.Value = "P";
+    this.prop.Value = "F";
     this.prop.Visible = true
     this.style.zIndex = 5
   }

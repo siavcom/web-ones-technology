@@ -26,6 +26,8 @@
         <input class="text" ref="Ref" :readonly="prop.Style == 2 || ReadOnly" type="text" :value="Resultado"
           @focusout="focusOut" stype="prop.style" />
 
+
+          
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
         <div class="toggle" v-if="toggle && !ReadOnly">
@@ -741,7 +743,7 @@ watch(
 watch(
   () => toggle.value,
   (new_val, old_val) => {
-
+    
     // console.log('toggle.value', props.prop.Name, old_val, new_val)
     if (new_val == true) onFocus()
   },
@@ -1084,7 +1086,9 @@ input.input {
   border-radius: 5px;
 }
 
-
+.columna {
+  z-index: v-bind('toggleZIndex');
+}
 
 input.label {
   width: v-bind("inputWidth");
@@ -1092,6 +1096,8 @@ input.label {
   border-radius: 5px;
   background: white;
   color: black;
+  position: relative;
+ /* z-index: 10;*/
 }
 
 /* Cambia el background cuando solo es de lectura */

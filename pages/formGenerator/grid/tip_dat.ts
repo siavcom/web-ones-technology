@@ -30,7 +30,7 @@ export class tip_dat extends COLUMN {
         this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
-        this.prop.ColumnWidths='80%,10%'        
+        this.prop.ColumnWidths='95%,0%'        
         this.style.width = '80px' /* width/height  - initial value: auto */
     }
 

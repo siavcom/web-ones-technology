@@ -165,7 +165,7 @@ export class gridForm extends FORM {
       }
       // console.log('captureForm tableUpdate')
       this.prop.Disabled = true
-      const result = await this.Parent.db.tableUpdate(this.prop.RecordSource)
+      const result = await this.Parent.db.tableUpdate(1,false,this.prop.RecordSource)
 
       if (result) {
         MessageBox('Datos actualizados')

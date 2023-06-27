@@ -24,7 +24,7 @@ import {ref_dat} from './ref_dat'
 //import {NOM_IND} from './nom_ind'
 import {updateKey} from './updateKey'  // es llave de captura
 import {cam_act} from './cam_act'  // es campo capturable
-
+import{baseClass} from './baseClass' // Clase base de captura
 import {controlSource} from './controlSource'
 import {nullValue} from './nullValue'
 import {min} from './min'
@@ -38,6 +38,7 @@ export class grid extends GRID {
  // public con_dat = new COLUMN()
   public con_dat = new con_dat()
   public cam_dat = new cam_dat()
+  public baseClass = new baseClass()
   public tip_dat = new tip_dat()
   public lon_dat = new lon_dat()
   public dec_dat = new dec_dat()
@@ -69,6 +70,9 @@ export class grid extends GRID {
     this.con_dat.prop.First=true // primer elemento
     this.toolTipText.prop.Last= true // ultimo elemento
     this.style.width='920'
+    this.prop.saveData=false
+    this.prop.deleteButton=false
+
    }
 
 ///////////////////////////////////////////////////

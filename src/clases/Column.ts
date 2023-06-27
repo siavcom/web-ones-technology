@@ -26,6 +26,7 @@ export class COLUMN extends COMPONENT {
     super()
     this.prop.Capture = true;
     this.prop.Valid = false;
+    this.prop.Position = 'main'
 // Segun Vfp
 //    this.header.BaseClass = 'Header'
 //    this.header.prop.Name = 'header'

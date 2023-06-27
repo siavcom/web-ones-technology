@@ -79,7 +79,7 @@ export class bt_gen_forma extends COMPONENT {
   async generaForma(zipWriter: any) {
     var imp_com = ''   // Importa componentes
     var com_imp = ''   // Componentes importados
-    var init=''
+    var init = ''
 
     await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/index.vue`, new TextReader(Main))
     var ThisForm: string = Form
@@ -94,22 +94,22 @@ export class bt_gen_forma extends COMPONENT {
     let grid_captura = ''
 
     if (this.Form.tip_for.prop.Value == 'G') {
-        imp_com =  `import {grid} from "./grid/grid" ` + String.fromCharCode(10)
-        com_imp =  `   public grid = new grid() ` + String.fromCharCode(10)
-        //init = 'this.Form.bt_graba.lee_grid()'
-        ThisForm = ThisForm.replace('<<init>>', init)
-        ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
-        ThisForm = ThisForm.replace('<<imp_com>>', imp_com)
-        await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/ThisForm.ts`, new TextReader(ThisForm))
-//        if (this.Form.tip_for.prop.Value == 'G') {
-//          init = 'this.Form.bt_graba.lee_grid()'
-//        }
-        imp_com=''
-        com_imp=''
+      imp_com = `import {grid} from "./grid/grid" ` + String.fromCharCode(10)
+      com_imp = `   public grid = new grid() ` + String.fromCharCode(10)
+      //init = 'this.Form.bt_graba.lee_grid()'
+      ThisForm = ThisForm.replace('<<init>>', init)
+      ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
+      ThisForm = ThisForm.replace('<<imp_com>>', imp_com)
+      await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/ThisForm.ts`, new TextReader(ThisForm))
+      //        if (this.Form.tip_for.prop.Value == 'G') {
+      //          init = 'this.Form.bt_graba.lee_grid()'
+      //        }
+      imp_com = ''
+      com_imp = ''
 
     }
 
-//    ThisForm = ThisForm.replaceAll('<<grid_cap>>', this.Form.nom_tab.prop.Value.trim())
+    //    ThisForm = ThisForm.replaceAll('<<grid_cap>>', this.Form.nom_tab.prop.Value.trim())
 
     let vis_cap = 'vi_cap_form'
 
@@ -137,7 +137,24 @@ export class bt_gen_forma extends COMPONENT {
         const textLabel = renglon[i]['ref_dat']
         //const textLabel=renglon[i]['textlabel']
         let Type = 'text'
-        let BaseClass = 'editText'
+
+        let BaseClass = 'editBox'
+
+        switch (renglon[i]['baseclass'].trim()) {
+          case 'E':
+            BaseClass = 'comboBox'
+            break
+          case 'B':
+            BaseClass = 'checkBox'
+            break
+          case 'L':
+            BaseClass = 'label'
+            break
+          case 'I':
+            BaseClass = 'image'
+            break
+        }
+
         const tip_dat = renglon[i]['tip_dat']
 
         console.log('bt_gen_renglon cam_dat', cam_dat, renglon[i])
@@ -153,19 +170,20 @@ export class bt_gen_forma extends COMPONENT {
 
         const ToolTipText = renglon[i]['tooltiptext']
         const updateKey = renglon[i]['updatekey'] == 1 ? 'true' : 'false'
+        // const MaxLength = renglon[i]['MaxLength']
 
         const Capture = !updateKey
 
-        
+
         var row_com = Component
-        if (vis_cap == 'vi_cap_grid') 
-            row_com= Column
+        if (vis_cap == 'vi_cap_grid')
+          row_com = Column
 
         row_com = row_com.replaceAll('<<cam_dat>>', cam_dat.trim())
         row_com = row_com.replaceAll('<<textLabel>>', textLabel.trim())
         row_com = row_com.replaceAll('<<ref_dat>>', textLabel.trim())
         row_com = row_com.replaceAll('<<Type>>', Type)
-        row_com = row_com.replaceAll('<<BaseClass>>', BaseClass.trim())
+        row_com = row_com.replaceAll('<<BaseClass>>', BaseClass)
         row_com = row_com.replaceAll('<<ControlSource>>', controlSource.trim())
         row_com = row_com.replaceAll('<<PlaceHolder>>', PlaceHolder.trim())
         row_com = row_com.replaceAll('<<ToolTipText>>', ToolTipText.trim())
@@ -175,6 +193,7 @@ export class bt_gen_forma extends COMPONENT {
         row_com = row_com.replaceAll('<<Decimals>>', dec_dat)
         row_com = row_com.replaceAll('<<updateKey>>', updateKey)
         row_com = row_com.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
+
 
         if (cam_act == 1 && updateKey)
           row_com = row_com.replaceAll('<<Capture>>', 'true')
@@ -202,12 +221,12 @@ export class bt_gen_forma extends COMPONENT {
         ThisGrid = ThisGrid.replace('<<init>>', init)
         ThisGrid = ThisGrid.replace('<<com_imp>>', com_imp)
         ThisGrid = ThisGrid.replace('<<imp_com>>', imp_com)
-        
+
         ThisGrid = ThisGrid.replaceAll('<<nom_for>>', this.Form.vis_cap.prop.Value)
         ThisGrid = ThisGrid.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
         //    ThisGrid = ThisGrid.replaceAll('<<nom_ind>>', this.Form.vis_cap.prop.Value.trim())
         ThisGrid = ThisGrid.replaceAll('<<nom_vis>>', this.Form.vis_cap.prop.Value.trim())
-    
+
 
         await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/grid/grid.ts`, new TextReader(ThisGrid))
       }

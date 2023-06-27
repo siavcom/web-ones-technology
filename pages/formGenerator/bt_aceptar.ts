@@ -66,8 +66,8 @@ export class bt_aceptar extends COMPONENT {
     // y le asignamos el nombre 'vi_cap_tab' a a tabla en el SQL local
     const campos = `con_dat,lower(cam_dat) as cam_dat,ref_dat, tip_dat,lon_dat,dec_dat,'${espacios}' as nom_ind, 0 as updatekey, \
     1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
-    1 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
-    ref_dat as placeholder,ref_dat as tooltiptext `
+    0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
+    ref_dat as placeholder,ref_dat as tooltiptext,'E' as baseclass `
     const ins_sql = `select ${campos} from vi_schema where \
     upper(cam_dat)<>'TIE_UAC' \
     and upper(cam_dat)<>'TIMESTAMP' \

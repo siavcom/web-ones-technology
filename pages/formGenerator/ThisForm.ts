@@ -17,7 +17,6 @@ import {bt_aceptar} from "./bt_aceptar"
 import {bt_gen_forma} from "./bt_gen_forma"
 
 import {grid} from "./grid/grid"
-//import {grid_captura} from "./grid_captura/grid_captura"
 
 ///////////////////////////////////////
 // Clase base

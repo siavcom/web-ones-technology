@@ -79,7 +79,7 @@ export class COMPONENT {
     List: [],
     updateKey: false, // true when this component is a field index for a table select , update or delete
     SqlUpdate: false,  //Si es verdadero actualiza automaticamente
-    MaxLength: 256,
+    MaxLength: 254,
     componentStyle: {
       background: "white",
       color: "black",
@@ -154,6 +154,7 @@ export class COMPONENT {
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
+    if(!TabIndex) TabIndex=1
     if (!Form) { // Inicializamos el this.Form
       Form = this
       this.Name = 'ThisForm'
@@ -184,7 +185,22 @@ export class COMPONENT {
         this[componente] &&
         this[componente].prop &&
         this[componente].Init) {
-        const name = this[componente].prop.Name
+
+        console.log('Init Component '+componente,'Name==',this[componente].prop.Name) 
+        if (this[componente].prop.Name==undefined){
+          console.error('Component '+componente+'has prop.Name=undefined')
+          // MessageBox('Component '+componente+' prop.Name=undefined',16,'Init Error')
+           return 
+        }
+        const name = this[componente].prop.Name.trim()
+
+        console.log('Component ===>>',componente,name)
+        if (componente!=name){
+          console.error('Component ='+componente,'has diferent prop.Name=',name)
+          // MessageBox('Component '+componente+' prop.Name=undefined',16,'Init Error')
+           return 
+        }
+
         const Position = this[componente].prop.Position.trim().toLowerCase()
 
         if (Position == 'header')
@@ -203,7 +219,7 @@ export class COMPONENT {
         }
         elements.push(component)
 
-        this[componente]['Parent'] = this // ref(this)
+        this[componente]['Parent'] = this // Asignamos el Parent ref(this)
 
         id++
       }
@@ -217,10 +233,10 @@ export class COMPONENT {
       TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
       // Se quito de aqui ya que el Init corre el init de c/componente
     }
-   // console.log('Component class main',main)
     for (const i in main) {
-      const comp=main[i]
-      //console.log('for next',comp)
+      const comp=main[i] // Obtenemos el nombre
+
+   //   console.log('Component.ts in main comp=',comp,this[comp])
       this[comp].prop.TabIndex = TabIndex
       TabIndex++
       TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
@@ -315,13 +331,17 @@ export class COMPONENT {
   }
 
   */
+ public async init() {
+   return
+ }
+ 
   /////////////////////////////////////////////////////////////////////
   // Valid
   // Descripcion: Cuando pierde el foco valida
   /////////////////////////////////////////////////////////////////
   public async valid() {
     this.prop.Valid = true
-    return true
+    return this.prop.Valid
   }
 
 /////////////////////////////////////////////////////////////////////

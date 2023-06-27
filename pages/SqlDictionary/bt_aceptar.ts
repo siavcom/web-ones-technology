@@ -148,7 +148,7 @@ export class bt_aceptar extends COMPONENT {
         if (this.Form.dic_dat.prop.Value == 'D') {
           this.Form.grid_datos.prop.Status = 'A'
           await this.Form.db.use("vi_cap_dat ", m, "vi_cap_dat", ["con_dat"])
-          if (await this.Form.db.recCount("vi_cap_dat") === 0) {
+          if (await this.Form.db.recCount("vi_cap_dat") == 0) {
             await this.Form.grid_datos.appendDatos()
           }
 
