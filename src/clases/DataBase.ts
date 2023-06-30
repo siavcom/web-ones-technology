@@ -58,7 +58,7 @@ export class VFPDB {
   // messagebox = MessageBox // asignamos las clases de VueSimpleAlert a messagebox
   Form = {} // any = getCurrentInstance();
   Ctx = {} // this.Form.ctx; // Contexto
-  
+
   event: any
   newTables = []
   oldTables = []
@@ -92,9 +92,9 @@ export class VFPDB {
     this.id_con = session.id_con == undefined ? '' : session.id_con
     this.user = session.user
     this.url = session.url // obtenemos el url del servidor node
-    this.dialect=session.dialect
+    this.dialect = session.dialect
     this.nom_emp = session.nom_emp
-    console.log('Db DataBase session.id ===>>>>', this.id_con,'dilect=',this.dialect)
+    console.log('Db DataBase session.id ===>>>>', this.id_con, 'dilect=', this.dialect)
 
     if (this.id_con.length < 16) {
       const router = useRouter()
@@ -222,7 +222,7 @@ export class VFPDB {
 
     dat_vis.nom_vis = nom_vis // Nombre de la vista
     try {
-      
+
       const response: any = await this.axiosCall(dat_vis)
 
       if (response == null) {
@@ -406,7 +406,7 @@ export class VFPDB {
       dat_vis.query = 'select * from ' + nom_vis
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy
-         
+
       if (this.View[alias].exp_indice.trim().length > 0) {
         try {
           exp_ind = eval(this.View[alias].exp_indice.trim())
@@ -598,8 +598,8 @@ export class VFPDB {
        Select Viejo.key_pri,Viejo.recno recnoOld, Nuevo.recno as recnoNew from Last.${alias} Viejo \
        LEFT OUTER JOIN Now.${alias} Nuevo using recno ${where_del}`)
 
-     // recorre registro por registro para buscar renglones borrados 
-       for (let row = 0; row < data.length; row++) {
+    // recorre registro por registro para buscar renglones borrados 
+    for (let row = 0; row < data.length; row++) {
       // Si no existe el recno New borra de la base de datos
       if (data[row].recnoNew == null || data[row].recnoNew != data[row].recnoOld) {
         const key_pri = data[row].key_pri
@@ -616,7 +616,7 @@ export class VFPDB {
     //  LEFT OUTER JOIN Last.${alias} Viejo using recno ${where}`))
 
     const dat_act = await this.localAlaSql(`SELECT * FROM Now.${alias} ${where}`)
-    console.log('Db tableUpdate lee datos Now', dat_act,'where ',where)
+    console.log('Db tableUpdate lee datos Now', dat_act, 'where ', where)
 
     //const dat_act = datos
     // console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
@@ -634,7 +634,7 @@ export class VFPDB {
     let sw_insert = false
 
     for (const row in dat_act) {
-      recno=dat_act[row].recno
+      recno = dat_act[row].recno
       dat_vis.tip_llamada = 'INSERT'
       dat_vis.dat_act = {} // Inicilizamos el arreglo de datos
       let sw_update = false
@@ -644,7 +644,7 @@ export class VFPDB {
       let old_dat = []
       // Es una actualizacion dedatos, asigna key_pri y timestamp
       //console.log('Db tableUpdate dat_act[row]', dat_act[row])
-      
+
       if (dat_act[row].key_pri > 0) {
         dat_vis.dat_act.key_pri = dat_act[row].key_pri
 
@@ -713,7 +713,7 @@ export class VFPDB {
 
         // Aqui me quede  Ojo Junio 2023
         const where = this.View[nom_tab].exp_indice.toLowerCase()
-        console.log('Db tableUpdate exp_indice m', m,'where', where,'dat_vis.where',dat_vis.where)
+        console.log('Db tableUpdate exp_indice m', m, 'where', where, 'dat_vis.where', dat_vis.where)
         try {
           eval(`dat_vis.where=${where}`)
         }
@@ -722,11 +722,11 @@ export class VFPDB {
 
           return false
         }
-        console.log('Db tableUpdate dat_vis.where',dat_vis.where)
+        console.log('Db tableUpdate dat_vis.where', dat_vis.where)
 
         // dat_vis.where =exp_ind    //eval(this.View[nom_tab].exp_indice)
       }
-  
+
       // this.View[alias].recCount = +row; // actualiza el recCount de la vista
       // const recno = dat_act[row].recno;
 
@@ -734,7 +734,7 @@ export class VFPDB {
       for (let num_int = 0; num_int < 2 && sw_update; num_int++) { // tratara 3 veces de actualiar el dato
         console.log('Db TableUpdate dat_vis', dat_vis)
         // llama el backEnd a grabar los datos
-        const response = await this.axiosCall(dat_vis) 
+        const response = await this.axiosCall(dat_vis)
 
         if (response && response.key_pri && response.key_pri > 0) // No hay error
         {
@@ -752,14 +752,14 @@ export class VFPDB {
           await this.localAlaSql(ins_sql, [response.timestamp, response.key_pri])
           //          console.log('2 Db tableUpdate ala Ok INSERT UPDATE =>',await this.localAlaSql(`select timestamp from ${alias} where recno=${dat_act[0].recno} ` ))
 
-          console.log('Db TableUpdate response.timestamp',response.timestamp,' alasql.timestamp.',await this.localAlaSql(`select timestamp from Now.${alias} where recno=${recno}`))
+          console.log('Db TableUpdate response.timestamp', response.timestamp, ' alasql.timestamp.', await this.localAlaSql(`select timestamp from Now.${alias} where recno=${recno}`))
 
           if (dat_vis.tip_llamada == 'INSERT') { sw_insert = true }
 
           num_int = 2 // se sale del for
         } else { // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
           console.error('No se pudo actualizar el registro en tabla ' + alias, dat_vis)
-          MessageBox('No se pudo actualizar el registro en tabla ' + alias+dat_vis,16,'SQL Error')
+          MessageBox('No se pudo actualizar el registro en tabla ' + alias + dat_vis, 16, 'SQL Error')
           sw_val = false
           if (dat_act[row].key_pri > 0) { // si es un dato existennte
             const respuesta = await this.obtRegistro(nom_tab, dat_act[row].key_pri) // se trae de nuevo los datos
@@ -830,30 +830,41 @@ export class VFPDB {
 
     const valores = { recno }
     const vis_act = this.View[alias].tablaSql.trim()
-    console.log('Db DB appendBlank alias', alias, m)
 
     for (const campo in this.View[vis_act].val_def) {
       // const val_eval="`"+this.View[alias].val_def[valor]+"`"
-      const val_eval = this.View[vis_act].val_def[campo]
-      let val_defa = null
-      try {
-        val_defa = eval(val_eval)
-      } catch (error) {
-        console.error(error)
+      if (campo != 'timestamp' && campo != 'tie_cre'
+        && campo != 'tie_uac' && campo != 'usu_cre' && campo != 'usu_usu') {
+        const val_eval = this.View[vis_act].val_def[campo]
+        let val_defa = null
+        try {
+          val_defa = eval(val_eval)
+        } catch (error) {
+          console.error(error)
 
-        return false
+          return false
+        }
+        valores[campo] = val_defa
       }
-      valores[campo] = val_defa
+
     }
-    if (!valores.timestamp) { valores.timestamp = 0 }
+    /*
+    if (!valores.timestamp) {
+      if (this.dialect == 'postgres')
+        valores.timestamp = 0
+      else
+        valores.timestamp = null
+    }
+    */
 
     // const val_defa = eval(this.View[alias].val_def)
     console.log('Db DataBAse appendBlank alias ', alias, valores)
-
-    await this.localAlaSql('USE Now;\
-    INSERT INTO Now.' + alias + ' VALUES ?', [valores])
-    await this.localAlaSql('USE Last;\
-    INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno)
+    try {
+      await this.localAlaSql('USE Now; INSERT INTO Now.' + alias + ' VALUES ?', [valores])
+      await this.localAlaSql('USE Last;INSERT INTO Last.' + alias + ' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno)
+    } catch (error) {
+      console.warn('alasql error', error)
+    }
 
     const ult_ele = this.View[alias].recnoVal.length - 1
 
@@ -864,8 +875,9 @@ export class VFPDB {
     this.View[alias].recnoVal.push({ recno, id }) // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 // asignamos nuevo row
-    console.log('Db DataBAse appendBlank RecnoVal=====>', alias, this.View[alias].recnoVal)
 
+    console.log('Db DataBAse Insert Now  alaSql=====>', alias,      
+    await this.localAlaSql(`select * from  Last.${alias} `))
     return valores
 
     /* locaDb
@@ -1407,7 +1419,7 @@ export class VFPDB {
       )
 
       console.error('SQL Error', error)
-    
+
       return false
     }
 
@@ -1432,7 +1444,7 @@ export class VFPDB {
         'SQL Error '
       )
 
-      
+
     }
   }
 
@@ -1504,7 +1516,7 @@ export class VFPDB {
         'SQL Error '
       )
 
-      
+
       return
     }
 
@@ -1588,6 +1600,10 @@ export class VFPDB {
     alias = alias.trim()
     this.num_are = this.are_tra.indexOf(alias) + 1 // regresa un -1 si no hay elemento
 
+    // borra las tablas en ALA
+    await this.localAlaSql('DROP TABLE IF EXISTS Now.' + alias + ';')
+    await this.localAlaSql('DROP TABLE IF EXISTS Last.' + alias + ';')
+
     if (!this.View[alias]) {
       console.log('Db geneta_tabla ', alias)
       sw_ini = true
@@ -1596,13 +1612,14 @@ export class VFPDB {
     if (this.num_are == 0) { // si es una area de trabajo nueva
       this.are_tra.push(alias)
       sw_ini = true
-    } else { // Si existe la tabla borra los registros
+    } /*
+    else { // Si existe la tabla borra los registros
       // this.localAlaSql('USE Now ; ')
       await this.localAlaSql('delete from Now.' + alias)
       // this.localAlaSql('USE Last ; ')
       await this.localAlaSql('delete from  Last.' + alias)
     }
-
+    */
     this.num_are = this.are_tra.indexOf(alias) + 1 // asigna el numero de area de trabajo
 
     // Inicializamos la vista
@@ -1611,7 +1628,6 @@ export class VFPDB {
       this.View[alias] = {} // Generamos el nuevo alias
       this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
       this.View[alias].tip_obj = respuesta.tip_obj // MODEL O VIEW
-      console.log('Db genera_tabla respuesta nom_tab', alias, respuesta)
       this.View[alias].tablaSql = respuesta.nom_tab // nombre de tabla en servidor SQL
       this.View[alias].exp_indice = respuesta.exp_indice
       this.View[alias].exp_where = respuesta.exp_where == null ? ' ' : respuesta.exp_where
@@ -1649,12 +1665,17 @@ export class VFPDB {
             'SQL Error '
           )
 
-          
+
           return null
         }
 
         /// /////////////////////////////
       }
+      // borra las tablas en ALA
+    //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
+    //  await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
+
+
       this.View[alias].est_tabla = respuesta.est_tabla  // estructura de la tabla
 
       // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
@@ -1684,11 +1705,19 @@ export class VFPDB {
 
       // console.log('Db ALASQL Estructura ===>',des_tab)
       // Creamos la tablas
-      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
-      await this.localAlaSql(des_tab)
+      console.log('Db ins_sql=', des_tab)
 
-      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
-      await this.localAlaSql(des_tab)
+      try {
+        //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
+        await this.localAlaSql('USE Now ;' + des_tab)
+
+        //  await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
+        await this.localAlaSql('USE Last ;' + des_tab)
+      }
+      catch (error) {
+        console.warn('Db ala error', error, des_tab);
+
+      }
     }
 
     // por reactividad borramos de uno por uno
@@ -1731,9 +1760,8 @@ export class VFPDB {
       this.View[alias].data = respuesta[respuesta.length - 1] // asignamos el valor del ultimo registro
 
       // Borra las tablas
-
-      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
-      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
+      //      await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
+      //      await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
 
       await this.select(alias)
 

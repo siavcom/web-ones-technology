@@ -2,7 +2,7 @@
 // Clase : Celda de un gridd
 // Author : Fernando Cuadras Angulo
 // Creacion : Noviembre/2021
-// Ult.Mod  : Mayo/2022
+// Ult.Mod  : Junio/2023
 /////////////////////////////////////////////
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -40,13 +40,15 @@ export class COLUMN extends COMPONENT {
 
   }
 
-
   async valid(){
+    return this.Parent.validColumn(this.Name)
+  } 
+  /* 
   this.prop.Valid=true
 
     if (this.prop.updateKey) {
       console.log('Column valid updateKey ',this.prop.Name)
-      this.Parent.Valid=false
+      this.Parent.prop.Valid=false
       if (this.prop.Value.trim().length==0){
           this.prop.ErrorMessage='No permite datos en blanco'
           this.prop.ShowError=true
@@ -60,6 +62,8 @@ export class COLUMN extends COMPONENT {
     }
     return this.prop.Valid
   }
+
+*/  
 /*
   ///////////////////////////////////////////////////// 
   // asignaRenglon 

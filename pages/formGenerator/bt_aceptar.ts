@@ -80,7 +80,7 @@ export class bt_aceptar extends COMPONENT {
     if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C') {
       await this.Form.db.execute(ins_sql, 'vi_cap_form')
       await this.Form.db.localSql(
-        " update vi_cap_form set cam_act=1,updatekey=1,max_len=2000000,min=1 where upper(trim(cam_dat))= 'KEY_PRI' ")
+        " update vi_cap_form set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' ")
 
       const nom_ind = this.Form.nom_ind.prop.Value.trim()
 

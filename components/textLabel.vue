@@ -289,6 +289,7 @@ const renderComboBox = async () => {
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
+  console.log('textLabel render comboBox')
   try {
     //console.log('TextLabel asignaResultado renderCombo',props.prop.Name,Value)
     const RowSource: string = props.prop.RowSource
@@ -671,6 +672,8 @@ const readCampo = async () => {
 */
 
 const readCampo = async () => {
+ // console.log('textLabel ',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
+
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
     const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno)
     for (const campo in data) {
@@ -678,6 +681,7 @@ const readCampo = async () => {
         Text.value = data[campo] != null ? data[campo] : ''
     }
   }
+  console.log('textLabel readCampo',This.Name,Text.value)
   if (props.prop.Type == 'number') {
     Text.value = toNumberStr(Text.value);
   }

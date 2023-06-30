@@ -2,17 +2,17 @@
 // Clase : Grid
 // Author : Fernando Cuadras Angulo
 // Creacion : Febrero/2022
-// Ult.Mod  :  28/Marzo/2023
+// Ult.Mod  :  29/Junio/2023
 /////////////////////////////////////////////
 
 import { COMPONENT } from '@/classes/Component'
-//import { nextTick} from "vue"
 export class GRID extends COMPONENT {
 
   //  constructor(parent: Record<string, never>) {
   // Tenemos que utilizar renglon o data
   data = [{}]    // arreglo donde esta el data 
   Row = -1
+  autoLoad=false
   // declare variable:string='Hola'
 
   //elements = [{}]
@@ -21,7 +21,7 @@ export class GRID extends COMPONENT {
     this.prop.Name = 'Grid'
     this.prop.ColumnCount = 1
     this.prop.BaseClass = 'grid'
-    this.prop.Capture = false
+    this.prop.Capture = true
     this.prop.RecordSource = ''
     this.prop.Row = 0
     this.prop.textLabel = 'Grid de datos'
@@ -30,22 +30,54 @@ export class GRID extends COMPONENT {
     this.prop.deleteButton = true
     this.prop.saveData = true
     this.prop.updated = false
-
+    this.prop.Visible = false
     this.prop.messageUpdate = 'Grabamos la tabla'
 
   }
+  
   ////////////////////////////////////////
   // Metodo : init
-  // Descripcion : Si es un grid de captura general  manda al valid para leer datos 
+  // Descripcion : Si es un grid de captura general y esta visible, 
+  //              Inicializa la tabla 
   //              si ya tiene el RecordSource
   /// /////////////////////////////////////
 
-  async init() {
-    if (this.prop.Visible) {
-      if (this.Form.main.length == 0)  // si no tiene componentes en Main lee grid
-        await this.valid()
+  public async init() {
+  
+    if (this.autoLoad && this.prop.RecordSource.length > 1) {// Si hay recordSource
+      await this.valid()
+      this.prop.Visible=true
+      // const data = await this.Form.db.use(this.prop.RecordSource)
     }
   }
+  
+  ////////////////////////////////////////
+  // Metodo : Valid
+  // Descripcion : Valida si es un campo key y si no esta repetido en la forma
+  /////////////////////////////////////////////////////
+
+  public async validColumn(name: string) {
+    const column = this[name]
+
+    this.prop.Valid = true
+
+    if (this.prop.updateKey) {
+      console.log('Column valid updateKey ', column)
+      this.Parent.prop.Valid = false
+      if (column.prop.Value.trim().length == 0) {
+        column.prop.ErrorMessage = 'No permite datos en blanco'
+        column.prop.ShowError = true
+        column.prop.Valid = false
+      }
+      if (await this.Parent.ValidKey() == false) {
+        column.prop.ErrorMessage = 'Dato duplicado'
+        column.prop.ShowError = true
+        column.prop.Valid = false
+      }
+    }
+    return this.prop.Valid
+  }
+
   ////////////////////////////////////////
   // Metodo : Valid
   // Descripcion : Valida los datos de la forma. Si es un dato nuevo
@@ -54,11 +86,13 @@ export class GRID extends COMPONENT {
   //              modificacion
   /// /////////////////////////////////////
 
-  async valid() {
-    if (this.prop.RecordSource.length <= 2) {// No hay recordSource
+  public async valid() :Promise<boolean>{
+    if (this.prop.RecordSource.length < 2) {// No hay recordSource
       this.prop.Valid = false
       return this.prop.Valid
     }
+    const RecordSource = this.prop.RecordSource
+    //    this.prop.RecordSource=''
     const m = {}
 
     for (const i in this.Form.main) {  // asigna a m los componentes de ThisForm 
@@ -76,26 +110,23 @@ export class GRID extends COMPONENT {
     }
     // Leemos datos de la tabla de actualizacion
 
-    const data = await this.Form.db.use(this.prop.RecordSource, m)
+    const data = await this.Form.db.use(RecordSource, m)
 
     if (!data || data == '400') { return false } // Hubo error al leer los datos
 
-    this.prop.Visible = true
+
+    this.prop.Valid = true
 
     if (data.length == 0) { // No existe el registro
-      const result = await this.Form.db.appendBlank(this.prop.RecordSource, m)
-      console.log('Valid appendBlank ', result)
+      await this.appendRow(m)
     }
-
+    //    this.prop.RecordSource=RecordSource
+    this.prop.Visible = true
     ///////////////////
-    return true
+    console.log('Grid Valid ', this.prop)
+
+    return this.prop.Valid
   }
-
-
-
-
-
-
 
   async validKey() {
     if (this.prop.Valid)
@@ -156,9 +187,10 @@ export class GRID extends COMPONENT {
     if (!m) m = {}
     this.Row = -1 // Quitamos donde esta el renglon
     //this.Form.db.select(this.prop.RecordSource) 
+    console.log('======grid Incertaremos renglon========>', this.prop.Name, 'm=', m)
+
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
     this.prop.Valid = false
-    console.log('======grid Incertamos renglon========>', this.prop.Name, values)
   }
 
 

@@ -94,8 +94,8 @@ export class bt_gen_forma extends COMPONENT {
     let grid_captura = ''
 
     if (this.Form.tip_for.prop.Value == 'G') {
-      imp_com = `import {grid} from "./grid/grid" ` + String.fromCharCode(10)
-      com_imp = `   public grid = new grid() ` + String.fromCharCode(10)
+      imp_com = `import {Grid} from "./grid/grid" ` + String.fromCharCode(10)
+      com_imp = `   public Grid = new Grid() ` + String.fromCharCode(10)
       //init = 'this.Form.bt_graba.lee_grid()'
       ThisForm = ThisForm.replace('<<init>>', init)
       ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
@@ -128,9 +128,10 @@ export class bt_gen_forma extends COMPONENT {
         const controlSource = renglon[i]['controlsource']
         const dec_dat = renglon[i]['dec_dat']
         const lla_cap = renglon[i]['lla_cap']
-        const lon_dat = renglon[i]['lon_dat']
-        const Max = renglon[i]['max_len']
+        let lon_dat = renglon[i]['lon_dat']
+        let MaxLength = renglon[i]['maxlen']
         const Min = renglon[i]['min']
+        let MaxVal='2147483647'
         // const nom_ind=renglon[i]['nom_ind']
         const nullvalue = renglon[i]['nullvalue']
         const PlaceHolder = renglon[i]['placeholder']
@@ -138,10 +139,10 @@ export class bt_gen_forma extends COMPONENT {
         //const textLabel=renglon[i]['textlabel']
         let Type = 'text'
 
-        let BaseClass = 'editBox'
+        let BaseClass = 'editText'
 
         switch (renglon[i]['baseclass'].trim()) {
-          case 'E':
+          case 'C':
             BaseClass = 'comboBox'
             break
           case 'B':
@@ -155,19 +156,25 @@ export class bt_gen_forma extends COMPONENT {
             break
         }
 
-        const tip_dat = renglon[i]['tip_dat']
+        const tip_dat = renglon[i]['tip_dat'].toLowerCase().slice(0,3)
+        
 
-        console.log('bt_gen_renglon cam_dat', cam_dat, renglon[i])
 
-        if (tip_dat == 'I' || tip_dat == 'N' || tip_dat == 'D' || tip_dat == 'F')
-          Type = 'numeric'
-        if (tip_dat == 'D')
+        if (tip_dat == 'int' || tip_dat == 'num' || tip_dat == 'dou' || tip_dat == 'flo'){
+          Type = 'number'
+          MaxLength='16'
+
+        }
+        if (tip_dat == 'dat'){
           Type = 'date'
-        if (tip_dat == 'I' && lon_dat == '1')
+          MaxLength='20'
+        }
+        if (tip_dat == 'int' && lon_dat == '1')
           Type = 'checkBox'
-        if ((tip_dat == 'C' || tip_dat == 'V') && lon_dat > 256)
+        if ( tip_dat == 'var' || ((tip_dat == 'cha' || tip_dat == 'var') && lon_dat > 256)){
           Type = 'textArea'
-
+          MaxLength=lon_dat
+        }
         const ToolTipText = renglon[i]['tooltiptext']
         const updateKey = renglon[i]['updatekey'] == 1 ? 'true' : 'false'
         // const MaxLength = renglon[i]['MaxLength']
@@ -187,9 +194,9 @@ export class bt_gen_forma extends COMPONENT {
         row_com = row_com.replaceAll('<<ControlSource>>', controlSource.trim())
         row_com = row_com.replaceAll('<<PlaceHolder>>', PlaceHolder.trim())
         row_com = row_com.replaceAll('<<ToolTipText>>', ToolTipText.trim())
-        row_com = row_com.replaceAll("<<MaxLength>>", lon_dat)
+        row_com = row_com.replaceAll("<<MaxLength>>", MaxLength)
         row_com = row_com.replaceAll("<<Min>>", Min)
-        row_com = row_com.replaceAll("<<Max>>", Max)
+        row_com = row_com.replaceAll("<<Max>>", MaxVal)
         row_com = row_com.replaceAll('<<Decimals>>', dec_dat)
         row_com = row_com.replaceAll('<<updateKey>>', updateKey)
         row_com = row_com.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))

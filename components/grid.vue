@@ -1,12 +1,12 @@
 <template>
-  <div class="divi" v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && Db.View[prop.RecordSource]"
-     :style="style" ref="Ref">
+  <div class="divi" v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Db.View[prop.RecordSource]"
+    :style="style" ref="Ref">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <form class="gridDatos">
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
-      <h2 v-if="prop.textLabel.length>0 ">{{ prop.textLabel }}</h2>
+      <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
       <div class="tabla">
         <table>
           <thead>
@@ -56,7 +56,7 @@
                     <Transition name="columntext">
                       <textLabel v-bind:Show="item.id != ThisGrid.Row" v-bind:Recno="item.recno" v-bind:Id="item.id"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:position="ThisGrid[col.Name].position"
-                        v-bind:style="ThisGrid[col.Name].style" 
+                        v-bind:style="ThisGrid[col.Name].style"
                         @focus.capture.stop="ejeEvento(`${ThisGrid.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
                         @click.stop @focusout.stop>
                       </textLabel>
@@ -74,11 +74,10 @@
                         v-model:Value="ThisGrid[col.Name].prop.Value" v-model:Status="ThisGrid[col.Name].prop.Status"
                         v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Focus="ThisGrid[col.Name].Focus"
                         v-model:Recno="ThisGrid[col.Name].Recno" v-model:Valid="ThisGrid[col.Name].prop.Valid"
-                        v-model:ShowError="ThisGrid[col.Name].prop.ShowError"
-                        v-bind:Show="true"
+                        v-model:ShowError="ThisGrid[col.Name].prop.ShowError" v-bind:Show="true"
                         v-bind:Component="ref(ThisGrid.Form[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="ThisGrid[col.Name].prop" v-bind:style="ThisGrid[col.Name].style"
-                        v-bind:position="ThisGrid[col.Name].position" 
+                        v-bind:position="ThisGrid[col.Name].position"
                         @focus.capture="ejeEvento(ThisGrid.prop.Map + '.' + ThisGrid[col.Name].Name + '.when()')"
                         :style="{ 'width': ThisGrid[col.Name].style.width }">
 
@@ -128,7 +127,7 @@
       <div class="break">
         <div class="controles" :disabled="!scroll.controls">
 
-          <span v-show="prop.addButton && scroll.bottom" width="40" @click="appendRow()">
+          <span v-show="prop.addButton" width="40" @click="appendRow()">
             <img src="/Iconos/add-color.svg" width="35">
           </span>
 
@@ -158,7 +157,7 @@
           </span>
 
           <span v-show="prop.saveData" @click.capture.stop="saveTable()">
-              <img src="/Iconos/save-color1.svg" width="45">
+            <img src="/Iconos/save-color1.svg" width="45">
           </span>
 
           <div v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -173,7 +172,8 @@
               v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-              v-bind:position="This[compFooter].position" @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+              v-bind:position="This[compFooter].position"
+              @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
               @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
           </div>
 
@@ -250,8 +250,8 @@ const props = defineProps<{
     Rows: number;
     deleteButton: true;
     addButton: true;
-    saveData:true;
-    updated:false;
+    saveData: true;
+    updated: false;
   };
 
   style: {
@@ -402,8 +402,16 @@ watch(
 ///////////////////////////////////////////////
 watch(
   () => props.prop.RecordSource,
-  (new_val, old_val) => {
-    console.log('RecordSource scroll===>', scroll)
+  async (RecordSource, old_val) => {
+    if (props.prop.Visible && RecordSource.length > 1){
+      console.log('grid watch RecordSource ',RecordSource,This.Form.db.View[RecordSource])
+      if (This.Form.db.View[RecordSource]) {
+        if (This.Form.db.View[RecordSource].recnoVal.length == 0)
+          await appendRow()
+
+        loadData()
+      }
+    }
   }
   ,
   { deep: false }
@@ -411,18 +419,16 @@ watch(
 
 watch(
   () => props.prop.Visible,
-  async (new_val, old_val) => {
-    /*   
-      // Si no hay renglones , aumenta un renglon
-      if (props.prop.Visible && Db.View[props.prop.RecordSource].recnoVal.length == 0){
-         await appendRow()
-         console.log('<=======Watch grid append Row Visible =======>', new_val,props.prop.Visible && Db.View[props.prop.RecordSource].recnoVal)
-      }
-   */
+  async (Visible, old_val) => {
 
-    if (props.prop.Visible && !old_val &&
-      props.prop.RecordSource.length > 3) {
-      //  console.log('watch Visible ===>',This.Parent.Name)
+    // Si no hay renglones , aumenta un renglon
+    if (Visible && props.prop.RecordSource.length > 1 && This.Form.db.View[props.prop.RecordSource]) {
+
+      console.log('grid watch Visible ',props.prop.RecordSource,This.Form.db.View[props.prop.RecordSource])
+
+      // si no hay datos, inserta renglon 
+      if (Db.View[props.prop.RecordSource].recnoVal.length == 0)
+        await appendRow()
 
       loadData()
 
@@ -444,6 +450,7 @@ watch(
       //console.log('Watch estatus ===>', comp, ThisGrid.estatus[comp])
 
       if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') {
+        console.log('Grid wacth eventos comp=', comp, 'Estatus=', ThisGrid.estatus[comp])
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -472,6 +479,9 @@ watch(
 watch(
   () => ThisGrid.Form.eventos,
   () => {
+    console.log('=====watch thisform.eventos =======', eventos, load_data)
+
+
     if (!load_data) return
     if (ThisGrid.Form.eventos.length == 0) {
       if (ThisGrid.Form.prop.Status != 'A')
@@ -491,12 +501,13 @@ watch(
 watch(
   () => ThisGrid.estatus,
   (new_val, old_val) => {
-    console.log('<=======Watch estatus componentes =======>', ThisGrid.estatus)
+
 
     for (const comp in ThisGrid.estatus) { // Recorre todos los estatus del grid
 
       if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
-        Status.value = 'P';  // Cambia el estatus del gri a Proceso
+        console.log('Grid watch estatus comp=', comp, 'Estatus', ThisGrid.estatus[comp])
+        Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
         return
@@ -526,8 +537,13 @@ const ejeEvento = (newEvento: string) => {
   console.log('Grid ejeEvento', newEvento)
 
   for (const comp in ThisGrid.estatus) {
+    console.log('Grid ejeEvento comp=', comp, ThisGrid.estatus[comp])
 
     if (ThisGrid.estatus[comp] != 'A' && Status.value == 'A') {
+
+
+      console.log('Grid ejeEvento Status comp=', comp, 'Estatus=', ThisGrid.estatus[comp])
+
       Status.value = 'P';  // Cambia el estatus del grid a Proceso
       emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -535,8 +551,8 @@ const ejeEvento = (newEvento: string) => {
     }
   }
 
+  console.log('Grid ejeEvento Form.eventos', ThisGrid.Form.eventos)
   ThisGrid.Form.eventos.push(newEvento) // emitimos los eventos a la forma padre
-
 }
 
 
@@ -557,17 +573,17 @@ const loadData = async () => {
 
   try {
 
-    if (!Db || props.prop.RecordSource.length < 3
+    if (!Db || props.prop.RecordSource.length < 2
       || Db.View[props.prop.RecordSource].recnoVal.length == 0
     ) {
       scroll.controls = false
       scroll.page = 0
       scroll.top = false
       scroll.bottom = false
-      if (props.prop.RecordSource.length > 2) {
+      if (props.prop.RecordSource.length > 1) {
         scroll.controls = true
       }
-
+      ThisGrid.Form.prop.Status = 'A'
       return false
 
     }
@@ -739,7 +755,7 @@ const saveRow = async (recno?: number) => {
 }
 
 const saveTable = async () => {
-  console.log('Grid ',ThisGrid.Name,'SaveTable',ThisGrid.Row)
+  console.log('Grid ', ThisGrid.Name, 'SaveTable', ThisGrid.Row)
   //if (ThisGrid.Row < 0) return
   scroll.controls = false
   //const { $MessageBox } = useNuxtApp()
@@ -756,6 +772,9 @@ const saveTable = async () => {
 /////////////////////////////////////////
 
 const init = async () => {
+  
+
+  await ThisGrid.init()
 
   for (const componente in ThisGrid) {
     if (ThisGrid[componente] !== undefined) {
@@ -768,11 +787,16 @@ const init = async () => {
       }
     }
   }
-  console.log('Init Grid==>', props.prop.Name)
 
   // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
+ 
+  console.log('Init Grid==>', props.prop.Name, 'estatus=', ThisGrid.estatus)
+  loadData()
+
+
+
 };
 
 init(); // Ejecuta el init

@@ -101,6 +101,10 @@ const props = defineProps<{
   // };
 }>();
 
+
+const Component = ref(props.prop.This)
+const This = Component.value
+const Value = ref(props.prop.Value)
 const ToolTipText = ref(true)
 
 
@@ -127,8 +131,40 @@ const onFocus = async () => {
   ToolTipText.value = false  // Activamos el ToolTipText
 }
 
-//const Value = ref(props.prop.Value);
-//const { Value } = toRefs(props);
+
+/////////////////////////////////////////
+// Metodo init Vfp
+// Aqui debemos de asignar todos los Valores inciales del componente
+// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
+// Se tiene que emitir para que cambie el Valor en el template
+/////////////////////////////////////////
+
+const init = async () => {
+  await This.init()
+
+
+  if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
+
+    Status.value = 'P';  // en lectura
+    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+
+    await readCampo(props.Registro)
+    if (!props.prop.First) {
+
+      //await emitValue()
+    }
+    Status.value = 'A';  // Activo
+    emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+  }
+  
+};
+
+
+init(); // Ejecuta el init
+
+
+
+
 </script>
 <style scoped >
 

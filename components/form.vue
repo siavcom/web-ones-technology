@@ -61,13 +61,19 @@
               <!--                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')" -->
               <TransitionGroup name='detailForm'>
                 <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
-                  <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
-                    v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                    v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
-                    v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno" v-bind:Show='true'
+                  <component :is="impComp(ThisForm[compMain].prop.BaseClass)"
+                    v-bind:Component="ref(ThisForm[compMain])"
+                    v-model:Value="ThisForm[compMain].prop.Value" 
+                    v-model:Status="ThisForm[compMain].prop.Status"
+                    v-model:ShowError="ThisForm[compMain].prop.ShowError" 
+                    v-model:Key="ThisForm[compMain].prop.Key"
+                    v-model:Focus="ThisForm[compMain].Focus" 
+                    v-model:Recno="ThisForm[compMain].Recno" v-bind:Show='true'
                     v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
-                    v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
-                    v-bind:position="ThisForm[compMain].position" v-bind:db="ref(ThisForm.db)"
+                    v-bind:prop="ThisForm[compMain].prop" 
+                    v-bind:style="ThisForm[compMain].style"
+                    v-bind:position="ThisForm[compMain].position" 
+                    v-bind:db="ref(ThisForm.db)"
                     @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
                     @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
                 </div>
@@ -424,7 +430,11 @@ watch(
     }
 
     for (const comp in ThisForm.estatus) {
+     
       if (ThisForm.estatus[comp] != 'A') {
+
+        console.log('watch ThisForm.eventos comp. ', comp,'estatus=',ThisForm.estatus[comp])
+
         return
       }
     }
@@ -544,13 +554,9 @@ const nextFocus = async ($event) => {
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
 const init = async () => {
+  await ThisForm.init()
   // try {
 
-  console.log('This Form init elements===>', ThisForm.elements)
-
-  console.log('This Form init header===>', ThisForm.header)
-  console.log('This Form init main===>', ThisForm.main)
-  console.log('This Form init footer===>', ThisForm.footer)
 
   await Init.Init()
     .then(() => {
@@ -565,6 +571,7 @@ const init = async () => {
                ThisForm[componente].prop.Capture &&  // Si es componente de captura
                ThisForm[componente].prop.Capture == true
              ) {
+              //console.log('Form asigna ref a componente=',componente)
                // if (ThisForm[componente].Ref)
                // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
                ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
@@ -593,8 +600,9 @@ const init = async () => {
      console.log('Error al inicializa la forma ', error)
    }
  */
+ console.log('ThisForm Finish Update  ', ThisForm)
+
 }
-console.log('This Form', ThisForm)
 init()
 
 //var result = x === true ? "passed" : "failed";

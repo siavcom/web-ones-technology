@@ -9,7 +9,7 @@ import { COMPONENT } from './Component'
 import { FORM } from '@/classes/Form'
 
 export class captureForm extends FORM {
-  public grid: [] = []
+  public gridCaptura: [] = []
   public sw_ini=false
   /// //////////////////////////////////////////////////
   // Metodo init
@@ -28,7 +28,7 @@ export class captureForm extends FORM {
     } catch (error) {
       console.log('======Error Init=====' + this.prop.Name, error)
     }
-    this.bt_graba.Grid = this.grid // asignamos el arreglo de grid
+    this.bt_graba.Grid = this.gridCaptura // asignamos el arreglo de grid
   }
 
   /// /////////////////////////////////////
@@ -98,7 +98,8 @@ export class captureForm extends FORM {
     if (this.sw_ini && !activate) { return }
 
     if (!activate) {
-      await this.db.useNodata(this.prop.RecordSource)
+      if (this.prop.RecordSource.length>2)
+        await this.db.useNodata(this.prop.RecordSource)
       Recno = 0
       this.sw_ini = true
       this.bt_graba.prop.Visible = false

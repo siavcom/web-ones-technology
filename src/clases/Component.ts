@@ -90,7 +90,8 @@ export class COMPONENT {
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: "left",
-      textTransform: "none"
+      textTransform: "none",
+      zIndex: 1,  // profundidad
     },
 
   }
@@ -117,7 +118,7 @@ export class COMPONENT {
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
-
+    
 
     textAlign: "left",
     position: "relative",
@@ -279,7 +280,7 @@ export class COMPONENT {
     
     if(this.init){
       console.log('Component init', this.Name, this.prop.Map)
-      await this.init() // Corre el init principal
+      // await this.init() // Corre el init principal
     }
     return TabIndex
   }
@@ -339,8 +340,9 @@ export class COMPONENT {
   // Valid
   // Descripcion: Cuando pierde el foco valida
   /////////////////////////////////////////////////////////////////
-  public async valid() {
+  public async valid():Promise<boolean> {
     this.prop.Valid = true
+    console.log('Valida ',this.prop.Name)
     return this.prop.Valid
   }
 
