@@ -16,6 +16,7 @@ import {GRID} from  '@/classes/Grid'
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
 import {nom_tab} from './nom_tab'
 import {des_tab} from './des_tab'
+import {sis_sis} from './sis_sis'
 import {vis_tab} from './vis_tab'
 
 export class grid_tablas extends GRID {
@@ -23,6 +24,7 @@ export class grid_tablas extends GRID {
  // Columna que tiene el grid
   public nom_tab = new nom_tab()
   public des_tab = new des_tab()
+  public sis_sis = new sis_sis()
   public vis_tab = new vis_tab()
  
   //  constructor(parent: Record<string, never>) {

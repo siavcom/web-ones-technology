@@ -140,7 +140,7 @@ const onFocus = async () => {
 /////////////////////////////////////////
 
 const init = async () => {
-  await This.init()
+  //await This.init()
 
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 0) {

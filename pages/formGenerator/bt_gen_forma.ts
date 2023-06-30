@@ -87,13 +87,16 @@ export class bt_gen_forma extends COMPONENT {
     ThisForm = ThisForm.replaceAll('<<nom_for>>', this.Form.nom_for.prop.Value.trim())
     ThisForm = ThisForm.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
     //    ThisForm = ThisForm.replaceAll('<<nom_ind>>', this.Form.nom_ind.prop.Value.trim())
-    ThisForm = ThisForm.replaceAll('<<vis_cap>>', this.Form.vis_cap.prop.Value.trim())
+    if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C')
+      ThisForm = ThisForm.replaceAll('<<vis_cap>>', this.Form.vis_cap.prop.Value.trim())
 
     ThisForm = ThisForm.replaceAll('<<nom_tab>>', this.Form.nom_tab.prop.Value.trim())
     let grid_import
     let grid_captura = ''
 
     if (this.Form.tip_for.prop.Value == 'G') {
+      ThisForm = ThisForm.replaceAll('<<vis_cap>>', '')
+
       imp_com = `import {Grid} from "./grid/grid" ` + String.fromCharCode(10)
       com_imp = `   public Grid = new Grid() ` + String.fromCharCode(10)
       //init = 'this.Form.bt_graba.lee_grid()'

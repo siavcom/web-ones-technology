@@ -554,7 +554,7 @@ const nextFocus = async ($event) => {
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
 const init = async () => {
-  await ThisForm.init()
+ // await ThisForm.init()
   // try {
 
 

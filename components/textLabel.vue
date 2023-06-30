@@ -672,7 +672,7 @@ const readCampo = async () => {
 */
 
 const readCampo = async () => {
- // console.log('textLabel ',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
+  console.log('textLabel readCampo',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
 
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
     const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno)
@@ -713,7 +713,8 @@ watch(
 watch(
   () => props.Recno,
   (new_val, old_val) => {
-    if (old_val != new_val) readCampo()
+    console.log('TextLabel watch Recno',old_val,new_val)
+    if (old_val != new_val && new_val>0) readCampo()
 
   },
   { deep: false }
@@ -736,7 +737,7 @@ watch(
 
 const init = async () => {
 
-  //console.log('TextLabel propiedades ID',props.Recno)
+  console.log('TextLabel ',This.Name,'Recno=',props.Recno)
   readCampo()
   //readCampo()
 

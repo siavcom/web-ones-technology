@@ -774,7 +774,7 @@ const saveTable = async () => {
 const init = async () => {
   
 
-  await ThisGrid.init()
+ // await ThisGrid.init()
 
   for (const componente in ThisGrid) {
     if (ThisGrid[componente] !== undefined) {

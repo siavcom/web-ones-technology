@@ -43,11 +43,14 @@ export class GRID extends COMPONENT {
   /// /////////////////////////////////////
 
   public async init() {
-  
     if (this.autoLoad && this.prop.RecordSource.length > 1) {// Si hay recordSource
+      console.log('================Grid.ts Init autoLoad=============',this.autoLoad)
+ 
       await this.valid()
       this.prop.Visible=true
-      // const data = await this.Form.db.use(this.prop.RecordSource)
+      console.log('================Grid.ts Fin Init autoLoad===========',this.autoLoad)
+
+
     }
   }
   

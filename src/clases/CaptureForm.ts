@@ -21,10 +21,9 @@ export class captureForm extends FORM {
 
 
     try {
-      // if (this.prop.RecordSource.length > 1) {
-      await this.refreshComponent(false)
-
-      //  }
+       if (this.prop.RecordSource.length > 1) {
+          await this.refreshComponent(false)
+        }
     } catch (error) {
       console.log('======Error Init=====' + this.prop.Name, error)
     }

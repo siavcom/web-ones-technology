@@ -280,7 +280,7 @@ export class COMPONENT {
     
     if(this.init){
       console.log('Component init', this.Name, this.prop.Map)
-      // await this.init() // Corre el init principal
+      await this.init() // Corre el init principal
     }
     return TabIndex
   }
