@@ -13,7 +13,13 @@
 -->
 <template>
   <transition name='Mainform'>
-    <div class="Main">
+
+    <div v-if="loading" class="splash-screen">
+          <div class="spinner-wrapper">
+            <div class="spinner"></div>
+          </div>
+    </div>
+    <div v-else class="Main">
       <section class="pagina" :style="ThisForm.style">
         <div class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
@@ -21,9 +27,9 @@
 
             <!--template v-slot:header-->
             <h2 class="header2" float="left">
-              <div class="nemPge">
+              <!--div class="nemPge">
                 <label text-align="left">{{ ThisForm.prop.nem_pge }}</label>
-              </div>
+              </div-->
               <div class="fpoPge">
                 <label type="date" text-align="center">{{ ThisForm.prop.fpo_pge + ' ' + ThisForm.prop.Name }}</label>
               </div>
@@ -240,7 +246,8 @@ const props = defineProps<{
   THISFORM: null;
 }>();
 
-const ThisForm = reactive(new props.THISFORM);
+const ThisForm = reactive(new props.THISFORM)
+const loading=ref(true)
 
 
 
@@ -601,6 +608,7 @@ const init = async () => {
    }
  */
  console.log('ThisForm Finish Update  ', ThisForm)
+ loading.value=false
 
 }
 init()
@@ -945,4 +953,59 @@ img.bt_salir {
   visibility: visible;
   opacity: 1;
 }
+
+
+/* Spinner   */
+.splash-screen {
+   background: #f2f0ee;
+    width: 60vw;
+    height: 60vh;
+  position: fixed;
+  z-index: 50;    
+}
+
+.spinner-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+}
+.spinner {
+  width: 80px;
+  height: 80px;
+  margin: 100px auto;
+  background-color: #e45447;
+
+  border-radius: 100%;
+  -webkit-animation: sk-scaleout 1s infinite ease-in-out;
+  animation: sk-scaleout 1s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+
+
+
+
 </style>

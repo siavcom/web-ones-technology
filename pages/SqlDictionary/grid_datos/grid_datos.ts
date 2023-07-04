@@ -69,7 +69,7 @@ export class grid_datos extends GRID {
    lower(trim(cam_dat)) <> 'key_pri' ")
    //console.log('appenRow grid_datos',await this.Form.db.localSql('select * from vi_cap_dat' ), data[0].con_dat)
    //console.log('appendRow',data[0])    
-   const con_dat=+data[0].con_dat > 0 ? data[0].con_dat+.1 : 1       
+   const con_dat=+data[0].con_dat > 0 ? data[0].con_dat+1 : 1       
    const m = {nom_tab:this.Form.nom_tab.prop.Value.trim(),
               sis_dat:'',
               arc_dat:'',

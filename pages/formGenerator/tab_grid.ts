@@ -3,7 +3,7 @@
 // Descripcion : Nombre de la tabla base para generar la forma de captura
 // Author : Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
-// Ult.Mod  : 13/Febrero/2023
+// Ult.Mod  : 4/Julio/2023
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // Clase base
@@ -13,7 +13,7 @@ import { COMPONENT } from '@/classes/Component'
 //import { nextTick } from 'vue';
 
 
-export class nom_tab extends COMPONENT {
+export class tab_grid extends COMPONENT {
 
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -21,7 +21,7 @@ export class nom_tab extends COMPONENT {
 
     this.prop.BaseClass = 'comboBox'
     this.prop.Visible = true
-    this.prop.textLabel = "Tabla de captura principal";
+    this.prop.textLabel = "Tabla de captura del grid ";
     this.prop.Capture = true // al quitarlo, quito reactividad oJo
     this.prop.Valid = false
     this.prop.ErrorMessage = ''
@@ -31,7 +31,7 @@ export class nom_tab extends COMPONENT {
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 2
     this.prop.ColumnWidths = "50%,50%"
-    this.prop.Visible = true
+    this.prop.Visible = false
     this.prop.Style = '2' //0=DropDown Combo 2=DropDown List
     this.style.zIndex = 4
   }
@@ -51,12 +51,12 @@ export class nom_tab extends COMPONENT {
 //    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `, 'vi_cap_ind')
 //    this.Form.nom_ind.prop.RowSourceType = 2
 
-      this.Form.vis_cap.prop.RowSourceType = 0
-      const nom_tab=this.Form.nom_tab.prop.Value.trim()
+      this.Form.vis_grid.prop.RowSourceType = 0
+      const nom_tab=this.prop.Value.trim()
       console.log('nom_tab valid',nom_tab)
-       this.Form.vis_cap.prop.RowSource = `select des_vis,nom_vis from vi_cap_vis where nom_tab='${nom_tab}' `
-       this.Form.vis_cap.prop.RowSourceType = 3
-       this.Form.vis_cap.prop.Visible = true
+       this.Form.vis_grid.prop.RowSource = `select des_vis,nom_vis from vi_cap_vis where nom_tab='${nom_tab}' `
+       this.Form.vis_grid.prop.RowSourceType = 3
+       this.Form.vis_grid.prop.Visible = true
 
     //await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `,'vi_cap_ind')
     // this.Form.nom_ind.prop.RowSource = `select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `

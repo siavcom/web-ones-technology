@@ -8,28 +8,27 @@
       <div class="Web-ones">
         <img class="logoVue" src="@/assets/logo.png" style="width:50px;height:50px;" />eb-Ones Technology
       </div>
-
-      <div v-if="nomEmp" style="vertical-align:middle; text-align:right;">
+      <div v-if="nomEmp" style=" text-align:right;">
         {{ nomEmp }}
         <img v-if="logoEmp" class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
-
       </div>
 
     </div>
-   </div>
+  </div>
 </template>
 
 
 <script lang="ts" setup >
-
+//vertical-align:middle;
 const props = defineProps<{
   logoEmp: string;
   nomEmp: string;
+  titleName: string;
 }>()
 
-const logoEmp = ref(props.logoEmp)
-logoEmp.value = "/img/Logo_Empresa.png"
-const nomEmp = ref(props.nomEmp)
-nomEmp.value = "Siavcom Software"
+//const logoEmp = ref(props.logoEmp)
+//logoEmp.value = "/img/Logo_Empresa.png"
+//const nomEmp = ref(props.nomEmp)
+//nomEmp.value = "Siavcom Software"
 
 </script>

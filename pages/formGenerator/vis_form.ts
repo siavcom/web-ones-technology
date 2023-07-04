@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : vis_cap
+// Clase : vis_form
 // Descripcion : Nombre de la vista de captura a utilizar de la tabla
 // Author : Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
@@ -11,7 +11,7 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class vis_cap extends COMPONENT {
+export class vis_form extends COMPONENT {
 
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -19,7 +19,7 @@ export class vis_cap extends COMPONENT {
 
     this.prop.BaseClass = 'comboBox'
     this.prop.Visible = false
-    this.prop.textLabel = "Vista de captura de mantenimiento";
+    this.prop.textLabel = "Vista de captura forma principal";
     this.prop.Capture = true // al quitarlo, quito reactividad oJo
     this.prop.Valid = false
     this.prop.ErrorMessage = ''

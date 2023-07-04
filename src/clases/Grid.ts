@@ -49,8 +49,6 @@ export class GRID extends COMPONENT {
       await this.valid()
       this.prop.Visible=true
       console.log('================Grid.ts Fin Init autoLoad===========',this.autoLoad)
-
-
     }
   }
   

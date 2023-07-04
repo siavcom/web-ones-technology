@@ -16,10 +16,7 @@ import Component from '@/static/templates/Component.txt?raw'
 import Grid from '@/static/templates/Grid.txt?raw'
 import Column from '@/static/templates/Column.txt?raw'
 
-
-
 //import { readFileSync } from 'fs'
-
 //https://github.com/gildas-lormeau/zip.js
 import {
   BlobWriter,
@@ -59,7 +56,7 @@ export class bt_gen_forma extends COMPONENT {
       const zipFileBlob = await zipFileWriter.getData()
 
       await saveAs(zipFileBlob, `${this.Form.nom_for.prop.Value.trim()}.zip`)
-      this.Form.nom_tab.setFocus()
+      this.Form.tip_for.setFocus()
 
       //    if (error.length)
       //      console.error('Error al generar Forma')
@@ -87,15 +84,16 @@ export class bt_gen_forma extends COMPONENT {
     ThisForm = ThisForm.replaceAll('<<nom_for>>', this.Form.nom_for.prop.Value.trim())
     ThisForm = ThisForm.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
     //    ThisForm = ThisForm.replaceAll('<<nom_ind>>', this.Form.nom_ind.prop.Value.trim())
-    if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C')
-      ThisForm = ThisForm.replaceAll('<<vis_cap>>', this.Form.vis_cap.prop.Value.trim())
 
-    ThisForm = ThisForm.replaceAll('<<nom_tab>>', this.Form.nom_tab.prop.Value.trim())
+    if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C')
+      ThisForm = ThisForm.replaceAll('<<vis_cap>>', this.Form.vis_form.prop.Value.trim())
+
+    ThisForm = ThisForm.replaceAll('<<nom_tab>>', this.Form.tab_form.prop.Value.trim())
     let grid_import
     let grid_captura = ''
 
-    if (this.Form.tip_for.prop.Value == 'G') {
-      ThisForm = ThisForm.replaceAll('<<vis_cap>>', '')
+    if (this.Form.tip_for.prop.Value == 'G' || this.Form.tip_for.prop.Value == 'C') {
+       ThisForm = ThisForm.replaceAll('<<vis_cap>>', '')
 
       imp_com = `import {Grid} from "./grid/grid" ` + String.fromCharCode(10)
       com_imp = `   public Grid = new Grid() ` + String.fromCharCode(10)
@@ -114,17 +112,20 @@ export class bt_gen_forma extends COMPONENT {
 
     //    ThisForm = ThisForm.replaceAll('<<grid_cap>>', this.Form.nom_tab.prop.Value.trim())
 
-    let vis_cap = 'vi_cap_form'
+   // let vis_form = 'vi_cap_form'
+    let vis_grid='vi_cap_form'
+    let grid = ''
+    if (this.Form.tip_for.prop.Value=='G'){
+        vis_grid='vi_cap_grid '
+        grid = 'grid/'
 
-    if (this.Form.tip_for.prop.Value == 'G')
-      vis_cap = 'vi_cap_grid'
-
+    }    
     // recorremos todos los renglones
-    while (vis_cap.length > 0) {
-      const renglon = await this.Form.db.localSql(`select * from ${vis_cap} order by con_dat`)
+    while (this.Form.tip_for.prop.Value.length>0) {
+      const renglon = await this.Form.db.localSql(`select * from ${vis_grid} order by con_dat`)
       for (let i = 0; i < renglon.length; i++) {
         const cam_dat = renglon[i]['cam_dat']
-        imp_com = imp_com + `import {${cam_dat.trim()} } from "./${cam_dat.trim()}" ` + String.fromCharCode(10)
+        imp_com = imp_com + `import {${cam_dat.trim()} } from "./${grid}${cam_dat.trim()}" ` + String.fromCharCode(10)
         com_imp = com_imp + `   public ${cam_dat.trim()} = new ${cam_dat.trim()}() ` + String.fromCharCode(10)
 
         const cam_act = renglon[i]['cam_act']
@@ -186,7 +187,7 @@ export class bt_gen_forma extends COMPONENT {
 
 
         var row_com = Component
-        if (vis_cap == 'vi_cap_grid')
+        if (vis_grid == 'vi_cap_grid')
           row_com = Column
 
         row_com = row_com.replaceAll('<<cam_dat>>', cam_dat.trim())
@@ -211,44 +212,50 @@ export class bt_gen_forma extends COMPONENT {
           row_com = row_com.replaceAll('<<Capture>>', 'false')
 
         //genera cada clase de c componente
-        let grid = ''
-        if (vis_cap == 'vi_cap_grid')
-          grid = 'grid/'
 
+        // Generamos archivo de clases 
         await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/${grid}${cam_dat.trim()}.ts`, new TextReader(row_com))
       }
       let init = ''
-      let grid = ''
-
-      if (vis_cap == 'vi_cap_form') {
-        //ThisForm = ThisForm.replace('<<grid>>', "'" + grid + "'")
-        ThisForm = ThisForm.replace('<<init>>', init)
-        ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
-        ThisForm = ThisForm.replace('<<imp_com>>', imp_com)
-        await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/ThisForm.ts`, new TextReader(ThisForm))
-      }
-      if (vis_cap == 'vi_cap_grid') {
+ 
+      if (this.Form.tip_for.prop.Value == 'G') {
         ThisGrid = ThisGrid.replace('<<init>>', init)
         ThisGrid = ThisGrid.replace('<<com_imp>>', com_imp)
         ThisGrid = ThisGrid.replace('<<imp_com>>', imp_com)
 
-        ThisGrid = ThisGrid.replaceAll('<<nom_for>>', this.Form.vis_cap.prop.Value)
+        ThisGrid = ThisGrid.replaceAll('<<nom_for>>', this.Form.vis_grid.prop.Value)
         ThisGrid = ThisGrid.replaceAll('<<fec_cre>>', new Date().toISOString().substring(0, 10))
-        //    ThisGrid = ThisGrid.replaceAll('<<nom_ind>>', this.Form.vis_cap.prop.Value.trim())
-        ThisGrid = ThisGrid.replaceAll('<<nom_vis>>', this.Form.vis_cap.prop.Value.trim())
-
-
+        //    ThisGrid = ThisGrid.replaceAll('<<nom_ind>>', this.Form.vis_grid.prop.Value.trim())
+        ThisGrid = ThisGrid.replaceAll('<<nom_vis>>', this.Form.vis_grid.prop.Value.trim())
+        // Genera el archivo Thisgrid
         await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/grid/grid.ts`, new TextReader(ThisGrid))
+        this.Form.tip_for.prop.Value == ''
       }
+
+      if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C') {
+        //ThisForm = ThisForm.replace('<<grid>>', "'" + grid + "'")
+        ThisForm = ThisForm.replace('<<init>>', init)
+        ThisForm = ThisForm.replace('<<com_imp>>', com_imp)
+        ThisForm = ThisForm.replace('<<imp_com>>', imp_com)
+        //Genera el archivo ThisForm
+        await zipWriter.add(`${this.Form.nom_for.prop.Value.trim()}/ThisForm.ts`, new TextReader(ThisForm))
+        if (this.Form.tip_for.prop.Value == 'C'){
+          this.Form.tip_for.prop.Value = 'G'
+          vis_grid='vi_cap_grid '
+          grid = 'grid/'
+        }
+        else  
+          this.Form.tip_for.prop.Value = ''
+
+      }
+
       com_imp = ''
       imp_com = ''
 
       //    const zipFileBlob = await zipFileWriter.getData()
       //    await saveAs(zipFileBlob, `${this.Form.nom_for.prop.Value.trim()}.zip`)
 
-      vis_cap = ''
-      if (this.Form.tip_for.prop.Value == 'C' && vis_cap == 'vi_cap_form')
-        vis_cap = 'vi_cap_grid'
+     // vis_cap = ''
 
     }
 

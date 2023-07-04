@@ -35,10 +35,8 @@ export class nom_for extends COMPONENT {
    return  await super.when()
   }
 
-
   public async valid () {
     this.prop.Value=this.prop.Value.replaceAll(' ','')
-    this.Form.nom_tab.prop.Visible= true
     return true
   }
  }

@@ -24,7 +24,7 @@ export class FORM extends COMPONENT {
   //sw_ini = false
   //Parent = {} //this.Dom.ctx; // Contexto
   //Form = {} //this.Parent.ThisForm // Thisform
-
+  loading= true
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
   Params = []

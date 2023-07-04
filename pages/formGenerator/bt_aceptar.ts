@@ -2,6 +2,7 @@
 // Clase : bt_aceptar
 // Author : Fernando Cuadras Angulo
 // Creacion : Agosto/2021
+// Ult.Mod : 4/Julio/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
 ////import { MessageBox } from '@/classes/Functions';
@@ -29,21 +30,8 @@ export class bt_aceptar extends COMPONENT {
 
   async click() {
 
-
     if (this.prop.Disabled) return
     this.prop.Disabled = true
-    /*
-    if (this.Form.nom_ind.prop.Value.trim() == '') {
-      await this.Form.nom_tab.valid()
-      this.prop.Disabled = false
-
-      return
-    }
-    */
-    if (!this.Form.vis_cap.prop.Visible || this.Form.vis_cap.prop.Value.trim() == '') {
-      this.prop.Disabled = false
-      return
-    }
 
     if (this.Form.nom_for.prop.Value.trim() == '') {
       this.Form.nom_for.prop.Valid = false
@@ -51,53 +39,57 @@ export class bt_aceptar extends COMPONENT {
       this.prop.Disabled = false
       return
     }
+
+    // Limpiamos el recordSource de los dos grid
     this.Form.grid_components.prop.RecordSource = ''
     this.Form.grid_captura.prop.RecordSource = ''
 
     const concatena = this.Form.db.dialect == 'postgres' ? '||' : '+'
     const m = {}
     const espacios = ' '.repeat(64)
-    const nom_tab = this.Form.nom_tab.prop.Value.trim()
-    const vis_cap = this.Form.vis_cap.prop.Value.trim()
-    const controlSource = `'${vis_cap.trim()}.'${concatena}ltrim(lower(cam_dat))`
-
-
-    // En el area de trabajo reservada , generamos un select a SQL server a una vista de captura
-    // y le asignamos el nombre 'vi_cap_tab' a a tabla en el SQL local
-    const campos = `con_dat,lower(cam_dat) as cam_dat,ref_dat, tip_dat,lon_dat,dec_dat,'${espacios}' as nom_ind, 0 as updatekey, \
-    1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
-    0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
-    ref_dat as placeholder,ref_dat as tooltiptext,'E' as baseclass `
-    const ins_sql = `select ${campos} from vi_schema where \
-    upper(cam_dat)<>'TIE_UAC' \
-    and upper(cam_dat)<>'TIMESTAMP' \
-    and upper(cam_dat)<>'USU_USU' \
-    and upper(cam_dat)<>'TIE_CRE' \
-    and upper(cam_dat)<>'USU_CRE' \
-    and upper(cam_dat)<>'KEY_PRI' \
-    and nom_vis='${vis_cap}' order by con_dat`
-
+    //   const nom_tab = this.Form.nom_tab.prop.Value.trim()
+    const vis_grid = this.Form.vis_grid.prop.Value.trim()
+    const vis_form = this.Form.vis_form.prop.Value.trim()
+    let controlSource = ''
+    // Es Forma o Compuesta. Asigna la forma de captura
     if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C') {
-      await this.Form.db.execute(ins_sql, 'vi_cap_form')
+      controlSource = `'${vis_form.trim()}.'${concatena}ltrim(lower(cam_dat))`
+      // En el area de trabajo reservada , generamos un select a SQL server a una vista de captura
+      // y le asignamos el nombre 'vi_cap_tab' a a tabla en el SQL local
+      const campos = `con_dat,lower(cam_dat) as cam_dat,ref_dat, tip_dat,lon_dat,dec_dat,'${espacios}' as nom_ind, 0 as updatekey, \
+      1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
+      0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
+      ref_dat as placeholder,ref_dat as tooltiptext,'E' as baseclass `
+      const ins_sql = `select ${campos} from vi_schema where \
+      upper(cam_dat)<>'TIE_UAC' \
+      and upper(cam_dat)<>'TIMESTAMP' \
+      and upper(cam_dat)<>'USU_USU' \
+      and upper(cam_dat)<>'TIE_CRE' \
+      and upper(cam_dat)<>'USU_CRE' \
+      and upper(cam_dat)<>'KEY_PRI' \
+      and nom_vis='${vis_form}' order by con_dat`
+
+      if (!await this.Form.db.execute(ins_sql, 'vi_cap_form')) {
+        MessageBox('No hay vista de captura para la forma principal', 16)
+        return
+      }
+
       await this.Form.db.localSql(
         " update vi_cap_form set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' ")
 
-      const nom_ind = this.Form.nom_ind.prop.Value.trim()
-
-      //console.log('Expresion vi_cap_ind',await this.Form.db.localSql('select * from vi_cap_ind'))
-
-      // const data = await this.Form.db.localSql(`select exp_ind from vi_cap_ind where trim(nom_ind)='${nom_ind}'`)
       const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
-                          join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_cap}'    `)
+                          join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_form}' `, 'MEMVAR')
 
-      if (data.length > 0 || data[0].exp_ind) {
-
-        const exp_ind = data[0].exp_ind
-//        console.log('Expresion campo indice ==', nom_ind, exp_ind)
-
-        await this.Form.db.localSql(
-          `update vi_cap_form set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
+      if (data.length == 0 || data[0].exp_ind.trim() == '') {
+        MessageBox('No hay expresión de indice el la vista de captura',16)
+        return
       }
+
+      const exp_ind = data[0].exp_ind.trim()
+      //        console.log('Expresion campo indice ==', nom_ind, exp_ind)
+
+      await this.Form.db.localSql(
+        `update vi_cap_form set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
       // CHARINDEX(cam_dat,'${exp_ind}')>0    ${exp_ind} like trim(cam_dat)
       for (let i = 0; i < this.Form.grid_components.elements.length; i++) {
         const comp = this.Form.grid_components.elements[i].Name
@@ -108,20 +100,41 @@ export class bt_aceptar extends COMPONENT {
       this.Form.grid_components.prop.Visible = true
 
     }
-    // Si es captura de Grid o Compuesta
-    if (this.Form.tip_for.prop.Value == 'C' || this.Form.tip_for.prop.Value == 'G') {
 
-      await this.Form.db.execute(ins_sql, 'vi_cap_grid')
+    // Si es captura de Grid o Compuesto
+    if (this.Form.tip_for.prop.Value == 'C' || this.Form.tip_for.prop.Value == 'G') {
+      controlSource = `'${vis_grid.trim()}.'${concatena}ltrim(lower(cam_dat))`
+
+      const campos = `con_dat,lower(cam_dat) as cam_dat,ref_dat, tip_dat,lon_dat,dec_dat,'${espacios}' as nom_ind, 0 as updatekey, \
+      1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
+      0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
+      ref_dat as placeholder,ref_dat as tooltiptext,'E' as baseclass `
+      const ins_sql = `select ${campos} from vi_schema where \
+      upper(cam_dat)<>'TIE_UAC' \
+      and upper(cam_dat)<>'TIMESTAMP' \
+      and upper(cam_dat)<>'USU_USU' \
+      and upper(cam_dat)<>'TIE_CRE' \
+      and upper(cam_dat)<>'USU_CRE' \
+      and upper(cam_dat)<>'KEY_PRI' \
+      and nom_vis='${vis_grid}' order by con_dat`
+
+      if (!this.Form.db.execute(ins_sql, 'vi_cap_grid')) {
+        MessageBox('No hay vista de captura para el grid', 16)
+        return
+      }
 
       const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
-                          join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_cap}'    `)
+                          join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_grid}'    `, 'MEMVAR')
 
-      if (data.length > 0 || data[0].exp_ind) {
-        const exp_ind = data[0].exp_ind
-
-        await this.Form.db.localSql(
-          `update vi_cap_grid set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
+      if (data.length == 0 || data[0].exp_ind.trim() == '') {
+        MessageBox('No hay expresión de indice para el grid captura')
+        return
       }
+
+      const exp_ind = data[0].exp_ind.trim()
+
+      await this.Form.db.localSql(
+        `update vi_cap_grid set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
 
       for (let i = 0; i < this.Form.grid_captura.elements.length; i++) {
         const comp = this.Form.grid_captura.elements[i].Name
@@ -131,7 +144,6 @@ export class bt_aceptar extends COMPONENT {
 
       this.Form.grid_captura.prop.RecordSource = 'vi_cap_grid'
       this.Form.grid_captura.prop.Visible = true
-
 
     }
 

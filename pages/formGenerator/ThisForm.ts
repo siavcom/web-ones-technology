@@ -8,8 +8,10 @@
 
 import {nom_for} from "./nom_for"
 import {nom_ind} from "./nom_ind"
-import {nom_tab} from "./nom_tab"
-import {vis_cap} from "./vis_cap"
+import {tab_grid} from "./tab_grid"
+import {tab_form} from "./tab_form"
+import {vis_form} from "./vis_form"
+import {vis_grid} from "./vis_grid"
 
 import {tip_for} from "./tip_for"
 
@@ -27,10 +29,13 @@ export class THISFORM extends FORM {
 
   public tip_for = new tip_for()
 
-  public nom_tab = new nom_tab()
+  public tab_form = new tab_form()
+  public tab_grid = new tab_grid()
+
   public nom_ind = new nom_ind()
 
-  public vis_cap = new vis_cap()
+  public vis_form = new vis_form()
+  public vis_grid = new vis_grid()
 
   public nom_for = new nom_for()
   public bt_aceptar = new bt_aceptar()
