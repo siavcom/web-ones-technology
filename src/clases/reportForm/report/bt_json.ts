@@ -33,7 +33,13 @@ export class bt_json extends COMPONENT {
     if (result.length==0)
        return
 
-    let json =JSON.stringify(result)
+    const ins_sql = 'select * from vcomepge'
+
+    const comepge=await this.Form.db.execute(ins_sql, 'MEMVAR')
+    let json =JSON.stringify(comepge[0])
+     
+    json =json+','+JSON.stringify(result)
+    
     const blobJson = new Blob([json], {type: 'text/plain'})
     /*
     const canvas = document.getElementById("my-canvas");

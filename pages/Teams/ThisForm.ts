@@ -48,7 +48,7 @@ export class THISFORM extends captureForm {
     this.prop.textLabel = "Mantenimiento a la tabla Teams"
     this.prop.RecordSource='Index1_Team'
     this.prop.nem_pge = "Killo Software"
-    this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
+   //this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
     this.prop.log_emp = "/img/Logo_Empresa.png"
     this.prop.Status = 'A'
     this.style.display = "flex"

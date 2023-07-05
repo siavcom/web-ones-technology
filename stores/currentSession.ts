@@ -35,6 +35,7 @@ export const Session = defineStore({
     nom_emp: '',
     url: '',
     dialect:'Postgres',
+    fpo_pge: new Date().toISOString().substring(0, 10),
     menu: []
   }),
   persist: true,
@@ -53,12 +54,13 @@ export const Session = defineStore({
 
   actions: {
  
-    update (id_con: string, user : string, nom_emp :string, url :string,dialect:string) {
+    update (id_con: string, user : string, nom_emp :string, url :string,dialect:string,fpo_pge:string) {
       this.id_con = id_con
       this.user = user
       this.nom_emp = nom_emp
       this.url = url
       this.dialect=dialect
+      this.fpo_pge=fpo_pge
       
     },
     updateMenu (menu : any[]) {
@@ -68,7 +70,8 @@ export const Session = defineStore({
     updateUser (user : string) { this.user=user },
     updateNomEmp (nom_emp : string ) { this.nom_emp=nom_emp },
     updateUrl (url: string) { this.url=url },
-    updateDialect (dialect: string) { this.dialect=dialect }
+    updateDialect (dialect: string) { this.dialect=dialect },
+    updatefpo_pge (fpo_pge: string) { this.fpo_pge=fpo_pge },
 
   },
   getters: {
@@ -77,6 +80,8 @@ export const Session = defineStore({
       if (variable === 'user') { return this.user }
       if (variable === 'nom_emp') { return this.nom_emp }
       if (variable === 'dialect') { return this.dialect }
+      if (variable === 'fpo_pge') { return this.fpo_pge }
+
     }
   }
 }

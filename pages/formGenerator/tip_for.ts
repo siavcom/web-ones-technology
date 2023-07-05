@@ -48,8 +48,7 @@ export class tip_for extends COMPONENT {
     this.Form.grid_captura.prop.Visible = false
 
     this.Form.bt_gen_forma.prop.Visible = false
-    this.Form.bt_aceptar.prop.Visible = true
-
+    this.Form.bt_aceptar.prop.Visible = false
     return true
   }
   async valid() {

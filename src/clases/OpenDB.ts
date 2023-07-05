@@ -24,6 +24,7 @@ export class OpenDb {
   user: string
   pass: string
   id_con: string
+  fpo_pge: string=new Date().toISOString().substring(0, 10)
   dialect:string=''
 
   // Inicializa la conexion
@@ -34,7 +35,7 @@ export class OpenDb {
     this.user = session.user
     this.pass = ''
     this.id_con = ''
-   // this.dialect=''
+      // this.dialect=''
     /*
         localsession.setItem('id_con','')
         localsession.setItem('nom_emp','')
@@ -54,8 +55,6 @@ export class OpenDb {
     
     const pass: any = this.pass
     //  let url: any = this.url
-
-
     const router = useRouter()
     if (nom_emp.length === 0 || user.length === 0 || pass.length === 0) {
 
@@ -90,6 +89,9 @@ export class OpenDb {
 
       this.id_con = response.data.id // asignamos a su conexion de base de datos
       this.dialect= response.data.dialect
+      if (response.data.fpo_pge)
+         this.fpo_pge=response.data.fpo_pge
+
       console.log("ID de conexion=", this.id_con,'dialect=',this.dialect);
 
       /*session.setItem('id_con', this.id_con)
@@ -99,7 +101,7 @@ export class OpenDb {
 
       if (await this.leeMenu()) {
 
-        session.update(this.id_con, this.user, this.nom_emp, this.url,this.dialect)
+        session.update(this.id_con, this.user, this.nom_emp, this.url,this.dialect,this.fpo_pge)
         return this.id_con
       }
     } catch (error) {

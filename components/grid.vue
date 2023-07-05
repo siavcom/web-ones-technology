@@ -404,6 +404,9 @@ watch(
   () => props.prop.RecordSource,
   async (RecordSource, old_val) => {
     if (props.prop.Visible && RecordSource.length > 1){
+      if (RecordSource.length>0)
+          Status.value='P'
+
       console.log('grid watch RecordSource ',RecordSource,This.Form.db.View[RecordSource])
       if (This.Form.db.View[RecordSource]) {
         if (This.Form.db.View[RecordSource].recnoVal.length == 0)
@@ -633,9 +636,9 @@ const loadData = async () => {
     //    scroll.message = "Error loading data";
   }
 
-  ThisGrid.Form.prop.Status = 'A'
+  Status.value='A'
+ // ThisGrid.Form.prop.Status = 'A'
   scroll.controls = true
-
 }
 
 const first = async () => {

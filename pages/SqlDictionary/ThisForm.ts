@@ -56,7 +56,7 @@ export class THISFORM extends FORM {
     this.prop.tag = ""
     this.prop.textLabel = "Mantenimiento al diccionario de datos"
     this.prop.nem_pge = "Killo Software"
-    this.prop.fpo_pge = new Date().toISOString().substring(0, 10) //  Fecha actual de la computadora cliente
+    //this.prop.fpo_pge = new Date().toISOString().substring(0, 10) //  Fecha actual de la computadora cliente
     this.prop.Status = "A"
 
     this.style.display = "inline-flex"

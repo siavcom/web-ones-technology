@@ -24,6 +24,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/bx-check-circle.svg"
     this.prop.TabIndex = 1
+    this.prop.Visible=false
 
 
   } // Fin constructor
@@ -39,7 +40,7 @@ export class bt_aceptar extends COMPONENT {
       this.prop.Disabled = false
       return
     }
-
+    
     // Limpiamos el recordSource de los dos grid
     this.Form.grid_components.prop.RecordSource = ''
     this.Form.grid_captura.prop.RecordSource = ''
@@ -75,13 +76,14 @@ export class bt_aceptar extends COMPONENT {
       }
 
       await this.Form.db.localSql(
-        " update vi_cap_form set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' ")
+        " update vi_cap_form set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' ")
 
+      // Buscamos la expresion de indice de actualizacion
       const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
                           join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_form}' `, 'MEMVAR')
 
       if (data.length == 0 || data[0].exp_ind.trim() == '') {
-        MessageBox('No hay expresión de indice el la vista de captura',16)
+        MessageBox('No hay expresión de indice el la vista de captura', 16)
         return
       }
 
@@ -118,23 +120,38 @@ export class bt_aceptar extends COMPONENT {
       and upper(cam_dat)<>'KEY_PRI' \
       and nom_vis='${vis_grid}' order by con_dat`
 
-      if (!this.Form.db.execute(ins_sql, 'vi_cap_grid')) {
-        MessageBox('No hay vista de captura para el grid', 16)
+      if (!await this.Form.db.execute(ins_sql, 'vi_cap_grid')) {
+        MessageBox('No hay vista de captura para el grid de captura', 16)
         return
       }
-
-      const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
-                          join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_grid}'    `, 'MEMVAR')
-
-      if (data.length == 0 || data[0].exp_ind.trim() == '') {
-        MessageBox('No hay expresión de indice para el grid captura')
-        return
-      }
-
-      const exp_ind = data[0].exp_ind.trim()
 
       await this.Form.db.localSql(
-        `update vi_cap_grid set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
+        " update vi_cap_grid set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' ")
+
+      // Buscamos la expresion de indice de actualizacion
+      const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
+                    join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_grid}' `, 'MEMVAR')
+
+      //////////////////////
+      /*      if (!this.Form.db.execute(ins_sql, 'vi_cap_grid')) {
+              MessageBox('No hay vista de captura para el grid', 16)
+              return
+            }
+            // Buscamos la expresion de indice de actualizacion
+            const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
+                                join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_grid}'    `, 'MEMVAR')
+      
+            if (data.length == 0 || data[0].exp_ind.trim() == '') {
+              MessageBox('No hay expresión de indice para el grid captura')
+              return
+            }
+            await this.Form.db.localSql(
+              `update vi_cap_grid set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
+      
+            */
+      //////////////////////
+
+      const exp_ind = data[0].exp_ind.trim()
 
       for (let i = 0; i < this.Form.grid_captura.elements.length; i++) {
         const comp = this.Form.grid_captura.elements[i].Name

@@ -9,7 +9,9 @@
         <img class="logoVue" src="@/assets/logo.png" style="width:50px;height:50px;" />eb-Ones Technology
       </div>
       <div v-if="nomEmp" style=" text-align:right;">
-        {{ nomEmp }}
+        <p>{{ nomEmp }}</p>
+        <p>{{ fpo_pge }}</p>
+                
         <img v-if="logoEmp" class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
       </div>
 
@@ -24,6 +26,7 @@ const props = defineProps<{
   logoEmp: string;
   nomEmp: string;
   titleName: string;
+  fpo_pge:string;
 }>()
 
 //const logoEmp = ref(props.logoEmp)

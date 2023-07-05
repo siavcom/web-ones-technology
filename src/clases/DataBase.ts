@@ -47,6 +47,7 @@ export class VFPDB {
   user: string
   pass: any
   id_con: string
+  fpo_pge: string=new Date().toISOString().substring(0, 10)
   dialect: string
   // vis_tra: any = []; // guarda nombre de las vistas de trabajo en el servidor SQL
   are_tra: string[] = [''] // Las areas de trabajo donde cada vista tendra.

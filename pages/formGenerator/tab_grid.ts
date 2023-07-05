@@ -41,6 +41,7 @@ export class tab_grid extends COMPONENT {
     this.Form.bt_gen_forma.prop.Visible= false
     this.Form.grid_captura.prop.Visible = false
     this.Form.grid_components.prop.Visible = false
+    this.Form.bt_aceptar.prop.Visible=true
 
     return true
   }
