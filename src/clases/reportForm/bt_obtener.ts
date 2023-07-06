@@ -42,9 +42,23 @@ export class bt_obtener extends COMPONENT {
     this.Form.bt_obtener.prop.Visible = false
     this.Form.bt_pdf.prop.Visible = false
 
-    const ins_sql = await this.Form.gen_query()
 
-    if (! await this.Form.db.execute(ins_sql, 'result', 'null') ||
+    let query=''
+    if (this.Parent.sqlQuery.length>0)
+    try{
+      query=eval(this.Parent.sqlQuery)+';'
+    } catch(error){
+
+      MessageBox('eval('+this.Parent.sqlQuery+') '+error,16)
+      return
+    }  
+    
+    query=query+await this.Form.gen_query()
+ 
+
+ //   const ins_sql = await this.Form.gen_query()
+
+    if (! await this.Form.db.execute(query, 'result', 'null') ||
       this.Form.db.View.result && this.Form.db.View.result.recCount == 0) {
       this.Form.report.bt_close.click()
       return

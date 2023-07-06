@@ -41,11 +41,23 @@ export class bt_pdf extends COMPONENT {
     this.Form.queryPri.prop.Visible=false
     this.Form.queryUsu.prop.Visible=false
     this.Form.queryGen.prop.Visible=false
+ 
+    let query=''
+    if (this.Parent.sqlQuery.length>0)
+    try{
+      query=eval(this.Parent.sqlQuery)+';'
+    } catch(error){
 
-    const query=await this.Form.gen_query()
+      MessageBox('eval('+this.Parent.sqlQuery+') '+error,16)
+      return
+    }  
+    
+    query=query+await this.Form.gen_query()
+ 
+   
     console.log('bt_pdf',query,this.Form.for_imp.prop.Value)
 
-    const buffer=await this.Form.db.jasperReport(query,this.Form.for_imp.prop.Value)
+    const buffer=await this.Form.db.jasperReport(query,this.Form.for_imp.prop.Value,this.Form.dataView)
    
     if (buffer==null)
         return

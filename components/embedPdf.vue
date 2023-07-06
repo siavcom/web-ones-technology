@@ -1,5 +1,10 @@
 <template>
-  <div class="'wraper" v-show="prop.Visible">
+  <div v-if="loading" class="splash-screen">
+       <div class="spinner-wrapper">
+            <div class="spinner"></div>
+       </div>
+  </div>
+  <div v-else class="wraper" v-show="prop.Visible">
     <div class='reportViewer'  :style="style">
       <iframe :src="BSource" :width="style.width" height="1200px" />
     </div>
@@ -84,8 +89,7 @@ const props = defineProps<{
 
 }>();
 const BSource = ref('')
-
-
+const loading=ref(false)
 
 watch(
   () => props.prop.Source,
@@ -104,7 +108,7 @@ watch(
       //  BSource.value = URL.createObjectURL(blob);
       BSource.value = URL.createObjectURL(blob);
 
-
+      loading.value=false
 
 
 
@@ -121,6 +125,23 @@ watch(
   },
   { deep: false }
 );
+
+
+watch(
+  () => props.prop.Visible,
+  (Visible, old_val) => {
+    if (!Visible)
+       loading.value=false
+
+    if (Visible && props.prop.Source == '')
+        loading.value=true
+  },
+  { deep: false }
+);
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////
 // focusOut

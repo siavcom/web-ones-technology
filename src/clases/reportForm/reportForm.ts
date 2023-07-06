@@ -27,7 +27,9 @@ export class reportForm extends FORM {
   vis_rep: string = ''   // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ''   // variables extras para el orden del select
   query: string = ''     // query para ejecutar el reporte
- 
+  dataView:string ='vcomepge'    // Vista de datos generales
+  sqlQuery:string=''             // Query a ejecutar antes de la vista del reporte
+  pdfHeigth='1200px'  // PDF hight 
   constructor() {
     super()
     this.queryPri.Name = 'queryPri'

@@ -956,7 +956,7 @@ img.bt_salir {
 }
 
 
-/* Spinner   */
+/* Spinner   
 .splash-screen {
    background: #f2f0ee;
     width: 60vw;
@@ -1005,7 +1005,7 @@ img.bt_salir {
   }
 }
 
-
+*/
 
 
 

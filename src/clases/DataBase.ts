@@ -2724,12 +2724,15 @@ return false;
 
   }
 
-  public async jasperReport(query: string, for_rep: string) {
+  public async jasperReport(query: string, for_rep: string,dataView?:string) {
+     if (!dataView) 
+        dataView=''
 
     const dat_rep = {
       id_con: this.id_con,
       tip_llamada: 'JASPERREPORT',
       jrxml: for_rep,
+      dataView,
       query
     }
     console.log('Db JasperReport Llamada', dat_rep)

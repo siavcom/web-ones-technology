@@ -40,7 +40,8 @@ export class bt_aceptar extends COMPONENT {
       this.prop.Disabled = false
       return
     }
-    
+     
+
     // Limpiamos el recordSource de los dos grid
     this.Form.grid_components.prop.RecordSource = ''
     this.Form.grid_captura.prop.RecordSource = ''
@@ -54,6 +55,9 @@ export class bt_aceptar extends COMPONENT {
     let controlSource = ''
     // Es Forma o Compuesta. Asigna la forma de captura
     if (this.Form.tip_for.prop.Value == 'F' || this.Form.tip_for.prop.Value == 'C') {
+      this.Form.grid_form.prop.Status='P'
+      this.Form.grid_form.prop.Visible=true
+  
       controlSource = `'${vis_form.trim()}.'${concatena}ltrim(lower(cam_dat))`
       // En el area de trabajo reservada , generamos un select a SQL server a una vista de captura
       // y le asignamos el nombre 'vi_cap_tab' a a tabla en el SQL local
@@ -99,12 +103,14 @@ export class bt_aceptar extends COMPONENT {
       }
 
       this.Form.grid_components.prop.RecordSource = 'vi_cap_form'
-      this.Form.grid_components.prop.Visible = true
 
     }
 
     // Si es captura de Grid o Compuesto
     if (this.Form.tip_for.prop.Value == 'C' || this.Form.tip_for.prop.Value == 'G') {
+      this.Form.grid_component.prop.Status='P'
+      this.Form.grid_component.prop.Visible=true
+ 
       controlSource = `'${vis_grid.trim()}.'${concatena}ltrim(lower(cam_dat))`
 
       const campos = `con_dat,lower(cam_dat) as cam_dat,ref_dat, tip_dat,lon_dat,dec_dat,'${espacios}' as nom_ind, 0 as updatekey, \
@@ -160,8 +166,7 @@ export class bt_aceptar extends COMPONENT {
       }
 
       this.Form.grid_captura.prop.RecordSource = 'vi_cap_grid'
-      this.Form.grid_captura.prop.Visible = true
-
+ 
     }
 
     this.prop.Disabled = false
