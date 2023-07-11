@@ -19,9 +19,8 @@ import { VFPDB } from "@/classes/DataBase"
 
 
 export class FORM extends COMPONENT {
+ 
   //Dom: any = getCurrentInstance();
-  
-  //sw_ini = false
   //Parent = {} //this.Dom.ctx; // Contexto
   //Form = {} //this.Parent.ThisForm // Thisform
   loading= true
@@ -40,17 +39,12 @@ export class FORM extends COMPONENT {
     this.prop.Map = 'ThisForm'
     this.prop.Position = ' '   // No hay posicion ya que es una forma
     this.Form = this
- 
 
-    this.prop.nem_pge = "Siavcom Software "
- //   this.prop.fpo_pge = new Date().toISOString().substring(0, 10); //  Fecha actual de la computadora cliente
-    this.prop.log_emp = "/img/Logo_Empresa.png"
-    //this.prop.ReportView=' '
 
     this.style.maxWidth = '920px'
     //    this.style.maxHeight='920px'    
 
-    // asigna los parametros pasados
+    // asigna los parametros de la llamada a esta forma (VFP parameters) 
     const router = useRoute()
     const { params } = useRoute()
     
@@ -69,122 +63,11 @@ export class FORM extends COMPONENT {
     // asignamos en la clase db esta forma
     this.db.Form = this
 
+
+   // this.style.backgroundImage= "/img/Logo_Empresa.png",
+
   }
 
-  /*
-    prop = {
-      Login: false,
-      tag: '',
-      Name: 'ThisForm',
-      Map: 'ThisForm',
-      Status: 'A',
-      textLabel: '',
-    }
-    
-    style = {
-      background: "white",
-      color: "#b94295",
-      width: "1420px",
-      height: "980px",
-      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      position: "center", //absolute,
-      display: 'flex',
-      flexWrap: 'wrap',
-      flexDirection: 'column',
-      alignContent: 'flex-start',
-      marginLeft: 'auto',
-      left: 0,
-      Top: 0,
-      backgroundImage: "/img/Logo_Empresa.png",
-      textAlign: 'start',
-    };
-  
-    posicion: any = {}
-    */
-
-  ///////////////////////////////////////////////////////////
-  // Init
-  ////////////////////////////////////////////////
-  //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
-  //    async Init(Form) {
-   /* 
-  public async Init_ant() {  //Form est?: any
-    this.init() // Corre el init de la forma
-    let  TabIndex= 1
-    let maxTabIndex =1
-    let id = 0
-    let comp = {}
-    let header :[] = []
-    let main :[] = []
-    let footer = []
-    const elements :[] = []
-    for (const componente in this) {
-      if (componente != 'Parent' &&
-        componente != 'ThisForm' &&
-        componente != 'Form' &&
-        this[componente] != null &&
-        this[componente] != undefined &&
-        this[componente] &&
-        this[componente].prop &&
-        this[componente].InitForm) {
-        const name = this[componente].prop.Name
-        const Position= this[componente].prop.Position.trim().toLowerCase()
-        
-        if (Position == 'header')
-          header.push(name)
-
-        if (Position == 'main'){
-          main.push(name)
-          if (this[componente].prop.TabIndex==0) {
-            this[componente].prop.TabIndex=TabIndex
-            TabIndex++
-          } else 
-            TabIndex=this[componente].prop.TabIndex+1
-
-
-          if (maxTabIndex<TabIndex)
-              maxTabIndex=TabIndex
-        }
-
-        if (Position == 'footer')
-          footer.push(name)
-      
-        elements.push({
-            Name: this[componente].prop.Name,
-            Id: this[componente].prop.Order,
-            Position : Position
-          })
-
-        this[componente]['Parent'] = this // ref(this)
-        this[componente]['InitForm'](this)  // Corre el InitForm en todos los componentes
-        if (this[componente]['init'])
-          await this[componente]['init'] // Init del componente
-        id++
-      }
-    }
-
-    this.elements = elements
-    this.header = header
-    this.main = main
-    TabIndex=maxTabIndex  // asignamos el TabIndex maximo de elementos
-    for (let i=footer.length-1;i>=0;i--){
-        //console.log('Form footer ',footer[i])
-        this[footer[i]].prop.TabIndex=TabIndex
-        TabIndex++
-    }
-
-
-
-    this.footer = footer.reverse()
-    this.prop.Status = 'A'
-
-
-    console.log('Form init header',this.header)
-    console.log('Form init main',this.main)
-    console.log('Form init footer',this.footer)
-    console.log('Form init elements',this.elements)
-  }
-*/
 
   public Salir = new class extends COMPONENT {
 
@@ -216,10 +99,4 @@ export class FORM extends COMPONENT {
     }
   }
 
-
-
-
 }
-
-//export const VueForm = new FORM();
-//export const form = new FORM();

@@ -46,17 +46,19 @@ export class bt_gen_forma extends COMPONENT {
     this.prop.Disabled = true
     this.prop.Visible = false
     if (await MessageBox('Generamos Forma (VUE view)  ', 4, '') == 6) {
+      this.Form.grid_form.prop.Visible.false
+      this.Form.grid_columns.prop.Visible.false
+
       const zipFileWriter = new BlobWriter();
       const zipWriter = new ZipWriter(zipFileWriter);
       await this.generaForma(zipWriter)
-      this.Form.grid_components.prop.Visible = false
-
 
       await zipWriter.close()
       const zipFileBlob = await zipFileWriter.getData()
 
       await saveAs(zipFileBlob, `${this.Form.nom_for.prop.Value.trim()}.zip`)
-      this.Form.tip_for.setFocus()
+
+      this.Form.tip_for.click()
 
       //    if (error.length)
       //      console.error('Error al generar Forma')
@@ -112,12 +114,13 @@ export class bt_gen_forma extends COMPONENT {
       //console.log('bt_gen_for ', renglon)
 
       // recorre renglon por renglon
-      renglon.forEach(async function (component: {}, index: number) {
-        console.log('renglon component', component.cam_dat, index)
+     // renglon.forEach(async function (component: {}, index: number) {
+       // const cam_dat = component.cam_dat
+       // console.log('renglon component', component.cam_dat, index)
 
-        //for (let i = 0; i < renglon.length; i++) 
-        //  const cam_dat = renglon[i]['cam_dat']
-        const cam_dat = component.cam_dat
+       for (let i = 0; i < renglon.length; i++) {
+        const component=renglon[i]
+        const cam_dat = renglon[i]['cam_dat']
         imp_com = imp_com + `import {${cam_dat.trim()} } from "./${grid}${cam_dat.trim()}" ` + String.fromCharCode(10)
         com_imp = com_imp + `   public ${cam_dat.trim()} = new ${cam_dat.trim()}() ` + String.fromCharCode(10)
 
@@ -209,7 +212,8 @@ export class bt_gen_forma extends COMPONENT {
         // Generamos archivo de clases 
         console.log('bt_gen_forma renglon', `${nom_for}/${grid}${cam_dat.trim()}.ts`)
         await zipWriter.add(`${nom_for}/${grid}${cam_dat.trim()}.ts`, new TextReader(row_com))
-      })
+      }
+      // ) // Final for each
       let init = ''
 
       if (vis_grid == 'vi_cap_grid') { // Grabamos los componentes del grid
@@ -231,6 +235,7 @@ export class bt_gen_forma extends COMPONENT {
         if (this.Form.tip_for.prop.Value == 'C') {
           vis_grid = 'vi_cap_form '
           this.Form.tip_for.prop.Value = 'F'
+          grid=''
         } else
           this.Form.tip_for.prop.Value = ''
 
@@ -249,8 +254,8 @@ export class bt_gen_forma extends COMPONENT {
     // Genera el ThisForm.ts
 
     if (sw_Grid) {
-      imp_com = imp_com + `import {grid} from "./grid/grid" ` + String.fromCharCode(10)
-      com_imp = com_imp + `     public grid = new grid()` + String.fromCharCode(10)
+      imp_com = imp_com + `import {Grid} from "./grid/grid" ` + String.fromCharCode(10)
+      com_imp = com_imp + `     public grid = new Grid()` + String.fromCharCode(10)
     }
 
     ThisForm = ThisForm.replace('<<init>>', init)

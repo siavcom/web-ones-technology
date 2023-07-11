@@ -30,17 +30,19 @@ export class tab_grid extends COMPONENT {
     this.prop.RowSource = "select des_tab,nom_tab from vi_cap_tab order by nom_tab"
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 2
-    this.prop.ColumnWidths = "50%,50%"
+    this.prop.ColumnWidths = "80%,30%"
     this.prop.Visible = false
     this.prop.Style = '2' //0=DropDown Combo 2=DropDown List
+    this.prop.componentStyle.width='400px'
+    this.style.width='600px'
     this.style.zIndex = 4
   }
 
   public async when() {
     this.Form.nom_ind.prop.RowSourceType = 0
     this.Form.bt_gen_forma.prop.Visible= false
-    this.Form.grid_captura.prop.Visible = false
-    this.Form.grid_components.prop.Visible = false
+    this.Form.grid_form.prop.Visible = false
+    this.Form.grid_columns.prop.Visible = false
     this.Form.bt_aceptar.prop.Visible=true
 
     return true

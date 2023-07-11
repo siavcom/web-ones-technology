@@ -1,17 +1,22 @@
 <template>
-  <div v-if="loading" class="splash-screen">
-       <div class="spinner-wrapper">
-            <div class="spinner"></div>
-       </div>
+ <div v-if="loading && prop.Visible && BSource==''" class="splash-screen">
+    <div class="spinner-wrapper">
+      <div class="spinner">
+        <p>..........Loading data..........</p>
+      </div>
+    </div>
   </div>
-  <div v-else class="wraper" v-show="prop.Visible">
-    <div class='reportViewer'  :style="style">
+
+  <div v-else class="wraper" >
+    <div class='reportViewer' :style="style">
       <iframe :src="BSource" :width="style.width" height="1200px" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+// import { NuxtloadingIndicator } from '~/.nuxt/components';
+
 /*
     <a :href="BSource">http</a>.
 
@@ -89,28 +94,27 @@ const props = defineProps<{
 
 }>();
 const BSource = ref('')
-const loading=ref(false)
+const loading = ref(true)
 
 watch(
   () => props.prop.Source,
 
   (new_val, old_val) => {
-    console.log('embedPdf source', new_val, old_val)
+    console.log('embedPdf sourcelength=',new_val.byteLength,'Bsource',BSource.value,'loading=',loading)
     BSource.value = ''
 
-    if (new_val != null) {
+    if (new_val.byteLength) {
+
       //const blob = new Blob([JSON.stringify(new_val)],{type: 'application/pdf'})
 
 
       const blob = new Blob([new_val], { type: 'application/pdf' }); // JavaScript Blob
 
-
-      //  BSource.value = URL.createObjectURL(blob);
       BSource.value = URL.createObjectURL(blob);
+      console.log('embedPdf asigna buffer URL', BSource.value)
 
-      loading.value=false
 
-
+      loading.value = false
 
       // BSource.value = objectUrl
       /*  
@@ -121,108 +125,21 @@ watch(
   
       BSource.value = objectUrl;
       */
-    }
+    } else 
+      loading.value = true
+
+
+      console.log('embedPdf Buffer=',BSource.value)
   },
   { deep: false }
 );
 
 
-watch(
-  () => props.prop.Visible,
-  (Visible, old_val) => {
-    if (!Visible)
-       loading.value=false
-
-    if (Visible && props.prop.Source == '')
-        loading.value=true
-  },
-  { deep: false }
-);
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-const focusOut = async () => {
-
-  ToolTipText.value = true  // Activamos el ToolTipText
-
-};
-
-const onFocus = async () => {
-  ToolTipText.value = false  // Activamos el ToolTipText
-}
 
 //const Value = ref(props.prop.Value);
 //const { Value } = toRefs(props);
 </script>
 <style scoped >
 /* Tooltip and error container */
-div.mensajes {
-  position: relative;
-  /*  display: inline-block;*/
-  /* border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-  /*min-width: 50%; */
-}
-
-/* Tooltip text */
-div.mensajes .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #76a184;
-  /*rgb(115, 181, 243);*/
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-  z-index: 2;
-
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-
-  /* Fade in tooltip */
-  opacity: 1;
-  transition: opacity 0.2s ease;
-
-}
-
-/* Tooltip arrow */
-div.mensajes .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-div.mensajes:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-
-
-
-.divibutton {
-  border-radius: 10%;
-  box-shadow: 0 4px 8px 0, 0 6px 20px 0;
-  box-sizing: "border-box";
-}
-
-.button {
-  background-color: bind("props.style.backgroundColor")
-}
 </style>
 

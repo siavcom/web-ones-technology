@@ -37,8 +37,8 @@ export class nom_ind extends COMPONENT {
  
   public async when() {
     this.Form.bt_gen_forma.prop.Visible= false
-    this.Form.grid_captura.prop.Visible = false
-    this.Form.grid_components.prop.Visible = false
+    this.Form.grid_form.prop.Visible = false
+    this.Form.grid_columns.prop.Visible = false
 
   return true
 }

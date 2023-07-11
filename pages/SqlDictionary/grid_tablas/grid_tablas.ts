@@ -34,7 +34,8 @@ export class grid_tablas extends GRID {
     this.prop.textLabel= 'Tablas del SQL Server'
     this.prop.RecordSource='vi_cap_tab'
     this.prop.Visible= false
-    this.prop.ReadOnly = false;
+    this.prop.ReadOnly = false
+    this.prop.autoLoad=false
     this.prop.ColumnCount=3
     //this.nom_tab.prop.First=true // primer elemento
    //this.vis_tab.prop.Last= true // ultimo elemento

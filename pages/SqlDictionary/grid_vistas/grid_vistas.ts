@@ -41,7 +41,8 @@ export class grid_vistas extends GRID {
     this.prop.textLabel= 'Definicion de vistas de captura'
     this.prop.RecordSource='vi_cap_vis'
     this.prop.Visible= false
-    this.prop.ReadOnly = false;
+    this.prop.ReadOnly = false
+    this.prop.autoLoad=false
     this.prop.ColumnCount=8
     this.nom_vis.prop.First=true // primer elemento
     this.fil_vis.prop.Last= true // ultimo elemento

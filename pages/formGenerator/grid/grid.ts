@@ -61,17 +61,19 @@ export class grid extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = 'grid_components'
+    this.prop.Name = 'grid_columns'
     this.prop.textLabel= 'Campos de la forma'
     this.prop.RecordSource='vi_cap_form'
     this.prop.Visible= false
-    this.prop.ReadOnly = false;
+    this.prop.ReadOnly = false
+    this.prop.autoLoad=false
+
     //this.prop.ColumnCount=8
     this.con_dat.prop.First=true // primer elemento
     this.toolTipText.prop.Last= true // ultimo elemento
     this.style.width='920'
     this.prop.saveData=false
-    this.prop.deleteButton=false
+    
 
    }
 
@@ -82,7 +84,7 @@ export class grid extends GRID {
   public async appendRow() { 
    // Obtiene el consecutivo con_dat del cursor local
    let vis_cap='vi_cap_form'
-   if (this.Name='grid_captura')
+   if (this.Name='grid_form')
       vis_cap='vi_cap_grid'
 
    const data=await this.Form.db.VfpCursor(`select max(con_dat) as con_dat from ${vis_cap}\

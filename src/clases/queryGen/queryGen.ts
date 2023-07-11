@@ -38,8 +38,7 @@ export class queryGen extends COMPONENT {
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
   usu_que=''   // usuario del query
-  
-  
+    
   constructor() {
     super()
     this.prop.Visible=true
@@ -51,5 +50,6 @@ export class queryGen extends COMPONENT {
     this.query.prop.Visible=false
     this.prop.appendRow=true
     this.prop.deleteRow=true
+    
      }
 }

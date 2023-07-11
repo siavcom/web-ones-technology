@@ -22,10 +22,11 @@ export class captureForm extends FORM {
 
     try {
        if (this.prop.RecordSource.length > 1) {
+        console.log('Capture Form init this.prop.RecordSource=', this.prop.RecordSource)
           await this.refreshComponent(false)
         }
     } catch (error) {
-      console.log('======Error Init=====' + this.prop.Name, error)
+      console.error('======Error Init=====' + this.prop.Name, error)
     }
     this.bt_graba.Grid = this.gridCaptura // asignamos el arreglo de grid
   }

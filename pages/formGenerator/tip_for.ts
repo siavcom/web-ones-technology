@@ -44,11 +44,12 @@ export class tip_for extends COMPONENT {
     this.Form.vis_form.prop.Visible = false
     this.Form.vis_grid.prop.Visible = false
 
-    this.Form.grid_components.prop.Visible = false
-    this.Form.grid_captura.prop.Visible = false
+    this.Form.grid_columns.prop.Visible = false
+    this.Form.grid_form.prop.Visible = false
 
     this.Form.bt_gen_forma.prop.Visible = false
     this.Form.bt_aceptar.prop.Visible = false
+    
     return true
   }
   async valid() {

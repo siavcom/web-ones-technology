@@ -30,19 +30,19 @@ export class THISFORM extends FORM {
   public tip_for = new tip_for()
 
   public tab_form = new tab_form()
+  public vis_form = new vis_form()
+
   public tab_grid = new tab_grid()
+  public vis_grid = new vis_grid()
 
   public nom_ind = new nom_ind()
-
-  public vis_form = new vis_form()
-  public vis_grid = new vis_grid()
 
   public nom_for = new nom_for()
   public bt_aceptar = new bt_aceptar()
   public bt_gen_forma = new bt_gen_forma()
 
-  public grid_components = new grid()
-  public grid_captura = new grid()
+  public grid_form = new grid()
+  public grid_columns = new grid()
 
  
   constructor() {
@@ -53,14 +53,15 @@ export class THISFORM extends FORM {
     this.prop.textLabel = "Generador de Formas de mantenimiento ";
     this.prop.Status = 'A'
     this.style.width = "auto"
-    this.grid_components.Name='grid_components'
-    this.grid_components.prop.Name='grid_components'
-    this.grid_components.prop.textLabel= 'Campos del form'
 
-    this.grid_captura.Name='grid_captura'
-    this.grid_captura.prop.Name='grid_captura'
-    this.grid_captura.prop.textLabel= 'Campos del grid'
- 
+    this.grid_form.Name='grid_form'
+    this.grid_form.prop.Name='grid_form'
+    this.grid_form.prop.textLabel= 'Componentes del form'
+
+    this.grid_columns.Name='grid_columns'
+    this.grid_columns.prop.Name='grid_columns'
+    this.grid_columns.prop.textLabel= 'Componentes del grid'
+
   }
   
   async init() {

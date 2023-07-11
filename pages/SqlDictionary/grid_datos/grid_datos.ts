@@ -48,10 +48,12 @@ export class grid_datos extends GRID {
     this.prop.RecordSource='vi_cap_dat'
     this.prop.Visible= false
     this.prop.ReadOnly = false;
+    this.prop.autoLoad=false
     this.prop.ColumnCount=8
+
     this.con_dat.prop.First=true // primer elemento
     this.vue_dat.prop.Last= true // ultimo elemento
- 
+
     }
 
 ///////////////////////////////////////////////////

@@ -325,18 +325,18 @@ export class bt_aceptar extends COMPONENT {
   async grabaDatos(vis_cap: string) {
     let men_txt = '' // Mensaje de texto
     let vis_act = '' // vista de actualizacion
-    let grid_captura = '' // grid de captura
+    let grid_form = '' // grid de captura
     if (vis_cap == 'vi_cap_dat') {
       men_txt = 'Quieres grabar la definicion de la tabla '
       vis_act = 'lla1_dat'
-      grid_captura = 'grid_datos'
+      grid_form = 'grid_datos'
     }
 
 
     if (vis_cap == 'vi_cap_ind') {
       men_txt = 'Quieres grabar la definicion de indices '
       vis_act = 'lla1_ind'
-      grid_captura = 'grid_indices'
+      grid_form = 'grid_indices'
 
     }
 
@@ -344,21 +344,21 @@ export class bt_aceptar extends COMPONENT {
     if (vis_cap == 'vi_cap_tab') {
       men_txt = 'Quieres grabar la definicion de las tablas SQL'
       vis_act = 'lla1_tab'
-      grid_captura = 'grid_tablas'
+      grid_form = 'grid_tablas'
 
     }
 
     if (vis_cap == 'vi_cap_vis') {
       men_txt = 'Quieres grabar la definicion de las vistas remotas SQL'
       vis_act = 'lla1_vis'
-      grid_captura = 'grid_vistas'
+      grid_form = 'grid_vistas'
 
     }
 
     if (vis_cap == 'vi_cap_prg') {
       men_txt = 'Quieres grabar el MENU del sistema'
       vis_act = 'lla1_prg'
-      grid_captura = 'grid_menu'
+      grid_form = 'grid_menu'
 
     }
 

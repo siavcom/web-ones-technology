@@ -2,7 +2,7 @@
 // Clase : bt_aceptar
 // Author : Fernando Cuadras Angulo
 // Creacion : Agosto/2021
-// Ult.Mod : 4/Julio/2023
+// Ult.Mod : 10/Julio/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
 ////import { MessageBox } from '@/classes/Functions';
@@ -43,8 +43,8 @@ export class bt_aceptar extends COMPONENT {
      
 
     // Limpiamos el recordSource de los dos grid
-    this.Form.grid_components.prop.RecordSource = ''
-    this.Form.grid_captura.prop.RecordSource = ''
+    this.Form.grid_columns.prop.RecordSource = ''
+    this.Form.grid_form.prop.RecordSource = ''
 
     const concatena = this.Form.db.dialect == 'postgres' ? '||' : '+'
     const m = {}
@@ -97,19 +97,23 @@ export class bt_aceptar extends COMPONENT {
       await this.Form.db.localSql(
         `update vi_cap_form set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
       // CHARINDEX(cam_dat,'${exp_ind}')>0    ${exp_ind} like trim(cam_dat)
-      for (let i = 0; i < this.Form.grid_components.elements.length; i++) {
-        const comp = this.Form.grid_components.elements[i].Name
-        this.Form.grid_components[comp].prop.ControlSource = 'vi_cap_form.' + comp.toLowerCase()
+      console.log('bt_aceptar this.Form.grid_form.elements',this.Form.grid_form.elements)
+      for (let i = 0; i < this.Form.grid_form.elements.length; i++) {
+        const comp = this.Form.grid_form.elements[i].Name
+        this.Form.grid_form[comp].prop.ControlSource = 'vi_cap_form.' + comp.toLowerCase()
+        console.log('bt_aceptar elements', comp, this.Form.grid_form[comp].prop.ControlSource)
       }
 
-      this.Form.grid_components.prop.RecordSource = 'vi_cap_form'
+
+      this.Form.grid_form.prop.Status='A'
+      this.Form.grid_form.prop.RecordSource = 'vi_cap_form'
 
     }
 
-    // Si es captura de Grid o Compuesto
+    //================ Si es captura de Grid o Compuesto =====================
     if (this.Form.tip_for.prop.Value == 'C' || this.Form.tip_for.prop.Value == 'G') {
-      this.Form.grid_component.prop.Status='P'
-      this.Form.grid_component.prop.Visible=true
+      this.Form.grid_columns.prop.Status='P'
+      this.Form.grid_columns.prop.Visible=true
  
       controlSource = `'${vis_grid.trim()}.'${concatena}ltrim(lower(cam_dat))`
 
@@ -159,13 +163,13 @@ export class bt_aceptar extends COMPONENT {
 
       const exp_ind = data[0].exp_ind.trim()
 
-      for (let i = 0; i < this.Form.grid_captura.elements.length; i++) {
-        const comp = this.Form.grid_captura.elements[i].Name
-        this.Form.grid_captura[comp].prop.ControlSource = 'vi_cap_grid.' + comp.toLowerCase()
-        console.log('bt_aceptar elements', comp, this.Form.grid_captura[comp].prop.ControlSource)
+      for (let i = 0; i < this.Form.grid_columns.elements.length; i++) {
+        const comp = this.Form.grid_columns.elements[i].Name
+        this.Form.grid_columns[comp].prop.ControlSource = 'vi_cap_grid.' + comp.toLowerCase()
+        console.log('bt_aceptar elements', comp, this.Form.grid_form[comp].prop.ControlSource)
       }
-
-      this.Form.grid_captura.prop.RecordSource = 'vi_cap_grid'
+      this.Form.grid_columns.prop.Status='A'
+      this.Form.grid_columns.prop.RecordSource = 'vi_cap_grid'
  
     }
 

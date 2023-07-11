@@ -4,7 +4,7 @@
 // Description : Equipo
 // Author : El Fer Blocks
 // Creation : 2023-03-13
-// Update Date  : 09/Mayo/2023
+// Update Date  : 9/Julio/2023
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
@@ -43,6 +43,8 @@ export class table extends GRID {
     this.prop.RecordSource=''
     this.prop.Visible=false
     this.prop.textLabel=''
+    this.prop.autoLoad=false  // se pone en falso para que no inicialice la tabla
+
     this.style.fontSize = '16px'
     this.style.color = 'green'
     this.style.backgroundColor = 'white'

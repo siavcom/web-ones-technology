@@ -39,7 +39,8 @@ export class grid_menu extends GRID {
     this.prop.textLabel= 'Menu de programas'
     this.prop.RecordSource='vi_cap_prg'
     this.prop.Visible= false
-    this.prop.ReadOnly = false;
+    this.prop.ReadOnly = false
+    this.prop.autoLoad=false
     this.prop.ColumnCount=8
     this.prg_prg.prop.First=true // primer elemento
      }

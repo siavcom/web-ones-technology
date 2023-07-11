@@ -16,7 +16,7 @@
 
     <div v-if="loading" class="splash-screen">
           <div class="spinner-wrapper">
-            <div class="spinner"></div>
+            <div class="spinner"><div>{{'.............Loading...................'  }}</div></div>
           </div>
     </div>
     <div v-else class="Main">

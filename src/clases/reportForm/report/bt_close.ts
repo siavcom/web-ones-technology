@@ -29,6 +29,10 @@ export class bt_close extends COMPONENT {
 
   async click() {
 
+    this.Form.report.displayPdf.prop.Visible=false
+
+    this.Form.report.prop.Visible=false
+
     this.Form.report.browseResult.prop.RowSource = ''
     this.Form.report.displayPdf.prop.Source = ''
 

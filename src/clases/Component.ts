@@ -80,6 +80,7 @@ export class COMPONENT {
     updateKey: false, // true when this component is a field index for a table select , update or delete
     SqlUpdate: false,  //Si es verdadero actualiza automaticamente
     MaxLength: 254,
+    autoLoad: true,
     componentStyle: {
       background: "white",
       color: "black",

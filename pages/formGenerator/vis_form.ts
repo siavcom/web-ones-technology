@@ -29,14 +29,16 @@ export class vis_form extends COMPONENT {
 
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 2
-    this.prop.ColumnWidths = "50%,50%"
+    this.prop.ColumnWidths = "80%,30%"
     this.prop.Style = '2' //0=DropDown Combo 2=DropDown List
+    this.prop.componentStyle.width='400px'
+    this.style.width='600px'
     this.style.zIndex=2
   }
 
   public async when() {
-    this.Form.grid_captura.prop.Visible = false
-    this.Form.grid_components.prop.Visible = false
+    this.Form.grid_form.prop.Visible = false
+    this.Form.grid_columns.prop.Visible = false
   return true
 }
 
