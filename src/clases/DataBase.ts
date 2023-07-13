@@ -437,9 +437,6 @@ export class VFPDB {
           return false
         }
 
-
-
-
         if (exp_whe == undefined) {
           MessageBox('No se pudo evaluar el la expresion where de la tabla=' + alias + ' indice=' + this.View[alias].exp_where)
           return false
@@ -489,7 +486,8 @@ export class VFPDB {
 
       if (data.length) // No hubo error
       { return await this.genera_tabla(data, alias) }
-      else { return [] }
+      else  
+        return false //   { return [] }
     } catch (error) {
       console.error('Axios error :', dat_vis, error)
 
@@ -841,7 +839,7 @@ export class VFPDB {
         try {
           val_defa = eval(val_eval)
         } catch (error) {
-          console.error(error)
+          console.error('No se pudo evaluar :',val_eval,error)
 
           return false
         }

@@ -121,7 +121,9 @@ export class bt_gen_forma extends COMPONENT {
        for (let i = 0; i < renglon.length; i++) {
         const component=renglon[i]
         const cam_dat = renglon[i]['cam_dat']
-        imp_com = imp_com + `import {${cam_dat.trim()} } from "./${grid}${cam_dat.trim()}" ` + String.fromCharCode(10)
+//        imp_com = imp_com + `import {${cam_dat.trim()} } from "./${grid}${cam_dat.trim()}" ` + String.fromCharCode(10)
+        imp_com = imp_com + `import {${cam_dat.trim()} } from "./${cam_dat.trim()}" ` + String.fromCharCode(10)
+
         com_imp = com_imp + `   public ${cam_dat.trim()} = new ${cam_dat.trim()}() ` + String.fromCharCode(10)
 
         const cam_act = component.cam_act
@@ -255,7 +257,7 @@ export class bt_gen_forma extends COMPONENT {
 
     if (sw_Grid) {
       imp_com = imp_com + `import {Grid} from "./grid/grid" ` + String.fromCharCode(10)
-      com_imp = com_imp + `     public grid = new Grid()` + String.fromCharCode(10)
+      com_imp = com_imp + `public Grid = new Grid()` + String.fromCharCode(10)
     }
 
     ThisForm = ThisForm.replace('<<init>>', init)

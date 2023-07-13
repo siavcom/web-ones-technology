@@ -80,7 +80,7 @@ export class GRID extends COMPONENT {
         if (!this.Form[comp].prop.Valid) { return } // Si es un dato no esta  validado
 
         // asignamos variables de memoria
-        if (thisForm[comp].prop.Type == 'numeric')
+        if (this.Form[comp].prop.Type == 'numeric')
           m[comp] = +this.Form[comp].prop.Value
         else
           m[comp] = this.Form[comp].prop.Value
@@ -95,6 +95,8 @@ export class GRID extends COMPONENT {
     this.prop.Valid = true
 
     if (data.length == 0) { // No tiene registros
+
+      console.log('Grid valid no tiene registros ',this.prop.Name)
       await this.appendRow(m)
     }
     //    this.prop.RecordSource=RecordSource
@@ -140,7 +142,6 @@ export class GRID extends COMPONENT {
     const db = this.Form.db
     const View = db.View[this.Parent.prop.RecordSource]
     const Recno = View.Recno
-    const valid = false
     let where = ' where '
     for (let i = 0; i < this.elements.length; i++) {
       const column = this.elements[i].Name
@@ -185,17 +186,20 @@ export class GRID extends COMPONENT {
   }
 
   ///////////////////////////////////////////////////
-  // Incerta renglon
+  // Inserta renglon
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow(m?: {}) {
     if (!m) m = {}
+  
     this.Row = -1 // Quitamos donde esta el renglon
     //this.Form.db.select(this.prop.RecordSource) 
-    console.log('======grid Incertaremos renglon========>', this.prop.Name, 'm=', m)
-
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
     this.prop.Valid = false
+
+    console.log('grid Incertaremos renglon=======>', this.prop.RecordSource, 'View=',this.Form.db.View[this.prop.RecordSource])
+
+    //this[this.elements[0].Name].prop.First=true
   }
 
 

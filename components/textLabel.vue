@@ -716,6 +716,8 @@ watch(
     console.log('TextLabel watch Recno',old_val,new_val)
     if (old_val != new_val && new_val>0) readCampo()
 
+    if (new_val==0)
+        Text.value=''
   },
   { deep: false }
 )

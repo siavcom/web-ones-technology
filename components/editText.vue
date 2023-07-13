@@ -86,7 +86,7 @@ const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Stat
 const props = defineProps<{
   Recno: number;
   Registro: number;  // Se pone para el manejo de grid
-  Show: true;
+  // Show: true;
   // Component: null;
   prop: {
     This: null;

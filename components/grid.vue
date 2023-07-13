@@ -67,14 +67,16 @@
                               y el when del componente typescript
                       Se quita el @focusout porque se hace el valid desde el componente
                       @focusout.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.valid()')"
-                            -->
+                        v-bind:Component="ref(This.Form[col.Name])" 
+
+                    -->
                   <Transition name="columninput">
                     <div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'>
                       <component :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                         v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
                         v-model:Focus="This[col.Name].Focus" v-model:Recno="This[col.Name].Recno"
                         v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
-                        v-bind:Show="true" v-bind:Component="ref(This.Form[col.Name])" v-bind:Registro="item.recno"
+                        v-bind:Show="true" v-bind:Component="ref(This[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                         v-bind:position="This[col.Name].position"
                         @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
@@ -566,6 +568,20 @@ const loadData = async () => {
   This.Row = -1
   load_data = false
 
+  if (!scroll.rows || scroll.rows == 0) scroll.rows = 10
+
+  const Rows = scroll.rows
+
+  // console.log('Grid loadData dataPage.length',scroll.dataPage.length,Rows)
+
+
+  // Se inserto un renglon, calcula la posicion donde quedo
+  if (scroll.dataPage.length >= Rows && RowInsert) {
+    scroll.page++
+
+  }
+
+
   This.Form.prop.Status = 'P'
   while (scroll.dataPage.length > 0)
     scroll.dataPage.pop() // borramos arreglon
@@ -588,18 +604,20 @@ const loadData = async () => {
 
     }
     const result = []
-    if (!scroll.rows || scroll.rows == 0) scroll.rows = 10
 
-    const Rows = scroll.rows
-    if (scroll.page == 0) scroll.top = true
-    else scroll.top = false
 
     scroll.bottom = false
 
+    if (scroll.page == 0)
+      scroll.top = true
+    else
+      scroll.top = false
+    let RowNumber = 0
     for (let i = 0; i < Rows; i++) {
       const elementNo = ((scroll.page) * Rows) + i
       if (Db.View[props.prop.RecordSource].recnoVal[elementNo]) {
         scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo]
+        RowNumber = i
       }
 
       else {  // borra los elementos que ya no existen
@@ -618,15 +636,13 @@ const loadData = async () => {
       }
 
     }
-
-    console.log('loadData scroll', scroll)
-
-    if (RowInsert) { // Se inserto un renglon, calcula la posicion donde quedo
-      const ult_ele = scroll.dataPage.length - 1
-      //This.Row = scroll.dataPage[ult_ele].id
+    if (RowInsert) {
+      console.log('loadData scroll', This.elements[0].Name)
+      // This[this.elements[0].Name].prop.First=true
+      This.Row = RowNumber
       RowInsert = false
     }
-    console.log('loadData Sin error')
+
   } catch (err) {
     console.warn('Error loadData ', err)
     //    scroll.noResult = true;
@@ -675,14 +691,25 @@ const last = async () => {
 
 }
 
-const appendRow = async (recno?: number) => {
+const appendRow = async () => {
+  if (This.Row >= 0) {
+    for (const comp in This.estatus) { // Recorre todos los estatus del grid
+
+      if (This.estatus[comp] != 'A') { // Si alguno no esta activo
+        return
+      }
+    }
+  }
+  This.Row = -1
   scroll.controls = false
-  //await This.appendRow()
-  eventos.push(This.prop.Map + '.appendRow()')
+  await This.appendRow()
+  //eventos.push(This.prop.Map + '.appendRow()')
   load_data = true
   RowInsert = true  // indicamos que hubo insercion de renglon
 
   /*
+
+
     // Si era el ultimo elemento de la pagina
     if (scroll.bottom) {
       scroll.bottom = false
@@ -791,32 +818,39 @@ const autoLoad = async (RecordSource: string) => {
 const init = async () => {
 
 
-  // await This.init()
+  console.log('Init Grid==>', props.prop.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
-  for (const componente in This) {
-    if (This[componente] !== undefined) {
-      if (
-        This[componente].prop &&       // Si tiene propiedades
-        This[componente].prop.Capture &&  // Si es componete de captura
-        This[componente].prop.Capture == true
+  // await This.init()
+  let firstElement = ''
+  //  for (const comp in This.elements) {
+  for (let i = 0; i < This.main.length; i++) {
+    const comp = This.main[i]
+
+      if ( //  This[componente].prop.Capture &&  // Si es componete de captura
+        This[comp].prop.Capture == true
       ) {
-        This.estatus[componente] = toRef(This[componente].prop, "Status"); // stack de estatus de componentes
+        if (This[comp].prop.First)
+          firstElement = comp
+        This.estatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
       }
-    }
+
   }
 
+  if (firstElement.length == 0){
+    
+    This[This.elements[0].Name].prop.First = true
+  }
   // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
 
-  console.log('Init Grid==>', props.prop.Name, 'autoLoad=',props.prop.autoLoad)
 
 
   if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid
-      await This.valid()
+    await This.valid()
 
   if (props.prop.RecordSource.length > 1 && Db.View[props.prop.RecordSource])
-     loadData()
+    loadData()
 
 
 

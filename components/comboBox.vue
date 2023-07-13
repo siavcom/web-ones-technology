@@ -88,7 +88,7 @@ const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Stat
 interface Props {
   Recno: number;
   Registro: number;
-  Show: false;
+  //Show: false;
   //Component: object;
   prop: {};
   style: {};
