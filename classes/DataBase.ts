@@ -47,7 +47,7 @@ export class VFPDB {
   user: string
   pass: any
   id_con: string
-  fpo_pge: string=new Date().toISOString().substring(0, 10)
+  fpo_pge: string = new Date().toISOString().substring(0, 10)
   dialect: string
   // vis_tra: any = []; // guarda nombre de las vistas de trabajo en el servidor SQL
   are_tra: string[] = [''] // Las areas de trabajo donde cada vista tendra.
@@ -366,9 +366,25 @@ export class VFPDB {
     alias = alias.trim()
     console.log('Db USE ', alias, this.View)
 
+    if (this.View[alias]) { // si exite ya la vista, Borra los datos locales
+   
+      await this.localAlaSql('delete from Now.' + alias)
+      await this.localAlaSql('delete from  Last.' + alias)
+
+      // Inicializamos el alias
+      this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
+
+      this.View[alias].data = {} // asignamos el valor del ultimo registro
+      this.View[alias].recCount = 0 // Total de registros de la vista
+      this.View[alias].recno = 0 // Registro en cero
+      this.View[alias].eof = false // Fin de archivo
+      this.View[alias].bof = false // Principio de archivo
+      this.View[alias].row = -1 // Renglon posicionado el registro
+    }
+
     if (await this.select(alias) == 0) // si el alias no existe
     {
-      console.log('Db Use Nodata', nom_vis, alias)
+      console.log('Db Use UseNodata', nom_vis, alias)
       await this.useNodata(nom_vis, alias)
     }
 
@@ -486,7 +502,7 @@ export class VFPDB {
 
       if (data.length) // No hubo error
       { return await this.genera_tabla(data, alias) }
-      else  
+      else
         return false //   { return [] }
     } catch (error) {
       console.error('Axios error :', dat_vis, error)
@@ -615,11 +631,12 @@ export class VFPDB {
     //  LEFT OUTER JOIN Last.${alias} Viejo using recno ${where}`))
 
     const dat_act = await this.localAlaSql(`SELECT * FROM Now.${alias} ${where}`)
-    console.log('Db tableUpdate lee datos Now', dat_act, 'where ', where)
 
     //const dat_act = datos
     // console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
     const val_def = this.View[tab_man].val_def // estructura de campos
+    console.log('Db tableUpdate lee datos Now', dat_act, 'where ', where,'val_def=',val_def)
+
 
     // llamado AXIOS
     const dat_vis: any = {
@@ -669,19 +686,11 @@ export class VFPDB {
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
         // console.log('Db DataBAse campo=', campo)
+        
+        // Antes switch
+        
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
-        switch (typeof dat_act[row][campo]) {
-          case 'number':
-            m[campo] = +dat_act[row][campo]
-            break
-          case 'boolean':
-            m[campo] = +dat_act[row][campo]
-            break
-          default:
-            //            m[campo] = "'" + dat_act[row][campo] + "'"
-            m[campo] = dat_act[row][campo]
-        }
 
         const nom_campo = campo.toLowerCase()
         if (nom_campo != 'recno' &&
@@ -694,9 +703,24 @@ export class VFPDB {
             dat_vis.tip_llamada == 'INSERT' ||
             old_dat[campo] != dat_act[row][campo])
         ) {
+
+          switch (typeof dat_act[row][campo]) {
+            case 'number':
+              m[campo] = +dat_act[row][campo]
+              break
+            case 'boolean':
+              m[campo] = +dat_act[row][campo]
+              break
+            default:
+              //            m[campo] = "'" + dat_act[row][campo] + "'"
+              m[campo] = dat_act[row][campo]
+          }
+
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
           if (val_def[campo]) {
             dat_vis.dat_act[campo] = dat_act[row][campo]
+
+            console.log('tableUpdate Actualiza CAMPO=',campo,'Valor=',dat_vis.dat_act[campo],' old=',old_dat[campo])
             //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true
           }
@@ -708,8 +732,6 @@ export class VFPDB {
       if (sw_update && dat_vis.tip_llamada == 'INSERT') {
 
         // const where = eval(this.View[nom_tab].exp_indice)
-
-
         // Aqui me quede  Ojo Junio 2023
         const where = this.View[nom_tab].exp_indice.toLowerCase()
         console.log('Db tableUpdate exp_indice m', m, 'where', where, 'dat_vis.where', dat_vis.where)
@@ -839,7 +861,7 @@ export class VFPDB {
         try {
           val_defa = eval(val_eval)
         } catch (error) {
-          console.error('No se pudo evaluar :',val_eval,error)
+          console.error('No se pudo evaluar :', val_eval, error)
 
           return false
         }
@@ -875,8 +897,8 @@ export class VFPDB {
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 // asignamos nuevo row
 
-    console.log('Db DataBAse Insert Now  alaSql=====>', alias,      
-    await this.localAlaSql(`select * from  Last.${alias} `))
+    console.log('Db DataBAse Insert Now  alaSql=====>', alias,
+      await this.localAlaSql(`select * from  Last.${alias} `))
     return valores
 
     /* locaDb
@@ -1671,8 +1693,8 @@ export class VFPDB {
         /// /////////////////////////////
       }
       // borra las tablas en ALA
-    //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
-    //  await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
+      //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
+      //  await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
 
 
       this.View[alias].est_tabla = respuesta.est_tabla  // estructura de la tabla
@@ -2722,9 +2744,9 @@ return false;
 
   }
 
-  public async jasperReport(query: string, for_rep: string,dataView?:string) {
-     if (!dataView) 
-        dataView=''
+  public async jasperReport(query: string, for_rep: string, dataView?: string) {
+    if (!dataView)
+      dataView = ''
 
     const dat_rep = {
       id_con: this.id_con,

@@ -33,9 +33,9 @@ div.divi{
   display: inline-flex;
   color:   #18e94c;
   background: #f7f8f7;
-  position: v-bind("props.posicion.position");
+ /* position: v-bind("props.posicion.position");
   left: v-bind("props.posicion.left");
-  top : v-bind("props.posicion.top");
+  top : v-bind("props.posicion.top");*/
   /*z-index: v-bind("props.style.zIndex");*/
   text-align: left;
   margin :auto;
@@ -340,6 +340,66 @@ input[ class="number"] {
 
   
 }
+
+/* ===============Spinner ======================  */
+.splash-screen {
+  background: #f2f0ee;
+   width: 40% ;  /*60vw;*/
+   height: 40%;
+ position: fixed;
+ background-color: rgb(255, 255, 255);
+ text-align: center;
+ border-radius: 6px;
+ z-index: 50;    
+}
+
+.spinner-wrapper {
+ position: absolute;
+ left: 50%;
+ top: 50%;
+
+ transform: translate(-50%, -50%);
+}
+.spinner {
+ width: 80px;
+ height: 80px;
+ margin: 100px auto;
+ background-color: #e45447;
+
+ border-radius: 100%;
+ -webkit-animation: sk-scaleout 1s infinite ease-in-out;
+ animation: sk-scaleout 1s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-scaleout {
+ 0% {
+   -webkit-transform: scale(0);
+ }
+ 100% {
+   -webkit-transform: scale(1);
+   opacity: 0;
+ }
+}
+
+@keyframes sk-scaleout {
+ 0% {
+   -webkit-transform: scale(0);
+   transform: scale(0);
+ }
+ 100% {
+   -webkit-transform: scale(1);
+   transform: scale(1);
+   opacity: 0;
+ }
+}
+
+
+
+
+
+
+
+
 /* Tooltip arrow */
 /*
 .error .errortext::after {

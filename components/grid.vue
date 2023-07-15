@@ -405,6 +405,7 @@ watch(
 watch(
   () => props.prop.RecordSource,
   async (RecordSource, old_val) => {
+   
     if (props.prop.Visible && RecordSource.length > 1) {
       console.log('grid watch RecordSource ', RecordSource, This.Form.db.View[RecordSource])
       if (This.Form.db.View[RecordSource]) {
@@ -637,9 +638,14 @@ const loadData = async () => {
 
     }
     if (RowInsert) {
-      console.log('loadData scroll', This.elements[0].Name)
+ 
       // This[this.elements[0].Name].prop.First=true
       This.Row = RowNumber
+      for (let i = 0; i < This.main.length; i++) {
+        This[This.main[i]].prop.Valid = false // Ponemos no validado todos los componentes
+        console.log('loadData RowInsert', This.main[i],'Valid=')
+
+      }
       RowInsert = false
     }
 
@@ -692,10 +698,13 @@ const last = async () => {
 }
 
 const appendRow = async () => {
-  if (This.Row >= 0) {
-    for (const comp in This.estatus) { // Recorre todos los estatus del grid
 
-      if (This.estatus[comp] != 'A') { // Si alguno no esta activo
+  if (This.Row >= 0) {
+
+    for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
+
+      if (!This[This.main[i]].prop.Valid) { // Si alguno no esta Validado
+        This[This.main[i]].prop.Focus = true
         return
       }
     }
@@ -703,6 +712,7 @@ const appendRow = async () => {
   This.Row = -1
   scroll.controls = false
   await This.appendRow()
+
   //eventos.push(This.prop.Map + '.appendRow()')
   load_data = true
   RowInsert = true  // indicamos que hubo insercion de renglon
@@ -783,6 +793,17 @@ const saveRow = async (recno?: number) => {
 
 const saveTable = async () => {
   console.log('Grid ', This.Name, 'SaveTable', This.Row)
+  if (This.Row >= 0) {
+
+    for (let i = 0; i < This.main.length; i++) {
+      if (!This[This.main[i]].prop.Valid) { // Si no validado
+        This[This.main[i]].prop.Focus = true
+        return
+
+      }
+
+    }
+  }
   //if (This.Row < 0) return
   scroll.controls = false
   //const { $MessageBox } = useNuxtApp()
@@ -826,18 +847,19 @@ const init = async () => {
   for (let i = 0; i < This.main.length; i++) {
     const comp = This.main[i]
 
-      if ( //  This[componente].prop.Capture &&  // Si es componete de captura
-        This[comp].prop.Capture == true
-      ) {
-        if (This[comp].prop.First)
-          firstElement = comp
-        This.estatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
-      }
+    if ( //  This[componente].prop.Capture &&  // Si es componete de captura
+      This[comp].prop.Capture == true
+    ) {
+      if (This[comp].prop.First)
+        firstElement = comp
+
+      This.estatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
+    }
 
   }
 
-  if (firstElement.length == 0){
-    
+  if (firstElement.length == 0) {
+
     This[This.elements[0].Name].prop.First = true
   }
   // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true

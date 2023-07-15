@@ -44,7 +44,7 @@ export class reportForm extends FORM {
   public async init() {
     //   init = async ()=> {
 
-    this.for_imp.prop.Value=this.prop.Name
+    //this.for_imp.prop.Value=this.prop.Name
     this.queryUsu.prop.Disabled = true
 
     this.queryGen.prop.Disabled = true
