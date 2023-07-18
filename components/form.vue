@@ -67,7 +67,7 @@
               <!--                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')" 
                                   v-bind:Show='true'
                     v-bind:db="ref(ThisForm.db)"
-
+emit
               -->
               <TransitionGroup name='detailForm'>
                 <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
