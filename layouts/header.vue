@@ -8,10 +8,15 @@
       <div class="Web-ones">
         <img class="logoVue" src="@/assets/logo.png" style="width:50px;height:50px;" />eb-Ones Technology
       </div>
-      <div v-if="nomEmp" style=" text-align:right;">
-        <p>{{ nomEmp }}</p>
-        <p>{{ fpo_pge }}</p>
-                
+      <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end">
+
+       </div>
+       <div class="dataEmp"  style="display:flex; flex-wrap:wrap;item-align:flex-end">
+        <div>{{ nomEmp }}</div>
+        <div class="break"></div>
+        <div>{{ fpo_pge }}</div>
+
+               
         <img v-if="logoEmp" class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
       </div>
 
@@ -22,6 +27,7 @@
 
 <script lang="ts" setup >
 //vertical-align:middle;
+
 const props = defineProps<{
   logoEmp: string;
   nomEmp: string;

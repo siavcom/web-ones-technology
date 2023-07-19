@@ -32,12 +32,15 @@
         <!--Valor seleccionado click-->
         <div class="toggle" v-if="toggle && !ReadOnly">
           <!--CheckBox -->
-          <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
-            @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="ReadOnly">
-            <!--Imprime Columnas -->
-            <div class="columna" :disabled="ReadOnly" v-for="(text, col) in option.text" :key="col"
-              :style="{ 'width': width[col], 'text-align': 'left' }">
-              <label class="label" v-text="text" />
+          <div class="MarcoColumnas" style="width:auto;height:200px;">
+            <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
+              @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="ReadOnly">
+              <!--Imprime Columnas -->
+
+              <div class="columna" :disabled="ReadOnly" v-for="(text, col) in option.text" :key="col"
+                :style="{ 'width': width[col], 'text-align': 'left' }">
+                <label class="label" v-text="text" />
+              </div>
             </div>
           </div>
         </div>

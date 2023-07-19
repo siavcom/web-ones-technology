@@ -30,9 +30,7 @@
               <!--div class="nemPge">
                 <label text-align="left">{{ ThisForm.prop.nem_pge }}</label>
               </div-->
-              <div class="fpoPge">
-                <label type="date" text-align="center">{{ThisForm.prop.Name }}</label>
-              </div>
+
               <div class="titFor">
                 <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
               </div>

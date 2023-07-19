@@ -39,6 +39,7 @@ export const Session = defineStore('currentSession', () => {
   const url = ref('')
   const dialect = ref('Postgres')
   const fpo_pge = ref(new Date().toISOString().substring(0, 10))
+  const logoEmp = ref('/img/Logo_Empresa.png') 
   const menu = ref([])
 
   // persist: true,
@@ -107,10 +108,11 @@ export const Session = defineStore('currentSession', () => {
       )
       if (response.data.fpo_pge)
         fpo_pge.value = response.data.fpo_pge
-        
+
       dialect.value = response.data.dialect
       id_con.value = response.data.id // asignamos a su conexion de base de datos
 
+     // logoEmp.value='/public/img/Logo_Empresa.png'
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
 
@@ -129,12 +131,18 @@ export const Session = defineStore('currentSession', () => {
         console.log('OpenDb Error SQL===>', error)
         MessageBox(error, 16, 'SQL Error ')
         //$Swal.fire('Error SQL' + error)
-        return ''
+        
       }
 
       // console.log('OpenDb error ===>',error.response.status.toString() + " " + error.response.statusText)
       if (error) {
-        MessageBox(error.response, 16, 'ERROR')
+        let menError=''
+        if (error.response.statusText)
+           menError=error.response.statusText
+        else
+            menError=error.response
+
+        MessageBox(menError, 16, 'ERROR')
         console.log('Pinia error ====>>>>>>', error.response)
         //  MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
       }
@@ -142,7 +150,7 @@ export const Session = defineStore('currentSession', () => {
         MessageBox('Back-end comunication error', 16, 'ERROR')
 
 
-      return ''
+      
     } // Fin de Catch
   }
 
@@ -151,7 +159,6 @@ export const Session = defineStore('currentSession', () => {
   // comunica con el servidor de SQL
   /// ////////////////////////////////////////
   async function leeMenu() {
-    console.log('Pinia ======leeMenu=====',id_con.value,url.value)
     //  sin no se ha inicilizado la conexion aborta todo
 
     if (id_con.value == '') {
@@ -168,7 +175,7 @@ export const Session = defineStore('currentSession', () => {
       id_con: id_con.value,
       tip_llamada: 'SQLEXEC',
       // tok_aut: this.tok_aut,
-      query: 'SELECT * from man_comeprg order by NUM_PRG,SIS_SIS,TPR_PRG'
+      query: 'SELECT * from vcomeprg order by NUM_PRG,SIS_SIS,TPR_PRG'
 
     }
 
@@ -196,6 +203,8 @@ export const Session = defineStore('currentSession', () => {
       }
       //const menu = JSON.stringify(response.data)
       menu.value = (data)
+      console.log('Pinia ======leeMenu=====',menu.value)
+
 
     } catch (error) {
       console.log('Error Session Lee Menu' ,error)
@@ -241,7 +250,6 @@ export const Session = defineStore('currentSession', () => {
   watch(() => pass.value,
     (new_pass, old_val) => {
       if (new_pass.length > 3 && user.value.length > 0) {
-        console.log('Watch Pinia new_pass', new_pass)  // doest not do anything
         const password=new_pass
         pass.value=''
         open(password)
@@ -249,8 +257,6 @@ export const Session = defineStore('currentSession', () => {
     },
     { deep: true }
   )
-
-
 
   const doneMenu = computed(() => menu.value.filter(menu => menu.value.done))
 
@@ -263,7 +269,7 @@ export const Session = defineStore('currentSession', () => {
     url,
     dialect,
     fpo_pge,
-    open,
+    logoEmp,
     doneMenu
   }
 

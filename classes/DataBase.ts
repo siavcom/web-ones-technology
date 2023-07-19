@@ -23,12 +23,15 @@
 //import workerInjector from 'jsstore/dist/worker_injector'
 //import { MessageBox } from '@/src/clases/Functions'
 // import dat_emp from '@/empresas/datos.json' // json con los datos de la empresa, substituye comeemp
+import { watch } from 'vue'
 
 import axios from 'axios'
 import alasql from 'alasql'
+import { storeToRefs } from 'pinia'
 import { Session } from '@/stores/currentSession'
 const session = Session()
-
+const { id_con, url,dialect,nom_emp} = storeToRefs(session)  //pasa los elementos por referencia al Global
+  
 /*
 import * as XLSX from 'xlsx';
 
@@ -42,13 +45,13 @@ export class VFPDB {
   // propiedades de las clases
   AlaSql = alasql
   name: string = 'VFPDB'
-  url: string
-  nom_emp: string
-  user: string
-  pass: any
-  id_con: string
-  fpo_pge: string = new Date().toISOString().substring(0, 10)
-  dialect: string
+  //url: string
+  //nom_emp: string
+  //user: string
+ // pass: any
+ // id_con: string
+//  fpo_pge: string = new Date().toISOString().substring(0, 10)
+ // dialect: string
   // vis_tra: any = []; // guarda nombre de las vistas de trabajo en el servidor SQL
   are_tra: string[] = [''] // Las areas de trabajo donde cada vista tendra.
   // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
@@ -79,9 +82,9 @@ export class VFPDB {
   // Inicializa la conexion
   constructor() {
     this.Estatus = true
-    this.url = ''
-    this.nom_emp = ''
-    this.user = ''
+   // this.url = ''
+   // this.nom_emp = ''
+  //  this.user = ''
 
     this.num_are = 0
 
@@ -90,19 +93,17 @@ export class VFPDB {
     /// //////////////////////////////////////
 
     // recupera datos de conexion
+
+   /*
     this.id_con = session.id_con == undefined ? '' : session.id_con
     this.user = session.user
     this.url = session.url // obtenemos el url del servidor node
     this.dialect = session.dialect
     this.nom_emp = session.nom_emp
-    console.log('Db DataBase session.id ===>>>>', this.id_con, 'dilect=', this.dialect)
+    */
+    console.log('Db DataBase session.id ===>>>>', id_con.value, 'dilect=', dialect.value)
 
-    if (this.id_con.length < 16) {
-      const router = useRouter()
-      router.push('/Login')
-      return
-    }
-
+   
     this.localAlaSql('DROP DATABASE IF EXISTS Now ;')
     this.localAlaSql('CREATE DATABASE Now ;')
     this.localAlaSql('DROP DATABASE IF EXISTS Last ;')
@@ -130,6 +131,11 @@ export class VFPDB {
     // await alasql.promise(`ATTACH INDEXEDDB DATABASE ${dbName};USE DATABASE ${dbName};`);
 
     //   console.log(this.id_con, this.url, this.user)
+    watch(nom_emp.value, ()=>{
+      this.View={}
+      } ) 
+    
+
   } // Fin constructor
 
   public async Init(Form) {
@@ -140,6 +146,7 @@ export class VFPDB {
   // Hace la conexion al servidor NODEJS que
   // comunica con el servidor de SQL
   /// ////////////////////////////////////////
+  /*
   open = async (pass: string) => {
     while (!this.Estatus) {
       console.log('Db esperando cambio de estatus')
@@ -167,7 +174,7 @@ export class VFPDB {
       return false
     } // Fin de Catch
   }
-
+*/
   /// /////////////  Vfp Use nodata ///////////////////
   // nom_vis : Nombre de la vista a utilizar
   /// /////////////////////////////////////////////////
@@ -215,7 +222,7 @@ export class VFPDB {
     // const vis_act = ThisForm.ctx[alias];
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'USENODATA',
       // tok_aut: this.tok_aut,
       nom_vis: ''
@@ -389,7 +396,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'USE',
       // tok_aut: this.tok_aut,
       nom_vis,
@@ -523,7 +530,7 @@ export class VFPDB {
 
   obtRegistro = async (nom_tab: '', key_pri: number) => {
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'USE',
       // tok_aut: this.tok_aut,
       nom_vis: nom_tab,
@@ -640,7 +647,7 @@ export class VFPDB {
 
     // llamado AXIOS
     const dat_vis: any = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: '',
       nom_tab,
       dat_act: {}
@@ -923,7 +930,7 @@ export class VFPDB {
       return false
     }
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'DELETE',
       // tok_aut: this.tok_aut,
       nom_vis: this.View[alias].tablaSql.trim(), // tabla en servidor SQL
@@ -1063,7 +1070,7 @@ export class VFPDB {
             select from ' + alias + ' where renco=?', recno)
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'INSERT',
       // tok_aut: this.tok_aut,
       nom_vis,
@@ -1118,7 +1125,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'SQLEXEC',
       query
     }
@@ -1254,7 +1261,7 @@ export class VFPDB {
       return
     }
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'GENTABLA',
       nom_tab: tabla
     }
@@ -1286,7 +1293,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'GENINDICES',
       nom_tab: tabla
     }
@@ -1320,7 +1327,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'GENVISTASSQL',
       nom_tab: tabla
     }
@@ -1353,7 +1360,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'GENMODEL',
       nom_tab: tabla
     }
@@ -1397,7 +1404,7 @@ export class VFPDB {
 
     let exp_where = ''
     const dat_vis = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'SQLEXEC',
       query
 
@@ -1446,7 +1453,7 @@ export class VFPDB {
 
     query = ' SELECT * FROM ' + nom_vis + exp_where
     const dat_sel = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'SQLEXEC',
       query,
       opciones: { replacements }
@@ -1522,7 +1529,7 @@ export class VFPDB {
 
     /// ///   Estructura
     const dat_est = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'GETDEF',
       query: alias
     }
@@ -1667,7 +1674,7 @@ export class VFPDB {
       if (!respuesta.est_tabla) { // Si no hay estructura de la tabla
         /// ///   Obtiene la Estructura
         const dat_est = {
-          id_con: this.id_con,
+          id_con: id_con.value,
           tip_llamada: 'GETDEF',
           query: alias
         }
@@ -2209,7 +2216,7 @@ return false;
   async axiosCall(dat_lla: Record<string, unknown>) {
     const ThisForm: any = this.Form
 
-    if (!(this.id_con > ' ')) {
+    if (!(id_con.value > ' ')) {
       MessageBox(
         'No hay conexion con la base de datos', 16,
         'SQL Error Open'
@@ -2224,7 +2231,7 @@ return false;
       try {
         // console.log('Db Axios call llamada  ======>>>', dat_lla, this.url)
 
-        const response = await axios.post(this.url + 'sql', dat_lla, {
+        const response = await axios.post(url.value + 'sql', dat_lla, {
           headers: { 'Content-type': 'application/json' }
         })
         const respuesta = response.data
@@ -2749,7 +2756,7 @@ return false;
       dataView = ''
 
     const dat_rep = {
-      id_con: this.id_con,
+      id_con: id_con.value,
       tip_llamada: 'JASPERREPORT',
       jrxml: for_rep,
       dataView,
@@ -2760,7 +2767,7 @@ return false;
 
 
     try {
-      const response = await axios.post(this.url + 'sql', dat_rep, { responseType: 'arraybuffer' })
+      const response = await axios.post(url.value + 'sql', dat_rep, { responseType: 'arraybuffer' })
       console.log
       return response.data
     } catch (error) {
@@ -2803,5 +2810,12 @@ return false;
 
     return $MessageBox(texto, tipo, title, timer)
   }
+
+
+
+
   // Fin de la clase================================
 }
+
+
+

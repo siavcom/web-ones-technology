@@ -41,14 +41,15 @@
 
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
               </li>
-
               <span v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
+              
                 <li @click="isMan = !isMan">
                   <span class="links_options">{{ maintenance }}</span>
                   <img v-show="!isMan" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
-                  <li v-if="menuItem.path.length > 1">
+                 
+                  <li >
                     <NuxtLink :to="menuItem.path"
                               :target="menuItem.target" 
                               @click="titleName=menuItem.name" >
@@ -60,14 +61,13 @@
                   </li>
                 </span>
               </span>
-
               <span v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
                 <li text-align="end" @click="isRep = !isRep">
                   <span style="text-align:end" class="links_options">{{ reports }}</span>
                   <img v-show="!isRep" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
-                  <li v-if="menuItem.path.length > 1">
+                  <li >
                     <NuxtLink :to="menuItem.path"   
                               :target="menuItem.target"
                                @click="titleName=menuItem.name">
@@ -79,13 +79,13 @@
                   </li>
                 </span>
               </span>
-              <span v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
+              <span v-show="isOpen && subMen &&  subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
                 <li text-align="end" @click="isPro = !isPro">
                   <span class="links_options">{{ process }}</span>
                   <img v-show="!isPro" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
-                  <li v-if="menuItem.path.length > 1">
+                  <li >
                     <NuxtLink :to="menuItem.path"
                               :target="menuItem.target" 
                               @click="titleName=menuItem.name">
@@ -129,7 +129,11 @@
     </div>
 
     <div class="mainForm">
-      <NuxtLayout name='header'/>
+      <NuxtLayout name='header' 
+          v-bind:logoEmp="logoEmp"
+          v-bind:nomEmp="nom_emp"
+          v-bind:titleName="titleName"
+          v-bind:fpo_pge="fpo_pge"/>
 
       <NuxtPage @updateStatus="updateStatus" @updateIsOpen="updateIsOpen" />
       <NuxtLayout name='footer'/>
@@ -172,8 +176,11 @@ import {
 
 // Utilizacion de Pinia 
 
-// import store from '@/stores/index'
+import { storeToRefs } from 'pinia'
 import { Session } from '@/stores/currentSession'
+
+
+
 //import consolaGlobalInstance from 'consola';
 
 /*
@@ -233,7 +240,7 @@ const props = withDefaults(defineProps<Props>(), {
   isOpened: true,
   isMenuOpen: true,
   menuTitle: 'KilloSoft',
-  menuLogo: '/Iconos/Logo_Empresa.png',
+  menuLogo: '/img/Logo_Empresa.png',
   menuIcon: 'bxl-c-plus-plus',
   isPaddingLeft: true,
   menuOpenedPaddingLeftBody: '250px',
@@ -328,22 +335,17 @@ const Style = {
   menuItemsTextColor: '#fff',
   menuFooterTextColor: '#fff'
 }
-// Borramos el app.$sessionStorage
-// app.$sessionStorage.removeItem('id_con')
-// app.$sessionStorage.removeItem('menu')
-// app.$sessionStorage.removeItem('nom_emp')
-// app.$sessionStorage.removeItem('url')
-// app.$sessionStorage.removeItem('user')
 
 const session = Session()
-//let menu = []
-const nom_emp = ref('')
+const { id_con,nom_emp,menu,fpo_pge,logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
+
 const Prop = ref(props)
 const Items = reactive(props.menuItems)
 const itemLength = Items.length
-const subItemsMan = reactive([])
-const subItemsRep = reactive([])
-const subItemsPro = reactive([])
+let subItemsMan = reactive([])
+let subItemsRep = reactive([])
+let subItemsPro = reactive([])
 
 const subMen = ref(false)
 const isMan = ref(false)
@@ -354,12 +356,11 @@ const isPro = ref(false)
 
 
 const isLoggedIn = ref(props.isLoggedIn)
-// const session = getStore('session')
 
 const isOpen = ref(props.isOpened)
 isOpen.value = true
 
-/* ***********Titulos en las pestañas****************** */
+/* ***********Titulos en las pestaÃ±as****************** */
 const titleName=ref()
 titleName.value=' Technologies'
 
@@ -371,82 +372,19 @@ const Title=computed(()=>{
 
 useHead({
   titleTemplate: (title) => `Web-Ones ${titleName.value}`,
+/*
+  script: [
+    {
+       src: 'https://www.scripts.com/some/other/script.js',
+       body: true
+     }
+  ]
+*/
+
 });
 
 
 
-
-/*
-$auth.$storage.setLocalStorage(key, val)
-$auth.$storage.getState(key)
-$auth.$storage.removeState(key)
-
-this.$auth.$storage.setState(key, val)
-this.$auth.$storage.getState(key)
-this.$auth.$storage.removeState(key)
-
-// Watch state changes
-this.$auth.$storage.watchState('loggedIn', newValue => { })
-
-*/
-
-// sessionStorage.getItem('id_con')
-
-// if ($auth.$storage.getState('id_con')) {
-//const id_con = ref(session.id_con)
-/*
-if (session.id_con && session.id_con.length > 0) {
-//  const id_con = session.id_con
-  let menu=[]
-  nom_emp.value = session.nom_emp
-  if (session.id_con.length > 0) {
-    isLoggedIn.value = true
-
-    Items.push(
-      {
-        link: '#',
-        name: 'SQL diccionary',
-        tooltip: 'Setting',
-        icon: 'svg/bx-cog.svg',
-        path: '/come9101',
-        target: '',
-        type: 'P',
-        system: ''
-      })
-
-    menu = JSON.parse(session.menu)// lee menu de programas
-    const url = session.url.trim()
-
-    for (let i = 0; menu.length > i; i++) {
-      // solo agrega menu principal
-      if (menu[i].tpr_prg === 'S') {
-        let link = '#'
-        let path = ''
-        let target = '_blank'
-        const type = menu[i].tpr_prg
-        const system = menu[i].sis_sis
-        if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
-          link = url + '/' + menu[i].prg_prg.trim()
-          path = '/' + menu[i].prg_prg.trim()
-        }
-        const item = {
-          link: '#',
-          name: menu[i].des_prg,
-          tooltip: menu[i].des_prg,
-          icon: menu[i].ico_prg,
-          path,
-          target,
-          type,
-          system
-        }
-        Items.push(item) // anexamos al menu
-      }
-    }
-
-    // obtMenu(false)
-  }
-}
-*/
 const cssVars = computed(() => {
   return {
     '--bg-color': Style.bgColor,
@@ -470,11 +408,12 @@ const mainFormLeft = computed(() => {
 // removeState
 const exit = () => {
   // app.$sessionStorage.removeItem('id_con')
-  session.update('', '', '', '')
+  id_con.value=''
   nom_emp.value = ''
   const tam_act = Items.length
   Items.splice(itemLength, tam_act - itemLength)
   isLoggedIn.value = false
+  menu.value=[]
 }
 const back = () => window.history.back()
 /*
@@ -494,7 +433,7 @@ const updateIsOpen = () => {
 // Actualiza estatus Login
 /// ///////////////////////////////////////
 const updateStatus = (loggedIn: boolean) => {
-  obtMenu()
+  //obtMenu()
   
 }
 
@@ -503,25 +442,12 @@ const updateStatus = (loggedIn: boolean) => {
 /// ///////////////////////////////////////
 const obtMenu = (sw_ini?: boolean) => {
   //id_con.value = session.id_con
-  let menu = []
-  nom_emp.value = session.nom_emp
-  //console.log('watch  lee menu Items', Items,Items.length)
+  //let menu = []
 
-
-  if (Items.length > 2) {
-    const num_ele = Items.length - 2
-
-    Items.splice(2, num_ele)
-  }
-
-  if (session.id_con.length === 0) {
-    isLoggedIn.value = false
-    return
-
-  }
   isLoggedIn.value = true
 
 
+  if (Items.length==0) {
 
   Items.push(
     {
@@ -546,29 +472,38 @@ const obtMenu = (sw_ini?: boolean) => {
       system: ''
     })
 
+  }
+  // Borramos todos los elementos del menu
+  if (Items.length > 2) {
+    const num_ele = Items.length - 2
+
+    Items.splice(2, num_ele)
+  }
+
 
   //menu = JSON.parse(session.menu)// lee menu de programas
-  menu = session.menu// lee menu de programas
+  
   // console.log('Menu completo',menu)
 
-  const url = session.url.trim()
+  // url.value.trim()
 
-  for (let i = 0; menu.length > i; i++) {
+  for (let i = 0; menu.value.length > i; i++) {
     // solo agrega menu principal
-    if (menu[i].tpr_prg === 'S') {
+    if (menu.value[i].tpr_prg === 'S') {
       let link = '#'
       const path = { path: '',
                     params:{},
                     query:{}}
       let target = ''        //'_blank' indica ventana nueva del explorador
-      const type = menu[i].tpr_prg
-      const system = menu[i].sis_sis
-      if (menu[i].prg_prg.trim() != 'null' && menu[i].prg_prg.trim() > ' ') {
-        link = url + '/' + menu[i].prg_prg.trim()
-        path.path = '/' + menu[i].prg_prg.trim()
+      const type = menu.value[i].tpr_prg
+      const system = menu.value[i].sis_sis
+      const urlVue =''
+      if (menu.value[i].prg_prg.trim() != 'null' && menu.value[i].prg_prg.trim() > ' ') {
+        link = urlVue + '/' + menu.value[i].prg_prg.trim()
+        path.path = '/' + menu.value[i].prg_prg.trim()
         var params=''
-        if (menu[i].par_prg != null && menu[i].par_prg.trim().length > 0)
-            params = menu[i].par_prg
+        if (menu.value[i].par_prg != null && menu.value[i].par_prg.trim().length > 0)
+            params = menu.value[i].par_prg
 
         let pos = params.indexOf(',') // Posicion de la primera coma
         let num_par = 1
@@ -592,9 +527,9 @@ const obtMenu = (sw_ini?: boolean) => {
       }
       const item = {
         link: '#',
-        name: menu[i].des_prg,
-        tooltip: menu[i].des_prg,
-        icon: menu[i].ico_prg,
+        name: menu.value[i].des_prg,
+        tooltip: menu.value[i].des_prg,
+        icon: menu.value[i].ico_prg,
         path: path,
         target: target,
         type: type,
@@ -609,51 +544,65 @@ const obtMenu = (sw_ini?: boolean) => {
 // Obten subMenu
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
+
+
+  console.log('SubMenu menu ====> system=',system)
   isMan.value = false
-
   isRep.value = false
-
   isPro.value = false
 
   subItemsMan.length = 0 // borramos subItems
   subItemsRep.length = 0 // borramos subItems
   subItemsPro.length = 0 // borramos subItems
-  const menu = session.menu
-  for (let i = 0; menu.length > i; i++) {
+  const Man=[]
+  const Rep=[]
+  const Pro=[]
+  //const menu = session.menu
+  for (let i = 0; menu.value.length > i; i++) {
     // solo agrega menu principal
-    if (menu[i].sis_sis === system) {
+ 
+    if (menu.value[i].sis_sis == system) {
       let link = '#'
       let path = {}
-      const type = menu[i].tpr_prg
-      const system = menu[i].sis_sis
-      const url = ' '
-      if (menu[i].prg_prg.trim() != null && menu[i].prg_prg.trim() > ' ') {
-        link = url + '/' + menu[i].prg_prg.trim()
-        path = { path: '/' + menu[i].prg_prg.trim() }
+      const type = menu.value[i].tpr_prg
+      const system = menu.value[i].sis_sis
+      const urlVue = ' '
+      if (menu.value[i].prg_prg.trim() != null && menu.value[i].prg_prg.trim() > ' ') {
+        link = urlVue + '/' + menu.value[i].prg_prg.trim()
+        path = { path: '/' + menu.value[i].prg_prg.trim() }
 
-        if (menu[i].par_prg != null && menu[i].par_prg.trim().length > 0)
-          path.params = { par_uno: menu[i].par_prg.trim() }
+        if (menu.value[i].par_prg != null && menu.value[i].par_prg.trim().length > 0)
+          path.params = { par_uno: menu.value[i].par_prg.trim() }
 
       }
       const item = {
         link: '#',
-        name: menu[i].des_prg,
-        tooltip: menu[i].des_prg,
-        icon: menu[i].ico_prg,
+        name: menu.value[i].des_prg,
+        tooltip: menu.value[i].des_prg,
+        icon: menu.value[i].ico_prg,
         path: path,
         type,
         system
       }
-      if (type === 'M') { subItemsMan.push(item) } // anexamos al menu Mantenimiento
-      if (type === 'R') { subItemsRep.push(item) } // anexamos al menu Reporte
-      if (type === 'P') { subItemsPro.push(item) } // anexamos al menu Procesos
+      if (type === 'M') { Man.push(item) } // anexamos al menu Mantenimiento
+      if (type === 'R') { Rep.push(item) } // anexamos al menu Reporte
+      if (type === 'P') { Pro.push(item) } // anexamos al menu Procesos
     }
   }
-  if (subItemsMan.length > 0 ||
-    subItemsRep.length > 0 ||
-    subItemsPro.length > 0) {
+  if (Man.length > 0 ||
+    Rep.length > 0 ||
+    Pro.length > 0) {
+      subItemsMan=Man
+      subItemsRep=Rep
+      subItemsPro=Pro  
     subMen.value = true
     isOpen.value = true
+   
+
+console.log('Submenu man',subItemsMan)
+
+console.log('Submenu rep',subItemsRep)
+
   }
 }
 
@@ -661,8 +610,8 @@ const obtSubMenu = (system: string) => {
 //////////////////////////////////////////////////
 // Init
 /////////////////////////////////////////////////
-console.log('=========Session============', session.id_con)
-if (session.id_con && session.id_con.length > 0) {
+console.log('=========Session============', id_con.value)
+if (id_con.value.length > 0) {
   obtMenu()
 }
 
@@ -682,82 +631,12 @@ watch(
 )
 
 watch(
-  () => session.id_con,
-  (new_val, old_val) => {
-
-
-    obtMenu()
-    //id_con.value = session.id_con
-    /*
-       let menu=[]
-       nom_emp.value = session.nom_emp
-       //console.log('watch  lee menu Items', Items,Items.length)
-   
-       
-       if (Items.length > 2) {
-         const num_ele = Items.length - 2
-   
-         Items.splice(2, num_ele)
-       }
-   
-       if (session.id_con.length === 0) {
-         isLoggedIn.value = false
-         return
-   
-       }
-       isLoggedIn.value = true
-   
-   
-   
-       Items.push(
-         {
-           link: '#',
-           name: 'SQL diccionary',
-           tooltip: 'Setting',
-           icon: 'svg/bx-cog.svg',
-           path: '/come9101',
-           target: '', //'_blank',
-           type: 'P',
-           system: ''
-         })
-   
-   
-   
-       //menu = JSON.parse(session.menu)// lee menu de programas
-       menu =session.menu// lee menu de programas
-      // console.log('Menu completo',menu)
-    
-       const url = session.url.trim()
-   
-       for (let i = 0; menu.length > i; i++) {
-         // solo agrega menu principal
-         if (menu[i].tpr_prg === 'S') {
-           let link = '#'
-           let path = ''
-           let target = ''        //'_blank' indica ventana nueva del explorador
-           const type = menu[i].tpr_prg
-           const system = menu[i].sis_sis
-           if (menu[i].prg_prg != null && menu[i].prg_prg.trim() > ' ') {
-             link = url + '/' + menu[i].prg_prg.trim()
-             path = '/' + menu[i].prg_prg.trim()
-           }
-           const item = {
-             link: '#',
-             name: menu[i].des_prg,
-             tooltip: menu[i].des_prg,
-             icon: menu[i].ico_prg,
-             path,
-             target,
-             type,
-             system
-           }
-           Items.push(item) // anexamos al menu
-         }
-       }
-       */
-    // console.log('Menu =====>',Items)
-
-    // obtMenu(false)
+  () => menu.value,
+  (menu_new, old_val) => {
+    if (menu_new.length>0){
+       console.log('watch menu',menu_new)
+        obtMenu()
+    }     
   },
   { deep: false }
 )
