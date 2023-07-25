@@ -11,11 +11,11 @@ import { emp_emp } from './emp_emp'
 import { log_usu } from './log_usu'
 import { pas_usu } from './pas_usu'
 import { bt_aceptar } from './bt_aceptar'
-import { Session } from '@/stores/currentSession'
+//import { Session } from '@/stores/currentSession'
 const session = Session()
  
 export class form extends COMPONENT {
-  public emp_emp=new emp_emp()
+  public emp_emp=new emp_emp('emp_emp')
   public log_usu=new log_usu()
   public pas_usu=new pas_usu()
   public bt_aceptar=new bt_aceptar()

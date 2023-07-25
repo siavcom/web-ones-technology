@@ -9,7 +9,7 @@
 
 //import { OpenDb } from '@/classes/OpenDB'
 import { COMPONENT } from '@/classes/Component'
-import { Session } from '@/stores/currentSession'
+//import { Session } from '@/stores/currentSession'
 import { storeToRefs } from 'pinia'
 
 

@@ -6,17 +6,20 @@
 /////////////////////////////////////////////
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-//import { THISFORM } from "@@/pages/come9101/ThisForm"
+//import { ThisForm } from "@@/pages/come9101/ThisForm"
 //import { nextTick } from "vue"
 
 export class COMPONENT {
+  Name : string  // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent: any = {} //this.Dom.ctx; // Contexto
   Form: any = {} //this.Parent.ThisForm // Thisform
-  Name = 'component'  // Se one aqui el name para que en el html poder hacer refere
+  //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
+  //name = this.Name
+
   db: any
   Recno: number
   Ref: null | undefined
-  Show: true
+  Show: true=true
   //Focus: boolean = false
   Index!: number
   header: [] = [] // elementos que tiene el componente en header
@@ -54,7 +57,7 @@ export class COMPONENT {
     ColumnCount: 1,
     BoundColumn: 1,
     RowSource: {},
-    ColumnWidths: '100',
+    ColumnWidths: "75%,25%",
     Visible: true,
     Grid: false,
     RecordSource: '',
@@ -94,7 +97,7 @@ export class COMPONENT {
       textTransform: "none",
       zIndex: 1,  // profundidad
     },
-
+    
   }
   style = {
     //display: "flex", "inline-block"
@@ -140,15 +143,24 @@ export class COMPONENT {
 
   imagen = { src: "" }
 
-  //  constructor(parent: Record<string, never>) {
+  
   // contructor base on create 
+//  constructor(Name:string) {
   constructor() {
-    //console.log('On Create Componente ====>',this.constructor.name,this)
-    this.Name = this.constructor.name  //.toLowerCase()
+   
+    this.Name=this.constructor.name    
+   
+
+    console.log('On Create Componente ====>',this.constructor.name,this)
+   // this.Name = this.constructor.name  //.toLowerCase()
+   // this.Name = (typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
     this.prop.Name = this.Name //.toLowerCase()
     this.Recno = 0
     this.prop.This = this
+ 
+
   }
+  
 
   ///////////////////////////////////////////////////////////
   // Init
@@ -156,6 +168,7 @@ export class COMPONENT {
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
+    
     if(!TabIndex) TabIndex=1
     if (!Form) { // Inicializamos el this.Form
       Form = this
@@ -176,7 +189,10 @@ export class COMPONENT {
     const elements: [] = []
     // asigna el mapa donde esta  ubicado el componente
     if (this.Name != 'ThisForm' && this.Parent.prop) { // Si tiene propiedades 
-      this.prop.Map = this.Parent.prop.Map + '.' + this.prop.Name
+  //    this.prop.Map = this.Parent.prop.Map + '.' + this.prop.Name
+       this.prop.Map = this.Parent.prop.Map + '.' + this.Name
+       console.log('Init Map ',this.prop.Map) 
+
     }
     for (const componente in this) {
       if (componente != 'Parent' &&
@@ -190,19 +206,20 @@ export class COMPONENT {
 
         console.log('Init Component '+componente,'Name==',this[componente].prop.Name) 
         if (this[componente].prop.Name==undefined){
-          console.error('Component '+componente+'has prop.Name=undefined')
-          // MessageBox('Component '+componente+' prop.Name=undefined',16,'Init Error')
+          console.error('Component ',componente+'has prop.Name=undefined')
+        
            return 
         }
-        const name = this[componente].prop.Name.trim()
+        // const name = this[componente].prop.Name.trim()
+        let name = this[componente].constructor.name
+
 
         console.log('Component ===>>',componente,name)
         if (componente!=name){
-          console.error('Component ='+componente,'has diferent prop.Name=',name)
-          // MessageBox('Component '+componente+' prop.Name=undefined',16,'Init Error')
-           return 
+          console.warn('Component =',componente,'has diferent prop.Name=',name,this)
+          // return 
         }
-
+        name=componente  // Modificar para el compilador
         const Position = this[componente].prop.Position.trim().toLowerCase()
 
         if (Position == 'header')
@@ -221,7 +238,7 @@ export class COMPONENT {
         }
         elements.push(component)
 
-        this[componente]['Parent'] = this // Asignamos el Parent ref(this)
+        this[componente].Parent = this // Asignamos el Parent ref(this)
 
         id++
       }
@@ -232,7 +249,7 @@ export class COMPONENT {
       const comp=header[i]
       this[comp].prop.TabIndex = TabIndex
       TabIndex++
-      TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
+      TabIndex = await this[comp].Init(Form, TabIndex)  // Corre el InitForm en todos los componentes
       // Se quito de aqui ya que el Init corre el init de c/componente
     }
     for (const i in main) {
@@ -241,7 +258,7 @@ export class COMPONENT {
    //   console.log('Component.ts in main comp=',comp,this[comp])
       this[comp].prop.TabIndex = TabIndex
       TabIndex++
-      TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
+      TabIndex = await this[comp].Init(Form, TabIndex)  // Corre el InitForm en todos los componentes
       if (maxTabIndex < TabIndex)
         maxTabIndex = TabIndex
 
@@ -251,7 +268,7 @@ export class COMPONENT {
       const comp=footer[i]
       this[comp].prop.TabIndex = TabIndex
       TabIndex++
-      TabIndex = await this[comp]['Init'](Form, TabIndex)  // Corre el InitForm en todos los componentes
+      TabIndex = await this[comp].Init(Form, TabIndex)  // Corre el InitForm en todos los componentes
       if (maxTabIndex < TabIndex)
         maxTabIndex = TabIndex
 

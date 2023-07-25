@@ -12,7 +12,9 @@
 import {GRID} from  '@/classes/Grid'
 
 // las clases importadas son clases tipo columna
+import {path_prg} from './path_prg'
 import {prg_prg} from './prg_prg'
+
 import {des_prg} from './des_prg'
 import {num_prg} from './num_prg'
 import {par_prg} from './par_prg'
@@ -26,6 +28,7 @@ export class grid_menu extends GRID {
  // Columna que tiene el grid
   
   public des_prg = new des_prg()
+  public path_prg = new path_prg()
   public prg_prg = new prg_prg()
   public num_prg = new num_prg()
   public par_prg = new par_prg()
@@ -42,7 +45,7 @@ export class grid_menu extends GRID {
     this.prop.ReadOnly = false
     this.prop.autoLoad=false
     this.prop.ColumnCount=8
-    this.prg_prg.prop.First=true // primer elemento
+    this.path_prg.prop.First=true // primer elemento
      }
 
 

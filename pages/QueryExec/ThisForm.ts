@@ -24,7 +24,7 @@ import { bt_aceptar } from "./bt_aceptar"
 import { FORM } from '@/classes/Form'
 
 
-export class THISFORM extends FORM {
+export class ThisForm extends FORM {
 
 ////////////////////////////////////
 // component imported
@@ -47,7 +47,7 @@ export class THISFORM extends FORM {
     this.style.color = "#b94295"
     this.style.fontSize = "13px" 
     this.style.position = "center"
-    this.style.backgroundImage = "/img/Logo_Empresa.png"
+    this.style.backgroundImage = "/img//Logo_Empresa.png"
     //this.style.height='400px'
     //this.style.maxHeight='400px'
 

@@ -11,13 +11,12 @@
       <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end">
 
        </div>
+       <img v-if="logoEmp" class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
        <div class="dataEmp"  style="display:flex; flex-wrap:wrap;item-align:flex-end">
-        <div>{{ nomEmp }}</div>
+        <div>{{nomEmp}}</div>
         <div class="break"></div>
-        <div>{{ fpo_pge }}</div>
-
-               
-        <img v-if="logoEmp" class="logoEmp" :src="logoEmp" style="width:50px;height:50px;" />
+        <div>{{fpo_pge}}</div>
+             
       </div>
 
     </div>
@@ -36,7 +35,7 @@ const props = defineProps<{
 }>()
 
 //const logoEmp = ref(props.logoEmp)
-//logoEmp.value = "/img/Logo_Empresa.png"
+//logoEmp.value = "/img//Logo_Empresa.png"
 //const nomEmp = ref(props.nomEmp)
 //nomEmp.value = "Siavcom Software"
 

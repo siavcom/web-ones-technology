@@ -18,11 +18,12 @@ export class sou_dat extends COLUMN {
         super()
         this.prop.Order = 3
         this.textLabel = 'RowSource ComboBox'
-        this.prop.BaseClass = 'editText'
+        this.prop.Type ='text'
+        this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_dat.sou_dat'
-        this.prop.ToolTipText ='RowSource para ComboBox'
         this.prop.Placeholder = "RowSource ComboBox"
-        this.style.flexBasis = '30%' /* width/height  - initial value: auto */
+        this.style.width='200px'
+      //  this.style.flexBasis = '30%' /* width/height  - initial value: auto */
     }
 
     ////////////////////////////////// 

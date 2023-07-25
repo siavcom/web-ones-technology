@@ -31,7 +31,6 @@ if (import.meta.hot) {
 */
 
 export const Session = defineStore('currentSession', () => {
-
   const id_con = ref('')
   const user = ref('')
   const pass = ref('********')
@@ -112,7 +111,7 @@ export const Session = defineStore('currentSession', () => {
       dialect.value = response.data.dialect
       id_con.value = response.data.id // asignamos a su conexion de base de datos
 
-     // logoEmp.value='/public/img/Logo_Empresa.png'
+     // logoEmp.value='/img/Logo_Empresa.png'
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
 
@@ -274,7 +273,10 @@ export const Session = defineStore('currentSession', () => {
   }
 
 
-}
+},
+{
+  persist: { storage: persistedState.localStorage,},
+},
 
 )
 

@@ -32,21 +32,40 @@ export class captureForm extends FORM {
   }
 
   /// /////////////////////////////////////
-  // Metodo : Valid
-  // Descripcion : Valida los datos de la forma. Si es un dato nuevo
+  // Metodo : valid
+  // Descripcion : Valida los componentes de la forma. Si es un dato nuevo
   //              manda refrescar la forma para permitir su captura
   //              Si no es un dato nuevo: Muestra los datos para permitir su
   //              modificacion
   /// /////////////////////////////////////
 
-  async valid() {
+   async valid(compName:string) {
+     
+    const thisComp=this[compName]
+    console.log('CaptureForm valid thisComp',thisComp)
+
+    if (thisComp.prop.updateKey) {
+
+      if (this.Form.db.View[this.Form.prop.RecordSource].recCount>0)
+         this.Form.sw_ini=false
+      if ((typeof thisComp.prop.Value=='string' && thisComp.prop.Value.trim().length==0)||
+          (typeof thisComp.prop.Value=='number' && thisComp.prop.Value==0))
+           {
+          thisComp.prop.ErrorMessage='No permite datos en blanco'
+          thisComp.prop.ShowError=true
+          thisComp.prop.Valid=false
+          return thisComp.prop.Valid
+        } 
+    }
+    thisComp.prop.Valid=true
+ 
     const m = {}
     // Generamos variables de memoria
     for (const i in this.main) {
       const comp = this.main[i]
       if (this[comp].prop.updateKey) { //Obtiene solo los de llaves de actualizacion
         //console.log('CaptureForm comp', comp, this[comp].prop.Valid)
-        if (!this[comp].prop.Valid) { return } // Si es un dato no esta  validado
+        if (!this[comp].prop.Valid) { return true } // Si es un dato no esta  validado
 
         // asignamos variables de memoria
         if (this[comp].prop.Type == 'numeric')

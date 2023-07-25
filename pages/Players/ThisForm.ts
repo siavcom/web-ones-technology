@@ -29,7 +29,7 @@ import {birthday } from "./birthday"
 import { captureForm } from '@/classes/CaptureForm'
 
 
-export class THISFORM extends captureForm {
+export class ThisForm extends captureForm {
 
 ////////////////////////////////////
 // component imported
@@ -53,14 +53,14 @@ export class THISFORM extends captureForm {
     this.prop.RecordSource='Index1_Players'
     this.prop.nem_pge = "Killo Software"
     //this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
-    this.prop.log_emp = "/img/Logo_Empresa.png"
+    this.prop.log_emp = "/img//Logo_Empresa.png"
     this.prop.Status = 'A'
     this.style.display = "flex"
     this.style.background = "white"
     this.style.color = "#b94295"
     this.style.fontSize = "13px" 
     this.style.position = "center"
-    this.style.backgroundImage = "/img/Logo_Empresa.png"
+    this.style.backgroundImage = "/img//Logo_Empresa.png"
     this.grid=['']
    
 

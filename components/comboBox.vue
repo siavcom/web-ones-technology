@@ -32,7 +32,7 @@
         <!--Valor seleccionado click-->
         <div class="toggle" v-if="toggle && !ReadOnly">
           <!--CheckBox -->
-          <div class="MarcoColumnas" style="width:auto;height:200px;">
+          <div class="MarcoColumnas" @focusout="toggle=!toggle" style="width:auto;heigth:auto; max-height:200px;"  >
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
               @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="ReadOnly">
               <!--Imprime Columnas -->

@@ -25,7 +25,7 @@ import {grid} from "./grid/grid"
 ///////////////////////////////////////
 import { FORM } from '@/classes/Form'
 
-export class THISFORM extends FORM {
+export class ThisForm extends FORM {
 
   public tip_for = new tip_for()
 

@@ -140,22 +140,9 @@ export class category extends COMPONENT {
     ///////////////////////////////////
     
     async valid() {
-      if (this.prop.updateKey) {
-        if (this.Form.db.View[this.Form.prop.RecordSource].recCount>0)
-           this.Form.sw_ini=false
-        if (this.prop.Value.trim().length==0){
-            this.prop.ErrorMessage='No permite datos en blanco'
-            this.prop.ShowError=true
-            this.prop.Valid=false
-            return false
-          } 
-        
-        this.prop.Valid=true
-        await this.Form.valid()
-      }
-      this.prop.Valid=true
-      return true
-    }
+if( !await this.Form.valid(this.name) && !this.prop.Valid)
+          return false
+      return true    }
 
     ////////////////////////////////// 
     // event click 

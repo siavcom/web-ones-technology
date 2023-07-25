@@ -28,7 +28,7 @@ import { watch } from 'vue'
 import axios from 'axios'
 import alasql from 'alasql'
 import { storeToRefs } from 'pinia'
-import { Session } from '@/stores/currentSession'
+//import { Session } from '@/stores/currentSession'
 const session = Session()
 const { id_con, url,dialect,nom_emp} = storeToRefs(session)  //pasa los elementos por referencia al Global
   

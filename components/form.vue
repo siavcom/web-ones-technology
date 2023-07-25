@@ -8,7 +8,7 @@
 && Ult. mod.	: Fernando Cuadras  				Fecha   : 13/Dic/2022
 && Evento		: 
 && Objeto		: VUE
-&& Comentarios	: Genera la forma dinamicamente en base al THISFORM que se pasa del comeponente padre
+&& Comentarios	: Genera la forma dinamicamente en base al ThisForm que se pasa del comeponente padre
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
@@ -178,6 +178,8 @@ import {
   //defineProps,
 } from "vue";
 */
+
+//import { Session } from '@/stores/currentSession'
 import { INIT } from "@/classes/Init";
 //const This: any = getCurrentInstance();
 //const ThisCtx = This.ctx;
@@ -248,10 +250,18 @@ export default eventHandler(() => {
 ////////////////////////////////////
 const emit = defineEmits(["updateIsOpen"])
 const props = defineProps<{
-  THISFORM: null;
+  ThisForm: null;
 }>();
 
-const ThisForm = reactive(new props.THISFORM)
+const ThisForm = reactive(new props.ThisForm)
+
+
+const session = Session()
+ThisForm.user=session.user
+ThisForm.nom_emp=session.nom_emp
+ThisForm.fpo_pge=session.fpo_pge 
+
+
 const loading=ref(true)
 
 
@@ -754,7 +764,7 @@ div.contenedor {
   color: #b94295;
   min-width: 375px;
   min-height: 812px;
-  background-image: "/img/Logo_Empresa.png";
+  background-image: "/img//Logo_Empresa.png";
   margin-top: 30%;
 
 }

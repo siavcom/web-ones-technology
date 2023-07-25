@@ -4,19 +4,20 @@
 // Creacion : Septiembre/2021
 // Ult.Mod  :
 /// //////////////////////////////////////////
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import dat_emp from '@/static/empresas/datos.json'
 
+import dat_emp from '@/static/empresas/datos.json'
 import { COMPONENT } from '@/classes/Component'
 
 export class emp_emp extends COMPONENT {
-  // name = 'emp_emp'
+  
 
   //  constructor(parent: Record<string, never>) {
 
-  constructor () {
-    super()
-    // this.prop.Name='emp_emp'
+  constructor (Name:string) {
+    super(Name)
+
+//    this.Name='emp_emp'
+//    this.prop.Name='emp_emp'
     this.prop.BaseClass = 'comboBox'
     //this.prop.Value = 'Demo'
     this.prop.textLabel = 'Empresa'

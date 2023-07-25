@@ -31,7 +31,7 @@ import { grid_tablas } from "./grid_tablas/grid_tablas"
 ///////////////////////////////////////
 import { FORM } from "@/classes/Form"
 
-export class THISFORM extends FORM {
+export class ThisForm extends FORM {
   public dic_dat = new dic_dat()
   public nom_tab = new nom_tab()
   public tpr_prg = new tpr_prg()
@@ -66,7 +66,7 @@ export class THISFORM extends FORM {
     this.style.height = "auto"
     this.style.fontSize = "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     this.style.position = "center" //absolute,
-    this.style.backgroundImage = "/img/Logo_Empresa.png"
+    this.style.backgroundImage = "/img//Logo_Empresa.png"
   }
 
   ////////////////////////////////////////

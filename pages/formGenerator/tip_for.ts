@@ -22,7 +22,6 @@ export class tip_for extends COMPONENT {
     this.prop.ReadOnly = false;
     this.prop.Capture = false;
     this.prop.Valid = false;
-    this.prop.ErrorMessage = ''
     this.prop.RowSource = [
       ["Forma de Captura", "Grid/Tabla", "Form/Grid compuesto", "Reporte"],
       ["F", "G", "C", "R"],
@@ -32,8 +31,7 @@ export class tip_for extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%";
     this.prop.Value = "F";
-    this.prop.Visible = true
-    this.style.zIndex = 5
+     this.style.zIndex = 5
   }
 
   async when() {

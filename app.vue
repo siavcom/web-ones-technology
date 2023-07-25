@@ -30,9 +30,7 @@
             <span v-for="(menuItem, index) in Items" :key="index">
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
-                <NuxtLink :to="menuItem.path" 
-                          :target="menuItem.target"
-                          @click="titleName=menuItem.name">
+                <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
                   <img class="bx" :src="'/Iconos/' + menuItem.icon" :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
@@ -42,17 +40,15 @@
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
               </li>
               <span v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
-              
+
                 <li @click="isMan = !isMan">
                   <span class="links_options">{{ maintenance }}</span>
                   <img v-show="!isMan" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
-                 
-                  <li >
-                    <NuxtLink :to="menuItem.path"
-                              :target="menuItem.target" 
-                              @click="titleName=menuItem.name" >
+
+                  <li>
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -67,10 +63,8 @@
                   <img v-show="!isRep" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
-                  <li >
-                    <NuxtLink :to="menuItem.path"   
-                              :target="menuItem.target"
-                               @click="titleName=menuItem.name">
+                  <li>
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -79,16 +73,14 @@
                   </li>
                 </span>
               </span>
-              <span v-show="isOpen && subMen &&  subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
+              <span v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
                 <li text-align="end" @click="isPro = !isPro">
                   <span class="links_options">{{ process }}</span>
                   <img v-show="!isPro" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
-                  <li >
-                    <NuxtLink :to="menuItem.path"
-                              :target="menuItem.target" 
-                              @click="titleName=menuItem.name">
+                  <li>
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -111,7 +103,7 @@
         <div v-if="isLoggedIn" class="profile">
           <div class="profile-details">
             <img v-if="profileImg" :src="profileImg" alt="profileImg">
-            <img v-else src="Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle">
+            <img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle">
             <div class="name_job">
               <div class="name">
                 {{ profileName }}
@@ -129,14 +121,11 @@
     </div>
 
     <div class="mainForm">
-      <NuxtLayout name='header' 
-          v-bind:logoEmp="logoEmp"
-          v-bind:nomEmp="nom_emp"
-          v-bind:titleName="titleName"
-          v-bind:fpo_pge="fpo_pge"/>
+      <NuxtLayout name='header' v-bind:logoEmp="logoEmp" v-bind:nomEmp="nom_emp" v-bind:titleName="titleName"
+        v-bind:fpo_pge="fpo_pge" />
 
-      <NuxtPage @updateStatus="updateStatus" @updateIsOpen="updateIsOpen" />
-      <NuxtLayout name='footer'/>
+      <NuxtPage  />
+      <NuxtLayout name='footer' />
 
     </div>
   </div>
@@ -144,7 +133,7 @@
 
 <script lang="ts" setup>
 /*
-
+ <NuxtPage @updateStatus="updateStatus @updateIsOpen="updateIsOpen">
                               <a :href="menuItem.link!='#'  ? menuItem.link : '#'">
 
                                   <!--i class="bx" :class="menuItem.icon || 'bx-square-rounded'" /-->
@@ -177,7 +166,7 @@ import {
 // Utilizacion de Pinia 
 
 import { storeToRefs } from 'pinia'
-import { Session } from '@/stores/currentSession'
+//import { Session } from '@/stores/currentSession'
 
 
 
@@ -240,7 +229,7 @@ const props = withDefaults(defineProps<Props>(), {
   isOpened: true,
   isMenuOpen: true,
   menuTitle: 'KilloSoft',
-  menuLogo: '/img/Logo_Empresa.png',
+  menuLogo: '/img/Siavcom.png',
   menuIcon: 'bxl-c-plus-plus',
   isPaddingLeft: true,
   menuOpenedPaddingLeftBody: '250px',
@@ -337,7 +326,7 @@ const Style = {
 }
 
 const session = Session()
-const { id_con,nom_emp,menu,fpo_pge,logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
+const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
 
 const Prop = ref(props)
@@ -361,25 +350,25 @@ const isOpen = ref(props.isOpened)
 isOpen.value = true
 
 /* ***********Titulos en las pestaÃ±as****************** */
-const titleName=ref()
-titleName.value=' Technologies'
+const titleName = ref()
+titleName.value = ' Technologies'
 
-const Title=computed(()=>{
-   return ` Titulo del programa`
-   //${menuItem.name}
+const Title = computed(() => {
+  return ` Titulo del programa`
+  //${menuItem.name}
 
 })
 
 useHead({
   titleTemplate: (title) => `Web-Ones ${titleName.value}`,
-/*
-  script: [
-    {
-       src: 'https://www.scripts.com/some/other/script.js',
-       body: true
-     }
-  ]
-*/
+  /*
+    script: [
+      {
+         src: 'https://www.scripts.com/some/other/script.js',
+         body: true
+       }
+    ]
+  */
 
 });
 
@@ -408,12 +397,12 @@ const mainFormLeft = computed(() => {
 // removeState
 const exit = () => {
   // app.$sessionStorage.removeItem('id_con')
-  id_con.value=''
+  id_con.value = ''
   nom_emp.value = ''
   const tam_act = Items.length
   Items.splice(itemLength, tam_act - itemLength)
   isLoggedIn.value = false
-  menu.value=[]
+  menu.value = []
 }
 const back = () => window.history.back()
 /*
@@ -432,78 +421,69 @@ const updateIsOpen = () => {
 /// //////////////////////////////////////
 // Actualiza estatus Login
 /// ///////////////////////////////////////
-const updateStatus = (loggedIn: boolean) => {
+/*const updateStatus = (loggedIn: boolean) => {
   //obtMenu()
-  
-}
 
+}
+*/
 /// //////////////////////////////////////
 // Obten Menu
 /// ///////////////////////////////////////
 const obtMenu = (sw_ini?: boolean) => {
-  //id_con.value = session.id_con
-  //let menu = []
+  
+// Borramos todos los elementos del menu
+while (Items.length>2)
+   Items.pop() 
 
+
+  console.log('menu items====>',Items,user.value)
   isLoggedIn.value = true
+  if (user.value.trim() == 'sa' || user.value.slice(0, 3) == 'sa@') {
 
-
-  if (Items.length==0) {
-
-  Items.push(
-    {
-      link: '#',
-      name: 'SQL diccionary',
-      tooltip: 'Setting',
-      icon: 'svg/bx-cog.svg',
-      path: { path: '/SqlDictionary' },
-      target: '', //'_blank',
-      type: 'P',
-      system: ''
-    })
+    Items.push(
+      {
+        link: '#',
+        name: 'SQL diccionary',
+        tooltip: 'Setting',
+        icon: 'svg/bx-cog.svg',
+        path: { path: '/SqlDictionary' },
+        target: '', //'_blank',
+        type: 'P',
+        system: ''
+      })
     Items.push(
 
-    {
-      // link: 'http://siavcom.com.mx:38000/Login',
-      name: 'SQL Query',
-      tooltip: 'SQL Query',
-      icon: 'svg/sql-query.svg',
-      path: { path: '/QueryExec' },
-      type: 'P',
-      system: ''
-    })
+      {
+        // link: 'http://siavcom.com.mx:38000/Login',
+        name: 'SQL Query',
+        tooltip: 'SQL Query',
+        icon: 'svg/sql-query.svg',
+        path: { path: '/QueryExec' },
+        type: 'P',
+        system: ''
+      })
 
   }
-  // Borramos todos los elementos del menu
-  if (Items.length > 2) {
-    const num_ele = Items.length - 2
-
-    Items.splice(2, num_ele)
-  }
-
-
-  //menu = JSON.parse(session.menu)// lee menu de programas
   
-  // console.log('Menu completo',menu)
-
-  // url.value.trim()
-
   for (let i = 0; menu.value.length > i; i++) {
     // solo agrega menu principal
     if (menu.value[i].tpr_prg === 'S') {
       let link = '#'
-      const path = { path: '',
-                    params:{},
-                    query:{}}
+      const path = {
+        path: '',
+        params: {},
+        query: {}
+      }
       let target = ''        //'_blank' indica ventana nueva del explorador
       const type = menu.value[i].tpr_prg
       const system = menu.value[i].sis_sis
-      const urlVue =''
+      const urlVue = ''
       if (menu.value[i].prg_prg.trim() != 'null' && menu.value[i].prg_prg.trim() > ' ') {
         link = urlVue + '/' + menu.value[i].prg_prg.trim()
         path.path = '/' + menu.value[i].prg_prg.trim()
-        var params=''
+        var params = ''
         if (menu.value[i].par_prg != null && menu.value[i].par_prg.trim().length > 0)
-            params = menu.value[i].par_prg
+          params = menu.value[i].par_prg
 
         let pos = params.indexOf(',') // Posicion de la primera coma
         let num_par = 1
@@ -519,7 +499,7 @@ const obtMenu = (sw_ini?: boolean) => {
         }
         if (params.length > 0) {
           params = params.replaceAll("'", '')
-          params= params.trim()
+          params = params.trim()
           path.params['par' + num_par.toString()] = params
           path.query['par' + num_par.toString()] = params
         }
@@ -545,8 +525,8 @@ const obtMenu = (sw_ini?: boolean) => {
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
 
-
-  console.log('SubMenu menu ====> system=',system)
+ // console.log('SubMenu menu ====> system=', system)
+  subMen.value = false
   isMan.value = false
   isRep.value = false
   isPro.value = false
@@ -554,13 +534,13 @@ const obtSubMenu = (system: string) => {
   subItemsMan.length = 0 // borramos subItems
   subItemsRep.length = 0 // borramos subItems
   subItemsPro.length = 0 // borramos subItems
-  const Man=[]
-  const Rep=[]
-  const Pro=[]
+  const Man = []
+  const Rep = []
+  const Pro = []
   //const menu = session.menu
   for (let i = 0; menu.value.length > i; i++) {
     // solo agrega menu principal
- 
+
     if (menu.value[i].sis_sis == system) {
       let link = '#'
       let path = {}
@@ -592,16 +572,11 @@ const obtSubMenu = (system: string) => {
   if (Man.length > 0 ||
     Rep.length > 0 ||
     Pro.length > 0) {
-      subItemsMan=Man
-      subItemsRep=Rep
-      subItemsPro=Pro  
+    subItemsMan = [...Man]
+    subItemsRep = [...Rep]
+    subItemsPro = [...Pro]
     subMen.value = true
     isOpen.value = true
-   
-
-console.log('Submenu man',subItemsMan)
-
-console.log('Submenu rep',subItemsRep)
 
   }
 }
@@ -633,10 +608,10 @@ watch(
 watch(
   () => menu.value,
   (menu_new, old_val) => {
-    if (menu_new.length>0){
-       console.log('watch menu',menu_new)
-        obtMenu()
-    }     
+    if (menu_new.length > 0) {
+      console.log('watch menu', menu_new)
+      obtMenu()
+    }
   },
   { deep: false }
 )
