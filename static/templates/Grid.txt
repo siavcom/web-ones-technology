@@ -21,20 +21,22 @@ import {GRID} from  '@/classes/Grid'
 
 <<imp_com>>
 
-export class grid extends GRID {
+export class Grid extends GRID {
  
 <<com_imp>> 
  
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = '<<nom_for>>'
-    this.prop.textLabel= 'Mantenimiento a la tabla <<nom_tab>>'
-    this.prop.RecordSource='<<nom_tab>>'
-    this.prop.Visible= false
-    this.prop.ReadOnly = false;
-    this.prop.ColumnCount=<<col_count>>
+    // this.prop.Name = '<<nom_for>>'
+    this.prop.textLabel= 'Mantenimiento a la vista de captura <<nom_vis>>'
+    this.prop.RecordSource='<<nom_vis>>'
+    this.prop.Visible= true
+    this.prop.ReadOnly = false
+    this.autoLoad = true  // carga automaticamente la tabla en el grid
      }
 
-  
-}
+
+ 
+ }
+

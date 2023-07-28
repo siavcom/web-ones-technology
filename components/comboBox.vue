@@ -26,13 +26,11 @@
         <input class="text" ref="Ref" :readonly="prop.Style == 2 || ReadOnly" type="text" :value="Resultado"
           @focusout="focusOut" stype="prop.style" />
 
-
-
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
         <div class="toggle" v-if="toggle && !ReadOnly">
           <!--CheckBox -->
-          <div class="MarcoColumnas" @focusout="toggle=!toggle" style="width:auto;heigth:auto; max-height:200px;"  >
+          <div class="MarcoColumnas" @focusout="toggle = !toggle" style="width:auto;heigth:auto; max-height:200px;">
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
               @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="ReadOnly">
               <!--Imprime Columnas -->
@@ -436,10 +434,13 @@ const OnMounted = onMounted(() => {
 // Asigna Resultado
 /////////////////////////////////////////////////////
 const asignaResultado = (valor?: string) => {
+
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
+  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return
+  if (columnas.length == 0) return
+  if (columnas[0]==undefined) return
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
@@ -449,15 +450,19 @@ const asignaResultado = (valor?: string) => {
   if (valor) {
     valor = valor.trim()
 
-
+    console.log('ComboBox asignaResultado columnas ',columnas[0])
     for (let i = 0; i < columnas.length; i++) {
-      if (valor == columnas[i].value.trim()) { // El objeto columna tiene dos campos value y text
+
+      if ((typeof columnas[i].value == 'number' && valor == columnas[i].value) ||
+        (!(typeof columnas[i].value == 'number') && valor == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
         Resultado.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
         console.log("Encontro el Value =======>", Resultado.value, Value.value);
-
+        Value.value = valor
       }
+
+
     }
-    // emit("update:Value", Resultado.value)
+    // emit("update:Resultado", Resultado.value)
   }
   else {  //aqui me quede checar cuando es por arreglo genera el value con array
     console.log('comoBox ', This.Name, 'value=', Value.value)
@@ -607,7 +612,7 @@ const renderComboBox = async () => {
   // renglon 0 ["Inventarios", "Cuentas por cobrar", "Cuentas por pagar", "Ventas","Compras","Vendedores","Estadisticas","Cierres y utilerias","Parametros generales","Contabilidad","Control vehicular","Logistica"],
   // renglon 1 ["IN",          "CC",                 "CP",                 "VE",   "CO",     "VN",         "ES",         "CI",                 "PG",                 "CT",            "CV",               "LO" ],
 
-  if (tip_rst == 2 || tip_rst == 3) {
+  if ((tip_rst == 2 || tip_rst == 3) && data.length > 0) {
     for (const nom_obj in data[0]) {
       const renglon = []
       for (let ren = 0; ren < data.length; ren++) {
@@ -619,29 +624,22 @@ const renderComboBox = async () => {
 
   // recorremos todas los renglones si es solo un columna val_col.length si no 
   // toma el tamaÃ±o del arreglo solo de la primer columna
-  var valor = null
 
-  if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
-    valor = Value.value // null
+  //if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
+  // let  valor = Value.value // null
 
-  for (
-    let ren = 0;
-    ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length);
-    ren++
-  ) {
+  for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
     // asignamos el Value del BoundColum 
     if (props.prop.ColumnCount <= 1) { // Si solo es una columna
-      valor = val_col[ren] // si no hay valor , asigna el primer valor
 
-      // Si solo tiene una columna
       columnas[ren] = {
         value: val_col[ren],
         text: [val_col[ren]],
       };
       //columnas[ren].text[0]= props.prop.RowSource[ren]
     } else {
-      if (!valor)
-        valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
+      //  if (!valor)
+      //    valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
 
       columnas[ren] = {  // asignamos el valor segun el BoundColumn
         value: val_col[BoundColumn][ren], // asignamos el valor segun BoundCoulumn
@@ -657,14 +655,30 @@ const renderComboBox = async () => {
 
     }
   }
-  // console.log('Columnas del comboBox',columnas)
-  //props.prop.Value = valor
 
-  //console.log("Asigna render Combo box columnas", columnas);
-  //console.log('ComboBox Renderiza column ===>', props.prop.Name, columnas)
+  // Busca valor inicial
+  let valIni = columnas[0].value
+  let sw_val = false
 
-  Value.value = valor
-  asignaResultado(valor)
+  for (let i = 0; i < columnas.length; i++) {
+
+    //  console.log('ComboBox Busca valor ', This.Name, Value.value, columnas[i].value)
+
+    if (typeof Value.value == 'number' && Value.value == columnas[i].value) {
+      sw_val = true
+      break
+    }
+
+    if (!(typeof Value.value == 'number') && Value.value.trim() == columnas[i].value.trim()) {
+      sw_val = true
+      break
+    }
+
+
+  }
+  if (!sw_val) Value.value = valIni
+
+  asignaResultado(Value.value)
 
 
   if (props.prop.MultiSelect) { // Si es multi selectccion generaramos el arreglo
@@ -784,7 +798,7 @@ watch(
 watch(
   () => props.prop.Value,
   (new_val, old_val) => {
-    console.log('Watch prop.Value ComboBox===>', new_val, old_val)
+    console.log('Watch prop.Value ComboBox===>', new_val, Value.value)
 
     // asigna la columna que tiene el resultado
     asignaResultado(new_val)
@@ -1020,6 +1034,15 @@ const init = async () => {
     }
     Status.value = 'A';  // Activo
     emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+  } else {
+    //   Value.value=This.prop.Value
+    //   Resultado.value=Value.value
+    console.log('1 comoBox init Final', This.Name, 'Values', Value.value, Resultado.value)
+
+    await renderComboBox()
+    console.log('2 comoBox init Final', This.Name, 'Values', Value.value, Resultado.value)
+
+    return
   }
   //console.warn('comboBox prop',props.prop)
   // const ref = Ref
@@ -1039,7 +1062,7 @@ const init = async () => {
     //Ref.value.select()
     return
   }// else  await emitValue()
-  //console.log('Init comboBox==>', props.prop.Name)
+  //  console.log('Init comboBox==>', This.Name,This.prop.Value,Resultado.value,Value.value)
 
 
 

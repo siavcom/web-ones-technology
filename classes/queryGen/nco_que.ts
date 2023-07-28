@@ -19,25 +19,27 @@ export class nco_que extends COMPONENT {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-  
+
     this.prop.Type = 'spinner'
     this.prop.BaseClass = 'editText'
-    this.prop.textLabel='Número'
-    this.prop.Value=0
+    this.prop.textLabel = 'Número'
+    this.prop.Value = 1
     this.prop.Position = 'main'
     this.prop.Min = "0"
     this.prop.Max = "999"
     this.prop.Decimals = 0
     this.prop.Capture = true
-    this.prop.componentStyle.width='40px'
-    
-    this.prop.Visible=false
-    this.prop.sw_add=false
+    this.prop.componentStyle.width = '40px'
+
+    this.prop.Visible = true
+    this.prop.sw_add = false
     //this.style.width='30px'
   }
 
-  public async valid(){
-    this.interactiveChange()
+
+
+  public async valid() {
+    await this.interactiveChange()
     return true
   }
   ////////////////////////////////// 
@@ -46,52 +48,58 @@ export class nco_que extends COMPONENT {
 
   async interactiveChange() {
 
-    const tabla=this.Parent.tabla
-    this.Parent.bt_edit.prop.Visible=false
-    this.Parent.bt_delete.prop.Visible=false
-    this.Parent.table.prop.Visible=false
+    if (this.prop.Value <= 0) {
+      this.prop.Value = 1
+
+    }
+    console.log('1 entra a InteractiveChange Value', this.prop.Value, this.Parent.Name)
+    const tabla = this.Parent.tabla
+    this.Parent.bt_edit.prop.Visible = false
+    this.Parent.bt_delete.prop.Visible = false
+    this.Parent.table.prop.Visible = false
     this.Parent.query.prop.Visible = false
     this.Parent.query.prop.Value = ''
-    var query=''
-      
-    if (this.prop.sw_add)
-       return
-   
+    var query = ''
 
-       if (this.prop.Value<=0){
-      this.prop.Value=1
-    }
+    if (this.prop.sw_add)
+      return
+
+      console.log('2 entra a InteractiveChange Value', this.prop.Value, this.Parent.Name)
+     
+
+
     const q = {
       usu_que: this.Parent.usu_que,
       nco_que: this.Parent.nco_que.prop.Value,
     }
 
-    const RecordSource=this.Parent.table.prop.RecordSource
-    
+    const RecordSource = this.Parent.table.prop.RecordSource
+
     const ins_sql = `select * From vi_cap_query_db  \
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`
 
-    console.log('nco_que localSql resultado',ins_sql,await this.Form.db.localSql(ins_sql))
+    //  console.log('nco_que localSql resultado', ins_sql, await this.Form.db.localSql(ins_sql))
 
     const data = await this.Form.db.localSql(ins_sql)
 
-   // console.log('nco_que interactiveChange data',data)
+    // console.log('nco_que interactiveChange data',data)
 
     if (data.length == 0) {
-      if (this.prop.Value==1)
-         return 
-      if (this.prop.Value>1){
-        this.prop.Value=this.prop.Value-1
-        this.interactiveChange()
+      if (this.prop.Value == 1)
+        return
+      if (this.prop.Value > 1) {
+        this.prop.Value = this.prop.Value - 1
+        return
+        //this.interactiveChange()
       }
       return
     } // Endif (
-    this.prop.ReadOnly= false
-    
+    this.prop.ReadOnly = false
+
     let sig_uni = ' '
- 
+
     for (let i = 0; i < data.length; i++) {
- 
+
       const m = data[i] //Scatter Memvar
 
       sig_uni = 'Y'
@@ -108,7 +116,7 @@ export class nco_que extends COMPONENT {
       }
 
       let con_uni = ' '
-      
+
       switch (m.con_que.trim()) {
         case '>':
           con_uni = ' MAYOR QUE '
@@ -161,18 +169,22 @@ export class nco_que extends COMPONENT {
     if (sig_uni.length > 0) {
       query = await left(query, query.length - sig_uni.length)
     } // Endif (
-    
 
-    this.Parent.query.prop.Value=query
+
+    this.Parent.query.prop.Value = query
     this.Parent.query.prop.Visible = true
-    this.Parent.bt_edit.prop.Visible=true
+    this.Parent.bt_edit.prop.Visible = true
 
-    if (this.Parent.Name=='queryPri') // solamente query Principal
-       this.Form.var_ord.prop.Value =data[0].cam_dat 
+    if (this.Parent.Name == 'queryPri') // solamente query Principal
+    {
+      console.log('1 asigna interactive nco_que Parent.Name', this.Parent.Name, this.Form.var_ord.prop.Value)
 
-    console.log('asigna interactive nco_que Parent.Name',this.Parent.Name,this.Form.var_ord.prop.Value)
+      this.Form.var_ord.prop.Value = data[0].cam_dat
+      console.log('2 asigna interactive nco_que Parent.Name', this.Parent.Name, this.Form.var_ord.prop.Value)
 
-    return true
+    }
+
+    return
   }
 
   ////////////////////////////////// 
@@ -180,7 +192,7 @@ export class nco_que extends COMPONENT {
   ///////////////////////////////////
 
   async when() {
-//    this.prop.Parent.browseResult.prop.RowSource = ''
+    //    this.prop.Parent.browseResult.prop.RowSource = ''
     //this.Parent.table.RecordSource=''
 
     return true
@@ -197,5 +209,5 @@ export class nco_que extends COMPONENT {
   }
   */
 
-  
+
 }

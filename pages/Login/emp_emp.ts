@@ -46,9 +46,9 @@ export class emp_emp extends COMPONENT {
     this.Parent = parent.value // solo asigno algo para que no de el error
     console.log('Emp_emp=== ctx',this.Parent)
     this.Form=this.Parent.ThisForm
-    const This = this.Parent.ThisForm[this.name].prop
-    const style = this.Parent.ThisForm[this.name].style
-    const position = this.Parent.ThisForm[this.name].position
+    const This = this.Parent.ThisForm[this.Name].prop
+    const style = this.Parent.ThisForm[this.Name].style
+    const position = this.Parent.ThisForm[this.Name].position
 
     This.prop.Name = "Demo";
     This.prop.textLabel = 'Empresa:';

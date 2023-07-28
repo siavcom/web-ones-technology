@@ -773,6 +773,8 @@ const init = async () => {
   else {
     if (props.prop.Type == 'number') numberStr.value = toNumberStr(props.prop.Value)
     if (props.prop.Type == 'checkBox') checkValue.value = props.prop.Value == 1 ? true : false
+    console.log('editText init ',This.Name,'Values',Value.value,This.prop.Value)
+    Value.value=This.prop.Value
   }
   // const ref = Ref
   // emit("update:Ref", Ref); // actualiza el valor del Ref al componente padre
@@ -788,7 +790,10 @@ const init = async () => {
     Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()
     return
-  }// else  await emitValue()
+  }
+  
+  
+  // else  await emitValue()
 
 };
 

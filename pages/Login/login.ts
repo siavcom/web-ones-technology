@@ -33,6 +33,7 @@ export class form extends COMPONENT {
     this.emp_emp.prop.Value=session.nom_emp
     this.log_usu.prop.Value=session.user
     console.log('login init emp_emp,log_usu',this.emp_emp.prop.Value,this.log_usu.prop.Value)
+    this.emp_emp.prop.Value=session.nom_emp
   }
 
 }

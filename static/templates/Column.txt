@@ -20,7 +20,7 @@ export class <<cam_dat>> extends COLUMN {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = '<<textLabel>>'
+        this.textLabel = '<<textLabel>>' // Column Header
         this.prop.Type ='<<Type>>'
         this.prop.BaseClass = '<<BaseClass>>'
         this.prop.ControlSource = '<<ControlSource>>'
@@ -32,7 +32,12 @@ export class <<cam_dat>> extends COLUMN {
         this.prop.Decimals=<<Decimals>>
         this.prop.Capture=<<Capture>>
         this.prop.updateKey=<<updateKey>>
-        
+        this.prop.RowSource=''      // 
+        this.prop.RowSourceType = 0 //1-Value, 2-Alias, 3-Select SQL 5-Array
+        this.prop.ColumnCount = 0  // Columns number
+        this.prop.BoundColumn =0  // the result is bound to column number 2
+        this.style.zIndex = 1
+
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -118,14 +123,15 @@ export class <<cam_dat>> extends COLUMN {
 
 
     }
-
+/*
     ////////////////////////////////// 
     // event when 
     ///////////////////////////////////
     
   async when() {
-    }
     
+    }
+*/    
 /*
     ////////////////////////////////// 
     // event valid 
@@ -138,8 +144,6 @@ export class <<cam_dat>> extends COLUMN {
         const Value=this.Value
         const Recno=View.Recno
       if (this.prop.updateKey) {
-
-         
          const data= async db.localSql('select 1 as exists from ${this.Parent.prop.ControlSource} \
                         where recno<>${recno}')
          if (data.exists && data.exist==1){

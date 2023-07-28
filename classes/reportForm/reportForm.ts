@@ -21,9 +21,10 @@ export class reportForm extends FORM {
   public for_imp = new for_imp()
   public bt_obtener = new bt_obtener()
   public bt_pdf = new bt_pdf()
- 
-  
   public report = new report()
+ 
+ 
+  tab_ord:string=''      // tabla para indicar el orden del reporte
   vis_rep: string = ''   // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ''   // variables extras para el orden del select
   query: string = ''     // query para ejecutar el reporte
@@ -42,6 +43,10 @@ export class reportForm extends FORM {
   }
 
   public async init() {
+
+    this.var_ord.prop.RowSource=`select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`
+    this.var_ord.prop.RowSourceType = 3 
+
     //   init = async ()=> {
 
     //this.for_imp.prop.Value=this.prop.Name
@@ -60,7 +65,7 @@ export class reportForm extends FORM {
                          lower(cam_dat)='usu_cre' or lower(cam_dat)='tie_cre' \
                          THEN 'zzzzzzzzzzz' \
                          ELSE nom_tab END as nom_tab \
-        from vi_schema_views where nom_vis='${vis_rep}' order by nom_tab,ref_dat `, 'campos', 'NULL')
+        from vi_schema_views where nom_vis='${vis_rep}' `, 'campos', 'NULL')
 
     if (!db.View.campos || db.View.campos.recCount == 0) {
       MessageBox('No existe la vista Sql :' + vis_rep, 16, 'Error  ')
@@ -68,10 +73,12 @@ export class reportForm extends FORM {
       return
     }
 
+//    const tab_ord=this.tab_ord.trim()
+//    await db.localAlaSql(`select * from campos where lower(nom_tab)='${tab_ord}`,'orden')
 
-
-    console.log('reportForm campos ', vis_rep, await db.localAlaSql('select * from campos'))
-
+//    console.log('reportForm campos ',this.tab_ord, vis_rep, await db.localAlaSql(`select * from campos `)) //where lower(nom_tab)='${this.tab_ord}'
+//    console.log('reportForm tabla campos ',this.tab_ord, vis_rep, await db.localAlaSql(`select * from campos where lower(nom_tab)='${tab_ord}`)) //where lower(nom_tab)='${this.tab_ord}'
+    
 
 
     // todos los querys del reporte
@@ -95,11 +102,9 @@ export class reportForm extends FORM {
 
     this.queryPri.usu_que = 'MAIN'
     this.queryPri.prop.Disabled = false
+    this.queryPri.query.prop.Visible=true
 
-
-
-    // await this.queryPri.nco_que.interactiveChange()
-
+    
     if (this.prop.Development == false) {
       this.queryPri.bt_add.prop.Visible = false
       this.queryPri.table.prop.saveData = false
@@ -127,11 +132,17 @@ export class reportForm extends FORM {
     await this.asignaRecordSource('queryGen', 'query_all')
     this.queryGen.usu_que = 'ALL'
 
-    this.queryPri.activa.prop.Value = 1
-    this.queryPri.nco_que.prop.Value = 1
+    this.Form.queryPri.activa.prop.Value = 1
+   // this.Form.queryPri.nco_que.prop.sw_add=true 
 
-    this.var_ord.prop.RowSource = "campos.ref_dat,cam_dat"
-    // console.log('reportForm Init ',this.queryPri,this.queryPri.activa.prop.Value,this.queryPri.nco_que.prop.Value)
+    //  this.queryPri.nco_que.prop.Value = 1
+    //      await  this.Form.queryPri.nco_que.interactiveChange()
+    //      this.Form.queryPri.activa.prop.Value = 1
+    
+
+    await this.Form.queryPri.nco_que.interactiveChange()
+    console.log('===========reportForm init()==============',this.queryPri.query.prop.Value)
+
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -146,7 +157,7 @@ export class reportForm extends FORM {
       tabla[column].prop.ControlSource = RecordSource + '.' + column
     }
     //  this.prop.ControlSource =this.Parent.prop.RecordSource.trim()+'.ren_que'
-    console.log('table asigna', nom_que, this[nom_que].table)
+    //console.log('table asigna', nom_que, this[nom_que].table)
 
   }
 
@@ -173,9 +184,7 @@ export class reportForm extends FORM {
     const ins_sql = `select * from vi_cap_query_db where trim(usu_que)='${usu_que}' and nco_que=${nco_que} order by ren_que`
     const data = await this.Form.db.localAlaSql(ins_sql)
 
-    // console.log('nco_que interactiveChange data',data)
-
-    if (data.length == 0) return where  // No hay condición 
+       if (data.length == 0) return where  // No hay condición 
 
     let query = '('
     let sig_uni = ' '

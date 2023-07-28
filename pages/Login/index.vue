@@ -196,8 +196,8 @@ div.imagen {
   height: 220x;
   width: 180px;
   /* 
-  background-image: url("/img/Logo_Empresa.png");*/
-  background-image: url("/img//Logo_Empresa.png");
+  background-image: url("/img/Logo_Empresa.bmp");*/
+  background-image: url("/img/Logo_Empresa.png");
   /* opacity: 0.5;*/
 }
 

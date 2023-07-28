@@ -151,7 +151,7 @@ export class COMPONENT {
     this.Name=this.constructor.name    
    
 
-    console.log('On Create Componente ====>',this.constructor.name,this)
+   // console.log('On Create Componente ====>',this.constructor.name,this)
    // this.Name = this.constructor.name  //.toLowerCase()
    // this.Name = (typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
     this.prop.Name = this.Name //.toLowerCase()
@@ -204,7 +204,7 @@ export class COMPONENT {
         this[componente].prop &&
         this[componente].Init) {
 
-        console.log('Init Component '+componente,'Name==',this[componente].prop.Name) 
+      //  console.log('Init Component '+componente,'Name==',this[componente].prop.Name) 
         if (this[componente].prop.Name==undefined){
           console.error('Component ',componente+'has prop.Name=undefined')
         
@@ -353,6 +353,10 @@ export class COMPONENT {
  public async init() {
    return
  }
+
+ public async mounted() {
+  return
+}
  
   /////////////////////////////////////////////////////////////////////
   // Valid

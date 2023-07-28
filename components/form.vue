@@ -15,9 +15,11 @@
   <transition name='Mainform'>
 
     <div v-if="loading" class="splash-screen">
-          <div class="spinner-wrapper">
-            <div class="spinner"><div>{{'.............Loading...................'  }}</div></div>
-          </div>
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <div>{{ '.............Loading...................' }}</div>
+        </div>
+      </div>
     </div>
     <div v-else class="Main">
       <section class="pagina" :style="ThisForm.style">
@@ -69,18 +71,13 @@ emit
               -->
               <TransitionGroup name='detailForm'>
                 <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
-                  <component :is="impComp(ThisForm[compMain].prop.BaseClass)"
-                    v-bind:Component="ref(ThisForm[compMain])"
-                    v-model:Value="ThisForm[compMain].prop.Value" 
-                    v-model:Status="ThisForm[compMain].prop.Status"
-                    v-model:ShowError="ThisForm[compMain].prop.ShowError" 
-                    v-model:Key="ThisForm[compMain].prop.Key"
-                    v-model:Focus="ThisForm[compMain].Focus" 
-                    v-model:Recno="ThisForm[compMain].Recno" 
+                  <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
+                    v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
+                    v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
+                    v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
                     v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
-                    v-bind:prop="ThisForm[compMain].prop"
-                    v-bind:style="ThisForm[compMain].style"
-                    v-bind:position="ThisForm[compMain].position" 
+                    v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
+                    v-bind:position="ThisForm[compMain].position"
                     @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
                     @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
                 </div>
@@ -115,37 +112,24 @@ emit
                   v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno"
                   v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 : ThisForm[compFooter].Recno"
                   v-bind:prop="ThisForm[compFooter].prop" v-bind:style="ThisForm[compFooter].style"
-                  v-bind:position="ThisForm[compFooter].position" 
-                  
+                  v-bind:position="ThisForm[compFooter].position"
                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                   @click.stop.prevent="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
               </div>
             </slot>
+
+            <div class='login' v-if="user != '' && id_con == '' && nom_emp != ''">
+              <!--teleport to="#modal"-->User:{{ user }} Password:
+              <input type="password" v-model.trim="pass">
+              <!--/teleport-->
+            </div>
+
           </section>
 
           <!--/template-->
           <!--/VueForm-->
         </div>
       </section>
-
-      <!--teleport to="#modal"  >
-      <laLogUsu
-        v-model:Value="ThisForm.la_log_usu.prop.Value"
-        v-bind:prop="ThisForm.la_log_usu.prop"
-        v-bind:style="ThisForm.la_log_usu.style"
-        v-bind:position="ThisForm.la_log_usu.position"
-      />
-      <pasUsu
-        v-model:Value="ThisForm.pas_usu.prop.Value"
-        v-model:Status="ThisForm.pas_usu.prop.Status"
-        v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
-        v-bind:prop="ThisForm.pas_usu.prop"
-        v-bind:style="ThisForm.pas_usu.style"
-        v-bind:position="ThisForm.pas_usu.position"
-        @focusout="ThisForm.pas_usu.valid()"
- 
-      />
-  </teleport-->
     </div>
   </transition>
 </template>
@@ -180,7 +164,13 @@ import {
 */
 
 //import { Session } from '@/stores/currentSession'
+import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
+
+const session = Session()
+const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
+
+
 //const This: any = getCurrentInstance();
 //const ThisCtx = This.ctx;
 //const showModal=ref(false)
@@ -252,17 +242,34 @@ const emit = defineEmits(["updateIsOpen"])
 const props = defineProps<{
   ThisForm: null;
 }>();
-
 const ThisForm = reactive(new props.ThisForm)
 
 
-const session = Session()
-ThisForm.user=session.user
-ThisForm.nom_emp=session.nom_emp
-ThisForm.fpo_pge=session.fpo_pge 
+/*
+let sw_session=true
+let intento=0
+do {
+  try{
+    const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
+    sw_session=false
+  } catch {
+    intento++
+    console.log('Esperando cargar session intento',intento)
+  }
+
+} while (sw_session)
+
+*/
+
+  //pasa los elementos por referencia al Global
+
+const password = ref('')
+ThisForm.user = user.value
+ThisForm.nom_emp = nom_emp.value
+ThisForm.fpo_pge = fpo_pge.value
 
 
-const loading=ref(true)
+const loading = ref(true)
 
 
 
@@ -452,10 +459,10 @@ watch(
     }
 
     for (const comp in ThisForm.estatus) {
-     
+
       if (ThisForm.estatus[comp] != 'A') {
 
-        console.log('watch ThisForm.eventos comp. ', comp,'estatus=',ThisForm.estatus[comp])
+        console.log('watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
 
         return
       }
@@ -507,7 +514,7 @@ watch(
       //  console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
 
       if (ThisForm.estatus[comp] != 'A') {
-        ThisForm.prop.Status='P'
+        ThisForm.prop.Status = 'P'
         return
       }
     }
@@ -577,7 +584,7 @@ const nextFocus = async ($event) => {
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
 const init = async () => {
- // await ThisForm.init()
+  // await ThisForm.init()
   // try {
 
 
@@ -585,37 +592,37 @@ const init = async () => {
     .then(() => {
     })
     .finally(async () => {
-      
-         for (const componente in ThisForm) {
-           if (ThisForm[componente] !== undefined) {
- 
-             if (
-               ThisForm[componente].prop &&       // Si tiene propiedades
-               ThisForm[componente].prop.Capture &&  // Si es componente de captura
-               ThisForm[componente].prop.Capture == true
-             ) {
-              //console.log('Form asigna ref a componente=',componente)
-               // if (ThisForm[componente].Ref)
-               // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
-               ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
- 
-             }
-           }
- 
-         }
- 
+
+      for (const componente in ThisForm) {
+        if (ThisForm[componente] !== undefined) {
+
+          if (
+            ThisForm[componente].prop &&       // Si tiene propiedades
+            ThisForm[componente].prop.Capture &&  // Si es componente de captura
+            ThisForm[componente].prop.Capture == true
+          ) {
+            //console.log('Form asigna ref a componente=',componente)
+            // if (ThisForm[componente].Ref)
+            // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
+            ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
+
+          }
+        }
+
+      }
+
       //console.warn(router.query.params)
       //console.warn(router.currentRoute[query])
 
       await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
-  /*
-      for (const i in ThisForm.elements) {
-        const comp = ThisForm.elements[i].Name
-        console.log('Vue Form',ThisForm.Name,' Component',comp)
-        ThisForm.estatus[comp] = toRef(ThisForm[comp].prop, "Status"); // stack de estatus de componentes
-
-      }
-      */
+      /*
+          for (const i in ThisForm.elements) {
+            const comp = ThisForm.elements[i].Name
+            console.log('Vue Form',ThisForm.Name,' Component',comp)
+            ThisForm.estatus[comp] = toRef(ThisForm[comp].prop, "Status"); // stack de estatus de componentes
+    
+          }
+          */
     });
   emit('updateIsOpen', true)
   /* }
@@ -623,11 +630,13 @@ const init = async () => {
      console.log('Error al inicializa la forma ', error)
    }
  */
- console.log('ThisForm Finish Update  ', ThisForm)
- loading.value=false
+  console.log('ThisForm Finish Update  ', ThisForm)
+  loading.value = false
+  await ThisForm.afterMounted()
 
 }
-init()
+await init()
+
 
 //var result = x === true ? "passed" : "failed";
 
@@ -764,7 +773,7 @@ div.contenedor {
   color: #b94295;
   min-width: 375px;
   min-height: 812px;
-  background-image: "/img//Logo_Empresa.png";
+  background-image: "/img//Logo_Empresa.bmp";
   margin-top: 30%;
 
 }
@@ -1021,7 +1030,4 @@ img.bt_salir {
 }
 
 */
-
-
-
 </style>

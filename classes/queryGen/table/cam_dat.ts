@@ -22,10 +22,10 @@ export class cam_dat extends COLUMN {
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
         //this.prop.ColumnWidths ="70%,10%";
-        this.prop.ColumnWidths ="200px,64px";
+        this.prop.ColumnWidths ="300px,90px"
 
         this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-        this.style.width='200px'
+        this.style.width='400px'
         this.style.zIndex=2
     }
 

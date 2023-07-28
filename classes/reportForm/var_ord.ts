@@ -17,17 +17,17 @@ export class var_ord extends COMPONENT {
     super()
         this.prop.BaseClass = 'comboBox'
         this.prop.textLabel='Ordenado Por'
-        this.prop.RowSourceType = 2  //1-Value, 2-Alias,3-sql 5-Array
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
-        this.prop.Value=''
+
         //this.prop.ColumnWidths ="70%,10%";
         this.prop.ColumnWidths ="400px,64px";
 
-        this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-        this.style.width='200px'
+       // this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
+        this.style.width='400px'
         this.style.zIndex=2
   }
   
+
  
 }

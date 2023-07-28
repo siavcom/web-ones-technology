@@ -31,7 +31,7 @@
                   :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
                   v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
                   v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-                  v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno" v-bind:Show="true"
+                  v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno"
                   v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
                   v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
                   v-bind:position="This[compHeader].position"
@@ -43,11 +43,13 @@
               <TransitionGroup name='detailForm'>
                 <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
                   <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
-            -->
+          v-bind:Show="true"
+          
+                  -->
                   <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
                     v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
                     v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-                    v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno" v-bind:Show="true"
+                    v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno" 
                     v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno"
                     v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
                     v-bind:position="This[compMain].position"
@@ -78,7 +80,7 @@
                 <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
                   v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
                   v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-                  v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
+                  v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" 
                   v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
                   v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
                   v-bind:position="This[compFooter].position"
@@ -133,7 +135,7 @@ const emit = defineEmits([ //"update",
 ////////////////////////////////////
 const props = defineProps<{
   Recno: 0;
-  Show: true;
+  //Show: true;
   Component: null;
   prop: {
     ToolTipText: string;
@@ -500,46 +502,46 @@ const impComp = ((name: string) => {
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-      console.log('Container import  edittext', name)
+     // console.log('Container import  edittext', name)
       //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       return editText
       break;
     }
     case 'combobox': {
-      console.log('Container import combobox', name)
+      //console.log('Container import combobox', name)
       return comboBox
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'grid': {
-      console.log('Container import grid', name)
+      // console.log('Container import grid', name)
       return grid
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'imgbutton': {
-      console.log('Container import imgbutton', name)
+      // console.log('Container import imgbutton', name)
       return imgButton
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'browse': {
-      console.log('Container import browse', name)
+      // console.log('Container import browse', name)
       return browse
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
 
     case 'textlabel': {
-      console.log('Container import texLabel', name)
+      // console.log('Container import texLabel', name)
       return textLabel
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'container': {
-      console.log('Container import container', name)
+      // console.log('Container import container', name)
       return container
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
@@ -552,7 +554,7 @@ const impComp = ((name: string) => {
       break
     }
     default: {
-      console.log('Container import default', name)
+     // console.log('Container import default', name)
       return editText
       //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       break;
@@ -583,7 +585,7 @@ div.contenedor {
   color: #b94295;
   min-width: 375px;
   min-height: 812px;
-  background-image: "/img//Logo_Empresa.png";
+  background-image: "/img//Logo_Empresa.bmp";
   margin-top: 30%;
 
 }

@@ -29,7 +29,7 @@ export class query extends COMPONENT {
     this.prop.Position = 'main'
     this.prop.Capture = false
     this.prop.ReadOnly= true
-    this.prop.Visible= false
+    this.prop.Visible=true
     
     //this.prop.updateKey=true
 

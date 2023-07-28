@@ -1,0 +1,17 @@
+export default defineNuxtPlugin(  () => {
+  return {
+    provide: { 
+      disableLogs:() => {
+        console.log = () => {};
+      }}}})
+
+
+      /*
+export function disableLogs() {
+
+  console.log = () => {};
+  // or you can override any other stuff you want
+}
+*/
+
+process.env.NODE_ENV === "production" ? disableLogs() : null;

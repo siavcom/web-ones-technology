@@ -38,7 +38,8 @@ export const Session = defineStore('currentSession', () => {
   const url = ref('')
   const dialect = ref('Postgres')
   const fpo_pge = ref(new Date().toISOString().substring(0, 10))
-  const logoEmp = ref('/img/Logo_Empresa.png') 
+  const logoEmp = ref('') 
+  const fileLogoEmp= ref(null)
   const menu = ref([])
 
   // persist: true,
@@ -78,6 +79,7 @@ export const Session = defineStore('currentSession', () => {
 
     try {
       url.value = dat_emp[nom_emp.value].url // obtenemos el url del servidor node
+      logoEmp.value=dat_emp[nom_emp.value].logoEmp
     }
 
     catch (error) {
@@ -110,8 +112,9 @@ export const Session = defineStore('currentSession', () => {
 
       dialect.value = response.data.dialect
       id_con.value = response.data.id // asignamos a su conexion de base de datos
+      //fileLogoEmp=response.data.fileLogoEmp
 
-     // logoEmp.value='/img/Logo_Empresa.png'
+     // logoEmp.value='/img/Logo_Empresa.bmp'
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
 
@@ -202,7 +205,7 @@ export const Session = defineStore('currentSession', () => {
       }
       //const menu = JSON.stringify(response.data)
       menu.value = (data)
-      console.log('Pinia ======leeMenu=====',menu.value)
+      console.log('Pinia ======leeMenu=====',menu.value,logoEmp.value)
 
 
     } catch (error) {
@@ -228,7 +231,7 @@ export const Session = defineStore('currentSession', () => {
     (new_emp, old_val) => {
       id_con.value = ''
 
-      console.log('Watch Pinia nom_emp.value', new_emp)  // doest not do anything
+      console.log('Watch Pinia nom_emp.value', new_emp,id_con.value)  // doest not do anything
       if (new_emp.length > 2 && id_con.value.length > 9)
         leeMenu()
     },
@@ -248,11 +251,15 @@ export const Session = defineStore('currentSession', () => {
 
   watch(() => pass.value,
     (new_pass, old_val) => {
-      if (new_pass.length > 3 && user.value.length > 0) {
-        const password=new_pass
+      if (new_pass=='')
+          return
+     
+      const password=new_pass
+       if (password.length > 3 && user.value.length > 0) {
         pass.value=''
         open(password)
       }
+
     },
     { deep: true }
   )
@@ -269,7 +276,8 @@ export const Session = defineStore('currentSession', () => {
     dialect,
     fpo_pge,
     logoEmp,
-    doneMenu
+    doneMenu,
+    fileLogoEmp
   }
 
 

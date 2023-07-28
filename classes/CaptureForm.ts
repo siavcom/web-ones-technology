@@ -39,7 +39,9 @@ export class captureForm extends FORM {
   //              modificacion
   /// /////////////////////////////////////
 
-   async valid(compName:string) {
+   async valid(compName?:string) {
+    if (!compName)
+      return false
      
     const thisComp=this[compName]
     console.log('CaptureForm valid thisComp',thisComp)

@@ -30,8 +30,8 @@ import alasql from 'alasql'
 import { storeToRefs } from 'pinia'
 //import { Session } from '@/stores/currentSession'
 const session = Session()
-const { id_con, url,dialect,nom_emp} = storeToRefs(session)  //pasa los elementos por referencia al Global
-  
+const { id_con, url, dialect, nom_emp, user } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
 /*
 import * as XLSX from 'xlsx';
 
@@ -48,10 +48,10 @@ export class VFPDB {
   //url: string
   //nom_emp: string
   //user: string
- // pass: any
- // id_con: string
-//  fpo_pge: string = new Date().toISOString().substring(0, 10)
- // dialect: string
+  // pass: any
+  // id_con: string
+  //  fpo_pge: string = new Date().toISOString().substring(0, 10)
+  // dialect: string
   // vis_tra: any = []; // guarda nombre de las vistas de trabajo en el servidor SQL
   are_tra: string[] = [''] // Las areas de trabajo donde cada vista tendra.
   // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
@@ -82,9 +82,9 @@ export class VFPDB {
   // Inicializa la conexion
   constructor() {
     this.Estatus = true
-   // this.url = ''
-   // this.nom_emp = ''
-  //  this.user = ''
+    // this.url = ''
+    // this.nom_emp = ''
+    //  this.user = ''
 
     this.num_are = 0
 
@@ -94,16 +94,16 @@ export class VFPDB {
 
     // recupera datos de conexion
 
-   /*
-    this.id_con = session.id_con == undefined ? '' : session.id_con
-    this.user = session.user
-    this.url = session.url // obtenemos el url del servidor node
-    this.dialect = session.dialect
-    this.nom_emp = session.nom_emp
-    */
+    /*
+     this.id_con = session.id_con == undefined ? '' : session.id_con
+     this.user = session.user
+     this.url = session.url // obtenemos el url del servidor node
+     this.dialect = session.dialect
+     this.nom_emp = session.nom_emp
+     */
     console.log('Db DataBase session.id ===>>>>', id_con.value, 'dilect=', dialect.value)
 
-   
+
     this.localAlaSql('DROP DATABASE IF EXISTS Now ;')
     this.localAlaSql('CREATE DATABASE Now ;')
     this.localAlaSql('DROP DATABASE IF EXISTS Last ;')
@@ -131,10 +131,10 @@ export class VFPDB {
     // await alasql.promise(`ATTACH INDEXEDDB DATABASE ${dbName};USE DATABASE ${dbName};`);
 
     //   console.log(this.id_con, this.url, this.user)
-    watch(nom_emp.value, ()=>{
-      this.View={}
-      } ) 
-    
+    watch(nom_emp.value, () => {
+      this.View = {}
+    })
+
 
   } // Fin constructor
 
@@ -374,7 +374,7 @@ export class VFPDB {
     console.log('Db USE ', alias, this.View)
 
     if (this.View[alias]) { // si exite ya la vista, Borra los datos locales
-   
+
       await this.localAlaSql('delete from Now.' + alias)
       await this.localAlaSql('delete from  Last.' + alias)
 
@@ -642,7 +642,7 @@ export class VFPDB {
     //const dat_act = datos
     // console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
     const val_def = this.View[tab_man].val_def // estructura de campos
-    console.log('Db tableUpdate lee datos Now', dat_act, 'where ', where,'val_def=',val_def)
+    console.log('Db tableUpdate lee datos Now', dat_act, 'where ', where, 'val_def=', val_def)
 
 
     // llamado AXIOS
@@ -693,9 +693,9 @@ export class VFPDB {
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
         // console.log('Db DataBAse campo=', campo)
-        
+
         // Antes switch
-        
+
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
 
@@ -727,7 +727,7 @@ export class VFPDB {
           if (val_def[campo]) {
             dat_vis.dat_act[campo] = dat_act[row][campo]
 
-            console.log('tableUpdate Actualiza CAMPO=',campo,'Valor=',dat_vis.dat_act[campo],' old=',old_dat[campo])
+            console.log('tableUpdate Actualiza CAMPO=', campo, 'Valor=', dat_vis.dat_act[campo], ' old=', old_dat[campo])
             //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true
           }
@@ -2215,13 +2215,18 @@ return false;
 
   async axiosCall(dat_lla: Record<string, unknown>) {
     const ThisForm: any = this.Form
+    let numIntentos = 0
+    let numLogin = 0
 
-    if (!(id_con.value > ' ')) {
+
+    if (!(id_con.value > ' ') || user.value == '' || nom_emp.value == '') {
       MessageBox(
         'No hay conexion con la base de datos', 16,
         'SQL Error Open'
       )
+
       const router = useRouter()
+      window.close()
       router.push('/Login')
       return
 
@@ -2247,14 +2252,27 @@ return false;
 
           return null
         }
+        numIntentos++
+        if (numIntentos == 5) {
+          numLogin++
+          //          ThisForm.prop.login = false
+          id_con.value = ''  // borra session 
+          await this.delay(10000) // espera 10 segundos
+          if (id_con.value == '')
+            numLogin = 3
 
-        ThisForm.prop.login = false
-        session.updateId('')
-      }
-    } while (ThisForm.prop.login)
+
+        }
+      } // Fin catch error
+    } while (numLogin < 3)
+
     window.close()
   }
 
+
+  delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   /// /////////////////////////////////////////////////
   // Instruccion sql base de datos local
   // db_name :Base de datos a utilizar

@@ -180,8 +180,8 @@ definePageMeta({
 
 interface Props {
   isOpened: boolean;
-  isMenuOpen: boolean;
-  menuTitle: string;
+  //isMenuOpen: boolean;
+  // menuTitle: string;
   menuLogo: string;
   menuIcon: string;
   isPaddingLeft: boolean;
@@ -227,8 +227,8 @@ const props = withDefaults(defineProps<Props>(), {
 
   // const props=defineProps({
   isOpened: true,
-  isMenuOpen: true,
-  menuTitle: 'KilloSoft',
+  //isMenuOpen: true,
+  // menuTitle: 'KilloSoftware',
   menuLogo: '/img/Siavcom.png',
   menuIcon: 'bxl-c-plus-plus',
   isPaddingLeft: true,
@@ -325,6 +325,10 @@ const Style = {
   menuFooterTextColor: '#fff'
 }
 
+const menuTitle= 'KilloSoft'
+
+
+
 const session = Session()
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
@@ -350,8 +354,8 @@ const isOpen = ref(props.isOpened)
 isOpen.value = true
 
 /* ***********Titulos en las pestaÃ±as****************** */
-const titleName = ref()
-titleName.value = ' Technologies'
+const titleName = ref('')
+titleName.value = 'Web-Ones Technologies'
 
 const Title = computed(() => {
   return ` Titulo del programa`
@@ -360,7 +364,7 @@ const Title = computed(() => {
 })
 
 useHead({
-  titleTemplate: (title) => `Web-Ones ${titleName.value}`,
+  titleTemplate: (title) => `${titleName.value}`,
   /*
     script: [
       {

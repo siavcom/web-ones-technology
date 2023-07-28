@@ -140,7 +140,7 @@ export class description extends COMPONENT {
     ///////////////////////////////////
     
     async valid() {
-if( !await this.Form.valid(this.name) && !this.prop.Valid)
+if( !await this.Form.valid(this.Name) && !this.prop.Valid)
           return false
       return true    }
 

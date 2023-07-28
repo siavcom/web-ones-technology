@@ -41,7 +41,7 @@ export class table extends GRID {
     this.prop.Valid = false;
     this.prop.Position = 'main'
     this.prop.RecordSource=''
-    this.prop.Visible=false
+    this.prop.Visible=true
     this.prop.textLabel=''
     this.prop.autoLoad=false  // se pone en falso para que no inicialice la tabla
 
