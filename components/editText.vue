@@ -618,7 +618,7 @@ watch(
   (new_val, old_val) => {
     // if (props.prop.Value != Value.value)
     //   Value.value = props.prop.Value
-    console.log('editText watch props.prop.Value', This.Name, new_val)
+    //console.log('editText watch props.prop.Value', This.Name, new_val)
     changeValue(new_val)
 
   },
@@ -630,7 +630,7 @@ watch(
   (new_val, old_val) => {
     // if (props.prop.Value != Value.value)
     //   Value.value = props.prop.Value
-    console.log('editText watch Value.value', This.Name, new_val)
+   // console.log('editText watch Value.value', This.Name, new_val)
 
     changeValue(new_val)
 
@@ -719,8 +719,8 @@ watch(
   (new_val, old_val) => {
     if (!props.prop.Focus) return
     console.log('EditText Set Focus', props.prop.Name)
-    Ref.value.focus()
-    //      Ref.value.select()
+    //Ref.value.focus()
+    Ref.value.select()
     Focus.value = false
     emit("update:Focus", false)
   },
@@ -787,8 +787,8 @@ const init = async () => {
     First.value = false
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     //emit("update") // emite un update en el componente padre
-    Ref.value.focus()  // hace el foco como primer elemento
-    //Ref.value.select()
+    //Ref.value.focus()  // hace el foco como primer elemento
+    Ref.value.select()
     return
   }
   

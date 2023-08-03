@@ -38,8 +38,8 @@ export const Session = defineStore('currentSession', () => {
   const url = ref('')
   const dialect = ref('Postgres')
   const fpo_pge = ref(new Date().toISOString().substring(0, 10))
-  const logoEmp = ref('') 
-  const fileLogoEmp= ref(null)
+  const logoEmp = ref('')
+  const fileLogoEmp = ref(null)
   const menu = ref([])
 
   // persist: true,
@@ -69,7 +69,7 @@ export const Session = defineStore('currentSession', () => {
   // Hace la conexion al servidor NODEJS que
   // comunica con el servidor de SQL
   /// ////////////////////////////////////////
-  async function open(password:string) {
+  async function open(password: string) {
 
     //  let url: any = this.url
     const router = useRouter()
@@ -79,7 +79,7 @@ export const Session = defineStore('currentSession', () => {
 
     try {
       url.value = dat_emp[nom_emp.value].url // obtenemos el url del servidor node
-      logoEmp.value=dat_emp[nom_emp.value].logoEmp
+      logoEmp.value = dat_emp[nom_emp.value].logoEmp
     }
 
     catch (error) {
@@ -114,15 +114,15 @@ export const Session = defineStore('currentSession', () => {
       id_con.value = response.data.id // asignamos a su conexion de base de datos
       //fileLogoEmp=response.data.fileLogoEmp
 
-     // logoEmp.value='/img/Logo_Empresa.bmp'
+      // logoEmp.value='/img/Logo_Empresa.bmp'
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
 
-     // leeMenu()
+      // leeMenu()
       window.history.back(); // regresa forma anterior
- //     const router = useRouter()
- //     router.push('/')
-  
+      //     const router = useRouter()
+      //     router.push('/')
+
 
     } catch (error) {
 
@@ -133,16 +133,16 @@ export const Session = defineStore('currentSession', () => {
         console.log('OpenDb Error SQL===>', error)
         MessageBox(error, 16, 'SQL Error ')
         //$Swal.fire('Error SQL' + error)
-        
+
       }
 
       // console.log('OpenDb error ===>',error.response.status.toString() + " " + error.response.statusText)
       if (error) {
-        let menError=''
+        let menError = ''
         if (error.response.statusText)
-           menError=error.response.statusText
+          menError = error.response.statusText
         else
-            menError=error.response
+          menError = error.response
 
         MessageBox(menError, 16, 'ERROR')
         console.log('Pinia error ====>>>>>>', error.response)
@@ -152,7 +152,7 @@ export const Session = defineStore('currentSession', () => {
         MessageBox('Back-end comunication error', 16, 'ERROR')
 
 
-      
+
     } // Fin de Catch
   }
 
@@ -171,7 +171,7 @@ export const Session = defineStore('currentSession', () => {
 
     // const nom_emp.value :any= Storage.getItem("nom_emp.value");
 
-   // const url = url // obtenemos el url del servidor node
+    // const url = url // obtenemos el url del servidor node
 
     const dat_vis = {
       id_con: id_con.value,
@@ -205,12 +205,15 @@ export const Session = defineStore('currentSession', () => {
       }
       //const menu = JSON.stringify(response.data)
       menu.value = (data)
-      console.log('Pinia ======leeMenu=====',menu.value,logoEmp.value)
+      console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
 
 
     } catch (error) {
-      console.log('Error Session Lee Menu' ,error)
-      MessageBox( error.response, 16, 'Back-End error')
+      console.log('Session Error', error)
+      MessageBox(error.toJSON(), 16, 'Back-End error ')
+      const router = useRouter()
+      router.push('/Login')
+      return
       // si no es un error de desconexion
     }
   }
@@ -229,9 +232,11 @@ export const Session = defineStore('currentSession', () => {
 
   watch(() => nom_emp.value,
     (new_emp, old_val) => {
-      id_con.value = ''
+      if (new_emp != old_val)
+        id_con.value = ''
 
-      console.log('Watch Pinia nom_emp.value', new_emp,id_con.value)  // doest not do anything
+
+      console.log('Watch Pinia nom_emp.value', new_emp, id_con.value)  // doest not do anything
       if (new_emp.length > 2 && id_con.value.length > 9)
         leeMenu()
     },
@@ -240,23 +245,25 @@ export const Session = defineStore('currentSession', () => {
 
   watch(() => id_con.value,
     (new_id, old_val) => {
-      console.log('Watch Pinia id_con.value', new_id)  // doest not do anything
-      if (new_id.length > 9 && nom_emp.value.length > 2)
-        leeMenu()
-      else
-        menu.value = []
+      if (new_id != old_val) {
+        console.log('Watch Pinia id_con.value', new_id)  // doest not do anything
+        if (new_id.length > 9 && nom_emp.value.length > 2)
+          leeMenu()
+        else
+          menu.value = []
+      }
     },
     { deep: true }
   )
 
   watch(() => pass.value,
     (new_pass, old_val) => {
-      if (new_pass=='')
-          return
-     
-      const password=new_pass
-       if (password.length > 3 && user.value.length > 0) {
-        pass.value=''
+      if (new_pass == '')
+        return
+
+      const password = new_pass
+      if (password.length > 3 && user.value.length > 0) {
+        pass.value = ''
         open(password)
       }
 
@@ -282,9 +289,9 @@ export const Session = defineStore('currentSession', () => {
 
 
 },
-{
-  persist: { storage: persistedState.localStorage,},
-},
+  {
+    persist: { storage: persistedState.localStorage, },
+  },
 
 )
 

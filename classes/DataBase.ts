@@ -68,17 +68,8 @@ export class VFPDB {
   oldTables = []
   Estatus: boolean
   Sql = alasql // portea alasql a this.sql (no quitar)
-  //const { MessageBox } = useNuxtApp()
-  /*
-    newData = {
-      name: "New",
-      tables: [],
-    };
-    oldData = {
-      name: "Old",
-      tables: [],
-    };
-  */
+  axiosActive:boolean=false
+
   // Inicializa la conexion
   constructor() {
     this.Estatus = true
@@ -1131,7 +1122,10 @@ export class VFPDB {
     }
 
     try {
+      console.log('llama SQLEXEC  ',new Date().toISOString())
       const respuesta = await this.axiosCall(dat_vis)
+      console.log('Obtuvo datos  SQLEXEC  ',new Date().toISOString())
+
       if (respuesta == null)
         return null
 
@@ -1169,9 +1163,10 @@ export class VFPDB {
       await this.localAlaSql(' USE Now ; DROP TABLE IF EXISTS ' + alias + '; ')
 
       await this.select(alias)
-
+      console.log(' SQLEXEC inicio crea tabla alias ',alias,new Date().toISOString())
       await this.localAlaSql(' CREATE TABLE ' + alias + ' ; \
       SELECT * INTO ' + alias + '  FROM ?', [respuesta])
+
 
       /*
             let resp_sql = {}
@@ -1236,9 +1231,12 @@ export class VFPDB {
       //* ******************* */
 
       // console.log('Db Tabla creada en Now resp ',resp_sql)
-      console.log('Db Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
+      //console.log('Db Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
+      console.log(' SQLEXEC Termino ',alias,new Date().toISOString())
+
       if (tip_res.toUpperCase() == 'NULL')
         return true
+
 
 
       return respuesta
@@ -2214,11 +2212,7 @@ return false;
   */
 
   async axiosCall(dat_lla: Record<string, unknown>) {
-    const ThisForm: any = this.Form
-    let numIntentos = 0
-    let numLogin = 0
-
-
+ 
     if (!(id_con.value > ' ') || user.value == '' || nom_emp.value == '') {
       MessageBox(
         'No hay conexion con la base de datos', 16,
@@ -2226,46 +2220,78 @@ return false;
       )
 
       const router = useRouter()
-      window.close()
+      //window.close()
       router.push('/Login')
       return
 
     }
 
+    const ThisForm: any = this.Form
+    let numIntentos = 0
+    let numLogin = 0
+
+    const controller = new AbortController()
+    const signal = controller.signal
+    // cancel the request,  controller.abort()
+    // el signal en la llamada no llevara nada  signal
+    // console.log('Db Axios call llamada  ======>>>', dat_lla, this.url)
+    this.axiosActive=true
+    setTimeout(() => controller.abort(), 60000) // 60 segundos
+
     do {
       try {
-        // console.log('Db Axios call llamada  ======>>>', dat_lla, this.url)
-
-        const response = await axios.post(url.value + 'sql', dat_lla, {
-          headers: { 'Content-type': 'application/json' }
-        })
+        const response = await axios.post(url.value + 'sql', dat_lla,{
+            signal //: AbortSignal.timeout(300000),  // milisegundos 5 minutos
+         //    headers: { 'Content-type': 'application/json' },
+  
+          })
+         /*
+        data - The response body provided by the server. If the response from the server is a JSON, Axios will automatically parse data into a JavaScript object.
+        status - The HTTP status code from the response e.g. 200, 400, 404.
+         */
+        this.axiosActive=false
         const respuesta = response.data
-        console.log('Db Axios call response  ======>>>', dat_lla, 'respuesta', respuesta)
+        console.log('Db Axios call response  ======>>>', dat_lla, 'respuesta', 'OK')
         return respuesta
-      } catch (error) {
-        console.error('Axios call BacKEnd error', dat_lla, error.response.statusText)
+      } catch (thrown) {
+        console.log("Axios stop=====>>>>>>> ", thrown);
 
-        await MessageBox(error.response.statusText, 16, 'SQL Data Base Error ')
-
-        // si no es un error de desconexion
-        if (error.response.status.toString() != '401') {
-
-          return null
+        if (axios.isCancel(thrown)) {
+          console.log("Request cancelled", thrown.message);
+          await MessageBox(error.response.statusText, 16, 'User camcel request ')
+          numLogin = 3   
         }
-        numIntentos++
-        if (numIntentos == 5) {
-          numLogin++
-          //          ThisForm.prop.login = false
-          id_con.value = ''  // borra session 
-          await this.delay(10000) // espera 10 segundos
-          if (id_con.value == '')
-            numLogin = 3
+        else {
+          //handle the error
 
+          // status - The HTTP status code from the response e.g. 200, 400, 404.
+          // statusText - The HTTP status message from the server response e.g. OK, Bad Request, Not Found.
+          
+          const error=thrown
+          console.error('Axios call BacKEnd error', dat_lla, error.response.statusText)
 
+          await MessageBox(error.response.statusText, 16, 'SQL Data Base Error ')
+
+          // si no es un error de desconexion
+          if (error.response.status.toString() != '401') {
+            this.axiosActive=false
+            return null
+          }
+          numIntentos++
+          if (numIntentos == 5) {
+            numLogin++
+
+            //          ThisForm.prop.login = false
+            id_con.value = ''  // borra session 
+            await this.delay(10000) // espera 10 segundos
+            if (id_con.value == '')
+              numLogin = 3
+
+          }
         }
       } // Fin catch error
     } while (numLogin < 3)
-
+    this.axiosActive=false
     window.close()
   }
 

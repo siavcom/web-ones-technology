@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="divi" :style="props.prop.style">
+  <div v-if="visible" class="divi" :style="props.style">
     <vue-good-table
       :columns="table.columns" 
       :rows="table.rows" 
@@ -174,11 +174,11 @@ const doSearch = async () => {
   
   // Start use axios to get data from Server
   //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
-
+  console.log('browse comienza leer data',new Date().toISOString())
   const data = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource)
   const rows = []
   if (data.length > 0) {
-    visible.value=true
+ 
     // generamos la columna recno 
     const recno = {
       label: 'Recno',
@@ -226,6 +226,8 @@ const doSearch = async () => {
     }
 
     table.rows = rows
+
+    visible.value=true // lo ponemos visible
  //   table.totalRecordCount = data.length //response.count;
  //   table.sortable.order = order;
 //    table.sortable.sort = sort;
@@ -247,6 +249,7 @@ const doSearch = async () => {
 
   // refresh table rows
   // table.rows =data.length //response.rows;
+  console.log('browse termina leer data',new Date().toISOString())
   console.log('browse final length', data.length)
   console.log('browse final columns',table.columns)
   console.log('browse final rows',table.rows)

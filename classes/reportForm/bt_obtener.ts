@@ -31,17 +31,15 @@ export class bt_obtener extends COMPONENT {
     this.Form.report.displayPdf.prop.Source = ''
     this.Form.report.displayPdf.prop.Visible = false
 
+    this.Form.queryPri.prop.Visible=false
+    this.Form.queryUsu.prop.Visible=false
+    this.Form.queryGen.prop.Visible=false
+
     this.Form.var_ord.prop.Visible = false
     this.Form.for_imp.prop.Visible = false
 
-    this.Form.queryPri.prop.Visible = false
-    this.Form.queryUsu.prop.Visible = false
-    this.Form.queryGen.prop.Visible = false
-
-
     this.Form.bt_obtener.prop.Visible = false
     this.Form.bt_pdf.prop.Visible = false
-
 
     let query=''
     if (this.Parent.sqlQuery.length>0)
@@ -55,16 +53,19 @@ export class bt_obtener extends COMPONENT {
     
     query=query+await this.Form.gen_query()
  
+    
+   
+    this.Form.bt_obtener.prop.Visible = false
+    this.Form.bt_pdf.prop.Visible = false
+
 
  //   const ins_sql = await this.Form.gen_query()
-
-    if (! await this.Form.db.execute(query, 'result', 'null') ||
-      this.Form.db.View.result && this.Form.db.View.result.recCount == 0) {
+    const resp=await this.Form.db.execute(query, 'result', 'null') 
+    console.log('bt_obtener termino query ',resp,query,new Date().toISOString()) 
+    if (!resp || this.Form.db.View.result.recCount == 0) {
       this.Form.report.bt_close.click()
       return
     }
-
-
     this.Form.report.bt_excel.prop.Visible = true
     this.Form.report.bt_json.prop.Visible = true
     this.Form.report.browseResult.prop.RowSource = 'result'

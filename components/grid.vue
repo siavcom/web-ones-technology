@@ -453,7 +453,7 @@ watch(
       //console.log('Watch estatus ===>', comp, This.estatus[comp])
 
       if (This.estatus[comp] != 'A' && Status.value == 'A') {
-        console.log('Grid wacth eventos comp=', comp, 'Estatus=', This.estatus[comp])
+        console.log('Grid watch eventos comp=', comp, 'Estatus=', This.estatus[comp])
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 

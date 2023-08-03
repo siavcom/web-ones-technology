@@ -120,6 +120,7 @@ const editText = resolveComponent('editText')
 const textLabel = resolveComponent('textLabel')
 const grid = resolveComponent('grid')
 const browse = resolveComponent('browse')
+const browseLite = resolveComponent('browseLite')
 const container = resolveComponent('container')
 const embedPdf = resolveComponent('embedPdf')
 
@@ -533,6 +534,15 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+
+    case 'browseLite': {
+      console.log('Container import browseLite', name)
+      return browseLite
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
+
 
     case 'textlabel': {
       // console.log('Container import texLabel', name)

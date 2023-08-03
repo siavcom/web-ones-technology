@@ -173,18 +173,34 @@ export class reportForm extends FORM {
     var where = ''
     if (this[tip_con].activa.prop.Value == 0) return where
 
-    if (this[tip_con].table.prop.Visible && !await this[tip_con].table.grabaTabla()) // si esta en edicion, graba la tabla
-      return where
+//    if (this[tip_con].table.prop.Visible ) // si esta en edicion, graba la tabla
+//      return where
 
     const view = this[tip_con].table.prop.RecordSource
 
     const usu_que = this[tip_con].usu_que
     const nco_que = this[tip_con].nco_que.prop.Value
+    let tabla='query_main'
+    if (tip_con=='queryUsu')
+        tabla='query_user'
 
-    const ins_sql = `select * from vi_cap_query_db where trim(usu_que)='${usu_que}' and nco_que=${nco_que} order by ren_que`
+    if (tip_con=='queryGen')
+       tabla='query_all'
+
+//trim(usu_que)='${usu_que}' and
+    console.log('reportForm alias') 
+    if (!this.Form.db.View[tabla]){ // Si no existe el alias
+      const filter = {
+        usu_que: this[tip_con].usu_que,
+        nco_que: this[tip_con].nco_que.prop.Value
+      }
+         await this.Form.db.localClone('vi_cap_query_db', tabla, filter)
+     }
+
+    const ins_sql = `select * from ${tabla} where nco_que=${nco_que} order by ren_que`
     const data = await this.Form.db.localAlaSql(ins_sql)
 
-       if (data.length == 0) return where  // No hay condición 
+    if (data.length == 0) return where  // No hay condición 
 
     let query = '('
     let sig_uni = ' '
@@ -194,13 +210,11 @@ export class reportForm extends FORM {
       m.cam_dat = m.cam_dat.trim()
       m.con_que = m.con_que.trim()
       m.val_que = m.val_que.trim()
-
       const data1 = await this.Form.db.localAlaSql(`select trim(tip_dat) as tip_dat from campos where trim(cam_dat)='${m.cam_dat}' `)
-      console.log('where tipo campo', data1, await this.Form.db.localAlaSql('select * from campos'))
 
-      const tip_dat = data1[0].tip_dat
+      const tip_dat = data1[0].tip_dat.slice(0,4)
 
-      if (tip_dat == 'character' || tip_dat == 'date' || tip_dat.slice(0, 8) == "timestamp")
+      if (tip_dat == 'char' || tip_dat == 'date' || tip_dat.slice(0, 8) == "time")
         m.val_que = "'" + m.val_que + "'"
 
         

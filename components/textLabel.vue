@@ -1,14 +1,14 @@
 <template>
   <div v-if="prop.Visible" class="divi" v-bind:style="style">
-    <div class="mensajes">
+    <div class="mensajes" v-bind:style="style" >
       <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
-      <div v-if="prop.Type == 'checkBox'">
+      <div v-if="prop.Type == 'checkBox'" v-bind:style="style" >
         <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
         <input :class="prop.Type" readonly="true" type="checkBox" :checked="checked" />
       </div>
  
       <div v-else>
-        <input v-show="Text != null" :class="prop.Type" readonly="true" v-model="Text" />
+        <input v-show="Text != null" :class="prop.Type" v-bind:style="style" readonly="true" v-model="Text" />
       </div>
     </div>
   </div>
@@ -126,6 +126,10 @@ const Text = ref(null)
 const Status = ref(props.prop.Status)
 const Caption = ref(props.prop.Caption)
 const Aling = ref('left')
+
+//const Style=ref(props.style)
+//Style.value.width=props.style.width 
+
 
 //Recno.value = 0
 //defineExpose({ Caption });

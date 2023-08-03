@@ -192,6 +192,8 @@ const editText = resolveComponent('editText')
 const textLabel = resolveComponent('textLabel')
 const grid = resolveComponent('grid')
 const browse = resolveComponent('browse')
+
+const browseLite = resolveComponent('browseLite')
 const container = resolveComponent('container')
 const embedPdf = resolveComponent('embedPdf')
 
@@ -674,6 +676,7 @@ const impComp = ((name: string, pos?: string) => {
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
+      console.log('Importo edittext')
       return editText
       break;
     }
@@ -687,15 +690,23 @@ const impComp = ((name: string, pos?: string) => {
     }
 
     case 'imgbutton': {
-      console.log('Entre a case imgButton')
-      return imgButton
+          return imgButton
       break;
     }
 
     case 'browse': {
+      console.log('Importo Browse')
       return browse
       break;
     }
+
+    case 'browselite': {
+
+      console.log('Importo BrowseLite')
+      return browseLite
+      break;
+    }
+
     case 'textlabel': {
       return textLabel
       break

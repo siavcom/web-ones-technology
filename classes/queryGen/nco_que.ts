@@ -47,6 +47,11 @@ export class nco_que extends COMPONENT {
   ///////////////////////////////////
 
   async interactiveChange() {
+    if (!this.Parent.bt_add.prop.Visible)
+        this.Parent.bt_add.prop.Visible=true
+    if (!this.Parent.query.prop.Visible)
+        this.Parent.query.prop.Visible=true
+
 
     if (this.prop.Value <= 0) {
       this.prop.Value = 1
@@ -64,7 +69,7 @@ export class nco_que extends COMPONENT {
     if (this.prop.sw_add)
       return
 
-      console.log('2 entra a InteractiveChange Value', this.prop.Value, this.Parent.Name)
+    console.log('2 entra a InteractiveChange Value', this.prop.Value, this.Parent.Name)
      
 
 
@@ -163,7 +168,11 @@ export class nco_que extends COMPONENT {
           break
 
       }
-      query = query + m.pai_que + m.ref_dat.trim() + con_uni + m.val_que.trim() + m.pad_que + sig_uni
+      query = query 
+              + m.pai_que 
+              + m.ref_dat.trim() + con_uni + m.val_que.trim() 
+              + m.pad_que + sig_uni
+              + String.fromCharCode(13)
     } // EndFor (
 
     if (sig_uni.length > 0) {

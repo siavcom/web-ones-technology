@@ -20,7 +20,7 @@ export class browseResult extends COMPONENT {
         
  //       this.prop.textLabel = 'Resultado'
         //this.prop.Type ='textArea'
-        this.prop.BaseClass = 'browse'
+        this.prop.BaseClass = 'browseLite'
         this.prop.RowSource = ''
         this.prop.Visible= false
     }

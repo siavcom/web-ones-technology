@@ -27,7 +27,7 @@ export class emp_emp extends COMPONENT {
     this.prop.BoundColumn = 1
     this.prop.RowSource = [[''], ['']]
     this.prop.ColumnWidths = '37%,60%'
-    this.style.width = '200px'
+    this.style.width = '150px'
     this.style.zIndex = 2
     let num_ren = 0
 

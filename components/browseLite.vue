@@ -1,34 +1,32 @@
 <template>
-  <div v-if="prop.Visible" class="divi" :style="style">
+  <div class="divi" :style="props.style">
+    <!--
     <div style="text-align: left">
       <img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
 
-      <!--label>SearchBy:</label-->
+      <label>SearchBy:</label>
       <input v-model="searchTerm" />
     </div>
     <input type="text" :placeholder="searchPlaceholder" @input="$emit('search-input-emit', $event.target.value)">
     <span class="tooltip">{{ searchTooltip }}</span>
-
-
-
-
-
+    -->
     <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
       :sortable="table.sortable" :messages="table.messages" :title="props.prop.Label" :is-hide-paging="true"
-      @do-search="doSearch" @is-finished="table.isLoading = false">
+      @do-search="doSearch" @is-finished="table.isLoading = false" :has-checkbox="true"
+      :column-filter="filter">
     </table-lite>
   </div>
 </template>
 
 <script setup lang="ts">
+
 //////////////////////////////////////
 // https://vue3-lite-table.vercel.app/
 //////////////////////////////////////
 
+//import tableLite from "vue3-table-lite/ts"; // TypeScript
+import TableLite from "@/components/TableLiteTs.vue"  // TypeScript
 
-
-
-import TableLite from "vue3-table-lite/ts"; // TypeScript
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -58,9 +56,12 @@ const props = defineProps<{
   };
   Recno: 0;
   Component: null;
-  db: null
+
 
 }>()
+
+const searchTerm = ref(""); // Search text
+const searchTerm2 = ref(""); // Search text
 
 const table = reactive({
   isLoading: false,
@@ -96,6 +97,14 @@ const table = reactive({
   },
 })
 
+
+// Valores componente padre
+const Component = ref(props.Component)
+const This = Component.value
+console.log('browse This', This)
+const visible = ref()
+visible.value = false
+
 ////////////////////////////////////////
 // RowSource
 ///////////////////////////////////////
@@ -103,6 +112,7 @@ const table = reactive({
 watch(
   () => props.prop.RowSource,
   (new_val, old_val) => {
+    console.log('browseLite watch RowSource ', new_val, props.prop.RowSource)
     if (new_val == '') {
       table.columns = []
       table.rows = []
@@ -114,16 +124,19 @@ watch(
 
 
 const doSearch = async (offset: number, limit: number, order: string, sort: string) => {
+  console.log('browseLite llenara los datos')
   table.rows = []
   table.columns = []
-  table.isLoading = true;
+  table.isLoading = true
   // Start use axios to get data from Server
   //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
   const sql_order = order == '' ? '' : ' order by ' + order + ' ' + sort
-
-  const data = await props.db.value.localAlaSql('select * from ' + props.prop.RowSource + sql_order)
+  console.log('browseLite llenara los datos', sql_order)
+  const data = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + sql_order)
+  console.log('browseLite data=', data)
   const rows = []
   if (data.length > 0) {
+    visible.value = true
     const recno = {
       label: 'Recno',
       field: 'recno',
@@ -149,12 +162,14 @@ const doSearch = async (offset: number, limit: number, order: string, sort: stri
 
       }
       rows.push(row) // inserta celda
+      Rows.value.push(row)
     }
-
+    table.isLoading = false
     table.rows = rows
     table.totalRecordCount = data.length //response.count;
     table.sortable.order = order;
     table.sortable.sort = sort;
+   
   }
   // Point: your response is like it on this example.
   //   {
@@ -173,7 +188,7 @@ const doSearch = async (offset: number, limit: number, order: string, sort: stri
 
   // refresh table rows
   // table.rows =data.length //response.rows;
-  console.log('browse final', data.length, order,)
+  console.log('browse final', data.length)
 
   // End use axios to get data from Server
 }
@@ -249,34 +264,72 @@ const initTable = ({ el: tableComponent }) => {
 
 
 
-  const tableLoadingFinish = (elements) => {
-    
-    table.isLoading = false;
-    console.log('tableLoadingFinish ', elements)
+const tableLoadingFinish = (elements) => {
+
+  table.isLoading = false;
+  console.log('tableLoadingFinish ', elements)
 
 
-  };
+};
 
-  const isFinished = (elements) => {
-  
-    
-    console.log('isFinished', elements)
+const isFinished = (elements) => {
 
 
-  };
-
-  const returnChequedRow = (rowData: []) => {
-    console.log('returnChequedRows ', rowData)
-  };
-
-  const rowClicked = (rowData: []) => {
-    console.log('Clik in row ', rowData)
-  };
+  console.log('isFinished', elements)
 
 
-  const rowToggled = (rows, isCollapsed) = {
-    console.log('RowToggled')
+};
 
-  }
+const returnChequedRow = (rowData: []) => {
+  console.log('returnChequedRows ', rowData)
+};
+
+const rowClicked = (rowData: []) => {
+  console.log('Clik in row ', rowData)
+};
+
+
+const rowToggled = (rows, isCollapsed) => {
+  console.log('RowToggled')
+
+}
+
+
+////////// Killo Soft //////////
+//let PropsRows = ref(props.rows)
+let Rows =ref([])
+//const RowsValue = reactive(props.rows)
+
+function multiFilter(array, filters) {
+  return array.filter(o =>
+    Object.keys(filters).every(k =>
+      [].concat(filters[k]).some(v => o[k].includes(v))));
+}
+
+
+
+const filter = (filters:{}) => {
+
+    console.log('TableLite en browseLite filters=', filters,'Rows=',Rows.value)  //, filterColumns[name])
+
+    const NewRows = multiFilter(Rows.value, filters)
+
+   // nextTick(() => {
+   //   PropsRows.value = Rows.value;
+   //   emit("Rows", PropsRows);
+      console.log('TableLite en browseLite filter NewRows==>>', NewRows)
+      table.rows=NewRows
+   // });
+
+
+};
+
+   ////////// Killo Soft ////////// 
+
+
+
+
+
+
 
 </script>

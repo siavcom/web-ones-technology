@@ -36,7 +36,8 @@ export class bt_add extends COMPONENT {
   async click() {
 
       await this.Parent.bt_edit.click(true) // se ppn en true para sumar nueva condicion
-      
+      this.prop.Visible=false
+      this.Parent.bt_edit.prop.Visible=false
     /*
       const m = {
       prg_prg: this.Form.prop.Name,

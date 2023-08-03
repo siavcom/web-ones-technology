@@ -36,13 +36,14 @@ export class bt_edit extends COMPONENT {
         this.Parent.nco_que.prop.Value=1
 
     this.prop.Visible=false  
+    this.Parent.bt_add.prop.Visible=false
 
    // || this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0
 
    const m = {
     prg_prg: this.Form.prop.Name,
     par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
-    usu_que: this.usu_que,
+    usu_que: this.Parent.usu_que,
     ren_que: 1,
     nco_que: this.Parent.nco_que.prop.Value
   }

@@ -58,13 +58,4 @@ export class queryGen extends COMPONENT {
   
 
 }
-/*async init ()  {
-  
-  //  this.queryPri.nco_que.prop.Value = 1
-//      await  this.Form.queryPri.nco_que.interactiveChange()
-//      this.Form.queryPri.activa.prop.Value = 1
-  
-  await  this.nco_que.interactiveChange()
 
-}
-*/

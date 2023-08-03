@@ -88,13 +88,13 @@ export class table extends GRID {
     let resultado=false
 
     if (await super.grabaTabla()){
-      console.log('grabaTabla super exito')
       const m = {
         prg_prg: this.Form.prop.Name,
         par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       }
    
-      await this.Form.db.use('vi_cap_query_db', m) // todos los querys del reporte
+    //  await this.Form.db.use('vi_cap_query_db', m) // todos los querys del reporte
+    
       resultado=true
     } 
     return resultado
