@@ -12,11 +12,12 @@
 
 //import { CONTAINER } from '@/classes/Container'
 import { COMPONENT } from '@/classes/Component'
-import { browseResult } from './browseResult'
+
 import {displayPdf} from './displayPdf'
 import { bt_excel } from './bt_excel'
 import { bt_close} from './bt_close'
 import { bt_json} from './bt_json'
+import { browseResult } from './browseResult'
 
 export class report extends COMPONENT {
 
@@ -25,8 +26,8 @@ export class report extends COMPONENT {
   ////////////////////////////////////
   //public mensaje=new mensaje()
   
-  public browseResult = new browseResult()
   public displayPdf = new displayPdf()
+  public browseResult = new browseResult()
   public bt_close= new bt_close()
   public bt_excel = new bt_excel()
   public bt_json = new bt_json()
@@ -43,8 +44,9 @@ export class report extends COMPONENT {
     this.prop.Visible=false
     this.prop.BaseClass='container'
     this.prop.textLabel='Reporte'
-    this.style.width='1200px'
 
+    this.style.width='920px'
+    this.style.height='auto'
     this.style.display='block'
     
      }

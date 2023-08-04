@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
-// This class component was generated automatically by web-ones-technology
+// This class container
 // BaseClass : component
-// Class : 
-// Description : browse resultado
+// Class : browseResult
+// Description : Contenedor de resultado de obtener datos
 // Author : El Fer Blocks
-// Creation : 2023-05-26
+// Creation : 2023-08-03
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -14,16 +14,10 @@
 import { COMPONENT } from '@/classes/Component'
 
 export class browseResult extends COMPONENT {
-
+    //table = {}  // Datos de la tabla
     constructor() {
         super()
-        
- //       this.prop.textLabel = 'Resultado'
-        //this.prop.Type ='textArea'
         this.prop.BaseClass = 'browseLite'
         this.prop.RowSource = ''
-        this.prop.Visible= false
     }
-
-   
 }

@@ -39,7 +39,7 @@ export class reportForm extends FORM {
     this.queryUsu.prop.Name = 'queryUsu'
     this.queryGen.Name = 'queryGen'
     this.queryGen.prop.Name = 'queryGen'
- 
+    //this.style.width='1210px'
   }
 
   public async init() {

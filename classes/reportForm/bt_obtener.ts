@@ -60,20 +60,26 @@ export class bt_obtener extends COMPONENT {
 
 
  //   const ins_sql = await this.Form.gen_query()
-    const resp=await this.Form.db.execute(query, 'result', 'null') 
-    console.log('bt_obtener termino query ',resp,query,new Date().toISOString()) 
-    if (!resp || this.Form.db.View.result.recCount == 0) {
-      this.Form.report.bt_close.click()
-      return
-    }
-    this.Form.report.bt_excel.prop.Visible = true
-    this.Form.report.bt_json.prop.Visible = true
-    this.Form.report.browseResult.prop.RowSource = 'result'
 
-    // Mostramos el reporte
+
     this.Form.report.prop.Visible = true
     this.Form.report.prop.Disabled = false
+    const result=await this.Form.db.execute(query, 'sqlresult') 
+    console.log('bt_obtener termino query ',query,new Date().toISOString()) 
+    if (!result || result.length==0){
+      console.log('No hay datos que mostrar') 
+      this.Form.report.prop.Disabled = true
+      this.Form.report.bt_close.click()
+      return
 
+    }
+        
+    this.Parent.report.browseResult.prop.RowSource = 'sqlresult'
+    console.log('bt_obtener asigno RowSource',this.Parent.report) 
+    this.Form.report.bt_excel.prop.Visible = true
+    this.Form.report.bt_json.prop.Visible = true
+  
+  
 
   }
 

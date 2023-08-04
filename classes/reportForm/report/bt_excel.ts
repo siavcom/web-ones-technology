@@ -28,6 +28,8 @@ export class bt_excel extends COMPONENT {
   } // Fin constructor
 
   async click() {
+
+    const result=this.Form.table.rows.value // obtenemos los rows
     await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from result`) 
    // await this.Form.db.localAlaSql(`select * into XLS("restest257a",?) from result`) 
 

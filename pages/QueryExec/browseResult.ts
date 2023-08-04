@@ -22,6 +22,6 @@ export class browseResult extends COMPONENT {
         //this.prop.Type ='textArea'
         this.prop.BaseClass = 'browseLite'
         this.prop.RowSource = ''
-        this.prop.Visible= false
+       
 }
 }

@@ -29,7 +29,9 @@ export class bt_json extends COMPONENT {
   } // Fin constructor
 
   async click() {
-    const result = await this.Form.db.localAlaSql(`select * from result`)
+
+    //const result = await this.Form.db.localAlaSql(`select * from result`)
+    const result=this.Parent.browseResult.table.value.rows // obtenemos los rows
     if (result.length == 0)
       return
 

@@ -42,7 +42,11 @@
                     {{ col.label }}
                   </div>
                   <!--Begin KilloSoft -->
-                  <input class='filter' v-model.trim="filterColumns[col.label]" @focusout="filter(col)" />
+                  <input class='filter'
+                  :style="Object.assign({width: col.width ? col.width : 'auto', },
+                    col.headerStyles )"
+                  
+                  v-model.trim="filterColumns[col.label]" @focusout="filter(col)" />
 
                   <!--End KilloSoft -->
                 </th>

@@ -1,15 +1,17 @@
 <template>
- <div v-if="loading && prop.Visible && BSource==''" class="splash-screen">
-    <div class="spinner-wrapper">
-      <div class="spinner">
-        <p>..........Loading data..........</p>
+  <div class="divi" v-if="prop.Visible">
+    <div v-if="loading && prop.Visible && BSource == ''" class="splash-screen">
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <p>..........Loading data..........</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div v-else class="wraper" >
-    <div class='reportViewer' :style="style">
-      <iframe :src="BSource" :width="style.width" height="1200px" />
+    <div v-else class="wraper">
+      <div class='reportViewer' :style="style">
+        <iframe :src="BSource" :width="style.width" height="1200px" />
+      </div>
     </div>
   </div>
 </template>
@@ -100,7 +102,7 @@ watch(
   () => props.prop.Source,
 
   (new_val, old_val) => {
-    console.log('embedPdf sourcelength=',new_val.byteLength,'Bsource',BSource.value,'loading=',loading)
+    console.log('embedPdf sourcelength=', new_val.byteLength, 'Bsource', BSource.value, 'loading=', loading)
     BSource.value = ''
 
     if (new_val.byteLength) {
@@ -125,11 +127,11 @@ watch(
   
       BSource.value = objectUrl;
       */
-    } else 
+    } else
       loading.value = true
 
 
-      console.log('embedPdf Buffer=',BSource.value)
+    console.log('embedPdf Buffer=', BSource.value)
   },
   { deep: false }
 );
