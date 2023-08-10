@@ -74,7 +74,7 @@ export class bt_obtener extends COMPONENT {
 
     }
         
-    this.Parent.report.browseResult.prop.RowSource = 'sqlresult'
+    this.Parent.report.browse.prop.RowSource = 'sqlresult'
     console.log('bt_obtener asigno RowSource',this.Parent.report) 
     this.Form.report.bt_excel.prop.Visible = true
     this.Form.report.bt_json.prop.Visible = true

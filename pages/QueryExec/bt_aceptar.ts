@@ -28,12 +28,13 @@ export class bt_aceptar extends COMPONENT {
   } // Fin constructor
 
   async click() {
-    this.Form.browseResult.prop.RowSource = ''
-    console.log('bt_aceptar click===>>>',this.Form.browseResult.prop.RowSource)  
+    this.Form.browse.prop.RowSource = ''
+   // console.log('bt_aceptar click===>>>',this.Form.browse.prop.RowSource)  
     if (this.Form.query.prop.Value.trim()>'   ' ){
       const result=await this.Form.db.execute(this.Form.query.prop.Value.trim(),'sqlresult') 
-      if (result) this.Form.browseResult.prop.RowSource = 'sqlresult'
-      console.log('bt_aceptar ===>>> Datos leidos del SQL Server',this.Form.browseResult.prop.RowSource)  
+      if (result) 
+        this.Form.browse.prop.RowSource = 'sqlresult'
+     // console.log('bt_aceptar ===>>> Datos leidos del SQL Server',this.Form.browse.prop.RowSource)  
       }
 
   }

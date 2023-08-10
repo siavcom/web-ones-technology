@@ -46,7 +46,7 @@
                   :style="Object.assign({width: col.width ? col.width : 'auto', },
                     col.headerStyles )"
                   
-                  v-model.trim="filterColumns[col.label]" @focusout="filter(col)" />
+                  v-model="filterColumns[col.label]" @focusout="filter(col)" />
 
                   <!--End KilloSoft -->
                 </th>
@@ -434,6 +434,8 @@ export default defineComponent({
     let tmpPageOptions = props.pageOptions as Array<pageOption>;
     let defaultPageSize =
       props.pageOptions.length > 0 ? ref(tmpPageOptions[0].value) : ref(props.pageSize);
+    console.log('TableLite const defaultPageSize=',defaultPageSize.value)
+
     if (tmpPageOptions.length > 0) {
       tmpPageOptions.forEach((v: pageOption) => {
         if (
@@ -537,7 +539,7 @@ export default defineComponent({
     
     */
     const filter = (columna: string) => {
-
+      console.log('Entro a TableLite filter') 
       const filters = {}
       let sw_filter = false
 
@@ -548,12 +550,15 @@ export default defineComponent({
           filters[name] = [filterColumns[name].trim()]
         }
       }
-      if (sw_filter) {
-        console.log('TableLite filter ', filters,props.columnFilter)  //, filterColumns[name])
+      console.log('TableLite filter ', filters,props.columnFilter)  //, filterColumns[name])
+       
+        //let offset = (setting.page - 1) * setting.pageSize;
+       // let limit = setting.pageSize;
+       
+      props.columnFilter(filters, setting.pageSize);
+      setting.page = 1;
+       // emit("get-now-page", setting.page);
 
-        props.columnFilter(filters)
-
-      }
 
     };
 
@@ -800,7 +805,9 @@ export default defineComponent({
     watch(
       () => props.pageSize,
       (newPageSize) => {
+        console.log('TableLite pageSize')
         setting.pageSize = newPageSize;
+        console.log('TableLite pageSize',setting.pageSize)
       }
     );
 

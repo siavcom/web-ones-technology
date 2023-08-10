@@ -1,34 +1,52 @@
 <template>
-    <table-lite v-if="This.prop.RowSource>' '" 
- 
-      :columns="table.columns" 
-      :rows="table.rows" 
-      :total="table.totalRecordCount"
-      :sortable="table.sortable" 
-      
-      :title="This.Form.prop.textLabel" 
-      
-      :max-height="table.maxHeigth"
-      :has-checkbox="table.checkBox"
-      :has-group-toggle="table.groupToggle"
-      :page-size="table.pageSize"
-      :grouping-key="table.groupingKey"
+  <div class="divi" v-if="This.prop.RowSource > ' '">
+    <div v-if="table.isLoading" class="splash-screen">
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <p>..........Loading data..........</p>
+        </div>
+      </div>
+    </div>
 
-      :is-loading="table.isLoading"
-      :messages="table.messages"
-      @do-search="doSearch" 
-      @is-finished="tableLoadingFinish"
-      @return-checked-rows="returnChequedRows"
-     
-      :column-filter="filter">
+    <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
+      :sortable="table.sortable" :title="This.Form.prop.textLabel" :has-checkbox="table.checkBox"
+      :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey" :messages="table.messages" :page-size="10"
+      :page-options="[{ value: 10, text: 10 }, { value: 25, text: 25 }, { value: 50, text: 50 }]" @do-search="doSearch"
+      @return-checked-rows="returnChequedRows" :column-filter="filter" @is-finished="table.isLoading = false">
     </table-lite>
+  </div>
 </template>
 
 <script setup lang="ts">
 /*
-  <div class="divi" v-if="This.prop.RowSource>' '" >
 
-<div style="text-align: left">
+
+   :page-size="15"
+        :page-options="pageOptions"
+      
+        :columns="table.columns" 
+        :rows="table.rows" 
+        :total="table.totalRecordCount"
+        :sortable="table.sortable" 
+        :title="This.Form.prop.textLabel" 
+        :has-checkbox="table.checkBox"
+        :has-group-toggle="table.groupToggle" 
+        :grouping-key="table.groupingKey" 
+        :messages="table.messages"
+       
+        @do-search="doSearch" 
+        @is-finished="isFinished"
+        @return-checked-rows="returnChequedRows" :column-filter="filter">
+
+
+
+
+
+  :page-size="table.pageSize" 
+ :grouping-display="table.groupingDisplay" 
+:is-loading="table.isLoading"
+ :max-height="table.maxHeigth"
+    <div style="text-align: left">
       <img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
 
       <label>SearchBy:</label>
@@ -55,6 +73,18 @@ import TableLite from "@/components/TableLiteTs.vue"  // TypeScript
 ///////////////////////////////////////
 // Propiedades del componente reactivas
 ////////////////////////////////////
+
+const pageOptions = [
+  {
+    value: 15,
+    text: 15
+  },
+  {
+    value: 30,
+    text: 30
+  }
+]
+
 const props = defineProps<{
   prop: {
     RowSource: string;
@@ -80,50 +110,28 @@ const props = defineProps<{
   };
   Recno: 0;
   Component: null;
-
-
 }>()
 
 // Valores componente padre
 const Component = ref(props.Component)
 const This = Component.value
-//This.table=ref(table)
-console.log('browse This', This)
-const visible = ref()
-visible.value = false
 
+const table = This.table
 
+//const isLoading = ref(false)
+const isStatic = ref(false)
 
-
-
+/*
 const table = reactive({
-  pageSize:10,
-  maxHeigth:'15px',
+  pageSize:10,  //Default display the number of items on one page. In most cases no set required.
+  //maxHeigth:'15px',  // Table Max Heigth Default "auto"
   checkBox:true,
   groupToggle:true,
  
   isLoading: false,
   groupingKey:'',
   columns: [
-    /*    {
-          label: "ID",
-          field: "id",
-      //    width: "3%",
-          sortable: true,
-          isKey: true,
-        },
-        {
-          label: "Name",
-          field: "name",
-          width: "10%",
-          sortable: true,
-        },
-        {
-          label: "Email",
-          field: "email",
-          width: "15%",
-          sortable: true,
-        }, */
+  
   ],
   rows: [],
   oriRows:[],
@@ -141,116 +149,146 @@ const table = reactive({
         gotoPageLabel: "Go to page:",
         noDataAvailable: "No data",
       },
+      groupingDisplay: function (key) {
+        return (
+          '<span style="background: darkgray; padding: 5px; border-radius: 5px;">' +
+          key +
+          "</span>"
+        );
+      },
 
 
 })
 
-
+*/
 ////////////////////////////////////////
 // RowSource
 ///////////////////////////////////////
 
 watch(
   () => props.prop.RowSource,
-  (new_val, old_val) => {
-    console.log('browseLite watch RowSource===>', new_val, props.prop.RowSource)
+  async (new_val, old_val) => {
+    // console.log('browseLite watch RowSource===>', new_val, props.prop.RowSource)
+    table.columns = []
+    table.rows = []
+    table.oriRows = []
+    table.totalRecordCount = 0
+    table.filters={}
+
     if (new_val == '') {
-      table.columns = []
-      table.rows = []
-    } else doSearch(0, 10, '', '') // Get data first
+      return
 
-  },
-  { deep: false }
-);
+    } else {
+      // obtiene el primer registro para obtener logitudes y descripcion de variables
+      const result = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + ' limit 1')
+      if (result.length > 0) {
 
+        const Id = {
+          label: 'Id',
+          field: 'recno',
+          isKey: true,
+          width: '40px',
+          sortable: true,
+        }
+        table.columns.push(Id)
 
-const doSearch = async (offset: number, limit: number, order: string, sort: string) => {
-  console.log('browseLite llenara los datos')
-  table.rows = []
-  table.columns = []
-  table.isLoading = true
-  // Start use axios to get data from Server
-  //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
-  const sql_order = order == '' ? '' : ' order by ' + order + ' ' + sort
-  
-  const data = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + sql_order)
- 
-  const rows = []
-  if (data.length > 0) {
-    visible.value = true
-    const recno = {
-      label: 'Recno',
-      field: 'recno',
-      isKey: true,
-      width: '40px',
-      sortable: true,
-    }
-    table.columns.push(recno)
+        // genera el header 
+        for (const field in result[0]) {
 
-   
-    for (let i = 0; i < data.length; i++) {
-      const row = { id: i + 1 }
-      for (const field in data[i]) {
-        if (i == 0) { // Genera header
-          let width='16'
-          if (typeof data[0][field]=='string' ){
-             const long=data[i][field].length*13     
-             console.log('browseLite field long',long.toString()+'px')
-             width = long.toString()+'px'
-          }   
+          let width = '16'
+          if (typeof result[0][field] == 'string') {
+            const long = result[0][field].length * 13
+            // console.log('browseLite field long', long.toString() + 'px')
+            width = long.toString() + 'px'
+          }
           const column = {
             label: field,
             field: field,
             width: width,
             sortable: true,
           }
-          if (field != 'recno')
-            table.columns.push(column)
+
+          table.columns.push(column)
+
         }
-        row[field] = data[i][field]
 
+        await doSearch(0, 10, 'id', 'asc') // busca los primeros datos
       }
-      rows.push(row) // inserta celda
-    
+
+
     }
-    table.isLoading = false
-    table.rows = rows
-    table.oriRows =rows
-    table.totalRecordCount = data.length //response.count;
-    table.sortable.order = order;
-    table.sortable.sort = sort;
-   
+  },
+  { deep: false }
+);
+
+const doSearch = async (offset: number, limit: number, order: string, sort: string) => {
+  // console.log('browseLite llenara los datos')
+  table.isLoading = true
+  table.rows = []  // limpiamos rows
+  table.oriRows = []
+  table.totalRecordCount = 0
+
+
+  // Start use axios to get data from Server
+  //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
+  const sql_order = (order == '' || order.trim() == 'id') ? ' ' : ' order by ' + order + ' ' + sort
+  //console.log('browseLite Order =',sql_order,await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource )) 
+
+  const datos = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + sql_order)
+
+  if (datos.length > 0) {
+    table.totalRecordCount = datos.length
+
+    for (let i = 0; i < datos.length; i++) {
+      const row = { id: i + 1 }
+      for (const field in datos[i]) { // Recorre columnas
+        row[field] = datos[i][field]
+      }
+      table.oriRows.push(row) // inserta columnas del renglon 
+
+    }
+
+    // table.oriRows = rows  // Rows originales para cuando se hacen lo filtros
+    let sw_filters = false
+    for (const elements in table.filters)
+      sw_filters = true
+
+
+    //  console.log('doSearch  table.filters=',table.filters,'sw_filers=',sw_filters)
+    const rows = sw_filters ?
+      await multiFilter(table.oriRows, table.filters) :
+      // else 
+      table.oriRows
+
+    // obtenemos los renglones a mostrar  
+
+    table.isReSearch = offset == undefined ? true : false
+    // limit es la cantidad de renglones a leer
+    //if (offset >= 10 || limit >= 20) {
+    //      limit = 20;
+    //}
+    if (offset + limit > table.totalRecordCount) {
+      limit = table.totalRecordCount - offset
+    }
+
+    console.log('browseLite doSearch offset=', offset, 'limit=', limit, 'order=', order, 'oriRows=', table.oriRows)
+
+    for (let i = offset; i < offset + limit; i++) {
+
+      table.rows.push(rows[i])
+    }
+
+
+    //This.rows = ref(table.rows)
+    table.totalRecordCount = datos.length
   }
-  // Point: your response is like it on this example.
-  //   {
-  //   rows: [{
-  //     id: 1,
-  //     name: 'jack',
-  //     email: 'example@example.com'
-  //   },{
-  //     id: 2,
-  //     name: 'rose',
-  //     email: 'example@example.com'
-  //   }],
-  //   count: 2,
-  //   ...something
-  // }
 
-  // refresh table rows
-  // table.rows =data.length //response.rows;
-  console.log('browse final', data.length)
-
-  // End use axios to get data from Server
+  table.sortable.order = order;
+  table.sortable.sort = sort;
 }
 
 
 /*
-const tableLoadingFinish = (elements) => {
-  table.isLoading = false;
-};
-
-
-
 
 row-clicked
 
@@ -316,19 +354,12 @@ const initTable = ({ el: tableComponent }) => {
 
 const tableLoadingFinish = (elements) => {
 
-  table.isLoading = false;
+  isLoading.value = false;
   console.log('tableLoadingFinish ', elements)
 
 
 };
 */
-const isFinished = (elements) => {
-
-
-  console.log('isFinished', elements)
-
-
-};
 
 const returnChequedRows = (rowData: []) => {
   console.log('returnChequedRows ', rowData)
@@ -350,7 +381,7 @@ const rowToggled = (rows, isCollapsed) => {
 
 //const RowsValue = reactive(props.rows)
 
-async function multiFilter(array, filters) {
+function multiFilter(array, filters) {
   return array.filter(o =>
     Object.keys(filters).every(k =>
       [].concat(filters[k]).some(v => o[k].includes(v))));
@@ -358,39 +389,70 @@ async function multiFilter(array, filters) {
 
 
 
-const filter = (filters:{}) => {
+const filter = async (filters?: {}, limit: number) => {
+  if (!filters)
+    filters = table.filters
+  else
+    table.filters = filters
 
-    console.log('TableLite en browseLite filters=', filters)  //, filterColumns[name])
 
-  //  const NewRows = multiFilter(Rows.value, filters)
-    const NewRows = multiFilter(table.oriRows, filters)
+  let sw_filters = false
+  for (const elements in filters)
+    sw_filters = true
+
+  //console.log('TableLite en browseLite filters=', filters)  //, filterColumns[name])
+
+  console.log('multiFilter filters', filters)
+  table.rows = []
+
+  const NewRows = sw_filters ? await multiFilter(table.oriRows, filters) :
+    table.oriRows
 
 
-   // nextTick(() => {
-   //   PropsRows.value = Rows.value;
-   //   emit("Rows", PropsRows);
-      console.log('TableLite en browseLite filter NewRows==>>', NewRows)
-      table.rows=NewRows
-   // });
+  console.log('browseLite doSearch offset=', 'limit=', limit, NewRows)
+  limit = (limit > NewRows.length) ? NewRows.length : limit
+  table.totalRecordCount = NewRows.length
+
+  for (let i = 0; i < limit; i++) {
+
+    table.rows.push(NewRows[i])
+  }
+
+  // nextTick(() => {
+  //   PropsRows.value = Rows.value;
+  //   emit("Rows", PropsRows);
+  //    console.log('TableLite en browseLite filter NewRows==>>', NewRows)
+
+
+  //     table.rows=NewRows  // asignamos Nuevos renglones
+  //    This.rows=table.rows // exportamos rows al componente
+  // });
 
 
 };
 
-const tableLoadingFinish = (elements) => {
-      table.isLoading = false;
-      Array.prototype.forEach.call(elements, function (element) {
-        if (element.classList.contains("name-btn")) {
-          element.addEventListener("click", function () {
-            console.log(this.dataset.id + " name-btn click!!");
-          });
-        }
-        if (element.classList.contains("quick-btn")) {
-          element.addEventListener("click", function () {
-            console.log(this.dataset.id + " quick-btn click!!");
-          });
-        }
+const isFinished = () => {
+  table.isLoading = false
+
+  console.log('isFinished', table.isLoading)
+
+
+  /*
+  Array.prototype.forEach.call(elements, function (element) {
+    if (element.classList.contains("name-btn")) {
+      element.addEventListener("click", function () {
+        console.log(this.dataset.id + " name-btn click!!");
       });
-    };
+    }
+    if (element.classList.contains("quick-btn")) {
+      element.addEventListener("click", function () {
+        console.log(this.dataset.id + " quick-btn click!!");
+      });
+    }
+  });
+
+  */
+};
 
 
 

@@ -33,10 +33,10 @@ export class bt_close extends COMPONENT {
 
     this.Form.report.prop.Visible=false
 
-    this.Form.report.browseResult.prop.RowSource = ''
+    this.Form.report.browse.prop.RowSource = ''
     this.Form.report.displayPdf.prop.Source = ''
 
-    this.Form.report.browseResult.prop.Visible = false
+    this.Form.report.browse.prop.Visible = false
     this.Form.report.displayPdf.prop.Visible = false
 
     this.Form.bt_obtener.prop.Visible=true

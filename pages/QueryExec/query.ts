@@ -125,7 +125,7 @@ export class query extends COMPONENT {
   ///////////////////////////////////
 
   async when() {
-    this.Parent.browseResult.prop.RowSource = ''
+    this.Parent.browse.prop.RowSource = ''
 
     return true
   }

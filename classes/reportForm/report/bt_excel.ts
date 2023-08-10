@@ -29,9 +29,18 @@ export class bt_excel extends COMPONENT {
 
   async click() {
 
-    const result=this.Form.table.rows.value // obtenemos los rows
-    await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from result`) 
-   // await this.Form.db.localAlaSql(`select * into XLS("restest257a",?) from result`) 
+    //const result=this.Form.table.rows.value // obtenemos los rows
+    console.log('bt_excel rows',this.Parent.browse.table.rows)
+    
+    await this.Form.db.localAlaSql( "DROP TABLE IF EXISTS excelResult ;CREATE TABLE excelResult")
+    await this.Form.db.localAlaSql('INSERT INTO excelResult SELECT * FROM ?',this.Parent.browse.table.row)
+    console.log('bt_excel 11111', await this.Form.db.localAlaSql(`select *  from excelResult`) )
+      
+    await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from excelResult`) 
+   //await this.Form.db.localAlaSql('INSERT INTO excelResult VALUES ?',this.Parent.browse.table.row)
+   //console.log('bt_excel 2222', await this.Form.db.localAlaSql(`select *  from excelResult`) )
+
+   //await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from result`) 
 
   }
 

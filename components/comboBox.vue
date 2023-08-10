@@ -590,6 +590,14 @@ const renderComboBox = async () => {
       //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
       data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
       console.log('CononBox render data', data)
+      if (data==null){ 
+        console.warn('comoBox Render',This.name,'RowSource',props.prop.RowSource )
+        
+        return
+
+
+      }
+
 
       /*
             // Recorremos las columnas que traiga el resultado 

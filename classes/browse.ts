@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
-// This class container
-// BaseClass : component
-// Class : browseResult
+
+// BaseClass : browseLite
+// Class : browse
 // Description : Contenedor de resultado de obtener datos
 // Author : El Fer Blocks
 // Creation : 2023-08-03
@@ -13,12 +13,12 @@
 
 import { COMPONENT } from '@/classes/Component'
 
-export class browseResult extends COMPONENT {
+export class browse extends COMPONENT {
     //table = {}  // Datos de la tabla
     rows=null // renglones resultantes por referencia
     table = {
         isLoading:false, 
-        pageSize:25,  //Default display the number of items on one page. In most cases no set required.
+        pageSize:10,  //Default display the number of items on one page. In most cases no set required.
         //maxHeigth:'15px',  // Table Max Heigth Default "auto"
         checkBox:true,
         filters:{},
@@ -60,9 +60,6 @@ export class browseResult extends COMPONENT {
       
       
       }
-      
-
-
 
 
     constructor() {

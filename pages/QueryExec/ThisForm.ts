@@ -14,7 +14,7 @@
 
 import {query } from "./query" 
 //import {result } from "./result" 
-import {browseResult} from "./browseResult"
+import {browse} from "@/classes/browse"
 import { bt_aceptar } from "./bt_aceptar"
 
 ///////////////////////////////////////
@@ -31,7 +31,7 @@ export class ThisForm extends FORM {
 ////////////////////////////////////
 
    public query = new query() 
-   public browseResult = new browseResult() 
+   public browse = new browse() 
    public bt_aceptar= new bt_aceptar()
  
   
@@ -39,7 +39,7 @@ export class ThisForm extends FORM {
     super()  // inicializa la clase base
 
     this.Development = false
-    this.prop.Name = 'browseResult'
+    this.prop.Name = 'SqlQuery'
     this.prop.textLabel = "SQL Query"
     this.prop.Status = 'A'
     this.style.display = "flex"

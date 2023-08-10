@@ -87,9 +87,11 @@ export const Session = defineStore('currentSession', () => {
       MessageBox('No esta definida la empresa :' + nom_emp.value, 16, 'SQL Error ')
 
     }
+    let sw_con=false 
+    if (id_con.value.length>8)
+       sw_con=true
 
-
-    id_con.value = ''
+    //id_con.value = ''
     /*    url = url.value
        nom_emp = nom_emp.value
         user = user.value
@@ -117,8 +119,10 @@ export const Session = defineStore('currentSession', () => {
       // logoEmp.value='/img/Logo_Empresa.bmp'
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
-
+      if (sw_con)
+         return 
       // leeMenu()
+      
       window.history.back(); // regresa forma anterior
       //     const router = useRouter()
       //     router.push('/')
@@ -232,13 +236,13 @@ export const Session = defineStore('currentSession', () => {
 
   watch(() => nom_emp.value,
     (new_emp, old_val) => {
-      if (new_emp != old_val)
+      if (new_emp != old_val){
         id_con.value = ''
-
-
+        menu.value = []
+      }
       console.log('Watch Pinia nom_emp.value', new_emp, id_con.value)  // doest not do anything
-      if (new_emp.length > 2 && id_con.value.length > 9)
-        leeMenu()
+//      if (new_emp.length > 2 && id_con.value.length > 9)
+//        leeMenu()
     },
     { deep: true }
   )

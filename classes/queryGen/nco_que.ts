@@ -201,7 +201,7 @@ export class nco_que extends COMPONENT {
   ///////////////////////////////////
 
   async when() {
-    //    this.prop.Parent.browseResult.prop.RowSource = ''
+    //    this.prop.Parent.browse.prop.RowSource = ''
     //this.Parent.table.RecordSource=''
 
     return true

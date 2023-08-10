@@ -120,7 +120,7 @@ emit
 
             <div class='login' v-if="user != '' && id_con == '' && nom_emp != ''">
               <!--teleport to="#modal"-->User:{{ user }} Password:
-              <input type="password" v-model.trim="pass">
+              <input type="password" v-model.trim="password" @focusout="pass=password">
               <!--/teleport-->
             </div>
 
@@ -169,7 +169,6 @@ import { INIT } from "@/classes/Init";
 
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
-
 
 //const This: any = getCurrentInstance();
 //const ThisCtx = This.ctx;
@@ -879,7 +878,7 @@ div.password {
   padding: 30px;
   background-color: #fff;
   border-radius: 20px;
-  border: #42b960 3px solid;
+  border: #dcede5 3px solid;
   z-index: 999;
   /*    opacity: 1;*/
 }
