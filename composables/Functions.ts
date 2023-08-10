@@ -20,6 +20,13 @@ export const char = async (ascci: number) => {
  return String.fromCharCode(ascci)
 }
 
+export const  multiFilter=(array, filters) =>{
+  return array.filter(o =>
+    Object.keys(filters).every(k =>
+      [].concat(filters[k]).some(v => o[k].includes(v))));
+}
+
+
 //////////////////////////////////////////////
 // Clase : MessageBox
 // Author : Fernando Cuadras Angulo

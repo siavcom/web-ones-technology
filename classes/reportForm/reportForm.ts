@@ -30,7 +30,7 @@ export class reportForm extends FORM {
   query: string = ''     // query para ejecutar el reporte
   dataView:string ='vcomepge'    // Vista de datos generales
   sqlQuery:string=''             // Query a ejecutar antes de la vista del reporte
-  pdfHeigth='1200px'  // PDF hight 
+  pdfHeigth='1200px'  // PDF height 
   constructor() {
     super()
     this.queryPri.Name = 'queryPri'
@@ -39,7 +39,7 @@ export class reportForm extends FORM {
     this.queryUsu.prop.Name = 'queryUsu'
     this.queryGen.Name = 'queryGen'
     this.queryGen.prop.Name = 'queryGen'
-    //this.style.width='1210px'
+   // this.style.width='1210px'
   }
 
   public async init() {

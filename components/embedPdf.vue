@@ -1,5 +1,5 @@
 <template>
-  <div class="divi" v-if="prop.Visible">
+  <div class="divi" v-if="prop.Visible" :style="style" >
     <div v-if="loading && prop.Visible && BSource == ''" class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
@@ -8,15 +8,20 @@
       </div>
     </div>
 
-    <div v-else class="wraper">
-      <div class='reportViewer' :style="style">
-        <iframe :src="BSource" :width="style.width" height="1200px" />
+    <div v-else class="wraper" style="width:100%;heigth:100%">
+      <div class='reportViewer' style="heigth:100%;heigth:90%" >
+         <iframe :src="BSource" style="width:95%" height="900" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+//   <iframe :src="BSource" width="100%" height="100%" scrolling="no" id="myIframe" style="overflow: hidden; " onload="resizeIframe(this)" onresize="resizeIframe(this)"></iframe>
+
+//<iframe :src="BSource" style="position: absolute; height: 100%; border: none" />
+//  <iframe :src="BSource" onload="this.width=screen.width;this.height=screen.height;" />
+
 // import { NuxtloadingIndicator } from '~/.nuxt/components';
 
 /*

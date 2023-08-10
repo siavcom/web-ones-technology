@@ -64,6 +64,7 @@ export class bt_obtener extends COMPONENT {
 
     this.Form.report.prop.Visible = true
     this.Form.report.prop.Disabled = false
+    this.Parent.report.browse.table.isLoading=true
     const result=await this.Form.db.execute(query, 'sqlresult') 
     console.log('bt_obtener termino query ',query,new Date().toISOString()) 
     if (!result || result.length==0){

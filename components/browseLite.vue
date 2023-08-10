@@ -1,19 +1,26 @@
 <template>
-  <div class="divi" v-if="This.prop.RowSource > ' '">
-    <div v-if="table.isLoading" class="splash-screen">
-      <div class="spinner-wrapper">
-        <div class="spinner">
-          <p>..........Loading data..........</p>
+  <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="style">
+
+    <div class="wraper" style="width:100%;heigth:100%">
+
+      <div v-if="table.isLoading" class="splash-screen">
+        <div class="spinner-wrapper">
+          <div class="spinner">
+            <p>..........Loading data..........</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount"
-      :sortable="table.sortable" :title="This.Form.prop.textLabel" :has-checkbox="table.checkBox"
-      :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey" :messages="table.messages" :page-size="10"
-      :page-options="[{ value: 10, text: 10 }, { value: 25, text: 25 }, { value: 50, text: 50 }]" @do-search="doSearch"
-      @return-checked-rows="returnChequedRows" :column-filter="filter" @is-finished="table.isLoading = false">
-    </table-lite>
+
+
+      <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
+        :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
+        :has-checkbox="table.checkBox" :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey"
+        :messages="table.messages" :page-size="10"
+        :page-options="[{ value: 10, text: 10 }, { value: 25, text: 25 }, { value: 50, text: 50 }]" @do-search="doSearch"
+        @return-checked-rows="returnChequedRows" :column-filter="filter" @is-finished="table.isLoading = false">
+      </table-lite>
+    </div>
   </div>
 </template>
 
@@ -173,7 +180,7 @@ watch(
     table.rows = []
     table.oriRows = []
     table.totalRecordCount = 0
-    table.filters={}
+    table.filters = {}
 
     if (new_val == '') {
       return

@@ -11,6 +11,7 @@ import { COMPONENT } from '@/classes/Component'
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
+import { read, writeFileXLSX,utils } from "xlsx";
 export class bt_excel extends COMPONENT {
 
   constructor() {
@@ -23,20 +24,32 @@ export class bt_excel extends COMPONENT {
     this.prop.Image = "/Iconos/svg/excel-file.svg"  
     this.prop.TabIndex = 2
     this.prop.Visible=true
-    this.style.width='40px'
+    this.style.width='80px'
 
   } // Fin constructor
 
   async click() {
 
     //const result=this.Form.table.rows.value // obtenemos los rows
-    console.log('bt_excel rows',this.Parent.browse.table.rows)
+    const rows =  await multiFilter(this.Parent.browse.table.oriRows, this.Parent.browse.table.filters) 
+
+    console.log('bt_excel rows',rows)
+    // else 
+   // table.oriRows
+
+
     
-    await this.Form.db.localAlaSql( "DROP TABLE IF EXISTS excelResult ;CREATE TABLE excelResult")
-    await this.Form.db.localAlaSql('INSERT INTO excelResult SELECT * FROM ?',this.Parent.browse.table.row)
-    console.log('bt_excel 11111', await this.Form.db.localAlaSql(`select *  from excelResult`) )
+    const workSheet = utils.json_to_sheet(rows);
+
+    const workBook = utils.book_new();
+    utils.book_append_sheet(workBook, workSheet, "Data");
+    writeFileXLSX(workBook, "Excel.xlsx",{ compression: true })
+ 
+    //await this.Form.db.localAlaSql( "DROP TABLE IF EXISTS excelResult ;CREATE TABLE excelResult")
+    //await this.Form.db.localAlaSql('INSERT INTO excelResult SELECT * FROM ?',this.Parent.browse.table.row)
+    //console.log('bt_excel 11111', await this.Form.db.localAlaSql(`select *  from excelResult`) )
       
-    await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from excelResult`) 
+    //await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from excelResult`) 
    //await this.Form.db.localAlaSql('INSERT INTO excelResult VALUES ?',this.Parent.browse.table.row)
    //console.log('bt_excel 2222', await this.Form.db.localAlaSql(`select *  from excelResult`) )
 

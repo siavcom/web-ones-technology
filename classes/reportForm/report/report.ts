@@ -46,9 +46,14 @@ export class report extends COMPONENT {
     this.prop.BaseClass='container'
     this.prop.textLabel='Reporte'
 
-    this.style.width='920px'
-    this.style.height='auto'
-    this.style.display='block'
+    this.style.width='95%'
+    this.style.height='1100px'
     
+    this.style.display='block'
+   
+    this.browse.style.width='-moz-available'
+   
      }
+
+
 }

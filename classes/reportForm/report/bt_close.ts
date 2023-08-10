@@ -23,7 +23,7 @@ export class bt_close extends COMPONENT {
     this.prop.TabIndex = 1
     this.prop.Visible=true
     this.prop.ToolTipText='Close report'
-    this.style.width='40px'
+    this.style.width='60px'
 
   } // Fin constructor
 

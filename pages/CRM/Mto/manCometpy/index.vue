@@ -1,0 +1,11 @@
+<template>
+  <VueForm v-bind:ThisForm="ThisForm">
+    <template #header />
+    <template #main />
+    <template #footer />
+  </VueForm>
+</template>
+<script  lang="ts" setup>
+import VueForm from "@/components/form.vue";
+import { ThisForm } from './ThisForm'
+</script>

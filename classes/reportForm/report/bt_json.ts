@@ -24,7 +24,7 @@ export class bt_json extends COMPONENT {
     this.prop.Image = "/Iconos/svg/json.svg"
     this.prop.TabIndex = 2
     this.prop.Visible = true
-    this.style.width = '40px'
+    this.style.width = '80px'
 
   } // Fin constructor
 

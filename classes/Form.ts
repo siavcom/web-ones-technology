@@ -40,8 +40,9 @@ export class FORM extends COMPONENT {
     this.prop.Position = ' '   // No hay posicion ya que es una forma
     this.Form = this
 
-
-    this.style.maxWidth = '920px'
+    this.style.width='100%'
+    this.style.height='100%'
+    // this.style.maxWidth = '100%'
     //    this.style.maxHeight='920px'    
 
     // asigna los parametros de la llamada a esta forma (VFP parameters) 
