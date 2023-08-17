@@ -505,7 +505,7 @@ const impComp = ((name: string, pos?: string) => {
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-      console.log('Importo edittext')
+      console.log('Container Importo edittext')
       return editText
       break;
     }

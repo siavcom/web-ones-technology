@@ -2,6 +2,7 @@
 // Clase : bt_excel
 // Author : Fernando Cuadras Angulo
 // Creacion : 25/Mayo/2023
+// Ult.Mod. : 10/Agosto/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
 /**
@@ -32,30 +33,13 @@ export class bt_excel extends COMPONENT {
 
     //const result=this.Form.table.rows.value // obtenemos los rows
     const rows =  await multiFilter(this.Parent.browse.table.oriRows, this.Parent.browse.table.filters) 
-
-    console.log('bt_excel rows',rows)
-    // else 
-   // table.oriRows
-
-
     
     const workSheet = utils.json_to_sheet(rows);
 
     const workBook = utils.book_new();
     utils.book_append_sheet(workBook, workSheet, "Data");
-    writeFileXLSX(workBook, "Excel.xlsx",{ compression: true })
- 
-    //await this.Form.db.localAlaSql( "DROP TABLE IF EXISTS excelResult ;CREATE TABLE excelResult")
-    //await this.Form.db.localAlaSql('INSERT INTO excelResult SELECT * FROM ?',this.Parent.browse.table.row)
-    //console.log('bt_excel 11111', await this.Form.db.localAlaSql(`select *  from excelResult`) )
-      
-    //await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from excelResult`) 
-   //await this.Form.db.localAlaSql('INSERT INTO excelResult VALUES ?',this.Parent.browse.table.row)
-   //console.log('bt_excel 2222', await this.Form.db.localAlaSql(`select *  from excelResult`) )
-
-   //await this.Form.db.localAlaSql(`select * into XLSXML("result.xlsx",?) from result`) 
-
+    writeFileXLSX(workBook, this.Form.for_imp.prop.Value.trim()+'.xlsx',{ compression: true })
+  
   }
-
 
 }

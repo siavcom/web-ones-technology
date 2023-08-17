@@ -438,7 +438,7 @@ const focusOut = async () => {
     //console.log('checkBox focusOut =',checkValue.value,Value.value)
   }
 
-  if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 3) {
+  if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
 
     // actualiza valor en localDb
     const valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +Value.value : Value.value
@@ -579,23 +579,26 @@ const readCampo = async (recno: number) => {
 
 }
 
-const changeValue = async (new_val: number) => {
-  if (new_val != Value.value)
-    Value.value = new_val
+const changeValue = async (type: boolean) => {
+  // type=true change by props 
+  // type=false change by Value
+
 
   if (props.prop.Type == 'checkBox') {
 
     checkValue.value = new_val == 1 ? true : false
     await This.interactiveChange()
-    emitValue()
+    //    emitValue()
 
   }
 
   if (props.prop.Type == 'spinner') {
     await This.interactiveChange()
-    emitValue()
+    //    emitValue()
 
   }
+  emitValue()
+
 
 }
 
@@ -615,11 +618,32 @@ const changeValue = async (new_val: number) => {
 // Si se cambia de afuera
 watch(
   () => props.prop.Value, //Value.value,
-  (new_val, old_val) => {
+  async (new_val, old_val) => {
     // if (props.prop.Value != Value.value)
     //   Value.value = props.prop.Value
     //console.log('editText watch props.prop.Value', This.Name, new_val)
-    changeValue(new_val)
+
+    if (props.prop.Value != Value.value)
+      Value.value = props.prop.Value
+    // se cambia en alasql
+
+
+    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+      console.log('===>Termino edittext watch props.Value ', This.Name, 'Value=', new_val)
+      // actualiza valor en localDb
+      const valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +Value.value : Value.value
+      // Actualiza el alaSQL el dato
+      Status.value = 'P'
+      await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+
+      nextTick(function () {
+
+        emitValue()
+        console.log('===>Termino edittext watch props.Value ', This.Name, 'Value=', new_val)
+
+      })
+
+    }
 
   },
   { deep: false }
@@ -627,16 +651,31 @@ watch(
 
 watch(
   () => Value.value,
-  (new_val, old_val) => {
-    // if (props.prop.Value != Value.value)
-    //   Value.value = props.prop.Value
-   // console.log('editText watch Value.value', This.Name, new_val)
+  async (new_val, old_val) => {
 
-    changeValue(new_val)
+    if (props.prop.Value != Value.value) {
+
+      if (props.prop.Type == 'checkBox') {
+
+        checkValue.value = new_val == 1 ? true : false
+        await This.interactiveChange()
+        emitValue()
+
+      }
+
+      if (props.prop.Type == 'spinner') {
+        await This.interactiveChange()
+        emitValue()
+
+      }
+
+    }
+
+
 
   },
   { deep: false }
-);
+)
 
 
 
@@ -773,8 +812,8 @@ const init = async () => {
   else {
     if (props.prop.Type == 'number') numberStr.value = toNumberStr(props.prop.Value)
     if (props.prop.Type == 'checkBox') checkValue.value = props.prop.Value == 1 ? true : false
-    console.log('editText init ',This.Name,'Values',Value.value,This.prop.Value)
-    Value.value=This.prop.Value
+    console.log('editText init ', This.Name, 'Values', Value.value, This.prop.Value)
+    Value.value = This.prop.Value
   }
   // const ref = Ref
   // emit("update:Ref", Ref); // actualiza el valor del Ref al componente padre
@@ -791,8 +830,8 @@ const init = async () => {
     Ref.value.select()
     return
   }
-  
-  
+
+
   // else  await emitValue()
 
 };

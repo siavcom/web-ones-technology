@@ -13,7 +13,9 @@ modules: [
         ]
 */
 
-import { defineStore, acceptHMRUpdate } from 'pinia'
+//import { defineStore, acceptHMRUpdate } from 'pinia'
+import { acceptHMRUpdate } from 'pinia'
+
 //import {watch} from 'vue'
 import axios from 'axios'
 import dat_emp from '@/static/empresas/datos.json'
@@ -73,8 +75,9 @@ export const Session = defineStore('currentSession', () => {
 
     //  let url: any = this.url
     const router = useRouter()
-    if (nom_emp.value.length === 0 || user.value.length === 0 || password.length === 0) {
+    if (nom_emp.value.length == 0 || user.value.length == 0 || password.length == 0) {
       router.push('/Login')
+      return
     }
 
     try {
@@ -237,8 +240,8 @@ export const Session = defineStore('currentSession', () => {
   watch(() => nom_emp.value,
     (new_emp, old_val) => {
       if (new_emp != old_val){
-        id_con.value = ''
-        menu.value = []
+      //  id_con.value = ''
+      //  menu.value = []
       }
       console.log('Watch Pinia nom_emp.value', new_emp, id_con.value)  // doest not do anything
 //      if (new_emp.length > 2 && id_con.value.length > 9)

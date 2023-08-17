@@ -29,8 +29,7 @@ import axios from 'axios'
 import alasql from 'alasql'
 import { storeToRefs } from 'pinia'
 //import { Session } from '@/stores/currentSession'
-const session = Session()
-const { id_con, url, dialect, nom_emp, user } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
 
 /*
 import * as XLSX from 'xlsx';
@@ -42,6 +41,11 @@ import * as fs from 'fs';
 // import moment from 'moment'  // manejo de fechas
 
 export class VFPDB {
+  // no debe de estar fuera 
+  session =Session()  // obtenemos la session
+  // const { id_con, url, dialect, nom_emp, user } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
+    
   // propiedades de las clases
   AlaSql = alasql
   name: string = 'VFPDB'
@@ -85,14 +89,8 @@ export class VFPDB {
 
     // recupera datos de conexion
 
-    /*
-     this.id_con = session.id_con == undefined ? '' : session.id_con
-     this.user = session.user
-     this.url = session.url // obtenemos el url del servidor node
-     this.dialect = session.dialect
-     this.nom_emp = session.nom_emp
-     */
-    console.log('Db DataBase session.id ===>>>>', id_con.value, 'dilect=', dialect.value)
+   
+    //console.log('Db DataBase session.id ===>>>>', '', 'dilect=', dialect.value)
 
 
     this.localAlaSql('DROP DATABASE IF EXISTS Now ;')
@@ -121,8 +119,10 @@ export class VFPDB {
     // this.localAlaSql("CREATE DATABASE 'new'; CREATE DATABASE 'old'")
     // await alasql.promise(`ATTACH INDEXEDDB DATABASE ${dbName};USE DATABASE ${dbName};`);
 
-    //   console.log(this.id_con, this.url, this.user)
-    watch(nom_emp.value, () => {
+   const {nom_emp} = storeToRefs(this.session)  //pasa los elementos por referencia al Global
+
+   // Si cambia el nombre de la empresa limpia las Vistas 
+   watch(nom_emp.value, () => {
       this.View = {}
     })
 
@@ -131,41 +131,10 @@ export class VFPDB {
 
   public async Init(Form) {
     this.Form = Form // .value
+
   }
 
-  /// /////////////  open  ///////////////////
-  // Hace la conexion al servidor NODEJS que
-  // comunica con el servidor de SQL
-  /// ////////////////////////////////////////
-  /*
-  open = async (pass: string) => {
-    while (!this.Estatus) {
-      console.log('Db esperando cambio de estatus')
-    }
-    session.updateId('')
-    const def_con = { nom_emp: this.nom_emp, user: this.user, pass }
-    const json = JSON.stringify(def_con)
-    try {
-      const response = await axios.get(
-        this.url + 'login?json=' + json
-        // { headers: { "Content-type": "application/json" } }
-      )
-      // console.log('Db renglon blanco =====>',response.data.ren_blanco);
-      // Eslint-disable-next-line prettier/prettier
-      this.id_con = response.data.id // asignamos a su conexion de base de datos
-      session.updateId(this.id_con)
-
-      return true
-    } catch (error) {
-      MessageBox(
-        error.response.status.toString() + ' ' + error.response.statusText, 16,
-        'SQL Error '
-
-      )
-      return false
-    } // Fin de Catch
-  }
-*/
+  
   /// /////////////  Vfp Use nodata ///////////////////
   // nom_vis : Nombre de la vista a utilizar
   /// /////////////////////////////////////////////////
@@ -211,9 +180,10 @@ export class VFPDB {
     // valores de los componentes, por lo que aqui aparece en el contexto de la forma
     // Por el momento se quita y se graba en localDb
     // const vis_act = ThisForm.ctx[alias];
+   
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'USENODATA',
       // tok_aut: this.tok_aut,
       nom_vis: ''
@@ -387,7 +357,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'USE',
       // tok_aut: this.tok_aut,
       nom_vis,
@@ -521,7 +491,7 @@ export class VFPDB {
 
   obtRegistro = async (nom_tab: '', key_pri: number) => {
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'USE',
       // tok_aut: this.tok_aut,
       nom_vis: nom_tab,
@@ -638,7 +608,7 @@ export class VFPDB {
 
     // llamado AXIOS
     const dat_vis: any = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: '',
       nom_tab,
       dat_act: {}
@@ -921,7 +891,7 @@ export class VFPDB {
       return false
     }
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'DELETE',
       // tok_aut: this.tok_aut,
       nom_vis: this.View[alias].tablaSql.trim(), // tabla en servidor SQL
@@ -1061,7 +1031,7 @@ export class VFPDB {
             select from ' + alias + ' where renco=?', recno)
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'INSERT',
       // tok_aut: this.tok_aut,
       nom_vis,
@@ -1116,7 +1086,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'SQLEXEC',
       query
     }
@@ -1259,7 +1229,7 @@ export class VFPDB {
       return
     }
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'GENTABLA',
       nom_tab: tabla
     }
@@ -1291,7 +1261,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'GENINDICES',
       nom_tab: tabla
     }
@@ -1325,7 +1295,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'GENVISTASSQL',
       nom_tab: tabla
     }
@@ -1358,7 +1328,7 @@ export class VFPDB {
     }
 
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'GENMODEL',
       nom_tab: tabla
     }
@@ -1402,7 +1372,7 @@ export class VFPDB {
 
     let exp_where = ''
     const dat_vis = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'SQLEXEC',
       query
 
@@ -1451,7 +1421,7 @@ export class VFPDB {
 
     query = ' SELECT * FROM ' + nom_vis + exp_where
     const dat_sel = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'SQLEXEC',
       query,
       opciones: { replacements }
@@ -1527,7 +1497,7 @@ export class VFPDB {
 
     /// ///   Estructura
     const dat_est = {
-      id_con: id_con.value,
+      id_con: '',
       tip_llamada: 'GETDEF',
       query: alias
     }
@@ -1672,7 +1642,7 @@ export class VFPDB {
       if (!respuesta.est_tabla) { // Si no hay estructura de la tabla
         /// ///   Obtiene la Estructura
         const dat_est = {
-          id_con: id_con.value,
+          id_con: '',
           tip_llamada: 'GETDEF',
           query: alias
         }
@@ -2213,7 +2183,11 @@ return false;
 
   async axiosCall(dat_lla: Record<string, unknown>) {
  
-    if (!(id_con.value > ' ') || user.value == '' || nom_emp.value == '') {
+   
+   
+
+    if (!(this.session.id_con > ' ') || this.session.user == '' || this.session.nom_emp == '') {
+      console.log('Data bases session =======>',this.session.id_con,this.session.user,this.session.nom_emp )
       MessageBox(
         'No hay conexion con la base de datos', 16,
         'SQL Error Open'
@@ -2225,7 +2199,7 @@ return false;
       return
 
     }
-
+    dat_lla.id_con=this.session.id_con // asignamos el id de connexion
     const ThisForm: any = this.Form
     let numIntentos = 0
     let numLogin = 0
@@ -2240,7 +2214,7 @@ return false;
 
     do {
       try {
-        const response = await axios.post(url.value + 'sql', dat_lla,{
+        const response = await axios.post(this.session.url + 'sql', dat_lla,{
             signal //: AbortSignal.timeout(300000),  // milisegundos 5 minutos
          //    headers: { 'Content-type': 'application/json' },
   
@@ -2280,10 +2254,12 @@ return false;
           numIntentos++
           if (numIntentos == 5) {
             numLogin++
-
+            //const session=storeToRefs(Session)
+            // const session = Session()
+            const { id_con} = storeToRefs(this.session)  //pasa los elementos por referencia al Global
             //          ThisForm.prop.login = false
             id_con.value = ''  // borra session 
-            await this.delay(10000) // espera 10 segundos
+            await this.delay(4000) // espera 10 segundos
             if (id_con.value == '')
               numLogin = 3
 
@@ -2799,8 +2775,10 @@ return false;
     if (!dataView)
       dataView = ''
 
+   
+
     const dat_rep = {
-      id_con: id_con.value,
+      id_con: this.session.id_con,
       tip_llamada: 'JASPERREPORT',
       jrxml: for_rep,
       dataView,
@@ -2811,7 +2789,7 @@ return false;
 
 
     try {
-      const response = await axios.post(url.value + 'sql', dat_rep, { responseType: 'arraybuffer' })
+      const response = await axios.post(this.session.url + 'sql', dat_rep, { responseType: 'arraybuffer' })
       console.log
       return response.data
     } catch (error) {

@@ -11,9 +11,18 @@
 import { COMPONENT } from '@/classes/Component'
 //import { Session } from '@/stores/currentSession'
 import { storeToRefs } from 'pinia'
+/*
+export default {
+  useAsyncData({ $pinia }) {
+    const session = Session($pinia)
+  },
+}
+*/
 
 
 export class bt_aceptar extends COMPONENT {
+
+ //session=this.store
   num_int = 0
   //OpenDb = new OpenDb()
 
@@ -40,7 +49,17 @@ export class bt_aceptar extends COMPONENT {
       return
     } // numero maximo de intentos = 5
 
-    const session = Session()
+
+// const { data:stats } = await useAsyncData( 'stats', () => $fetch( config.API_BASE_URL+'/stats') );
+
+
+  
+   const session = await Session()
+
+//   const {data, pending, error, refresh } = await useAsyncData('Session',
+//      ()=>Session(pinia))
+
+    //const session = Session(pinia)
     // Podiamos poner todas las variables de memoria globales
     const { id_con, pass, user, nom_emp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 

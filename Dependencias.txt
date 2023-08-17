@@ -52,6 +52,14 @@ export default defineNuxtConfig({
 
 ======================= Axios ===================================================
 
-
 https://axios.nuxtjs.org/setup
 
+======================= XLSX ===================================================
+
+https://joaomede.github.io/vue3-xlsx/guide/#installation
+
+
+=======================Vue 3 table lite ===================================================
+
+
+https://vue3-lite-table.vercel.app/api-reference

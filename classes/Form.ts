@@ -73,7 +73,7 @@ export class FORM extends COMPONENT {
 
   }
   public Salir = new class extends COMPONENT {
-
+    Development = false 
     constructor() {
       super()
       this.Index = 50

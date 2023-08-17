@@ -2,6 +2,7 @@
 // Clase : bt_json
 // Author : Fernando Cuadras Angulo
 // Creacion : 25/Mayo/2023
+// Ult.Mod : 10/Agosto/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
 import { saveAs } from 'file-saver'
@@ -26,65 +27,28 @@ export class bt_json extends COMPONENT {
     this.prop.Visible = true
     this.style.width = '80px'
 
-  } // Fin constructor
+  } 
 
   async click() {
 
-    //const result = await this.Form.db.localAlaSql(`select * from result`)
-    //const result=this.Parent.browse.table.value.rows // obtenemos los rows
+    const rows =  await multiFilter(this.Parent.browse.table.oriRows, this.Parent.browse.table.filters) 
 
-    console.log('bt_excel rows',this.Parent.browse)
-    const result=this.Parent.browse.table.rows // obtenemos los rows
-
-    if (result.length == 0)
+    if (rows.length == 0)
       return
 
     // Obtenemos datos generales de comepge
     const ins_sql = 'select * from ' + this.Form.dataView
     const comepge = await this.Form.db.execute(ins_sql, 'MEMVAR')
 
-
-
     for (let key in comepge[0]) {
-      result[0][key] = comepge[0][key]
+      rows[0][key] = comepge[0][key]
 
     }
-
-    console.log('bt_json Object res Json=', result[0]);
-
-
-    /*
-       Object.values(comepge[0]).forEach((value, index,name) => {
-        console.log('bt_json Object res Json=',index,name);
     
-       //     console.log('bt_json Object res Json=',name,value,index);
-      })
-    */
-
-    
-    /*
-       let objJson ='['+JSON.stringify(comepge[0])
-       objJson=objJson.slice(0,objJson.length-1)+','
-    
-       //console.log('bt_json comepge Json=',objJson)
-       let jsonResult= JSON.stringify(result)
-    
-       objJson=objJson+jsonResult.slice(-(jsonResult.length-2))
-       */
-
-
-    const objJson = JSON.stringify(result)
+    const objJson = JSON.stringify(rows)
     const blobJson = new Blob([objJson], { type: 'text/plain' })
-    /*
-    const canvas = document.getElementById("my-canvas");
-    canvas.toBlob(blob=> {
-        // saveAs(blob, "pretty image.png")
-        saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`)
-    });
-    */
     await saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`)
 
   }
-
 
 }

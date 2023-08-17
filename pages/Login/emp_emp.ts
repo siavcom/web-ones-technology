@@ -14,7 +14,7 @@ export class emp_emp extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
 
   constructor (Name:string) {
-    super(Name)
+    super()
 
 //    this.Name='emp_emp'
 //    this.prop.Name='emp_emp'

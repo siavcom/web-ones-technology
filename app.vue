@@ -329,7 +329,10 @@ const menuTitle= 'KilloSoft'
 
 
 
-const session = Session()
+const session = await Session()
+console.log('---------- session cargada ---------------',session.id_con)
+//const { data } = await useAsyncData('id', () => session.id_con)
+
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
 
@@ -447,11 +450,11 @@ while (Items.length>2)
     Items.push(
       {
         link: '#',
-        name: 'SQL diccionary',
+        name: 'SQL data diccionary',
         tooltip: 'Setting',
         icon: 'svg/bx-cog.svg',
         path: { path: '/SqlDictionary' },
-        target: '', //'_blank',
+        target: '_blank', //'_blank',
         type: 'P',
         system: ''
       })
