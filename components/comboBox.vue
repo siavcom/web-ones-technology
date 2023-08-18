@@ -1,11 +1,14 @@
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
-  <div class="divi" :style="style" :disabled="prop.Disabled || ReadOnly">
+  <div class="divi" :style="style" >
     <!--Etiqueta del componente -->
     <div class="mensajes" v-show="This.prop.Visible">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
       <!--List Box -->
-      <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
+      <div v-if="prop.MultiSelect" class="multiSelect" 
+          @lostFocus="validList()" 
+          :style='prop.componentStyle'
+          >
         <select v-model="List" multiple>
           <option class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex"
             :value="columnas[valueIndex].value">
@@ -13,7 +16,10 @@
             <!--div class="columna"  v-for="(text, col) in option.text" :key="col"
             -->
             <input v-for="(text, col) in option.text" :key="col" :style="{ 'width': width[col], 'text-align': 'left' }"
-              class="input" :value="text" />
+              class="input" :value="text" 
+              :disabled="prop.Disabled"
+              :readonly="prop.ReadOnly"
+              />
             <!--/div-->
           </option>
         </select>
@@ -21,7 +27,7 @@
       </div>
 
       <!--ComboBox 
-        <input class="textLabel" :readonly="prop.Style == 2 || ReadOnly" ref="Ref" type="text" :v-model="Text"
+        <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="Text"
           @focusout="focusOut" />{{ Text }}
       
       -->
@@ -30,7 +36,7 @@
 
         <input class="textLabel" 
            :style="TextStyle" 
-           :readonly="prop.Style == 2 || ReadOnly" 
+           :readonly="prop.Style == 2 || prop.ReadOnly" 
            :value="Text"
           @focusout="focusOut"
           ref="Ref" />
@@ -39,23 +45,23 @@
 
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
-        <div class="toggle" v-if="toggle && !ReadOnly">
+        <div class="toggle" v-if="toggle && !prop.ReadOnly">
           <!--CheckBox -->
           <div class="MarcoColumnas" @focusout="toggle = !toggle" style="width:auto;heigth:auto; max-height:200px;">
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
-              @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="ReadOnly">
+              @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
-              <div class="columna" :disabled="ReadOnly" v-for="(text, col) in option.text" :key="col"
+              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
                 :style="{ 'width': width[col], 'text-align': 'left' }">
                 <label class="label" v-text="text" />
               </div>
             </div>
           </div>
         </div>
-        <img class="imagen" v-show="!prop.Disabled && !ReadOnly"
+        <img class="imagen" v-show="!prop.ReadOnly"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'"
-          @click.prevent="toggle = ReadOnly == false ? !toggle.value : toggle.value" :tabindex="prop.TabIndex" />
+          @click.prevent="toggle = prop.ReadOnly == false ? !toggle.value : toggle.value" :tabindex="prop.TabIndex" />
       </div>
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
         prop.ToolTipText
@@ -198,7 +204,7 @@ const Text = ref("");
 //const width = reactive([{}]);
 const width = reactive(['60%', '20%', '20%']);
 
-const ReadOnly = ref(props.prop.ReadOnly)
+//const ReadOnly = ref(props.prop.ReadOnly)
 const Ref = ref(null)
 
 const Status = ref(props.prop.Status);
@@ -589,7 +595,7 @@ const renderComboBox = async () => {
       // llama la vista en el servidor de SQL
       //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
       data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
-      console.log('CononBox render data', data)
+      //console.log('ComboBox render data', data)
       if (data==null){ 
         console.warn('comoBox Render',This.name,'RowSource',props.prop.RowSource )
         

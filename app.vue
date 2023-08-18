@@ -330,7 +330,6 @@ const menuTitle= 'KilloSoft'
 
 
 const session = await Session()
-console.log('---------- session cargada ---------------',session.id_con)
 //const { data } = await useAsyncData('id', () => session.id_con)
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
@@ -443,7 +442,7 @@ while (Items.length>2)
    Items.pop() 
 
 
-  console.log('menu items====>',Items,user.value)
+ // console.log('menu items====>',Items,user.value)
   isLoggedIn.value = true
   if (user.value.trim() == 'sa' || user.value.slice(0, 3) == 'sa@') {
 
@@ -454,7 +453,7 @@ while (Items.length>2)
         tooltip: 'Setting',
         icon: 'svg/bx-cog.svg',
         path: { path: '/SqlDictionary' },
-        target: '_blank', //'_blank',
+        target: '', //'_blank',
         type: 'P',
         system: ''
       })

@@ -28,24 +28,14 @@ import { watch } from 'vue'
 import axios from 'axios'
 import alasql from 'alasql'
 import { storeToRefs } from 'pinia'
-//import { Session } from '@/stores/currentSession'
-
-
-/*
-import * as XLSX from 'xlsx';
-
-import * as fs from 'fs';
-*/
 
 // import { Global } from "@/Global";
-// import moment from 'moment'  // manejo de fechas
 
 export class VFPDB {
   // no debe de estar fuera 
   session =Session()  // obtenemos la session
   // const { id_con, url, dialect, nom_emp, user } = storeToRefs(session)  //pasa los elementos por referencia al Global
-
-    
+     
   // propiedades de las clases
   AlaSql = alasql
   name: string = 'VFPDB'
@@ -131,7 +121,11 @@ export class VFPDB {
 
   public async Init(Form) {
     this.Form = Form // .value
-
+    const Var=PublicVar()
+    for (const variable in Var ){
+      this.Form.Public[variable]=Var[variable]  // asignamos variables Publicas
+    }
+  
   }
 
   
@@ -469,9 +463,9 @@ export class VFPDB {
       console.log('Db Use Axios Ok response =====>', dat_vis, data) // .data
 
       if (data.length) // No hubo error
-      { return await this.genera_tabla(data, alias) }
+        return await this.genera_tabla(data, alias)
       else
-        return false //   { return [] }
+        return [] //   { return [] }
     } catch (error) {
       console.error('Axios error :', dat_vis, error)
 
@@ -1733,7 +1727,7 @@ export class VFPDB {
     // console.log('Db Genera_tabla final==>',this.View[alias],alias)
     if (sw_ini) {
       console.log('Db genera_tabla View creada', alias, this.View[alias])
-      return true
+      return await this.localAlaSql(`select * from ${alias} limit 0`)
     }
 
     // console.log('Db Genera_tabla datos==>', respuesta)

@@ -309,54 +309,6 @@ initial	Sets this property to its default value. Read about initial
 inherit	Inherits this property from its parent element. Read about inherit
 */
 
-// funciona para cualquier comoponente de este componente
-
-/////////////////////////////////////////
-// Metodo KeyPres Vfp
-// Este metodo se corre cada ves que se teclea cualquier cosa en el componente
-// Similar al keypress si  no esta el lasy
-/////////////////////////////////////////
-
-// string : String,
-//texto: Number,
-//boleano: Boolean,
-// arreglo: Array,
-// objeto: Object,
-//fecha: Date,
-//simbolo: Symbol,
-// valida: Function,
-
-// arreglo1: Object,
-// default: () => {},
-//    arreglo2: Array,
-//    default: () => [],
-
-// Vue dice no utilizar "this" dentro del setup segun Vue
-// al pasarle props se podra tomar todos los Valuees de props anteriormente definidos
-// como props.Value
-//The second argument passed to the setup function is the context. The context is a normal JavaScript object that exposes
-// three component properties:
-// Attributes (Non-reactive object)
-//    console.log(context.attrs)
-// Slots (Non-reactive object)
-//    console.log(context.slots)
-// Emit Events (Method)
-//    console.log(context.emit)
-//setup(props,context)
-//setup(props, { attrs, slots, emit })
-// Setup funciona de la misma forma que el actual data(), devolviendo un objeto con las propiedades
-// que serán usadas en el template:
-// Inicio Setup
-
-
-/////////////////////////////////////////
-// Metodo Release Vfp
-/////////////////////////////////////////
-/*
-const onUnmounted = () => {
-  //  console.log("Component unmounted!");
-};
-*/
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -371,7 +323,7 @@ const emitValue = async () => {
   emit("update:Valid", Valid.value)
   emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
   // emit("update") // emite un update en el componente padre
-  // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
+  console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
 
@@ -580,10 +532,7 @@ const readCampo = async (recno: number) => {
 }
 
 const changeValue = async (type: boolean) => {
-  // type=true change by props 
-  // type=false change by Value
-
-
+  
   if (props.prop.Type == 'checkBox') {
 
     checkValue.value = new_val == 1 ? true : false
@@ -619,15 +568,8 @@ const changeValue = async (type: boolean) => {
 watch(
   () => props.prop.Value, //Value.value,
   async (new_val, old_val) => {
-    // if (props.prop.Value != Value.value)
-    //   Value.value = props.prop.Value
-    //console.log('editText watch props.prop.Value', This.Name, new_val)
 
-    if (props.prop.Value != Value.value)
-      Value.value = props.prop.Value
     // se cambia en alasql
-
-
     if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       console.log('===>Termino edittext watch props.Value ', This.Name, 'Value=', new_val)
       // actualiza valor en localDb
@@ -636,19 +578,38 @@ watch(
       Status.value = 'P'
       await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
 
-      nextTick(function () {
 
-        emitValue()
-        console.log('===>Termino edittext watch props.Value ', This.Name, 'Value=', new_val)
 
-      })
+    }
+    if (Value.value != new_val)
+      Value.value = new_val
+
+    if (props.prop.Type == 'checkBox') {
+
+      checkValue.value = new_val == 1 ? true : false
+      await This.interactiveChange()
+   
 
     }
 
+    if (props.prop.Type == 'spinner') {
+      await This.interactiveChange()
+
+    }
+    if (props.prop.Type == 'number') {
+      numberStr.value = toNumberStr(Value.value)
+    }
+
+     //nextTick(function () {
+       
+    await emitValue()
+// })
+
+  
   },
   { deep: false }
-);
-
+)
+/*
 watch(
   () => Value.value,
   async (new_val, old_val) => {
@@ -668,6 +629,11 @@ watch(
         emitValue()
 
       }
+      if (props.prop.Type == 'number') {
+        numberStr.value = toNumberStr(Value.value)
+        emitValue()
+      }
+
 
     }
 
@@ -677,8 +643,7 @@ watch(
   { deep: false }
 )
 
-
-
+*/
 
 
 ////////////////////////////////////////
@@ -707,10 +672,10 @@ watch(
   (new_val, old_val) => {
 
     if (Recno.value != props.Registro)
-      Recno.value = props.Registro
+      Recno.value = new_val
 
-    if (props.Registro == 0) {
-      Value.value = '' //props.prop.Type='numeric'? 0: ''
+    if (new_val == 0) {
+      Value.value=props.prop.Type=='number'? 0: ''
       emitValue()
       return
 
@@ -718,11 +683,11 @@ watch(
     if (new_val != old_val
       && props.prop.ControlSource > ' '
       && props.Registro > 0) {
-      // console.log('Watch EditText Recno=', new_val)
-      readCampo(props.Registro)
+        console.log('watch Registro EditBox '),This.Name,new_val
+   
+      readCampo(new_val)
     }
-    //    LocalDb.ControlSource = new_val;
-
+    
   },
   { deep: false }
 );

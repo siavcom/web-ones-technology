@@ -44,27 +44,8 @@ export const Session = defineStore('currentSession', () => {
   const fileLogoEmp = ref(null)
   const menu = ref([])
 
-  // persist: true,
-  //{
-  //  storage: persistedState.sessionStorage,
-  //},
-  /* {
-    return {
-      id_con.value: '',
-      user.value: '',
-      nom_emp.value: '',
-      url: '',
-      menu: []
-    }
-  } */
-
-
-
+  
   // actions: { // aqui van todas las funciones que uno defina separadas por coma
-
-
-  ////////////////////////
-
 
 
   /// /////////////  open  ///////////////////
@@ -94,12 +75,7 @@ export const Session = defineStore('currentSession', () => {
     if (id_con.value.length>8)
        sw_con=true
 
-    //id_con.value = ''
-    /*    url = url.value
-       nom_emp = nom_emp.value
-        user = user.value
-        menu.value = []
-    */
+  
     const def_con = {
       nom_emp: nom_emp.value,
       user: user.value,
@@ -212,11 +188,11 @@ export const Session = defineStore('currentSession', () => {
       }
       //const menu = JSON.stringify(response.data)
       menu.value = (data)
-      console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
+     // console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
 
 
     } catch (error) {
-      console.log('Session Error', error)
+      console.log('Read Menu ',' Error', error)
       MessageBox(error.toJSON(), 16, 'Back-End error ')
       const router = useRouter()
       router.push('/Login')
@@ -297,8 +273,10 @@ export const Session = defineStore('currentSession', () => {
 
 },
   {
-    persist: { storage: persistedState.localStorage, },
-  },
+//    persist: { storage: persistedState.localStorage, },
+    persist: { storage: persistedState.sessionStorage, },
+
+},
 
 )
 

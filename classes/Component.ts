@@ -118,7 +118,7 @@ export class COMPONENT {
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     width: "auto",
     height: "auto",
-    maxWidth: "auto",
+    maxWidth: "90%",
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
@@ -393,7 +393,7 @@ export class COMPONENT {
 
   public async when() {
     //console.log('Super when ==>',this.prop.Name)
-    return true
+    return !this.prop.ReadOnly
   }
 
   /////////////////////////////////////////////////////////////////////

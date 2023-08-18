@@ -27,7 +27,8 @@ export class FORM extends COMPONENT {
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
   Params = []
-  public db = new VFPDB();  // conexion a la base de datos
+  public db = new VFPDB()  // conexion a la base de datos
+  Public={}  // Variables publicas
   //messageBox = MessageBox
 
   //  constructor(parent: Record<string, never>) {
@@ -40,8 +41,8 @@ export class FORM extends COMPONENT {
     this.prop.Position = ' '   // No hay posicion ya que es una forma
     this.Form = this
 
-    this.style.width='100%'
-    this.style.height='100%'
+    this.style.width='90%'
+    this.style.height='96%'
     // this.style.maxWidth = '100%'
     //    this.style.maxHeight='920px'    
 

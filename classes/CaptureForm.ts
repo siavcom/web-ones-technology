@@ -44,7 +44,6 @@ export class captureForm extends FORM {
       return false
      
     const thisComp=this[compName]
-    console.log('CaptureForm valid thisComp',thisComp)
 
     if (thisComp.prop.updateKey) {
 
@@ -84,7 +83,7 @@ export class captureForm extends FORM {
     //console.log('capture form valid data', data)
     console.log('captureForm m', m,'data',data)
   
-    if (!data || data == '400') { return false } // Hubo error al leer los datos
+  //  if (!data || data == '400') { return false } // Hubo error al leer los datos
 
     let Recno = 0
     let sw_bor = false
@@ -140,7 +139,10 @@ export class captureForm extends FORM {
       if (this[comp].prop.Capture) {
         this[comp].Recno = 0  // ponemos en cero para ejecutar un refresh
         if (this[comp].prop.updateKey === false) { // No es llave de actualizacion
-          if (Recno > 0) { this[comp].prop.ReadOnly = false } else { this[comp].prop.ReadOnly = !activate }
+          if (Recno > 0) {
+             this[comp].prop.ReadOnly = false } 
+             else { 
+              this[comp].prop.ReadOnly = !activate }
 
           this[comp].prop.Valid = activate
           this[comp].Recno = Recno // Actualiza el registro del componente

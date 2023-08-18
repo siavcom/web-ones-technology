@@ -34,6 +34,7 @@ const props = defineProps<{
   nomEmp: string;
   titleName: string;
   fpo_pge: string;
+  
 }>()
 
 //const logoEmp = ref(props.logoEmp)
