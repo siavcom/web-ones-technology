@@ -5,7 +5,7 @@
 // Ult.Mod  :
 /// //////////////////////////////////////////
 
-import dat_emp from '@/static/empresas/datos.json'
+import dat_emp from '@/src/empresas/datos.json'
 import { COMPONENT } from '@/classes/Component'
 
 export class emp_emp extends COMPONENT {

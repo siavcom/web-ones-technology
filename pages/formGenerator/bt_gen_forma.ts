@@ -8,13 +8,13 @@ import { COMPONENT } from '@/classes/Component'
 //import { MessageBox } from '@/classes/Functions'
 
 // importa archivos de texto
-//import Main from '@/static/templates/Main.txt?raw'
-import Main from '@/static/templates/Main.txt?raw'
+//import Main from '/templates/Main.txt?raw'
+import Main from '/templates/Main.txt?raw'
 
-import Form from '@/static/templates/ThisForm.txt?raw'
-import Component from '@/static/templates/Component.txt?raw'
-import Grid from '@/static/templates/Grid.txt?raw'
-import Column from '@/static/templates/Column.txt?raw'
+import Form from '/templates/ThisForm.txt?raw'
+import Component from '/templates/Component.txt?raw'
+import Grid from '/templates/Grid.txt?raw'
+import Column from '/templates/Column.txt?raw'
 
 //import { readFileSync } from 'fs'
 //https://github.com/gildas-lormeau/zip.js

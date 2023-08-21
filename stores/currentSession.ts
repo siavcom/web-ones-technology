@@ -18,7 +18,7 @@ import { acceptHMRUpdate } from 'pinia'
 
 //import {watch} from 'vue'
 import axios from 'axios'
-import dat_emp from '@/static/empresas/datos.json'
+import dat_emp from '/src/empresas/datos.json'
 //import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
 //import store from '../stores/index'
 /*
@@ -94,8 +94,6 @@ export const Session = defineStore('currentSession', () => {
       dialect.value = response.data.dialect
       id_con.value = response.data.id // asignamos a su conexion de base de datos
       //fileLogoEmp=response.data.fileLogoEmp
-
-      // logoEmp.value='/img/Logo_Empresa.bmp'
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
       if (sw_con)

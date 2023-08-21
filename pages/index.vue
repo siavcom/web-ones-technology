@@ -103,7 +103,7 @@ div.imagen {
   se quita el directorio /public
   background-image: url("/img/Logo_Empresa.bmp");
   */
-  background-image: url("/img//Siavcom.png");
+  background-image: url("/logos/Siavcom.png");
   /* opacity: 0.5;*/
 
   background-position: center;

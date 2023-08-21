@@ -4,7 +4,7 @@
         "nem_emp": "Demo ",
         "nom_sis": "come9101",
         "path": { "name": "Menu" },
-	"logoEmp" : "/logo_Empresa.png"
+	"logoEmp" : "/logos/logo_Empresa.png"
     },
 
     "condominos": {
@@ -19,7 +19,7 @@
         "nem_emp": "Shel Prueba",
         "nom_sis": "menu",
         "path" : { "name": "Menu" },
-	"logoEmp" : "/Shel.png"
+	"logoEmp" : "/logos/Shel.png"
 
     },
     "19Guzman": {
@@ -33,13 +33,13 @@
         "nem_emp": "Demo Postgres come9101",
         "nom_sis": "menu ",
         "path" : { "name": "Menu" },
-	"logoEmp" : "/Siavcom.png"
+	"logoEmp" : "/logos/Siavcom.png"
     },
    "Fba": {
         "url": "http://189.203.74.157:38080/",
         "nem_emp": "FutBol Americano",
         "nom_sis": "menu ",
         "path" : { "name": "Menu" },
-	"logoEmp" : "/Siavcom.png"
+	"logoEmp" : "/logos/Siavcom.png"
     }
 }

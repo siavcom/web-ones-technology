@@ -31,7 +31,7 @@
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
                 <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
-                  <img class="bx" :src="'/Iconos/' + menuItem.icon" :class="menuItem.icon">
+                  <img class="bx" v-if="menuItem.icon.length>0" :src="'/Iconos/' + menuItem.icon" :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
 
@@ -229,7 +229,7 @@ const props = withDefaults(defineProps<Props>(), {
   isOpened: true,
   //isMenuOpen: true,
   // menuTitle: 'KilloSoftware',
-  menuLogo: '/img/Siavcom.png',
+  menuLogo: '/logos/Siavcom.png',
   menuIcon: 'bxl-c-plus-plus',
   isPaddingLeft: true,
   menuOpenedPaddingLeftBody: '250px',
@@ -515,7 +515,7 @@ while (Items.length>2)
         link: '#',
         name: menu.value[i].des_prg,
         tooltip: menu.value[i].des_prg,
-        icon: menu.value[i].ico_prg,
+        icon: menu.value[i].ico_prg.trim(),
         path: path,
         target: target,
         type: type,
@@ -565,7 +565,7 @@ const obtSubMenu = (system: string) => {
         link: '#',
         name: menu.value[i].des_prg,
         tooltip: menu.value[i].des_prg,
-        icon: menu.value[i].ico_prg,
+        icon: menu.value[i].ico_prg.trim(),
         path: path,
         type,
         system
@@ -591,7 +591,7 @@ const obtSubMenu = (system: string) => {
 //////////////////////////////////////////////////
 // Init
 /////////////////////////////////////////////////
-console.log('=========Session============', id_con.value)
+//console.log('=========Session============', id_con.value)
 if (id_con.value.length > 0) {
   obtMenu()
 }

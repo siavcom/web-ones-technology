@@ -38,7 +38,7 @@ const props = defineProps<{
 }>()
 
 //const logoEmp = ref(props.logoEmp)
-//logoEmp.value = "/img//Logo_Empresa.bmp"
+//logoEmp.value = "/logos/Logo_Empresa.png"
 //const nomEmp = ref(props.nomEmp)
 //nomEmp.value = "Siavcom Software"
 

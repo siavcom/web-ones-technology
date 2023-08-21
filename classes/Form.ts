@@ -66,7 +66,7 @@ export class FORM extends COMPONENT {
     this.db.Form = this
 
 
-   // this.style.backgroundImage= "/img//Logo_Empresa.bmp",
+   // this.style.backgroundImage= "/logos/Logo_Empresa.png",
 
   }
 

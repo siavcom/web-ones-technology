@@ -53,14 +53,14 @@ export class ThisForm extends captureForm {
     this.prop.RecordSource='Index1_Players'
     this.prop.nem_pge = "Killo Software"
     //this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
-    this.prop.log_emp = "/img//Logo_Empresa.bmp"
+    this.prop.log_emp = "/logos/Logo_Empresa.png"
     this.prop.Status = 'A'
     this.style.display = "flex"
     this.style.background = "white"
     this.style.color = "#b94295"
     this.style.fontSize = "13px" 
     this.style.position = "center"
-    this.style.backgroundImage = "/img//Logo_Empresa.bmp"
+    this.style.backgroundImage = "/logos/Logo_Empresa.png"
     this.grid=['']
    
 
