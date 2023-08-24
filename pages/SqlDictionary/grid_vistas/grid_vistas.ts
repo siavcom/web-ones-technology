@@ -37,7 +37,7 @@ export class grid_vistas extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = 'grid_vistas'
+    this.Name = 'grid_vistas'
     this.prop.textLabel= 'Definicion de vistas de captura'
     this.prop.RecordSource='vi_cap_vis'
     this.prop.Visible= false

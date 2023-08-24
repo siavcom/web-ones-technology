@@ -4,6 +4,9 @@ export default defineNuxtConfig({
  devServer: {
     port: 3000
   },
+alias: {  // Quita el error a instalar Nuxt
+  pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
+},
 imports: {
     // Auto-import pinia stores defined in `~/stores`
     dirs: ['stores']

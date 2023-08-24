@@ -31,10 +31,12 @@
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
                 <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
-                  <img class="bx" v-if="menuItem.icon.length > 0" :src="'/Iconos/' + menuItem.icon"
-                    :class="menuItem.icon">
+                  <img class="bx" v-if="menuItem.icon.length>0" :src="'/Iconos/' + menuItem.icon" :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
+
+
+
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
               </li>
               <span v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
@@ -121,9 +123,8 @@
     <div class="mainForm">
       <NuxtLayout name='header' v-bind:logoEmp="logoEmp" v-bind:nomEmp="nom_emp" v-bind:titleName="titleName"
         v-bind:fpo_pge="fpo_pge" />
-      <NuxtLayout name='default'>
-        <NuxtPage />
-      </NuxtLayout>
+
+      <NuxtPage  />
       <NuxtLayout name='footer' />
 
     </div>
@@ -324,7 +325,7 @@ const Style = {
   menuFooterTextColor: '#fff'
 }
 
-const menuTitle = 'KilloSoft'
+const menuTitle= 'KilloSoft'
 
 
 
@@ -435,13 +436,13 @@ const updateIsOpen = () => {
 // Obten Menu
 /// ///////////////////////////////////////
 const obtMenu = (sw_ini?: boolean) => {
+  
+// Borramos todos los elementos del menu
+while (Items.length>2)
+   Items.pop() 
 
-  // Borramos todos los elementos del menu
-  while (Items.length > 2)
-    Items.pop()
 
-
-  // console.log('menu items====>',Items,user.value)
+ // console.log('menu items====>',Items,user.value)
   isLoggedIn.value = true
   if (user.value.trim() == 'sa' || user.value.slice(0, 3) == 'sa@') {
 
@@ -468,22 +469,8 @@ const obtMenu = (sw_ini?: boolean) => {
         system: ''
       })
 
-    Items.push(
-
-      {
-        // link: 'http://siavcom.com.mx:38000/Login',
-        name: 'Web Form Generator',
-        tooltip: 'Web Form Generator',
-        icon: 'svg/bx-spreadsheet.svg',
-        path: { path: '/formGenerator' },
-        type: 'P',
-        system: ''
-      })
-
-
-
   }
-
+  
   for (let i = 0; menu.value.length > i; i++) {
     // solo agrega menu principal
     if (menu.value[i].tpr_prg === 'S') {
@@ -544,7 +531,7 @@ const obtMenu = (sw_ini?: boolean) => {
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
 
-  // console.log('SubMenu menu ====> system=', system)
+ // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
   isMan.value = false
   isRep.value = false
@@ -604,7 +591,7 @@ const obtSubMenu = (system: string) => {
 //////////////////////////////////////////////////
 // Init
 /////////////////////////////////////////////////
-console.log('=========Session============', id_con.value)
+//console.log('=========Session============', id_con.value)
 if (id_con.value.length > 0) {
   obtMenu()
 }

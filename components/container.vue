@@ -118,12 +118,11 @@ const comboBox = resolveComponent('comboBox')
 const editText = resolveComponent('editText')
 const textLabel = resolveComponent('textLabel')
 const grid = resolveComponent('grid')
-const browse = resolveComponent('browse')
+//const browse = resolveComponent('browse')
 const browseLite = resolveComponent('browseLite')
 const container = resolveComponent('container')
 const embedPdf = resolveComponent('embedPdf')
 
-console.log('container asigno browseLite',browseLite)
 
 const emit = defineEmits([ //"update", 
   "update:Value",
@@ -252,7 +251,7 @@ const focusOut = async () => {
     //await LocalDb.update(valor).then(() => { 
     // })
   }
-  console.log('editBox focusout ', props.prop.Name)
+  console.log('editBox focusout ', props.Name)
   return await emitValue()
 }
 */
@@ -268,7 +267,7 @@ const focusOut = async () => {
 watch(
   () => Focus.value,
   (new_val, old_val) => {
-    console.log('EditText Set Focus', props.prop.Name)
+    console.log('EditText Set Focus', props.Name)
     if (Focus.value) {
       Ref.value.focus()
       Ref.value.select()
@@ -525,7 +524,7 @@ const impComp = ((name: string, pos?: string) => {
 
     case 'browse': {
       console.log('Importo Browse')
-      return browse
+      return browseLite
       break;
     }
 

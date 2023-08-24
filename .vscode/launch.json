@@ -14,28 +14,76 @@
             "request": "launch",
             "reAttach": true,
             "name": "Firefox (dev)",
-            "url": "http://176.16.200.20:3000",
+            "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/",
             "pathMappings": [
                 {
-                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/pages",
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones",
+                    "path": "${workspaceFolder}"
+                },
+                {
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones",
+                    "path": "${workspaceFolder}"
+                },
+                {
+                    "url": "http://localhost:3000/_nuxt/pages",
                     "path": "${workspaceFolder}/pages"
                 },
                 {
-                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/pages/Login/bt_aceptar.ts",
-                    "path": "${workspaceFolder}/pages/QueryExec/bt_aceptar.ts"
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/classes/*.ts",
+                    "path": "${workspaceFolder}/classes/*.ts"
                 },
                 {
-                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/pages/SqlDictionary/grid_datos",
-                    "path": "${workspaceFolder}/pages/SqlDictionary/grid_datos"
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/classes/CaptureForm.ts",
+                    "path": "${workspaceFolder}/classes/CaptureForm.ts"
                 },
                 {
-                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones/src/clases",
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/pages/formGenerator/bt_aceptar.ts",
+                    "path": "${workspaceFolder}/pages/formGenerator/bt_aceptar.ts"
+                },
+                {
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/pages/formGenerator/bt_gen_forma.ts",
+                    "path": "${workspaceFolder}/pages/formGenerator/bt_gen_forma.ts"
+                },
+                {
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/pages/SqlDictionary/bt_aceptar.ts",
+                    "path": "${workspaceFolder}/pages/SqlDictionary/bt_aceptar.ts"
+                },
+                {
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/classes",
                     "path": "${workspaceFolder}/classes"
                 },
                 {
+                    "url": "http://localhost:3000/_nuxt/@fs/siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/pages/CRM/Mto/manCometap/bt_aceptar",
+                    "path": "${workspaceFolder}/pages/CRM/Mto/manCometap/bt_aceptar.ts"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/components",
+                    "path": "${workspaceFolder}/components"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/pages",
+                    "path": "${workspaceFolder}/pages"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/classes/DataBase",
+                    "path": "${workspaceFolder}/classes/DataBase"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/classes",
+                    "path": "${workspaceFolder}/classes"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/pages/CRM/Mto/manComepry/num_pry.ts",
+                    "path": "${workspaceFolder}/pages/CRM/Mto/manComepry/num_pry.ts"
+                },
+                {
+                    "url": "file:///siavcom/desarrollo/desarrolloweb/Vue/web-ones-FERNANDO/classes/reportForm/reportForm.ts",
+                    "path": "${workspaceFolder}/classes/reportForm/reportForm.ts"
+                },
+                {
                     "url": "file://",
-                    "path": "vscode-remote://ssh-remote%2B176.16.200.20"
+                    "path": "vscode-remote://ssh-remote%2Blocalhost"
                 }
             ]
         },
@@ -43,7 +91,7 @@
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",
-            "url": "http://176.16.200.20:3000",
+            "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
         },
         {

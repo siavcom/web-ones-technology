@@ -498,7 +498,7 @@ const asignaResultado = (valor?: string) => {
      emitValue()
    }
    */
-  //console.log("AsignaResultado  Value =======>",props.prop.Name, Text.value, valor)
+  //console.log("AsignaResultado  Value =======>",props.Name, Text.value, valor)
   emitValue()
 
 }
@@ -521,7 +521,7 @@ const renderComboBox = async () => {
 
   ColumnWidth(props.prop.ColumnWidths) // asigna tamaÃ±o de columnas
 
-  //console.log('ComboBox renderiza  ===>>', props.prop.Name,props.prop.Status)
+  //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
@@ -729,7 +729,7 @@ const renderComboBox = async () => {
 //////////////////////////////////////////////////////
 /*
 watchEffect(() => {
-  console.log('WatchEffect ComboBox '+props.prop.Name,props.prop.Status)
+  console.log('WatchEffect ComboBox '+props.Name,props.prop.Status)
   //renderComboBox()
   },
    {
@@ -738,12 +738,12 @@ watchEffect(() => {
 
 
 watchPostEffect(() => {
-  console.log('WatchPostEffect ComboBox '+props.prop.Name,props.prop.Value)
+  console.log('WatchPostEffect ComboBox '+props.Name,props.prop.Value)
   //renderComboBox()
   })
 
 watchSyncEffect(() => {
-  console.log('WatchSyncEffect ComboBox '+props.prop.Name,props.prop.Status)
+  console.log('WatchSyncEffect ComboBox '+props.Name,props.prop.Status)
   //renderComboBox()asignaResultado
   })
 
@@ -773,7 +773,7 @@ watch(
   () => Focus.value,
   (new_val, old_val) => {
     if (!Focus.value) return
-    console.log('ComboBox Set Focus', props.prop.Name)
+    console.log('ComboBox Set Focus', props.Name)
     if (Focus.value) {
       //      Ref.value.focus()
       //Ref.value.select()
@@ -793,7 +793,7 @@ watch(
   () => toggle.value,
   (new_val, old_val) => {
 
-    // console.log('toggle.value', props.prop.Name, old_val, new_val)
+    // console.log('toggle.value', props.Name, old_val, new_val)
     if (new_val == true) onFocus()
   },
   { deep: false }
@@ -809,7 +809,7 @@ watch(
 
 
     if (new_val == 'A' && old_val == 'I') {
-      //      console.log('Watch Estatus Renderiza por cambio de estatus==>', props.prop.Name, old_val, new_val)
+      //      console.log('Watch Estatus Renderiza por cambio de estatus==>', props.Name, old_val, new_val)
 
       renderComboBox()
     }

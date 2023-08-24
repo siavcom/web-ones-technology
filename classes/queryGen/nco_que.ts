@@ -61,7 +61,7 @@ export class nco_que extends COMPONENT {
     const tabla = this.Parent.tabla
     this.Parent.bt_edit.prop.Visible = false
     this.Parent.bt_delete.prop.Visible = false
-    this.Parent.table.prop.Visible = false
+    this.Parent.Grid.prop.Visible = false
     this.Parent.query.prop.Visible = false
     this.Parent.query.prop.Value = ''
     var query = ''
@@ -78,7 +78,7 @@ export class nco_que extends COMPONENT {
       nco_que: this.Parent.nco_que.prop.Value,
     }
 
-    const RecordSource = this.Parent.table.prop.RecordSource
+    const RecordSource = this.Parent.Grid.prop.RecordSource
 
     const ins_sql = `select * From vi_cap_query_db  \
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`
@@ -87,9 +87,11 @@ export class nco_que extends COMPONENT {
 
     const data = await this.Form.db.localSql(ins_sql)
 
-    // console.log('nco_que interactiveChange data',data)
 
     if (data.length == 0) {
+      console.log('No hay datos interactiveChange ',ins_sql)
+
+
       if (this.prop.Value == 1)
         return
       if (this.prop.Value > 1) {
@@ -102,6 +104,8 @@ export class nco_que extends COMPONENT {
     this.prop.ReadOnly = false
 
     let sig_uni = ' '
+    console.log('nco_que interactiveChange data',data)
+
 
     for (let i = 0; i < data.length; i++) {
 
@@ -202,7 +206,7 @@ export class nco_que extends COMPONENT {
 
   async when() {
     //    this.prop.Parent.browse.prop.RowSource = ''
-    //this.Parent.table.RecordSource=''
+    //this.Parent.Grid.RecordSource=''
 
     return true
   }

@@ -43,7 +43,7 @@ export class grid_datos extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = 'grid_datos'
+    this.Name = 'grid_datos'
     this.prop.textLabel= 'Definicion de campos'
     this.prop.RecordSource='vi_cap_dat'
     this.prop.Visible= false

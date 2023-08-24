@@ -48,7 +48,7 @@ export class ThisForm extends captureForm {
     super()  // inicializa la clase base
 
     this.Development = false
-    this.prop.Name = 'Players'
+    this.Name = 'Players'
     this.prop.textLabel = "Mantenimiento a la tabla Players"
     this.prop.RecordSource='Index1_Players'
     this.prop.nem_pge = "Killo Software"

@@ -18,7 +18,7 @@ export class CONTAINER extends COMPONENT {
   constructor() {
     super()
     //this.prop.BaseClass = 'container'
-    this.prop.Name = 'Container'
+    
     this.prop.BaseClass='container'
     this.prop.Position = 'main'
 //    this.Container = this

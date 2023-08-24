@@ -34,7 +34,6 @@ export class activa extends COMPONENT {
   }
 
   async interactiveChange(){
-    console.log('interactiveChange ',this.Parent.Name,this.Name,this.prop.Value)
     if (this.prop.Value==1){
        this.Parent.nco_que.prop.Visible=true
        this.Parent.query.prop.Visible=true

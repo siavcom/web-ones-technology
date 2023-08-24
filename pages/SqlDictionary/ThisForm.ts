@@ -62,8 +62,6 @@ export class ThisForm extends FORM {
     this.style.display = "inline-flex"
     this.style.background = "white"
     this.style.color = "#b94295"
-    this.style.width = "auto"
-    this.style.height = "auto"
     this.style.fontSize = "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     this.style.position = "center" //absolute,
     this.style.backgroundImage = "/logos/Logo_Empresa.png"

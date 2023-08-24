@@ -19,7 +19,7 @@ import { VFPDB } from "@/classes/DataBase"
 
 
 export class FORM extends COMPONENT {
- 
+  
   //Dom: any = getCurrentInstance();
   //Parent = {} //this.Dom.ctx; // Contexto
   //Form = {} //this.Parent.ThisForm // Thisform
@@ -34,10 +34,9 @@ export class FORM extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    
     this.prop.BaseClass = 'Form'
-    this.prop.Name = 'ThisForm'
-    this.prop.Map = 'ThisForm'
+ 
+    this.prop.Map = this.constructor.name
     this.prop.Position = ' '   // No hay posicion ya que es una forma
     this.Form = this
 
@@ -78,7 +77,7 @@ export class FORM extends COMPONENT {
     constructor() {
       super()
       this.Index = 50
-      this.prop.Name = 'Salir'
+      this.Name='Salir'
       this.prop.Value = "Salir";
       this.prop.Capture = false;
       this.prop.Valid = false;

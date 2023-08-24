@@ -16,7 +16,7 @@ import { COMPONENT } from '@/classes/Component'
 import {nco_que} from './nco_que'
 import {activa}  from './activa'
 import { query } from './query'
-import { table } from './table/table'
+import { Grid} from './table/grid'
 import { bt_edit } from './bt_edit'
 import { bt_add } from './bt_add'
 import { bt_delete } from './bt_delete'
@@ -30,7 +30,7 @@ export class queryGen extends COMPONENT {
   public activa= new activa()
   public nco_que= new nco_que()
   public query = new query()
-  public table = new table()
+  public Grid = new Grid()
   public bt_edit = new bt_edit()
   public bt_add = new bt_add()
   public bt_delete = new bt_delete()

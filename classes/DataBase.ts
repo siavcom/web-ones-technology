@@ -34,26 +34,20 @@ import { storeToRefs } from 'pinia'
 export class VFPDB {
   // no debe de estar fuera 
   session =Session()  // obtenemos la session
+ // {nom_emp} = storeToRefs(this.session)  //pasa los elementos por referencia al Global
+
   // const { id_con, url, dialect, nom_emp, user } = storeToRefs(session)  //pasa los elementos por referencia al Global
      
   // propiedades de las clases
   AlaSql = alasql
   name: string = 'VFPDB'
-  //url: string
-  //nom_emp: string
-  //user: string
-  // pass: any
-  // id_con: string
-  //  fpo_pge: string = new Date().toISOString().substring(0, 10)
-  // dialect: string
-  // vis_tra: any = []; // guarda nombre de las vistas de trabajo en el servidor SQL
+ 
+ 
   are_tra: string[] = [''] // Las areas de trabajo donde cada vista tendra.
   // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
 
   num_are: number // numero de area de trabajo que se esta en este momento
-  // db: any = {}; // estructura de toda la base de datos
   View: any = {} // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
-  // messagebox = MessageBox // asignamos las clases de VueSimpleAlert a messagebox
   Form = {} // any = getCurrentInstance();
   Ctx = {} // this.Form.ctx; // Contexto
 
@@ -64,11 +58,14 @@ export class VFPDB {
   Sql = alasql // portea alasql a this.sql (no quitar)
   axiosActive:boolean=false
 
+
+
+  
   // Inicializa la conexion
   constructor() {
     this.Estatus = true
     // this.url = ''
-    // this.nom_emp = ''
+ 
     //  this.user = ''
 
     this.num_are = 0
@@ -88,37 +85,13 @@ export class VFPDB {
     this.localAlaSql('DROP DATABASE IF EXISTS Last ;')
     this.localAlaSql('CREATE DATABASE Last ;')
 
-    /*
-    this.borraLocalDb('New');  // Borra primero toda la Base de datos local
-    this.borraLocalDb('Old')
-    */
+  
     this.Estatus = true
-    /* }
-     catch (error) {
-       console.log('Db Error borrar Local Db ', error)
-       MessageBox.alert(
-         error,
-         "Error borraLocalDb ",
-         "error"
-       );
-     } */
-
-    //    this.localAlaSql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMP_; \
-    //                  ATTACH INDEXEDDB DATABASE TEMP_;' )
-
-    // this.localAlaSql("CREATE DATABASE 'new'; CREATE DATABASE 'old'")
-    // await alasql.promise(`ATTACH INDEXEDDB DATABASE ${dbName};USE DATABASE ${dbName};`);
-
-   const {nom_emp} = storeToRefs(this.session)  //pasa los elementos por referencia al Global
-
-   // Si cambia el nombre de la empresa limpia las Vistas 
-   watch(nom_emp.value, () => {
-      this.View = {}
-    })
-
+ 
 
   } // Fin constructor
 
+  
   public async Init(Form) {
     this.Form = Form // .value
     const Var=PublicVar()
@@ -357,11 +330,7 @@ export class VFPDB {
       nom_vis,
       where: ''
     }
-    //    if (this.View[alias].tip_obj = 'VIEW') // si es una VIEW
-    //    {
-    //      dat_vis['query'] = 'select * from ' + nom_vis
-    //      dat_vis.tip_llamada = 'SQLEXEC'
-    //    }
+   
     // la expresion del indice es generada desde el servidor de node y es formada
     // por un objeto json el cual utiliza los model del sequelize
     // { cop_nom=m.cop_nom, cod_nom=m.cod_nom }
@@ -372,16 +341,7 @@ export class VFPDB {
     {
       // console.log('Db USE this.View VIEW', this.View[alias], dat_vis)
       // cambiar el * por los campos de la View en minusculas
-      /*
-       var campos=''
-       var coma=''
-       for (const field in this.View[alias].est_tabla){
-           campos=campos+coma+field.toLowerCase()
-           coma=','
-       }    
- 
-      // dat_vis.query = `select ${campos} from ${nom_vis}`
-      */
+
       dat_vis.query = 'select * from ' + nom_vis
       dat_vis.tip_llamada = 'SQLEXEC'
       // Aqui voy

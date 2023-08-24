@@ -353,7 +353,7 @@ const focusOut = async () => {
     //await LocalDb.update(valor).then(() => { 
     // })
   }
-  console.log('editBox focusout ', props.prop.Name)
+  console.log('editBox focusout ', props.Name)
   return await emitValue()
 }
 */
@@ -839,7 +839,7 @@ const autoLoad = async (RecordSource: string) => {
 const init = async () => {
 
 
-  console.log('Init Grid==>', props.prop.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
+  console.log('Init Grid==>', props.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
   // await This.init()
   let firstElement = ''
@@ -862,7 +862,7 @@ const init = async () => {
 
     This[This.elements[0].Name].prop.First = true
   }
-  // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
+  // if (props.Name=='des_dat')  Ref.value.autofocus=true
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
 

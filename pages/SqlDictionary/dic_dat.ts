@@ -16,7 +16,7 @@ export class dic_dat extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-  //  this.prop.Name = 'dic_dat'
+  //  this.Name = 'dic_dat'
     this.prop.BaseClass = 'comboBox'
     this.prop.textLabel = "Tipo de diccionario  de datos";
     this.prop.ToolTipText=this.prop.textLabel 

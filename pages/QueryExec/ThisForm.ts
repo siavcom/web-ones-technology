@@ -39,7 +39,7 @@ export class ThisForm extends FORM {
     super()  // inicializa la clase base
 
     this.Development = false
-    this.prop.Name = 'SqlQuery'
+    this.Name = 'SqlQuery'
     this.prop.textLabel = "SQL Query"
     this.prop.Status = 'A'
     this.style.display = "flex"

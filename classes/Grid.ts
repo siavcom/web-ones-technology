@@ -18,7 +18,7 @@ export class GRID extends COMPONENT {
   //elements = [{}]
   constructor() {
     super()
-    this.prop.Name = 'Grid'
+    this.Name = 'Grid'
     this.prop.ColumnCount = 1
     this.prop.BaseClass = 'grid'
     this.prop.Capture = true
@@ -96,7 +96,7 @@ export class GRID extends COMPONENT {
 
     if (data.length == 0) { // No tiene registros
 
-      console.log('Grid valid no tiene registros ',this.prop.Name)
+      console.log('Grid valid no tiene registros ',this.Name)
       await this.appendRow(m)
     }
     //    this.prop.RecordSource=RecordSource

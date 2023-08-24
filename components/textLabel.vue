@@ -148,7 +148,7 @@ const toNumberStr = (n) => {
   /* if (!Style) Style = 'decimal'
   if (!Currency) Currency = 'MXN'
   if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
-  //console.log('textLabel Digits===>',props.prop.Name,props.prop.Decimals,MinimumFractionDigits)
+  //console.log('textLabel Digits===>',props.Name,props.prop.Decimals,MinimumFractionDigits)
   return new Intl.NumberFormat('en-US', {
     style: Style,
     currency: Currency,
@@ -189,7 +189,7 @@ const emitValue = async () => {
 /////////////////////////////////////////////////////
 
 const asignaResultado = (valor?: string) => {
-  //console.log('TextLabel asignaResultado ',props.prop.Name,valor)
+  //console.log('TextLabel asignaResultado ',props.Name,valor)
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
@@ -202,7 +202,7 @@ const asignaResultado = (valor?: string) => {
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
 
   if (valor) {
-    //  console.log("ComboBox AsignaResultado valor columnas =======>", props.prop.Name,valor,columnas)
+    //  console.log("ComboBox AsignaResultado valor columnas =======>", props.Name,valor,columnas)
     for (let i = 0; i < columnas.length; i++) {
       if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
         // console.log("Busca Value =======>", i, new_val);
@@ -213,12 +213,12 @@ const asignaResultado = (valor?: string) => {
         //Resultado.value = columnas[i].text[0];
         Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
         //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
-        //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
+        //console.log("AsignaResultado  Value =======>",props.Name, Resultado.value, valor)
       }
     }
   }
   else {  //aqui me quede checar cuando es por arreglo genera el value con array
-    // console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.prop.Name,Value.value,columnas)
+    // console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.Name,Value.value,columnas)
 
 
     for (let i = 0; i < columnas.length; i++) {
@@ -233,12 +233,12 @@ const asignaResultado = (valor?: string) => {
           // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
           //Resultado.value = columnas[i].text[0];
-          // console.log("ComboBox AsignaResultado columnas =======>", props.prop.Name,props.prop.Value,columnas[i].text[0])
+          // console.log("ComboBox AsignaResultado columnas =======>", props.Name,props.prop.Value,columnas[i].text[0])
 
 
          Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
           //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
-          //console.log("AsignaResultado  Value =======>",props.prop.Name, Resultado.value, valor)
+          //console.log("AsignaResultado  Value =======>",props.Name, Resultado.value, valor)
         }
       } catch {
         console.error('comboBox columnas', columnas[i])
@@ -295,7 +295,7 @@ const renderComboBox = async () => {
   if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
   console.log('textLabel render comboBox')
   try {
-    //console.log('TextLabel asignaResultado renderCombo',props.prop.Name,Value)
+    //console.log('TextLabel asignaResultado renderCombo',props.Name,Value)
     const RowSource: string = props.prop.RowSource
     const pos = RowSource.indexOf(".") // posicion del punto
 
@@ -304,7 +304,7 @@ const renderComboBox = async () => {
 
     //ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
-    //console.log('ComboBox renderiza  ===>>', props.prop.Name,props.prop.Status)
+    //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
 
     const BoundColumn =
       (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
@@ -461,7 +461,7 @@ const renderComboBox = async () => {
     //props.prop.Value = valor
 
     //console.log("Asigna render Combo box columnas", columnas);
-    //console.log('ComboBox Renderiza column ===>', props.prop.Name, columnas)
+    //console.log('ComboBox Renderiza column ===>', props.Name, columnas)
 
     Text.value = valor
 
@@ -501,7 +501,7 @@ const renderComboBox = async () => {
   
   //ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
-  //console.log('ComboBox renderiza  ===>>', props.prop.Name,props.prop.Status)
+  //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
@@ -691,7 +691,7 @@ const readCampo = async () => {
   }
   if (props.prop.Type == 'checkBox') {
     checked.value = Text.value == 1 ? true : false
-    //console.log('checkBox ReadValue =',props.prop.Name,Text.value)
+    //console.log('checkBox ReadValue =',props.Name,Text.value)
   }
   renderComboBox()
 }

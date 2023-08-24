@@ -50,7 +50,7 @@ div.divi{
 div.mensajes{
   display: inline-flex; /* recomendado por raul*/
   width: auto;
-  height: auto;
+  height: 100%;
 
 }
 

@@ -37,7 +37,7 @@ export class grid_indices extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = 'grid_indices'
+    this.Name = 'grid_indices'
     this.prop.textLabel= 'Definicion de indices '
     this.prop.RecordSource='vi_cap_ind'
     this.prop.Visible= false

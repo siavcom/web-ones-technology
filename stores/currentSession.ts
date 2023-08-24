@@ -221,7 +221,7 @@ export const Session = defineStore('currentSession', () => {
 //      if (new_emp.length > 2 && id_con.value.length > 9)
 //        leeMenu()
     },
-    { deep: true }
+    { deep: false }
   )
 
   watch(() => id_con.value,
@@ -234,7 +234,7 @@ export const Session = defineStore('currentSession', () => {
           menu.value = []
       }
     },
-    { deep: true }
+    { deep: false }
   )
 
   watch(() => pass.value,
@@ -249,7 +249,7 @@ export const Session = defineStore('currentSession', () => {
       }
 
     },
-    { deep: true }
+    { deep: false }
   )
 
   const doneMenu = computed(() => menu.value.filter(menu => menu.value.done))

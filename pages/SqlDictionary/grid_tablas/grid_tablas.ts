@@ -30,7 +30,7 @@ export class grid_tablas extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = 'grid_tablas'
+    this.Name = 'grid_tablas'
     this.prop.textLabel= 'Tablas del SQL Server'
     this.prop.RecordSource='vi_cap_tab'
     this.prop.Visible= false

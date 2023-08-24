@@ -25,7 +25,7 @@ import {pad_que} from './pad_que'
 import {uni_que} from './uni_que'
 
 
-export class table extends GRID {
+export class Grid extends GRID {
   public ren_que = new ren_que()
   public pai_que = new pai_que()
   public cam_dat = new cam_dat()
@@ -36,7 +36,7 @@ export class table extends GRID {
 
   constructor() {
     super()
-    this.prop.Name = 'table'
+   
     this.prop.Capture = false;
     this.prop.Valid = false;
     this.prop.Position = 'main'
@@ -57,7 +57,7 @@ export class table extends GRID {
     if (!m.nco_que)
         m.nco_que=this.Parent.nco_que.prop.Value
      
-    m.prg_prg= this.Form.prop.Name
+    m.prg_prg= this.Form.Name
     m.par_prg= this.Form.Params.par_prg ? this.Form.Params.par_prg:'' 
     m.usu_que= this.Parent.usu_que
     m.ren_que= 1
@@ -77,7 +77,7 @@ export class table extends GRID {
     this.Row=-1 // Quitamos donde esta el renglon
     const values= await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
     this.prop.Valid=false
-    console.log('======grid Incertamos renglon========>',this.prop.Name,values)
+    console.log('======grid Incertamos renglon========>',this.Name,values)
    */
   }
 
@@ -89,7 +89,7 @@ export class table extends GRID {
 
     if (await super.grabaTabla()){
       const m = {
-        prg_prg: this.Form.prop.Name,
+        prg_prg: this.Form.Name,
         par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       }
    

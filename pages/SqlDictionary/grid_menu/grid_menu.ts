@@ -38,7 +38,7 @@ export class grid_menu extends GRID {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
-    this.prop.Name = 'grid_menu'  // se necesita poner su nombre
+    this.Name = 'grid_menu'  // se necesita poner su nombre
     this.prop.textLabel= 'Menu de programas'
     this.prop.RecordSource='vi_cap_prg'
     this.prop.Visible= false

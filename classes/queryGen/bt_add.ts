@@ -40,7 +40,7 @@ export class bt_add extends COMPONENT {
       this.Parent.bt_edit.prop.Visible=false
     /*
       const m = {
-      prg_prg: this.Form.prop.Name,
+      prg_prg: this.Form.Name,
       par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       usu_que: this.Parent.usu_que,
       ren_que: 1,

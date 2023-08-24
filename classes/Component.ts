@@ -144,21 +144,10 @@ export class COMPONENT {
   imagen = { src: "" }
 
   
-  // contructor base on create 
-//  constructor(Name:string) {
   constructor() {
-   
     this.Name=this.constructor.name    
-   
-
-   // console.log('On Create Componente ====>',this.constructor.name,this)
-   // this.Name = this.constructor.name  //.toLowerCase()
-   // this.Name = (typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
-    this.prop.Name = this.Name //.toLowerCase()
     this.Recno = 0
     this.prop.This = this
- 
-
   }
   
 
@@ -168,13 +157,19 @@ export class COMPONENT {
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
-    
+    let sw_component=true
     if(!TabIndex) TabIndex=1
     if (!Form) { // Inicializamos el this.Form
+      console.log('ThisForm.name 2',this.constructor.name)
+
       Form = this
-      this.Name = 'ThisForm'
+      this.prop.Map ='ThisForm' // this.constructor.name
+ 
       //      console.log('Init ThisForm', this.Name, this.Form)
       TabIndex = 1
+      sw_component=false
+      console.log('Init constructor.name',this.constructor.name,'Name=',this.Name,'Map =',this.prop.Map) 
+
     }
     //console.log('Init TabIndex', this.Name, TabIndex,this)
 
@@ -187,11 +182,14 @@ export class COMPONENT {
     let main: [] = []
     let footer: [] = []
     const elements: [] = []
-    // asigna el mapa donde esta  ubicado el componente
-    if (this.Name != 'ThisForm' && this.Parent.prop) { // Si tiene propiedades 
-  //    this.prop.Map = this.Parent.prop.Map + '.' + this.prop.Name
-       this.prop.Map = this.Parent.prop.Map + '.' + this.Name
-       console.log('Init Map ',this.prop.Map) 
+    // Generamos  el MAP donde esta  ubicado el componente
+    if (sw_component && this.Parent.prop) { // Si tiene propiedades el componente padre
+
+      // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
+      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
+
+
+       console.log('Init constructor.name',this.constructor.name,'Name=',this.Name,'Map =',this.prop.Map) 
 
     }
     for (const componente in this) {
@@ -204,22 +202,27 @@ export class COMPONENT {
         this[componente].prop &&
         this[componente].Init) {
 
-      //  console.log('Init Component '+componente,'Name==',this[componente].prop.Name) 
-        if (this[componente].prop.Name==undefined){
-          console.error('Component ',componente+'has prop.Name=undefined')
+      //  console.log('Init Component '+componente,'Name==',this[componente].Name) 
+        if (this[componente].Name==undefined){
+          console.error('Component ',componente+' has Name=undefined')
         
            return 
         }
-        // const name = this[componente].prop.Name.trim()
-        let name = this[componente].constructor.name
+        // const name = this[componente].Name.trim()
+        // let name = this[componente].constructor.name
+        const name=componente
+//        console.log('Component =',componente,'contructor.name=',this[componente].constructor.name)
 
 
-        console.log('Component ===>>',componente,name)
-        if (componente!=name){
-          console.warn('Component =',componente,'has diferent prop.Name=',name,this)
+        if (componente!=this[componente].constructor.name){
+          console.warn('Component =',componente,'has diferent contructor.name=',this[componente].constructor.name)
+          this[componente].Name=componente // tenemos que obtener el nombre original
+          this[componente].prop.Map=this.prop.Map.trim()+'.'+componente  
+          console.warn('Arreglado Component =',componente,this[componente].prop.Map)
+
           // return 
         }
-        name=componente  // Modificar para el compilador
+        // name=componente  // Modificar para el compilador
         const Position = this[componente].prop.Position.trim().toLowerCase()
 
         if (Position == 'header')
@@ -297,7 +300,7 @@ export class COMPONENT {
 //    console.log('Component init', this.Name, this.prop.Map)
     
     if(this.init){
-      console.log('Component init', this.Name, this.prop.Map)
+    //  console.log('Component init Name=', this.Name,'Map=', this.prop.Map)
        await this.init() // Corre el init principal
     }
     return TabIndex
@@ -309,14 +312,14 @@ export class COMPONENT {
   /*
   public async InitForm_ant(Form: any) {
     const elements: [] = []
-    //console.log('Inicializando componente Parent ===> ', this.prop.Name,this.Parent)
+    //console.log('Inicializando componente Parent ===> ', this.Name,this.Parent)
 
-    //console.log('InitForm  componente Parent ===> ',this.prop.Name)
+    //console.log('InitForm  componente Parent ===> ',this.Name)
 
     if (this.Name != 'ThisForm' && this.Parent.prop) { // Si tiene propiedades 
-      this.prop.Map = this.Parent.prop.Map + '.' + this.prop.Name
+      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
     }
-    //console.log('Mapa clase ======>', this.prop.Name, this.prop.Map)
+    //console.log('Mapa clase ======>', this.Name, this.prop.Map)
     for (const componente in this) {
       if (componente !== 'db' &&
         componente !== 'Ref' &&
@@ -328,7 +331,7 @@ export class COMPONENT {
         this[componente].InitForm
       ) {
         const component = {
-          Name: this[componente].prop.Name,
+          Name: this[componente].Name,
           Id: this[componente].prop.Order,
           Position: this[componente].prop.Position
         }
@@ -343,9 +346,9 @@ export class COMPONENT {
 
 
     this.Form = Form  // asigna la forma a la propiedad Form 
-    //console.log('Init form ====>', this.prop.Name)
+    //console.log('Init form ====>', this.Name)
     this.prop.Status = 'A'
-    console.log('Componente Inicializado =========> ', this.prop.Name, this.elements)
+    console.log('Componente Inicializado =========> ', this.Name, this.elements)
     // console.log('Init Componente this.Form',this.Form)
   }
 
@@ -364,7 +367,7 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
   public async valid():Promise<boolean> {
     this.prop.Valid = true
-    console.log('Valida ',this.prop.Name)
+   // console.log('Valida ',this.Name)
     return this.prop.Valid
   }
 
@@ -392,7 +395,7 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
 
   public async when() {
-    //console.log('Super when ==>',this.prop.Name)
+    
     return !this.prop.ReadOnly
   }
 
@@ -405,7 +408,7 @@ export class COMPONENT {
 
   public async setFocus() {
     this.prop.Focus = true
-    console.log('Super setFocus ==>', this.prop.Name)
+    //console.log('Super setFocus ==>', this.Name)
 
   }
 

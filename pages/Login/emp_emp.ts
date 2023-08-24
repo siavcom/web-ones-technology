@@ -17,7 +17,7 @@ export class emp_emp extends COMPONENT {
     super()
 
 //    this.Name='emp_emp'
-//    this.prop.Name='emp_emp'
+//    this.Name='emp_emp'
     this.prop.BaseClass = 'comboBox'
     //this.prop.Value = 'Demo'
     this.prop.textLabel = 'Empresa'
@@ -50,7 +50,7 @@ export class emp_emp extends COMPONENT {
     const style = this.Parent.ThisForm[this.Name].style
     const position = this.Parent.ThisForm[this.Name].position
 
-    This.prop.Name = "Demo";
+    This.Name = "Demo";
     This.prop.textLabel = 'Empresa:';
     This.prop.ReadOnly = false;
     This.prop.Capture = true;

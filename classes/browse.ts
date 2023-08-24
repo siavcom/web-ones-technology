@@ -64,7 +64,7 @@ export class browse extends COMPONENT {
 
     constructor() {
         super()
-        this.prop.BaseClass = 'browseLite'
+        this.prop.BaseClass = 'browse'
         this.prop.RowSource = ''
     }
 }

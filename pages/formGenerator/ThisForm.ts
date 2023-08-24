@@ -49,17 +49,17 @@ export class ThisForm extends FORM {
     super()  // inicializa la clase base
     
     this.Development = false
-    this.prop.Name = 'GenForma'
+    this.Name = 'GenForma'
     this.prop.textLabel = "Generador de Formas de mantenimiento ";
     this.prop.Status = 'A'
     this.style.width = "auto"
 
     this.grid_form.Name='grid_form'
-    this.grid_form.prop.Name='grid_form'
+    this.grid_form.Name='grid_form'
     this.grid_form.prop.textLabel= 'Componentes del form'
 
     this.grid_columns.Name='grid_columns'
-    this.grid_columns.prop.Name='grid_columns'
+    this.grid_columns.Name='grid_columns'
     this.grid_columns.prop.textLabel= 'Componentes del grid'
 
   }
@@ -70,7 +70,7 @@ export class ThisForm extends FORM {
    
     }
     catch (error) {
-      console.log("======Error Init=====" + this.prop.Name, error)
+      console.log("======Error Init=====" + this.Name, error)
     }
   
 

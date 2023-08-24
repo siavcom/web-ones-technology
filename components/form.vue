@@ -12,6 +12,7 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
+  
   <transition name='Mainform'>
 
     <div v-if="loading" class="splash-screen">
@@ -190,7 +191,7 @@ const comboBox = resolveComponent('comboBox')
 const editText = resolveComponent('editText')
 const textLabel = resolveComponent('textLabel')
 const grid = resolveComponent('grid')
-const browse = resolveComponent('browse')
+//const browse = resolveComponent('browse')
 
 const browseLite = resolveComponent('browseLite')
 const container = resolveComponent('container')
@@ -464,7 +465,6 @@ watch(
       if (ThisForm.estatus[comp] != 'A') {
 
         console.log('watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
-
         return
       }
     }
@@ -695,7 +695,7 @@ const impComp = ((name: string, pos?: string) => {
 
     case 'browse': {
       console.log('Importo Browse')
-      return browse
+      return browseLite
       break;
     }
 

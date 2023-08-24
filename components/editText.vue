@@ -221,7 +221,7 @@ const toNumberStr = (n) => {
   /* if (!Style) Style = 'decimal'
   if (!Currency) Currency = 'MXN'
   if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
-  //console.log('textLabel Digits===>',props.prop.Name,props.prop.Decimals,MinimumFractionDigits)
+  //console.log('textLabel Digits===>',props.Name,props.prop.Decimals,MinimumFractionDigits)
 
 
 
@@ -316,7 +316,7 @@ inherit	Inherits this property from its parent element. Read about inherit
 /////////////////////////////////////////////////////////////////
 const emitValue = async () => {
   Status.value = 'A'
-  //console.log('EditBox antes emit Value  ====>', props.prop.Name, props.Registro, props.Recno)
+  //console.log('EditBox antes emit Value  ====>', props.Name, props.Registro, props.Recno)
   Recno.value = props.Registro
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
@@ -459,7 +459,7 @@ const keyPress = ($event) => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-  //console.log('editText onFocus ', props.prop.Name, props.prop.ReadOnly)
+  //console.log('editText onFocus ', props.Name, props.prop.ReadOnly)
   ToolTipText.value = false
   ShowError.value = false
   // emit("update:ShowError", false)
@@ -525,7 +525,7 @@ const readCampo = async (recno: number) => {
 
   if (props.prop.Type == 'checkBox') {
     checkValue.value = Value.value == 1 ? true : false
-    //console.log('checkBox ReadValue =',props.prop.Name,checkValue.value,Value.value)
+    //console.log('checkBox ReadValue =',props.Name,checkValue.value,Value.value)
   }
   emitValue()
 
@@ -722,7 +722,7 @@ watch(
   () => props.prop.Focus,
   (new_val, old_val) => {
     if (!props.prop.Focus) return
-    console.log('EditText Set Focus', props.prop.Name)
+    console.log('EditText Set Focus', props.Name)
     //Ref.value.focus()
     Ref.value.select()
     Focus.value = false
@@ -768,7 +768,7 @@ const init = async () => {
     //   if (!props.prop.Autofocus) {
     if (!props.prop.First) {
 
-      //console.log('Init EditText', props.prop.Name, props.prop.Value)
+      //console.log('Init EditText', props.Name, props.prop.Value)
       await emitValue()
     }
     Status.value = 'A';  // Activo

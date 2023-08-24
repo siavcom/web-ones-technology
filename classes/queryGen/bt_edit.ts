@@ -38,10 +38,10 @@ export class bt_edit extends COMPONENT {
     this.prop.Visible=false  
     this.Parent.bt_add.prop.Visible=false
 
-   // || this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0
+   // || this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount==0
 
    const m = {
-    prg_prg: this.Form.prop.Name,
+    prg_prg: this.Form.Name,
     par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
     usu_que: this.Parent.usu_que,
     ren_que: 1,
@@ -65,16 +65,16 @@ export class bt_edit extends COMPONENT {
       nco_que: this.Parent.nco_que.prop.Value
     }
  
-   // if (this.Form.db.View[this.Parent.table.prop.RecordSource])
-   //     await this.Form.db.useNodata(this.Parent.table.prop.RecordSource)
+   // if (this.Form.db.View[this.Parent.Grid.prop.RecordSource])
+   //     await this.Form.db.useNodata(this.Parent.Grid.prop.RecordSource)
    // else    
-    await this.Form.db.localClone('vi_cap_query_db', this.Parent.table.prop.RecordSource, filter)
+    await this.Form.db.localClone('vi_cap_query_db', this.Parent.Grid.prop.RecordSource, filter)
 
-    if (this.Form.db.View[this.Parent.table.prop.RecordSource].recCount==0){
-      await this.Parent.table.appendRow(m)
+    if (this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount==0){
+      await this.Parent.Grid.appendRow(m)
     }
     this.Parent.query.prop.Visible=false 
-    this.Parent.table.prop.Visible = true
+    this.Parent.Grid.prop.Visible = true
 //    this.Parent.bt_delete.prop.Visible=true
 
 }
