@@ -321,7 +321,7 @@ const emitValue = async () => {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update:Valid", Valid.value)
-  emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
+ // emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
   // emit("update") // emite un update en el componente padre
   console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
@@ -376,7 +376,6 @@ const change = async () => {
   else
     Value.value = 0
 
-
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -384,7 +383,7 @@ const change = async () => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
-
+ 
   if (props.prop.Type == 'checkBox') {
     Value.value = checkValue.value ? 1 : 0
     //console.log('checkBox focusOut =',checkValue.value,Value.value)
@@ -395,7 +394,7 @@ const focusOut = async () => {
     // actualiza valor en localDb
     const valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +Value.value : Value.value
     // Actualiza el alaSQL el dato
-    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+    await This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
     //    await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
   }
   ToolTipText.value = true  // Activamos el ToolTipText
@@ -473,8 +472,8 @@ const onFocus = async () => {
         emit("update")
       }
 
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno, 'Old')
-      //      const data = await props.db.value.readCampo(props.prop.ControlSource, props.Recno, 'Old')
+    //  const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno, 'Old')
+      const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value, 'Old')
 
       let valor = ''
       let sw_key = false
@@ -508,9 +507,13 @@ const onFocus = async () => {
 ////////////////////////////////////////
 
 const readCampo = async (recno: number) => {
-  if (recno != props.Recno) Recno.value = recno
-  const data = await This.Form.db.readCampo(props.prop.ControlSource, recno)
-  //const data = await props.db.value.readCampo(props.prop.ControlSource, recno)
+//  if (recno != props.Recno) Recno.value = recno
+  if (recno != Recno.value) Recno.value = recno
+
+
+
+  //  const data = await This.Form.db.readCampo(props.prop.ControlSource, recno)
+  const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value)
 
   for (const campo in data) {
     if (campo != 'key_pri') Value.value = data[campo]
@@ -570,13 +573,16 @@ watch(
   async (new_val, old_val) => {
 
     // se cambia en alasql
-    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+//    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+
+    if (Recno.value > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       console.log('===>Termino edittext watch props.Value ', This.Name, 'Value=', new_val)
       // actualiza valor en localDb
       const valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +Value.value : Value.value
       // Actualiza el alaSQL el dato
       Status.value = 'P'
-      await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+      //await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+      await This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
 
 
 
@@ -653,8 +659,10 @@ watch(
   () => props.prop.ControlSource,
   (new_val, old_val) => {
     if (new_val != old_val) {
-      if (props.Recno > 0 && new_val.trim().length) {
-        readCampo(props.Registro)
+    //  if (props.Recno > 0 && new_val.trim().length) {
+     if (Recno.value> 0 && new_val.trim().length) {
+
+      readCampo(Recno.value)
       }
     }
 

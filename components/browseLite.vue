@@ -12,7 +12,6 @@
       </div>
 
 
-
       <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
         :has-checkbox="table.checkBox" :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey"
@@ -387,13 +386,13 @@ const rowToggled = (rows, isCollapsed) => {
 //let PropsRows = ref(props.rows)
 
 //const RowsValue = reactive(props.rows)
-
+/*
 function multiFilter(array, filters) {
   return array.filter(o =>
     Object.keys(filters).every(k =>
       [].concat(filters[k]).some(v => o[k].includes(v))));
 }
-
+*/
 
 
 const filter = async (filters?: {}, limit: number) => {

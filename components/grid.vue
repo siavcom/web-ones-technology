@@ -74,7 +74,7 @@
                     <div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'>
                       <component :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                         v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
-                        v-model:Focus="This[col.Name].Focus" v-model:Recno="This[col.Name].Recno"
+                        v-model:Focus="This[col.Name].Focus" 
                         v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
                         v-bind:Show="true" v-bind:Component="ref(This[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
@@ -170,7 +170,7 @@
             <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-              v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"
+              v-model:Focus="This[compFooter].Focus" v-bind:Show="true"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"

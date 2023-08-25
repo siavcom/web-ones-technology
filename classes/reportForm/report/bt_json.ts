@@ -36,18 +36,11 @@ export class bt_json extends COMPONENT {
     if (rows.length == 0)
       return
 
-    // Obtenemos datos generales de comepge
-    const ins_sql = 'select * from ' + this.Form.dataView
-    const comepge = await this.Form.db.execute(ins_sql, 'MEMVAR')
-
-    for (let key in comepge[0]) {
-      rows[0][key] = comepge[0][key]
-
-    }
-    
+    rows[0]=await this.Form.obtData(rows[0])  
+    console.log('bt_json rows[0]',rows[0],rows[1])
     const objJson = JSON.stringify(rows)
     const blobJson = new Blob([objJson], { type: 'text/plain' })
-    await saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`)
+    saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`)
 
   }
 

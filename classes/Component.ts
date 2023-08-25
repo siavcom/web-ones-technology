@@ -87,8 +87,8 @@ export class COMPONENT {
     componentStyle: {
       background: "white",
       color: "black",
-      width: "auto",
-      height: "auto",
+      width:'100%',
+      height:'100%',
       maxHeigth: 'auto',
       maxWidth: 'auto',
       fontFamily: "Arial",

@@ -54,24 +54,21 @@ export class Grid extends GRID {
   public async appendRow(m?: {}) { 
     if (!m) m = {}
 
-    if (!m.nco_que)
-        m.nco_que=this.Parent.nco_que.prop.Value
-     
-    m.prg_prg= this.Form.Name
+    m.nco_que= this.Parent.nco_que.prop.Value 
+    m.prg_prg= this.Form.prop.Name
     m.par_prg= this.Form.Params.par_prg ? this.Form.Params.par_prg:'' 
     m.usu_que= this.Parent.usu_que
     m.ren_que= 1
-    
     const db = this.Form.db
     const data=await db.localAlaSql(`select max(ren_que)+1 as max_ren from ${this.prop.RecordSource} `)
-    console.log('appendRow table Ala ===>',this.prop.RecordSource,await db.localAlaSql(`select * from ${this.prop.RecordSource} `))
         
     if( data[0] && data[0].max_ren && data[0].max_ren!=null)
        m.ren_que=data[0].max_ren
-      else
-       m.ren_que=1
-    console.log('appendRow table m ===>',m,data,)
+  
+    //console.log('appendRow table m ===>',m,)
     await super.appendRow(m) 
+    console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+
     /*   
     if (!m) m = {}
     this.Row=-1 // Quitamos donde esta el renglon
@@ -81,18 +78,21 @@ export class Grid extends GRID {
    */
   }
 
- //////////////////////////////////
-  // Graba Tabla
+//////////////////////////////////
+// Graba Tabla
 /////////////////////////////////
-  async grabaTabla() {
+  async grabaTabla_ant() {
     let resultado=false
 
+    console.log('grabaTabla ala ===>',await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+    
+
     if (await super.grabaTabla()){
-      const m = {
-        prg_prg: this.Form.Name,
+    /*  const m = {
+        prg_prg: this.Form.prop.Name,
         par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       }
-   
+   */
     //  await this.Form.db.use('vi_cap_query_db', m) // todos los querys del reporte
     
       resultado=true

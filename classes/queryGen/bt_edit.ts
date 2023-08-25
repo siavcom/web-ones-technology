@@ -37,11 +37,13 @@ export class bt_edit extends COMPONENT {
 
     this.prop.Visible=false  
     this.Parent.bt_add.prop.Visible=false
+    const RecordSource=this.Parent.Grid.prop.RecordSource
+    this.Parent.Grid.prop.RecordSource=''
 
    // || this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount==0
 
    const m = {
-    prg_prg: this.Form.Name,
+    prg_prg: this.Form.prop.Name,
     par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
     usu_que: this.Parent.usu_que,
     ren_que: 1,
@@ -68,14 +70,19 @@ export class bt_edit extends COMPONENT {
    // if (this.Form.db.View[this.Parent.Grid.prop.RecordSource])
    //     await this.Form.db.useNodata(this.Parent.Grid.prop.RecordSource)
    // else    
-    await this.Form.db.localClone('vi_cap_query_db', this.Parent.Grid.prop.RecordSource, filter)
+    await this.Form.db.localClone('vi_cap_query_db', RecordSource, filter)
+    this.Parent.Grid.prop.RecordSource=RecordSource
 
     if (this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount==0){
       await this.Parent.Grid.appendRow(m)
     }
+
+    console.log('bt_add alaSql recordSource=',this.Parent.Grid.prop.RecordSource,
+       await this.Form.db.localAlaSql(`select * from ${this.Parent.Grid.prop.RecordSource}`))
+    //this.Parent.activa.prop.Value=1
     this.Parent.query.prop.Visible=false 
     this.Parent.Grid.prop.Visible = true
-//    this.Parent.bt_delete.prop.Visible=true
+    this.Parent.bt_delete.prop.Visible=true
 
 }
 

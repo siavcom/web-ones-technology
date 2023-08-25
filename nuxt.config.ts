@@ -4,9 +4,11 @@ export default defineNuxtConfig({
  devServer: {
     port: 3000
   },
-alias: {  // Quita el error a instalar Nuxt
+/*
+alias: {  // Quita el error a instalar Nuxt. Se debe de comentar despues de instalar el NUXT
   pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
 },
+*/
 imports: {
     // Auto-import pinia stores defined in `~/stores`
     dirs: ['stores']
@@ -31,6 +33,8 @@ imports: {
   build: {
     transpile: ['vuetify'],
   },
+  // Para poder hacer los enlaces simbolicos, se aumenta los directorios
+  // para que vite los acepte
   vite: {
   server: {
       fs: {
@@ -51,6 +55,10 @@ imports: {
       fs: {
         allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
       },
+    },
+   // quita los mensajes de la consola al compilar
+   define: {
+      'process.env.DEBUG': false,
     },
   },
   modules: [

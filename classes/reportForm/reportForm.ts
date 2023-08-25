@@ -30,24 +30,18 @@ export class reportForm extends FORM {
   vis_rep: string = ''   // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ''   // variables extras para el orden del select
   query: string = ''     // query para ejecutar el reporte
-  dataView:string ='vcomepge'    // Vista de datos generales
   sqlQuery:string=''             // Query a ejecutar antes de la vista del reporte
   pdfHeigth='1200px'  // PDF height 
   constructor() {
     super()
-   // this.queryPri.Name = 'queryPri'
-   // this.queryUsu.Name = 'queryUsu'
-   // this.queryGen.Name = 'queryGen'
-   // this.style.width='1210px'
+  
   }
 
   public async init() {
 
     this.var_ord.prop.RowSource=`select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`
     this.var_ord.prop.RowSourceType = 3 
-    //   init = async ()=> {
-
-    //this.for_imp.prop.Value=this.Name
+    
     this.queryUsu.prop.Disabled = true
 
     this.queryGen.prop.Disabled = true
@@ -71,14 +65,6 @@ export class reportForm extends FORM {
       return
     }
 
-//    const tab_ord=this.tab_ord.trim()
-//    await db.localAlaSql(`select * from campos where lower(nom_tab)='${tab_ord}`,'orden')
-
-//    console.log('reportForm campos ',this.tab_ord, vis_rep, await db.localAlaSql(`select * from campos `)) //where lower(nom_tab)='${this.tab_ord}'
-//    console.log('reportForm tabla campos ',this.tab_ord, vis_rep, await db.localAlaSql(`select * from campos where lower(nom_tab)='${tab_ord}`)) //where lower(nom_tab)='${this.tab_ord}'
-    
-
-
     // todos los querys del reporte
 
     const m = {
@@ -91,57 +77,30 @@ export class reportForm extends FORM {
 
 
     // Query Principal
-    const filter = { usu_que: 'MAIN' }
-    // await db.localClone('vi_cap_query_db', 'query_main', filter)
-
-    //this.queryPri.Grid.prop.RecordSource = 'query_main'
+   
     await this.asignaRecordSource('queryPri', 'query_main')
 
-    this.queryPri.prop.textLabel = 'Condiciones principales'
-
-    //this.queryPri.usu_que = 'MAIN'
-    //this.queryPri.prop.Disabled = false
-    // this.queryPri.query.prop.Visible=true
-
-    
+   
     if (this.prop.Development == false) {
       this.queryPri.bt_add.prop.Visible = false
       this.queryPri.Grid.prop.saveData = false
     }
 
     // Query Usuario
-    filter.usu_que = this.db.session.user
-    //await db.localClone('vi_cap_query_db', 'query_user', filter)
 
-
-    this.queryUsu.prop.textLabel = 'Condiciones usuario :' + this.db.user
-
-    //this.queryUsu.Grid.prop.RecordSource = 'query_user'
     await this.asignaRecordSource('queryUsu', 'query_user')
-    this.queryUsu.usu_que = this.db.session.user
+    this.queryUsu.usu_que = db.session.user
+    console.log('reportForm session',db.session)
+    this.queryUsu.prop.textLabel = 'Condiciones por usuario :' + this.queryUsu.usu_que
 
     // Query Todos
-    filter.usu_que = 'ALL'
 
-    //await db.localClone('vi_cap_query_db', 'query_all', filter)
-
-    this.queryGen.prop.textLabel = 'Condiciones generales'
-
-    //this.queryGen.Grid.prop.RecordSource = 'query_all'
     await this.asignaRecordSource('queryGen', 'query_all')
-    this.queryGen.usu_que = 'ALL'
 
     this.Form.queryPri.activa.prop.Value = 1
-   // this.Form.queryPri.nco_que.prop.sw_add=true 
-
-    //  this.queryPri.nco_que.prop.Value = 1
-    //      await  this.Form.queryPri.nco_que.interactiveChange()
-    //      this.Form.queryPri.activa.prop.Value = 1
     
 
     await this.Form.queryPri.nco_que.interactiveChange()
-
-
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -155,8 +114,6 @@ export class reportForm extends FORM {
       tabla[column].prop.RecordSource = RecordSource
       tabla[column].prop.ControlSource = RecordSource + '.' + column
     }
-    //  this.prop.ControlSource =this.Parent.prop.RecordSource.trim()+'.ren_que'
-    //console.log('Grid asigna', nom_que, this[nom_que].Grid)
 
   }
 
@@ -172,8 +129,6 @@ export class reportForm extends FORM {
     var where = ''
     if (this[tip_con].activa.prop.Value == 0) return where
 
-//    if (this[tip_con].Grid.prop.Visible ) // si esta en edicion, graba la tabla
-//      return where
 
     const view = this[tip_con].Grid.prop.RecordSource
 
@@ -186,7 +141,6 @@ export class reportForm extends FORM {
     if (tip_con=='queryGen')
        tabla='query_all'
 
-//trim(usu_que)='${usu_que}' and
     console.log('reportForm alias') 
     if (!this.Form.db.View[tabla]){ // Si no existe el alias
       const filter = {
@@ -266,4 +220,30 @@ export class reportForm extends FORM {
     return query_gen + where + orden
     //   init = async ()=> {
   }
+
+  async obtData(data?:{}){
+    if (!data)
+       data={}
+
+ 
+    // obtenemos valores de los componentes en la forma
+    for (let i=0;i<this.main.length;i++){
+        if( typeof this[this.main[i]].prop.Value=='string' || typeof  this[this.main[i]].prop.Value=='number' ) 
+            data[this.main[i]]=this[this.main[i]].prop.Value
+    }          
+    // Obtenemos variables Publicas
+   
+    const Var = this.Form.Var
+      //await this.Form.db.execute(ins_sql, 'MEMVAR')
+ 
+    for (let component in Var) {
+      data[component] = Var[component]
+      console.log('bt_json component.value= ',data[component])
+
+    }
+    console.log('bt_json obtData= ',data)
+   return data
+
+  }
+
 }

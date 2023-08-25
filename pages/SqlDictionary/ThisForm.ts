@@ -52,10 +52,9 @@ export class ThisForm extends FORM {
     super() // inicializa la clase base
     
     this.prop.Name = "SqlDictionary"
-    this.prop.Login = false
+  
     this.prop.tag = ""
     this.prop.textLabel = "Mantenimiento al diccionario de datos"
-    this.prop.nem_pge = "Killo Software"
     //this.prop.fpo_pge = new Date().toISOString().substring(0, 10) //  Fecha actual de la computadora cliente
     this.prop.Status = "A"
 

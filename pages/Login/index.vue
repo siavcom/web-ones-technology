@@ -107,7 +107,7 @@ const emit = defineEmits(['updateStatus'])
 /// //////////////////////////////////////////////////////
 // watch Login
 /// ///////////////////////////////////////
-
+/*
 watch(
   () => ThisForm.prop.Login,
   (new_val, old_val) => {
@@ -116,7 +116,7 @@ watch(
   },
   { deep: false }
 )
-
+*/
 // ////////////   Clase Base de datos ///////////////////////////////
 const Init = new INIT() // solo se puso para evitar de errores que tenia
 

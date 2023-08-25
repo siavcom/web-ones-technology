@@ -107,8 +107,7 @@ export class bt_aceptar extends COMPONENT {
     nom_emp.value = empresa
     user.value = login
     pass.value = ThisForm.pas_usu.prop.Value
-    ThisForm.prop.Login = true // apaga el teleport para cerrar ventana login
-
+ 
 
   }
 }

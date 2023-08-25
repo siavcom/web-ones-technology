@@ -37,7 +37,7 @@ export class activa extends COMPONENT {
     if (this.prop.Value==1){
        this.Parent.nco_que.prop.Visible=true
        this.Parent.query.prop.Visible=true
-       this.Parent.table.prop.Visible=false
+       this.Parent.Grid.prop.Visible=false
        this.Parent.bt_edit.prop.Visible=true
        this.Parent.bt_add.prop.Visible=true
        this.Parent.bt_delete.prop.Visible=false
@@ -48,7 +48,7 @@ export class activa extends COMPONENT {
      {
       this.Parent.nco_que.prop.Visible=false
       this.Parent.query.prop.Visible=false
-      this.Parent.table.prop.Visible=false
+      this.Parent.Grid.prop.Visible=false
       this.Parent.bt_edit.prop.Visible=false
       this.Parent.bt_add.prop.Visible=false
       this.Parent.bt_delete.prop.Visible=false

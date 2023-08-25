@@ -25,7 +25,13 @@ export class query extends COMPONENT {
     this.prop.BaseClass = 'editText'
     this.prop.Capture = false
     this.prop.ReadOnly= true
+    this.prop.componentStyle.width='100%'
+    this.prop.componentStyle.height='100%'
     this.prop.Visible=true
+    this.style.width='100%'
+    this.style.height='90px'
+    
+
    }
 
   

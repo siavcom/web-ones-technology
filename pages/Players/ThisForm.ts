@@ -51,7 +51,7 @@ export class ThisForm extends captureForm {
     this.Name = 'Players'
     this.prop.textLabel = "Mantenimiento a la tabla Players"
     this.prop.RecordSource='Index1_Players'
-    this.prop.nem_pge = "Killo Software"
+
     //this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
     this.prop.log_emp = "/logos/Logo_Empresa.png"
     this.prop.Status = 'A'

@@ -37,14 +37,14 @@ export class queryGen extends COMPONENT {
  
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
-  usu_que=''   // usuario del query
+  usu_que= 'ALL'   // usuario del query
     
   constructor() {
     super()
     this.prop.Visible=true
     this.prop.Disabled=true
     this.prop.BaseClass='container'
-    this.prop.textLabel='Query Generator'
+    this.prop.textLabel='Condiciones generales'
     //this.style.maxWidth='400px'
     this.style.display='block'
     this.query.prop.Visible=false

@@ -1,14 +1,11 @@
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
-  <div class="divi" :style="style" >
+  <div class="divi" :style="style">
     <!--Etiqueta del componente -->
     <div class="mensajes" v-show="This.prop.Visible">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
       <!--List Box -->
-      <div v-if="prop.MultiSelect" class="multiSelect" 
-          @lostFocus="validList()" 
-          :style='prop.componentStyle'
-          >
+      <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
         <select v-model="List" multiple>
           <option class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex"
             :value="columnas[valueIndex].value">
@@ -16,10 +13,7 @@
             <!--div class="columna"  v-for="(text, col) in option.text" :key="col"
             -->
             <input v-for="(text, col) in option.text" :key="col" :style="{ 'width': width[col], 'text-align': 'left' }"
-              class="input" :value="text" 
-              :disabled="prop.Disabled"
-              :readonly="prop.ReadOnly"
-              />
+              class="input" :value="text" :disabled="prop.Disabled" :readonly="prop.ReadOnly" />
             <!--/div-->
           </option>
         </select>
@@ -34,12 +28,8 @@
 
       <div v-else class="comboBox">
 
-        <input class="textLabel" 
-           :style="TextStyle" 
-           :readonly="prop.Style == 2 || prop.ReadOnly" 
-           :value="Text"
-          @focusout="focusOut"
-          ref="Ref" />
+        <input class="textLabel" :style="TextStyle" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
+          @focusout="focusOut" ref="Ref" />
 
 
 
@@ -97,7 +87,7 @@ const props = withDefaults(defineProps<Props>(), {
 
   /// columnas: any;
   // Value: string;
-  Recno: 0,
+ // Recno: 0,
   Registro: 0,
   Component: null,
   prop: {
@@ -267,9 +257,9 @@ const focusOut = async () => {
   const valor = Value.value;
 
   if (props.prop.ControlSource && props.prop.ControlSource.length > 3) {
-    // await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
-    console.log('comboBox updateCampo', valor, props.prop.ControlSource, props.Recno)
-    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+    console.log('comboBox updateCampo', valor, props.prop.ControlSource, Recno.value)
+    //    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+    await This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
 
   }
   ToolTipText.value = true  // Activamos el ToolTipText
@@ -360,13 +350,15 @@ const onFocus = async () => {
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
 
-    if (props.Recno > 0) {
+    //    if (props.Recno > 0) {
+    if (Recno.value > 0) {
+
       if (Status.value != 'P') { // actualiza su estatus a proceso
         Status.value = 'P';  // en foco
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
         emit("update")
       }
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno, 'Old')
+      const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value, 'Old')
       let valor = ''
       let sw_key = false
 
@@ -411,7 +403,9 @@ const readCampo = async (recno: number) => {
   //   Status.value = 'P'
   //   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
   // }
-  const data = await This.Form.db.readCampo(props.prop.ControlSource, recno)
+
+  if (recno != Recno.value) Recno.value = recno
+  const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value)
   if (Recno.value != recno) Recno.value = recno
 
   for (const campo in data) {
@@ -596,9 +590,9 @@ const renderComboBox = async () => {
       //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
       data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
       //console.log('ComboBox render data', data)
-      if (data==null){ 
-        console.warn('comoBox Render',This.name,'RowSource',props.prop.RowSource )
-        
+      if (data == null) {
+        console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
+
         return
 
 
@@ -751,6 +745,39 @@ watchSyncEffect(() => {
 //watchPostEffect()
 
 
+
+
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+watch(
+  () => props.Registro,
+  (new_val, old_val) => {
+
+    if (Recno.value != props.Registro)
+      Recno.value = new_val
+
+    if (new_val == 0) {
+      Value.value=props.prop.Type=='number'? 0: ''
+      emitValue()
+      return
+
+    }
+    if (new_val != old_val
+      && props.prop.ControlSource > ' '
+      && props.Registro > 0) {
+        console.log('watch Registro ComboBox'),This.Name,new_val
+   
+      readCampo(new_val)
+    }
+    
+  },
+  { deep: false }
+);
+
+
 ////////////////////////////////////////
 // watch Valid
 ///////////////////////////////////////
@@ -841,11 +868,10 @@ watch(
   (new_val, old_val) => {
 
     if (new_val != old_val) {
-      // console.log('Watch comboBox ControlSource=')
-      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
-        readCampo(props.Recno)
-        //Value.value = props.db.value.readRenglon(new_val, props.Recno)
-        //emitValue()
+//      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
+      if (Recno.value > 0 && props.prop.ControlSource > ' ') {
+
+        readCampo(Recno.value)
       }
     }
     //    LocalDb.ControlSource = new_val;
@@ -855,6 +881,7 @@ watch(
   { deep: false }
 );
 
+/*
 
 ////////////////////////////////////////
 // Registro
@@ -886,7 +913,6 @@ watch(
 
 
 
-/*
 watch(
   () => props.prop.ControlSource,
   (new_val, old_val) => {
@@ -1067,10 +1093,10 @@ const init = async () => {
     //   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     //emit("update") // emite un update en el componente padre
     // onFocus()
-    console.log('ComboBox Set focus',Ref.value)
+    console.log('ComboBox Set focus', Ref.value)
     Ref.value.select()  // hace el foco como primer elemento
-   
-   // Ref.value.focus()  // hace el foco como primer elemento
+
+    // Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()
     return
   }

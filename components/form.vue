@@ -30,9 +30,6 @@
 
             <!--template v-slot:header-->
             <h2 class="header2" float="left">
-              <!--div class="nemPge">
-                <label text-align="left">{{ ThisForm.prop.nem_pge }}</label>
-              </div-->
 
               <div class="titFor">
                 <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
@@ -47,7 +44,7 @@
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
                 v-model:Status="ThisForm[compHeader].prop.Status" v-model:ShowError="ThisForm[compHeader].prop.ShowError"
                 v-model:Key="ThisForm[compHeader].prop.Key" v-model:Focus="ThisForm[compHeader].Focus"
-                v-model:Recno="ThisForm[compHeader].Recno"
+               
                 v-bind:Registro="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
                 v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
                 v-bind:position="ThisForm[compHeader].position"
@@ -75,7 +72,7 @@ emit
                   <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
-                    v-model:Focus="ThisForm[compMain].Focus" v-model:Recno="ThisForm[compMain].Recno"
+                    v-model:Focus="ThisForm[compMain].Focus" 
                     v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
                     v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                     v-bind:position="ThisForm[compMain].position"
@@ -110,7 +107,7 @@ emit
                   v-bind:Component="ref(ThisForm[compFooter])" v-model:Value="ThisForm[compFooter].prop.Value"
                   v-model:Status="ThisForm[compFooter].prop.Status"
                   v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-                  v-model:Focus="ThisForm[compFooter].Focus" v-model:Recno="ThisForm[compFooter].Recno"
+                  v-model:Focus="ThisForm[compFooter].Focus"
                   v-bind:Registro="ThisForm[compFooter].Recno == null ? 0 : ThisForm[compFooter].Recno"
                   v-bind:prop="ThisForm[compFooter].prop" v-bind:style="ThisForm[compFooter].style"
                   v-bind:position="ThisForm[compFooter].position"
@@ -136,6 +133,18 @@ emit
 </template>
 
 <script  lang="ts" setup>
+
+definePageMeta({
+  //layout: 'default',
+ 
+ // keepalive: true,
+
+  //keepalive: {
+  //  exclude: ['modal']
+  //},
+
+})
+
 //   @click.stop.prevent="push_eve('ThisForm.btAceptar.click()')"
 
 //   @keypress ="ThisForm.nom_tab.keyPress($event)"   llamar el keypress
