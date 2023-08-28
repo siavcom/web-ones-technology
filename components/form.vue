@@ -186,15 +186,7 @@ const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(sessi
 /////////////////////////////////////////////////
 // Componentes
 /////////////////////////////////////////////////
-/*
-import imgButton from "@/components/imgButton.vue"
-import comboBox from "@/components/comboBox.vue"
-import editText from "@/components/editText.vue"
-import textLabel from "@/components/textLabel.vue"
-import grid from "@/components/grid.vue"
-import browse from "@/components/browse.vue"
-import container from "@/components/container.vue"
-*/
+
 const imgButton = resolveComponent('imgButton')
 const comboBox = resolveComponent('comboBox')
 const editText = resolveComponent('editText')
@@ -206,21 +198,10 @@ const browseLite = resolveComponent('browseLite')
 const container = resolveComponent('container')
 const embedPdf = resolveComponent('embedPdf')
 
-
-// import grid from "/components/GridScrollStatic.vue"
-// import grid from "/components/gridVirtualList.vue"  Dejo de utilizar el item mode
-//import grid from "/components/GridScrollInfinite.vue"
-//import grid from "/components/VirtualScrollGrid.vue"
 /////////////////////////////////////////
 // Componentes dinamicos
 // https://vuejs.org/guide/components/async.html#basic-usage
 //////////////////////////////
-
-
-//const editText = defineAsyncComponent(() =>
-//import('@/components/editText.vue')
-//)
-
 
 /////////////////////////////////////////
 // Manejo de errores personalizados 
@@ -290,13 +271,6 @@ const loading = ref(true)
 //ThisThisForm.refs.fea_nom.Value=ahora;
 //console.log('Fecha ahora ====>',ThisThisForm.refs.fea_nom.Value);
 
-function mouseleave() {
-  alert("¡Has sacado el ratón del botón!");
-}
-function beforeUpdate() {
-  console.log("¡Antes de actualizar en padre!");
-}
-
 function sleep(sleepDuration: number) {
   const now = new Date().getTime();
   while (new Date().getTime() < now + sleepDuration) {
@@ -311,7 +285,7 @@ function sleep(sleepDuration: number) {
 
 /////////////////////////////////////////////////////
 // Ejecuta los eventos que hay en la pila de eventos
-async function eje_eve(numero: number) {
+async function eje_eve_old(numero: number) {
   try {
     //console.log('Entra a eje_eve', ThisForm.eventos[0])
 
@@ -364,20 +338,6 @@ async function eje_eve(numero: number) {
           });
       }
 
-      /*
-          const waitFn = (fn, form) => {
-      
-            // Wait for new Function wrapper
-            //const waitFn = (ev) => {
-            // new Function('resolve', ev)(resolve); // si no se le pone el return el scope es local
-            console.log('ThisForm promise===>', ThisForm)
-            return new Promise((resolve, reject) => {
-              return new Function('resolve', ` return ${fn}`)(resolve);
-            });
-          };
-         */
-
-
       // LLamamos el evento a ejecutar en forma sincrona
       // Necesitamos pasar por referencia el ThisForm
 
@@ -389,17 +349,7 @@ async function eje_eve(numero: number) {
       ThisForm.eventos[0] = 'A'
       // ejecutamos el evento 
       waitEval(evento, ref(ThisForm))
-      /*
-      .
-        then(() => {
-        
- 
-          //   nextTick()
-        }).
-        finally(() => {
-
-        })
-        */
+  
       //  console.log('Stack de eventos', ThisForm.eventos)  // borramos el evento
 
 

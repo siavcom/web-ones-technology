@@ -77,7 +77,7 @@ import {
 
 } from "vue" */
 //import { receiveMessageOnPort } from "worker_threads";
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus", 'customChange']) //, "update:ShowError", "update:Ref"
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status",  "update:Key", "update:Focus", 'customChange']) //, "update:ShowError", "update:Ref","update:Recno",
 
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -89,7 +89,7 @@ const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Stat
 //  el Recno pertenece al los componentes  de captura  del ThisForm  
 ////////////////////////////////////
 const props = defineProps<{
-  Recno: number;
+  //Recno: number;
   Registro: number;  // Se pone para el manejo de grid
   // Show: true;
   // Component: null;
@@ -168,7 +168,7 @@ const props = defineProps<{
 const Component = ref(props.prop.This)
 const This = Component.value
 const Value = ref(props.prop.Value)
-const Recno = ref(props.Recno)
+const Recno = ref(0)
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
@@ -389,7 +389,8 @@ const focusOut = async () => {
     //console.log('checkBox focusOut =',checkValue.value,Value.value)
   }
 
-  if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+//  if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+    if (Recno.value > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
 
     // actualiza valor en localDb
     const valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +Value.value : Value.value
@@ -464,7 +465,8 @@ const onFocus = async () => {
   // emit("update:ShowError", false)
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
-    if (props.Recno > 0) {
+   // if (props.Recno > 0) {
+    if (Recno.value > 0) {
 
       if (Status.value != 'P') { // actualiza su estatus a proceso
         Status.value = 'P';  // en foco

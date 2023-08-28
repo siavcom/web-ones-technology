@@ -42,11 +42,18 @@ div.divi{
   /*z-index: v-bind("props.style.zIndex");*/
   text-align: left;
   margin :auto;
-  height:auto;
-  /*min-width: max-content;*/
+
+  height:95%;
+  /*  min-width: max-content;*/
   flex-shrink: 0;  /* adjustment para que funcione el width */
 }
 
+
+div.textLabel{
+  border-radius: 3px;
+  heigth:80%;
+  
+}
 div.mensajes{
   display: inline-flex; /* recomendado por raul*/
   width: auto;
@@ -73,7 +80,7 @@ label.error {
   text-align: center;
   visibility: visible;
   padding: 5px 0; /*relleno alrededor */
-  border-radius: 1px;
+  border-radius: 5%;
   border-color: black;
   z-index: 2;
  /* bottom: 125%;
@@ -92,14 +99,17 @@ span.Caption {
 }
 
 span.etiqueta { 
+  height:90%;
+  margin-top: 4px;
   margin-right: 3px;
+  
 
 }
 
 input.text {
   border: 1px solid rgb(0, 5, 2);
   padding: "5px";
-  border-radius: 5px;
+  border-radius: 3px;
   text-align: left;
   width: 96%;
   margin-top: 2;
@@ -130,7 +140,7 @@ width :100%;
 input.checkBox {
   border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
-  border-radius: 5px;
+  border-radius: 3px;
   text-align: left;
   width: 96%;
   accent-color: rgb(163, 193, 168);
@@ -144,7 +154,7 @@ input.checkBox {
 input.date {
   border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
-  border-radius: 5px;
+  border-radius: 3px;
   text-align: left;
   width: 96%;
   min-width: max-content;
@@ -155,7 +165,7 @@ input.date {
 input[ class="number"] {
   border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
-  border-radius: 5px;
+  border-radius: 3px;
   text-align: right;
   width: 96%;
   z-index: 1;
@@ -178,7 +188,7 @@ input[ class="number"] {
   color: #fff;
   text-align: center;
   padding: 5px 0;
-  border-radius: 6px;
+  border-radius: 3px;
   z-index: 2;
 
   /* Position the tooltip text */
@@ -299,7 +309,7 @@ input[ class="number"] {
   color: rgb(245, 9, 9);
   text-align: center;
  /* padding: 5px 0;*/
-  border-radius: 6px;
+  border-radius: 3px;
   /*border-color: #f10c0c;*/
 
   /* Position */

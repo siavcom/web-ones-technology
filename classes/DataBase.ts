@@ -87,20 +87,7 @@ export class VFPDB {
 
   
     this.Estatus = true
- 
-
   } // Fin constructor
-
-  
-  public async Init(Form) {
-    this.Form = Form // .value
-    const Var=PublicVar()
-    for (const variable in Var ){
-      this.Form.Public[variable]=Var[variable]  // asignamos variables Publicas
-    }
-  
-  }
-
   
   /// /////////////  Vfp Use nodata ///////////////////
   // nom_vis : Nombre de la vista a utilizar

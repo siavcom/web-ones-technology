@@ -1,3 +1,7 @@
+dasboard para Vue (grafico) : https://developer.harness.io/
+
+
+
 const {variable : 'hola'}=defineProps<{variable:string}
 
 const { a,b,c}=someFunction('datos')
@@ -145,7 +149,7 @@ Capitulo 3-4 Serve side error
 
 
 
-/*  ==============  Vue 3.4
+=====================  Vue 3.4 ==============================
 
 //<script setup lang="ts" generic="T">
 const props = defineProps<{

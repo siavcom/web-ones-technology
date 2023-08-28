@@ -28,7 +28,7 @@
 
       <div v-else class="comboBox">
 
-        <input class="textLabel" :style="TextStyle" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
+        <input class="textLabel"  :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
           @focusout="focusOut" ref="Ref" />
 
 
@@ -64,13 +64,13 @@
 
 <script setup lang="ts">
 
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Recno", "update:Key", "update:Focus"]) //, "update:Ref"
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Key", "update:Focus"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
 // Variables comunes globales al componente
 ////////////////////////////////////
 
 interface Props {
-  Recno: number;
+  //Recno: number;
   Registro: number;
   //Show: false;
   //Component: object;
@@ -181,7 +181,7 @@ const props = withDefaults(defineProps<Props>(), {
 //const Component = ref(props.Component)
 
 const Value = ref(props.prop.Value)
-const Recno = ref(props.Recno)
+const Recno = ref(0)
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const ToolTipText = ref(true)
@@ -215,18 +215,39 @@ const toggleZIndex = zIndex.value + 2
 //zIndex.value = zIndex.value + 1
 const inputWidth = ref('auto')
 const List = ref(props.prop.List)
-const componentStyle = ref(props.prop.componentStyle)
-componentStyle.value.width = props.style.width
-const TextStyle = props.style
+// const componentStyle = ref(props.prop.componentStyle)
+
+const TextLabel = reactive(props.prop.componentStyle)
+
+TextLabel.width = props.style.width
+TextLabel.height ='75%'
+
 let medida = ''
 
-if (TextStyle.width.search("px") > 0)
+if (TextLabel.width.search("px") > 0)
   medida = 'px'
-if (TextStyle.width.search("%") > 0)
+if (TextLabel.width.search("%") > 0)
   medida = '%'
 
-const textWidth = +TextStyle.width.replaceAll(medida, '') - 30
-TextStyle.width = textWidth.toString() + medida
+let textWidth = +TextLabel.width.replaceAll(medida, '') - 30
+TextLabel.width = textWidth.toString() + medida
+/*
+const LabelStyle = reactive(props.style)
+
+LabelStyle.width = props.prop.componentStyle.width
+
+medida = ''
+
+if (LabelStyle.width.search("px") > 0)
+  medida = 'px'
+if (LabelStyle.width.search("%") > 0)
+  medida = '%'
+*/
+//textWidth = +TextStyle.width.replaceAll(medida, '') - 30
+//LabelStyle.width = textWidth.toString() + medida
+
+
+
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -239,7 +260,7 @@ const emitValue = async () => {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update:Valid", Valid.value)
-  emit("update:Recno", props.Registro)
+ // emit("update:Recno", props.Registro)
   emit("update") // emite un update en el componente padre
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;

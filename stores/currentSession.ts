@@ -42,6 +42,7 @@ export const Session = defineStore('currentSession', () => {
   const fpo_pge = ref(new Date().toISOString().substring(0, 10))
   const logoEmp = ref('')
   const fileLogoEmp = ref(null)
+  const Var=ref(0)
   const menu = ref([])
 
   
@@ -98,7 +99,7 @@ export const Session = defineStore('currentSession', () => {
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
       if (sw_con)
          return 
-      // leeMenu()
+     
       
       window.history.back(); // regresa forma anterior
       //     const router = useRouter()
@@ -197,6 +198,26 @@ export const Session = defineStore('currentSession', () => {
       return
       // si no es un error de desconexion
     }
+    
+      dat_vis.query= ' select * from publicvar'
+    
+      try {
+        const result = await axios.post(url.value + 'sql', dat_vis)
+        console.log('Pinia Var=',Var.value)
+        if (result.data){
+          Var.value = result.data[0]
+          console.log('Store publicVar Var.value=',Var.value)
+          console.log('Pinia Var=',Var.value)
+    
+        }
+    
+      } catch (error) {
+    
+        console.warn("Can't read view publicvar", error)
+    
+      }
+    
+
   }
   //////////////////////////////////
 
@@ -265,6 +286,7 @@ export const Session = defineStore('currentSession', () => {
     fpo_pge,
     logoEmp,
     doneMenu,
+    Var,
     fileLogoEmp
   }
 

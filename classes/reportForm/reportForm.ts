@@ -98,8 +98,6 @@ export class reportForm extends FORM {
     await this.asignaRecordSource('queryGen', 'query_all')
 
     this.Form.queryPri.activa.prop.Value = 1
-    
-
     await this.Form.queryPri.nco_que.interactiveChange()
   }
 

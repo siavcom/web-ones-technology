@@ -88,7 +88,7 @@ export class COMPONENT {
       background: "white",
       color: "black",
       width:'100%',
-      height:'100%',
+      height:'80%',
       maxHeigth: 'auto',
       maxWidth: 'auto',
       fontFamily: "Arial",
@@ -117,13 +117,12 @@ export class COMPONENT {
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     width: "auto",
-    height: "auto",
+    height: "95%",
     maxWidth: "90%",
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
     
-
     textAlign: "left",
     position: "relative",
     wordWrap: "break-word", // Parte las palabras

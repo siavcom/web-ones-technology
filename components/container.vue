@@ -31,7 +31,7 @@
                 :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
                 v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
                 v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-                v-model:Focus="This[compHeader].Focus" v-model:Recno="This[compHeader].Recno"
+                v-model:Focus="This[compHeader].Focus" 
                 v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
                 v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
                 v-bind:position="This[compHeader].position"
@@ -80,7 +80,7 @@
               <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
                 v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
                 v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-                v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno"
+                v-model:Focus="This[compFooter].Focus" 
                 v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
                 v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
                 v-bind:position="This[compFooter].position"
@@ -135,7 +135,7 @@ const emit = defineEmits([ //"update",
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-  Recno: 0;
+  //Recno: 0;
   //Show: true;
   Component: null;
   prop: {

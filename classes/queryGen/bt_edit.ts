@@ -52,6 +52,7 @@ export class bt_edit extends COMPONENT {
 
    if (add ){
       this.Parent.nco_que.prop.sw_add=true
+      
       const data = await this.Form.db.execute(`select max(nco_que)+1 as max_que from man_query_db \
       where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
          and usu_que='${m.usu_que}' `)

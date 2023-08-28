@@ -11,6 +11,12 @@ import { FORM } from '@/classes/Form'
 export class captureForm extends FORM {
   public gridCaptura: [] = []
   public sw_ini=false
+
+  // se debe de poner siempre el contructor
+  constructor() {
+    super()
+  }
+
   /// //////////////////////////////////////////////////
   // Metodo init
   // Aqui se deben de asignar las areas de trabajo de los archivos
@@ -62,8 +68,8 @@ export class captureForm extends FORM {
  
     const m = {}
     // Generamos variables de memoria
-    for (const i in this.main) {
-      const comp = this.main[i]
+    for (const main in this.main) {
+      const comp = this.main[main]
       if (this[comp].prop.updateKey) { //Obtiene solo los de llaves de actualizacion
         //console.log('CaptureForm comp', comp, this[comp].prop.Valid)
         if (!this[comp].prop.Valid) { return true } // Si es un dato no esta  validado
@@ -74,14 +80,22 @@ export class captureForm extends FORM {
         else
           m[comp] = this[comp].prop.Value
       }
+
     }
+
+      // variables publicas
+      for (const Var in this.Form.Var){
+          m[Var] = this.Form.Var[Var]
+    }
+
+
     // Leemos datos de la tabla de actualizacion
     //const tablaSql=this.db.View[this.prop.RecordSource].tablaSql .trim() 
 
     const data = await this.db.use(this.prop.RecordSource, m)
 
     //console.log('capture form valid data', data)
-    console.log('captureForm m', m,'data',data)
+    console.log('captureForm Valid m=', m,'data=',data)
   
   //  if (!data || data == '400') { return false } // Hubo error al leer los datos
 
@@ -89,8 +103,9 @@ export class captureForm extends FORM {
     let sw_bor = false
     if (data.length == 0) { // No existe el registro
       const result = await this.db.appendBlank(this.prop.RecordSource, m)
-      console.log('Valid appendBlank ', result)
       Recno = result.recno
+      console.log('Valid appendBlank ', result)
+
     } else {
       Recno = data[0].recno
 
