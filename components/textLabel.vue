@@ -707,8 +707,10 @@ watch(
 watch(
   () => props.Show,
   (new_val, old_val) => {
-
-    if (props.Show) readCampo()
+    if (new_val!=old_val) { 
+        console.log('TextLabel watch Show')
+        if (props.Show) readCampo()
+    }
   },
   { deep: false }
 )
@@ -743,7 +745,7 @@ watch(
 
 const init = async () => {
 
-  console.log('TextLabel ',This.Name,'Recno=',props.Recno)
+  console.log('TextLabel init ',This.Name,'Recno=',props.Recno)
   readCampo()
   //readCampo()
 

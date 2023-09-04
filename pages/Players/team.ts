@@ -11,9 +11,9 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { captureComponent } from '@/classes/captureComponent'
 
-export class team extends COMPONENT {
+export class team extends captureComponent {
 
     constructor() {
         super()
@@ -22,18 +22,15 @@ export class team extends COMPONENT {
          
         this.prop.textLabel = 'Team'
         this.prop.Type ='text'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'Index1_Players.team'
-        this.prop.Placeholder = ''
-        this.prop.ToolTipText =''
-        this.prop.MaxLength=12
-        this.prop.Min="0"
-        this.prop.Max="999"
-        this.prop.Decimals=0
+        this.prop.BaseClass = 'comboBox'
+        this.prop.ControlSource = 'index1_players.team'
+        this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
+        this.prop.RowSource = "select Description,team from vi_cap_Teams"
+        this.prop.ColumnCount = 2
+        this.prop.BoundColumn = 2
         this.prop.Capture=true
         this.prop.updateKey=true
-        
-        
+
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -120,47 +117,4 @@ export class team extends COMPONENT {
 
     }
 
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-      if (this.prop.ReadOnly) return
-      if (this.prop.updateKey){ // Si es llave de actualizacion
-        await this.Form.refreshComponent(false)
-        }
-
-        return !this.prop.ReadOnly
-        //   await super.when() no hace falta el super porque en focus.capture lo hace 
-    }
-    
-
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-if( !await this.Form.valid(this.Name) && !this.prop.Valid)
-          return false
-      return true    }
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
-    }
-    */
-
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
 }

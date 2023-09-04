@@ -10,14 +10,14 @@
           v-model:Status="ThisForm.emp_emp.prop.Status"
           v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
           v-model:Key="ThisForm.emp_emp.prop.Key"
-          v-model:Recno="ThisForm.emp_emp.Recno"
+          bind:Registro="ThisForm.emp_emp.Recno"
           :component="ref(ThisForm.emp_emp)"
           :Registro="0"
           :prop="ThisForm.emp_emp.prop"
           :style="ThisForm.emp_emp.style"
           :position="ThisForm.emp_emp.position"
           :db="null"
-          :recno="0"
+         
           @focusout="ThisForm.emp_emp.valid()"
         />
         <component
@@ -26,14 +26,14 @@
           v-model:Status="ThisForm.log_usu.prop.Status"
           v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
           v-model:Key="ThisForm.log_usu.prop.Key"
-          v-model:Recno="ThisForm.log_usu.Recno"
+         
           :component="ref(ThisForm.log_usu)"
           :Registro="0"
           :prop="ThisForm.log_usu.prop"
           :style="ThisForm.log_usu.style"
           :position="ThisForm.log_usu.position"
           :db="null"
-          :recno="0"
+        
           @keypress="ThisForm.log_usu.keyPress($event)"
           @focusout="ThisForm.log_usu.valid()"
         />
@@ -43,14 +43,12 @@
           v-model:Status="ThisForm.pas_usu.prop.Status"
           v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
           v-model:Key="ThisForm.pas_usu.prop.Key"
-          v-model:Recno="ThisForm.pas_usu.Recno"
           :component="ref(ThisForm.pas_usu)"
           :Registro="0"
           :prop="ThisForm.pas_usu.prop"
           :style="ThisForm.pas_usu.style"
           :position="ThisForm.pas_usu.position"
           :db="null"
-          :recno="0"
           @focusout="ThisForm.pas_usu.valid()"
         />
         <component

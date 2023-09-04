@@ -133,22 +133,18 @@ emit
 </template>
 
 <script  lang="ts" setup>
-
+/*
 definePageMeta({
   //layout: 'default',
  
- // keepalive: true,
+  keepalive: true,
 
   //keepalive: {
   //  exclude: ['modal']
   //},
 
 })
-
-//   @click.stop.prevent="push_eve('ThisForm.btAceptar.click()')"
-
-//   @keypress ="ThisForm.nom_tab.keyPress($event)"   llamar el keypress
-//.stop.prevent
+*/
 
 /*
 import {
@@ -173,7 +169,6 @@ import {
 } from "vue";
 */
 
-//import { Session } from '@/stores/currentSession'
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
 

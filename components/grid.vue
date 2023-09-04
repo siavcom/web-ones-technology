@@ -51,10 +51,13 @@
 
                     
                     -->
-
+                  <!--Imprime renglones de solo los textos cuando no es captura -->
                   <div v-show="item.id != This.Row" :style='{ "width": This[col.Name].style.width }'>
                     <Transition name="columntext">
-                      <textLabel v-bind:Show="item.id != This.Row" v-bind:Recno="item.recno" v-bind:Id="item.id"
+                      <textLabel v-bind:Show="item.id != This.Row"
+                        v-bind:Recno="item.recno"
+                        v-bind:Id="item.id"
+
                         v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                         v-bind:style="This[col.Name].style"
                         @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
@@ -271,7 +274,7 @@ const props = defineProps<{
     left: number;
     Top: number;
   };
-  Recno: 0;
+  Registro: 0;
   Component: null;
   //db: any
 
@@ -280,7 +283,8 @@ const props = defineProps<{
 const Component = ref(props.Component)
 //const ThisGrid = Component.value
 const This = Component.value
-This['estatus'] = []
+//This['estatus'] = []
+const compStatus=reactive({})
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
@@ -449,11 +453,11 @@ watch(
   () => eventos,
   (new_val, old_val) => {
 
-    for (const comp in This.estatus) {
-      //console.log('Watch estatus ===>', comp, This.estatus[comp])
+    for (const comp in compStatus) {
+      //console.log('Watch estatus ===>', comp, compStatus[comp])
 
-      if (This.estatus[comp] != 'A' && Status.value == 'A') {
-        console.log('Grid watch eventos comp=', comp, 'Estatus=', This.estatus[comp])
+      if (compStatus[comp] != 'A' && Status.value == 'A') {
+        console.log('Grid watch eventos comp=', comp, 'Estatus=', compStatus[comp])
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -502,14 +506,14 @@ watch(
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
 watch(
-  () => This.estatus,
+  () => compStatus,
   (new_val, old_val) => {
 
 
-    for (const comp in This.estatus) { // Recorre todos los estatus del grid
+    for (const comp in compStatus) { // Recorre todos los estatus del grid
 
-      if (This.estatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
-        console.log('Grid watch estatus comp=', comp, 'Estatus', This.estatus[comp])
+      if (compStatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
+        console.log('Grid watch estatus comp=', comp, 'Estatus', compStatus[comp])
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -539,13 +543,13 @@ watch(
 const ejeEvento = (newEvento: string) => {
   console.log('Grid ejeEvento', newEvento)
 
-  for (const comp in This.estatus) {
-    console.log('Grid ejeEvento comp=', comp, This.estatus[comp])
+  for (const comp in compStatus) {
+    console.log('Grid ejeEvento comp=', comp, compStatus[comp])
 
-    if (This.estatus[comp] != 'A' && Status.value == 'A') {
+    if (compStatus[comp] != 'A' && Status.value == 'A') {
 
 
-      console.log('Grid ejeEvento Status comp=', comp, 'Estatus=', This.estatus[comp])
+      console.log('Grid ejeEvento Status comp=', comp, 'Estatus=', compStatus[comp])
 
       Status.value = 'P';  // Cambia el estatus del grid a Proceso
       emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
@@ -838,7 +842,6 @@ const autoLoad = async (RecordSource: string) => {
 
 const init = async () => {
 
-
   console.log('Init Grid==>', props.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
   // await This.init()
@@ -853,7 +856,10 @@ const init = async () => {
       if (This[comp].prop.First)
         firstElement = comp
 
-      This.estatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
+      
+      //  compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
+      compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
+
     }
 
   }

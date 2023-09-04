@@ -107,7 +107,7 @@ export class bt_aceptar extends COMPONENT {
     nom_emp.value = empresa
     user.value = login
     pass.value = ThisForm.pas_usu.prop.Value
- 
+    //console.log('Datos login ========>>>>>>>',id_con.value,nom_emp.value,user.value,pass.value)
 
   }
 }

@@ -42,10 +42,10 @@ export const Session = defineStore('currentSession', () => {
   const fpo_pge = ref(new Date().toISOString().substring(0, 10))
   const logoEmp = ref('')
   const fileLogoEmp = ref(null)
-  const Var=ref(0)
+  const Var = ref(0)
   const menu = ref([])
 
-  
+
   // actions: { // aqui van todas las funciones que uno defina separadas por coma
 
 
@@ -72,11 +72,11 @@ export const Session = defineStore('currentSession', () => {
       MessageBox('No esta definida la empresa :' + nom_emp.value, 16, 'SQL Error ')
 
     }
-    let sw_con=false 
-    if (id_con.value.length>8)
-       sw_con=true
+    let sw_con = false
+    if (id_con.value.length > 8)
+      sw_con = true
 
-  
+
     const def_con = {
       nom_emp: nom_emp.value,
       user: user.value,
@@ -98,9 +98,9 @@ export const Session = defineStore('currentSession', () => {
 
       console.log("Pinia ID de conexion=", id_con.value, 'dialect', dialect.value);
       if (sw_con)
-         return 
-     
-      
+        return
+
+
       window.history.back(); // regresa forma anterior
       //     const router = useRouter()
       //     router.push('/')
@@ -111,7 +111,7 @@ export const Session = defineStore('currentSession', () => {
       console.warn('Error llamada Axios', error)
       //const { $MessageBox } = useNuxtApp()
 
-      if (error == 'Error: Network Error') {
+      if (error == 'Network Error. Posible Db Server internet fail') {
         console.log('OpenDb Error SQL===>', error)
         MessageBox(error, 16, 'SQL Error ')
         //$Swal.fire('Error SQL' + error)
@@ -121,20 +121,28 @@ export const Session = defineStore('currentSession', () => {
       // console.log('OpenDb error ===>',error.response.status.toString() + " " + error.response.statusText)
       if (error) {
         let menError = ''
-        if (error.response.statusText)
-          menError = error.response.statusText
-        else
-          menError = error.response
 
-        MessageBox(menError, 16, 'ERROR')
-        console.log('Pinia error ====>>>>>>', error.response)
-        //  MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
+        if (error.response) {
+
+
+          if (error.response.statusText)
+            menError = error.response.statusText
+          else
+            menError = error.response
+
+          MessageBox(menError, 16, 'ERROR')
+          console.log('Pinia error ====>>>>>>', error.response)
+          //  MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
+        }
+        else{
+          MessageBox('Back-end comunication error', 16, 'ERROR')
+       
+        }
+      } else{
+          console.warn('BackEnd error',error) 
+          MessageBox(error, 16, 'ERROR')
       }
-      else
-        MessageBox('Back-end comunication error', 16, 'ERROR')
-
-
-
+      pass.value=''
     } // Fin de Catch
   }
 
@@ -187,36 +195,47 @@ export const Session = defineStore('currentSession', () => {
       }
       //const menu = JSON.stringify(response.data)
       menu.value = (data)
-     // console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
+      // console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
 
 
     } catch (error) {
-      console.log('Read Menu ',' Error', error)
+      console.log('Read Menu ', ' Error', error)
       MessageBox(error.toJSON(), 16, 'Back-End error ')
       const router = useRouter()
       router.push('/Login')
       return
       // si no es un error de desconexion
     }
-    
-      dat_vis.query= ' select * from publicvar'
-    
-      try {
-        const result = await axios.post(url.value + 'sql', dat_vis)
-        console.log('Pinia Var=',Var.value)
-        if (result.data){
-          Var.value = result.data[0]
-          console.log('Store publicVar Var.value=',Var.value)
-          console.log('Pinia Var=',Var.value)
-    
+
+    dat_vis.query = ' select * from publicvar'
+
+    try {
+      const result = await axios.post(url.value + 'sql', dat_vis)
+      console.log('Pinia Var=', Var.value)
+      if (result.data) {
+        Var.value = result.data[0]
+        for (const comp in Var.value){
+           if (typeof Var.value[comp]=='string') {
+              const Variable=Var.value[comp]
+              // Checa si es una fecha
+              if ( Variable.substring(4,5)=='-'  && Variable.substring(7,8)=='-' &&
+                parseInt(Variable.slice(0,4))> 1900 && parseInt(Variable.slice(0,4))<9999){
+                Var.value[comp]=await stringToDate(Variable)
+                }
+           }
+
         }
-    
-      } catch (error) {
-    
-        console.warn("Can't read view publicvar", error)
-    
+        console.log('Store publicVar Var.value=', Var.value)
+        console.log('Pinia Var=', Var.value)
+
       }
-    
+
+    } catch (error) {
+
+      console.warn("Can't read view publicvar", error)
+
+    }
+
 
   }
   //////////////////////////////////
@@ -234,13 +253,13 @@ export const Session = defineStore('currentSession', () => {
 
   watch(() => nom_emp.value,
     (new_emp, old_val) => {
-      if (new_emp != old_val){
-      //  id_con.value = ''
-      //  menu.value = []
+      if (new_emp != old_val) {
+        //  id_con.value = ''
+        //  menu.value = []
       }
       console.log('Watch Pinia nom_emp.value', new_emp, id_con.value)  // doest not do anything
-//      if (new_emp.length > 2 && id_con.value.length > 9)
-//        leeMenu()
+      //      if (new_emp.length > 2 && id_con.value.length > 9)
+      //        leeMenu()
     },
     { deep: false }
   )
@@ -293,10 +312,10 @@ export const Session = defineStore('currentSession', () => {
 
 },
   {
-//    persist: { storage: persistedState.localStorage, },
+    //    persist: { storage: persistedState.localStorage, },
     persist: { storage: persistedState.sessionStorage, },
 
-},
+  },
 
 )
 

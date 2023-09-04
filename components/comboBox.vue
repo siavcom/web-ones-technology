@@ -1,6 +1,6 @@
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
-  <div class="divi" :style="style">
+  <div class="divi" :style="divStyle">
     <!--Etiqueta del componente -->
     <div class="mensajes" v-show="This.prop.Visible">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -28,7 +28,7 @@
 
       <div v-else class="comboBox">
 
-        <input class="textLabel"  :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
+        <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
           @focusout="focusOut" ref="Ref" />
 
 
@@ -37,13 +37,13 @@
         <!--Valor seleccionado click-->
         <div class="toggle" v-if="toggle && !prop.ReadOnly">
           <!--CheckBox -->
-          <div class="MarcoColumnas" @focusout="toggle = !toggle" style="width:auto;heigth:auto; max-height:200px;">
+          <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
               @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
               <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
-                :style="{ 'width': width[col], 'text-align': 'left' }">
+                :style="{ 'width': width[col], 'text-align': 'left' ,'z-index': toggleZIndex}">
                 <label class="label" v-text="text" />
               </div>
             </div>
@@ -87,7 +87,7 @@ const props = withDefaults(defineProps<Props>(), {
 
   /// columnas: any;
   // Value: string;
- // Recno: 0,
+  // Recno: 0,
   Registro: 0,
   Component: null,
   prop: {
@@ -215,12 +215,18 @@ const toggleZIndex = zIndex.value + 2
 //zIndex.value = zIndex.value + 1
 const inputWidth = ref('auto')
 const List = ref(props.prop.List)
-// const componentStyle = ref(props.prop.componentStyle)
+const columnContainer=reactive({   
+  width : 'auto',
+  heigth: 'auto',
+  maxHeight:'200px'
+  })
+const divStyle=reactive(props.style)
+divStyle.zIndex=props.style.zIndex+1
 
 const TextLabel = reactive(props.prop.componentStyle)
 
 TextLabel.width = props.style.width
-TextLabel.height ='75%'
+TextLabel.height = '75%'
 
 let medida = ''
 
@@ -260,7 +266,7 @@ const emitValue = async () => {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update:Valid", Valid.value)
- // emit("update:Recno", props.Registro)
+  // emit("update:Recno", props.Registro)
   emit("update") // emite un update en el componente padre
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
@@ -705,11 +711,13 @@ const renderComboBox = async () => {
       break
     }
 
-    if (!(typeof Value.value == 'number') && Value.value.trim() == columnas[i].value.trim()) {
-      sw_val = true
-      break
+    if (!(typeof Value.value == 'number')) {
+      const value = columnas[i].value
+      if (value.length>0 && Value.value.length>0 && Value.value.trim() == value.trim()) {
+        sw_val = true
+        break
+      }
     }
-
 
   }
   if (!sw_val) Value.value = valIni
@@ -726,7 +734,8 @@ const renderComboBox = async () => {
     emit("update:Value", Value.value)
     Valid.value = true
 
-  }
+  } else 
+    This.prop.Valid=true // Se toma como validado
   /* }
    
    catch (error) {
@@ -781,7 +790,7 @@ watch(
       Recno.value = new_val
 
     if (new_val == 0) {
-      Value.value=props.prop.Type=='number'? 0: ''
+      Value.value = props.prop.Type == 'number' ? 0 : ''
       emitValue()
       return
 
@@ -789,11 +798,11 @@ watch(
     if (new_val != old_val
       && props.prop.ControlSource > ' '
       && props.Registro > 0) {
-        console.log('watch Registro ComboBox'),This.Name,new_val
-   
+      console.log('watch Registro ComboBox'), This.Name, new_val
+
       readCampo(new_val)
     }
-    
+
   },
   { deep: false }
 );
@@ -889,7 +898,7 @@ watch(
   (new_val, old_val) => {
 
     if (new_val != old_val) {
-//      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
+      //      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
       if (Recno.value > 0 && props.prop.ControlSource > ' ') {
 
         readCampo(Recno.value)
@@ -1101,7 +1110,9 @@ const init = async () => {
     //Value.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
     //   if (!props.prop.Autofocus) {
 
-    Status.value = 'A';  // Activo
+    Status.value = 'A'  // Activo
+ 
+
     emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
   } else {
@@ -1176,10 +1187,11 @@ input.input {
   border-radius: 5px;
 }
 
+/*
 .columna {
   z-index: v-bind('toggleZIndex')
 }
-
+*/
 input.label {
   width: v-bind("inputWidth");
   border: 1px solid rgb(0, 5, 2);

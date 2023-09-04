@@ -10,11 +10,12 @@ import { FORM } from '@/classes/Form'
 
 export class captureForm extends FORM {
   public gridCaptura: [] = []
-  public sw_ini=false
+  public sw_ini = false
 
   // se debe de poner siempre el contructor
   constructor() {
     super()
+
   }
 
   /// //////////////////////////////////////////////////
@@ -27,10 +28,10 @@ export class captureForm extends FORM {
 
 
     try {
-       if (this.prop.RecordSource.length > 1) {
+      if (this.prop.RecordSource.length > 1) {
         console.log('Capture Form init this.prop.RecordSource=', this.prop.RecordSource)
-          await this.refreshComponent(false)
-        }
+        await this.refreshComponent(false)
+      }
     } catch (error) {
       console.error('======Error Init=====' + this.Name, error)
     }
@@ -45,64 +46,69 @@ export class captureForm extends FORM {
   //              modificacion
   /// /////////////////////////////////////
 
-   async valid(compName?:string) {
+  async validComponent(compName?: string) {
     if (!compName)
       return false
-     
-    const thisComp=this[compName]
+    this.prop.RecordSource = this.prop.RecordSource.toLowerCase()
+    const thisComp = this[compName]
+
 
     if (thisComp.prop.updateKey) {
 
-      if (this.Form.db.View[this.Form.prop.RecordSource].recCount>0)
-         this.Form.sw_ini=false
-      if ((typeof thisComp.prop.Value=='string' && thisComp.prop.Value.trim().length==0)||
-          (typeof thisComp.prop.Value=='number' && thisComp.prop.Value==0))
-           {
-          thisComp.prop.ErrorMessage='No permite datos en blanco'
-          thisComp.prop.ShowError=true
-          thisComp.prop.Valid=false
-          return thisComp.prop.Valid
-        } 
+      if (this.Form.db.View[this.Form.prop.RecordSource].recCount > 0)
+        this.Form.sw_ini = false
+      if ((typeof thisComp.prop.Value == 'string' && thisComp.prop.Value.trim().length == 0) ||
+        (typeof thisComp.prop.Value == 'number' && thisComp.prop.Value == 0)) {
+        thisComp.prop.ErrorMessage = 'No permite datos en blanco'
+        thisComp.prop.ShowError = true
+        thisComp.prop.Valid = false
+        return thisComp.prop.Valid
+      }
     }
-    thisComp.prop.Valid=true
- 
-    const m = {}
+    thisComp.prop.Valid = true
+
+    const m = this.Var  // Tomamos las variables publicas de la forma
     // Generamos variables de memoria
     for (const main in this.main) {
       const comp = this.main[main]
+
       if (this[comp].prop.updateKey) { //Obtiene solo los de llaves de actualizacion
-        //console.log('CaptureForm comp', comp, this[comp].prop.Valid)
+
         if (!this[comp].prop.Valid) { return true } // Si es un dato no esta  validado
 
-        // asignamos variables de memoria
+      }
+      // asignamos variables de memoria
+      if (this[comp].prop.Capture) {
         if (this[comp].prop.Type == 'numeric')
           m[comp] = +this[comp].prop.Value
         else
           m[comp] = this[comp].prop.Value
+
       }
 
+
+
     }
 
-      // variables publicas
-      for (const Var in this.Form.Var){
-          m[Var] = this.Form.Var[Var]
+    // variables publicas
+    for (const Var in this.Var) {
+      m[Var] = this.Var[Var]
     }
-
 
     // Leemos datos de la tabla de actualizacion
     //const tablaSql=this.db.View[this.prop.RecordSource].tablaSql .trim() 
 
-    const data = await this.db.use(this.prop.RecordSource, m)
+    const data = await this.Form.db.use(this.prop.RecordSource, m)
 
     //console.log('capture form valid data', data)
-    console.log('captureForm Valid m=', m,'data=',data)
-  
-  //  if (!data || data == '400') { return false } // Hubo error al leer los datos
+    console.log('captureForm Valid m=', m, 'data=', data)
+
+    //  if (!data || data == '400') { return false } // Hubo error al leer los datos
 
     let Recno = 0
     let sw_bor = false
     if (data.length == 0) { // No existe el registro
-      const result = await this.db.appendBlank(this.prop.RecordSource, m)
+      const result = await this.Form.db.appendBlank(this.prop.RecordSource, m)
       Recno = result.recno
       console.log('Valid appendBlank ', result)
 
@@ -133,9 +139,10 @@ export class captureForm extends FORM {
     if (this.sw_ini && !activate) { return }
 
     if (!activate) {
-      if (this.prop.RecordSource.length>2)
-        await this.db.useNodata(this.prop.RecordSource)
+      if (this.prop.RecordSource.length > 2)
+        await this.Form.db.useNodata(this.prop.RecordSource)
       Recno = 0
+      console.log('========CaptureForm useNodata ===========',this.prop.RecordSource)
       this.sw_ini = true
       this.bt_graba.prop.Visible = false
       this.bt_borra.prop.Visible = false
@@ -152,29 +159,39 @@ export class captureForm extends FORM {
 
       //      console.log('refresh componente 1', componente)
       if (this[comp].prop.Capture) {
-        this[comp].Recno = 0  // ponemos en cero para ejecutar un refresh
         if (this[comp].prop.updateKey === false) { // No es llave de actualizacion
+          this[comp].Recno = 0  // ponemos en cero para ejecutar un refresh
+
           if (Recno > 0) {
-             this[comp].prop.ReadOnly = false } 
-             else { 
-              this[comp].prop.ReadOnly = !activate }
+            this[comp].prop.ReadOnly = false
+          }
+          else {
+            this[comp].prop.ReadOnly = !activate
+          }
 
           this[comp].prop.Valid = activate
-          this[comp].Recno = Recno // Actualiza el registro del componente
           console.log('CaptureForm refreshcomp ', comp, this[comp].Recno, this[comp].prop.ReadOnly)
         } else {
           this[comp].prop.ReadOnly = false // Si es llave de captura
           if (!activate) {
             this[comp].prop.Valid = false
           }
+
+          if (this[comp].prop.BaseClass == 'comboBox' && !this[comp].prop.MultiSelect)
+            this[comp].prop.Valid = true
         }
+
+        if (Recno>0 && this[comp].Recno != Recno) this[comp].Recno = Recno  // Actualiza el registro del componente
+        console.log('refresh CaptureForm comp=', comp, 'Recno=', this[comp].Recno)
       }
     }
     if (Recno > 0) {
       this.bt_graba.prop.Visible = true
     }
 
-  }; // fin metodo
+    console.log('=============<Fin CaptureForm refreshcomp>================= ')
+
+  } // fin metodo
 
   /// //////////////////////////////
   // Metodo : bt_graba
@@ -195,6 +212,7 @@ export class captureForm extends FORM {
       //this.prop.TabIndex= 20
       this.style.width = '20px'
 
+
     } // Fin constructor
 
     async click() {
@@ -204,28 +222,21 @@ export class captureForm extends FORM {
       this.prop.Valid = false
 
       this.Parent.bt_borra.prop.Disabled = true
-      const m = {} //Record<string, never>
 
       // Recorremos toda la forma y revisamos si estan validados
 
       for (const i in this.Parent.main) {
-      const comp :string= this.Parent.main[i]
-     // console.log('bt_graba comp',comp,this)
-      /* 
-      m[comp] = this.Parent[comp].prop.Value // asignamos variables de memoria
-
-         console.log('bt_graba ', comp, this.Parent[comp].prop.Valid)
-       */
+        const comp: string = this.Parent.main[i]
         // Checa si todos esta validados
         if ((this.Parent[comp].prop.Capture) &&
           !this.Parent[comp].prop.Valid) {
           if (!await this.Parent[comp].valid()) { return }
         }
       }
-//       console.log('captureForm tableUpdate ala',await this.Parent.db.localAlaSql(`select * from ${this.Parent.prop.RecordSource}`))
-//      console.log('captureForm tableUpdate this.Parent',this.Parent.prop.RecordSource,this.Parent)
-      // tableUpdate(0=1 registro,false=no reintenta forzar la grabacion,alias)
-      const result = await this.Parent.db.tableUpdate(0,false,this.Parent.prop.RecordSource)
+
+      console.log('CaptureForm bt_graba click() ====> alaSql=', await this.Form.db.localAlaSql('select * from ' + this.Parent.prop.RecordSource))
+      console.log('CaptureForm bt_graba')
+      const result = await this.Form.db.tableUpdate(0, false, this.Parent.prop.RecordSource)
 
       if (result) {
         MessageBox('Datos actualizados')
@@ -251,7 +262,7 @@ export class captureForm extends FORM {
 
       for (let i = 0; i < this.Grid.length; i++) {
         if (this.Form[this.Grid[i]].prop.RecordSource.trim() > '  ')
-          await this.db.use(this.Form[this.Grid[i]].prop.RecordSource, m)
+          await this.Form.db.use(this.Form[this.Grid[i]].prop.RecordSource, m)
         this.Form[this.Grid[i]].prop.Visible = true
       }
     }

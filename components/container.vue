@@ -49,7 +49,7 @@
                 <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
                   v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
                   v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-                  v-model:Focus="This[compMain].Focus" v-model:Recno="This[compMain].Recno"
+                  v-model:Focus="This[compMain].Focus" 
                   v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno"
                   v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
                   v-bind:position="This[compMain].position"

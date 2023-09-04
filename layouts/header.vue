@@ -13,7 +13,7 @@
         <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end">
 
         </div>
-        <img v-if="logoEmp.length > 5" class="logoEmp" :src="logoEmp" style="width:50px;height:50px; float: inline-end;" />
+        <img v-if="logoEmp && logoEmp.length > 5" class="logoEmp" :src="logoEmp" style="width:50px;height:50px; float: inline-end;" />
         <div class="dataEmp" style="display:flex; flex-wrap:wrap;item-align:flex-end">
           <div  style="flex: 1; text-align: left;">{{ nomEmp }}</div>
           <div class="break"></div>

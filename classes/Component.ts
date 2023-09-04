@@ -26,7 +26,7 @@ export class COMPONENT {
   main: [] = []   // elementos que tiene el componente en main
   footer: [] = [] // elementos que tiene el componente en footer
   //elements: [] = [] // elementos que tiene el componente
-  status: null | undefined   // status de todos los hijos del componente
+  status: {} ={}   // status de todos los hijos del componente
   
   prop = {
     Development : false,
@@ -88,7 +88,7 @@ export class COMPONENT {
       background: "white",
       color: "black",
       width:'100%',
-      height:'80%',
+      heigth:'80%',
       maxHeigth: 'auto',
       maxWidth: 'auto',
       fontFamily: "Arial",
@@ -128,8 +128,6 @@ export class COMPONENT {
     wordWrap: "break-word", // Parte las palabras
     backgroundImage: "",
     zIndex: 1,  // profundidad
-
-
     // textAlign: "left";
   }
 

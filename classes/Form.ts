@@ -14,9 +14,7 @@ import {
 */
 import { COMPONENT } from '@/classes/Component'
 import { VFPDB } from "@/classes/DataBase"
-////import { MessageBox } from '@/classes/Functions'
-//import { stringifyQuery } from "vue-router";
-
+import { storeToRefs } from 'pinia'
 
 export class FORM extends COMPONENT {
 
@@ -63,17 +61,14 @@ export class FORM extends COMPONENT {
 
     // asignamos en la clase db esta forma
     this.db.Form = this
-    const RefVar=this.db.session.Var._rawValue
-    console.log('ThisForm Pinia RefVar=',RefVar
-    for (const Var in this.db.session.Var.value){
-      this.Var[Var]=this.db.session.Var.value[Var]
+    const {Var}=storeToRefs(this.db.session)
+    const RefVar=Var.value
+   
+    for (const comp in RefVar){
+      this.Var[comp]=RefVar[comp]
     }
 
-    console.log('ThisForm Pinia this.Var=',this.Var,this.db.session)
- 
-
-
-    
+      
     
     // this.style.backgroundImage= "/logos/Logo_Empresa.png",
 

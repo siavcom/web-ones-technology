@@ -119,29 +119,25 @@ export class <<cam_dat>> extends COMPONENT {
 
 
     }
-
+  /* 
     ////////////////////////////////// 
     // event when 
     ///////////////////////////////////
-    
+ 
   async when() {
-    if ( ! await super.when()) return false
-
-    if (this.prop.updateKey) { // Si es llave de actualizacion
-      await this.Form.refreshComponent(false)
-    }
-    return true
+   super.when()
   }
-
-
+*/
+/*
     ////////////////////////////////// 
     // event valid 
     ///////////////////////////////////
     
     async valid() {
-      if( !await this.Form.valid(this.Name) && !this.prop.Valid)
-          return false
-      return true    }
+      this.prop.Valid=super.valid()
+      return this.prop.Valid 
+      }
+*/
 
     ////////////////////////////////// 
     // event click 

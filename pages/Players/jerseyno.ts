@@ -11,9 +11,9 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { captureComponent } from '@/classes/captureComponent'
 
-export class jerseyno extends COMPONENT {
+export class jerseyno extends captureComponent {
 
     constructor() {
         super()
@@ -23,7 +23,7 @@ export class jerseyno extends COMPONENT {
         this.prop.textLabel = 'No Jersey/Playera'
         this.prop.Type ='numeric'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'Index1_Players.jerseyno'
+        this.prop.ControlSource = 'index1_players.jerseyno'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
         this.prop.MaxLength=2
@@ -119,30 +119,6 @@ export class jerseyno extends COMPONENT {
 
 
     }
-
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-      if (this.prop.ReadOnly) return
-      if (this.prop.updateKey){ // Si es llave de actualizacion
-        await this.Form.refreshComponent(false)
-        }
-
-        return !this.prop.ReadOnly
-        //   await super.when() no hace falta el super porque en focus.capture lo hace 
-    }
-    
-
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-if( !await this.Form.valid(this.Name) && !this.prop.Valid)
-          return false
-      return true    }
 
     ////////////////////////////////// 
     // event click 

@@ -11,9 +11,10 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
 
-export class nickname extends COMPONENT {
+import { captureComponent } from '@/classes/captureComponent'
+
+export class nickname extends captureComponent {
 
     constructor() {
         super()
@@ -23,7 +24,7 @@ export class nickname extends COMPONENT {
         this.prop.textLabel = 'Apodo del muchacho'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'Index1_Players.nickname'
+        this.prop.ControlSource = 'index1_players.nickname'
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
         this.prop.MaxLength=32
@@ -120,39 +121,7 @@ export class nickname extends COMPONENT {
 
     }
 
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-      if (this.prop.ReadOnly) return
-      if (this.prop.updateKey){ // Si es llave de actualizacion
-        await this.Form.refreshComponent(false)
-        }
-
-        return !this.prop.ReadOnly
-        //   await super.when() no hace falta el super porque en focus.capture lo hace 
-    }
-    
-
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-if( !await this.Form.valid(this.Name) && !this.prop.Valid)
-          return false
-      return true    }
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
-    }
-    */
-
+  
   //////////////////////////
   // KeyPress
   // Descripcion: Cada tecla que se presiona en el input
