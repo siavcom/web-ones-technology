@@ -16,13 +16,13 @@ export class captureComponent extends COMPONENT {
 
   constructor() {
     super()
-    this.prop.ReadOnly=true
-   
+    this.prop.ReadOnly = true
+
   }
 
   public async init(): Promise<void> {
     if (this.prop.updateKey == true)
-       this.prop.ReadOnly=false
+      this.prop.ReadOnly = false
 
   }
 
@@ -32,11 +32,11 @@ export class captureComponent extends COMPONENT {
 
   async when() {
     if (this.prop.ReadOnly) return false
-    if (this.prop.updateKey){ // Si es llave de actualizacion
+    if (this.prop.updateKey) // Si es llave de actualizacion
       await this.Form.refreshComponent(false)
-      }
 
-      return !this.prop.ReadOnly
+
+    return !this.prop.ReadOnly
   }
 
   ////////////////////////////////// 
@@ -47,11 +47,10 @@ export class captureComponent extends COMPONENT {
     if (this.prop.ReadOnly)
       return false
 
-    if (!this.prop.updateKey || !this.prop.Capture){
-       this.prop.Valid=true
-       return true 
+    if (!this.prop.updateKey || !this.prop.Capture) {
+      this.prop.Valid = true
+      return true
     }
-       
 
     if (!await this.Form.validComponent(this.Name) && !this.prop.Valid)
       return false

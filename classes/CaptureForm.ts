@@ -181,15 +181,13 @@ export class captureForm extends FORM {
             this[comp].prop.Valid = true
         }
 
-        if (Recno>0 && this[comp].Recno != Recno) this[comp].Recno = Recno  // Actualiza el registro del componente
-        console.log('refresh CaptureForm comp=', comp, 'Recno=', this[comp].Recno)
+        if (Recno>0 && this[comp].Recno != Recno) 
+          this[comp].Recno = Recno  // Actualiza el registro del componente
       }
     }
     if (Recno > 0) {
       this.bt_graba.prop.Visible = true
     }
-
-    console.log('=============<Fin CaptureForm refreshcomp>================= ')
 
   } // fin metodo
 
