@@ -154,6 +154,7 @@ export class COMPONENT {
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
+    this.prop.Name=this.Name
     let sw_component=true
     if(!TabIndex) TabIndex=1
     if (!Form) { // Inicializamos el this.Form
@@ -362,9 +363,10 @@ export class COMPONENT {
   // Valid
   // Descripcion: Cuando pierde el foco valida
   /////////////////////////////////////////////////////////////////
-  public async valid():Promise<boolean> {
-    this.prop.Valid = true
-   // console.log('Valida ',this.Name)
+  public async valid(Valid:boolean):Promise<boolean> {
+    if(!Valid)
+      Valid=true
+    this.prop.Valid = Valid
     return this.prop.Valid
   }
 

@@ -32,6 +32,7 @@ export class <<cam_dat>> extends COMPONENT {
         this.prop.Decimals=<<Decimals>>
         this.prop.Capture=<<Capture>>
         this.prop.updateKey=<<updateKey>>
+        this.prop.ReadOnly=true
         
         
         // this.RecordSource="" oJo
