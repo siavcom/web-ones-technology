@@ -23,6 +23,8 @@ export class captureComponent extends COMPONENT {
   public async init(): Promise<void> {
     if (this.prop.updateKey == true)
       this.prop.ReadOnly = false
+    else
+      this.prop.ReadOnly = true
 
   }
 
@@ -35,8 +37,7 @@ export class captureComponent extends COMPONENT {
     if (this.prop.updateKey) // Si es llave de actualizacion
       await this.Form.refreshComponent(false)
 
-
-    return !this.prop.ReadOnly
+    return true
   }
 
   ////////////////////////////////// 
@@ -52,6 +53,7 @@ export class captureComponent extends COMPONENT {
       return true
     }
 
+    
     if (!await this.Form.validComponent(this.Name) && !this.prop.Valid)
       return false
     return true

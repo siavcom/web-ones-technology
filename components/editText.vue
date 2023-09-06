@@ -453,18 +453,26 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
-
+  
   if ($event.charCode == 13) {
+    console.log('=====KeyPress Enter======') 
     //$event.charCode = 9
     // window.event.keyCode = 9;
-    Key.value = $event.charCode
-    emit('customChange', $event.target.value + String.fromCharCode(9))
+    //const next = $event.currentTarget.nextElementSibling;
+    //$event.target.parentElement.nextSibling.children[1].focus()
+    //next.focus();
+   // emit('tab')
+   Key.value = $event.charCode
+   emit('customChange', $event.target.value + String.fromCharCode(9))
+   $event.dispatchEvent(new KeyboardEvent('keyTab', {'key': 'a'}));
 
-
-  } else
+  } else{
+//    Status.value = 'P'  //Aqui me quede
+//    emit("update:Status", 'P')
     This.prop.Status = 'P'
-  Key.value = $event.charCode
-}
+    Key.value = $event.charCode
+  }
+  }
 
 
 /////////////////////////////////////////////////////////////////////
@@ -474,8 +482,6 @@ const keyPress = ($event) => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
   //console.log('editText onFocus ', props.Name, props.prop.ReadOnly)
-  Status.value = 'P'  //Aqui me quede
-  emit("update:Status", 'P')
   ToolTipText.value = false
   ShowError.value = false
   // emit("update:ShowError", false)

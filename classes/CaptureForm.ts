@@ -131,7 +131,7 @@ export class captureForm extends FORM {
   // Descripcion : refresca los componentes
   /// /////////////////////////////////////
   async refreshComponent(activate: boolean, Recno?: numeric) {
-    // console.log('refresh component ', this.sw_ini)
+     console.log('refresh component ', this.prop.Name,' Activate=',activate,' Recno=',Recno)
     if (!Recno) { Recno = 0 }
 
     this.Recno = Recno

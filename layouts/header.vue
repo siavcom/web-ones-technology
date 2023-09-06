@@ -4,9 +4,9 @@
     <div style="width: 80%;
                             height: 55px;
                             display: flex;">
-      <img class="logoVue" src="@/assets/logo.png" style="width:50px;height:50px;" />
+      <img class="logoVue" :src="logo" style="width:50px;height:50px;" />
       <div class="Web-ones">
-        <img class="logoVue" src="@/assets/logo.png" style="width:50px;height:50px;" />eb-Ones Technology
+        <img class="logoVue" :src="logo" style="width:50px;height:50px;" />eb-Ones Technology
       </div>
 
       <div class="Company" style="align-self:flex-end;margin-left: auto;">
@@ -28,6 +28,9 @@
 
 <script lang="ts" setup >
 //vertical-align:middle;
+// @/assets/logo.pn
+
+import logo from '~/assets/logo.png'
 
 const props = defineProps<{
   logoEmp: string;

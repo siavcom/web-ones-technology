@@ -12,7 +12,6 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  
   <transition name='Mainform'>
 
     <div v-if="loading" class="splash-screen">
@@ -44,7 +43,6 @@
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
                 v-model:Status="ThisForm[compHeader].prop.Status" v-model:ShowError="ThisForm[compHeader].prop.ShowError"
                 v-model:Key="ThisForm[compHeader].prop.Key" v-model:Focus="ThisForm[compHeader].Focus"
-               
                 v-bind:Registro="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
                 v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
                 v-bind:position="ThisForm[compHeader].position"
@@ -72,7 +70,7 @@ emit
                   <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
-                    v-model:Focus="ThisForm[compMain].Focus" 
+                    v-model:Focus="ThisForm[compMain].Focus"
                     v-bind:Registro="ThisForm[compMain].Recno == null ? 0 : ThisForm[compMain].Recno"
                     v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                     v-bind:position="ThisForm[compMain].position"
@@ -116,9 +114,16 @@ emit
               </div>
             </slot>
 
+            <div class="salir" @click='ThisForm.clickSalir()'>
+
+              <img class='img' src="/Iconos/exit4-color.svg" style="float:right"
+              :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green','width':'60px' }" />
+
+            </div>
+
             <div class='login' v-if="user != '' && id_con == '' && nom_emp != ''">
               <!--teleport to="#modal"-->User:{{ user }} Password:
-              <input type="password" v-model.trim="password" @focusout="pass=password">
+              <input type="password" v-model.trim="password" @focusout="pass = password">
               <!--/teleport-->
             </div>
 
@@ -248,7 +253,7 @@ do {
 
 */
 
-  //pasa los elementos por referencia al Global
+//pasa los elementos por referencia al Global
 
 const password = ref('')
 ThisForm.user = user.value
@@ -344,7 +349,7 @@ async function eje_eve_old(numero: number) {
       ThisForm.eventos[0] = 'A'
       // ejecutamos el evento 
       waitEval(evento, ref(ThisForm))
-  
+
       //  console.log('Stack de eventos', ThisForm.eventos)  // borramos el evento
 
 
@@ -516,6 +521,11 @@ watch(
 
 */
 
+
+
+
+
+
 const nextFocus = async ($event) => {
   let nextElement = $event.explicitOriginalTarget.nextSibling
   console.log('Edit nextElement ', nextElement)
@@ -643,7 +653,7 @@ const impComp = ((name: string, pos?: string) => {
     }
 
     case 'imgbutton': {
-          return imgButton
+      return imgButton
       break;
     }
 

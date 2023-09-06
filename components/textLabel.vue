@@ -25,7 +25,7 @@ readonly="true" >
 // Ult. Modificacion  
 // 30/Sep/2022.- Fdo Cuadras
 
-
+/*
 import {
   //  defineExpose,
   ref,
@@ -42,6 +42,9 @@ import {
   // onUnmounted,
 
 } from "vue";
+
+
+*/
 const emit = defineEmits(["update"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 

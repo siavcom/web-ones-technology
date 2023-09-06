@@ -290,7 +290,7 @@ const props = withDefaults(defineProps<Props>(), {
   searchPlaceholder: 'Search...',
   searchTooltip: 'Search',
 
-  profileImg: '/img/ElFerBlocks.jpg',
+  profileImg: '/img/ ElFerBlocks.jpg',
   profileName: 'El Fer Blocks',
   profileRole: 'Front/Back End & SQL developer ',
   isExitButton: true,

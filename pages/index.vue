@@ -101,7 +101,7 @@ div.imagen {
   /*height: 220x;
     width: 220px;
   se quita el directorio /public
-  background-image: url("/img/Logo_Empresa.bmp");
+  background-image: url("/img/ Logo_Empresa.bmp");
   */
   background-image: url("/logos/Siavcom.png");
   /* opacity: 0.5;*/

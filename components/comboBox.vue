@@ -31,8 +31,6 @@
         <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
           @focusout="focusOut" ref="Ref" />
 
-
-
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
         <div class="toggle" v-if="toggle && !prop.ReadOnly">
@@ -226,7 +224,7 @@ divStyle.zIndex=props.style.zIndex+1
 const TextLabel = reactive(props.prop.componentStyle)
 
 TextLabel.width = props.style.width
-TextLabel.height = '75%'
+TextLabel.height = '72%'
 
 let medida = ''
 

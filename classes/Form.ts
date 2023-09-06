@@ -74,37 +74,20 @@ export class FORM extends COMPONENT {
 
   }
 
+//////////////////////////////
+// Salir de la forma
+//////////////////////////////
+
+   clickSalir = async () => {
+    if (await MessageBox("Salimos de la forma", 4, '') == 6){
+      window.history.back()
+     // window.close() // cierra la forma history.back(); // regresa forma anterior
+  }}
+  
+
   public async afterMounted() {
 
   }
-  public Salir = new class extends COMPONENT {
-    Development = false
-    constructor() {
-      super()
-      this.Index = 50
-      this.Name = 'Salir'
-      this.prop.Value = "Salir";
-      this.prop.Capture = false;
-      this.prop.Valid = false;
-      this.prop.BaseClass = 'imgButton'
-      this.prop.Position = 'footer'
-      this.prop.Image = "/Iconos/exit4-color.svg";
-      //this.prop.Image = "/Iconos/exit.png"
-      this.style.width = '30px'
-      this.style.fontSize = '13px'
-      this.style.color = 'green'
-      this.style.backgroundColor = 'white'
-      this.prop.TabIndex = 50
-
-      //this.style.height='80px'
-
-    } // Fin constructor
-
-    public click = async () => {
-      if (await MessageBox("Seguro ,salimos de la forma", 4, '') == 6)
-
-        window.history.back(); // regresa forma anterior
-    }
-  }
+ 
 
 }
