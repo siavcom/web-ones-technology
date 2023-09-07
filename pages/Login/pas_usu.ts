@@ -22,8 +22,8 @@ export class pas_usu extends COMPONENT {
     this.prop.Sw_val = false
     this.prop.Status = 'A'
     this.num_int=0
-    //this.style.width = '200px'
-    this.prop.componentStyle.width= "130px"
+    this.style.width = '230px'
+    this.prop.componentStyle.width ='130px'
   
   }
   public valid2 = async () => {

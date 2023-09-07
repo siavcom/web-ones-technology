@@ -8,8 +8,8 @@
       </div>
     </div>
 
-    <div v-else class="wraper" style="width:100%;heigth:100%">
-      <div class='reportViewer' style="heigth:100%;heigth:90%" >
+    <div v-else class="wraper" style="width:100%;height:100%">
+      <div class='reportViewer' style="height:100%;height:90%" >
          <iframe :src="BSource" style="width:95%" height="900" />
       </div>
     </div>

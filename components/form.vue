@@ -114,7 +114,7 @@ emit
               </div>
             </slot>
 
-            <div class="salir" @click='ThisForm.clickSalir()'>
+            <div class="salir" @click='clickSalir()'>
 
               <img class='img' src="/Iconos/exit4-color.svg" style="float:right"
               :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green','width':'60px' }" />
@@ -521,6 +521,12 @@ watch(
 
 */
 
+const clickSalir = async () => {
+    if (await MessageBox("Salimos de la forma", 4, '') == 6){
+      window.history.back()
+     // window.close() // cierra la forma history.back(); // regresa forma anterior
+  }}
+  
 
 
 

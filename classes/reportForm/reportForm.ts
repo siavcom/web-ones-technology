@@ -31,11 +31,10 @@ export class reportForm extends FORM {
   ord_vis: string = ''   // variables extras para el orden del select
   query: string = ''     // query para ejecutar el reporte
   sqlQuery:string=''             // Query a ejecutar antes de la vista del reporte
-  pdfHeigth='1200px'  // PDF height 
-  constructor() {
-    super()
-  
-  }
+  pdfheight='1200px'  // PDF height 
+//  constructor() {
+//    super()
+//  }
 
   public async init() {
 
@@ -72,7 +71,7 @@ export class reportForm extends FORM {
       par_prg: this.Params.par_prg ? this.Params.par_prg : ' ',
       nom_vis: vis_rep
     }
-
+    console.log('reportForm init m=',m)
     await db.use('vi_cap_query_db', m) // todos los querys del reporte
 
 

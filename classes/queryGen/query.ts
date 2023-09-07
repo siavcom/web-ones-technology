@@ -26,10 +26,9 @@ export class query extends COMPONENT {
     this.prop.Capture = false
     this.prop.ReadOnly= true
     this.prop.Visible=true
-    this.style.width='100%'
-    this.style.height='90px'
-    
 
+    this.prop.componentStyle.width='100%'
+    this.prop.componentStyle.height='90%'
    }
 
   

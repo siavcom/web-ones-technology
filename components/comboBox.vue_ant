@@ -1,8 +1,6 @@
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
-  <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-
-  <div class="divi" :style="divStyle">
+  <!--div class="divi" :style="divStyle"-->
     <!--Etiqueta del componente -->
     <div class="mensajes" v-show="This.prop.Visible">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -28,7 +26,7 @@
       
       -->
 
-      <div v-else class="comboBox" :style='prop.componentStyle'>
+      <div v-else class="comboBox">
 
         <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
           @focusout="focusOut" ref="Ref" />
@@ -59,7 +57,7 @@
       <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     </div>
     <span v-if="prop.ShowValue">{{ prop.Value }}</span>
-  </div>
+  <!--/div-->
 </template>
 
 <script setup lang="ts">
@@ -225,7 +223,7 @@ divStyle.zIndex=props.style.zIndex+1
 
 const TextLabel = reactive(props.prop.componentStyle)
 
-//TextLabel.width = props.style.width
+TextLabel.width = props.style.width
 TextLabel.height = 'fit-content'
 
 let medida = ''

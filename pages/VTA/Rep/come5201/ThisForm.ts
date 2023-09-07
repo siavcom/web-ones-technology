@@ -32,7 +32,7 @@ public async init(){
   await super.init()
   this.var_ord.prop.Value='ndo_doc'
 
-  console.log('===================>Init Report name',this.Name,'var_ord',this.var_ord.prop.Value)
+  console.log('===================>Init Report name=',this.prop.Name,'var_ord',this.var_ord.prop.Value)
  
 }
 

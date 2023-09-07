@@ -22,6 +22,6 @@ export class ref_dat extends COLUMN {
         this.prop.ControlSource = 'vi_cap_for.ref_dat'
         this.prop.ReadOnly=false
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width='300px'
+      
     }
 }

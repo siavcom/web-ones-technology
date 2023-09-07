@@ -31,7 +31,7 @@
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
                 <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
-                  <img class="bx" v-if="menuItem.icon.length > 0" :src="'/Iconos/' + menuItem.icon"
+                  <img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
                     :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
@@ -247,24 +247,7 @@ const props = withDefaults(defineProps<Props>(), {
       system: ''
     },
     */
-    {
-      // link: 'http://siavcom.com.mx:38000/Login',
-      name: 'Login',
-      tooltip: 'Login',
-      icon: 'svg/bx-user.svg',
-      path: { path: '/Login' },
-      type: 'P',
-      system: ''
-    },
-    {
-      link: '#',
-      name: 'Messages',
-      tooltip: 'Messages',
-      icon: 'svg/bx-chat.svg',
-      path: {},
-      type: 'L',
-      system: ''
-    }
+
     /*    {
       link: '#',
       name: 'File Manager',
@@ -290,7 +273,7 @@ const props = withDefaults(defineProps<Props>(), {
   searchPlaceholder: 'Search...',
   searchTooltip: 'Search',
 
-  profileImg: '/img/ ElFerBlocks.jpg',
+  profileImg: '/img/ElFerBlocks.jpg',
   profileName: 'El Fer Blocks',
   profileRole: 'Front/Back End & SQL developer ',
   isExitButton: true,
@@ -323,6 +306,29 @@ const Style = {
   menuItemsTextColor: '#fff',
   menuFooterTextColor: '#fff'
 }
+
+
+props.menuItems.push(
+         {
+      // link: 'http://siavcom.com.mx:38000/Login',
+      name: 'Login',
+      tooltip: 'Login',
+      icon: '/Iconos/svg/bx-user.svg',
+      path: { path: '/Login' },
+      type: 'P',
+      system: ''
+    })
+props.menuItems.push(
+    {
+      link: '#',
+      name: 'Messages',
+      tooltip: 'Messages',
+      icon: '/Iconos/svg/bx-chat.svg',
+      path: {},
+      type: 'L',
+      system: ''
+    }
+    )
 
 const menuTitle = 'KilloSoft'
 
@@ -450,7 +456,7 @@ const obtMenu = (sw_ini?: boolean) => {
         link: '#',
         name: 'SQL data diccionary',
         tooltip: 'Setting',
-        icon: 'svg/bx-cog.svg',
+        icon: '/Iconos/svg/bx-cog.svg',
         path: { path: '/SqlDictionary' },
         target: '', //'_blank',
         type: 'P',
@@ -462,7 +468,7 @@ const obtMenu = (sw_ini?: boolean) => {
         // link: 'http://siavcom.com.mx:38000/Login',
         name: 'SQL Query',
         tooltip: 'SQL Query',
-        icon: 'svg/sql-query.svg',
+        icon: '/Iconos/svg/sql-query.svg',
         path: { path: '/QueryExec' },
         type: 'P',
         system: ''
@@ -474,7 +480,7 @@ const obtMenu = (sw_ini?: boolean) => {
         // link: 'http://siavcom.com.mx:38000/Login',
         name: 'Web Form Generator',
         tooltip: 'Web Form Generator',
-        icon: 'svg/bx-spreadsheet.svg',
+        icon: '/Iconos/svg/bx-spreadsheet.svg',
         path: { path: '/formGenerator' },
         type: 'P',
         system: ''
@@ -524,11 +530,12 @@ const obtMenu = (sw_ini?: boolean) => {
         }
 
       }
+      const icon=menu.value[i].ico_prg.trim().length>1? '/Iconos/'+menu.value[i].ico_prg.trim(): '/Iconos/svg/bx-door-open.svg'
       const item = {
         link: '#',
         name: menu.value[i].des_prg,
         tooltip: menu.value[i].des_prg,
-        icon: menu.value[i].ico_prg.trim(),
+        icon,
         path: path,
         target: target,
         type: type,
@@ -578,7 +585,7 @@ const obtSubMenu = (system: string) => {
         link: '#',
         name: menu.value[i].des_prg,
         tooltip: menu.value[i].des_prg,
-        icon: menu.value[i].ico_prg.trim(),
+        icon: '/Iconos/' + menu.value[i].ico_prg.trim(),
         path: path,
         type,
         system

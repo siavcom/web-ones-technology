@@ -30,6 +30,8 @@ export class sis_sis extends COMPONENT {
     this.prop.BoundColumn = 2
     this.prop.ColumnWidths = "75%,25%"
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
+    this.style.width = '500px'
+    this.prop.componentStyle.width ='200px'
 
     this.style.zIndex=2
   }

@@ -19,7 +19,7 @@ export class browse extends COMPONENT {
     table = {
         isLoading:false, 
         pageSize:10,  //Default display the number of items on one page. In most cases no set required.
-        //maxHeigth:'15px',  // Table Max Heigth Default "auto"
+        //maxheight:'15px',  // Table Max height Default "auto"
         checkBox:true,
         filters:{},
  

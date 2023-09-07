@@ -20,15 +20,16 @@ export class emp_emp extends COMPONENT {
 //    this.Name='emp_emp'
     this.prop.BaseClass = 'comboBox'
     //this.prop.Value = 'Demo'
-    this.prop.textLabel = 'Empresa'
     this.prop.Capture = true
     this.prop.RowSourceType = 5 // 1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 1
     this.prop.RowSource = [[''], ['']]
     this.prop.ColumnWidths = '37%,60%'
-    this.style.width = '150px'
+    this.style.width = '230px'
     this.style.zIndex = 2
+    this.style.width = '230px'
+    this.prop.componentStyle.width ='150px'
     let num_ren = 0
 
     if (dat_emp == null){

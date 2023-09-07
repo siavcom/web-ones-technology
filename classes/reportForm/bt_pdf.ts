@@ -67,7 +67,7 @@ export class bt_pdf extends COMPONENT {
     this.Form.report.displayPdf.prop.Visible=true 
 
  
-    this.Form.report.displayPdf.heigth='1200px'
+    this.Form.report.displayPdf.height='1200px'
 
     return
     

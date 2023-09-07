@@ -30,7 +30,7 @@
 //vertical-align:middle;
 // @/assets/logo.pn
 
-import logo from '~/assets/logo.png'
+import logo from '@/assets/logo.png'
 
 const props = defineProps<{
   logoEmp: string;

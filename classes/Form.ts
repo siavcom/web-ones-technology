@@ -68,23 +68,21 @@ export class FORM extends COMPONENT {
       this.Var[comp]=RefVar[comp]
     }
 
-      
     
-    // this.style.backgroundImage= "/logos/Logo_Empresa.png",
 
   }
 
 //////////////////////////////
 // Salir de la forma
 //////////////////////////////
-
+/*
    clickSalir = async () => {
     if (await MessageBox("Salimos de la forma", 4, '') == 6){
       window.history.back()
      // window.close() // cierra la forma history.back(); // regresa forma anterior
   }}
   
-
+*/
   public async afterMounted() {
 
   }

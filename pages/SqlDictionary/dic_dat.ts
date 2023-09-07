@@ -36,7 +36,9 @@ export class dic_dat extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths='80%,20%'
-    this.style.width='400px'
+    this.style.width = '500px'
+    this.prop.componentStyle.width ='300px'
+
     this.style.zIndex=3
   }
   // init del componente 

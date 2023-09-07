@@ -87,9 +87,9 @@ export class COMPONENT {
     componentStyle: {
       background: "white",
       color: "black",
-      width:'100%',
-      heigth:'80%',
-      maxHeigth: 'auto',
+      width:'auto',
+      height:'80%',
+      maxheight: 'auto',
       maxWidth: 'auto',
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
@@ -106,19 +106,17 @@ export class COMPONENT {
     flexShrink: "0",   /* do not shrink - initial value: 1 */
     flexBasis: "auto", /* width/height  - initial value: auto */
     flexWrap: "wrap",
-
-
     alignContent: "center",
-    background: "white",
-    backgroundColor: "white",
+    background: "transparent",
+    backgroundColor: "transparent" , // semi "rgba(170, 187, 97, 0.5)",  //
     color: "#b94295",
     cols: "60",
 
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    width: "auto",
+    width: "95%",
     height: "95%",
-    maxWidth: "90%",
+    maxWidth: "auto",
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
@@ -154,7 +152,8 @@ export class COMPONENT {
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
-    this.prop.Name=this.Name
+    if( this.prop.Name.length==0)
+       this.prop.Name=this.Name
     let sw_component=true
     if(!TabIndex) TabIndex=1
     if (!Form) { // Inicializamos el this.Form

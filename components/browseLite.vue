@@ -1,7 +1,7 @@
 <template>
   <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="style">
 
-    <div class="wraper" style="width:100%;heigth:100%">
+    <div class="wraper" style="width:100%;height:100%">
 
       <div v-if="table.isLoading" class="splash-screen">
         <div class="spinner-wrapper">
@@ -51,7 +51,7 @@
   :page-size="table.pageSize" 
  :grouping-display="table.groupingDisplay" 
 :is-loading="table.isLoading"
- :max-height="table.maxHeigth"
+ :max-height="table.maxheight"
     <div style="text-align: left">
       <img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
 
@@ -114,7 +114,7 @@ const props = defineProps<{
     left: number;
     Top: number;
   };
-  Recno: 0;
+
   Component: null;
 }>()
 
@@ -130,7 +130,7 @@ const isStatic = ref(false)
 /*
 const table = reactive({
   pageSize:10,  //Default display the number of items on one page. In most cases no set required.
-  //maxHeigth:'15px',  // Table Max Heigth Default "auto"
+  //maxheight:'15px',  // Table Max height Default "auto"
   checkBox:true,
   groupToggle:true,
  
