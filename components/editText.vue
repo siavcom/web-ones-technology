@@ -1,5 +1,5 @@
 <template>
-   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
+  <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <div class="divi" v-bind:style="Style">
     <div class="mensajes" v-show="This.prop.Visible">
 
@@ -10,43 +10,43 @@
        :value.number="currentValue"
     -->
       <!--div class="component" :style="prop.componentStyle"-->
-        <input v-if="prop.Type == 'number'" class="number" type="text" :style="prop.componentStyle" ref="Ref"
-          :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue" :readonly="prop.ReadOnly"
-          :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
-          @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
-        <!--spinner" -->
-        <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="prop.componentStyle" ref="Ref"
-          :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="Value" :readonly="prop.ReadOnly"
-          :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur"
-          @focus="onFocus" @input="onInput">
-        <!--textArea" -->
-        <textarea v-else-if="prop.Type == 'textArea'" class="text" :style="prop.componentStyle" ref="Ref"
-          v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
-          :tabindex="prop.TabIndex" :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength"
-          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
-        <!--fecha  -->
-        <input v-else-if="prop.Type == 'date'" class="date" :style="componentStyle" ref="Ref" type="date"
-          v-model="currentValue" :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
-          :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
-        <!--checkBox-->
-        <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" :style="prop.componentStyle"
-          ref="Ref" :value="checkValue" :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly"
-          :tabindex="prop.TabIndex" @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
+      <input v-if="prop.Type == 'number'" class="number" type="text" :style="prop.componentStyle" ref="Ref"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue" :readonly="prop.ReadOnly"
+        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
+        @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
+      <!--spinner" -->
+      <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="prop.componentStyle" ref="Ref"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="Value" :readonly="prop.ReadOnly"
+        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur"
+        @focus="onFocus" @input="onInput">
+      <!--textArea" -->
+      <textarea v-else-if="prop.Type == 'textArea'" class="text" :style="prop.componentStyle" ref="Ref"
+        v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
+        :tabindex="prop.TabIndex" :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength"
+        @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
+      <!--fecha  -->
+      <input v-else-if="prop.Type == 'date'" class="date" :style="componentStyle" ref="Ref" type="date"
+        v-model="currentValue" :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
+        :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
+      <!--checkBox-->
+      <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" :style="prop.componentStyle" ref="Ref"
+        :value="checkValue" :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex"
+        @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
 
-        <!--Si es texto
+      <!--Si es texto
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-        <input v-else class="text" ref="Ref" :style="prop.componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
-          :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
-          :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
-          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
+      <input v-else class="text" ref="Ref" :style="prop.componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
+        :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
+        :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
+        @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
-        <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
-          prop.ToolTipText
-        }}</span>
-        <span class="errorText" v-show="ShowError && prop.ErrorMessage.length > 1">{{ prop.ErrorMessage }}</span>
-      <!--/div-->  <!--fin class=component -->
+      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
+        prop.ToolTipText
+      }}</span>
+      <span class="errorText" v-show="ShowError && prop.ErrorMessage.length > 1">{{ prop.ErrorMessage }}</span>
+      <!--/div--> <!--fin class=component -->
     </div>
   </div>
 </template>
@@ -221,7 +221,7 @@ const toNumberStr = (n) => {
 
 const typeNumber = ref('text');
 
-const toNumberStr = async (n) => {
+const toNumberStr = async (n:number) => {
   let Style = props.prop.Style
   let Currency = props.prop.Currency
   let MinimumFractionDigits = props.prop.Decimals
@@ -230,11 +230,9 @@ const toNumberStr = async (n) => {
   if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
   //console.log('textLabel Digits===>',props.Name,props.prop.Decimals,MinimumFractionDigits)
 
-
-
   return new Intl.NumberFormat('en-US', {
-    style: Style,
-    currency: Currency,
+    // style: Style,
+    // currency: Currency,
     minimumFractionDigits: MinimumFractionDigits,
     maximumFractionDigits: MinimumFractionDigits,
   }).format(n);
@@ -252,13 +250,14 @@ async function toNumberString(num) {
 
 
 
+// Formateo de valores
 const onInput = ({ target }) => {
-  console.log('OnInput target',target.value)
-  if (target.value=='0') { 
-    Value.value=0
+
+  if (target.value == '0') {
+    Value.value = 0
     return
   }
-  
+
   const valor = target.value.replace(/[^0-9.]/g, "").trim()  // solo admite numeros y punto decimal
 
 
@@ -300,7 +299,7 @@ const onBlur = async () => {
   //     currentValue.value = toNumberStr(Value.value)
   //  currentValue.value = toNumberString(props.prop.Value) //toNumberStr
   Value.value = +currentValue.value
-  currentValue.value = await toNumberString(currentValue.value) //toNumberStr
+  currentValue.value = await toNumberStr(currentValue.value) //toNumberStr
   typeNumber.value = 'text';
 
   focusOut()
@@ -330,16 +329,45 @@ inherit	Inherits this property from its parent element. Read about inherit
 const emitValue = async () => {
   This.prop.Status = 'A'
   Status.value = 'A'
+
+
+  if (props.prop.Type == 'checkBox') {
+
+    checkValue.value = Value.value == 1 ? true : false
+    await This.interactiveChange()
+
+
+  }
+
+  if (props.prop.Type == 'spinner') {
+    await This.interactiveChange()
+
+  }
+
+  if (props.prop.Type == 'number') {
+    const Valor=await toNumberStr(Value.value)
+      if (Valor!=currentValue.value)
+          currentValue.value =  Valor
+  }
+
+  if (props.prop.Type == 'date'){
+    const Valor=await await stringToDate(Value.value)
+      if (Valor!=currentValue.value)
+          currentValue.value =  Valor
+  }
+
+
+
   //console.log('EditBox antes emit Value  ====>', props.Name, props.Registro, props.Recno)
   // Recno.value = props.Registro
   //nextTick(function () {
-    emit("update:currentValue", currentValue.value); // actualiza el valor Value en el componente padre
-    emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-    emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-    emit("update:Valid", Valid.value)
-    // emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
-    // emit("update") // emite un update en el componente padre
- // })
+  emit("update:currentValue", currentValue.value); // actualiza el valor Value en el componente padre
+  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  emit("update:Valid", Valid.value)
+  // emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
+  // emit("update") // emite un update en el componente padre
+  // })
   ToolTipText.value = true  // Activamos el ToolTipText
   ShowError.value = false  // Desactivamos mensaje de error
   return true
@@ -460,7 +488,7 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
-  console.log('KeyPress===>',$event.charCode)
+  console.log('KeyPress===>', $event.charCode)
 
   if ($event.charCode == 13) {
     console.log('=====KeyPress Enter======')
@@ -475,7 +503,7 @@ const keyPress = ($event) => {
     $event.dispatchEvent(new KeyboardEvent('keyTab', { 'key': 'a' }));
 
   } else {
-     //    Status.value = 'P'  //Aqui me quede
+    //    Status.value = 'P'  //Aqui me quede
     //    emit("update:Status", 'P')
     This.prop.Status = 'P'
     Key.value = $event.charCode
@@ -624,8 +652,8 @@ watch(
   async (new_val, old_val) => {
     // se cambia en alasql
     //    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-    if (new_val!=Value.value)
-       Value.value=new_val
+    if (new_val != Value.value)
+      Value.value = new_val
     console.log('EditText Watch Name=', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value)
 
 
@@ -642,30 +670,6 @@ watch(
     This.prop.Valid = true
     if (Value.value != new_val)
       Value.value = new_val
-
-    if (props.prop.Type == 'checkBox') {
-
-      checkValue.value = new_val == 1 ? true : false
-      await This.interactiveChange()
-
-
-    }
-
-    if (props.prop.Type == 'spinner') {
-      await This.interactiveChange()
-
-    }
-
-
-    if (props.prop.Type == 'number') {
-      currentValue.value = await toNumberStr(Value.value)
-    }
-
-    if (props.prop.Type == 'date')
-      currentValue.value = await stringToDate(new_val)
-
-
-
     // Necesita aqui el emit para que refleje los cambios 
 
     // Si existe un error en la validacion del componente padre
@@ -795,7 +799,7 @@ watch(
     if (new_val != old_val
       && props.prop.ControlSource > ' '
       && props.Registro > 0) {
-      console.log('watch Registro EditBox ', This.prop.Name, 'new_val=', new_val, 'This.Reco=', This.Recno)
+      //console.log('watch Registro EditBox ', This.prop.Name, 'new_val=', new_val, 'This.Reco=', This.Recno)
       readCampo(new_val)
     }
 
@@ -840,8 +844,8 @@ watch(
     emit("update:Focus", false)
   },
   { deep: false }
-);
-
+)
+/*
 ///////////////////////////////////////////////
 // Cuando cambia el estatus de Inicial a Activo, emite valores  
 ///////////////////////////////////////////////
@@ -849,19 +853,27 @@ watch(
 watch(
   () => props.prop.Status,
   (new_val, old_val) => {
-
+    if (new_val==old_val)
+       return
     if (new_val == 'A' && old_val == 'I') {
       emitValue()
     }
   },
   { deep: false }
 );
+*/
 
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
 
 const init = async () => {
+
+  if (props.prop.Type == 'date') {
+      componentStyle.width = '100px'
+      componentStyle.height = '20px'
+      componentStyle.maxHeight = '20px'
+    }
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
     Status.value = 'P';  // en lectura
@@ -872,53 +884,37 @@ const init = async () => {
     //     });
 
     await readCampo(props.Registro)
+    This.Form.Recno=props.Registro
   }
   else {
 
     if (props.prop.Type != 'number' && (props.prop.Value == null || props.prop.Value == undefined || props.prop.Value === ""))
       Value.value = ''
 
-    //Value.value = This.prop.Value
-
-
     if (props.prop.Type == 'number') {
       Value.value = (props.prop.Value == null || props.prop.Value == undefined) ? 0 : +props.prop.Value
-      currentValue.value = await toNumberStr(Value.value)
     }
-
-    if (props.prop.Type == 'date') {
-      currentValue.value = await stringToDate(Value.value)
-
-      componentStyle.width = '100px'
-      componentStyle.height = '20px'
-      componentStyle.maxHeight = '20px'
-    }
-
-    if (props.prop.Type == 'checkBox')
-      checkValue.value = Value.value == 1 ? true : false
-
-
+    await emitValue()
   }
 
   oldVal = Value.value   // asignamos el valor viejo
-
+  
   // si es el primer elemento a posicionarse
   if (props.prop.First) {
-
     First.value = false
-    emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+    // emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     //emit("update") // emite un update en el componente padre
     //Ref.value.focus()  // hace el foco como primer elemento
     if (Ref && Ref != null)
       Ref.value.select() // Hace foco con select
     return
-  } else
-    await emitValue()
+  }
+  // else
+  //  if (props.Registro == 0)
+  //    await emitValue()
 
   console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'ControlSource=', props.prop.ControlSource, 'Registro=', props.Registro, ' ')
 }
 
-
 init() // Ejecuta el init
-
 </script>

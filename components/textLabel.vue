@@ -1,14 +1,14 @@
 <template>
   <div v-if="prop.Visible" class="divi" v-bind:style="style">
-    <div class="mensajes" v-bind:style="style" >
+    <div class="mensajes" v-bind:style="TextLabel" >
       <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
-      <div v-if="prop.Type == 'checkBox'" v-bind:style="style" >
+      <div v-if="prop.Type == 'checkBox'" v-bind:style="TextLabel" >
         <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
         <input :class="prop.Type" readonly="true" type="checkBox" :checked="checked" />
       </div>
  
       <div v-else>
-        <input v-show="Text != null" :class="prop.Type" v-bind:style="style" readonly="true" v-model="Text" />
+        <input v-show="Text != null" :class="prop.Type" v-bind:style="TextLabel" readonly="true" v-model="Text" />
       </div>
     </div>
   </div>
@@ -140,6 +140,30 @@ const Aling = ref('left')
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checked = ref(false)
+
+
+
+const TextLabel = reactive(props.style)
+
+//TextLabel.width = props.style.width
+TextLabel.height = 'fit-content'
+if (TextLabel.width=='auto') 
+  TextLabel.width='100%'
+
+let medida = ''
+
+if (TextLabel.width.search("px") > 0)
+  medida = 'px'
+if (TextLabel.width.search("%") > 0)
+  medida = '%'
+
+let textWidth = +TextLabel.width.replaceAll(medida, '') - 5
+TextLabel.width = textWidth.toString() + medida
+
+
+
+
+
 ////////////////////////////////
 // Formateador de numeros 
 /////////////////////////////

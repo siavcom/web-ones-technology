@@ -88,7 +88,7 @@ export class COMPONENT {
       background: "white",
       color: "black",
       width:'auto',
-      height:'80%',
+      height:'85%',
       maxheight: 'auto',
       maxWidth: 'auto',
       fontFamily: "Arial",

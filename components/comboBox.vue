@@ -160,22 +160,10 @@ const props = withDefaults(defineProps<Props>(), {
     left: 0,
     Top: 0,
   },
-  // db: null,
-
-  // colStyle: [
-  //   {
-  //     width: "100px";
-  //   },
-  //   {
-  //     width: "100px";
-  //   },
-  //   {
-  //     width: "100px";
-  //   }
-  // ];
+ 
 })
 
-//  Original }>();
+
 
 
 //const Component = ref(props.Component)
@@ -746,36 +734,6 @@ const renderComboBox = async () => {
 }
 
 
-//////////////////////////////////////////////////////
-// Watchers : Triggers de templates .Cambios en los modos del combo box
-// Descripcion : Cuando cambia el valor de una propiedad que afecte el contenido
-// Notas : Si se tiene en props, se tiene que vigilar el cambio de props.prop.Value
-//////////////////////////////////////////////////////
-/*
-watchEffect(() => {
-  console.log('WatchEffect ComboBox '+props.Name,props.prop.Status)
-  //renderComboBox()
-  },
-   {
-    flush: 'pre'
-  })
-
-
-watchPostEffect(() => {
-  console.log('WatchPostEffect ComboBox '+props.Name,props.prop.Value)
-  //renderComboBox()
-  })
-
-watchSyncEffect(() => {
-  console.log('WatchSyncEffect ComboBox '+props.Name,props.prop.Status)
-  //renderComboBox()asignaResultado
-  })
-
-*/
-//watchPostEffect()
-
-
-
 
 ////////////////////////////////////////
 // Registro
@@ -1109,6 +1067,7 @@ const init = async () => {
     await readCampo(props.Registro)
     //Value.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
     //   if (!props.prop.Autofocus) {
+    This.Form.Recno=props.Registro
 
     Status.value = 'A'  // Activo
  

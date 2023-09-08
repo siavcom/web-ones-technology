@@ -23,10 +23,7 @@ export class cam_dat extends COLUMN {
         this.prop.Placeholder = "Nombre del campo"
         this.prop.ToolTipText ='Nombre del campo'
         this.prop.componentStyle.textTransform='lowercase'
-        this.style.flexBasis = '10%' /* width/height  - initial value: auto */
         this.style.width='100px'
-      
-        
     }
 
     ////////////////////////////////// 
@@ -45,12 +42,12 @@ export class cam_dat extends COLUMN {
     }
 
     async valid() {
-
+        if (this.prop.Valid)
+           return
         const vfp=this.Form.db
         const valor=this.prop.Value.toUpperCase() 
-        const recno=this.Recno
-
-        const data=await vfp.localSql(`select count(key_pri) as existe from vi_cap_dat where trim(upper(cam_dat))="${valor}" and recno<>${recno}`,'Old') 
+        const recno=this.Form.Recno
+        const data=await vfp.localSql(`select count(key_pri) as existe from vi_cap_dat where trim(upper(cam_dat))="${valor}" and recno<>${recno}`) 
         //console.log('VALID====>',data[0])
         if (data[0].existe>0){
             this.prop.Valid=false

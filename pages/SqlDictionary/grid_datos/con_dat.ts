@@ -20,7 +20,7 @@ export class con_dat extends COLUMN {
         this.prop.Type = 'number'
         this.prop.Min = '0'
         this.prop.Max = '256'
-        this.prop.Decimals=2
+        this.prop.Decimals=0
         this.prop.ControlSource = 'vi_cap_dat.con_dat'
         this.prop.Placeholder = "Consecutivo/Orden "
         this.prop.ToolTipText = 'Consecutivo/Orden'
