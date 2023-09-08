@@ -13,7 +13,7 @@
 import { COMPONENT } from '@/classes/Component'
 
 export class captureComponent extends COMPONENT {
-
+  sw_when:boolean=false
   constructor() {
     super()
     this.prop.ReadOnly = true
@@ -36,7 +36,7 @@ export class captureComponent extends COMPONENT {
     if (this.prop.ReadOnly) return false
     if (this.prop.updateKey) // Si es llave de actualizacion
       await this.Form.refreshComponent(false)
-
+    
     return true
   }
 
@@ -47,15 +47,16 @@ export class captureComponent extends COMPONENT {
   async valid() {
     if (this.prop.ReadOnly)
       return false
-
+   
     if (!this.prop.updateKey || !this.prop.Capture) {
       this.prop.Valid = true
       return true
     }
-
     
-    if (!await this.Form.validComponent(this.Name) && !this.prop.Valid)
-      return false
+    if ( !this.sw_when && !await this.Form.validComponent(this.Name) && !this.prop.Valid){
+       return false
+    }
+      else this.prop.Valid  
     return true
   }
 

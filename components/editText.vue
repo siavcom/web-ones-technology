@@ -11,9 +11,9 @@
     -->
       <!--div class="component" :style="prop.componentStyle"-->
         <input v-if="prop.Type == 'number'" class="number" type="text" :style="prop.componentStyle" ref="Ref"
-          :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" :value="currentValue" :readonly="prop.ReadOnly"
+          :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue" :readonly="prop.ReadOnly"
           :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
-          @focus="onFocus" @input="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
+          @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
         <!--spinner" -->
         <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="prop.componentStyle" ref="Ref"
           :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="Value" :readonly="prop.ReadOnly"
@@ -250,9 +250,15 @@ async function toNumberString(num) {
   }
 }
 
-const onInput = ({ target }) => {
-  if (target.value.length == 0) return
 
+
+const onInput = ({ target }) => {
+  console.log('OnInput target',target.value)
+  if (target.value=='0') { 
+    Value.value=0
+    return
+  }
+  
   const valor = target.value.replace(/[^0-9.]/g, "").trim()  // solo admite numeros y punto decimal
 
 
@@ -326,14 +332,14 @@ const emitValue = async () => {
   Status.value = 'A'
   //console.log('EditBox antes emit Value  ====>', props.Name, props.Registro, props.Recno)
   // Recno.value = props.Registro
-  nextTick(function () {
+  //nextTick(function () {
     emit("update:currentValue", currentValue.value); // actualiza el valor Value en el componente padre
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
     emit("update:Valid", Valid.value)
     // emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
     // emit("update") // emite un update en el componente padre
-  });
+ // })
   ToolTipText.value = true  // Activamos el ToolTipText
   ShowError.value = false  // Desactivamos mensaje de error
   return true
@@ -454,6 +460,7 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
+  console.log('KeyPress===>',$event.charCode)
 
   if ($event.charCode == 13) {
     console.log('=====KeyPress Enter======')
@@ -468,7 +475,7 @@ const keyPress = ($event) => {
     $event.dispatchEvent(new KeyboardEvent('keyTab', { 'key': 'a' }));
 
   } else {
-    //    Status.value = 'P'  //Aqui me quede
+     //    Status.value = 'P'  //Aqui me quede
     //    emit("update:Status", 'P')
     This.prop.Status = 'P'
     Key.value = $event.charCode
@@ -615,12 +622,13 @@ const changeValue = async (type: boolean) => {
 watch(
   () => This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
-    if (This.prop.Valid) // tiene un dato valido
-      return
     // se cambia en alasql
     //    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+    if (new_val!=Value.value)
+       Value.value=new_val
+    console.log('EditText Watch Name=', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value)
 
-    console.log('=======>watch value props.Value ', This.prop.Name, 'new_val=', new_val)
+
 
     if (!This.prop.Valid && props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       // actualiza valor en localDb
@@ -656,7 +664,6 @@ watch(
     if (props.prop.Type == 'date')
       currentValue.value = await stringToDate(new_val)
 
-    console.log('EditText Watch Name=', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value)
 
 
     // Necesita aqui el emit para que refleje los cambios 
@@ -673,6 +680,12 @@ watch(
   },
   { deep: false }
 )
+/* 
+   if (This.prop.Valid) // tiene un dato valido
+      return
+
+
+*/
 /////////////////////////////////////////////////////////
 // watch currentValue
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el

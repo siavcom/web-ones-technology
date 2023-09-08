@@ -26,10 +26,9 @@ export class emp_emp extends COMPONENT {
     this.prop.BoundColumn = 1
     this.prop.RowSource = [[''], ['']]
     this.prop.ColumnWidths = '37%,60%'
-    this.style.width = '230px'
     this.style.zIndex = 2
-    this.style.width = '230px'
-    this.prop.componentStyle.width ='150px'
+    this.style.width = 'auto'
+    this.prop.componentStyle.width ='200px'
     let num_ren = 0
 
     if (dat_emp == null){

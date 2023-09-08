@@ -21,7 +21,7 @@ export class log_usu extends COMPONENT {
     this.prop.ToolTipText='user@company'
     this.prop.textLabel = "Usuario";
     this.prop.Type = "text";
-    this.style.width = '230px'
+    this.style.width = 'auto'
     this.prop.componentStyle.width ='150px'
 
   }
