@@ -1,19 +1,18 @@
 <template>
-  <div v-if="prop.Visible" class="divi" v-bind:style="style">
-    <div class="mensajes" v-bind:style="componentStyle" >
+  <div v-if="prop.Visible" class="divi" :style="style">
+    <div class="mensajes">
       <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
-      <div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle" >
+      <div v-if="prop.Type == 'checkBox'" :style="componentStyle">
         <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
         <input :class="prop.Type" readonly="true" type="checkBox" :checked="checked" />
       </div>
- 
+
       <div v-else>
         <input v-show="Text != null" :class="prop.Type" v-bind:style="componentStyle" readonly="true" v-model="Text" />
       </div>
     </div>
   </div>
 </template>
-
 
 <!--textarea v-else-if="prop.Type == 'textArea'" class="text" 
 v-model="Text" 
@@ -42,7 +41,6 @@ import {
   // onUnmounted,
 
 } from "vue";
-
 
 */
 const emit = defineEmits(["update"]);
@@ -98,10 +96,18 @@ const props = defineProps<{
     Decimals: number;
     Nu: 'arab';//
 
-
-    //compAddress: any;
+    componentStyle: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "200px";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      //compAddress: any;
+    };
   };
-
   style: {
     background: "white";
     padding: "5px"; // Relleno
@@ -128,8 +134,9 @@ const Value = ref(props.prop.Value)
 const Text = ref(null)
 const Status = ref(props.prop.Status)
 const Caption = ref(props.prop.Caption)
-const Aling = ref('left')
 
+// const currentValue.value=ref(props.prop.Value)
+const componentStyle = reactive(props.prop.componentStyle)
 //const Style=ref(props.style)
 //Style.value.width=props.style.width 
 
@@ -143,12 +150,10 @@ const checked = ref(false)
 
 
 
-const componentStyle = reactive(props.style)
-
 //componentStyle.width = props.style.width
 componentStyle.height = 'fit-content'
-if (componentStyle.width=='auto') 
-  componentStyle.width='100%'
+if (componentStyle.width == 'auto')
+  componentStyle.width = '100%'
 
 let medida = ''
 
@@ -164,6 +169,47 @@ componentStyle.width = textWidth.toString() + medida
 
 
 
+/*
+const TextLabel = reactive(props.style)
+
+//TextLabel.width = props.style.width
+TextLabel.height = 'fit-content'
+if (TextLabel.width=='auto') 
+  TextLabel.width='100%'
+
+let medida = ''
+
+if (TextLabel.width.search("px") > 0)
+  medida = 'px'
+if (TextLabel.width.search("%") > 0)
+  medida = '%'
+
+let textWidth = +TextLabel.width.replaceAll(medida, '') - 5
+TextLabel.width = textWidth.toString() + medida
+*/
+
+
+
+
+////////////////////////////////
+// Formateador de numeros 
+/////////////////////////////
+
+const toNumberStr = (n) => {
+  let Style = props.prop.Style
+  let Currency = props.prop.Currency
+  let MinimumFractionDigits = props.prop.Decimals
+  /* if (!Style) Style = 'decimal'
+  if (!Currency) Currency = 'MXN'
+  if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
+  //console.log('textLabel Digits===>',props.Name,props.prop.Decimals,MinimumFractionDigits)
+  return new Intl.NumberFormat('en-US', {
+    style: Style,
+    currency: Currency,
+    minimumFractionDigits: MinimumFractionDigits,
+    maximumFractionDigits: MinimumFractionDigits,
+  }).format(n);
+};
 
 //const toggle = ref(false)
 //const hover = ref(false)
@@ -197,7 +243,7 @@ const emitValue = async () => {
 /////////////////////////////////////////////////////
 
 const asignaResultado = (valor?: string) => {
-  //console.log('componentStyle asignaResultado ',props.Name,valor)
+  //console.log('TextLabel asignaResultado ',props.Name,valor)
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
@@ -244,7 +290,7 @@ const asignaResultado = (valor?: string) => {
           // console.log("ComboBox AsignaResultado columnas =======>", props.Name,props.prop.Value,columnas[i].text[0])
 
 
-         Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
+          Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
           //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
           //console.log("AsignaResultado  Value =======>",props.Name, Resultado.value, valor)
         }
@@ -303,7 +349,7 @@ const renderComboBox = async () => {
   if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
   console.log('textLabel render comboBox')
   try {
-    //console.log('componentStyle asignaResultado renderCombo',props.Name,Value)
+    //console.log('TextLabel asignaResultado renderCombo',props.Name,Value)
     const RowSource: string = props.prop.RowSource
     const pos = RowSource.indexOf(".") // posicion del punto
 
@@ -430,7 +476,7 @@ const renderComboBox = async () => {
     var valor = null
 
     if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
-      valor =Text.value //Value.value // null
+      valor = Text.value //Value.value // null
 
     for (
       let ren = 0;
@@ -684,7 +730,7 @@ const readCampo = async () => {
 */
 
 const readCampo = async () => {
-  console.log('textLabel readCampo',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
+  console.log('textLabel readCampo', This.Name, 'Recno=', props.Recno, 'ControlSource=', props.prop.ControlSource)
 
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
     const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno)
@@ -693,11 +739,9 @@ const readCampo = async () => {
         Text.value = data[campo] != null ? data[campo] : ''
     }
   }
-  console.log('textLabel readCampo',This.Name,Text.value)
+  console.log('textLabel readCampo', This.Name, Text.value)
   if (props.prop.Type == 'number') {
-    //Text.value = toNumberStr(Text.value);
-    Text.value =await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-
+    Text.value = toNumberStr(Text.value);
   }
   if (props.prop.Type == 'checkBox') {
     checked.value = Text.value == 1 ? true : false
@@ -717,9 +761,9 @@ watch(
 watch(
   () => props.Show,
   (new_val, old_val) => {
-    if (new_val!=old_val) { 
-        console.log('componentStyle watch Show')
-        if (props.Show) readCampo()
+    if (new_val != old_val) {
+      console.log('TextLabel watch Show')
+      if (props.Show) readCampo()
     }
   },
   { deep: false }
@@ -729,11 +773,11 @@ watch(
 watch(
   () => props.Recno,
   (new_val, old_val) => {
-    console.log('componentStyle watch Recno',old_val,new_val)
-    if (old_val != new_val && new_val>0) readCampo()
+    console.log('TextLabel watch Recno', old_val, new_val)
+    if (old_val != new_val && new_val > 0) readCampo()
 
-    if (new_val==0)
-        Text.value=''
+    if (new_val == 0)
+      Text.value = ''
   },
   { deep: false }
 )
@@ -755,10 +799,17 @@ watch(
 
 const init = async () => {
 
-  if (props.prop.Type == 'number')
-    componentStyle.textAlign = 'right'
+  if (props.prop.Type == 'date') {
+    componentStyle.width = '100px'
+    componentStyle.height = '20px'
+    componentStyle.maxHeight = '20px'
+  }
 
-  console.log('componentStyle init ',This.Name,'Recno=',props.Recno)
+  if (props.prop.Type = 'number') {
+    componentStyle.textAlign = 'right'
+    Text.value = await numberFormat(props.prop.Value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+  }
+  console.log('TextLabel init ', This.Name, 'Recno=', props.Recno)
   readCampo()
   //readCampo()
 

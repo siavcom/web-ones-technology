@@ -6,21 +6,25 @@
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
 
       <!--mensajes de error y tooltip
-    :style="{ 'width': 'auto' }"
-       :value.number="currentValue"
     -->
       <!--div class="component" :style="prop.componentStyle"-->
-      <input v-if="prop.Type == 'number'" class="number" type="text" :style="prop.componentStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue" :readonly="prop.ReadOnly"
+      <!--number 
+      @input.self="onInput" -->
+
+      <!--number--> 
+
+        <input v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="prop.ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
         @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
-      <!--spinner" -->
-      <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="prop.componentStyle" ref="Ref"
+
+      <!--spinner-->
+      <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="Value" :readonly="prop.ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur"
         @focus="onFocus" @input="onInput">
       <!--textArea" -->
-      <textarea v-else-if="prop.Type == 'textArea'" class="text" :style="prop.componentStyle" ref="Ref"
+      <textarea v-else-if="prop.Type == 'textArea'" class="text" :style="componentStyle" ref="Ref"
         v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength"
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
@@ -29,7 +33,7 @@
         v-model="currentValue" :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
       <!--checkBox-->
-      <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" :style="prop.componentStyle" ref="Ref"
+      <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" :style="componentStyle" ref="Ref"
         :value="checkValue" :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex"
         @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
 
@@ -37,7 +41,7 @@
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-      <input v-else class="text" ref="Ref" :style="prop.componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
+      <input v-else class="text" ref="Ref" :style="componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
         :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
@@ -77,7 +81,7 @@ import {
 
 } from "vue" */
 //import { receiveMessageOnPort } from "worker_threads";
-const emit = defineEmits(["update", "update:Value", "update:currentValue", "update:Valid", "update:Status", "update:Key", "update:Focus", 'customChange']) //, "update:ShowError", "update:Ref","update:Recno",
+const emit = defineEmits(["update", "update:Value", "update:currentValue[0]","update:currentValue[1]", "update:Valid", "update:Status", "update:Key", "update:Focus", 'customChange']) //, "update:ShowError", "update:Ref","update:Recno",
 
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -139,7 +143,7 @@ const props = defineProps<{
       height: "30px";
       fontFamily: "Arial";
       fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
+      textAlign: string;
     };
 
 
@@ -172,6 +176,8 @@ const Value = ref(props.prop.Value)
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
+const RefInput = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
+
 const Status = ref(props.prop.Status);
 const ToolTipText = ref(true)
 Status.value = 'I'
@@ -188,10 +194,11 @@ const checkValue = ref(false)
 
 const Style = reactive(props.style)
 const componentStyle = reactive(props.prop.componentStyle)
+const focusIn = ref(0)
+const currentValue = ref([]) // Valor para capturar
+const outFocus = ref(true)
 
-let sw_read = false
-//const currenvalue= ref('')
-
+currentValue.value[0] = ''
 ////////////////////////////////
 // Formateador de numeros 
 /////////////////////////////
@@ -221,7 +228,7 @@ const toNumberStr = (n) => {
 
 const typeNumber = ref('text');
 
-const toNumberStr = async (n:number) => {
+const toNumberStr = async (n: number) => {
   let Style = props.prop.Style
   let Currency = props.prop.Currency
   let MinimumFractionDigits = props.prop.Decimals
@@ -233,13 +240,19 @@ const toNumberStr = async (n:number) => {
   return new Intl.NumberFormat('en-US', {
     // style: Style,
     // currency: Currency,
-    minimumFractionDigits: MinimumFractionDigits,
-    maximumFractionDigits: MinimumFractionDigits,
+    notation: 'standard'
+    // Para redondeo
+    //maximumFractionDigits: 2,
+    //  roundingIncrement: 5,
+
+
   }).format(n);
 };
 
-const currentValue = ref(); //Value.value
 
+
+
+/*
 async function toNumberString(num) {
   if (Number.isInteger(num)) {
     return num + ".0"
@@ -248,7 +261,7 @@ async function toNumberString(num) {
   }
 }
 
-
+*/
 
 // Formateo de valores
 const onInput = ({ target }) => {
@@ -282,26 +295,16 @@ const onInput = ({ target }) => {
   if (punto !== -1 && target.value.indexOf('.', punto + 1) !== -1) {
     target.value = target.value.substr(0, len - 1) // quitamos el segundo punto
   }
-  currentValue.value = parseFloat(target.value)
+  currentValue.value[1] = parseFloat(target.value)
   //Value.value = parseFloat(target.value)
   //   console.log('onInput number',target.value)
   oldVal = target.value
 }
-/*
-  const onFocusN = () => {
-      currentValue.value = Value.value;
-      type.value = 'number';
-      onFocus()
-    };
 
-  */
+
 const onBlur = async () => {
-  //     currentValue.value = toNumberStr(Value.value)
-  //  currentValue.value = toNumberString(props.prop.Value) //toNumberStr
-  Value.value = +currentValue.value
-  currentValue.value = await toNumberStr(currentValue.value) //toNumberStr
+  Value.value = +currentValue.value[1]
   typeNumber.value = 'text';
-
   focusOut()
 };
 
@@ -328,8 +331,10 @@ inherit	Inherits this property from its parent element. Read about inherit
 /////////////////////////////////////////////////////////////////
 const emitValue = async () => {
   This.prop.Status = 'A'
+  outFocus.value = true
   Status.value = 'A'
 
+  let Valor = ''
 
   if (props.prop.Type == 'checkBox') {
 
@@ -345,23 +350,23 @@ const emitValue = async () => {
   }
 
   if (props.prop.Type == 'number') {
-    const Valor=await toNumberStr(Value.value)
-      if (Valor!=currentValue.value)
-          currentValue.value =  Valor
+     if (Valor != currentValue.value[1]) {
+      Valor=Value.value
+      currentValue.value[1] = Value.value.toString()
+      currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+    }
+
   }
 
-  if (props.prop.Type == 'date'){
-    const Valor=await await stringToDate(Value.value)
-      if (Valor!=currentValue.value)
-          currentValue.value =  Valor
+  if (props.prop.Type == 'date') {
+    Valor = await await stringToDate(Value.value)
+    if (Valor != currentValue.value[1])
+      currentValue.value[1] = Valor
   }
 
-
-
-  //console.log('EditBox antes emit Value  ====>', props.Name, props.Registro, props.Recno)
-  // Recno.value = props.Registro
   //nextTick(function () {
-  emit("update:currentValue", currentValue.value); // actualiza el valor Value en el componente padre
+  //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
+  emit("update:currentValue[0]", currentValue.value[0]); // actualiza el valor Value en el componente padre
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update:Valid", Valid.value)
@@ -429,31 +434,27 @@ const change = async () => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
+  focusIn.value = 0  // Perdio el foco
   Status.value = 'P'  //Aqui me quede
   emit("update:Status", 'P')
-  console.log('editBox focusout', This.prop.ControlSource, 'Registro=', props.Registro, 'valor=', Value.value)
+ // console.log('editBox focusout', This.prop.ControlSource, 'Registro=', props.Registro, 'valor=', Value.value)
 
   if (props.prop.Type == 'checkBox') {
     Value.value = checkValue.value ? 1 : 0
-    //console.log('checkBox focusOut =',checkValue.value,Value.value)
   }
 
-  //  if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
   if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
 
     // actualiza valor en localDb
 
-    let valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +currentValue.value : Value.value
+    let valor = props.prop.Type == 'number' || props.prop.Type == 'checkBox' ? +currentValue.value[1] : Value.value
 
     if (props.prop.Type == 'date')
-      valor = await dateToString(currentValue.value)
+      valor = await dateToString(currentValue.value[1])
 
     console.log('editBox updateCampo', This.prop.ControlSource, 'valor=', valor)
 
     Value.value = valor
-    //This.prop.Value = valor
-    // Actualiza el alaSQL el dato
-
 
     // Se quita porque se activa en el watch de This.props.Value se graba el dato
     await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Registro)
@@ -509,8 +510,13 @@ const keyPress = ($event) => {
     Key.value = $event.charCode
   }
 }
+/*
+const focusInput = async () => {
+  outFocus.value = false
+  RefInput.value.select() //focus() // Hace foco con select
 
-
+}
+*/
 /////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -518,9 +524,12 @@ const keyPress = ($event) => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
   //console.log('editText onFocus ', props.Name, props.prop.ReadOnly)
+  focusIn.value = 1
+  emit("update:currentValue[1]", currentValue.value[1]); // actualiza el valor Value en el componente padre
   ToolTipText.value = false
   ShowError.value = false
-  // emit("update:ShowError", false)
+
+  
   return
   /* if (!props.prop.Valid) {    // = false; // old revisar si se necesita
  
@@ -559,60 +568,35 @@ const readCampo = async (recno: number) => {
 
     return
   }
-
-
-  // console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value)
-
+  // console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
 
   //  const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value)
   const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
   This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
   for (const campo in data) {
     if (campo != 'key_pri') {
-      This.prop.Valid = false // ya se capturo algo , se apaga Valid
+      //      This.prop.Valid = false // ya se capturo algo , se apaga Valid
       Value.value = data[campo]
 
     }
   }
+  /*
   if (props.prop.Type == 'number') {
-    currentValue.value = await toNumberStr(Value.value)
+    currentValue.value[1] = await toNumberStr(Value.value)
+    
   }
 
   if (props.prop.Type == 'date') {
-    currentValue.value = await stringToDate(Value.value)
-    /*
-     if (Value.value ==undefined || Value.value == null || Value.value == '')
-       currentValue.value = new Date('1900-01-01 00:00:00')
-     else
-       if (Value.value.trim().length == 10) 
-         currentValue.value = new Date(Value.value + ' 00:00:00')
-       else
-         currentValue.value = new Date(Value.value)
-    */
+    currentValue.value[1] = await stringToDate(Value.value)
+   
   }
 
-  /*
-    if (props.prop.Type == 'number') {
-      currentValue.value = toNumberStr(Value.value)
-      // console.log('editText readCampo currentValue', currentValue.value)
-    }
-  
-    if (props.prop.Type == 'date') {
-      currentValue.value = await stringToDate(props.prop.Value)
-      currentValue.value = new Date(Value.value.slice(0,19))
-    }
-  
-  
-    if (props.prop.Type == 'checkBox') {
-      checkValue.value = Value.value == 1 ? true : false
-      //console.log('checkBox ReadValue =',props.Name,checkValue.value,Value.value)
-    }
+  // console.log('editText readCampo True', props.prop.ControlSource, 'Registro=', props.Registro, 'Value=', Value.value, currentValue.value[1])
   */
-  // console.log('editText readCampo True', props.prop.ControlSource, 'Registro=', props.Registro, 'Value=', Value.value, currentValue.value)
   emitValue()
   return true
 }
-
+/*
 const changeValue = async (type: boolean) => {
 
   if (props.prop.Type == 'checkBox') {
@@ -632,7 +616,7 @@ const changeValue = async (type: boolean) => {
 
 
 }
-
+*/
 ////////////////////////////////////////
 // Watchers : Triggers de templates
 // Descripcion : Cuando cambia el Value de la propiedad del ControlSource, asigna el Value de
@@ -650,11 +634,12 @@ const changeValue = async (type: boolean) => {
 watch(
   () => This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
+    if (This.prop.Valid) return
     // se cambia en alasql
     //    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
     if (new_val != Value.value)
       Value.value = new_val
-    console.log('EditText Watch Name=', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value)
+    console.log('EditText Watch Name=', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value[1])
 
 
 
@@ -680,7 +665,6 @@ watch(
       emit("update:Status", 'P')
     } else emitValue()
 
-
   },
   { deep: false }
 )
@@ -699,7 +683,7 @@ watch(
 // Si se cambia de afuera
 /*
 watch(
-  () => currentValue.value, //props.prop.Value, //Value.value,
+  () => currentValue.value[1], //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
 
     if (props.prop.Type == 'number') {
@@ -745,7 +729,7 @@ watch(
 
       }
       if (props.prop.Type == 'number') {
-        currentValue.value = toNumberStr(Value.value)
+        currentValue.value[1] = toNumberStr(Value.value)
         emitValue()
       }
 
@@ -870,21 +854,24 @@ watch(
 const init = async () => {
 
   if (props.prop.Type == 'date') {
-      componentStyle.width = '100px'
-      componentStyle.height = '20px'
-      componentStyle.maxHeight = '20px'
-    }
+    componentStyle.width = '100px'
+    componentStyle.height = '20px'
+    componentStyle.maxHeight = '20px'
+  }
+
+  if (props.prop.Type == 'number')
+    componentStyle.textAlign = 'right'
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
-    Status.value = 'P';  // en lectura
-    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+    //    Status.value = 'P';  // en lectura
+    //    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
     //    Vue.nextTick(() => {
     //       console.log(this.show, this.$refs.content);
     //     });
 
     await readCampo(props.Registro)
-    This.Form.Recno=props.Registro
+    This.Form.Recno = props.Registro
   }
   else {
 
@@ -894,13 +881,16 @@ const init = async () => {
     if (props.prop.Type == 'number') {
       Value.value = (props.prop.Value == null || props.prop.Value == undefined) ? 0 : +props.prop.Value
     }
-    await emitValue()
   }
+  await emitValue()
+
 
   oldVal = Value.value   // asignamos el valor viejo
-  
+
   // si es el primer elemento a posicionarse
   if (props.prop.First) {
+    console.log('First init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
+
     First.value = false
     // emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     //emit("update") // emite un update en el componente padre
@@ -913,7 +903,7 @@ const init = async () => {
   //  if (props.Registro == 0)
   //    await emitValue()
 
-  console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'ControlSource=', props.prop.ControlSource, 'Registro=', props.Registro, ' ')
+  console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
 }
 
 init() // Ejecuta el init

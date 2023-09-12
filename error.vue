@@ -14,10 +14,12 @@
                 <p>Sorry about that.</p>
             </template>
             <p>
-                Go back to
-                <a @click="handleError">
-                    main page.
-                </a>
+                <strong>
+                    Go back to
+                    <a @click="handleError">
+                        main page.
+                    </a>
+                </strong>
             </p>
         </div>
     </NuxtLayout>
