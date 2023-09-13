@@ -98,6 +98,18 @@ export class reportForm extends FORM {
 
     this.Form.queryPri.activa.prop.Value = 1
     await this.Form.queryPri.nco_que.interactiveChange()
+    console.log(
+      "Fin reportForm",
+      this.Form.queryPri.Name,
+      "Var_ord=",
+      this.Form.var_ord.prop.Value,
+      "Query=",
+      this.Form.queryPri.query.prop.Value,
+    );
+
+
+
+
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -106,7 +118,6 @@ export class reportForm extends FORM {
     const tabla = this[nom_que].Grid
     tabla.prop.RecordSource = RecordSource
     for (let i = 0; i < tabla.elements.length; i++) {
-
       const column = tabla.elements[i].Name
       tabla[column].prop.RecordSource = RecordSource
       tabla[column].prop.ControlSource = RecordSource + '.' + column

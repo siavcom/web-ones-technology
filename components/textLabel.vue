@@ -216,7 +216,6 @@ const asignaResultado = (valor?: string) => {
         // console.log("Busca Value =======>", i, new_val);
 
         // Encontro la posicion del value
-        // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
         //Resultado.value = columnas[i].text[0];
         Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
@@ -226,17 +225,12 @@ const asignaResultado = (valor?: string) => {
     }
   }
   else {  //aqui me quede checar cuando es por arreglo genera el value con array
-    // console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.Name,Value.value,columnas)
 
 
     for (let i = 0; i < columnas.length; i++) {
       try {
         //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
         if (Value.value == columnas[i]['value'][0] || Value.value == columnas[i]['value']) {  // { // El objeto columna tiene dos campos value y text
-          // if (Value.value == columnas[i]['value']) { // El objeto columna tiene dos campos value y text
-
-          // console.log("Busca Value =======>", i, new_val);
-
           // Encontro la posicion del value
           // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
@@ -684,7 +678,7 @@ const readCampo = async () => {
 */
 
 const readCampo = async () => {
-  console.log('textLabel readCampo',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
+  //console.log('textLabel readCampo',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
 
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
     const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno)
@@ -693,7 +687,6 @@ const readCampo = async () => {
         Text.value = data[campo] != null ? data[campo] : ''
     }
   }
-  console.log('textLabel readCampo',This.Name,Text.value)
   if (props.prop.Type == 'number') {
     //Text.value = toNumberStr(Text.value);
     Text.value =await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
@@ -705,7 +698,7 @@ const readCampo = async () => {
   }
   renderComboBox()
 }
-
+/*
 watch(
   () => props.prop.Visible,
   (new_val, old_val) => {
@@ -713,7 +706,7 @@ watch(
   },
   { deep: false }
 )
-
+*/
 watch(
   () => props.Show,
   (new_val, old_val) => {
@@ -758,7 +751,7 @@ const init = async () => {
   if (props.prop.Type == 'number')
     componentStyle.textAlign = 'right'
 
-  console.log('componentStyle init ',This.Name,'Recno=',props.Recno)
+ // console.log('componentStyle init ',This.Name,'Recno=',props.Recno)
   readCampo()
   //readCampo()
 

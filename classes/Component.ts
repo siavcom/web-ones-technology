@@ -96,6 +96,8 @@ export class COMPONENT {
       textAlign: "left",
       textTransform: "none",
       zIndex: 1,  // profundidad
+      cols: 100,
+      rows: 5
     },
     
   }

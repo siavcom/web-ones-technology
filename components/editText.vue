@@ -24,9 +24,13 @@
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur"
         @focus="onFocus" @input="onInput">
       <!--textArea" -->
-      <textarea v-else-if="prop.Type == 'textArea'" class="text" :style="componentStyle" ref="Ref"
-        v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
-        :tabindex="prop.TabIndex" :type="prop.Type" :cols='style.cols' :maxlength="prop.MaxLength"
+      <textarea v-else-if="prop.Type == 'textArea'" class="textArea" :style="componentStyle" ref="Ref"
+        v-model="This.prop.Value" 
+        :readonly="prop.ReadOnly" 
+        :disabled="prop.Disabled" 
+        :placeholder="prop.Placeholder"
+        :tabindex="prop.TabIndex" type="textArea"
+        :rows="componentStyle.rows" :cols='componentStyle.cols'
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
       <!--fecha  -->
       <input v-else-if="prop.Type == 'date'" class="date" :style="componentStyle" ref="Ref" type="date"
@@ -144,6 +148,8 @@ const props = defineProps<{
       fontFamily: "Arial";
       fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: string;
+      cols:"100";
+      rows:"5";
     };
 
 
@@ -160,7 +166,8 @@ const props = defineProps<{
     fontFamily: "Arial";
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
-    cols: "100"
+ 
+
   };
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
@@ -637,11 +644,10 @@ watch(
     if (This.prop.Valid) return
     // se cambia en alasql
     //    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-    if (new_val != Value.value)
+      console.log('EditText Watch Name=', This.prop.Name,'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value[1])
+
+      if (new_val != Value.value)
       Value.value = new_val
-    console.log('EditText Watch Name=', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value[1])
-
-
 
     if (!This.prop.Valid && props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       // actualiza valor en localDb
@@ -858,7 +864,6 @@ const init = async () => {
     componentStyle.height = '20px'
     componentStyle.maxHeight = '20px'
   }
-
   if (props.prop.Type == 'number')
     componentStyle.textAlign = 'right'
 

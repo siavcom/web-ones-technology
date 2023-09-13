@@ -25,11 +25,9 @@ export class query extends COMPONENT {
     this.prop.BaseClass = 'editText'
     this.prop.Capture = false
     this.prop.ReadOnly= true
-    this.prop.Visible=true
+    this.prop.Visible=false
+    this.prop.Placeholder='SQL QUERY'
+    this.prop.componentStyle.cols=80
 
-    this.prop.componentStyle.width='100%'
-    this.prop.componentStyle.height='90%'
-   }
-
-  
+  }  
 }

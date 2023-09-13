@@ -5,7 +5,7 @@
   <div class="divi" :style="divStyle">
     <!--Etiqueta del componente -->
     <div class="mensajes" v-show="This.prop.Visible">
-      <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
+      <span class="etiqueta" v-if="prop.textLabel.length > 0">{{ prop.textLabel + " " }}</span>
       <!--List Box -->
       <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
         <select v-model="List" multiple>
@@ -25,9 +25,7 @@
       <!--ComboBox 
         <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="Text"
           @focusout="focusOut" />{{ Text }}
-      
       -->
-
       <div v-else class="comboBox" :style='prop.componentStyle'>
 
         <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
@@ -43,7 +41,7 @@
               <!--Imprime Columnas -->
 
               <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
-                :style="{ 'width': width[col], 'text-align': 'left' ,'z-index': toggleZIndex}">
+                :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
                 <label class="label" v-text="text" />
               </div>
             </div>
@@ -160,7 +158,7 @@ const props = withDefaults(defineProps<Props>(), {
     left: 0,
     Top: 0,
   },
- 
+
 })
 
 
@@ -203,28 +201,38 @@ const toggleZIndex = zIndex.value + 2
 //zIndex.value = zIndex.value + 1
 const inputWidth = ref('auto')
 const List = ref(props.prop.List)
-const columnContainer=reactive({   
-  width : 'auto',
+const columnContainer = reactive({
+  width: 'auto',
   height: 'auto',
-  maxHeight:'200px'
-  })
-const divStyle=reactive(props.style)
-divStyle.zIndex=props.style.zIndex+1
+  maxHeight: '200px'
+})
+const divStyle = reactive(props.style)
+divStyle.zIndex = props.style.zIndex + 1
 
-const TextLabel = reactive(props.prop.componentStyle)
+//const TextLabel = reactive(props.prop.componentStyle)
 
-//TextLabel.width = props.style.width
-TextLabel.height = 'fit-content'
+const TextLabel=ref({})
+if (props.prop.textLabel.length > 0) {
+   TextLabel.value = props.prop.componentStyle
+} else {
+   TextLabel.value = props.style
 
-let medida = ''
 
-if (TextLabel.width.search("px") > 0)
-  medida = 'px'
-if (TextLabel.width.search("%") > 0)
-  medida = '%'
+  //TextLabel.width = props.style.width
+  TextLabel.value.height = 'fit-content'
 
-let textWidth = +TextLabel.width.replaceAll(medida, '') - 30
-TextLabel.width = textWidth.toString() + medida
+  let medida = ''
+
+  if (TextLabel.value.width.search("px") > 0)
+    medida = 'px'
+  if (TextLabel.value.width.search("%") > 0)
+    medida = '%'
+
+  let textWidth = +TextLabel.value.width.replaceAll(medida, '') - 30
+  TextLabel.value.width = textWidth.toString() + medida
+}
+//TextLabel.width = 'fit-content'
+
 /*
 const LabelStyle = reactive(props.style)
 
@@ -701,7 +709,7 @@ const renderComboBox = async () => {
 
     if (!(typeof Value.value == 'number')) {
       const value = columnas[i].value
-      if (value.length>0 && Value.value.length>0 && Value.value.trim() == value.trim()) {
+      if (value.length > 0 && Value.value.length > 0 && Value.value.trim() == value.trim()) {
         sw_val = true
         break
       }
@@ -722,8 +730,8 @@ const renderComboBox = async () => {
     emit("update:Value", Value.value)
     Valid.value = true
 
-  } else 
-    This.prop.Valid=true // Se toma como validado
+  } else
+    This.prop.Valid = true // Se toma como validado
   /* }
    
    catch (error) {
@@ -1067,10 +1075,10 @@ const init = async () => {
     await readCampo(props.Registro)
     //Value.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
     //   if (!props.prop.Autofocus) {
-    This.Form.Recno=props.Registro
+    This.Form.Recno = props.Registro
 
     Status.value = 'A'  // Activo
- 
+
 
     emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
