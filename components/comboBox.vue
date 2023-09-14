@@ -282,8 +282,6 @@ const focusOut = async () => {
   if (props.prop.ControlSource && props.prop.ControlSource.length > 3) {
     console.log('comboBox updateCampo', valor, props.prop.ControlSource, Recno.value)
     //    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
-    await This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
-
   }
   ToolTipText.value = true  // Activamos el ToolTipText
   toggle.value = false
@@ -451,7 +449,7 @@ const OnMounted = onMounted(() => {
 // Asigna Resultado
 /////////////////////////////////////////////////////
 const asignaResultado = (valor?: string) => {
-  // console.log('ComboBox asignaResultado ',This.Name,props.prop.Value,VisualViewport    )
+   console.log('1 ComboBox asignaResultado ',This.Name,props.prop.Value,VisualViewport    )
 
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
@@ -475,7 +473,12 @@ const asignaResultado = (valor?: string) => {
       valor = columnas[0]['text'][0]  // asigna el primer Text valor
   }
 
+  //Actualizamos valor en localAlaSql
+  if (props.prop.ControlSource.length>0 && Recno.value>0 ){
+     This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
+     console.log("2 ComboBox asignaResultado Graba localAlaSql ")
 
+  }
 
   //console.log('ComboBox asignaResultado columnas ',This.Name,columnas[0],valor)
   for (let i = 0; i < columnas.length; i++) {
@@ -483,13 +486,17 @@ const asignaResultado = (valor?: string) => {
     if ((typeof columnas[i].value == 'number' && valor == columnas[i].value) ||
       (!(typeof columnas[i].value == 'number') && valor == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
       Text.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
-      console.log("ComboBox asignaResultado Encontro el Value =======>", Text.value, Value.value);
+      console.log("3 ComboBox asignaResultado Encontro el Value =======>", Text.value,
+         'Value.value=',Value.value,
+         'valor=',valor)
+         
       if (Value.value != valor)
         Value.value = valor
     }
 
-
   }
+
+ 
   // emit("update:Resultado", Text.value)
   /* }
   
@@ -536,7 +543,7 @@ const renderComboBox = async () => {
   // Obtenemos el alias
   const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
 
-  ColumnWidth(props.prop.ColumnWidths) // asigna tamaÃ±o de columnas
+  ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
   //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
 
@@ -721,7 +728,7 @@ const renderComboBox = async () => {
 
   // asignaResultado(Value.value)
   console.log('render combobox asigna resultado===>>', This.Name)
-  asignaResultado()
+  await asignaResultado()
 
 
   if (props.prop.MultiSelect) { // Si es multi selectccion generaramos el arreglo

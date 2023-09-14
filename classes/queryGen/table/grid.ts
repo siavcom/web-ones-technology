@@ -59,13 +59,16 @@ export class Grid extends GRID {
     m.par_prg= this.Form.Params.par_prg ? this.Form.Params.par_prg:'' 
     m.usu_que= this.Parent.usu_que
     m.ren_que= 1
+    m.con_que='='
+    m.cam_dat=this.Form.var_ord.prop.Value
+
+
     const db = this.Form.db
     const data=await db.localAlaSql(`select max(ren_que)+1 as max_ren from ${this.prop.RecordSource} `)
         
     if( data[0] && data[0].max_ren && data[0].max_ren!=null)
        m.ren_que=data[0].max_ren
   
-    //console.log('appendRow table m ===>',m,)
     await super.appendRow(m) 
     console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 

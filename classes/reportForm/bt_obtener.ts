@@ -61,7 +61,6 @@ export class bt_obtener extends COMPONENT {
 
  //   const ins_sql = await this.Form.gen_query()
 
-
     this.Form.report.prop.Visible = true
     this.Form.report.prop.Disabled = false
     this.Parent.report.browse.table.isLoading=true

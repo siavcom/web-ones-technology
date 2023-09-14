@@ -27,10 +27,10 @@ export class nom_tab extends COMPONENT {
     this.prop.ErrorMessage = ''
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = "select des_tab,nom_tab from vi_cap_tab order by nom_tab"
-    this.prop.ColumnCount = 2;
+    this.prop.RowSource = "select des_tab,nom_tab,sis_sis from vi_cap_tab order by sis_sis,nom_tab"
+    this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths ="70%,25%";
+    this.prop.ColumnWidths ="60%,30%,10%";
     this.prop.Visible = false;
     this.prop.MultiSelect= false;
     this.prop.List= [],
@@ -54,10 +54,6 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_model.prop.Visible = false
     this.Form.bt_gen_indices.prop.Visible = false
     this.Form.bt_gen_vistas.prop.Visible = false
-
-
-
-    
    return
   }
 

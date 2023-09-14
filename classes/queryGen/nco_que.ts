@@ -23,7 +23,7 @@ export class nco_que extends COMPONENT {
     this.prop.textLabel = "Número";
     this.prop.Value = 1;
     this.prop.Position = "main";
-    this.prop.Min = "0";
+    this.prop.Min = "1";
     this.prop.Max = "999";
     this.prop.Decimals = 0;
     this.prop.Capture = true;
@@ -62,7 +62,7 @@ export class nco_que extends COMPONENT {
     if (this.prop.sw_add) return;
 
     console.log(
-      "2 InteractiveChange Value",
+      "1 InteractiveChange Value=",
       this.prop.Value,
       this.Parent.Name,
       await this.Form.db.localAlaSql("select * From vi_cap_query_db")
@@ -81,10 +81,14 @@ export class nco_que extends COMPONENT {
     const data = await this.Form.db.localAlaSql(ins_sql);
 
     if (data.length == 0) {
-      console.log("No hay datos interactiveChange ", ins_sql, "Data=", data);
-
-      if (this.prop.Value == 1) return;
+      console.log("2 No hay datos interactiveChange ", ins_sql, "Data=", data);
+//      this.Parent.query.prop.Value = '' // limpiamos el query
+      if (this.prop.Value == 1) {
+        this.Parent.query.prop.Value = '' // limpiamos el query
+        return
+      } 
       if (this.prop.Value > 1) {
+        this.prop.Valid=false
         this.prop.Value = this.prop.Value - 1;
         return;
         //this.interactiveChange()
@@ -179,12 +183,12 @@ export class nco_que extends COMPONENT {
     } // EndFor (
 
     if (sig_uni.length > 0) {
-      query = await left(query, query.length - sig_uni.length);
+      query = await left(query, query.length - sig_uni.length)
     } // Endif (
 
-    this.Parent.query.prop.Value = query.trim();
-    this.Parent.query.prop.Visible = true;
-    this.Parent.bt_edit.prop.Visible = true;
+    this.Parent.query.prop.Value = query.trim()
+    this.Parent.query.prop.Visible = true
+    this.Parent.bt_edit.prop.Visible = true
 
     if (this.Parent.Name == "queryPri") {
       // solamente query Principal

@@ -20,11 +20,13 @@
 
       <!--spinner-->
       <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="Value" :readonly="prop.ReadOnly"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="prop.ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur"
-        @focus="onFocus" @input="onInput">
+        @focus="onFocus" @input="This.prop.Valid=false">
+
       <!--textArea" -->
-      <textarea v-else-if="prop.Type == 'textArea'" class="textArea" :style="componentStyle" ref="Ref"
+      <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
+        <textarea  class="textArea" :style="componentStyle" ref="Ref"
         v-model="This.prop.Value" 
         :readonly="prop.ReadOnly" 
         :disabled="prop.Disabled" 
@@ -32,7 +34,9 @@
         :tabindex="prop.TabIndex" type="textArea"
         :rows="componentStyle.rows" :cols='componentStyle.cols'
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
-      <!--fecha  -->
+      </div>
+
+        <!--fecha  -->
       <input v-else-if="prop.Type == 'date'" class="date" :style="componentStyle" ref="Ref" type="date"
         v-model="currentValue" :disabled="prop.Disabled" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
@@ -351,10 +355,6 @@ const emitValue = async () => {
 
   }
 
-  if (props.prop.Type == 'spinner') {
-    await This.interactiveChange()
-
-  }
 
   if (props.prop.Type == 'number') {
      if (Valor != currentValue.value[1]) {
@@ -639,12 +639,24 @@ const changeValue = async (type: boolean) => {
 
 // Si se cambia de afuera
 watch(
-  () => This.prop.Value, //props.prop.Value, //Value.value,
+  () =>This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
+    console.log('EditText Watch Name=', This.prop.Name,
+       'prop.Valid =',This.prop.Valid,
+       'Status=', This.prop.Status, 
+       'Value=', This.prop.Value, 
+       'CurrentValue=', currentValue.value[1])
+
     if (This.prop.Valid) return
+
+    if (props.prop.Type == 'spinner') {
+        This.interactiveChange()
+        return
+    }
+
+
     // se cambia en alasql
     //    if (props.Recno > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-      console.log('EditText Watch Name=', This.prop.Name,'Status=', This.prop.Status, 'Value=', This.prop.Value, 'CurrentValue=', currentValue.value[1])
 
       if (new_val != Value.value)
       Value.value = new_val
@@ -672,7 +684,7 @@ watch(
     } else emitValue()
 
   },
-  { deep: false }
+  { deep: true }
 )
 /* 
    if (This.prop.Valid) // tiene un dato valido

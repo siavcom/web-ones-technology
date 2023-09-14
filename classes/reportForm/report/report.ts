@@ -33,10 +33,9 @@ export class report extends COMPONENT {
   public bt_excel = new bt_excel()
   public bt_json = new bt_json()
   
-  
  
-  eventos = [] // eventos a ejecutar en el stack
-  estatus = []  // estatus de los componentes hijos
+ // eventos = [] // eventos a ejecutar en el stack
+ // estatus = []  // estatus de los componentes hijos
   
   
   constructor() {
