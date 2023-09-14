@@ -10,12 +10,15 @@ import { queryPri } from "@/classes/queryGen/queryPri";
 import { queryUsu } from "@/classes/queryGen/queryUsu";
 import { queryGen } from "@/classes/queryGen/queryGen";
 import { bt_obtener } from "./bt_obtener";
+
+import { tip_rep } from "./tip_rep";
 import { var_ord } from "./var_ord";
 import { for_imp } from "./for_imp";
 import { report } from "./report/report";
 import { bt_pdf } from "./bt_pdf";
 
 export class reportForm extends FORM {
+  public tip_rep= new tip_rep()
   public var_ord = new var_ord(); // variable de orden principal de la vista
   public queryPri = new queryPri();
   public queryUsu = new queryUsu();
@@ -31,6 +34,9 @@ export class reportForm extends FORM {
   query: string = ""; // query para ejecutar el reporte
   sqlQuery: string = ""; // Query a ejecutar antes de la vista del reporte
   pdfheight = "1200px"; // PDF height
+  data={};
+  vis_ori:string=''  // vista sql original
+  for_ori:string=''  // forma JASPER original
   //  constructor() {
   //    super()
   //  }
@@ -194,13 +200,24 @@ export class reportForm extends FORM {
     var where: string = "";
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
     var query_gen: string = "select * from " + this.vis_rep;
+   
+    const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
+    if (this.Form.sqlQuery.length > 0)
+      try {
+        const val_eval = "`" + this.Parent.sqlQuery + "`";
+        query_gen = eval(val_eval) + ";";
+      } catch (error) {
+        MessageBox("eval(" + this.Parent.sqlQuery + ") " + error, 16);
+        return;
+      }
+
 
     if (this.ord_vis.length > 1) {
       // variables extras para el orden del select
       orden = orden + "," + this.ord_vis;
     }
 
-    if (this.query.length > 1) query_gen = this.query;
+//    if (this.query.length > 1) query_gen = this.query;
 
     where = await this.gen_where("queryPri");
 
@@ -226,6 +243,12 @@ export class reportForm extends FORM {
     //   init = async ()=> {
   }
 
+////////////////////////////////////////
+// metodo :obtData
+// pone en la propiedad this.Form.data todos los valores de las propiedades
+// de esta Forma
+//////////////////////////////////////
+
   async obtData(data?: {}) {
     if (!data) data = {};
 
@@ -237,16 +260,16 @@ export class reportForm extends FORM {
       )
         data[this.main[i]] = this[this.main[i]].prop.Value;
     }
+
+
     // Obtenemos variables Publicas
-
     const Var = this.Form.Var;
-    //await this.Form.db.execute(ins_sql, 'MEMVAR')
-
     for (let component in Var) {
       data[component] = Var[component];
-      console.log("bt_json component.value= ", data[component]);
+      //console.log("bt_json component.value= ", data[component]);
     }
-    console.log("bt_json obtData= ", data);
+    //console.log("bt_json obtData= ", data);
+    this.Form.data=data
     return data;
   }
 }

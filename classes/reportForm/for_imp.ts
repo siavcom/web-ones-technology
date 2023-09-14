@@ -20,6 +20,7 @@ export class for_imp extends COMPONENT {
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
         this.prop.MaxLength=64
+        this.prop.TabIndex=15
     }
 
  

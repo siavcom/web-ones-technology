@@ -19,6 +19,7 @@ export class queryUsu extends queryGen {
    this.usu_que = ''
    this.prop.Disabled = false
    this.query.prop.Visible=false
+   this.prop.TabIndex=13
    }
 
 }

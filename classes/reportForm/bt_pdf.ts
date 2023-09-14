@@ -52,9 +52,9 @@ export class bt_pdf extends COMPONENT {
     const query=await this.Form.gen_query()
    // console.log('bt_pdf',query,this.Form.for_imp.prop.Value)
 
-    const dataView=await this.Form.obtData()  
+   // const dataView=await this.Form.obtData()  
 
-    const buffer=await this.Form.db.jasperReport(query,this.Form.for_imp.prop.Value,dataView)
+    const buffer=await this.Form.db.jasperReport(query,this.Form.for_imp.prop.Value,this.Form.data)
    
     if (buffer==null){
       this.Form.report.bt_close.click()

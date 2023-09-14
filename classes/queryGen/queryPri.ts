@@ -20,6 +20,7 @@ export class queryPri extends queryGen {
     this.prop.textLabel='Condiciones principales'
     this.prop.Disabled = false
     this.query.prop.Visible=true
+    this.prop.TabIndex=12
     }
 
   

@@ -42,10 +42,10 @@
         :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
       <!--checkBox-->
       <input v-else-if="prop.Type == 'checkBox'" class="checkBox" :type="prop.Type" :style="componentStyle" ref="Ref"
-        :value="checkValue" :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex"
+        :readonly="prop.ReadOnly" :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex"
         @change="change" :checked="checkValue" @focusout="focusOut" @focus="onFocus">
 
-      <!--Si es texto
+      <!--Si es texto 
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
@@ -348,11 +348,9 @@ const emitValue = async () => {
   let Valor = ''
 
   if (props.prop.Type == 'checkBox') {
-
-    checkValue.value = Value.value == 1 ? true : false
+    
+   //  checkValue.value = Value.value == 1 ? true : false
     await This.interactiveChange()
-
-
   }
 
 
@@ -426,13 +424,21 @@ const change = async () => {
   if (props.prop.ReadOnly) {
     return
   }
-  //  console.log('checkBox change 1',checkValue.value,Value.value)
+  
+  console.log('checkBox change 1',checkValue.value,This.prop.Value)
 
   checkValue.value = !checkValue.value
   if (checkValue.value)
-    Value.value = 1
+    This.prop.Value = 1
   else
-    Value.value = 0
+    This.prop.Value = 0
+
+ console.log('checkBox change 2',checkValue.value,This.prop.Value)
+
+
+
+    emitValue()
+
 
 }
 
@@ -445,11 +451,11 @@ const focusOut = async () => {
   Status.value = 'P'  //Aqui me quede
   emit("update:Status", 'P')
  // console.log('editBox focusout', This.prop.ControlSource, 'Registro=', props.Registro, 'valor=', Value.value)
-
+/*
   if (props.prop.Type == 'checkBox') {
     Value.value = checkValue.value ? 1 : 0
   }
-
+ */
   if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
 
     // actualiza valor en localDb

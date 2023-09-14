@@ -70,7 +70,7 @@ export class Grid extends GRID {
        m.ren_que=data[0].max_ren
   
     await super.appendRow(m) 
-    console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+   // console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
     /*   
     if (!m) m = {}
