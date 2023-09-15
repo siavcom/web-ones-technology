@@ -26,18 +26,20 @@ export const dateToString = async (texto: Date) => {
   return texto.toString();
 };
 
-export const stringToDate = async (texto: string) => {
-  let date =
-    texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
+export const stringToDate = async (texto?: string) => {
+  if (!texto || texto==null || texto=='') texto = "1900-01-01";
+  let date =texto
+  //  texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
+
   if (date.length == 10) date = date + " 00:00:00";
-  date = date.slice(0, 19);
-  date = date.replace("T", " ");
   console.log(
     "stringToDate texto=",
-    texto,
+    date,
     "date=",
     new Date(date).toISOString().substring(0, 10)
   );
+  date = date.slice(0, 19);
+  date = date.replace("T", " ");
   return new Date(date).toISOString().substring(0, 10);
 };
 
@@ -84,13 +86,13 @@ export const numberFormat = async (
   if (val.toString().includes(".")) {
     num = num + "." + val.toString().split(".")[1];
   }
-  console.log('1 numberFormat number=',val,num)
+  console.log("1 numberFormat number=", val, num);
   // return result with - sign if negative
   const point = num.indexOf(".");
-  let result=''
+  let result = "";
   let intNumber = "";
   let decNumber = "";
-  let type=''
+  let type = "";
   if (point > 0) {
     intNumber = num.slice(0, point);
     if (integers > 0) intNumber = await right(intNumber, integers);
@@ -98,20 +100,17 @@ export const numberFormat = async (
     decNumber = num.slice(point, num.length);
     if (decimals > 0) decNumber = decNumber.slice(0, decimals + 1);
 
-    num = intNumber + decNumber
-  } else
-    result=num
-  
-  result = sign < 0 ? "-" + num : num
-  if (currency=='MNX' || currency=='EUR' || currency=='USD')
-    type='$'
+    num = intNumber + decNumber;
+  } else result = num;
 
-  result = type + result
-  console.log('2 numberFormat result=',result)
+  result = sign < 0 ? "-" + num : num;
+  if (currency == "MNX" || currency == "EUR" || currency == "USD") type = "$";
 
+  result = type + result;
+  console.log("2 numberFormat result=", result);
 
-  return result
-}
+  return result;
+};
 
 //////////////////////////////////////////////
 // Clase : MessageBox

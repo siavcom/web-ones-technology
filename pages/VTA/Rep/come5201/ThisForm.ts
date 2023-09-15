@@ -27,6 +27,8 @@ export class ThisForm extends reportForm {
     this.vis_rep = 'vi_come5201'   // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value ='jr_come5201'   // no incluir extencion jasper o jrxml
     this.sqlQuery='' //' select * from man_comeisu where cla_isu>="${m.desde}" '
+    this.tip_rep.prop.Visible=true    // Muestra general odetallado
+
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
   } 

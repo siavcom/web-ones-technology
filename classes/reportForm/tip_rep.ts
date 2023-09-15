@@ -18,6 +18,7 @@ export class tip_rep extends COMPONENT {
     this.prop.textLabel = "Reporte detallado";
     this.prop.Value = 0;
     this.prop.TabIndex = 10;
+    this.prop.Visible=false    // No muestra general o detallado
   }
 
   async init() {
