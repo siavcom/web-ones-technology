@@ -422,9 +422,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       if (data.key_pri) {
         for (const campo in data) {
           if (campo != 'key_pri') {
-            //      This.prop.Valid = false // ya se capturo algo , se apaga Valid
+            This.prop.Valid = true// ya se capturo algo , se apaga Valid
             Value.value = data[campo]
-            This.prop.Value = Value.value
+           // This.prop.Value = data[campo]
+            
+//            Value.value = data[campo]
+//            This.prop.Value = Value.value
+
+
             // console.log('editText emitValue() Name', props.prop.ControlSource, 'Value=', Value.value)
 
           }
