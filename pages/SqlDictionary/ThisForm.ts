@@ -55,9 +55,7 @@ export class ThisForm extends FORM {
   
     this.prop.tag = ""
     this.prop.textLabel = "Mantenimiento al diccionario de datos"
-    //this.prop.fpo_pge = new Date().toISOString().substring(0, 10) //  Fecha actual de la computadora cliente
     this.prop.Status = "A"
-
     this.style.display = "inline-flex"
     this.style.background = "white"
     this.style.color = "#b94295"

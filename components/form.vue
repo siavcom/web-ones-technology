@@ -565,7 +565,7 @@ const init = async () => {
     .finally(async () => {
 
       for (const componente in ThisForm) {
-        if (ThisForm[componente] !== undefined) {
+        if (ThisForm[componente] !== undefined && ThisForm[componente] !== null) {
 
           if (
             ThisForm[componente].prop &&       // Si tiene propiedades
@@ -645,7 +645,7 @@ const impComp = ((name: string, pos?: string) => {
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-      console.log('Importo edittext')
+     // console.log('Importo edittext')
       return editText
       break;
     }
@@ -664,14 +664,14 @@ const impComp = ((name: string, pos?: string) => {
     }
 
     case 'browse': {
-      console.log('Importo Browse')
+      //console.log('Importo Browse')
       return browseLite
       break;
     }
 
     case 'browselite': {
 
-      console.log('Importo BrowseLite')
+     // console.log('Importo BrowseLite')
       return browseLite
       break;
     }

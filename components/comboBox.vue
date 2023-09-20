@@ -29,7 +29,7 @@
       <div v-else class="comboBox" :style='prop.componentStyle'>
 
         <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
-          @focusout="focusOut" ref="Ref" />
+          ref="Ref" />
 
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
@@ -37,7 +37,7 @@
           <!--CheckBox -->
           <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
-              @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="prop.ReadOnly">
+              @mouseleave="hover = false" @click="validClick(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
               <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
@@ -211,11 +211,11 @@ divStyle.zIndex = props.style.zIndex + 1
 
 //const TextLabel = reactive(props.prop.componentStyle)
 
-const TextLabel=ref({})
+const TextLabel = ref({})
 if (props.prop.textLabel.length > 0) {
-   TextLabel.value = props.prop.componentStyle
+  TextLabel.value = props.prop.componentStyle
 } else {
-   TextLabel.value = props.style
+  TextLabel.value = props.style
 
 
   //TextLabel.width = props.style.width
@@ -265,35 +265,31 @@ const emitValue = async () => {
   // emit("update:Recno", props.Registro)
   emit("update") // emite un update en el componente padre
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
+  console.log('ComboBox emitValue', This.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status)
+
   return true;
 };
-
 
 /////////////////////////////////////////////////////////////////////
 // focusOut
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
-const focusOut = async () => {
+const focusOut_old = async () => {
 
   await asignaResultado()
 
   const valor = Value.value;
 
-  if (props.prop.ControlSource && props.prop.ControlSource.length > 3) {
-    console.log('comboBox updateCampo', valor, props.prop.ControlSource, Recno.value)
-    //    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Recno)
+  if (props.prop.ControlSource && props.prop.ControlSource.length > 3 && props.Registro > 0) {
+    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Registro)
   }
   ToolTipText.value = true  // Activamos el ToolTipText
   toggle.value = false
-  console.log('ComboBox  focusOut===>', Value.value, Text.value)
 
-  if (This.valid && await This.valid() == false)
-    ShowError.value = true
+  console.log('comboBox updateCampo', Value.value, props.prop.ControlSource, props.Registro)
 
-  Status.value = 'A'  //Aqui me quede
-  emit("update:Status", 'A')
+  await This.interactiveChange()
 
-  console.log('ComboBox Valid', This.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status)
 
 
 
@@ -306,23 +302,27 @@ const focusOut = async () => {
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
-const valid = async (num_ren: number) => {
+const validClick = async (num_ren: number) => {
   toggle.value = false
   // if (!toggle.value) return
   //console.log('ComboBox  dio Click===>', columnas[num_ren].value)
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
 
-  // emit("update:Value", columnas[num_ren].value); // actualiza el valor Value en el componente padre 
-  // emit("update") // emite un update en el componente padre
-  focusOut()
+  await asignaResultado()
 
+  const valor = Value.value;
 
-  // await emitValue()
-  //Ref.value.select()
+  if (props.prop.ControlSource && props.prop.ControlSource.length > 3 && props.Registro > 0) {
+    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Registro)
+  }
+  ToolTipText.value = true  // Activamos el ToolTipText
+  toggle.value = false
 
-  //  Ref.value.focus()
-  //  if(props.prop.Style==2) return
-  //  Ref.value.select()
+  console.log('comboBox updateCampo Value=', Value.value,'ControlSource=', props.prop.ControlSource,'Recno=', props.Registro)
+
+  await This.interactiveChange()
+  // focusOut()
+
   return
 };
 
@@ -448,8 +448,8 @@ const OnMounted = onMounted(() => {
 //////////////////////////////////////////////////////
 // Asigna Resultado
 /////////////////////////////////////////////////////
-const asignaResultado = (valor?: string) => {
-   console.log('1 ComboBox asignaResultado ',This.Name,props.prop.Value,VisualViewport    )
+const asignaResultado = async (valor?: string) => {
+  console.log('1 ComboBox asignaResultado ', This.Name, props.prop.Value, VisualViewport)
 
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
@@ -474,9 +474,9 @@ const asignaResultado = (valor?: string) => {
   }
 
   //Actualizamos valor en localAlaSql
-  if (props.prop.ControlSource.length>0 && Recno.value>0 ){
-     This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
-     console.log("2 ComboBox asignaResultado Graba localAlaSql ")
+  if (props.prop.ControlSource.length > 0 && Recno.value > 0) {
+    This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
+    console.log("2 ComboBox asignaResultado Graba localAlaSql ")
 
   }
 
@@ -487,16 +487,16 @@ const asignaResultado = (valor?: string) => {
       (!(typeof columnas[i].value == 'number') && valor == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
       Text.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
       console.log("3 ComboBox asignaResultado Encontro el Value =======>", Text.value,
-         'Value.value=',Value.value,
-         'valor=',valor)
-         
+        'Value.value=', Value.value,
+        'valor=', valor)
+
       if (Value.value != valor)
         Value.value = valor
     }
 
   }
 
- 
+
   // emit("update:Resultado", Text.value)
   /* }
   
@@ -656,16 +656,18 @@ const renderComboBox = async () => {
   }
   // renglon 0 ["Inventarios", "Cuentas por cobrar", "Cuentas por pagar", "Ventas","Compras","Vendedores","Estadisticas","Cierres y utilerias","Parametros generales","Contabilidad","Control vehicular","Logistica"],
   // renglon 1 ["IN",          "CC",                 "CP",                 "VE",   "CO",     "VN",         "ES",         "CI",                 "PG",                 "CT",            "CV",               "LO" ],
-
-  if ((tip_rst == 2 || tip_rst == 3) && data.length > 0) {
-    for (const nom_obj in data[0]) {
-      const renglon = []
-      for (let ren = 0; ren < data.length; ren++) {
-        renglon.push(data[ren][nom_obj])
+  if (data[0]) {
+    if ((tip_rst == 2 || tip_rst == 3) && data.length > 0) {
+      for (const nom_obj in data[0]) {
+        const renglon = []
+        for (let ren = 0; ren < data.length; ren++) {
+          renglon.push(data[ren][nom_obj])
+        }
+        val_col.push(renglon)
       }
-      val_col.push(renglon)
     }
-  }
+  } else
+    console.warn('No data in ', This.prop.ControlSource)
 
   // recorremos todas los renglones si es solo un columna val_col.length si no 
   // toma el tamaÃ±o del arreglo solo de la primer columna

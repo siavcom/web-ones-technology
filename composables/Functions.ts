@@ -40,7 +40,8 @@ export const stringToDate = async (texto?: string) => {
   );
   date = date.slice(0, 19);
   date = date.replace("T", " ");
-  return new Date(date).toISOString().substring(0, 10);
+  return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+  
 };
 
 export const char = async (ascci: number) => {
@@ -86,7 +87,7 @@ export const numberFormat = async (
   if (val.toString().includes(".")) {
     num = num + "." + val.toString().split(".")[1];
   }
-  console.log("1 numberFormat number=", val, num);
+ // console.log("1 numberFormat number=", val, num);
   // return result with - sign if negative
   const point = num.indexOf(".");
   let result = "";
@@ -107,7 +108,7 @@ export const numberFormat = async (
   if (currency == "MNX" || currency == "EUR" || currency == "USD") type = "$";
 
   result = type + result;
-  console.log("2 numberFormat result=", result);
+ // console.log("2 numberFormat result=", result);
 
   return result;
 };

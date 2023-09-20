@@ -39,7 +39,7 @@ export const Session = defineStore('currentSession', () => {
   const nom_emp = ref('')
   const url = ref('')
   const dialect = ref('Postgres')
-  const fpo_pge = ref(new Date().toISOString().substring(0, 10))
+  const fpo_pge = ref(new Date().toDateString())
   const logoEmp = ref('')
   const fileLogoEmp = ref(null)
   const Var = ref(0)
@@ -83,14 +83,14 @@ export const Session = defineStore('currentSession', () => {
       pass: password
     }
     const json = JSON.stringify(def_con)
-    console.log('Conexion Axios==>>', url.value, json)
+//    console.log('Conexion Axios==>>', url.value, json)
     try {
       const response = await axios.get(
         url.value + 'login?json=' + json
         // { headers: { "Content-type": "application/json" } }
       )
       if (response.data.fpo_pge)
-        fpo_pge.value = response.data.fpo_pge
+        fpo_pge.value = await stringToDate(response.data.fpo_pge)
 
       dialect.value = response.data.dialect
       id_con.value = response.data.id // asignamos a su conexion de base de datos
@@ -195,7 +195,7 @@ export const Session = defineStore('currentSession', () => {
       }
       //const menu = JSON.stringify(response.data)
       menu.value = (data)
-      // console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
+      console.log('Pinia ======leeMenu=====', menu.value, logoEmp.value)
 
 
     } catch (error) {
@@ -218,11 +218,42 @@ export const Session = defineStore('currentSession', () => {
            if (typeof Var.value[comp]=='string') {
               const Variable=Var.value[comp]
               // Checa si es una fecha
-              if ( Variable.substring(4,5)=='-'  && Variable.substring(7,8)=='-' &&
-                parseInt(Variable.slice(0,4))> 1900 && parseInt(Variable.slice(0,4))<9999){
-                Var.value[comp]=await stringToDate(Variable)
+
+
+
+              if (
+                typeof Variable == "string" &&
+                +Variable.slice(0, 4) >= 1900 &&
+                +Variable.slice(0, 4) <= 2100 &&
+                Variable.slice(4, 5) == "-" &&
+                +Variable.slice(5, 7) > 0 &&
+                +Variable.slice(5, 7) < 13 &&
+                Variable.slice(7, 8) == "-" &&
+                +Variable.slice(8, 10) > 0 &&
+                +Variable.slice(8, 10) < 32 &&
+                Variable.slice(10, 11)== 'T'
+              ){              
+                Var.value[comp]=Variable.substring(0,10)//   replace('T',' ') // Quitamos la T
+
+            
+        //        Var.value[comp]=await stringToDate(Variable)
                 }
+
+
+
+
+
+
+
+
+
+
+
            }
+
+
+
+
 
         }
         console.log('Store publicVar Var.value=', Var.value)
@@ -267,7 +298,7 @@ export const Session = defineStore('currentSession', () => {
   watch(() => id_con.value,
     (new_id, old_val) => {
       if (new_id != old_val) {
-        console.log('Watch Pinia id_con.value', new_id)  // doest not do anything
+        console.log('Watch Pinia id_con.value=', new_id,'nom_emp=',nom_emp.value)  // doest not do anything
         if (new_id.length > 9 && nom_emp.value.length > 2)
           leeMenu()
         else

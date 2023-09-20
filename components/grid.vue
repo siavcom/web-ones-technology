@@ -51,11 +51,15 @@
 
                     
                     -->
-                  <!--Imprime renglones de solo los textos cuando no es captura -->
+                  <!--Imprime renglones de solo los textos cuando no es captura 
+                  
+                  v-bind:Show="item.id != This.Row"
+                  
+                  -->
                   <div v-show="item.id != This.Row" :style='{ "width": This[col.Name].style.width }'>
                     <Transition name="columntext">
-                      <textLabel v-bind:Show="item.id != This.Row"
-                        v-bind:Recno="item.recno"
+                      <textLabel 
+                        v-bind:Registro="item.id != This.Row?item.recno:0"
                         v-bind:Id="item.id"
 
                         v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
@@ -71,7 +75,7 @@
                       Se quita el @focusout porque se hace el valid desde el componente
                       @focusout.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.valid()')"
                         v-bind:Component="ref(This.Form[col.Name])" 
-
+                      v-bind:Show="true"
                     -->
                   <Transition name="columninput">
                     <div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'>
@@ -79,7 +83,7 @@
                         v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
                         v-model:Focus="This[col.Name].Focus" 
                         v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
-                        v-bind:Show="true" v-bind:Component="ref(This[col.Name])" v-bind:Registro="item.recno"
+                         v-bind:Component="ref(This[col.Name])" v-bind:Registro="item.recno"
                         v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                         v-bind:position="This[col.Name].position"
                         @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
@@ -168,12 +172,12 @@
             <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
-          
+          v-bind:Show="true"
           -->
             <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-              v-model:Focus="This[compFooter].Focus" v-bind:Show="true"
+              v-model:Focus="This[compFooter].Focus" 
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"

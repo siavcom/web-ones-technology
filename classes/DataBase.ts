@@ -286,7 +286,7 @@ export class VFPDB {
       alias = nom_vis // asignamos el nombre de la vista
     }
     alias = alias.trim()
-    console.log('Db USE ', alias, this.View)
+    console.log('1 Db USE ', alias)
 
     if (this.View[alias]) { // si exite ya la vista, Borra los datos locales
 
@@ -341,7 +341,7 @@ export class VFPDB {
 
           return false
         }
-        console.log('Db USE ' + alias + ' exp_ind', m, exp_ind)
+        console.log('2 Db USE ' + alias +'m='.match,' exp_ind=',exp_ind)
         if (exp_ind == undefined) {
           MessageBox('No se pudo evaluar el indice de la tabla=' + alias + ' indice=' + this.View[alias].exp_indice)
           return false
@@ -382,12 +382,12 @@ export class VFPDB {
       if (this.View[alias].order.trim().length > 0) { dat_vis.query = dat_vis.query + ' order by ' + this.View[alias].order }
     } else { // es un MODEL{
       //      const val_eval = "`"+this.View[alias].exp_indice+"`"
-      console.log('Db USE this.View MODEL eval exp_indice', this.View[alias], dat_vis)
+      console.log('3 Db USE this.View MODEL eval exp_indice', this.View[alias], dat_vis)
 
 
       const val_eval = this.View[alias].exp_indice
 
-      console.log('Db use eval dat_vis ===>', val_eval)
+      
       try {
         eval('dat_vis.where=' + val_eval)
       }
@@ -397,7 +397,7 @@ export class VFPDB {
         return false
       }
 
-
+      console.log('Db USE eval dat_vis ===>', val_eval,'dat_vis.where=',dat_vis.where)
 
       // eval("dat_vis.where=`" + this.View[alias].exp_indice+"`") // obtenemos la expresion del indice
     }
@@ -405,9 +405,10 @@ export class VFPDB {
     //console.log('Db  use dat_vis========>', dat_vis)
 
     try {
+      console.log('4 Db Use Axios =====>', dat_vis) // .data
       const data = await this.axiosCall(dat_vis)
 
-      console.log('Db Use Axios Ok response =====>', dat_vis, data) // .data
+      console.log('5 Db Use Axios Ok response =====>', dat_vis, data) // .data
 
       if (data.length) // No hubo error
         return await this.genera_tabla(data, alias)
@@ -770,7 +771,9 @@ export class VFPDB {
         try {
           val_defa = eval(val_eval)
         } catch (error) {
-          console.error('No se pudo evaluar :', val_eval, error)
+          MessageBox(
+            " appendBlank can't eval("+ val_eval+")" + alias+" Error="+error, 16, 'LocalError')
+          console.error("appendBlank can't eval("+ val_eval+")","Error=", error)
 
           return false
         }
@@ -1033,9 +1036,9 @@ export class VFPDB {
     }
 
     try {
-      console.log('llama SQLEXEC  ',new Date().toISOString())
+      console.log('llama SQLEXEC  ',query,new Date().toISOString())
       const respuesta = await this.axiosCall(dat_vis)
-      console.log('Obtuvo datos  SQLEXEC  ',new Date().toISOString())
+      console.log('Obtuvo datos  SQLEXEC  ',respuesta)
 
       if (respuesta == null)
         return null
@@ -2259,7 +2262,7 @@ return false;
       return resultado
     } catch (error) {
 
-      console.error('localSql error==>', error)
+      console.error('localAlaSql error==>', error)
       MessageBox(ins_sql + ' ' + error, 16,
         'Error Ala SQL ')
 
@@ -2269,26 +2272,6 @@ return false;
   }
 
 
-  /*
-    ////////////////////////////////////////////////////
-    // Instruccion sql base de datos local
-    // db_name :Base de datos a utilizar
-    // ins_sql : Instruccion SQL
-    /////////////////////////////////////////
-    public async localSql(ins_sql: string,db_name?: string) {
-      if (!db_name) db_name='T'
-
-      try {
-        ins_sql = 'USE Now;' + ins_sql
-        const resultado = this.localAlaSql(ins_sql)
-        // console.log('Db Lectura SQL',resultado[1][0])
-        return resultado[1]
-      }
-      catch (error) {
-        console.log('Db localSql error==>', error)
-      }
-    }
-  */
   public async selectInto(ins_sql: string, alias?: string, filename?: string) {
     // alias  : TXT(filename)
     //          CSV(filename,options)
@@ -2320,12 +2303,12 @@ return false;
           await this.localAlaSql(' CREATE TABLE IF NOT EXISTS' + alias + ' ; \
         SELECT * INTO ' + alias + '  FROM ?', [resultado])
           const resp = await this.localAlaSql('select * from ' + alias)
-          // console.log('Db localSql=>>', resp)
+         
         }
       }
       return resultado
     } catch (error) {
-      console.error('localSql error==>', error)
+      console.error('SelectInto error==>', error)
     }
   }
 
@@ -2700,9 +2683,8 @@ return false;
 
       //Generamos el Last
       //query = `select * INTO Last.${alias} from New.${alias}`
-      // await this.localSql(query)
+     
 
-      // console.log('Db Clone Datos  Last',await this.localSql(`select * from Last.${alias} `))
       this.View[alias].recno = respuesta.length // asignamos el ultimo numero registro de trabajo
       this.View[alias].recCount = respuesta.length // registros totales
       //    this.View[alias]["tablaSql"] = alias // tabla en servidor SQL

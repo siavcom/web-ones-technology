@@ -25,26 +25,6 @@ readonly="true" >
 // Ult. Modificacion  
 // 30/Sep/2022.- Fdo Cuadras
 
-/*
-import {
-  //  defineExpose,
-  ref,
-  reactive,
-  // computed,
-  //  onUnmounted,
-  watch,
-  //  toRefs,
-  // toRefs,
-  //toRef,
-  // onMounted,
-  // onBeforeUpdate,
-  // onUpdated,
-  // onUnmounted,
-
-} from "vue";
-
-
-*/
 const emit = defineEmits(["update"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -52,8 +32,9 @@ const emit = defineEmits(["update"]);
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-  Recno: 0;
-  Show: false;
+  //Recno: 0;
+  Registro:0;
+ //Show: false;
   prop: {
     This: null;
     ToolTipText: string;
@@ -134,7 +115,6 @@ const Aling = ref('left')
 //Style.value.width=props.style.width 
 
 
-//Recno.value = 0
 //defineExpose({ Caption });
 //const This = Component.value
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
@@ -489,199 +469,11 @@ const renderComboBox = async () => {
   }
 }
 
-
-//////////////////////////////////////////////////////
-// Renderizado del combo box anterior
-/////////////////////////////////////////////////////
-/*
-const renderComboBox = async () => {
-  // 30/Sep/2022 se aumenta la linea 
-  if (props.prop.RowSourceType < 1) return
-  if (props.prop.Status == 'I') return
-  if (props.prop.ColumnCount == 0) return
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
-  
-  //ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
-
-  //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
-
-  const BoundColumn =
-    (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
-
-  // Numero de columnas
-  const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
-
-  //console.log('Bound Column',!(props.prop.BoundColumn)) ;
-  for (let ren = 0; ren < columnas.length; ren++) {
-    // Borra todos los renglones
-    delete columnas[ren];
-  }
-  ///////////////////////
-  // generamos un arreglo dependiendo del RowSourceType
-
-  let val_col: any = [];  // valores de columna
-  const tip_rst = props.prop.RowSourceType;
-  switch (tip_rst) {
-
-    case 1:    // Value o por valor directamente 
-
-      {
-        let RowSource = "'" + props.prop.RowSource + "'"
-        RowSource = RowSource.replaceAll(',', "','");
-        //let pos=0;
-        //pos= props.prop.RowSource.indexOf() // similar at VFP
-
-        const Values = eval("[" + RowSource + "]"); // por medio del eval generamos el arreglo
-        if (props.prop.ColumnCount == 1) {  // si solo tiene una columna
-          val_col = Values;
-        } else {  // Si tiene mas de una columna
-          let ren = 0; // renglon
-          let ele = 0; // numero de elemento
-          while (ele < Values.length) {
-            // recorremos todos los elementos
-            for (
-              let col = 0;
-              col < props.prop.ColumnCount;
-              col++ // recorre columna por columna
-            ) {
-              val_col[ren][col] = Values[ele];
-              ele++; // incrementamos el elemento
-            }
-          }
-          ren++; // incrementamos el renglon
-        }
-        break;
-      }
-
-
-
-    case 2: {
-      // Alias
-      const ins_sql = 'select ' + RowSource + ' from ' + alias
-      data = await This.Form.db.value.localSql(ins_sql)
-
-
-
-      console.log('textLabel RowSource',props.prop.RowSource)
-      const Values = eval("[" + props.prop.RowSource + "]");  // generamos un arreglo con los valores
-      // Obtenemos la vista sql
-      const pos = Values[0].indexOf(".");
-
-      if (pos == 1) return; // si no hay definida vista
-      // el primer elemento tiene el nombre de la tabla local, se obtiene y se quita del primer elemento
-      const nom_tab = Values[0].slice(0, pos); // obtenemos el nombre de la tabla
-      Values[0] = Values[0].slice(pos); // Quitamos el nombre de la tabla (similar al left se le indica de que posicion hacia adelante)
-
-      //        const resultado = await selectLocalDb(nom_tab);// hacemos select a la tabla local
-      // aqui me quede (arreglar lectura por alias)
-      //This.Form.db
-      const data = await This.Form.db.localSql(props.prop.RowSource)
-
-      break;
-    }
-    case 3: {
-      //console.log('ComboBox db sql =======>>', sql.value)
-      const data = await This.Form.db.localSql(props.prop.RowSource)
-      // Generamos el arreglo 
-      for (const nom_obj in data[0]) {
-        const renglon = []
-        for (let ren = 0; ren < data.length; ren++) {
-          renglon.push(data[ren][nom_obj])
-
-        }
-        //console.log('ComboBox renglon',renglon)
-
-        val_col.push(renglon)
-      }
-     
-      break
-    }
-
-    case 5: {
-      // Array , solo copiamos el arreglo
-      val_col = props.prop.RowSource;
-
-      break;
-    }
-    case 6: {
-      // Field
-      break;
-    }
-  }
-
-  // recorremos todas los renglones si es solo un columna val_col.length si no 
-  // toma el tamaño del arreglo solo de la primer columna
-  var valor = null
-
-  if (props.prop.ControlSource > '  ')  // Si Hay controSource asigna el valor leido
-    valor = Text.value // null
-  //valor = Value.value // null
-
-  for (
-    let ren = 0;
-    ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length);
-    ren++
-  ) {
-    // asignamos el Value del BoundColum 
-    if (props.prop.ColumnCount <= 1) { // Si solo es una columna
-      valor = val_col[ren] // si no hay valor , asigna el primer valor
-
-      // Si solo tiene una columna
-      columnas[ren] = {
-        value: val_col[ren],
-        text: [val_col[ren]],
-      };
-      //columnas[ren].text[0]= props.prop.RowSource[ren]
-    } else {
-      if (!valor)
-        valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
-
-      columnas[ren] = {  // asignmos el valor segun el BoundColumn
-        value: val_col[BoundColumn][ren],
-        text: [],   // un arreglo vacio y se llenara con el numero de columnas del resultado
-      };
-      // console.log("Antes de Asigna option columnCount ===>",props.prop.ColumnCount);
-      for (let col = 0; col < props.prop.ColumnCount; col++) { // recorremos todas las columnas
-        //console.log("Asigna option ===>",props.prop.RowSource,ren,col);
-
-        columnas[ren].text[col] = val_col[col][ren]; // asignamos los valore text de todas las demas columnas
-        // console.log("Asigna option ===>",ren,col.props.prop.RowSource[col][ren]);
-      }
-
-    }
-  }
-  // console.log('textLabel render', Text.value)
-
-  asignaResultado(valor)
-  //emitValue()
-};
-*/
-
-
-
-
-
-/*
 const readCampo = async () => {
-  if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
-    Text.value = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno)
-    if (props.prop.Type == 'number') {
-      Text.value = toNumberStr(Text.value);
-    
-    }
-  }
+  //console.log('textLabel readCampo',This.Name,'Registro=',props.Registro,'ControlSource=',props.prop.ControlSource)
 
-
-  renderComboBox()
-
-}
-*/
-
-const readCampo = async () => {
-  //console.log('textLabel readCampo',This.Name,'Recno=',props.Recno,'ControlSource=',props.prop.ControlSource)
-
-  if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
-    const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno)
+  if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
+    const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
     for (const campo in data) {
       if (campo != 'key_pri')
         Text.value = data[campo] != null ? data[campo] : ''
@@ -706,7 +498,7 @@ watch(
   },
   { deep: false }
 )
-*/
+
 watch(
   () => props.Show,
   (new_val, old_val) => {
@@ -717,12 +509,12 @@ watch(
   },
   { deep: false }
 )
-
+*/
 
 watch(
-  () => props.Recno,
+  () => props.Registro,
   (new_val, old_val) => {
-    console.log('componentStyle watch Recno',old_val,new_val)
+    console.log('componentStyle watch Registro',old_val,new_val)
     if (old_val != new_val && new_val>0) readCampo()
 
     if (new_val==0)
@@ -751,30 +543,9 @@ const init = async () => {
   if (props.prop.Type == 'number')
     componentStyle.textAlign = 'right'
 
- // console.log('componentStyle init ',This.Name,'Recno=',props.Recno)
   readCampo()
-  //readCampo()
-
+ 
 }
 
 init();
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only 
-<style scoped> 
-input[ class="number"] {
-  text-align: right;
-}
-</style>
-
-
-<style scoped> 
-input.number {
- 
-  text-align: right;
-}
-</style>
-
-
-
--->

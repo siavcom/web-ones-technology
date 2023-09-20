@@ -90,7 +90,7 @@ export class COMPONENT {
       width:'auto',
       height:'85%',
       maxheight: 'auto',
-      maxWidth: 'auto',
+      maxWidth: '100%',
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: "left",
@@ -195,6 +195,7 @@ export class COMPONENT {
       if (componente != 'Parent' &&
         componente != 'ThisForm' &&
         componente != 'Form' &&
+        componente != '_init' && 
         this[componente] != null &&
         this[componente] != undefined &&
         this[componente] &&

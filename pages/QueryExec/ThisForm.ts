@@ -55,10 +55,5 @@ export class ThisForm extends FORM {
    
 
   }
-async init(){
-  // <<init>>
-
-}
-
 
 } // End ThisForm

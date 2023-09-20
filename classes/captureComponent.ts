@@ -45,19 +45,22 @@ export class captureComponent extends COMPONENT {
   ///////////////////////////////////
 
   async valid() {
-    if (this.prop.ReadOnly)
-      return false
-   
+    if (this.prop.ReadOnly){
+      this.prop.Valid=true
+      return this.prop.Valid
+    }
+    
     if (!this.prop.updateKey || !this.prop.Capture) {
       this.prop.Valid = true
-      return true
+      return this.prop.Valid
     }
     
     if ( !this.sw_when && !await this.Form.validComponent(this.Name) && !this.prop.Valid){
-       return false
+       return this.prop.Valid
     }
-      else this.prop.Valid  
-    return true
+
+    this.prop.Valid=true  
+    return this.prop.Valid
   }
 
 }

@@ -32,7 +32,7 @@ export class log_usu extends COMPONENT {
   //////////////////////////
 
   public keyPress = async ($event) => {
-    console.log('KeyPress===>',super.keyPress($event))
+    //console.log('KeyPress===>',super.keyPress($event))
    // const key = $event.charCode // Key pressed
   }
 

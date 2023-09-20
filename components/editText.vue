@@ -165,7 +165,7 @@ const props = defineProps<{
     fontFamily: "Arial";
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
-
+    zIndex: 1
 
   };
   position: {
@@ -415,95 +415,90 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       if (This.Form.Recno = !props.Registro)
         This.Form.Recno = props.Registro
 
-      // console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
+      //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
       const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
-      //console.log('editText emitValue() Name', props.prop.ControlSource, 'Data=', data)
-
-      if (data.key_pri) {
-        for (const campo in data) {
-          if (campo != 'key_pri') {
-            This.prop.Valid = true// ya se capturo algo , se apaga Valid
-            Value.value = data[campo]
-           // This.prop.Value = data[campo]
-            
-//            Value.value = data[campo]
-//            This.prop.Value = Value.value
 
 
-            // console.log('editText emitValue() Name', props.prop.ControlSource, 'Value=', Value.value)
-
-          }
+  
+      let sw_dat=false
+      for (const campo in data) {
+        if (campo != 'key_pri') {
+          sw_dat=true
+          This.prop.Valid = true// ya se capturo algo , se apaga Valid
+          Value.value = data[campo]
 
         }
       }
-      else {
+      if (!sw_dat) {
 
-        switch (props.prop.Type) {
-          case 'number':
-            Value.value = 0
-
-            break;
-          case 'checkBox':
-            Value.value = 0
-            break;
-          case 'date':
-            Value.value = '1900-01-01'
-            break;
-          default:
-            Value.value = ''
-
-        }
-      }
-    }
-    // Asigna valore a campos de captura
-  }
   switch (props.prop.Type) {
     case 'number':
-      currentValue.value[1] = Value.value.toString()
-      currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-      emit("update:currentValue[0]", currentValue.value[0]); // actualiza el valor Value en el componente padre
+      Value.value = 0
 
       break;
     case 'checkBox':
-      //  checkValue.value = Value.value == 1 ? true : false
-      //await This.interactiveChange()
-      checkValue.value = Value.value == 0 ? false : true
-      emit("update:checkValue", checkValue)
+      Value.value = 0
       break;
     case 'date':
-      Valor = await await stringToDate(Value.value)
-      if (Valor != currentValue.value[1])
-        currentValue.value[1] = Valor
-
-      emit("update:currentValue[1]", currentValue.value[1]); // actualiza el valor Value en el componente padre
-
+      Value.value = '1900-01-01'
       break;
     default:
-      // 
-      break;
+      Value.value = ''
+
   }
+}
+    }
+    // Asigna valore a campos de captura
+  }
+switch (props.prop.Type) {
+  case 'number':
+    currentValue.value[1] = Value.value.toString()
+    currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+    emit("update:currentValue[0]", currentValue.value[0]); // actualiza el valor Value en el componente padre
+
+    break;
+  case 'checkBox':
+    //  checkValue.value = Value.value == 1 ? true : false
+    //await This.interactiveChange()
+    checkValue.value = Value.value == 0 ? false : true
+    emit("update:checkValue", checkValue)
+    break;
+  case 'date':
+    Valor = await await stringToDate(Value.value)
+    //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
+    if (Valor != currentValue.value[1])
+      currentValue.value[1] = Valor
+
+    // console.log('editText emitValue() Name', props.prop.ControlSource, 'currentValue.value[1]=', currentValue.value[1])
+    emit("update:currentValue[1]", currentValue.value[1]); // actualiza el valor Value en el componente padre
+
+    break;
+  default:
+    // 
+    break;
+}
 
 
-  Valid.value = true
-  This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
-  This.prop.Status = 'A'
-  Status.value = 'A'
+Valid.value = true
+This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
+This.prop.Status = 'A'
+Status.value = 'A'
 
-  /////////////////////////////////////////
-  //nextTick(function () {
-  //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
+/////////////////////////////////////////
+//nextTick(function () {
+//emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
 
-  
-  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-  emit("update:Valid", Valid.value)
-  // emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
-  // emit("update") // emite un update en el componente padre
-  // })
-  ToolTipText.value = true  // Activamos el ToolTipText
-  ShowError.value = false  // Desactivamos mensaje de error
-  console.log('editText emitValue() Name', props.prop.Name, 'Value=', Value.value, This.prop.Value)
-  return true
+
+emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+emit("update:Valid", Valid.value)
+// emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
+// emit("update") // emite un update en el componente padre
+// })
+ToolTipText.value = true  // Activamos el ToolTipText
+ShowError.value = false  // Desactivamos mensaje de error
+console.log('editText emitValue() Name', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'This.prop.Value=', This.prop.Value)
+return true
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -557,7 +552,7 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
-  console.log('KeyPress===>', $event.charCode)
+  //console.log('KeyPress===>', $event.charCode)
 
   if ($event.charCode == 13) {
     console.log('=====KeyPress Enter======')
@@ -828,9 +823,13 @@ watch(
 watch(
   () => props.Registro,
   (new_val, old_val) => {
-    if (new_val != old_val)
-      emitValue(true)
+    if (new_val != old_val) {
+      console.log('EditText Watch Registro Name=', This.prop.Name,
+        'new_val =', new_val, old_val)
 
+
+      emitValue(true)
+    }
   },
   { deep: false }
 );

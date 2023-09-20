@@ -1,5 +1,5 @@
 <template>
-  <div id="app-layout-header">
+  <div id="app-layout-header" >
 
     <div style="width: 80%;
                             height: 55px;
@@ -13,11 +13,17 @@
         <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end">
 
         </div>
-        <img v-if="logoEmp && logoEmp.length > 5" class="logoEmp" :src="logoEmp" style="width:50px;height:50px; float: inline-end;" />
         <div class="dataEmp" style="display:flex; flex-wrap:wrap;item-align:flex-end">
-          <div  style="flex: 1; text-align: left;">{{ nomEmp }}</div>
-          <div class="break"></div>
-          <div class="date"  >{{ fpo_pge }}</div>
+
+
+          <div style="flex: 1; text-align: left;">
+            <p>{{ Datos.nomEmp }}</p>
+            <p>{{ Datos.fpo_pge }}</p>
+
+          </div>
+          <img v-if="logoEmp && logoEmp.length > 5" class="logoEmp" :src="logoEmp"
+          style="width:60px;height:60px; float: inline-end" />
+
 
         </div>
       </div>
@@ -37,9 +43,13 @@ const props = defineProps<{
   nomEmp: string;
   titleName: string;
   fpo_pge: string;
-  
 }>()
 
+const Datos=reactive(props)
+
+Datos.nomEmp=props.nomEmp.trim()
+Datos.titleName=props.titleName
+Datos.fpo_pge=props.fpo_pge
 //const logoEmp = ref(props.logoEmp)
 //logoEmp.value = "/logos/Logo_Empresa.png"
 //const nomEmp = ref(props.nomEmp)

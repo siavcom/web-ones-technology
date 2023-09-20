@@ -67,7 +67,7 @@ export class captureForm extends FORM {
     }
     thisComp.prop.Valid = true
 
-    const m = this.Var  // Tomamos las variables publicas de la forma
+    const {...m} = this.Var  // Tomamos las variables publicas de la forma
     // Generamos variables de memoria
     for (const main in this.main) {
       const comp = this.main[main]
@@ -109,8 +109,14 @@ export class captureForm extends FORM {
     let sw_bor = false
     if (data.length == 0) { // No existe el registro
       const result = await this.Form.db.appendBlank(this.prop.RecordSource, m)
-      Recno = result.recno
-      console.log('Valid appendBlank ', result)
+     
+       
+      if (result==false)
+         return false
+
+         console.log('captureForm appendBlank  datos=', await this.Form.db.localAlaSql('select * from '+this.prop.RecordSource))
+         Recno = result.recno
+     
 
     } else {
       Recno = data[0].recno
@@ -131,10 +137,8 @@ export class captureForm extends FORM {
   // Descripcion : refresca los componentes
   /// /////////////////////////////////////
   async refreshComponent(activate: boolean, Recno?: numeric) {
-     console.log('refresh component ', this.prop.Name,' Activate=',activate,' Recno=',Recno)
+ 
     if (!Recno) { Recno = 0 }
-
-    this.Recno = Recno
 
     if (this.sw_ini && !activate) { return }
 
@@ -142,6 +146,7 @@ export class captureForm extends FORM {
       if (this.prop.RecordSource.length > 2)
         await this.Form.db.useNodata(this.prop.RecordSource)
       Recno = 0
+
       console.log('========CaptureForm useNodata ===========',this.prop.RecordSource)
       this.sw_ini = true
       this.bt_graba.prop.Visible = false
@@ -150,14 +155,17 @@ export class captureForm extends FORM {
     else
       this.sw_ini = false
 
-    // console.log('CaptureForm refresh commponent',activate)
+      this.Recno = Recno
+
+     // console.log('CaptureForm refresh commponent',activate)
 
     // this.bt_borra.prop.Visible = activate
     // Recorremos la forma y si es un componente de captura e quita el ReadOnly
+    console.log('refresh component ', this.prop.Name,' Recno=',Recno,this.sw_ini,this.main)
     for (const i in this.main) {
       const comp = this.main[i]
 
-      //      console.log('refresh componente 1', componente)
+     console.log('refresh componente ', comp,this[comp].prop.Capture,this[comp].prop.updateKey)
       if (this[comp].prop.Capture) {
         if (this[comp].prop.updateKey === false) { // No es llave de actualizacion
           this[comp].Recno = 0  // ponemos en cero para ejecutar un refresh
@@ -170,7 +178,9 @@ export class captureForm extends FORM {
           }
 
           this[comp].prop.Valid = activate
-          console.log('CaptureForm refreshcomp ', comp, this[comp].Recno, this[comp].prop.ReadOnly)
+          if (Recno>0 ) 
+             this[comp].Recno = Recno  // Actualiza el registro del componente
+         console.log('CaptureForm refreshcomp ', comp, this[comp].Recno)
         } else {
           this[comp].prop.ReadOnly = false // Si es llave de captura
           if (!activate) {
@@ -181,8 +191,7 @@ export class captureForm extends FORM {
             this[comp].prop.Valid = true
         }
 
-        if (Recno>0 && this[comp].Recno != Recno) 
-          this[comp].Recno = Recno  // Actualiza el registro del componente
+       
       }
     }
     if (Recno > 0) {
