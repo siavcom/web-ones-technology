@@ -339,8 +339,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   outFocus.value = true
   This.prop.Status = 'P'
-  Status.value = 'P'
-  emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+  let readValid=false
+  // Status.value = 'P'
+  // emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
 
   let Valor = ''
@@ -383,10 +384,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         await This.interactiveChange()
 
       if (!isValid) {
+        
         This.prop.Valid = false
         if (await This.valid() == false) {
+          // console.log('editText emitValue() Name', props.prop.Name, 'This.valid= false')
           ShowError.value = true
-          This.prop.Valid = false
+          if (This.prop.Valid)
+            This.prop.Valid = false
+          Ref.value.select()
           return
         }
       }
@@ -412,93 +417,103 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
     else {
       // Actualizamos el registro del form
+
+      This.prop.Valid = false
       if (This.Form.Recno = !props.Registro)
         This.Form.Recno = props.Registro
 
       //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
       const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
 
-
-  
-      let sw_dat=false
+      let sw_dat = false
       for (const campo in data) {
         if (campo != 'key_pri') {
-          sw_dat=true
+          sw_dat = true
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
           Value.value = data[campo]
-
+        // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
+           
+          if (!isValid) {
+            readValid=true
+          }
         }
       }
       if (!sw_dat) {
 
-  switch (props.prop.Type) {
-    case 'number':
-      Value.value = 0
+        switch (props.prop.Type) {
+          case 'number':
+            Value.value = 0
 
-      break;
-    case 'checkBox':
-      Value.value = 0
-      break;
-    case 'date':
-      Value.value = '1900-01-01'
-      break;
-    default:
-      Value.value = ''
+            break;
+          case 'checkBox':
+            Value.value = 0
+            break;
+          case 'date':
+            Value.value = '1900-01-01'
+            break;
+          default:
+            Value.value = ''
 
-  }
-}
+        }
+      }
     }
     // Asigna valore a campos de captura
   }
-switch (props.prop.Type) {
-  case 'number':
-    currentValue.value[1] = Value.value.toString()
-    currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-    emit("update:currentValue[0]", currentValue.value[0]); // actualiza el valor Value en el componente padre
+  switch (props.prop.Type) {
+    case 'number':
+      currentValue.value[1] = Value.value.toString()
+      currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+      emit("update:currentValue[0]", currentValue.value[0]); // actualiza el valor Value en el componente padre
 
-    break;
-  case 'checkBox':
-    //  checkValue.value = Value.value == 1 ? true : false
-    //await This.interactiveChange()
-    checkValue.value = Value.value == 0 ? false : true
-    emit("update:checkValue", checkValue)
-    break;
-  case 'date':
-    Valor = await await stringToDate(Value.value)
-    //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
-    if (Valor != currentValue.value[1])
-      currentValue.value[1] = Valor
+      break;
+    case 'checkBox':
+      //  checkValue.value = Value.value == 1 ? true : false
+      //await This.interactiveChange()
+      checkValue.value = Value.value == 0 ? false : true
+      emit("update:checkValue", checkValue)
+      break;
+    case 'date':
+      Valor = await await stringToDate(Value.value)
+      //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
+      if (Valor != currentValue.value[1])
+        currentValue.value[1] = Valor
 
-    // console.log('editText emitValue() Name', props.prop.ControlSource, 'currentValue.value[1]=', currentValue.value[1])
-    emit("update:currentValue[1]", currentValue.value[1]); // actualiza el valor Value en el componente padre
+      emit("update:currentValue[1]", currentValue.value[1]); // actualiza el valor Value en el componente padre
 
-    break;
-  default:
-    // 
-    break;
-}
+      break;
+    default:
+      // 
+      break;
+  }
+
+  //Valid.value = true
+  This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
+  This.prop.Status = 'A'
+  //Status.value = 'A'
+
+  /////////////////////////////////////////
+  //nextTick(function () {
+  //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
+
+  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+  //emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+
+  // emit("update:Valid", Valid.value)
 
 
-Valid.value = true
-This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
-This.prop.Status = 'A'
-Status.value = 'A'
+  // emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
+  // emit("update") // emite un update en el componente padre
+  // })
+  ToolTipText.value = true  // Activamos el ToolTipText
+  ShowError.value = false  // Desactivamos mensaje de error
+  console.log('editText emitValue() Name', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'This.prop.Value=', This.prop.Value)
 
-/////////////////////////////////////////
-//nextTick(function () {
-//emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
+  if (readValid) {
+   // console.log('editText emitValue valid() Name', props.prop.Name)
+    This.valid()
+  }
 
-
-emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-emit("update:Valid", Valid.value)
-// emit("update:Recno", props.Registro) // se emite en el Recno actual al ThisForm
-// emit("update") // emite un update en el componente padre
-// })
-ToolTipText.value = true  // Activamos el ToolTipText
-ShowError.value = false  // Desactivamos mensaje de error
-console.log('editText emitValue() Name', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'This.prop.Value=', This.prop.Value)
-return true
+  return true
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -553,9 +568,15 @@ const focusOut = async () => {
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
   //console.log('KeyPress===>', $event.charCode)
+  if (ShowError.value)
+    ShowError.value = false
 
+  if (!ToolTipText.value)
+    ToolTipText.value = false
   if ($event.charCode == 13) {
-    console.log('=====KeyPress Enter======')
+
+    console.log('Enter keyPress=', $event.charCode)
+
     //$event.charCode = 9
     // window.event.keyCode = 9;
     //const next = $event.currentTarget.nextElementSibling;
@@ -564,13 +585,21 @@ const keyPress = ($event) => {
     // emit('tab')
     Key.value = $event.charCode
     emit('customChange', $event.target.value + String.fromCharCode(9))
+
+    // emit('customChange', event.target.value.toUpperCase())
+
+    // new KeyboardEvent('keydown', {
+    //      keyCode: 40
+    //  })
+
     //revisar esto
     // $event.dispatchEvent(new KeyboardEvent('keyTab', { 'key': 'a' }));
 
   } else {
     //    Status.value = 'P'  //Aqui me quede
     //    emit("update:Status", 'P')
-    This.prop.Status = 'P'
+    if (This.prop.Status != 'P')
+      This.prop.Status = 'P'
     Key.value = $event.charCode
   }
 }
@@ -592,7 +621,6 @@ const onFocus = async () => {
   emit("update:currentValue[1]", currentValue.value[1]); // actualiza el valor Value en el componente padre
   ToolTipText.value = false
   ShowError.value = false
-
 
   return
   /* if (!props.prop.Valid) {    // = false; // old revisar si se necesita
@@ -672,9 +700,10 @@ watch(
 
 
     //  if (This.prop.Valid) return
-    if (new_val != old_val)
+    if (new_val != old_val) {
       Value.value = This.prop.Value
-    emitValue(false, This.prop.Valid)
+      emitValue(false, This.prop.Valid)
+    }
   },
   { deep: true }
 )
@@ -822,12 +851,9 @@ watch(
 ///////////////////////////////////////
 watch(
   () => props.Registro,
-  (new_val, old_val) => {
+  async (new_val, old_val) => {
     if (new_val != old_val) {
-      console.log('EditText Watch Registro Name=', This.prop.Name,
-        'new_val =', new_val, old_val)
-
-
+      // console.log('EditText Watch Registro Name=', This.prop.Name,'new_val =', new_val, old_val)
       emitValue(true)
     }
   },
