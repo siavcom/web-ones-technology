@@ -29,61 +29,82 @@ export class COMPONENT {
   status: {} ={}   // status de todos los hijos del componente
   
   prop = {
-    Development : false,
-    This: null,
-    Name: "",
-    textLabel: "",
-    ToolTipText: '',
-    Value: '',
-    Placeholder: "",
-    Format: "",
-    InputMask: "",
-    ReadOnly: false,
-    Disabled: false,
-    Tag: "",
-    Valid: true,
-    Capture: false,
-    Key: 0,
-    id: 0,
-    ControlSource: "",
-    Status: "I",
-    ErrorMessage: '',
-    ShowError: false,
-    ShowValue: false,
-    TabIndex: 0,
-    BaseClass: "editText",
-    Type: "text",
-    RowSourceType: 0, //1-Value, 2-Alias, 5-Array
-    ColumnCount: 1,
-    BoundColumn: 1,
-    RowSource: {},
-    ColumnWidths: "75%,25%",
-    Visible: true,
-    Grid: false,
-    RecordSource: '',
-    Row: 0,
-    Map: "",
+    autoLoad: true,
     Autofocus: false,
-    Position: 'main', // main, header , footer
-    Image: '',
-    Focus: false,
-    First: false,
-    Last: false,
-    Order: 1,
-    // Datos numericos
-    Step: "1",
-    Min: "0",
-    Max: "999999999",
-    Style: 'decimal', // decimal, currency,percent,unit
+
+    BaseClass: "editText",
+    BoundColumn: 1,
+
+    Capture: false,
+    ControlSource: "",
+    ColumnCount: 1,
+    ColumnWidths: "75%,25%",
     Currency: 'MXN', //USD,EUR,MXN
     CurrencyDisplay: 'code', //to use the ISO currency code.
+
+    Development : false,
+    Disabled: false,
     Decimals: 2,
-    MultiSelect: false,
-    List: [],
-    updateKey: false, // true when this component is a field index for a table select , update or delete
-    SqlUpdate: false,  //Si es verdadero actualiza automaticamente
+
+    ErrorMessage: '',
+
+    First: false,
+    Focus: false,
+    Format: "",
+
+    Grid: false,
+    id: 0,
+    Image: '',
+    InputMask: "",
+
+    Key: 0,
+
+    Map: "",  // Nos indica el mapSource del componente
     MaxLength: 254,
-    autoLoad: true,
+
+    // Datos numericos
+    Max: "999999999",
+    Min: "0",
+    MultiSelect: false,
+
+    Name: "",
+
+    Last: false,
+    List: [],
+
+    Order: 1,
+
+    Placeholder: "",
+    Position: 'main', // main, header , footer
+
+    ReadOnly: false,
+    RecordSource: '',
+    Row: 0,
+    RowSource: {},
+    RowSourceType: 0, //1-Value, 2-Alias, 5-Array
+
+    Status: "I",
+    Step: "1",
+    ShowError: false,
+    ShowValue: false,
+
+    TabIndex: 0,
+    Tag: "",
+    Type: "text",
+    textLabel: "",
+    This: null,
+    ToolTipText: '',
+
+    Style: 'decimal', // decimal, currency,percent,unit
+    SqlUpdate: false,  //Si es verdadero actualiza automaticamente
+
+    updateKey: false, // true when this component is a field index for a table select , update or delete
+
+    Valid: true,
+    Value: '',
+    ValidOnRead:false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
+    Visible: true,
+
     componentStyle: {
       background: "white",
       color: "black",

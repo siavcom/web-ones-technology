@@ -248,140 +248,14 @@ if (LabelStyle.width.search("%") > 0)
 //textWidth = +TextStyle.width.replaceAll(medida, '') - 30
 //LabelStyle.width = textWidth.toString() + medida
 
-/////////////////////////////////////////////////////////////////////
-// emitValue
-// Descripcion: emite hacia el componente padre el nuevo valor asignado
-/////////////////////////////////////////////////////////////////
-const emitValue = async (readCam?: boolean, isValid?: boolean) => {
-  console.log("ComboBox emitValue Entro Name", props.prop.Name)
 
-  toggle.value = false
-  This.prop.Status = 'P'
-  let readValid = false
-
-  // Status.value = 'P'
-  // emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
-
-  if (!readCam) {  // Graba en AlaSql , el dato se cambio desde fuera 
-    // Si no viene del watch This.prop.Value
-    let Valor = Value.value
-
-    if (typeof Valor == 'string') {
-      Valor = Valor.trim()
-      if (Valor == '')
-        Valor = columnas[0]['text'][0]  // asigna el primer Text valor
-    }
-    Value.value=Valor
-    
-    if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-      await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
-      Value.value = Valor
-    } 
-    // Si no hay error
-//    if (!This.prop.ReadOnly && !This.prop.Disabled) {
-
- // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
-
-      emit("update:Value", Value.value);
-      await This.interactiveChange()
-
-      if (!isValid) {
-
-        This.prop.Valid = false
-        if (await This.valid() == false) {
-          // console.log('editText emitValue() Name', props.prop.Name, 'This.valid= false')
-          ShowError.value = true
-          if (This.prop.Valid)
-            This.prop.Valid = false
-          Ref.value.select()
-          return
-        }
-      }
-//    }
-  }
-  else {  // Lectura de campo
-    if (props.Registro == 0 || props.prop.ControlSource.length == 0) { // limpia value
-      if (props.prop.Value == null) {
-        Value.value = columnas[0]['text'][0]  // asigna el primer Text valor
-      }
-    }
-    else {
-      // Actualizamos el registro del form
-      This.prop.Valid = false
-      if (This.Form.Recno = !props.Registro)
-        This.Form.Recno = props.Registro
-
-      //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
-
-      let sw_dat = false
-      for (const campo in data) {
-        if (campo != 'key_pri') {
-          sw_dat = true
-          This.prop.Valid = true// ya se capturo algo , se apaga Valid
-          Value.value = data[campo]
-          // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
-
-          if (!isValid) {
-            readValid = true
-          }
-        }
-      }
-      if (!sw_dat) {
-
-         Value.value = columnas[0]['text'][0]  // asigna el primer Text valor
-
-      }
-    }
-    // Asigna valore a campos de captura
-  }
-
-  for (let i = 0; i < columnas.length; i++) {
-
-    if ((typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
-      (!(typeof columnas[i].value == 'number') && Value.value == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
-      Text.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
-      console.log("ComboBox emitValue Encontro el Value Name", props.prop.Name,'Text=', Text.value,
-        'Value.value=', Value.value)
-
-      //  if (Value.value != Valor)
-      //    Value.value = Valor
-    }
-
-
-  }
-
-  //Valid.value = true
-  This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
-  This.prop.Status = 'A'
-
-  /////////////////////////////////////////
-  //nextTick(function () {
-  //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
-
-  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
- 
-  // })
-  ToolTipText.value = true  // Activamos el ToolTipText
-  ShowError.value = false  // Desactivamos mensaje de error
-  console.log('comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value,'Text=',Text.value)
-
-  if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
-    // console.log('editText emitValue valid() Name', props.prop.Name)
-    await This.interactiveChange()
-    This.valid()
-
-  }
-
-  return true
-}
 
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
 /////////////////////////////////////////////////////////////////
-const emitValue_ant = async () => {
+const emitValue = async () => {
   Status.value = 'A'
   //console.log('ComboBox emit Value ====>', Value.value)
   Recno.value = props.Registro
@@ -395,17 +269,6 @@ const emitValue_ant = async () => {
 
   return true;
 };
-
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-const focusOut = async () => {
-  emitValue()
-  return
-};
-
-
 
 /////////////////////////////////////////////////////////////////////
 // focusOut
@@ -426,6 +289,10 @@ const focusOut_old = async () => {
   console.log('comboBox updateCampo', Value.value, props.prop.ControlSource, props.Registro)
 
   await This.interactiveChange()
+
+
+
+
   return
 
 };
@@ -440,9 +307,7 @@ const validClick = async (num_ren: number) => {
   // if (!toggle.value) return
   //console.log('ComboBox  dio Click===>', columnas[num_ren].value)
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  emitValue()
-  return
-/*
+
   await asignaResultado()
 
   const valor = Value.value;
@@ -453,13 +318,12 @@ const validClick = async (num_ren: number) => {
   ToolTipText.value = true  // Activamos el ToolTipText
   toggle.value = false
 
-  console.log('comboBox updateCampo Value=', Value.value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+  console.log('comboBox updateCampo Value=', Value.value,'ControlSource=', props.prop.ControlSource,'Recno=', props.Registro)
 
   await This.interactiveChange()
   // focusOut()
 
   return
-  */
 };
 
 
@@ -481,11 +345,7 @@ const validList = async () => {
 
     Value.value = Value.value + List.value[i]
   }
-  emitValue()
-
-  //  asignaResultado()
-
-  return
+  asignaResultado()
   // await emitValue()
   //Ref.value.select()
 
@@ -558,7 +418,7 @@ const onFocus = async () => {
 //////////////////////////////////////////
 // Lee el campo desde SQL Local
 ////////////////////////////////////////
-/*
+
 const readCampo = async (recno: number) => {
   // if (Status.value == 'A') {
   //   Status.value = 'P'
@@ -574,7 +434,7 @@ const readCampo = async (recno: number) => {
   }
   renderComboBox()
 }
-*/
+
 /////////////////////////////////////////
 // Metodo onMounted
 /////////////////////////////////////////
@@ -663,7 +523,7 @@ const asignaResultado = async (valor?: string) => {
    }
    */
   //console.log("AsignaResultado  Value =======>",props.Name, Text.value, valor)
-  // emitValue()
+  emitValue()
 
 }
 
@@ -868,11 +728,8 @@ const renderComboBox = async () => {
   if (!sw_val) Value.value = valIni
 
 
-  //asignaResultado(Value.value)
+  // asignaResultado(Value.value)
   console.log('render combobox asigna resultado===>>', This.Name)
-  emitValue()
-  return
-/*
   await asignaResultado()
 
 
@@ -884,29 +741,15 @@ const renderComboBox = async () => {
 
   } else
     This.prop.Valid = true // Se toma como validado
- */
+  /* }
+   
+   catch (error) {
+     console.error('ComboBox ', error)
+ 
+   }
+   */
 }
 
-////////////////////////////////////////////////////////////////
-//                          Watchers                          //
-////////////////////////////////////////////////////////////////
-
-
-
-////////////////////////////////////////
-// ControlSource
-///////////////////////////////////////
-watch(
-  () => props.prop.ControlSource, //props.prop.ControlSource,
-  (new_val, old_val) => {
-    if (new_val != old_val)
-      emitValue(true)
-    //readCampo(props.Registro)
-
-
-  },
-  { deep: false }
-);
 
 
 ////////////////////////////////////////
@@ -923,10 +766,10 @@ watch(
 
     if (new_val == 0) {
       Value.value = props.prop.Type == 'number' ? 0 : ''
+      emitValue()
+      return
+
     }
-    emitValue()
-    return
-/*
     if (new_val != old_val
       && props.prop.ControlSource > ' '
       && props.Registro > 0) {
@@ -934,7 +777,7 @@ watch(
 
       readCampo(new_val)
     }
-    */
+
   },
   { deep: false }
 );
@@ -999,42 +842,15 @@ watch(
 
     if (new_val == 'A' && old_val == 'I') {
       //      console.log('Watch Estatus Renderiza por cambio de estatus==>', props.Name, old_val, new_val)
+
       renderComboBox()
     }
   },
   { deep: false }
 );
 
-/////////////////////////////////////////////////////////
-// watch Value
-//  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
-//          Componente
-//////////////////////////////////////////
-
-// Si se cambia de afuera
-watch(
-  () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
-  async (new_val, old_val) => {
-    console.log('comboBox Watch Name=', This.prop.Name,
-      'prop.Valid =', This.prop.Valid,
-      'Status=', This.prop.Status,
-      'Value=', This.prop.Value, Value.value,
-      'Valid=', This.prop.Valid)
-
-
-    //  if (This.prop.Valid) return
-    if (new_val != old_val) {
-      Value.value = This.prop.Value
-      emitValue(false, This.prop.Valid)
-    }
-  },
-  { deep: true }
-)
-
-
 
 //Value
-/*
 watch(
   () => props.prop.Value,
   (new_val, old_val) => {
@@ -1047,7 +863,6 @@ watch(
   },
   { deep: false }
 );
-*/
 
 // ControlSource
 ///////////////////////////////////////
@@ -1060,8 +875,8 @@ watch(
     if (new_val != old_val) {
       //      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
       if (Recno.value > 0 && props.prop.ControlSource > ' ') {
-         emitValue()
-        //readCampo(Recno.value)
+
+        readCampo(Recno.value)
       }
     }
     //    LocalDb.ControlSource = new_val;
@@ -1222,7 +1037,7 @@ watch(
   () => props.style.width,
 
   (new_val, old_val) => {
-    console.log("Cambio tamaño ", inputWidth.value);
+    console.log("Cambio tamaÃ±o ", inputWidth.value);
     if (new_val != old_val) {
       if (props.style.width.substr(-2, 2) == 'px') {
         const len = props.style.width.length - 2
@@ -1246,14 +1061,16 @@ const getZIndex = computed(() => {
 })
 */
 
+
+
 /////////////////////////////////////////
 // Metodo init Vfp
 // Aqui debemos de asignar todos los Valores inciales del componente
 // A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
 // Se tiene que emitir para que cambie el Valor en el template
 /////////////////////////////////////////
-/*
-const init_ant = async () => {
+
+const init = async () => {
   // await This.init()
   if (props.Registro > 0 && props.prop.ControlSource.length > 1) {
 
@@ -1265,7 +1082,8 @@ const init_ant = async () => {
     //     });
 
     await readCampo(props.Registro)
-
+    //Value.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
+    //   if (!props.prop.Autofocus) {
     This.Form.Recno = props.Registro
 
     Status.value = 'A'  // Activo
@@ -1291,40 +1109,6 @@ const init_ant = async () => {
     return
   }
 };
-*/
-
-/////////////////////////////////////////
-// Metodo init 
-/////////////////////////////////////////
-
-const init = async () => {
-
-if (props.prop.Type == 'date') {
-  componentStyle.width = '100px'
-  componentStyle.height = '20px'
-  componentStyle.maxHeight = '20px'
-}
-if (props.prop.Type == 'number')
-  componentStyle.textAlign = 'right'
-
-await renderComboBox()
-// await emitValue(true)
-//oldVal = Value.value   // asignamos el valor viejo
-
-// si es el primer elemento a posicionarse
-if (props.prop.First) {
-
-  First.value = false
-  if (Ref && Ref != null)
-    //Ref.value.focus()  // hace el foco como primer elemento
-    Ref.value.select() // Hace foco con select
-  return
-}
-
-console.log('init comboBox Name=', props.prop.Name, 'Value=', Value.value,'Text=',Text.value)
-}
-
-
 
 
 

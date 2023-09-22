@@ -202,7 +202,7 @@ const Style = reactive(props.style)
 const componentStyle = reactive(props.prop.componentStyle)
 const focusIn = ref(0)
 const currentValue = ref([]) // Valor para capturar
-const outFocus = ref(true)
+//const outFocus = ref(true)
 
 currentValue.value[0] = ''
 ////////////////////////////////
@@ -337,7 +337,7 @@ inherit	Inherits this property from its parent element. Read about inherit
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
-  outFocus.value = true
+  //outFocus.value = true
   This.prop.Status = 'P'
   let readValid=false
   // Status.value = 'P'
@@ -384,10 +384,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         await This.interactiveChange()
 
       if (!isValid) {
-        
         This.prop.Valid = false
         if (await This.valid() == false) {
-          // console.log('editText emitValue() Name', props.prop.Name, 'This.valid= false')
           ShowError.value = true
           if (This.prop.Valid)
             This.prop.Valid = false
@@ -506,10 +504,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   ShowError.value = false  // Desactivamos mensaje de error
-  console.log('editText emitValue() Name', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'This.prop.Value=', This.prop.Value)
+  console.log('editText emitValue() Name', props.prop.Name, 
+      'currentValue.value[1]=', currentValue.value[1], 
+      'This.prop.Value=', This.prop.Value,
+      'ValidOnRead',This.prop.ValidOnRead,
+      'readValid',readValid)
 
-  if (readValid) {
-   // console.log('editText emitValue valid() Name', props.prop.Name)
+  if  (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
+    console.log('editText emitValue valid() Name', props.prop.Name)
     This.valid()
   }
 
@@ -644,13 +646,8 @@ const onFocus = async () => {
 //////////////////////////////////////////
 // Lee el campo desde SQL Local
 ////////////////////////////////////////
-
+/*
 const readCampo = async (recno: number) => {
-  //  if (recno != props.Recno) Recno.value = recno
-  // if (recno != Recno.value) Recno.value = recno
-  //  if (Recno.value=0) return
-
-  //  if (This.Recno == 0) return
 
   if (props.Registro == 0) { // limpia value
     if (props.prop.Type == 'number')
@@ -666,7 +663,6 @@ const readCampo = async (recno: number) => {
   This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
   for (const campo in data) {
     if (campo != 'key_pri') {
-      //      This.prop.Valid = false // ya se capturo algo , se apaga Valid
       Value.value = data[campo]
 
     }
@@ -674,6 +670,9 @@ const readCampo = async (recno: number) => {
   emitValue(true)
   return true
 }
+*/
+
+
 
 ////////////////////////////////////////
 // Watchers : Triggers de templates

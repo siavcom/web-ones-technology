@@ -27,8 +27,8 @@ export const dateToString = async (texto: Date) => {
 };
 
 export const stringToDate = async (texto?: string) => {
-  if (!texto || texto==null || texto=='') texto = "1900-01-01";
-  let date =texto
+  if (!texto || texto == null || texto == "") texto = "1900-01-01";
+  let date = texto;
   //  texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
 
   if (date.length == 10) date = date + " 00:00:00";
@@ -41,7 +41,6 @@ export const stringToDate = async (texto?: string) => {
   date = date.slice(0, 19);
   date = date.replace("T", " ");
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
-  
 };
 
 export const char = async (ascci: number) => {
@@ -87,7 +86,7 @@ export const numberFormat = async (
   if (val.toString().includes(".")) {
     num = num + "." + val.toString().split(".")[1];
   }
- // console.log("1 numberFormat number=", val, num);
+  // console.log("1 numberFormat number=", val, num);
   // return result with - sign if negative
   const point = num.indexOf(".");
   let result = "";
@@ -108,7 +107,7 @@ export const numberFormat = async (
   if (currency == "MNX" || currency == "EUR" || currency == "USD") type = "$";
 
   result = type + result;
- // console.log("2 numberFormat result=", result);
+  // console.log("2 numberFormat result=", result);
 
   return result;
 };
@@ -134,4 +133,71 @@ export async function MessageBox(
   if (!timer) return $MessageBox(texto, tipo, title);
 
   return $MessageBox(texto, tipo, title, timer);
+}
+
+//////////////////////////////////////////////
+// Clase : consoleLog
+// Author : Fernando Cuadras Angulo
+// Creacion : Julio /2022
+// Ult.Mod  : 15/Enero/2023
+/////////////////////////////////////////////
+
+export async function consoleLog(
+  men1: any,
+  men2?: any,
+  men3?: any,
+  men4?: any,
+  men5?: any,
+  men6?: any,
+  men7?: any,
+  men8?: any,
+  men9?: any,
+  men10?: any
+) {
+  if (!men2) {
+    console.log(men1);
+    return;
+  }
+
+  if (!men3) {
+    console.log(men1, men2);
+    return;
+  }
+
+  if (!men4) {
+    console.log(men1, men2, men3);
+    return;
+  }
+
+  if (!men5) {
+    console.log(men1, men2, men3, men4);
+    return;
+  }
+
+  if (!men6) {
+    console.log(men1, men2, men3, men4, men5);
+    return;
+  }
+
+  if (!men7) {
+    console.log(men1, men2, men3, men4, men5, men6);
+    return;
+  }
+
+  if (!men8) {
+    console.log(men1, men2, men3, men4, men5, men6, men7);
+    return;
+  }
+
+  if (!men9) {
+    console.log(men1, men2, men3, men4, men5, men6, men7, men8);
+    return;
+  }
+
+  if (!men10) {
+    console.log(men1, men2, men3, men4, men5, men6, men7, men8, men9);
+    return;
+  }
+  console.log(men1, men2, men3, men4, men5, men6, men7, men8, men9, men10);
+  return;
 }

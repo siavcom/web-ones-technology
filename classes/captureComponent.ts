@@ -17,7 +17,7 @@ export class captureComponent extends COMPONENT {
   constructor() {
     super()
     this.prop.ReadOnly = true
-
+    this.prop.ValidOnRead = true
   }
 
   public async init(): Promise<void> {

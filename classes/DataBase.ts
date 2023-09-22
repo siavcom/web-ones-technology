@@ -320,7 +320,7 @@ export class VFPDB {
    
     // la expresion del indice es generada desde el servidor de node y es formada
     // por un objeto json el cual utiliza los model del sequelize
-    // { cop_nom=m.cop_nom, cod_nom=m.cod_nom }
+  
 
     let exp_ind = ''
     let exp_whe = ''
