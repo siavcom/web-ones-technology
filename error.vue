@@ -3,17 +3,17 @@
         <div class="prose" v-if="error">
             <template v-if="error.statusCode === 404">
                 <h1>404!</h1>
-                <p>Sorry, that page doesn't exist.</p>
+                <p style="color:#cf0aed">Sorry, that page doesn't exist.</p>
             </template>
             <template v-else>
                 <h1>Gulp!</h1>
-                <p>
+                <p style="color:#e8154a">
                     <strong>{{ error.message }}</strong>
                 </p>
                 <p>It looks like something broke.</p>
                 <p>Sorry about that.</p>
             </template>
-            <p>
+            <p style="color:#41f07b">
                 <strong>
                     Go back to
                     <a @click="handleError">

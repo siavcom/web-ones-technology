@@ -4,15 +4,14 @@
 // Description : Documentos
 // Author : El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-03-17
-// Update Date  : 
+// Update Date  : 2023-09-26
 /////////////////////////////////////////////
 
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
 
-import { reportForm } from '@/classes/reportForm/reportForm'
-import { sol_cfdi } from "./sol_cfdi";
+import { reportForm } from '@/classes/reports/VTAS/reportForm'
 
 export class ThisForm extends reportForm {
   public sol_cfdi= new sol_cfdi()
@@ -26,8 +25,7 @@ export class ThisForm extends reportForm {
     this.prop.Development=true
     this.vis_rep = 'vi_come5201'   // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value ='jr_come5201'   // no incluir extencion jasper o jrxml
-    this.sqlQuery='' //' select * from man_comeisu where cla_isu>="${m.desde}" '
-    this.tip_rep.prop.Visible=true    // Muestra general odetallado
+    this.tip_rep.prop.Visible=true    // Muestra general o detallado
 
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
@@ -46,6 +44,13 @@ public async afterMounted() {
 
   console.log('===================>afterMounted',this.Name,'var_ord',this.var_ord.prop.Value)
 
+
+}
+public async sqlQuery(where:string){
+  if (this.mon_rep.prop.Value==0 )
+    return `select * from ${this.vis_rep} where ${where} `
+  else
+    return `select * from ${this.vis_rep} where mon_doc=${this.mon_rep.prop.Value} and ${where} `
 
 }
 

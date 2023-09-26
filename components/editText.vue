@@ -1,6 +1,6 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <div class="divi" v-bind:style="Style">
+  <div class="divi" v-bind:style="divStyle">
     <div class="mensajes" v-show="This.prop.Visible">
 
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -54,9 +54,10 @@
         :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
-      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid">{{
-        prop.ToolTipText
-      }}</span>
+      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
+        style="zIndex:zIndex+1">{{
+          prop.ToolTipText
+        }}</span>
       <span class="errorText" v-show="ShowError && prop.ErrorMessage.length > 1">{{ prop.ErrorMessage }}</span>
       <!--/div--> <!--fin class=component -->
     </div>
@@ -198,7 +199,8 @@ const ShowError = ref(false) //ref(props.prop.ShowError)
 const checkValue = ref(false)
 
 
-const Style = reactive(props.style)
+const divStyle = reactive(props.style)
+const zIndex = divStyle.zIndex
 const componentStyle = reactive(props.prop.componentStyle)
 const focusIn = ref(0)
 const currentValue = ref([]) // Valor para capturar
@@ -339,7 +341,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   //outFocus.value = true
   This.prop.Status = 'P'
-  let readValid=false
+  let readValid = false
   // Status.value = 'P'
   // emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
@@ -380,7 +382,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no hay error
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-      if (props.prop.Type == 'spinner')
+      if (props.prop.Type == 'spinner' || props.prop.Type == 'checkBox')
         await This.interactiveChange()
 
       if (!isValid) {
@@ -429,10 +431,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
           sw_dat = true
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
           Value.value = data[campo]
-        // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
-           
+          // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
+
           if (!isValid) {
-            readValid=true
+            readValid = true
           }
         }
       }
@@ -504,13 +506,15 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   ShowError.value = false  // Desactivamos mensaje de error
-  console.log('editText emitValue() Name', props.prop.Name, 
-      'currentValue.value[1]=', currentValue.value[1], 
-      'This.prop.Value=', This.prop.Value,
-      'ValidOnRead',This.prop.ValidOnRead,
-      'readValid',readValid)
+  console.log('editText emitValue() Name', props.prop.Name,
+    'This.prop.Value=', This.prop.Value,
+    'currentValue.value[1]=', currentValue.value[1],
+    'checkValue=', checkValue.value,
 
-  if  (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
+    'ValidOnRead=', This.prop.ValidOnRead,
+    'readValid', readValid)
+
+  if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     console.log('editText emitValue valid() Name', props.prop.Name)
     This.valid()
   }
@@ -716,13 +720,17 @@ watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
 
+/*
     if (new_val)
       This.prop.Value = 1
     else
       This.prop.Value = 0
+*/  if (new_val != old_val) {
+      console.log('watch checkValue editText Name', This.prop.Name,'Value.value',Value.value, 'new_val=', new_val,'old_val=',old_val)
 
-    emitValue()
-
+      This.prop.Value = new_val ? 1 : 0
+      //emitValue()
+    }
   },
   { deep: false }
 )

@@ -11,6 +11,7 @@ import { queryUsu } from "@/classes/queryGen/queryUsu";
 import { queryGen } from "@/classes/queryGen/queryGen";
 import { bt_obtener } from "./bt_obtener";
 
+import { mon_rep } from "./mon_rep";
 import { tip_rep } from "./tip_rep";
 import { var_ord } from "./var_ord";
 import { for_imp } from "./for_imp";
@@ -18,6 +19,7 @@ import { report } from "./report/report";
 import { bt_pdf } from "./bt_pdf";
 
 export class reportForm extends FORM {
+  public mon_rep= new mon_rep()
   public tip_rep= new tip_rep()
   public var_ord = new var_ord(); // variable de orden principal de la vista
   public queryPri = new queryPri();
@@ -32,7 +34,7 @@ export class reportForm extends FORM {
   vis_rep: string = ""; // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ""; // variables extras para el orden del select
   query: string = ""; // query para ejecutar el reporte
-  sqlQuery: string = ""; // Query a ejecutar antes de la vista del reporte
+  //sqlQuery: string = ""; // Query a ejecutar antes de la vista del reporte
   pdfheight = "1200px"; // PDF height
   data={};
   vis_ori:string=''  // vista sql original
@@ -199,25 +201,11 @@ export class reportForm extends FORM {
   public async gen_query() {
     var where: string = "";
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
-    var query_gen: string = "select * from " + this.vis_rep;
+    var executeQuery: string = "select * from " + this.vis_rep;
    
     const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
-    if (this.Form.sqlQuery.length > 0)
-      try {
-        const val_eval = "`" + this.Parent.sqlQuery + "`";
-        query_gen = eval(val_eval) + ";";
-      } catch (error) {
-        MessageBox("eval(" + this.Parent.sqlQuery + ") " + error, 16);
-        return;
-      }
 
-
-    if (this.ord_vis.length > 1) {
-      // variables extras para el orden del select
-      orden = orden + "," + this.ord_vis;
-    }
-
-//    if (this.query.length > 1) query_gen = this.query;
+//    if (this.query.length > 1) executeQuery = this.query;
 
     where = await this.gen_where("queryPri");
 
@@ -236,10 +224,25 @@ export class reportForm extends FORM {
       }
     }
 
-    console.log("reportForm query", query_gen + where + orden);
-    if (where.length > 2) where = " where " + where;
+    if (this.sqlQuery){// si hay generacion de query
+        console.log('reportForm query Generacion custom de query')
+        executeQuery=await this.sqlQuery(where)
+    }
+    else {
+      if (where.length > 2) 
+          where = " where " + where;
 
-    return query_gen + where + orden;
+        executeQuery=executeQuery + where ;
+    }
+
+    if (this.ord_vis.length > 1) {
+      // variables extras para el orden del select
+      orden = orden + "," + this.ord_vis;
+    }
+
+    console.log("reportForm query", executeQuery + orden);
+
+    return executeQuery + orden;
     //   init = async ()=> {
   }
 

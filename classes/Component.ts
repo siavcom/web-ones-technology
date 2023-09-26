@@ -148,6 +148,13 @@ export class COMPONENT {
     position: "relative",
     wordWrap: "break-word", // Parte las palabras
     backgroundImage: "",
+
+     // un valor negativo (usualmente tabindex="-1") significa que el elemento debe ser enfocado, pero no debe de ser accesible a través de la navegación secuencial del teclado. Es útil para crear widgets accesibles con JavaScript.
+     // tabindex="0" significa que el elemento debe ser enfocado y ser accesible a través de la navegación secuencial del teclado, pero su orden relativo es definido por convención de la plataforma.
+     // un valor positivo significa que debe poder recoger el foco y alcanzable a través de la navegación secuencial del teclado; su orden relativo es definido por el valor del atributo: la secuencia sigue el aumento del número de tabindex.
+     // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
+
+    tabindex: 0, 
     zIndex: 1,  // profundidad
     // textAlign: "left";
   }
