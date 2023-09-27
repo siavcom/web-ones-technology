@@ -189,8 +189,12 @@ const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(sessi
 
 const imgButton = resolveComponent('imgButton')
 const comboBox = resolveComponent('comboBox')
-const editText = resolveComponent('editText')
+//const editText = resolveComponent('editText')
+const editText = defineAsyncComponent(() =>
+  import('@/components/editText.vue')
+)
 const textLabel = resolveComponent('textLabel')
+
 const grid = resolveComponent('grid')
 //const browse = resolveComponent('browse')
 

@@ -27,7 +27,8 @@ export class mon_rep extends COMPONENT {
         this.prop.ToolTipText = 'Moneda en la cual presentara el reporte'
         this.prop.Capture = false
         this.prop.updateKey = false
-        this.style.zIndex=3
+      //  this.prop.TabIndex=101
+        this.style.zIndex=1
     }
 
     public async init() {

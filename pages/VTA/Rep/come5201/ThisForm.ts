@@ -11,10 +11,10 @@
 // Base class 
 ///////////////////////////////////////
 
-import { reportForm } from '@/classes/reports/VTAS/reportForm'
+import { reportVtas } from '@/classes/reports/VTAS/reportVtas'
 
-export class ThisForm extends reportForm {
-  public sol_cfdi= new sol_cfdi()
+export class ThisForm extends reportVtas {
+ // public sol_cfdi= new sol_cfdi()
  
   constructor() {
     super()  // inicializa la clase base

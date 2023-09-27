@@ -5,11 +5,15 @@
 // Ult.Mod  : 25/Mayo/2023
 /////////////////////////////////////////////
 //import { COMPONENT } from './Component'
-import { reportForm } from "@/classes/reportForm/"
+import { reportForm } from "@/classes/reportForm/reportForm"
 import { tdo_tdo } from "./tdo_tdo";
 
 export class reportVtas extends reportForm {
 
   public tdo_tdo= new tdo_tdo()
+  constructor() {
+    super()
+    this.tdo_tdo.prop.TabIndex=1
+  }
 
 }

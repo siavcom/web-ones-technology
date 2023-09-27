@@ -39,9 +39,18 @@ export class reportForm extends FORM {
   data={};
   vis_ori:string=''  // vista sql original
   for_ori:string=''  // forma JASPER original
-  //  constructor() {
-  //    super()
-  //  }
+  
+  
+  constructor() {
+      super()
+      this.mon_rep.prop.TabIndex=101
+      this.tip_rep.prop.TabIndex=102
+      this.var_ord.prop.TabIndex=103
+      this.queryPri.prop.TabIndex=104
+      this.queryUsu.prop.TabIndex=105
+      this.queryGen.prop.TabIndex=106
+      this.for_imp.prop.TabIndex=107
+    }
 
   public async init() {
     this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;

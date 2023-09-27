@@ -26,7 +26,7 @@ export class var_ord extends COMPONENT {
        // this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
         this.style.width='400px'
         this.style.zIndex=2
-        this.prop.TabIndex=11
+       // this.prop.TabIndex=103
   }
   
 

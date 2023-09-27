@@ -10,24 +10,24 @@
 //import { nextTick } from "vue"
 
 export class COMPONENT {
-  Name : string  // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
-  Parent: any = {} //this.Dom.ctx; // Contexto
-  Form: any = {} //this.Parent.ThisForm // Thisform
+  Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
+  Parent: any = {}; //this.Dom.ctx; // Contexto
+  Form: any = {}; //this.Parent.ThisForm // Thisform
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
 
-  db: any
-  Recno: number
-  Ref: null | undefined
-  Show: true=true
+  db: any;
+  Recno: number;
+  Ref: null | undefined;
+  Show: true = true;
   //Focus: boolean = false
-  Index!: number
-  header: [] = [] // elementos que tiene el componente en header
-  main: [] = []   // elementos que tiene el componente en main
-  footer: [] = [] // elementos que tiene el componente en footer
-  //elements: [] = [] // elementos que tiene el componente
-  status: {} ={}   // status de todos los hijos del componente
-  
+  Index!: number;
+  header: [] = []; // elementos que tiene el componente en header
+  main: [] = []; // elementos que tiene el componente en main
+  footer: [] = []; // elementos que tiene el componente en footer
+  elements: [] = []; // elementos que tiene el componente
+  status: {} = {}; // status de todos los hijos del componente
+
   prop = {
     autoLoad: true,
     Autofocus: false,
@@ -39,14 +39,14 @@ export class COMPONENT {
     ControlSource: "",
     ColumnCount: 1,
     ColumnWidths: "75%,25%",
-    Currency: 'MXN', //USD,EUR,MXN
-    CurrencyDisplay: 'code', //to use the ISO currency code.
+    Currency: "MXN", //USD,EUR,MXN
+    CurrencyDisplay: "code", //to use the ISO currency code.
 
-    Development : false,
+    Development: false,
     Disabled: false,
     Decimals: 2,
 
-    ErrorMessage: '',
+    ErrorMessage: "",
 
     First: false,
     Focus: false,
@@ -54,12 +54,12 @@ export class COMPONENT {
 
     Grid: false,
     id: 0,
-    Image: '',
+    Image: "",
     InputMask: "",
 
     Key: 0,
 
-    Map: "",  // Nos indica el mapSource del componente
+    Map: "", // Nos indica el mapSource del componente
     MaxLength: 254,
 
     // Datos numericos
@@ -75,10 +75,10 @@ export class COMPONENT {
     Order: 1,
 
     Placeholder: "",
-    Position: 'main', // main, header , footer
+    Position: "main", // main, header , footer
 
     ReadOnly: false,
-    RecordSource: '',
+    RecordSource: "",
     Row: 0,
     RowSource: {},
     RowSourceType: 0, //1-Value, 2-Alias, 5-Array
@@ -93,45 +93,44 @@ export class COMPONENT {
     Type: "text",
     textLabel: "",
     This: null,
-    ToolTipText: '',
+    ToolTipText: "",
 
-    Style: 'decimal', // decimal, currency,percent,unit
-    SqlUpdate: false,  //Si es verdadero actualiza automaticamente
+    Style: "decimal", // decimal, currency,percent,unit
+    SqlUpdate: false, //Si es verdadero actualiza automaticamente
 
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
     Valid: true,
-    Value: '',
-    ValidOnRead:false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
+    Value: "",
+    ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
 
     componentStyle: {
       background: "white",
       color: "black",
-      width:'auto',
-      height:'85%',
-      maxheight: 'auto',
-      maxWidth: '100%',
+      width: "auto",
+      height: "85%",
+      maxheight: "auto",
+      maxWidth: "100%",
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: "left",
       textTransform: "none",
-      zIndex: 1,  // profundidad
+      zIndex: 1, // profundidad
       cols: 100,
-      rows: 5
+      rows: 5,
     },
-    
-  }
+  };
   style = {
     //display: "flex", "inline-block"
     display: "inline-flex",
-    flexGrow: "0",     /* do not grow   - initial value: 0 */
-    flexShrink: "0",   /* do not shrink - initial value: 1 */
-    flexBasis: "auto", /* width/height  - initial value: auto */
+    flexGrow: "0" /* do not grow   - initial value: 0 */,
+    flexShrink: "0" /* do not shrink - initial value: 1 */,
+    flexBasis: "auto" /* width/height  - initial value: auto */,
     flexWrap: "wrap",
     alignContent: "center",
     background: "transparent",
-    backgroundColor: "transparent" , // semi "rgba(170, 187, 97, 0.5)",  //
+    backgroundColor: "transparent", // semi "rgba(170, 187, 97, 0.5)",  //
     color: "#b94295",
     cols: "60",
 
@@ -143,173 +142,255 @@ export class COMPONENT {
     minWidth: "auto",
     maxHeight: "auto",
     minHeight: "auto",
-    
+
     textAlign: "left",
     position: "relative",
     wordWrap: "break-word", // Parte las palabras
     backgroundImage: "",
 
-     // un valor negativo (usualmente tabindex="-1") significa que el elemento debe ser enfocado, pero no debe de ser accesible a través de la navegación secuencial del teclado. Es útil para crear widgets accesibles con JavaScript.
-     // tabindex="0" significa que el elemento debe ser enfocado y ser accesible a través de la navegación secuencial del teclado, pero su orden relativo es definido por convención de la plataforma.
-     // un valor positivo significa que debe poder recoger el foco y alcanzable a través de la navegación secuencial del teclado; su orden relativo es definido por el valor del atributo: la secuencia sigue el aumento del número de tabindex.
-     // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
+    // un valor negativo (usualmente tabindex="-1") significa que el elemento debe ser enfocado, pero no debe de ser accesible a través de la navegación secuencial del teclado. Es útil para crear widgets accesibles con JavaScript.
+    // tabindex="0" significa que el elemento debe ser enfocado y ser accesible a través de la navegación secuencial del teclado, pero su orden relativo es definido por convención de la plataforma.
+    // un valor positivo significa que debe poder recoger el foco y alcanzable a través de la navegación secuencial del teclado; su orden relativo es definido por el valor del atributo: la secuencia sigue el aumento del número de tabindex.
+    // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
 
-    tabindex: 0, 
-    zIndex: 1,  // profundidad
+    tabindex: 0,
+    zIndex: 1, // profundidad
     // textAlign: "left";
-  }
+  };
 
   position = {
     position: "left",
     width: "auto",
     height: "auto",
+  };
 
-  }
+  imagen = { src: "" };
 
-  imagen = { src: "" }
-
-  
   constructor() {
-    this.Name=this.constructor.name    
-    this.Recno = 0
-    this.prop.This = this
+    this.Name = this.constructor.name;
+    this.Recno = 0;
+    this.prop.This = this;
   }
-  
 
   ///////////////////////////////////////////////////////////
   // Init
   ////////////////////////////////////////////////
   //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
   //    async Init(Form) {
-  public async Init(Form?: any, TabIndex?: number) {  //Form est?: any
-    if( this.prop.Name.length==0)
-       this.prop.Name=this.Name
-    let sw_component=true
-    if(!TabIndex) TabIndex=1
-    if (!Form) { // Inicializamos el this.Form
-      console.log('ThisForm.name 2',this.constructor.name)
+  public async Init(Form?: any, TabIndex?: number) {
+    //Form est?: any
+    if (this.prop.Name.length == 0) this.prop.Name = this.Name;
+    let sw_component = true;
+    if (!TabIndex) TabIndex = 1;
+    if (!Form) {
+      // Inicializamos el this.Form
+      console.log("ThisForm.name 2", this.constructor.name);
 
-      Form = this
-      this.prop.Map ='ThisForm' // this.constructor.name
- 
+      Form = this;
+      this.prop.Map = "ThisForm"; // this.constructor.name
+
       //      console.log('Init ThisForm', this.Name, this.Form)
-      TabIndex = 1
-      sw_component=false
-      console.log('Init constructor.name',this.constructor.name,'Name=',this.Name,'Map =',this.prop.Map) 
-
+      TabIndex = 1;
+      sw_component = false;
+      console.log(
+        "Init constructor.name",
+        this.constructor.name,
+        "Name=",
+        this.Name,
+        "Map =",
+        this.prop.Map
+      );
     }
     //console.log('Init TabIndex', this.Name, TabIndex,this)
 
-    this.Form = Form
-           
-    let maxTabIndex = 1
-    let id = 0
+    this.Form = Form;
+
+    let maxTabIndex = 1;
+    let id = 0;
     //let comp = {}
-    let header: [] = []
-    let main: [] = []
-    let footer: [] = []
-    const elements: [] = []
+    let header: [] = [];
+    let main: [] = [];
+    let footer: [] = [];
+    const elements: [] = [];
     // Generamos  el MAP donde esta  ubicado el componente
-    if (sw_component && this.Parent.prop) { // Si tiene propiedades el componente padre
+    if (sw_component && this.Parent.prop) {
+      // Si tiene propiedades el componente padre
 
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
-      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
+      this.prop.Map = this.Parent.prop.Map + "." + this.Name;
 
-
-       console.log('Init constructor.name',this.constructor.name,'Name=',this.Name,'Map =',this.prop.Map) 
-
+      console.log(
+        "Init constructor.name",
+        this.constructor.name,
+        "Name=",
+        this.Name,
+        "Map =",
+        this.prop.Map
+      );
     }
     for (const componente in this) {
-      if (componente != 'Parent' &&
-        componente != 'ThisForm' &&
-        componente != 'Form' &&
-        componente != '_init' && 
+      if (
+        componente != "Parent" &&
+        componente != "ThisForm" &&
+        componente != "Form" &&
+        componente != "_init" &&
         this[componente] != null &&
         this[componente] != undefined &&
         this[componente] &&
         this[componente].prop &&
-        this[componente].Init) {
+        this[componente].Init
+      ) {
+        //  console.log('Init Component '+componente,'Name==',this[componente].Name)
+        if (this[componente].Name == undefined) {
+          console.error("Component ", componente + " has Name=undefined");
 
-      //  console.log('Init Component '+componente,'Name==',this[componente].Name) 
-        if (this[componente].Name==undefined){
-          console.error('Component ',componente+' has Name=undefined')
-        
-           return 
+          return;
         }
         // const name = this[componente].Name.trim()
         // let name = this[componente].constructor.name
-        const name=componente
-//        console.log('Component =',componente,'contructor.name=',this[componente].constructor.name)
+        const name = componente;
+        //        console.log('Component =',componente,'contructor.name=',this[componente].constructor.name)
 
+        if (componente != this[componente].constructor.name) {
+          console.warn(
+            "Component =",
+            componente,
+            "has diferent contructor.name=",
+            this[componente].constructor.name
+          );
+          this[componente].Name = componente; // tenemos que obtener el nombre original
+          this[componente].prop.Map = this.prop.Map.trim() + "." + componente;
+          console.warn(
+            "Arreglado Component =",
+            componente,
+            this[componente].prop.Map
+          );
 
-        if (componente!=this[componente].constructor.name){
-          console.warn('Component =',componente,'has diferent contructor.name=',this[componente].constructor.name)
-          this[componente].Name=componente // tenemos que obtener el nombre original
-          this[componente].prop.Map=this.prop.Map.trim()+'.'+componente  
-          console.warn('Arreglado Component =',componente,this[componente].prop.Map)
-
-          // return 
+          // return
         }
         // name=componente  // Modificar para el compilador
-        const Position = this[componente].prop.Position.trim().toLowerCase()
+        const Position = this[componente].prop.Position.trim().toLowerCase();
 
-        if (Position == 'header')
-          header.push(name)
+        //if (Position == "header") header.push(name);
 
-        if (Position == 'main') 
-          main.push(name)
+        // if (Position == "main") main.push(name);
 
-        if (Position == 'footer')
-          footer.push(name)
+        //  if (Position == "footer") footer.push(name);
 
         const component = {
           Name: name,
-          Id: id, // this[componente].prop.Order,
-          Position: Position
-        }
-        elements.push(component)
+          Id: this[componente].prop.TabIndex, // this[componente].prop.Order,
+          Position: Position,
+        };
+        elements.push(component);
 
-        this[componente].Parent = this // Asignamos el Parent ref(this)
+        this[componente].Parent = this; // Asignamos el Parent ref(this)
 
-        id++
+        id++;
       }
-
     }
 
+    // Ordenamos los elementos segun su TabIndex
+    elements.sort((a, b) => {
+      return a.Id - b.Id;
+    });
+
+    // console.log('1 Component mainElement Name=',this.prop.Name,'mainElement',mainElement)
+    /////////////////////// Header ////////////////////////////////////
+    //let arreglo:[]=[]
+    const headerElement = await multiFilter(elements, { Position: "header" });
+    for (const i in headerElement) {
+      const comp = headerElement[i].Name; // Obtenemos el nombre
+      this[comp].prop.TabIndex = TabIndex;
+      TabIndex++;
+      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
+
+      headerElement[i].Id = TabIndex;
+      header.push(comp);
+      // arreglo.push[comp]
+    }
+
+    //arreglo=[]
+
+    /*
     for (const i in header) {
-      const comp=header[i]
-      this[comp].prop.TabIndex = TabIndex
-      TabIndex++
-      TabIndex = await this[comp].Init(Form, TabIndex)  // Corre el InitForm en todos los componentes
+      const comp = header[i];
+      this[comp].prop.TabIndex = TabIndex;
+      TabIndex++;
+      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
       // Se quito de aqui ya que el Init corre el init de c/componente
     }
+   */
+    //////////////////////  Main //////////////////////////////
+
+    const mainElement = await multiFilter(elements, { Position: "main" });
+
+    for (const i in mainElement) {
+      const comp = mainElement[i].Name; // Obtenemos el nombre
+
+      //   console.log('Component.ts in main comp=',comp,this[comp])
+      this[comp].prop.TabIndex = TabIndex;
+      TabIndex++;
+      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
+
+      mainElement[i].Id = TabIndex;
+      main.push(comp);
+    }
+
+    //    arreglo=[]
+    //  console.log('2 Component mainElement Name=',this.prop.Name,'mainElement',mainElement)
+    /*
     for (const i in main) {
-      const comp=main[i] // Obtenemos el nombre
+      const comp = main[i]; // Obtenemos el nombre
 
-   //   console.log('Component.ts in main comp=',comp,this[comp])
-      this[comp].prop.TabIndex = TabIndex
-      TabIndex++
-      TabIndex = await this[comp].Init(Form, TabIndex)  // Corre el InitForm en todos los componentes
-      if (maxTabIndex < TabIndex)
-        maxTabIndex = TabIndex
-
+      //   console.log('Component.ts in main comp=',comp,this[comp])
+      this[comp].prop.TabIndex = TabIndex;
+      TabIndex++;
+      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
     }
 
+*/
+
+    ///////////////// Footer ///////////////////////////////
+
+    const footerElement = await multiFilter(elements, { Position: "footer" });
+    for (const i in footerElement) {
+      // Solo componentes es main
+
+      const comp = footerElement[i].Name; // Obtenemos el nombre
+
+      //   console.log('Component.ts in main comp=',comp,this[comp])
+      this[comp].prop.TabIndex = TabIndex;
+      TabIndex++;
+      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
+
+      footerElement[i].Id = TabIndex;
+      footer.push(comp);
+    }
+
+    /*
     for (let i = footer.length - 1; i >= 0; i--) {
-      const comp=footer[i]
-      this[comp].prop.TabIndex = TabIndex
-      TabIndex++
-      TabIndex = await this[comp].Init(Form, TabIndex)  // Corre el InitForm en todos los componentes
-      if (maxTabIndex < TabIndex)
-        maxTabIndex = TabIndex
-
+      const comp = footer[i];
+      this[comp].prop.TabIndex = TabIndex;
+      TabIndex++;
+      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
     }
-    this.footer = footer.reverse()
+*/
 
+    this.footer = footer.reverse();
 
-    this.elements = elements
-    this.header = header
-    this.main = main
+    this.header = header;
+    this.main = main;
+
+    const arrayTot = headerElement.concat(mainElement);
+
+    this.elements = arrayTot.concat(footerElement);
+
     /*
     TabIndex = maxTabIndex  // asignamos el TabIndex maximo de elementos
     if (footer.length > 0) {
@@ -323,19 +404,31 @@ export class COMPONENT {
     this.footer = footer.reverse()
 
     */
-    this.prop.Status = 'A'
+    this.prop.Status = "A";
 
-//    console.log('Component init', this.Name, this.prop.Map)
-    
-    if(this.init){
-    //  console.log('Component init Name=', this.Name,'Map=', this.prop.Map)
-       await this.init() // Corre el init principal
+    console.log(
+      "Component init Name=",
+      this.Name,
+   //   this.prop.Map,
+     "Elements=",
+     this.elements //,
+ //     "header=",
+ //     this.header,
+  //    "main=",
+  //    this.main,
+  //    "footer=",
+  //    this.footer
+    );
+
+    if (this.init) {
+      //  console.log('Component init Name=', this.Name,'Map=', this.prop.Map)
+      await this.init(); // Corre el init principal
     }
-    return TabIndex
+    return TabIndex;
   }
 
   ///////////////////////////////////////////////////////////
-  // InitForm : Iicializa los valores de toda la forma en cada/componente 
+  // InitForm : Iicializa los valores de toda la forma en cada/componente
   ////////////////////////////////////////////////
   /*
   public async InitForm_ant(Form: any) {
@@ -381,33 +474,30 @@ export class COMPONENT {
   }
 
   */
- public async init() {
-   return
- }
+  public async init() {
+    return;
+  }
 
- public async mounted() {
-  return
-}
- 
+  public async mounted() {
+    return;
+  }
+
   /////////////////////////////////////////////////////////////////////
   // Valid
   // Descripcion: Cuando pierde el foco valida
   /////////////////////////////////////////////////////////////////
-  public async valid(Valid:boolean):Promise<boolean> {
-    if(!Valid)
-      Valid=true
-    this.prop.Valid = Valid
-    return this.prop.Valid
+  public async valid(Valid: boolean): Promise<boolean> {
+    if (!Valid) Valid = true;
+    this.prop.Valid = Valid;
+    return this.prop.Valid;
   }
 
-/////////////////////////////////////////////////////////////////////
-// interactiveChange
-// Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
-////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
+  // interactiveChange
+  // Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
+  ////////////////////////////////////////////////////////////////////
 
- public async interactiveChange() {
- }
-
+  public async interactiveChange() {}
 
   /////////////////////////////////////////////////////////////////////
   // Click
@@ -415,7 +505,7 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
 
   public async click() {
-    return
+    return;
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -424,8 +514,7 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
 
   public async when() {
-    
-    return !this.prop.ReadOnly
+    return !this.prop.ReadOnly;
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -436,27 +525,24 @@ export class COMPONENT {
   //public setFocus = async () => {
 
   public async setFocus() {
-    this.prop.Focus = true
+    this.prop.Focus = true;
     //console.log('Super setFocus ==>', this.Name)
-
   }
 
   /////////////////////////////////////////////////////////////////////
   // pushEvent
   // Descripcion: Hace push a la tabla de eventos sincronos
-  //              Utiliza el map de la clase para saber la ruta completa de donde 
+  //              Utiliza el map de la clase para saber la ruta completa de donde
   //              pertencece en la clase
-  //              ThisForm 
+  //              ThisForm
   /////////////////////////////////////////////////////////////////
 
   public pushEvent = async (evento: string) => {
     //console.log('Componente evento empujado====>>',this.prop.Map+ '.' + evento)
 
-    this.Form.eventos.push(this.prop.Map + '.' + evento)
+    this.Form.eventos.push(this.prop.Map + "." + evento);
     //console.log('pushEvent eventos===>',this.Form.eventos)
-
-  }
-
+  };
 
   /////////////////////////////////////////////////////////////////////
   // KeyPress
@@ -465,10 +551,9 @@ export class COMPONENT {
 
   //public keyPress = async ($event) => {
   public keyPress($event) {
-    this.prop.Key = $event.charCode
-    return this.prop.Key
+    this.prop.Key = $event.charCode;
+    return this.prop.Key;
     //  console.log('KeyPress===>', key)
-
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -476,7 +561,7 @@ export class COMPONENT {
   // Descripcion: asigna la ref html del componente desplegado
   /////////////////////////////////////////////////////////////////
   Refe(el: any) {
-    this.Ref = el.$el
-    console.log('Columna Ref===>', this.Ref)
+    this.Ref = el.$el;
+    console.log("Columna Ref===>", this.Ref);
   }
 }
