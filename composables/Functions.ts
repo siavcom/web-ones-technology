@@ -16,6 +16,18 @@ export const right = async (texto: string, len: number) => {
   return texto.substring(-len);
 };
 
+export const char = async (ascci: number) => {
+  return String.fromCharCode(ascci);
+};
+
+/////////////////////////////////////
+// Funcionea Fecha
+////////////////////////////////////
+
+export const dateToSql = async (fecha: string) => {
+  return fecha.replaceAll("-", "");
+};
+
 export const dateToString = async (texto: Date) => {
   let date =
     texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
@@ -24,6 +36,54 @@ export const dateToString = async (texto: Date) => {
     texto = new Date("1900-01-01 00:00:00");
   }
   return texto.toString();
+};
+
+export const dayToMilliseconds = async (day: number, Type?: string) => {
+  if (!Type || Type.slice(0, 0).toUpperCase() == "D")
+    // Dias
+    return day * 1000 * 60 * 60 * 24; //Como se puede ver, multiplicamos 1000 milisegundos por sesenta segundos, por sesenta minutos, por 24 horas
+  if (!Type || Type.slice(0, 0).toUpperCase() == "W")
+    // Semanas
+    return day * 1000 * 60 * 60 * 24 * 7; // Por 7 dias de la semana
+};
+
+////////////////////////////////////////////////////
+// Suma fecha
+// date : date
+// data : data to sum
+// tipo : type ( 'D'=days,'W'=weeks, 'M'=months, Null=date)
+
+export const addDate = async (date:Date, data: any, tipo?: string) => {
+   
+  const thisDate=new Date(date)
+  if (!tipo)
+    return new Date(date.getTime() + data.getTime())
+      .toISOString()
+      .substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+
+  if (tipo == "W")
+    return new Date(date.getTime() + (await dayToMilliseconds(data, tipo)))
+      .toISOString()
+      .substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+
+  let day = thisDate.getDay();
+  let year = thisDate.getFullYear();
+  let month = thisDate.getMonth();
+
+  if (tipo == "W")
+      day=day+(data*7)
+
+  if (tipo == "D") 
+      day=day+data
+   
+  if (tipo == "Y") 
+      year=year+data
+ 
+  if (tipo == "M") 
+     month=month+data;
+   
+
+  return new Date(year, month, day).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
 export const stringToDate = async (texto?: string) => {
@@ -43,17 +103,22 @@ export const stringToDate = async (texto?: string) => {
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
-export const char = async (ascci: number) => {
-  return String.fromCharCode(ascci);
-};
+///////////////////////////////////////////////
+// Funciones para arreglos de objetos
+///////////////////////////////////////////////
 
-export const multiFilter = (array, filters) => {
+// Filtra un array segun el valor del filter= { Position: "header" }
+export const multiFilter = (array: [], filters: {}) => {
   return array.filter((o) =>
     Object.keys(filters).every((k) =>
       [].concat(filters[k]).some((v) => o[k].includes(v))
     )
   );
 };
+
+///////////////////////////////////////////////
+// Funciones de números
+///////////////////////////////////////////////
 
 export const numberFormat = async (
   val: number,

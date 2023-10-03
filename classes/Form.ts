@@ -25,7 +25,7 @@ export class FORM extends COMPONENT {
   estatus = []; // estatus de los componentes hijos
   Params = [];
   public db = new VFPDB(); // conexion a la base de datos
-  Var = {};
+  publicVar = {};
 
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
@@ -36,6 +36,8 @@ export class FORM extends COMPONENT {
     this.prop.Map = this.constructor.name;
     this.prop.Position = " "; // No hay posicion ya que es una forma
     this.Form = this;
+    
+    this.prop.Status='I'
 
     this.style.width = "90%";
     this.style.height = "96%";
@@ -58,69 +60,17 @@ export class FORM extends COMPONENT {
     this.db.Form = this;
 
     const { Var } = storeToRefs(this.db.session); // variables publicas
-    this.Var = Var.value;
+    this.publicVar = Var.value;
 
-    console.log("ThisForm Var=", this.Var, "Params=", this.Params);
+    console.log("ThisForm publicVar=", this.publicVar, "Params=", this.Params);
 
-    /*
-    const promise = this._init()
-    promise.then(() => {
- 
-      console.log(
-        "Fin promesa ThisForm router Params===>",
-        this.Params,
-      
-        "ThisForm.Var===>",
-        this.Var
-      );
-      })
-*/
-  }
-
-  /*
-  async _init() {
-    const RefVar = this.Var;
-    console.log("ThisForm Var RefVar=", RefVar)
-
-    for (const comp in RefVar) {
-      const field = RefVar[comp];
-      let Tipo = "";
-      // Busca campo fecha
-      if (
-        typeof field == "string" &&
-        +field.slice(0, 4) >= 1900 &&
-        +field.slice(0, 4) <= 2100 &&
-        field.slice(4, 5) == "-" &&
-        +field.slice(5, 7) > 0 &&
-        +field.slice(5, 7) < 13 &&
-        field.slice(7, 8) == "-" &&
-        +field.slice(8, 10) > 0 &&
-        +field.slice(8, 10) < 32
-      ){
-        this.Var[comp] = await stringToDate(field);
-        console.log(
-          "ThisForm Var comp=",
-          comp,
-          'date Valor=',
-          this.Var[comp]
-        );
- 
-
-      }
-    }
     
   }
-*/
-  //////////////////////////////
-  // Salir de la forma
-  //////////////////////////////
-  /*
-   clickSalir = async () => {
-    if (await MessageBox("Salimos de la forma", 4, '') == 6){
-      window.history.back()
-     // window.close() // cierra la forma history.back(); // regresa forma anterior
-  }}
-  
-*/
-  public async afterMounted() {}
+  /////////////////////////////////////////
+  // After Mounted
+  ////////////////////////////////////
+   
+  public async afterMounted() {
+    this.prop.Status='A'
+  }
 }

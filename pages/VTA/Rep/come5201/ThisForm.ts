@@ -1,57 +1,74 @@
 ﻿//////////////////////////////////////////////
 // BaseClass : reportForm
-// Class : Teams
-// Description : Documentos
+// Class : reportVtas
+// Description : Documentos de ventas
 // Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2023-03-17
-// Update Date  : 2023-09-26
+// Creation : 2023-09-20
+// Update Date  : 2023-09-29
 /////////////////////////////////////////////
 
 ///////////////////////////////////////
-// Base class 
+// Base class
 ///////////////////////////////////////
 
-import { reportVtas } from '@/classes/reports/VTAS/reportVtas'
+import { reportVtas } from "@/classes/reports/VTAS/reportVtas";
 
 export class ThisForm extends reportVtas {
- // public sol_cfdi= new sol_cfdi()
- 
   constructor() {
-    super()  // inicializa la clase base
-    this.tab_ord='comedoc'
-    this.prop.Name = 'come5201'
-    this.prop.textLabel = "Documentos"
-    this.prop.Status = 'A'
-    this.prop.Development=true
-    this.vis_rep = 'vi_come5201'   // nombre de la vista sql a utilizar en el reporte
-    this.for_imp.prop.Value ='jr_come5201'   // no incluir extencion jasper o jrxml
-    this.tip_rep.prop.Visible=true    // Muestra general o detallado
+    super(); // inicializa la clase base
+    this.tab_ord = "comedoc";
+    this.prop.Name = "come5201";
+    this.prop.textLabel = "Documentos";
+    this.prop.Status = "A";
+    this.prop.Development = true;
+    this.vis_rep = "vi_come5201"; // nombre de la vista sql a utilizar en el reporte
+    this.for_imp.prop.Value = "jr_come5201"; // no incluir extencion jasper o jrxml
+    this.tip_rep.prop.Visible = true; // Muestra general o detallado
 
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
-  } 
+  }
 
-public async init(){
-  await super.init()
-  this.var_ord.prop.Value='ndo_doc'
+  public async init() {
+    await super.init();
 
-  console.log('===================>Init Report name=',this.prop.Name,'var_ord',this.var_ord.prop.Value)
- 
-}
+    this.var_ord.prop.Value = "ndo_doc";
 
+    console.log(
+      "===================>Init Report name=",
+      this.prop.Name,
+      "var_ord",
+      this.var_ord.prop.Value
+    );
+  }
 
-public async afterMounted() {
+  ///////////////////////////////////////////////////////////////
+  // En caso de tener que generar el query del select del report
+  ///////////////////////////////////////////////////////////////
 
-  console.log('===================>afterMounted',this.Name,'var_ord',this.var_ord.prop.Value)
+  public async sqlQuery(where: string) {
+    let localWhere = "";
+    if (this.tdo_tdo.prop.Value != "??")
+      localWhere = `tdo_tdo='${this.tdo_tdo.prop.Value}' AND `;
+    else localWhere = `cop_nom='C' AND `;
 
+    if (this.mon_rep.prop.Value > 0) {
+      localWhere = localWhere + `mon_doc=${this.mon_rep.prop.Value} AND`;
+    }
+    const des_fec = this.Form.des_fec.prop.Value.replaceAll("-", ""); //dateToSql(this.Form.des_fec.Value)
+    const has_fec = this.Form.has_fec.prop.Value.replaceAll("-", ""); //dateToSql(this.Form.has_fec.Value)
 
-}
-public async sqlQuery(where:string){
-  if (this.mon_rep.prop.Value==0 )
-    return `select * from ${this.vis_rep} where ${where} `
-  else
-    return `select * from ${this.vis_rep} where mon_doc=${this.mon_rep.prop.Value} and ${where} `
+    if (where.length>0)
+       where = ' AND '+where
+      
+    localWhere =
+      localWhere +
+      `  fec_doc>='${des_fec}' AND fec_doc<='${has_fec}' `+where;
 
-}
-
+    console.log(
+      "sqlQuery =",
+      `select * from ${this.vis_rep} WHERE ${localWhere} `
+    );
+    return `select * from ${this.vis_rep} WHERE ${localWhere} `;
+  }
 } // End ThisForm

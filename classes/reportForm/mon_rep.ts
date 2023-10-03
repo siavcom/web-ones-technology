@@ -32,8 +32,8 @@ export class mon_rep extends COMPONENT {
     }
 
     public async init() {
-        const Var = this.Form.Var
-        const des_mon = ['Todas',Var.pr1_pge, Var.pr2_pge, Var.pr3_pge, Var.pr4_pge, Var.pr5_pge]
+        const m = this.Form.publicVar
+        const des_mon = ['Todas',m.pr1_pge, m.pr2_pge, m.pr3_pge, m.pr4_pge, m.pr5_pge]
         const num_mon = [0,1, 2, 3, 4, 5]
         this.prop.RowSource = [des_mon, num_mon]
         this.prop.Value=0

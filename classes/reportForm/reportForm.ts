@@ -52,6 +52,7 @@ export class reportForm extends FORM {
       this.for_imp.prop.TabIndex=107
     }
 
+
   public async init() {
     this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
     this.var_ord.prop.RowSourceType = 3;
@@ -73,11 +74,11 @@ export class reportForm extends FORM {
                          THEN 'zzzzzzzzzzz' \
                          ELSE nom_tab END as nom_tab \
         from vi_schema_views where nom_vis='${vis_rep}' `,
-      "campos",
+      "camposView",
       "NULL"
     );
 
-    if (!db.View.campos || db.View.campos.recCount == 0) {
+    if (!db.View.camposView || db.View.camposView.recCount == 0) {
       MessageBox("No existe la vista Sql :" + vis_rep, 16, "Error  ");
 
       return;
@@ -123,7 +124,12 @@ export class reportForm extends FORM {
       this.Form.var_ord.prop.Value,
       "Query=",
       this.Form.queryPri.query.prop.Value
-    );
+      ,'camposView=', await this.Form.db.localAlaSql(
+        `select * as tip_dat from Now.camposView ; ` )
+      );
+
+
+
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -180,8 +186,9 @@ export class reportForm extends FORM {
       m.cam_dat = m.cam_dat.trim();
       m.con_que = m.con_que.trim();
       m.val_que = m.val_que.trim();
+      
       const data1 = await this.Form.db.localAlaSql(
-        `select trim(tip_dat) as tip_dat from campos where trim(cam_dat)='${m.cam_dat}' `
+        `select trim(tip_dat) as tip_dat from Now.camposView where trim(cam_dat)='${m.cam_dat}' ; `
       );
 
       if (data1.length > 0) {

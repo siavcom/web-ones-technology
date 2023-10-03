@@ -42,6 +42,7 @@ export class tip_rep extends COMPONENT {
       this.Form.vis_rep = this.Form.vis_ori + "_g";
     }
     console.log('tip_rep Valid',this.Form.for_imp.prop.Value, this.Form.vis_rep)
+    this.Form.init()
 
     return ;
   }

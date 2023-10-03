@@ -28,9 +28,6 @@ export class birthday extends captureComponent {
         this.prop.Placeholder = ''
         this.prop.ToolTipText =''
         this.prop.MaxLength=8
-        this.prop.Min="0"
-        this.prop.Max="999"
-        this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
         

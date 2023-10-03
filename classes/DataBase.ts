@@ -1052,6 +1052,9 @@ export class VFPDB {
         const json = JSON.parse(respuesta);;
         return json
       }
+      // Borramos localmente la tabla si existe
+      
+
 
       this.View[alias] = {} // Generamos el nuevo alias
       this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
@@ -1060,6 +1063,7 @@ export class VFPDB {
       this.View[alias].eof = false // Fin de archivo
       this.View[alias].bof = false // Principio de archivo
       this.View[alias].row = -1 // Renglon posicionado el registro
+      await this.select(alias)
 
       // console.log('Db SQLExec =====>',respuesta)
       // Generamos la extructura de la respuesta
@@ -1074,12 +1078,15 @@ export class VFPDB {
 
       //  console.log('Db Ejecutara ala con  :', respuesta)
 
-      await this.localAlaSql(' USE Now ; DROP TABLE IF EXISTS ' + alias + '; ')
 
-      await this.select(alias)
-      console.log(' SQLEXEC inicio crea tabla alias ',alias,new Date().toISOString())
-      await this.localAlaSql(' CREATE TABLE ' + alias + ' ; \
-      SELECT * INTO ' + alias + '  FROM ?', [respuesta])
+      console.log(' SQLEXEC inicio crea tabla alias ',alias,' Respuesta',respuesta)
+
+      const resp=await this.localAlaSql(` DROP TABLE IF EXISTS Last.${alias} ; DROP TABLE IF EXISTS Now.${alias} ; `)
+      await this.localAlaSql(`CREATE TABLE Now.${alias} ;`)
+      await this.localAlaSql(` SELECT * INTO Now.${alias} FROM ? ;`, [respuesta])
+
+     // await this.localAlaSql(' CREATE TABLE ' + alias + ' ; \
+     // SELECT * INTO ' + alias + '  FROM ?', [respuesta])
 
 
       /*
@@ -2251,6 +2258,7 @@ return false;
   /// //////////////////////////////////////
   public async localAlaSql(ins_sql: string, datos?: any) {
 
+    //await alasql('USE Now ;')
     try {
       //console.log('Db DataBase localAlaSql=====>>', ins_sql)
       let resultado: []

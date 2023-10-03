@@ -30,7 +30,7 @@
             <span v-for="(menuItem, index) in Items" :key="index">
               <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
               <li @click="obtSubMenu(menuItem.system)">
-                <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
+                <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name;isOpen=menuItem.name=='Login'?true:false">
                   <img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
                     :class="menuItem.icon">
                   <span class="links_name">{{ menuItem.name }}</span>
@@ -46,7 +46,7 @@
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
 
                   <li>
-                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name;isOpen=false">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -62,7 +62,7 @@
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                   <li>
-                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name;isOpen=false">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 
@@ -78,7 +78,7 @@
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
                   <li>
-                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name">
+                    <NuxtLink :to="menuItem.path" :target="menuItem.target" @click="titleName = menuItem.name;isOpen=false">
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
 

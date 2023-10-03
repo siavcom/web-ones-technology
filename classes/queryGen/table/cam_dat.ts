@@ -18,7 +18,7 @@ export class cam_dat extends COLUMN {
         this.textLabel = 'Campo'
         this.prop.BaseClass = 'comboBox'
         this.prop.RowSourceType = 2  //1-Value, 2-Alias,3-sql 5-Array
-        this.prop.RowSource = "campos.ref_dat,cam_dat"
+        this.prop.RowSource = "camposView.ref_dat,cam_dat"
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
         //this.prop.ColumnWidths ="70%,10%";

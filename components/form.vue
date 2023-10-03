@@ -6,22 +6,26 @@
 && Sistema  	: Siavcom  							Version : 10.0  VUE
 && Programa 	: Forma prinncipal   		Mnemo   : form.VUE
 && Ult. mod.	: Fernando Cuadras  				Fecha   : 13/Dic/2022
-&& Evento		: 
 && Objeto		: VUE
 && Comentarios	: Genera la forma dinamicamente en base al ThisForm que se pasa del comeponente padre
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <transition name='Mainform'>
+  <div v-if="ThisForm.prop.Status == 'I'">
 
-    <div v-if="loading" class="splash-screen">
+    <div class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
-          <div>{{ '.............Loading...................' }}</div>
+          <p>..........Loading FORM..........</p>
         </div>
       </div>
     </div>
-    <div v-else class="Main">
+
+  </div>
+
+  <transition name='Mainform'>
+
+    <div :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'Main'" v-if="ThisForm.prop.Status != 'I'">
       <section class="pagina" :style="ThisForm.style">
         <div class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
@@ -117,7 +121,7 @@ emit
             <div class="salir" @click='clickSalir()'>
 
               <img class='img' src="/Iconos/exit4-color.svg" style="float:right"
-              :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green','width':'60px' }" />
+                :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
 
             </div>
 
@@ -134,6 +138,9 @@ emit
         </div>
       </section>
     </div>
+
+
+
   </transition>
 </template>
 
@@ -187,20 +194,51 @@ const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(sessi
 // Componentes
 /////////////////////////////////////////////////
 
-const imgButton = resolveComponent('imgButton')
-const comboBox = resolveComponent('comboBox')
+//const imgButton = resolveComponent('imgButton')
+const imgButton = defineAsyncComponent(() =>
+  import('@/components/imgButton.vue'))
+
+
+//const comboBox = resolveComponent('comboBox')
+const comboBox = defineAsyncComponent(() =>
+  import('@/components/comboBox.vue'))
+
+
 //const editText = resolveComponent('editText')
 const editText = defineAsyncComponent(() =>
   import('@/components/editText.vue')
 )
-const textLabel = resolveComponent('textLabel')
 
-const grid = resolveComponent('grid')
+
+//const textLabel = resolveComponent('textLabel')
+const textLabel = defineAsyncComponent(() =>
+  import('@/components/textLabel.vue')
+)
+
+
+//const grid = resolveComponent('grid')
+const grid = defineAsyncComponent(() =>
+  import('@/components/grid.vue')
+)
+
 //const browse = resolveComponent('browse')
 
-const browseLite = resolveComponent('browseLite')
-const container = resolveComponent('container')
-const embedPdf = resolveComponent('embedPdf')
+//const browseLite = resolveComponent('browseLite')
+const browseLite = defineAsyncComponent(() =>
+  import('@/components/browseLite.vue')
+)
+
+
+//const container = resolveComponent('container')
+const container = defineAsyncComponent(() =>
+  import('@/components/container.vue')
+)
+
+
+//const embedPdf = resolveComponent('embedPdf')
+const embedPdf = defineAsyncComponent(() =>
+  import('@/components/embedPdf.vue')
+)
 
 /////////////////////////////////////////
 // Componentes dinamicos
@@ -526,11 +564,12 @@ watch(
 */
 
 const clickSalir = async () => {
-    if (await MessageBox("Salimos de la forma", 4, '') == 6){
-      window.history.back()
-     // window.close() // cierra la forma history.back(); // regresa forma anterior
-  }}
-  
+  if (await MessageBox("Salimos de la forma", 4, '') == 6) {
+    window.history.back()
+    // window.close() // cierra la forma history.back(); // regresa forma anterior
+  }
+}
+
 
 
 
@@ -649,7 +688,7 @@ const impComp = ((name: string, pos?: string) => {
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-     // console.log('Importo edittext')
+      // console.log('Importo edittext')
       return editText
       break;
     }
@@ -675,7 +714,7 @@ const impComp = ((name: string, pos?: string) => {
 
     case 'browselite': {
 
-     // console.log('Importo BrowseLite')
+      // console.log('Importo BrowseLite')
       return browseLite
       break;
     }
@@ -963,6 +1002,11 @@ img.bt_salir {
   opacity: 1;
 }
 
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
 
 /* Spinner   
 .splash-screen {

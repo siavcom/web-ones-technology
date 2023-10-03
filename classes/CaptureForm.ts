@@ -69,7 +69,7 @@ export class captureForm extends FORM {
     }
     thisComp.prop.Valid = true;
 
-    const { ...m } = this.Var; // Tomamos las variables publicas de la forma
+    const { ...m } = this.publicVar; // Tomamos las variables publicas de la forma
     // Generamos variables de memoria
     for (const main in this.main) {
       const comp = this.main[main];
@@ -89,8 +89,8 @@ export class captureForm extends FORM {
     }
 
     // variables publicas
-    for (const Var in this.Var) {
-      m[Var] = this.Var[Var];
+    for (const Var in this.publicVar) {
+      m[Var] = this.publicVar[Var];
     }
 
     // Leemos datos de la tabla de actualizacion
