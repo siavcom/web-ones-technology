@@ -21,11 +21,11 @@ export const char = async (ascci: number) => {
 };
 
 /////////////////////////////////////
-// Funcionea Fecha
+// Funciones Fecha
 ////////////////////////////////////
 
 export const dateToSql = async (fecha: string) => {
-  return fecha.replaceAll("-", "");
+    return fecha.replaceAll("-", "").slice(0,8);
 };
 
 export const dateToString = async (texto: Date) => {
@@ -36,6 +36,29 @@ export const dateToString = async (texto: Date) => {
     texto = new Date("1900-01-01 00:00:00");
   }
   return texto.toString();
+};
+
+export const stringToDate = async (texto?: string) => {
+  if (!texto || texto == null || texto == "") 
+    texto = "1900-01-01";
+
+  let date = texto.slice(0,10);
+  
+  //  texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
+/*
+  if (date.length == 10) 
+    date+=  " 00:00:00";
+
+  date = date.slice(0, 19);
+  date = date.replace("T", " ");
+
+ 
+  console.log(
+    "1 stringToDate texto=",texto,
+    "date=",date
+   );
+*/
+   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
 export const dayToMilliseconds = async (day: number, Type?: string) => {
@@ -84,23 +107,6 @@ export const addDate = async (date:Date, data: any, tipo?: string) => {
    
 
   return new Date(year, month, day).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
-};
-
-export const stringToDate = async (texto?: string) => {
-  if (!texto || texto == null || texto == "") texto = "1900-01-01";
-  let date = texto;
-  //  texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
-
-  if (date.length == 10) date = date + " 00:00:00";
-  console.log(
-    "stringToDate texto=",
-    date,
-    "date=",
-    new Date(date).toISOString().substring(0, 10)
-  );
-  date = date.slice(0, 19);
-  date = date.replace("T", " ");
-  return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
 ///////////////////////////////////////////////

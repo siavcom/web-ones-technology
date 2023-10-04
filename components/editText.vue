@@ -32,15 +32,14 @@
           @focus="onFocus"></textarea>
       </div>
 
-      <!--fecha v-model="currentValue[1]"  -->
+      <!--fecha v-model="currentValue[1]"  v-model="currentDate"-->
       <div v-else-if="prop.Type == 'date'">
-        <input v-show="focusIn == 1" class="date" :style="componentStyle" ref="Ref" type="date" v-model="currentDate"
+        <input  class="date" :style="componentStyle" ref="Ref" type="date" :value="currentDate"
           :disabled="prop.Disabled" :readonly="prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-          @focusout="focusOut">
+           @focusout="onBlur">
 
-        <input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
-          :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus">
-
+        <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
+          :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
       </div>
       <!--checkBox-->
       <div v-else-if="prop.Type == 'checkBox'">
@@ -325,9 +324,21 @@ const onInput = ({ target }) => {
 
 
 const onBlur = async () => {
-  Value.value = +currentValue.value[1]
-  typeNumber.value = 'text';
-  focusOut()
+
+  focusIn.value = 0  // Perdio el foco
+  if (props.prop.Type == 'number'){
+//    Value.value = +currentValue.value[1]
+
+    This.prop.Value = +currentValue.value[1]
+
+    typeNumber.value = 'text';
+  }
+  if(props.prop.Type == 'date'){
+   This.prop.Value=await dateToString(currentDate.value)
+
+  }
+ 
+ // focusOut()
 };
 
 
@@ -384,8 +395,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 //}
 //          Valor = await dateToString(currentValue.value[1])
 
-            displayDate.value = new Date().toISOString().substring(0, 10)
-            currentDate.value = await stringToDate('')
+            displayDate.value = new Date().toISOString()
+            currentDate.value = await stringToDate()
             Valor = '1900-01-01'
 
           break;
@@ -399,7 +410,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
-//      Value.value = Valor
+      // Value.value = Valor
     }
       
     // Si no hay error
@@ -419,6 +430,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         }
       }
     }
+
+    // Reasigamos valor de Value
+    if (Value.value != Valor)
+       Value.value = Valor
+    
   }
   else {  // Lectura de campo
     This.prop.Valid = false
@@ -493,12 +509,18 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     case 'checkBox':
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
-      checkValue.value = Value.value == 0 ? false : true
-      emit("update:checkValue", checkValue)
+      let check= Value.value == 0 ? false : true
+      if (checkValue.value !=check){
+        checkValue.value=check
+        emit("update:checkValue", checkValue)
+      }
       break;
     case 'date':
 
       //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
+      if (Value.value=='') 
+          Value.value='1900-01-01'
+
       Value.value = Value.value.slice(0, 10) + 'T00:00:00'
    //   currentValue.value[1] = await stringToDate(Value.value)
    //   currentValue.value[0] = new Date(Value.value).toDateString()
@@ -591,7 +613,6 @@ const Numeros = async ($event) => {
   }
 
 }
-
 
 /////////////////////////////////////////////////////////////////////
 // focusOut
@@ -743,7 +764,8 @@ watch(
       'prop.Valid =', This.prop.Valid,
       'Status=', This.prop.Status,
       'Value=', This.prop.Value, Value.value,
-      'Valid=', This.prop.Valid)
+      'Valid=', This.prop.Valid,
+      'checkValue=',checkValue.value)
 
 
     //  if (This.prop.Valid) return
@@ -773,10 +795,9 @@ watch(
     else
       This.prop.Value = 0
 */  if (new_val != old_val) {
-      console.log('watch checkValue editText Name', This.prop.Name, 'Value.value', Value.value, 'new_val=', new_val, 'old_val=', old_val)
-
-      This.prop.Value = new_val ? 1 : 0
-      //emitValue()
+     // Value.value=new_val ? 1 : 0
+    //  console.log('watch checkValue editText Name', This.prop.Name, 'Value.value', Value.value, 'new_val=', new_val, 'old_val=', old_val)
+       This.prop.Value = new_val ? 1 : 0
     }
   },
   { deep: false }
@@ -784,34 +805,6 @@ watch(
 
 
 
-/*
-
-const change = async () => {
-  if (props.prop.ReadOnly) {
-    return
-  }
-
-  console.log('checkBox change 1', checkValue.value, This.prop.Value)
-
-  // checkValue.value = !checkValue.value
-  if (checkValue.value)
-    This.prop.Value = 1
-  else
-    This.prop.Value = 0
-
-  console.log('checkBox change 2', checkValue.value, This.prop.Value)
-  emitValue()
-}
-
-*/
-
-
-/* 
-   if (This.prop.Valid) // tiene un dato valido
-      return
-
-
-*/
 /////////////////////////////////////////////////////////
 // watch currentValue
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
@@ -966,23 +959,6 @@ watch(
   },
   { deep: false }
 )
-/*
-///////////////////////////////////////////////
-// Cuando cambia el estatus de Inicial a Activo, emite valores  
-///////////////////////////////////////////////
-
-watch(
-  () => props.prop.Status,
-  (new_val, old_val) => {
-    if (new_val==old_val)
-       return
-    if (new_val == 'A' && old_val == 'I') {
-      emitValue()
-    }
-  },
-  { deep: false }
-);
-*/
 
 /////////////////////////////////////////
 // Metodo init 

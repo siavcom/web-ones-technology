@@ -23,12 +23,12 @@
       </div>
 
       <!--ComboBox 
-        <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="Text"
-          @focusout="focusOut" />{{ Text }}
+        <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
+          @focusout="focusOut" />{{ displayText }}
       -->
       <div v-else class="comboBox" :style='prop.componentStyle'>
 
-        <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="Text"
+        <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="displayText"
           ref="Ref" />
 
         <!--span> {{ prop.Value }}</span-->
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Key", "update:Focus"]) //, "update:Ref", "update:Recno",
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Key", "update:Focus", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
 // Variables comunes globales al componente
 ////////////////////////////////////
@@ -177,7 +177,7 @@ const Component = ref(props.prop.This)
 const This = Component.value
 
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
-const Text = ref("");
+const displayText = ref("");
 //const width = reactive([{}]);
 const width = reactive(['60%', '20%', '20%']);
 
@@ -265,7 +265,6 @@ if (LabelStyle.width.search("%") > 0)
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean) => {
-  console.log("ComboBox emitValue Entro Name", props.prop.Name)
 
   toggle.value = false
   This.prop.Status = 'P'
@@ -311,16 +310,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         return
       }
     }
-    //    }
+
+    // Reasigamos valor de Value
+   // if (Value.value != Valor)
+   //    Value.value = Valor
+
+    
   }
   else {  // Lectura de campo
 
-    if (props.Registro == 0 || props.prop.ControlSource.length == 0) { // limpia value
-      if (props.prop.Value == null) {
-        Value.value = columnas[0]['text'][0]  // asigna el primer Text valor
-      }
-    }
-    else {
+    if (props.Registro > 0 && props.prop.ControlSource.length > 0) { 
       // Actualizamos el registro del form
 
       This.prop.Valid = false
@@ -344,29 +343,20 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       }
       if (!sw_dat) {
 
-        Value.value = columnas[0]['text'][0]  // asigna el primer Text valor
+        Value.value = null  // asigna el primer Text valor
 
       }
     }
+
+
+    /*
+    if (props.prop.Value == null || props.prop.Value =='') {
+        Value.value = columnas[0]['text'][0]  // asigna el primer Text valor
+      }
+    */     
     // Asigna valore a campos de captura
   }
-/*
-  for (let i = 0; i < columnas.length; i++) {
 
-    if ((typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
-      (!(typeof columnas[i].value == 'number') && Value.value == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
-      Text.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
-      console.log("ComboBox emitValue Encontro el Value Name", props.prop.Name, 'Text=', Text.value,
-        'Value.value=', Value.value)
-
-      //  if (Value.value != Valor)
-      //    Value.value = Valor
-    }
-
-
-  }
-*/
-  //Valid.value = true
   This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
   This.prop.Status = 'A'
 
@@ -374,15 +364,39 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //nextTick(function () {
   //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
 
-  console.log('1 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
+//  console.log('1 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
 
-  const result = await asignaResultado(Value.value)
+//const result = await asignaResultado(Value.value)
+//////------------------- Asigna Resultado
+
+  //console.log('ComboBox asignaResultado columnas ',This.Name,columnas[0],valor)
+  let found=false
+  for (let i = 0; i < columnas.length; i++) {
+
+    if ((typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
+      (!(typeof columnas[i].value == 'number') && Value.value == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
+      displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
+      found=true
+    }
+
+  }
+ if (!found){ // No se encontro el valor , asignara el primer valor
+  Value.value= columnas[0].value
+  displayText.value = columnas[0]['text'][0]  
+ }
+
+ console.log('1 ComboBox asignaResultado ', This.Name,'displayText=',displayText.value,'props.prop.Value', Value.value)
+
+/////------------------------------
+//nextTick(function () {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-
+  emit("update:displayText", displayText.value); // actualiza el valor Value en el componente padre
+  emit("update") // emite un update en el componente padre
+//})
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   ShowError.value = false  // Desactivamos mensaje de error
-  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Text=', Text.value)
+//  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Text=', Text.value)
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     // console.log('editText emitValue valid() Name', props.prop.Name)
@@ -429,6 +443,7 @@ const focusOut = async () => {
 // focusOut
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
+/*
 const focusOut_old = async () => {
 
   await asignaResultado()
@@ -447,7 +462,7 @@ const focusOut_old = async () => {
   return
 
 };
-
+*/
 /////////////////////////////////////////////////////////////////////
 // Valid
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -457,29 +472,10 @@ const validClick = async (num_ren: number) => {
   toggle.value = false
   divStyle.value.zIndex = zIndex
 
-  // if (!toggle.value) return
-  //console.log('ComboBox  dio Click===>', columnas[num_ren].value)
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
   emitValue()
   return
-  /*
-    await asignaResultado()
   
-    const valor = Value.value;
-  
-    if (props.prop.ControlSource && props.prop.ControlSource.length > 3 && props.Registro > 0) {
-      await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Registro)
-    }
-    ToolTipText.value = true  // Activamos el ToolTipText
-    toggle.value = false
-  
-    console.log('comboBox updateCampo Value=', Value.value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
-  
-    await This.interactiveChange()
-    // focusOut()
-  
-    return
-    */
 };
 
 
@@ -512,7 +508,7 @@ const validList = async () => {
   //  Ref.value.focus()
   //  if(props.prop.Style==2) return
   //  Ref.value.select()
-  return
+  
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -608,93 +604,49 @@ const OnMounted = onMounted(() => {
 //////////////////////////////////////////////////////
 // Asigna Resultado
 /////////////////////////////////////////////////////
+/*
 const asignaResultado = async (valor?: string) => {
-  console.log('1 ComboBox asignaResultado ', This.Name, props.prop.Value, VisualViewport)
 
-  if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
   if (!props.prop.RowSource || props.prop.RowSource.length < 1) return
   if (columnas.length == 0) return
   if (columnas[0] == undefined) return
 
-  const BoundColumn =
-    (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
+  
   // recorre todo los renglones en columnas
-
-
-  if (!valor)
-    valor = This.prop.Value // Value.value
-
-  // if (valor) {
-  if (typeof valor == 'string') {
-    valor = valor.trim()
-    if (valor == '')
-      valor = columnas[0]['text'][0]  // asigna el primer Text valor
-  }
-
-  //Actualizamos valor en localAlaSql
-  /*
-  if (props.prop.ControlSource.length > 0 && Recno.value > 0) {
-    This.Form.db.updateCampo(valor, props.prop.ControlSource, Recno.value)
-    console.log("2 ComboBox asignaResultado Graba localAlaSql ")
-
-  }
-  */
+  //if (!valor || valor=null )
+  valor = This.prop.Value // Value.value
   //console.log('ComboBox asignaResultado columnas ',This.Name,columnas[0],valor)
+  let found=false
   for (let i = 0; i < columnas.length; i++) {
 
     if ((typeof columnas[i].value == 'number' && valor == columnas[i].value) ||
       (!(typeof columnas[i].value == 'number') && valor == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
-      Text.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
-      console.log("3 ComboBox asignaResultado Encontro el Value =======>", Text.value,
-        'Value.value=', Value.value,
-        'valor=', valor)
-
-      if (Value.value != valor)
-        Value.value = valor
+      displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
+      found=true
     }
 
   }
+ if (!found){ // No se encontro el valor , asignara el primer valor
+  This.prop.Value= columnas[0].value
+  displayText.value = columnas[0]['text'][0]  
+ }
+
+ console.log('1 ComboBox asignaResultado ', This.Name,'displayText=',displayText.value,'props.prop.Value', Value.value)
 
 
-  // emit("update:Resultado", Text.value)
-  /* }
-  
-   else {  //aqui me quede checar cuando es por arreglo genera el value con array
-     console.log('comoBox ', This.Name, 'value=', Value.value)
-     if ((Value.value == '' || Value.value == null) && columnas.length > 0)
-       Value.value = columnas[0]['value']
- 
-     for (let i = 0; i < columnas.length; i++) {
-       try {
-         console.log('comboBox columna asigna sin valor', i, This.Name, columnas[i].value,columnas[i].value)        //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
-         if (Value.value == columnas[i]['value']) {
-           // if (Value.value == columnas[i]['value']) { // El objeto columna tiene dos campos value y text
- 
-           Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
-           //     Value.value = valor // Text.value;  // Asigna el valor al componente
-         }
-       } catch (error) {
-         console.error('comboBox ', error)
-       }
- 
-     }
-     emitValue()
-   }
-   */
-  //console.log("AsignaResultado  Value =======>",props.Name, Text.value, valor)
-  // emitValue()
-
+  return true
 }
-
+*/
 //////////////////////////////////////////////////////
 // Renderizado del combo box
 /////////////////////////////////////////////////////
-const renderComboBox = async () => {
+const renderComboBox = async (readData?:boolean) => {
+
 
   if (props.prop.RowSourceType < 1) return
-  if (props.prop.Status == 'I') return
+  // if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
   //try {
@@ -764,15 +716,7 @@ const renderComboBox = async () => {
       const ins_sql = 'select ' + RowSource + ' from ' + alias
       data = await This.Form.db.localSql(ins_sql)
       console.log('comboBox data ===>', ins_sql, data)
-      /*
-        for (const nom_obj in data[0]) {
-          const renglon = []
-          for (let ren = 0; ren < data.length; ren++) {
-            renglon.push(data[ren][nom_obj])
-          }
-          val_col.push(renglon)
-        }
-        */
+     
       break
     }
     case 3: {
@@ -790,17 +734,7 @@ const renderComboBox = async () => {
       }
 
 
-      /*
-            // Recorremos las columnas que traiga el resultado 
-            for (const nom_obj in data[0]) {
-              const renglon = []
-              // recorremos todos los renglones que tenga el data
-              for (let ren = 0; ren < data.length; ren++) {
-                renglon.push(data[ren][nom_obj])
-              }
-              val_col.push(renglon)
-            }
-      */
+     
       break
     }
 
@@ -815,8 +749,6 @@ const renderComboBox = async () => {
       break;
     }
   }
-  // renglon 0 ["Inventarios", "Cuentas por cobrar", "Cuentas por pagar", "Ventas","Compras","Vendedores","Estadisticas","Cierres y utilerias","Parametros generales","Contabilidad","Control vehicular","Logistica"],
-  // renglon 1 ["IN",          "CC",                 "CP",                 "VE",   "CO",     "VN",         "ES",         "CI",                 "PG",                 "CT",            "CV",               "LO" ],
   if (data[0]) {
     if ((tip_rst == 2 || tip_rst == 3) && data.length > 0) {
       for (const nom_obj in data[0]) {
@@ -844,10 +776,7 @@ const renderComboBox = async () => {
         value: val_col[ren],
         text: [val_col[ren]],
       };
-      //columnas[ren].text[0]= props.prop.RowSource[ren]
     } else {
-      //  if (!valor)
-      //    valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
 
       columnas[ren] = {  // asignamos el valor segun el BoundColumn
         value: val_col[BoundColumn][ren], // asignamos el valor segun BoundCoulumn
@@ -864,56 +793,17 @@ const renderComboBox = async () => {
     }
   }
 
-  // Busca valor inicial
-  let valIni = columnas[0].value
-  let sw_val = false
-
-  for (let i = 0; i < columnas.length; i++) {
-
-    //  console.log('ComboBox Busca valor ', This.Name, Value.value, columnas[i].value)
-
-    if (typeof Value.value == 'number' && Value.value == columnas[i].value) {
-      sw_val = true
-      break
-    }
-
-    if (!(typeof Value.value == 'number')) {
-      const value = columnas[i].value
-      if (value.length > 0 && Value.value.length > 0 && Value.value.trim() == value.trim()) {
-        sw_val = true
-        break
-      }
-    }
-
-  }
-  if (!sw_val) Value.value = valIni
-
-
-  //asignaResultado(Value.value)
   console.log('render combobox ===>>', This.Name)
-  //emitValue()
+ 
+  //if (readData)
+     emitValue(true)
   return
-  /*
-    await asignaResultado()
-  
-  
-    if (props.prop.MultiSelect) { // Si es multi selectccion generaramos el arreglo
-      List.value = eval('[' + Value.value.trim() + ']')
-      Value.value = data
-      emit("update:Value", Value.value)
-      Valid.value = true
-  
-    } else
-      This.prop.Valid = true // Se toma como validado
-   */
+
 }
 
 ////////////////////////////////////////////////////////////////
 //                          Watchers                          //
 ////////////////////////////////////////////////////////////////
-
-
-
 ////////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
@@ -922,9 +812,6 @@ watch(
   (new_val, old_val) => {
     if (new_val != old_val)
       emitValue(true)
-    //readCampo(props.Registro)
-
-
   },
   { deep: false }
 );
@@ -949,7 +836,6 @@ watch(
 ////////////////////////////////////////
 // watch Valid
 ///////////////////////////////////////
-
 watch(
   () => props.prop.Valid,
   (new_val, old_val) => {
@@ -957,9 +843,6 @@ watch(
   },
   { deep: false }
 );
-
-
-
 
 ////////////////////////////////////////
 // Hacer el set focus 
@@ -994,23 +877,6 @@ watch(
   { deep: false }
 );
 
-///////////////////////////////////
-// Cuando cambia el estatus de Inicial a Activo 
-//////////////////////
-
-watch(
-  () => props.prop.Status,
-  (new_val, old_val) => {
-
-
-    if (new_val == 'A' && old_val == 'I') {
-      //      console.log('Watch Estatus Renderiza por cambio de estatus==>', props.Name, old_val, new_val)
-      renderComboBox()
-    }
-  },
-  { deep: false }
-);
-
 /////////////////////////////////////////////////////////
 // watch Value
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
@@ -1038,24 +904,6 @@ watch(
 )
 
 
-
-//Value
-/*
-watch(
-  () => props.prop.Value,
-  (new_val, old_val) => {
-    console.log('Watch prop.Value ComboBox===>', new_val, Value.value)
-    // asigna la columna que tiene el resultado
-    if (new_val != Value.value)
-      asignaResultado(new_val)
-
-
-  },
-  { deep: false }
-);
-*/
-
-// ControlSource
 ///////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
@@ -1064,14 +912,8 @@ watch(
   (new_val, old_val) => {
 
     if (new_val != old_val) {
-      //      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
-      //      if (Recno.value > 0 && props.prop.ControlSource > ' ') {
       emitValue(true)
-      //readCampo(Recno.value)
-      //      }
     }
-    //    LocalDb.ControlSource = new_val;
-
 
   },
   { deep: false }
@@ -1122,12 +964,9 @@ watch(
 watch(
   () => props.prop.RowSource,
   (new_val, old_val) => {
-    if (new_val.length < 2 || props.prop.RowSourceType < 1)
-      return
 
     if (new_val != old_val) {
-      //console.log('ComboBox renderiza por cambio enRowSource ===>>', new_val)
-      renderComboBox()
+      renderComboBox(true)
     }
   },
   { deep: true }
@@ -1142,7 +981,7 @@ watch(
     // console.log('ComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {
       //console.log('ComboBox renderiza por cambio enRowSourceType ===>>', new_val)
-      renderComboBox()
+      renderComboBox(true)
     }
   },
   { deep: false }
@@ -1155,8 +994,7 @@ watch(
   (new_val, old_val) => {
     if (new_val != old_val) {
       //console.log('ComboBox renderiza por cambio en Sorted ===>>', new_val)
-
-      renderComboBox();
+      renderComboBox(true);
     }
   },
   { deep: false }
@@ -1168,8 +1006,7 @@ watch(
   (new_val, old_val) => {
     if (new_val != old_val) {
       // console.log('ComboBox renderiza por cambio en ColumnCount ===>>', new_val)
-
-      renderComboBox();
+      renderComboBox(true);
     }
   },
   { deep: false }
@@ -1194,14 +1031,6 @@ watch(
 
     if (new_val != old_val) {
       ColumnWidth(new_val)
-      /*
-      const columnWidth = eval('["' + new_val.replace(",", '","') + '"]');
-
-      for (let col = 0; col < columnWidth.length; col++) {
-        width[col] = columnWidth[col] + "%";
-      console.log("Cambio tamaÃ±o de columnas==>", width[col]);
-      }
-      */
     }
 
   },
@@ -1215,9 +1044,7 @@ watch(
 
   (new_val, old_val) => {
     if (new_val != old_val) {
-      //console.log('ComboBox renderiza por cambio en BoundCoulmn ===>>', new_val)
-
-      renderComboBox();
+      renderComboBox(true);
     }
   },
   { deep: false }
@@ -1252,52 +1079,6 @@ const getZIndex = computed(() => {
 })
 */
 
-/////////////////////////////////////////
-// Metodo init Vfp
-// Aqui debemos de asignar todos los Valores inciales del componente
-// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
-// Se tiene que emitir para que cambie el Valor en el template
-/////////////////////////////////////////
-/*
-const init_ant = async () => {
-  // await This.init()
-  if (props.Registro > 0 && props.prop.ControlSource.length > 1) {
-
-    Status.value = 'P';  // en lectura
-    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-    //    Vue.nextTick(() => {
-    //       console.log(this.show, this.$refs.content);
-    //     });
-
-    await readCampo(props.Registro)
-
-    This.Form.Recno = props.Registro
-
-    Status.value = 'A'  // Activo
-
-
-    emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-  } else {
-
-    await renderComboBox()
-
-  }
-  if (props.prop.First) {
-    First.value = false
-    //   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-    //emit("update") // emite un update en el componente padre
-    // onFocus()
-    console.log('ComboBox Set focus', Ref.value)
-    Ref.value.select()  // hace el foco como primer elemento
-
-    // Ref.value.focus()  // hace el foco como primer elemento
-    //Ref.value.select()
-    return
-  }
-};
-*/
 
 /////////////////////////////////////////
 // Metodo init 
@@ -1313,9 +1094,11 @@ const init = async () => {
   if (props.prop.Type == 'number')
     componentStyle.textAlign = 'right'
 
-  await renderComboBox() 
-  const result = await emitValue(true)
-  console.log('init comboBox Name=', props.prop.Name, 'Value=', Value.value, 'Text=', Text.value)
+  const result = await renderComboBox() 
+  //const result = await emitValue(true)
+
+
+  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
 
   
   //oldVal = Value.value   // asignamos el valor viejo

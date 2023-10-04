@@ -550,7 +550,7 @@ const obtMenu = (sw_ini?: boolean) => {
 // Obten subMenu
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
-
+  isOpen.value =true
   // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
   isMan.value = false

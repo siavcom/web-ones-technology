@@ -23,8 +23,6 @@ export class nom_tab extends COMPONENT {
     this.prop.Visible= false
     this.prop.textLabel = "Tablas del sistema";
     this.prop.Capture = true // al quitarlo, quito reactividad oJo
-    this.prop.Sw_val = false;
-    this.prop.ErrorMessage = ''
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.RowSource = "select des_tab,nom_tab,sis_sis from vi_cap_tab order by sis_sis,nom_tab"
@@ -35,7 +33,7 @@ export class nom_tab extends COMPONENT {
     this.prop.MultiSelect= false;
     this.prop.List= [],
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-    this.style.width='400px'
+    this.style.width='600px'
     this.style.zIndex=2
   }
 

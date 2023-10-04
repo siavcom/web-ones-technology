@@ -1,0 +1,59 @@
+nuxt Devtools
+npm i @pinia/nuxt
+npm i @pinia-plugin-persistedstate/nuxt
+npm i @nuxtjs/axios
+npm i alasql 
+npm i vue-sweetalert2
+sweetalert2  >=11.6.14
+sweetalert2 v11.6.14 and above contains potentially undesirable behavior - https://github.com/advisories/GHSA-mrr8-v49w-3333
+
+npm i @zip.js/zip.js@2.6.40
+npm i buffer
+npm i file-saver
+// quedo fuera npm i vue-good-table-next
+// quedo fuera npm i vue3-table-lite
+
+nuxi 
+
+the cleanup command removes common generated Nuxt files and caches, including:
+
+    .nuxt
+    .output
+    node_modules/.vite
+    node_modules/.cache
+
+
+packages.json
+"dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+    "@pinia/nuxt": "^0.4.11",
+    "@zip.js/zip.js": "^2.6.40",
+    "alasql": "^4.1.3",
+    "buffer": "^6.0.3",
+    "file-saver": "^2.0.5",
+    "vue-sweetalert2": "^5.0.5",
+    "vue3-table-lite": "^1.3.7",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
+}
+
+//////////////////// Extras /////////////////////////////
+
+
+instalar node con nvm
+
+
+
+
+npm i js-xlsx (2 high severity vulnerability) o  npm i xlsx (1 high severity vulnerability)
+
+Nuevos paquetes : vite-plugin-vsharp .-Compresor de imagenes. Las imagenes deben estra en assets
+Currently supported file types are:
+
+    .jpg/.jpeg
+    .png
+    .gif
+    .webp
+
+
+

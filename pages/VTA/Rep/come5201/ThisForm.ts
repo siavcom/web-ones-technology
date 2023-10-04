@@ -55,8 +55,8 @@ export class ThisForm extends reportVtas {
     if (this.mon_rep.prop.Value > 0) {
       localWhere = localWhere + `mon_doc=${this.mon_rep.prop.Value} AND`;
     }
-    const des_fec = this.Form.des_fec.prop.Value.replaceAll("-", ""); //dateToSql(this.Form.des_fec.Value)
-    const has_fec = this.Form.has_fec.prop.Value.replaceAll("-", ""); //dateToSql(this.Form.has_fec.Value)
+    const des_fec =await dateToSql(this.Form.des_fec.prop.Value); //dateToSql(this.Form.des_fec.Value)
+    const has_fec =await dateToSql(this.Form.has_fec.prop.Value); //dateToSql(this.Form.has_fec.Value)
 
     if (where.length>0)
        where = ' AND '+where
