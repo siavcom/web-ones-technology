@@ -1,3 +1,4 @@
+# manual instalation 
 # nuxt Devtools
 npm i @pinia/nuxt
 npm i @pinia-plugin-persistedstate/nuxt
@@ -7,4 +8,3 @@ npm i vue-sweetalert2
 npm i @zip.js/zip.js@2.6.40
 npm i buffer
 npm i file-saver
-npm i vue3-table-lite

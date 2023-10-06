@@ -369,7 +369,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 //const result = await asignaResultado(Value.value)
 //////------------------- Asigna Resultado
 
-  //console.log('ComboBox asignaResultado columnas ',This.Name,columnas[0],valor)
+  
   let found=false
   for (let i = 0; i < columnas.length; i++) {
 
@@ -385,9 +385,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   displayText.value = columnas[0]['text'][0]  
  }
 
- console.log('1 ComboBox asignaResultado ', This.Name,'displayText=',displayText.value,'props.prop.Value', Value.value)
 
-/////------------------------------
 //nextTick(function () {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:displayText", displayText.value); // actualiza el valor Value en el componente padre

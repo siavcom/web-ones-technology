@@ -240,25 +240,32 @@ export class reportForm extends FORM {
       }
     }
 
-    if (this.sqlQuery){// si hay generacion de query
-        console.log('reportForm query Generacion custom de query')
-        executeQuery=await this.sqlQuery(where)
-    }
-    else {
-      if (where.length > 2) 
-          where = " where " + where;
-
-        executeQuery=executeQuery + where ;
-    }
 
     if (this.ord_vis.length > 1) {
       // variables extras para el orden del select
       orden = orden + "," + this.ord_vis;
     }
 
-    console.log("reportForm query", executeQuery + orden);
 
-    return executeQuery + orden;
+    if (this.sqlQuery){// si hay generacion de query
+        console.log('reportForm query Generacion custom de query')
+        executeQuery=await this.sqlQuery(where,orden)
+    }
+    else {
+      if (where.length > 2) 
+          where = " where " + where;
+
+        executeQuery=executeQuery + where + orden;
+    }
+/*
+    if (this.ord_vis.length > 1) {
+      // variables extras para el orden del select
+      orden = orden + "," + this.ord_vis;
+    }
+*/
+    console.log("reportForm query", executeQuery );
+
+    return executeQuery 
     //   init = async ()=> {
   }
 

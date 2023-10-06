@@ -33,7 +33,7 @@ export class bt_aceptar extends COMPONENT {
     if (this.Form.query.prop.Value.trim()>'   ' ){
       const result=await this.Form.db.execute(this.Form.query.prop.Value.trim(),'sqlresult') 
       if (result) 
-        this.Form.browse.prop.RowSource = 'sqlresult'
+        this.Form.browse.prop.RowSource = 'Now.sqlresult'
      // console.log('bt_aceptar ===>>> Datos leidos del SQL Server',this.Form.browse.prop.RowSource)  
       }
 

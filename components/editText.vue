@@ -32,9 +32,9 @@
           @focus="onFocus"></textarea>
       </div>
 
-      <!--fecha v-model="currentValue[1]"  v-model="currentDate"-->
+      <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
       <div v-else-if="prop.Type == 'date'">
-        <input  class="date" :style="componentStyle" ref="Ref" type="date" :value="currentDate"
+        <input  class="date" :style="componentStyle" ref="Ref" type="date" v-model="currentDate"
           :disabled="prop.Disabled" :readonly="prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
            @focusout="onBlur">
 

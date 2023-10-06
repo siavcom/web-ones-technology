@@ -1036,10 +1036,10 @@ export class VFPDB {
     }
 
     try {
-      console.log('llama SQLEXEC  ',query,new Date().toISOString())
-      const respuesta = await this.axiosCall(dat_vis)
-      console.log('Obtuvo datos  SQLEXEC  ',respuesta)
+      console.log('Begin SQLEXEC  ',new Date().toISOString(),'Query=',query)
 
+      const respuesta = await this.axiosCall(dat_vis)
+     
       if (respuesta == null)
         return null
 
@@ -1079,11 +1079,10 @@ export class VFPDB {
       //  console.log('Db Ejecutara ala con  :', respuesta)
 
 
-      console.log(' SQLEXEC inicio crea tabla alias ',alias,' Respuesta',respuesta)
-
-      const resp=await this.localAlaSql(` DROP TABLE IF EXISTS Last.${alias} ; DROP TABLE IF EXISTS Now.${alias} ; `)
-      await this.localAlaSql(`CREATE TABLE Now.${alias} ;`)
-      await this.localAlaSql(` SELECT * INTO Now.${alias} FROM ? ;`, [respuesta])
+   
+      let resp=await this.localAlaSql(` DROP TABLE IF EXISTS Last.${alias} ; DROP TABLE IF EXISTS Now.${alias} ; `)
+      resp=await this.localAlaSql(`CREATE TABLE Now.${alias} ;`)
+      resp=await this.localAlaSql(` SELECT * INTO Now.${alias} FROM ? ;`, [respuesta])
 
      // await this.localAlaSql(' CREATE TABLE ' + alias + ' ; \
      // SELECT * INTO ' + alias + '  FROM ?', [respuesta])
@@ -1153,21 +1152,23 @@ export class VFPDB {
 
       // console.log('Db Tabla creada en Now resp ',resp_sql)
       //console.log('Db Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
-      console.log(' SQLEXEC Termino ',alias,new Date().toISOString())
+      
 
+   
+      console.log('End SQLEXEC ',new Date().toISOString(), 'Alias=',alias,'Registros=',respuesta.length)
+
+     // console.log('Respuesta SQL=',await this.localAlaSql( `select * from Now.${alias}` ))
+   
       if (tip_res.toUpperCase() == 'NULL')
         return true
 
-
-
       return respuesta
     } catch (error) {
-      console.error('SQL Error', error)
+      console.error('SQL Error', error,'Respuesta=',respuesta)
       MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'SQL Error '
       )
-
       return false
     }
   }
@@ -2270,7 +2271,7 @@ return false;
       return resultado
     } catch (error) {
 
-      console.error('localAlaSql error==>', error)
+      console.error('localAlaSql error==>', error,ins_sql)
       MessageBox(ins_sql + ' ' + error, 16,
         'Error Ala SQL ')
 
