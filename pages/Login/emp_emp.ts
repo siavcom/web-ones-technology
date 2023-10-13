@@ -7,6 +7,7 @@
 
 import dat_emp from '@/src/empresas/datos.json'
 import { COMPONENT } from '@/classes/Component'
+//import { Session } from '@/stores/currentSession'
 
 export class emp_emp extends COMPONENT {
   
@@ -42,6 +43,9 @@ export class emp_emp extends COMPONENT {
       this.prop.RowSource[1][num_ren] = dat_emp[nom_emp].nem_emp // columna 2,renglon
       num_ren++
     }
+    const session = Session()
+    this.prop.Value=session.nom_emp
+
     // console.log('emp_emp RowSource >===',this.prop.RowSource)
     /*
     this.Parent = parent.value // solo asigno algo para que no de el error

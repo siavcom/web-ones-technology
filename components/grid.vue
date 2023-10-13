@@ -286,7 +286,7 @@ const props = defineProps<{
 // Valores componente padre
 const Component = ref(props.Component)
 //const ThisGrid = Component.value
-const This = Component.value
+const This:{} = Component.value
 //This['estatus'] = []
 const compStatus=reactive({})
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
@@ -415,9 +415,9 @@ watch(
   async (RecordSource, old_val) => {
    
     if (props.prop.Visible && RecordSource.length > 1) {
-      console.log('grid watch RecordSource ', RecordSource, This.Form.db.View[RecordSource])
-      if (This.Form.db.View[RecordSource]) {
-        if (This.Form.db.View[RecordSource].recnoVal.length == 0)  // No hay renglones
+      console.log('grid watch RecordSource ', RecordSource, Db.View[RecordSource])
+      if (Db.View[RecordSource]) {
+        if (Db.View[RecordSource].recnoVal.length == 0)  // No hay renglones
           await appendRow()
 
         loadData()
@@ -433,9 +433,9 @@ watch(
   async (Visible, old_val) => {
 
     // Si no hay renglones , aumenta un renglon
-    if (Visible && props.prop.RecordSource.length > 1 && This.Form.db.View[props.prop.RecordSource]) {
+    if (Visible && props.prop.RecordSource.length > 1 && Db.View[props.prop.RecordSource]) {
 
-      console.log('grid watch Visible ', props.prop.RecordSource, This.Form.db.View[props.prop.RecordSource])
+      console.log('grid watch Visible ', props.prop.RecordSource, Db.View[props.prop.RecordSource])
 
       // si no hay datos, inserta renglon 
       if (Db.View[props.prop.RecordSource].recnoVal.length == 0)
@@ -646,8 +646,6 @@ const loadData = async () => {
 
     }
     if (RowInsert) {
- 
-      // This[this.elements[0].Name].prop.First=true
       This.Row = RowNumber
       for (let i = 0; i < This.main.length; i++) {
         This[This.main[i]].prop.Valid = false // Ponemos no validado todos los componentes

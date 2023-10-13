@@ -334,14 +334,13 @@ const menuTitle = 'KilloSoft'
 
 
 
-const session = await Session()
+const session = Session()
 //const { data } = await useAsyncData('id', () => session.id_con)
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
-
 const Prop = ref(props)
-const Items = reactive(props.menuItems)
+const Items = reactive(props.menuItems)  // son los que aparecen en el html
 const itemLength = Items.length
 let subItemsMan = reactive([])
 let subItemsRep = reactive([])
@@ -607,16 +606,6 @@ const obtSubMenu = (system: string) => {
   }
 }
 
-
-//////////////////////////////////////////////////
-// Init
-/////////////////////////////////////////////////
-console.log('=========Session============', id_con.value)
-if (id_con.value.length > 0) {
-  obtMenu()
-}
-
-
 /// //////////////////////////////////////////////////////
 // watch Value
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
@@ -634,15 +623,33 @@ watch(
 watch(
   () => menu.value,
   (menu_new, old_val) => {
-    if (menu_new.length > 0) {
-      console.log('watch menu', menu_new)
+    console.log('watch menu', menu_new)
+     if (menu_new.length > 0) {
+      obtMenu()
+    }
+  },
+  { deep: true }
+)
+
+watch(
+  () => id_con.value,
+  (id_new, id_val) => {
+
+    console.log('watch id',id_new,Items)
+
+    if (Items.length<3) {
+ 
       obtMenu()
     }
   },
   { deep: false }
 )
 
-
+//////////////////////////////////////////////////
+// Init
+/////////////////////////////////////////////////
+if(id_con.value>'' && Items.length<3)
+   obtMenu()
 
 </script>
 

@@ -18,8 +18,10 @@ import { acceptHMRUpdate } from "pinia";
 
 //import {watch} from 'vue'
 import axios from "axios";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 import dat_emp from "/src/empresas/datos.json";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+
 //import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
 //import store from '../stores/index'
 /*
@@ -44,12 +46,13 @@ export const Session = defineStore(
     const fileLogoEmp = ref(null);
     const Var = ref(0);
     const menu = ref([]);
-    let socketIo: any;
+    let socket;
+    let socketIo = ref(false);
     let socketId: string;
 
     // actions: { // aqui van todas las funciones que uno defina
 
-    async function openSocket(password:string) {
+    async function openSocket() {
       let urlSocket = url.value;
       const lon = urlSocket.length;
       urlSocket = urlSocket.slice(0, lon - 1);
@@ -58,63 +61,76 @@ export const Session = defineStore(
       const json = {
         nom_emp: nom_emp.value,
         user: user.value,
-        pass: password,
+        pass: "XASddweef12234esasasf.@dsesddsddsd",
       };
 
-      console.log("Socket url=>>>>>>>>>>>>>>>>", urlSocket, "json=", json);
+      console.log(
+        "Socket url=>>>>>>>>>>>>>>>>",
+        urlSocket,
+        "json=",
+        json,
+        "id_con=",
+        id_con.value
+      );
 
-      //    console.log('Conexion Axios==>>', url.value, json)
-      if (socketIo) {
-        socketIo.disconnect();
-        console.log("=========Socket Disconnect====================");
+      if (!socket) {
+        socket = io(urlSocket, {
+          auth: {
+            nom_emp: nom_emp.value,
+            user: "administrator",
+            pass: "XASddweef12234esasasf.@dsesddsddsd",
+          },
+        });
+
+        //      console.log("Socket url=>>>>>>>>>>>>>>>>", urlSocket, "json=", json);
+
+        socket.on("loginFail", (res: string) => {
+          MessageBox(res, 16, "SQL Error ");
+
+          console.log("Socket loginFail res=", res);
+        });
+
+        socket.on("loginOk", async (res: {}) => {
+          socketId = socket.id;
+          //res={ id: name, dialect: options.dialect, fpo_pge }
+          // obtenemos datos de conexión
+          id_con.value = res.id;
+          fpo_pge.value = await stringToDate(res.fpo_pge);
+          dialect.value = res.dialect;
+          console.log("Socket Connection sucefully id=", id_con.value);
+        });
+
+        socket.on("loginFail", () => {
+          console.log(
+            "=======================Socket loginFail ===================="
+          );
+          pass.value = "";
+          //socket.disconnect();
+        });
+
+        socket.on("error", (error) => {
+          MessageBox(error, 16, "SQL Error ");
+
+          console.warn("Error SQL=", error);
+        });
+        socket.on("disconnect", () => {
+          socketIo.value = false;
+          console.log("==============Server socket disconnected============");
+        });
+
+        /*
+      socket.on("broadcast", (res: []) => {
+      });
+     */
+        socketIo.value = true;
       }
-
-      socketIo = io(urlSocket, {
-        auth: { 
-          nom_emp: nom_emp.value,
-          user: user.value,
-          pass: password,
-         },
-      });
-      socketId = socketIo.id;
-
-      socketIo.on("loginFail", (res: string) => {
-        MessageBox(res, 16, "SQL Error ");
-
-        console.log("Socket loginFail res=", res);
-      });
-
-      socketIo.on("loginOk", async (res: {}) => {
-        //res={ id: name, dialect: options.dialect, fpo_pge }
-
-        id_con.value = res.id;
-        fpo_pge.value = await stringToDate(res.fpo_pge);
-        dialect.value = res.dialect;
-        console.log("Socket Connection sucefully id=", socketId);
-      });
-
-      socketIo.on("fail", () => {
-        socketIo.disconnect();
-      });
-
-      socketIo.on("broadcast", (res: []) => {});
-    }
-
-    function disconnect() {
-      if (socketIo) {
-        socketIo.disconnect();
-      }
-    }
-
-    function sendMessage(req: {}) {
-      socketIo.emit(req.msg, req.data);
     }
 
     /// /////////////  open  ///////////////////
     // Hace la conexion al servidor NODEJS que
     // comunica con el servidor de SQL
     /// ////////////////////////////////////////
-    async function open(password: string) {
+    async function open(password?: string) {
       //  let url: any = this.url
       const router = useRouter();
       if (
@@ -147,33 +163,20 @@ export const Session = defineStore(
       };
 
       const json = JSON.stringify(def_con);
+      await openSocket();
 
-      const con = openSocket(password);
+      if (socket && id_con.value == "") {
+        socket.emit("login", json); // hace login
+        if (password.length > 0) pass.value = "";
+
+        return;
+      }
+      if (socket && menu.value.length == 0) leeMenu();
+
       return;
 
       /*
-      try {
-        let urlSocket = url.value;
-        const lon = urlSocket.length;
-        urlSocket = urlSocket.slice(0, lon - 1);
-
-        console.log("Socket url=", urlSocket);
-        //const socket= new io()
-        const socket = io(urlSocket); // conecta con el servidor
-
-        socket.on("loginOk", (data) => {
-          console.log("Socket respuesta=", data);
-        });
-
-        //socket.emit('login',json)
-        console.log("Socket IO=", socket);
-        //  socketIo.value=socket
-      } catch (error) {
-        console.log("Socket Error=", error);
-        //  return
-      }
-      */
-      try {
+    try {
         let response = await axios.get(
           url.value + "login?json=" + json
           // { headers: { "Content-type": "application/json" } }
@@ -226,6 +229,7 @@ export const Session = defineStore(
         }
         pass.value = "";
       } // Fin de Catch
+    */
     }
 
     /// ////////////////////////////////
@@ -252,31 +256,16 @@ export const Session = defineStore(
         query: "SELECT * from vcomeprg order by NUM_PRG,SIS_SIS,TPR_PRG",
       };
 
+      if (socket) {
+        // hay socket
+        await socket.emit("sql async", dat_vis, (response) => {
+          /*
       try {
-        const response = await axios.post(url.value + "sql", dat_vis, {
+         const res= await axios.post(url.value + "sql", dat_vis, {
           headers: { "Content-type": "application/json" },
         });
-
-        var data = [];
-
-        for (let i = 0; i < response.data.length; i++) {
-          const registro = {};
-          for (const nom_cam in response.data[i]) {
-            registro[nom_cam.toLowerCase()] = response.data[i][nom_cam];
-          }
-          data.push(registro); //  asigna todos los datos de cada opcion del menu
-
-          const pre = data[i].tpr_prg === "S" ? "" : "-";
-          let des_prg = data[i].des_prg.replace(String.raw`\<`, "");
-          des_prg = des_prg == null ? "" : des_prg;
-          data[i].des_prg = pre + des_prg;
-
-          // response.data[i].des_prg = pre + response.data[i].des_prg.replace(String.raw`\<`, '')
-        }
-        //const menu = JSON.stringify(response.data)
-        menu.value = data;
-        console.log("Pinia ======leeMenu=====", menu.value, logoEmp.value);
-      } catch (error) {
+        response=res
+      }catch (error) {
         console.log("Read Menu ", " Error", error);
         MessageBox(error.toJSON(), 16, "Back-End error ");
         const router = useRouter();
@@ -284,64 +273,98 @@ export const Session = defineStore(
         return;
         // si no es un error de desconexion
       }
+      */
 
-      dat_vis.query = " select * from publicvar";
+          var data = [];
 
-      try {
-        const result = await axios.post(url.value + "sql", dat_vis);
-        console.log("Pinia Var=", Var.value);
-        if (result.data) {
-          Var.value = result.data[0];
-          for (const comp in Var.value) {
-            if (typeof Var.value[comp] == "string") {
-              const Variable = Var.value[comp];
-              // Checa si es una fecha
-
-              if (
-                typeof Variable == "string" &&
-                +Variable.slice(0, 4) >= 1900 &&
-                +Variable.slice(0, 4) <= 2100 &&
-                Variable.slice(4, 5) == "-" &&
-                +Variable.slice(5, 7) > 0 &&
-                +Variable.slice(5, 7) < 13 &&
-                Variable.slice(7, 8) == "-" &&
-                +Variable.slice(8, 10) > 0 &&
-                +Variable.slice(8, 10) < 32 &&
-                Variable.slice(10, 11) == "T"
-              ) {
-                Var.value[comp] = Variable.substring(0, 10); //   replace('T',' ') // Quitamos la T
-
-                //        Var.value[comp]=await stringToDate(Variable)
-              }
+          for (let i = 0; i < response.length; i++) {
+            const registro = {};
+            for (const nom_cam in response[i]) {
+              registro[nom_cam.toLowerCase()] = response[i][nom_cam];
             }
+            data.push(registro); //  asigna todos los datos de cada opcion del menu
+
+            const pre = data[i].tpr_prg === "S" ? "" : "-";
+            let des_prg = data[i].des_prg.replace(String.raw`\<`, "");
+            des_prg = des_prg == null ? "" : des_prg;
+            data[i].des_prg = pre + des_prg;
+
+            // response.data[i].des_prg = pre + response.data[i].des_prg.replace(String.raw`\<`, '')
           }
-          console.log("Store publicVar Var.value=", Var.value);
-          console.log("Pinia Var=", Var.value);
-        }
-      } catch (error) {
-        console.warn("Can't read view publicvar", error);
+          //const menu = JSON.stringify(response.data)
+          menu.value = data;
+          console.log("Pinia ======leeMenu=====", menu.value, logoEmp.value);
+
+          dat_vis.query = " select * from publicvar";
+
+          try {
+            // const result = await axios.post(url.value + "sql", dat_vis);
+
+            socket.emit("sql async", dat_vis, (data) => {
+              console.log("Pinia Var=", Var.value);
+              if (data && data.length > 0) {
+                Var.value = data[0];
+                for (const comp in Var.value) {
+                  if (typeof Var.value[comp] == "string") {
+                    const Variable = Var.value[comp];
+                    // Checa si es una fecha
+
+                    if (
+                      typeof Variable == "string" &&
+                      +Variable.slice(0, 4) >= 1900 &&
+                      +Variable.slice(0, 4) <= 2100 &&
+                      Variable.slice(4, 5) == "-" &&
+                      +Variable.slice(5, 7) > 0 &&
+                      +Variable.slice(5, 7) < 13 &&
+                      Variable.slice(7, 8) == "-" &&
+                      +Variable.slice(8, 10) > 0 &&
+                      +Variable.slice(8, 10) < 32 &&
+                      Variable.slice(10, 11) == "T"
+                    ) {
+                      Var.value[comp] = Variable.substring(0, 10); //   replace('T',' ') // Quitamos la T
+
+                      //        Var.value[comp]=await stringToDate(Variable)
+                    }
+                  }
+                }
+                console.log(
+                  "Store publicVar Var.value=",
+                  Var.value,
+                  id_con.value
+                );
+                console.log("Pinia Var=", Var.value);
+              }
+            });
+          } catch (error) {
+            console.warn("Can't read view publicvar", error);
+          }
+        });
       }
     }
     //////////////////////////////////
-
-    function logout() {
-      $reset(); //  resetea lo valores a originales
-      // desde la aplicacion haria lo mismo session.$reset()
-      router.push("/");
-    }
 
     function updateMenu(menuObt: any[]) {
       menu.value = menuObt;
     }
 
+    ///////////////////////////////////////////////////
+    // watchers
+    ////////////////////////////////////////////////////
+
     watch(
       () => nom_emp.value,
       (new_emp, old_val) => {
+        console.log(
+          "Watch Pinia nom_emp.value",
+          new_emp,
+          old_val,
+          id_con.value
+        ); // doest not do anything
+
         if (new_emp != old_val) {
-          id_con.value = "";
+          //  id_con.value = "";
           //  menu.value = []
         }
-        console.log("Watch Pinia nom_emp.value", new_emp, id_con.value); // doest not do anything
       },
       { deep: false }
     );
@@ -349,15 +372,19 @@ export const Session = defineStore(
     watch(
       () => id_con.value,
       (new_id, old_val) => {
+        console.log(
+          "Watch Pinia id_con.value=",
+          new_id,
+          old_val,
+          "nom_emp=",
+          nom_emp.value
+        ); // doest not do anything
+
         if (new_id != old_val) {
-          console.log(
-            "Watch Pinia id_con.value=",
-            new_id,
-            "nom_emp=",
-            nom_emp.value
-          ); // doest not do anything
-          if (new_id.length > 9 && nom_emp.value.length > 2) leeMenu();
-          else menu.value = [];
+          if (new_id.length > 9 && nom_emp.value.length > 2) {
+            console.log("currentSesion watch id_con", new_id, old_val);
+            leeMenu();
+          } else menu.value = [];
         }
       },
       { deep: false }
@@ -369,8 +396,14 @@ export const Session = defineStore(
         if (new_pass == "") return;
 
         const password = new_pass;
-        if (password.length > 3 && user.value.length > 0) {
-          pass.value = "";
+        if (
+          password.length > 3 &&
+          user.value.length > 0 &&
+          nom_emp.value.length > 1
+        ) {
+          // pass.value = "";
+
+          console.log("======Watch Pinia password=========", password);
           open(password);
         }
       },
@@ -381,6 +414,72 @@ export const Session = defineStore(
       menu.value.filter((menu) => menu.value.done)
     );
 
+    const socketDisconnect = () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+
+    const sendMessage = (req: {}) => {
+      socket.emit(req.msg, req.data);
+    };
+
+    const logOut = () => {
+      $reset(); //  resetea lo valores a originales
+      // desde la aplicacion haria lo mismo session.$reset()
+      router.push("/");
+    };
+
+    const updateSql = async (dat_act: {}) => {
+      if (!socket) {
+        openSocket();
+        if (!socket) {
+          const router = useRouter();
+          MessageBox("Back end connection fail", 16, "Error");
+          router.push("/Login");
+          return;
+        }
+      }
+      let data;
+
+      //        .emit("sql async", dat_act, (res: []) => {
+      try {
+        const response = await socket.emitWithAck("sql async", dat_act);
+        console.log("1 Socket response", response);
+        return response;
+      } catch {
+        console.log("2 Socket error");
+
+        console.error(response);
+        return null;
+      }
+      /*
+        if (response.error) {
+          console.error(response.error);
+          reject(response.error);
+        }
+
+        */
+    };
+    /*      socket
+        .emit("sql async", dat_act, (response) => {
+          if (response.error) {
+            console.error(response.error);
+            reject(response.error);
+          }
+        else {  
+          console.log("1 Session Socket emit data", response);
+          resolve()
+          data=[response]
+        }  
+        })
+        .then(() => {
+          console.log("2 Session Socket emit data", data);
+          return data;
+        });
+         
+      };
+     */
     return {
       id_con,
       nom_emp,
@@ -395,6 +494,11 @@ export const Session = defineStore(
       Var,
       socketIo,
       fileLogoEmp,
+      updateSql,
+      sendMessage,
+      logOut,
+      openSocket,
+      socket,
     };
   },
   {

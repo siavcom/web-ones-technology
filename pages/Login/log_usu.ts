@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : pas_usu
+// Clase : log_usu
 // Author : Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
 // Ult.Mod  : 
@@ -23,7 +23,10 @@ export class log_usu extends COMPONENT {
     this.prop.Type = "text";
     this.style.width = 'auto'
     this.prop.componentStyle.width ='150px'
-
+ 
+    const session = Session()
+    this.prop.Value=session.user
+ 
   }
   
   //////////////////////////

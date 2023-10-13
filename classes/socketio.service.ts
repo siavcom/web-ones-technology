@@ -12,43 +12,30 @@ import { storeToRefs } from "pinia";
 
 
 export class SocketioService {
-  socket;
+  socketIo;
   url:string ='http://176.16.200.20:38080';
   id_con;
-  def_con:{}
-   
+  res:{};
   
 
-  constructor(def_con) {
-
-    this.url=def_con.url
+  constructor() {
 
     const session = await Session()
        
-    const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al Global
-    this.id_con=id_con
+    const { id_con,url } = storeToRefs(session)  //pasa los elementos por referencia al Global
+    this.id_con=id_con.value
+    this.url=url.value
+    this.socketIo = io(this.url, {
+      auth: { 
+        id_con: this.id_con
+       },
+    });
+
+    this.socketIo.on("broadcast", async (res: {}) => {
+      this.res=res
+      return
+    });
   }  
-
-  setupSocketConnection() {
-    this.socket = io(this.url,this.def_con);
-
-// client-side
-    this.socket.on("connect", () => {
-      console.log(this.socket.id); 
-    })
-
-    this.socket.on('loginOk',(resp)=>{
-      this.id_con.value=resp.id
-      this.fpo_pge.value=resp.fpo_pge
-      res={ id: name, dialect: options.dialect, fpo_pge }
-      console.log('Conection sucefully id=',id_con)
-     })
-    
-     this.socket.on('fail',()=>{
-      this.socket.disconnect();
-     })
-
-  }
 
   disconnect() {
     if (this.socket) {
@@ -57,12 +44,7 @@ export class SocketioService {
   }
 
   sendMessage(req){
-    
-   
-    this.socket.emit(req.msg, req.data);
-
-
-
+    this.socket.emit(req);
   }
 
 } 

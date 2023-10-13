@@ -23,8 +23,9 @@
 //import workerInjector from 'jsstore/dist/worker_injector'
 //import { MessageBox } from '@/src/clases/Functions'
 // import dat_emp from '@/empresas/datos.json' // json con los datos de la empresa, substituye comeemp
-import { watch } from 'vue'
+//import { watch } from 'vue'
 
+//import { io } from 'socket.io-client';
 import axios from 'axios'
 import alasql from 'alasql'
 import { storeToRefs } from 'pinia'
@@ -33,7 +34,8 @@ import { storeToRefs } from 'pinia'
 
 export class VFPDB {
   // no debe de estar fuera 
-  session =Session()  // obtenemos la session
+  session 
+ 
  // {nom_emp} = storeToRefs(this.session)  //pasa los elementos por referencia al Global
 
   // const { id_con, url, dialect, nom_emp, user } = storeToRefs(session)  //pasa los elementos por referencia al Global
@@ -57,14 +59,20 @@ export class VFPDB {
   Estatus: boolean
   Sql = alasql // portea alasql a this.sql (no quitar)
   axiosActive:boolean=false
-
-
-
+  //socketIo =this.session.socketIo
+  socket
+  res:[]=[]
   
   // Inicializa la conexion
   constructor() {
     this.Estatus = true
-    // this.url = ''
+    this.session=Session()  // obtenemos la session
+
+    console.log('Session=',this.session)
+    const { socketIo } = storeToRefs(this.session)  //pasa los elementos por referencia al Global
+    
+
+   // this.url = ''
  
     //  this.user = ''
 
@@ -87,6 +95,44 @@ export class VFPDB {
 
   
     this.Estatus = true
+   /*
+    this.socketIo = io(this.session.url, {
+      auth: { 
+        id_con: this.session.id_con,
+        tip_llamada: 'CHECK',
+        broadcast: 'loginFail'
+       },
+    });
+  */  
+  
+    console.log('socketIo ==',socketIo.value)
+   if (!socketIo.value)
+        this.session.openSocket()
+
+  this.socket=socketIo
+
+/*
+
+    console.log('socketIo ==',socketIo.value)
+
+    const soc= socketIo.value
+    this.socket=soc.value
+    console.log('socket ==',this.socket)
+
+    this.socket.on("error", async (res: string) => {
+      this.MessageBox(res)
+    //  this.socketIo.disconnect()
+      return
+    });
+  
+    this.socket.on("loginOk", async (res: {}) => {
+
+      console.log('Db login ok')
+      return
+    });
+
+   */
+   
   } // Fin constructor
   
   /// /////////////  Vfp Use nodata ///////////////////
@@ -1164,7 +1210,7 @@ export class VFPDB {
 
       return respuesta
     } catch (error) {
-      console.error('SQL Error', error,'Respuesta=',respuesta)
+      console.error('SQL Error', error)
       MessageBox(
         error.response.status.toString() + ' ' + error.response.statusText, 16,
         'SQL Error '
@@ -2134,14 +2180,12 @@ return false;
   */
 
   async axiosCall(dat_lla: Record<string, unknown>) {
- 
-   
-   
 
+  
     if (!(this.session.id_con > ' ') || this.session.user == '' || this.session.nom_emp == '') {
       console.log('Data bases session =======>',this.session.id_con,this.session.user,this.session.nom_emp )
       MessageBox(
-        'No hay conexion con la base de datos', 16,
+        'Back End error', 16,
         'SQL Error Open'
       )
 
@@ -2151,7 +2195,41 @@ return false;
       return
 
     }
+
     dat_lla.id_con=this.session.id_con // asignamos el id de connexion
+
+    /*
+   const broadcast=this.socketIo?this.session.socketId+new Date().getTime().toString():''
+
+    if (broadcast>''){
+       dat_lla.broadcast=broadcast
+        this.socketIo.on(broadcast), async (res: {}) => {
+          const respuesta = res.data
+          console.log('Sockect response  ======>>>', dat_lla, 'respuesta', 'OK')
+          return respuesta        
+
+        }
+          this.socketIo.emit('sql async',dat_lla)
+    }
+
+   */
+    // hay socket de conexion
+  
+   
+   if (this.socket.value ){
+    try {
+    const data=await this.session.updateSql(dat_lla)
+    console.log('4 DataBase ok socket data=',data )
+    return data
+ 
+  }
+    catch{
+     console.warn('Error SQL Scoket')
+
+    }
+   }
+
+   
     const ThisForm: any = this.Form
     let numIntentos = 0
     let numLogin = 0
@@ -2177,7 +2255,7 @@ return false;
          */
         this.axiosActive=false
         const respuesta = response.data
-        console.log('Db Axios call response  ======>>>', dat_lla, 'respuesta', 'OK')
+        console.log('5 Db Axios call response  ======>>>', dat_lla, 'respuesta', 'OK',respuesta)
         return respuesta
       } catch (thrown) {
         console.log("Axios stop=====>>>>>>> ", thrown);
@@ -2209,6 +2287,7 @@ return false;
             //const session=storeToRefs(Session)
             // const session = Session()
             const { id_con} = storeToRefs(this.session)  //pasa los elementos por referencia al Global
+
             //          ThisForm.prop.login = false
             id_con.value = ''  // borra session 
             await this.delay(4000) // espera 10 segundos

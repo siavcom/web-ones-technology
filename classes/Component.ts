@@ -11,7 +11,8 @@
 
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
-  Parent: any = {}; //this.Dom.ctx; // Contexto
+  Parent={}; //this.Dom.ctx; // Contexto
+//  Container={}; // Contenedor
   Form: any = {}; //this.Parent.ThisForm // Thisform
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name

@@ -45,10 +45,9 @@ export class cam_dat extends COLUMN {
         if (this.prop.Valid)
            return
         const vfp=this.Form.db
-        const valor=this.prop.Value.toUpperCase() 
-        const recno=this.Form.Recno
+        const valor=this.prop.Value.toUpperCase().trim() 
+        const recno=this.Recno 
         const data=await vfp.localSql(`select count(key_pri) as existe from vi_cap_dat where trim(upper(cam_dat))="${valor}" and recno<>${recno}`) 
-        //console.log('VALID====>',data[0])
         if (data[0].existe>0){
             this.prop.Valid=false
             this.prop.ErrorMessage='Campo existente dentro del diccionario'

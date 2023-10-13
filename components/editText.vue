@@ -459,8 +459,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
     else {
       // leemos valor 
-      if (This.Form.Recno = !props.Registro)
-        This.Form.Recno = props.Registro
+      if (This.Parent.Recno = !props.Registro)
+        This.Parent.Recno = props.Registro
 
       //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
       const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
@@ -469,8 +469,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       for (const campo in data) {
         if (campo != 'key_pri') {
           sw_dat = true
+
+          if (This.Recno!=props.Registro)
+            This.Recno=props.Registro
+
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
           Value.value = data[campo]
+
           // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
 
           if (!isValid) {
@@ -760,13 +765,14 @@ const readCampo = async (recno: number) => {
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
+/*
     console.log('EditText Watch Name=', This.prop.Name,
       'prop.Valid =', This.prop.Valid,
       'Status=', This.prop.Status,
       'Value=', This.prop.Value, Value.value,
       'Valid=', This.prop.Valid,
       'checkValue=',checkValue.value)
-
+*/
 
     //  if (This.prop.Valid) return
     if (new_val != old_val) {

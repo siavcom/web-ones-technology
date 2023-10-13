@@ -74,6 +74,8 @@ import {
   watch,
   } from "vue";
 */
+
+import { storeToRefs } from 'pinia'
 // ///////////////////////////////////////////////
 // Componentes
 // ///////////////////////////////////////////////
@@ -100,21 +102,32 @@ import { form } from './login'
 // const ThisCtx = This.ctx
 
 const ThisForm = reactive(new form())
-const emit = defineEmits(['updateStatus'])
+//const emit = defineEmits(['updateStatus'])
+
+
+
+const session = Session()
+//const { data } = await useAsyncData('id', () => session.id_con)
+
+const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
 /// //////////////////////////////////////////////////////
-// watch Login
+// watch id
 /// ///////////////////////////////////////
-/*
+
 watch(
-  () => ThisForm.prop.Login,
+  () => id_con.value,
   (new_val, old_val) => {
-    console.log('Login ', new_val)
-    if (ThisForm.prop.Login) { emit('updateStatus', true) }
+    if (new_val=='')
+       return
+    if (new_val!=old_val)  
+       window.history.back() // regresa a la pagina anterior   
+
+
   },
   { deep: false }
 )
-*/
+
 // ////////////   Clase Base de datos ///////////////////////////////
 const Init = new INIT() // solo se puso para evitar de errores que tenia
 

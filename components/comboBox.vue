@@ -323,8 +323,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       // Actualizamos el registro del form
 
       This.prop.Valid = false
-      if (This.Form.Recno = !props.Registro)
-        This.Form.Recno = props.Registro
+      if (This.Parent.Recno = !props.Registro)
+        This.Parent.Recno = props.Registro
 
       const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
 
@@ -332,6 +332,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       for (const campo in data) {
         if (campo != 'key_pri') {
           sw_dat = true
+
+          if (This.Recno!=props.Registro)
+            This.Recno=props.Registro
+
+
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
           Value.value = data[campo]
           console.log('comboBox emitValue readCampo ',props.Registro,props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
