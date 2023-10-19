@@ -210,7 +210,8 @@ export class GRID extends COMPONENT {
       "grid Incertaremos renglon=======>",
       this.prop.RecordSource,
       "View=",
-      this.Form.db.View[this.prop.RecordSource]
+      this.Form.db.View[this.prop.RecordSource],
+      "Valores=",m
     );
 
     //this[this.elements[0].Name].prop.First=true

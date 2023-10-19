@@ -449,7 +449,6 @@ export const Session = defineStore(
         return response;
       } catch {
         console.log("2 Socket error");
-
         console.error(response);
         return null;
       }

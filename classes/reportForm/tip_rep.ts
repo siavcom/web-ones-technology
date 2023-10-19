@@ -31,7 +31,7 @@ export class tip_rep extends COMPONENT {
   }
 
   async interactiveChange() {
-  
+
     if (this.prop.Value == 1) {
       // Detallado
       this.Form.for_imp.prop.Value = this.Form.for_ori + "_d";
@@ -41,7 +41,32 @@ export class tip_rep extends COMPONENT {
       this.Form.for_imp.prop.Value = this.Form.for_ori + "_g";
       this.Form.vis_rep = this.Form.vis_ori + "_g";
     }
-    console.log('tip_rep Valid',this.Form.for_imp.prop.Value, this.Form.vis_rep)
+    const m={view_report:this.Form.vis_rep  }
+    this.Form.reportFields.Grid.prop.RecordSource=''
+    await this.Form.db.use('vi_cap_db_reportfields',m)
+
+    this.Form.reportFields.Grid.prop.RecordSource='vi_cap_db_reportfields'
+    
+    if (this.Form.db.View.vi_cap_db_reportfields.recCount==0){ // Si no tiene registros, inserta la primera vista 
+     /*
+      const  data = await this.Form.db.localAlaSql('select * from Now.camposView')
+     const  field={}
+      for (let g=0;g<data.length;g++){
+        const d=data[g]
+        field[d.cam_dat]=[{ type: 'label',label: 'Field', value: d.des_dat},
+                          { type: 'editText',label:'Header', value: d.des_dat,},
+                          { type: 'checkBox',label :'Enabled', value:1}
+        ]
+
+        // m.yes_report=1
+        // m.header_report=m.des_cam
+      } 
+      const m={fields_report : JSON.stringify(field)}
+     */
+      await this.Form.reportFields.Grid.appendRow()
+
+   }
+
     this.Form.init()
 
     return ;

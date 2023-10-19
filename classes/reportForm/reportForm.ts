@@ -16,6 +16,7 @@ import { tip_rep } from "./tip_rep";
 import { var_ord } from "./var_ord";
 import { for_imp } from "./for_imp";
 import { report } from "./report/report";
+import {reportFields} from "./reportFields"
 import { bt_pdf } from "./bt_pdf";
 
 export class reportForm extends FORM {
@@ -25,7 +26,10 @@ export class reportForm extends FORM {
   public queryPri = new queryPri();
   public queryUsu = new queryUsu();
   public queryGen = new queryGen();
+
   public for_imp = new for_imp();
+  public reportFields = new reportFields();
+
   public bt_obtener = new bt_obtener();
   public bt_pdf = new bt_pdf();
   public report = new report();
@@ -50,6 +54,8 @@ export class reportForm extends FORM {
       this.queryUsu.prop.TabIndex=105
       this.queryGen.prop.TabIndex=106
       this.for_imp.prop.TabIndex=107
+      this.reportFields.prop.TabIndex=108
+
     }
 
 
@@ -92,7 +98,7 @@ export class reportForm extends FORM {
       nom_vis: vis_rep,
     };
     console.log("reportForm init m=", m);
-    await db.use("vi_cap_query_db", m); // todos los querys del reporte
+    await db.use("vi_cap_db_query", m); // todos los querys del reporte 
 
     // Query Principal
 
@@ -107,7 +113,6 @@ export class reportForm extends FORM {
 
     await this.asignaRecordSource("queryUsu", "query_user");
     this.queryUsu.usu_que = db.session.user;
-    console.log("reportForm session", db.session);
     this.queryUsu.prop.textLabel =
       "Condiciones por usuario :" + this.queryUsu.usu_que;
 
@@ -117,6 +122,7 @@ export class reportForm extends FORM {
 
     this.Form.queryPri.activa.prop.Value = 1;
     await this.Form.queryPri.nco_que.interactiveChange();
+    /*
     console.log(
       "Fin reportForm",
       this.Form.queryPri.Name,
@@ -127,9 +133,11 @@ export class reportForm extends FORM {
       ,'camposView=', await this.Form.db.localAlaSql(
         `select * as tip_dat from Now.camposView ; ` )
       );
+      */
 
-
-
+      if (db.session.user=='sa')
+        this.reportFields.prop.Visible=true
+       
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -170,7 +178,7 @@ export class reportForm extends FORM {
         usu_que: this[tip_con].usu_que,
         nco_que: this[tip_con].nco_que.prop.Value,
       };
-      await this.Form.db.localClone("vi_cap_query_db", tabla, filter);
+      await this.Form.db.localClone("vi_cap_db_query", tabla, filter);
     }
 
     const ins_sql = `select * from ${tabla} where nco_que=${nco_que} order by ren_que`;

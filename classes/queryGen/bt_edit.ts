@@ -53,7 +53,7 @@ export class bt_edit extends COMPONENT {
    if (add ){
       this.Parent.nco_que.prop.sw_add=true
       
-      const data = await this.Form.db.execute(`select max(nco_que)+1 as max_que from man_query_db \
+      const data = await this.Form.db.execute(`select max(nco_que)+1 as max_que from man_db_query \
       where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
          and usu_que='${m.usu_que}' `)
          m.nco_que=1 
@@ -71,7 +71,7 @@ export class bt_edit extends COMPONENT {
    // if (this.Form.db.View[this.Parent.Grid.prop.RecordSource])
    //     await this.Form.db.useNodata(this.Parent.Grid.prop.RecordSource)
    // else    
-    await this.Form.db.localClone('vi_cap_query_db', RecordSource, filter)
+    await this.Form.db.localClone('vi_cap_db_query', RecordSource, filter)
     this.Parent.Grid.prop.RecordSource=RecordSource
 
     if (this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount==0){

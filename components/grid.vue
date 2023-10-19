@@ -43,7 +43,7 @@
 
               <td v-for="col in This.elements" :key="col.Id" style="padding:0">
 
-                <div v-show="This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible">
+                <div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)">
                   <!--template style="This[col.Name].style" -->
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
@@ -79,12 +79,17 @@
                     -->
                   <Transition name="columninput">
                     <div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'>
-                      <component :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
-                        v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
+                      <component :is="impComp(This[col.Name].prop.BaseClass)" 
+                        v-model:Value="This[col.Name].prop.Value"
+                        v-model:Status="This[col.Name].prop.Status" 
+                        v-model:Key="This[col.Name].prop.Key"
                         v-model:Focus="This[col.Name].Focus" 
-                        v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
-                         v-bind:Component="ref(This[col.Name])" v-bind:Registro="item.recno"
-                        v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
+                        v-model:Valid="This[col.Name].prop.Valid" 
+                        v-model:ShowError="This[col.Name].prop.ShowError"
+                        v-bind:Component="ref(This[col.Name])" 
+                        v-bind:Registro="item.recno"
+                        v-bind:prop="This[col.Name].prop" 
+                        v-bind:style="This[col.Name].style"
                         v-bind:position="This[col.Name].position"
                         @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
                         :style="{ 'width': This[col.Name].style.width }">

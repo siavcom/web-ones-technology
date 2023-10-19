@@ -96,7 +96,7 @@ export class Grid extends GRID {
         par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       }
    */
-    //  await this.Form.db.use('vi_cap_query_db', m) // todos los querys del reporte
+    //  await this.Form.db.use('vi_cap_db_query', m) // todos los querys del reporte
     
       resultado=true
     } 

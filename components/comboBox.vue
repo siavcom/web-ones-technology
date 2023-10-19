@@ -374,10 +374,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 //const result = await asignaResultado(Value.value)
 //////------------------- Asigna Resultado
 
-  
+  //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
   let found=false
-  for (let i = 0; i < columnas.length; i++) {
-
+  for (let i = 0; i < columnas.length && !found; i++) {
+  //  console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value)
     if ((typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
       (!(typeof columnas[i].value == 'number') && Value.value == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
       displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
@@ -763,11 +763,9 @@ const renderComboBox = async (readData?:boolean) => {
       }
     }
   } else
-    console.warn('No data in ', This.prop.ControlSource)
-
+    console.warn('ComboBox Name=',This.prop.Name,' No data in ', This.prop.ControlSource)
   // recorremos todas los renglones si es solo un columna val_col.length si no 
   // toma el tamaÃ±o del arreglo solo de la primer columna
-
   //if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
   // let  valor = Value.value // null
 
