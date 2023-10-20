@@ -56,6 +56,7 @@ export class tip_rep extends COMPONENT {
         field[d.cam_dat]=[{ type: 'label',label: 'Field', value: d.des_dat},
                           { type: 'editText',label:'Header', value: d.des_dat,},
                           { type: 'checkBox',label :'Enabled', value:1}
+                          
         ]
 
         // m.yes_report=1

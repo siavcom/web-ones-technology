@@ -40,7 +40,7 @@
         <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
       </div>
-      <div v-else-if="prop.Type == 'json'">
+      <div v-else-if="prop.Type == 'json'" :style="componentStyle" >
 
 
         <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
@@ -50,9 +50,9 @@
         <TransitionGroup name='detailJson'  >
           <details v-for="(comp, index) in compJson" key:='index'  ref="Ref">
               <summary>{{ comp }} </summary>
-              <div v-for="(comp2) in  currentJson[comp]" >   
-                {{comp2.label}}       
-                <input v-model="comp2.value" :type="comp2.type" :readonly="comp2.readOnly" >
+              <div v-for="(detalle) in  currentJson[comp]" >   
+                {{detalle.label}}       
+                <input v-model="detalle.value" :type="detalle.type?detalle.type:'text'" :readonly="detalle.readOnly?detalle.readOnly:false" :style="detalle.style?detalle.style: { height:'50px'} " >
 
               </div> 
           </details>
@@ -396,8 +396,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //outFocus.value = true
   This.prop.Status = 'P'
   let readValid = false
-  // Status.value = 'P'
-  // emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+  Status.value = 'P'
+  emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
 
   let Valor = ''
@@ -483,6 +483,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
           if (This.prop.Valid)
             This.prop.Valid = false
           Ref.value.select()
+
+
+          This.prop.Status = 'A'
+           Status.value = 'A'
+          emit("update:Status", 'A'); // actualiza el valor Status para que funcione el watch en el componente padre
           return
         }
       }
@@ -654,6 +659,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     console.log('ValidOnRead editText emitValue valid() Name', props.prop.Name)
     This.valid()
   }
+
+  Status.value = 'A'  // se necesita para que el watch padre funcione
+  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+
 
   return true
 }

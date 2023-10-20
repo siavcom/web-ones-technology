@@ -270,8 +270,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   This.prop.Status = 'P'
   let readValid = false
 
-  // Status.value = 'P'
-  // emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+  Status.value = 'P'
+  emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
   if (!readCam) {  // Graba en AlaSql , el dato se cambio desde fuera 
     // Si no viene del watch This.prop.Value
@@ -307,6 +307,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (This.prop.Valid)
           This.prop.Valid = false
         Ref.value.select()
+        This.prop.Status = 'A'
+        Status.value = 'A'
+        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
       }
     }
@@ -407,6 +410,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     This.valid()
 
   }
+
+
+  Status.value = 'A'  // se necesita para que el watch padre funcione
+  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+
 
   return true
 }

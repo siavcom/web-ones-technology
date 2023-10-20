@@ -86,7 +86,7 @@ export class Grid extends GRID {
     m.view_report = this.Form.vis_rep;
 
     await super.appendRow(m);
-    console.log('TIP_REP appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+   // console.log('TIP_REP appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
   }
 }
