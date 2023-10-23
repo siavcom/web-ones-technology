@@ -23,7 +23,7 @@ export class cam_dat extends COLUMN {
         this.prop.Placeholder = "Nombre del campo"
         this.prop.ToolTipText ='Nombre del campo'
         this.prop.componentStyle.textTransform='lowercase'
-        this.style.width='100px'
+        this.style.width='00px'
     }
 
     ////////////////////////////////// 

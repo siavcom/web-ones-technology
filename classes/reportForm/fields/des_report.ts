@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
-// Clase : con_report
-// Descripcion : Conjunto de columnas
+// Clase : des_report
+// Descripcion : Descripcion
 // Author : Fernando Cuadras Angulo
 // Creacion : Octubre/2023
-// Ult.Mod  : 16/Octubre/2023
+// Ult.Mod  : 20/Octubre/2023
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // Clase base
@@ -11,17 +11,14 @@
 import { COLUMN } from '@/classes/Column'
 
 
-export class con_report extends COLUMN {
+export class des_report extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.textLabel = 'Conjunto'
-        this.prop.Type = 'number'
-        this.prop.ControlSource='vi_cap_db_reportfields.con_report'
-        this.prop.Decimals=0
-        this.prop.ReadOnly=false
-        this.style.width = '50px'
+        this.textLabel = 'descripcion'
+        this.prop.ControlSource='vi_cap_db_reportfields.des_report'
+        this.style.width = '250px'
         
     }
 }

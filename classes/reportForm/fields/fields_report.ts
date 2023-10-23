@@ -18,7 +18,6 @@ export class fields_report extends COLUMN {
         this.textLabel = 'Campos'
         this.prop.Type = 'json'
         this.prop.ControlSource='vi_cap_db_reportfields.fields_report'
-        this.style.width='400px'
+        this.style.width='450px'
     }
-
 }

@@ -16,12 +16,13 @@ export class con_report extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.textLabel = 'Conjunto'
+        this.textLabel = 'Conjunto de columnas'
         this.prop.Type = 'number'
-        this.prop.ControlSource='vi_cap_db_reportfields.con_report'
         this.prop.Decimals=0
         this.prop.ReadOnly=false
+        this.prop.Value=1
         this.style.width = '50px'
-        
+        this.prop.Max= "99"
+        this.prop.Min= "0"
     }
 }

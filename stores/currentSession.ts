@@ -110,6 +110,10 @@ export const Session = defineStore(
 
         socket.on("error", (error) => {
           MessageBox(error, 16, "SQL Error ");
+          if (error=='Timeout or connection error'){
+             const router = useRouter();
+             router.push("/Login");
+          }
 
           console.warn("Error SQL=", error);
         });

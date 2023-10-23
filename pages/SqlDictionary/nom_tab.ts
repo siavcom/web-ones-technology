@@ -34,6 +34,7 @@ export class nom_tab extends COMPONENT {
     this.prop.List= [],
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
     this.style.width='600px'
+    this.prop.componentStyle.width ='350px'
     this.style.zIndex=2
   }
 

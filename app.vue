@@ -2,7 +2,7 @@
   <div class="Menu">
     <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
       <div class="logo-details" style="margin: 6px 14px 0 14px;">
-        <img v-if="menuLogo" :src="menuLogo" alt="menu-logo" class="menu-logo icon">
+        <img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon">
 
         <!--i  v-else src="/Iconos/svg" class="bx icon" :class="menuIcon"></i-->
         <div class="logo_name">
@@ -20,9 +20,9 @@
             <li v-if="isLoggedIn" @click="isOpen = true">
               <!--i class="bx bx-search" ></i-->
               <img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
-              <input type="text" :placeholder="searchPlaceholder"
+              <input type="text" :placeholder="Props.searchPlaceholder"
                 @input="$emit('search-input-emit', $event.target.value)">
-              <span class="tooltip">{{ searchTooltip }}</span>
+              <span class="tooltip">{{ Props.searchTooltip }}</span>
             </li>
 
             <!--span v-for="(menuItem, index) in menuItems" :key="index"-->
@@ -40,7 +40,7 @@
               <span v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
 
                 <li @click="isMan = !isMan">
-                  <span class="links_options">{{ maintenance }}</span>
+                  <span class="links_options">{{ Props.maintenance }}</span>
                   <img v-show="!isMan" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
@@ -57,7 +57,7 @@
               </span>
               <span v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
                 <li text-align="end" @click="isRep = !isRep">
-                  <span style="text-align:end" class="links_options">{{ reports }}</span>
+                  <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
                   <img v-show="!isRep" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
@@ -73,7 +73,7 @@
               </span>
               <span v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
                 <li text-align="end" @click="isPro = !isPro">
-                  <span class="links_options">{{ process }}</span>
+                  <span class="links_options">{{ Props.process }}</span>
                   <img v-show="!isPro" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
@@ -100,19 +100,19 @@
 
         <div v-if="isLoggedIn" class="profile">
           <div class="profile-details">
-            <img v-if="profileImg" :src="profileImg" alt="profileImg">
+            <img v-if="Props.profileImg" :src="Props.profileImg" alt="Props.profileImg">
             <img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle">
             <div class="name_job">
               <div class="name">
-                {{ profileName }}
+                {{ Props.profileName }}
               </div>
               <div class="job">
-                {{ profileRole }}
+                {{ Props.profileRole }}
               </div>
             </div>
           </div>
           <!--i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" /-->
-          <img v-if="isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
+          <img v-if="Props.isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
             @click.stop="exit()">
         </div>
       </div>
@@ -177,7 +177,7 @@ definePageMeta({
 })
 */
 
-interface Props {
+interface Props_interface {
   isOpened: boolean;
   //isMenuOpen: boolean;
   // menuTitle: string;
@@ -222,9 +222,8 @@ interface Props {
 
 */
 
-const props = withDefaults(defineProps<Props>(), {
+const Props =reactive({ //   withDefaults(defineProps<Props_interface>(), {
 
-  // const props=defineProps({
   isOpened: true,
   //isMenuOpen: true,
   // menuTitle: 'KilloSoftware',
@@ -236,7 +235,8 @@ const props = withDefaults(defineProps<Props>(), {
   maintenance: 'Mantenimiento',
   reports: 'Reportes',
   process: 'Procesos',
-  menuItems: () => [
+  menuItems:[     //() => [
+
     /* {  // Estadisticas graficas del negocio
       link: '#',
       name: 'Dashboard',
@@ -308,7 +308,7 @@ const Style = {
 }
 
 
-props.menuItems.push(
+Props.menuItems.push(
          {
       // link: 'http://siavcom.com.mx:38000/Login',
       name: 'Login',
@@ -318,7 +318,7 @@ props.menuItems.push(
       type: 'P',
       system: ''
     })
-props.menuItems.push(
+Props.menuItems.push(
     {
       link: '#',
       name: 'Messages',
@@ -339,8 +339,8 @@ const session = Session()
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
-const Prop = ref(props)
-const Items = reactive(props.menuItems)  // son los que aparecen en el html
+//const Prop = ref(props)
+const Items = reactive(Props.menuItems)  // son los que aparecen en el html
 const itemLength = Items.length
 let subItemsMan = reactive([])
 let subItemsRep = reactive([])
@@ -354,9 +354,9 @@ const isPro = ref(false)
 // Idicamos si ya esta firmado
 
 
-const isLoggedIn = ref(props.isLoggedIn)
+const isLoggedIn = ref(Props.isLoggedIn)
 
-const isOpen = ref(props.isOpened)
+const isOpen = ref(Props.isOpened)
 isOpen.value = true
 
 /* ***********Titulos en las pestaÃ±as****************** */
@@ -615,7 +615,7 @@ const obtSubMenu = (system: string) => {
 watch(
   () => isOpen,
   (new_val, old_val) => {
-    window.document.body.style.paddingLeft = props.isOpened && props.isPaddingLeft ? props.menuOpenedPaddingLeftBody : props.menuClosedPaddingLeftBody
+    window.document.body.style.paddingLeft = Props.isOpened && Props.isPaddingLeft ? Props.menuOpenedPaddingLeftBody : Props.menuClosedPaddingLeftBody
   },
   { deep: false }
 )

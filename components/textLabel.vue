@@ -6,7 +6,12 @@
         <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
         <input :class="prop.Type" readonly="true" type="checkBox" :checked="checked" />
       </div>
- 
+      <div v-else-if="prop.Type == 'json'" v-bind:style="componentStyle" >
+        <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
+        <input class="text" value='Json Data' readonly="true" />
+      </div>
+
+      
       <div v-else>
         <input v-show="Text != null" :class="prop.Type" v-bind:style="componentStyle" readonly="true" v-model="Text" />
       </div>

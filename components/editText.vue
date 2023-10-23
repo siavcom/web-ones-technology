@@ -15,18 +15,18 @@
 
       <input v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]"
-        :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur"
+        :readonly="prop.ReadOnly || noUpdate" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur"
         @keypress="keyPress($event)" @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
 
       <!--spinner-->
    
       <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="prop.ReadOnly"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="prop.ReadOnly || noUpdate"
         :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
 
       <!--textArea -->
       <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
-        <textarea class="textArea" :style="componentStyle" ref="Ref" v-model="This.prop.Value" :readonly="prop.ReadOnly"
+        <textarea class="textArea" :style="componentStyle" ref="Ref" v-model="This.prop.Value" :readonly="prop.ReadOnly || noUpdate"
           :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
           :rows="componentStyle.rows" :cols='componentStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
           @focus="onFocus"></textarea>
@@ -35,7 +35,7 @@
       <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
       <div v-else-if="prop.Type == 'date'">
         <input class="date" :style="componentStyle" ref="Ref" type="date" v-model="currentDate" :disabled="prop.Disabled"
-          :readonly="prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur">
+          :readonly="prop.ReadOnly || noUpdate" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="onBlur">
 
         <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
@@ -49,10 +49,10 @@
 
         <TransitionGroup name='detailJson'  >
           <details v-for="(comp, index) in compJson" key:='index'  ref="Ref">
-              <summary>{{ comp }} </summary>
+              <summary :style="{fontWeight: 'bold'}">{{ comp }} </summary>
               <div v-for="(detalle) in  currentJson[comp]" >   
                 {{detalle.label}}       
-                <input v-model="detalle.value" :type="detalle.type?detalle.type:'text'" :readonly="detalle.readOnly?detalle.readOnly:false" :style="detalle.style?detalle.style: { height:'50px'} " >
+                <input v-model="detalle.value" :type="detalle.type?detalle.type:'text'" :readonly="detalle.readOnly?detalle.readOnly:false" :style="detalle.style?detalle.style: { width:'auto'} " >
 
               </div> 
           </details>
@@ -61,8 +61,8 @@
 
       <!--checkBox-->
       <div v-else-if="prop.Type == 'checkBox'">
-        <input class="checkBox" type="checkbox" id="checkbox" :style="componentStyle" ref="Ref" :readonly="prop.ReadOnly"
-          :disabled="prop.Disabled || prop.ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue" @focus="onFocus">
+        <input class="checkBox" type="checkbox" id="checkbox" :style="componentStyle" ref="Ref" :readonly="prop.ReadOnly || noUpdate"
+          :disabled="prop.Disabled || prop.ReadOnly || noUpdate" :tabindex="prop.TabIndex" v-model="checkValue" @focus="onFocus">
 
         <!--label for="checkbox">{{ checkValue }}</label-->
       </div>
@@ -72,7 +72,7 @@
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-      <input v-else class="text" ref="Ref" :style="componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly"
+      <input v-else class="text" ref="Ref" :style="componentStyle" v-model.trim="Value" :readonly="prop.ReadOnly || noUpdate"
         :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
@@ -202,6 +202,7 @@ const props = defineProps<{
   };
   //db: any
 }>();
+const noUpdate=ref(false)
 const Component = ref(props.prop.This)
 const This = Component.value
 const Value = ref(props.prop.Value)

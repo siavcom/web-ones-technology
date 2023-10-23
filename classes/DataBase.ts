@@ -664,9 +664,13 @@ export class VFPDB {
     let sw_insert = false;
 
     for (const row in dat_act) {
+      dat_vis.dat_act={}
+      const m = {}; // valiables en memoria
+      dat_vis.dat_act.key_pri = dat_act[row].key_pri;
+      dat_vis.dat_act.timestamp= dat_act[row].timestamp;   
+  
       recno = dat_act[row].recno;
       dat_vis.tip_llamada = "INSERT";
-      dat_vis.dat_act = {}; // Inicilizamos el arreglo de datos
       let sw_update = false;
 
       // recorre los registros de la vista a actualizar
@@ -676,18 +680,20 @@ export class VFPDB {
       //console.log('Db tableUpdate dat_act[row]', dat_act[row])
 
       if (dat_act[row].key_pri > 0) {
-        dat_vis.dat_act.key_pri = dat_act[row].key_pri;
+       // dat_vis.dat_act.key_pri = dat_act[row].key_pri;
 
-        dat_vis.dat_act.timestamp = dat_act[row].timestamp;
-        //recno=dat_act[row].recno
+       // dat_vis.dat_act.timestamp = dat_act[row].timestamp;
 
         dat_vis.tip_llamada = "UPDATE";
+
+        // Leemos los datos viejos
         const ins_sql = `SELECT * FROM Last.${alias}  WHERE recno=${recno} ;`;
         const datos = await this.localAlaSql(ins_sql);
         // console.log('Db tableUpdate select Now ',ins_sql,datos)
 
         if (datos.length > 0) {
           old_dat = datos[0];
+          console.log('tableupdate old=',old_dat)
         } else {
           console.error(
             "tableUpdate error recno ",
@@ -700,9 +706,21 @@ export class VFPDB {
       }
 
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
-      const m = {}; // valiables en memoria
+
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
+        if (dat_act[row][campo]==null) dat_act[row][campo]=''  
+        
+        if (typeof dat_act[row][campo]=='string'){
+          dat_act[row][campo]=dat_act[row][campo].trim()
+            if (old_dat[campo]==null)
+               old_dat[campo]=''
+            else  
+              old_dat[campo]=old_dat[campo].trim()
+         }  
+
+
+
         // console.log('Db DataBAse campo=', campo)
 
         // Antes switch
@@ -730,26 +748,37 @@ export class VFPDB {
               break;
             default:
               //            m[campo] = "'" + dat_act[row][campo] + "'"
-              m[campo] = dat_act[row][campo];
+              
+              // se tiene que validar como string y nll ya que asi viene desde alaSQL  
+            
+
+              m[campo] =dat_act[row][campo]!='null' ? dat_act[row][campo].trim() : ''
+
           }
 
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
           if (val_def[campo]) {
-            dat_vis.dat_act[campo] = dat_act[row][campo];
+            dat_vis.dat_act[campo] =m[campo] // dat_act[row][campo];
 
             console.log(
               "tableUpdate Actualiza CAMPO=",
               campo,
               "Valor=",
               dat_vis.dat_act[campo],
-              " old=",
+              " Old value=",
               old_dat[campo]
             );
+    
+
+           
             //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true;
           }
         }
+        
       }
+    
+
 
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = "";
@@ -2221,10 +2250,9 @@ return false;
 
     if (this.socket.value && false) {
       try {
-
-       if (dat_lla.tip_llamada=='UPDATE'){
-        console.log(' DataBase Socket UPDATE data =',dat_lla.dat_act)
-        /* 
+        if (dat_lla.tip_llamada == "UPDATE") {
+          console.log(" DataBase Socket UPDATE data =", dat_lla.dat_act);
+          /* 
         for (const campo in dat_lla.dat_act) {
 
              console.log('Socket UPDATE campo =',campo,'valor ',dat_lla.dat_act[campo],'typeof=',typeof dat_lla.dat_act[campo])
@@ -2236,7 +2264,7 @@ return false;
               }
            }
          */
-       }
+        }
 
         const data = await this.session.updateSql(dat_lla);
         console.log(" DataBase Socket UPDATE ok data=", data);
@@ -2303,13 +2331,17 @@ return false;
           );
 
           await MessageBox(
-            error.response.statusText,
+            error.response.status.toString() + " " + error.response.statusText,
             16,
             "SQL Data Base Error "
           );
 
           // si no es un error de desconexion
           if (error.response.status.toString() != "401") {
+            const router = useRouter();
+
+            router.push("/Login");
+
             this.axiosActive = false;
             return null;
           }

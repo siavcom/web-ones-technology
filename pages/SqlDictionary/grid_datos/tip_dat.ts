@@ -27,7 +27,7 @@ export class tip_dat extends COLUMN {
         "Numeric",
         "Date",
         "Integer",
-        "TimeStamp",
+        "Time",
         "Text",
         "Logical",
       ],
