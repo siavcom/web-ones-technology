@@ -11,23 +11,25 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { captureComponent } from '@/classes/captureComponent'
 
-export class fco_pry extends COMPONENT {
+
+export class fco_pry extends captureComponent {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Forma de cotización'
+        this.prop.textLabel = 'Forma de cotizar'
         this.prop.Type ='text'
         this.prop.BaseClass = 'comboBox'
         this.prop.ControlSource = 'vi_cap_comepry.fco_pry'
         this.prop.RowSourceType = 5 //1-Value, 2-Alias,3-sql 5-Array
-        this.prop.RowSource =[["DESCRIPCION","INSUMO"],["D","I"]]
+        this.prop.RowSource =[["INSUMO POR INSUMO","DESCRIPCION "],['I','D']]
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
+        this.prop.Value='I'
 
         this.prop.Capture=true
         this.prop.updateKey=false
@@ -119,47 +121,6 @@ export class fco_pry extends COMPONENT {
 
     }
 
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-      if (this.prop.ReadOnly) return false
-      if (this.prop.updateKey){ // Si es llave de actualizacion
-        await this.Form.refreshComponent(false)
-        }
-
-        return !this.prop.ReadOnly
-        //   await super.when() no hace falta el super porque en focus.capture lo hace 
-    }
-    
-
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-if( !await this.Form.valid(this.Name) && !this.prop.Valid)
-          return false
-      return true    }
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
-    }
-    */
-
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
+   
+  
 }

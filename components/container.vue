@@ -40,8 +40,8 @@
             </div>
           </div>
           <div class='main'>
-            <TransitionGroup name='detailForm'>
-              <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
+            <TransitionGroup name='detailForm' tag='div'>
+              <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0" >
                 <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
           v-bind:Show="true"
           

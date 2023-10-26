@@ -57,7 +57,7 @@ export class VFPDB {
   oldTables = [];
   Estatus: boolean;
   Sql = alasql; // portea alasql a this.sql (no quitar)
-  axiosActive: boolean = false;
+  //axiosActive: boolean = false;
   //socketIo =this.session.socketIo
   socket;
   res: [] = [];
@@ -139,7 +139,7 @@ export class VFPDB {
     }
 
     if (nom_vis == null) {
-      MessageBox("No se permite nombre de vista en null", 16, "Error");
+      alert("No se permite nombre de vista en null");
       return false;
     }
     if (!alias) {
@@ -392,8 +392,7 @@ export class VFPDB {
         }
         console.log("2 Db USE " + alias + "m=".match, " exp_ind=", exp_ind);
         if (exp_ind == undefined) {
-          MessageBox(
-            "No se pudo evaluar el indice de la tabla=" +
+          alert("No se pudo evaluar el indice de la tabla=" +
               alias +
               " indice=" +
               this.View[alias].exp_indice
@@ -416,7 +415,7 @@ export class VFPDB {
         }
 
         if (exp_whe == undefined) {
-          MessageBox(
+          alert(
             "No se pudo evaluar el la expresion where de la tabla=" +
               alias +
               " indice=" +
@@ -490,11 +489,7 @@ export class VFPDB {
     } catch (error) {
       console.error("Axios error :", dat_vis, error);
 
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert("SQL Error :"+error.response.status.toString() + " " + error.response.statusText );
 
       return false;
     }
@@ -571,11 +566,8 @@ export class VFPDB {
         "No hay nombre de tabla de actualizacion para la vista",
         alias
       );
-      MessageBox(
-        "No hay nombre de tabla de actualizacion para la vista " + alias,
-        16,
-        "ERROR"
-      );
+      alert(
+        "ERROR :No hay nombre de tabla de actualizacion para la vista " + alias );
       return false;
     }
 
@@ -603,7 +595,7 @@ export class VFPDB {
       // Solo actualiza un registro
       if (!recno) {
         // No hay registro a actualizar
-        MessageBox("No hay recno en " + alias, 16, "ERROR");
+        alert("ERROR :No hay recno en " + alias);
         return;
       }
       select.where = { recno };
@@ -863,11 +855,7 @@ export class VFPDB {
             "No se pudo actualizar el registro en tabla " + alias,
             dat_vis
           );
-          MessageBox(
-            "No se pudo actualizar el registro en tabla " + alias + dat_vis,
-            16,
-            "SQL Error"
-          );
+          alert('SQL Error: No se pudo actualizar el registro en tabla ' + alias + dat_vis);
           sw_val = false;
           if (dat_act[row].key_pri > 0) {
             // si es un dato existennte
@@ -939,7 +927,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error ");
+      alert("SQL Error : No existe la vista SQL " + alias)
     }
 
     let recno = 0;
@@ -973,16 +961,13 @@ export class VFPDB {
         try {
           val_defa = eval(val_eval);
         } catch (error) {
-          MessageBox(
-            " appendBlank can't eval(" +
-              val_eval +
-              ")" +
-              alias +
-              " Error=" +
-              error,
-            16,
-            "LocalError"
-          );
+          alert(" appendBlank can't eval(" +
+          val_eval +
+          ")" +
+          alias +
+          " Error=" +
+          error)
+
           console.error(
             "appendBlank can't eval(" + val_eval + ")",
             "Error=",
@@ -1060,7 +1045,9 @@ export class VFPDB {
     }
 
     if (!alias) {
-      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
+      alert('SQL Error :No existe la vista SQL  '+ alias)
+
+//      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
       return false;
     }
     const dat_vis = {
@@ -1120,7 +1107,8 @@ export class VFPDB {
     }
 
     if (!alias) {
-      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
+      alert("SQL Error :No existe la vista SQL "+alias )
+    
       return false;
     }
 
@@ -1206,7 +1194,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
+      alert('SQL Error :No existe la vista SQL ' + alias)
       return;
     }
     // Leemos los datos a actualizar
@@ -1280,11 +1268,7 @@ export class VFPDB {
 
       return;
     } catch (error) {
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
       return false;
     }
   };
@@ -1443,11 +1427,7 @@ export class VFPDB {
       return respuesta;
     } catch (error) {
       console.error("SQL Error", error);
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
       return false;
     }
   };
@@ -1474,11 +1454,7 @@ export class VFPDB {
       }
     } catch (error) {
       console.log("SQL Error", error.response);
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
       return false;
     }
   };
@@ -1507,11 +1483,7 @@ export class VFPDB {
       }
     } catch (error) {
       console.error("SQL Error", error);
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
 
       return false;
     }
@@ -1541,11 +1513,8 @@ export class VFPDB {
       }
     } catch (error) {
       console.error("SQL Error", error);
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+
 
       return false;
     }
@@ -1583,11 +1552,8 @@ export class VFPDB {
       return true;
     } catch (error) {
       console.error("SQL Error", error);
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+
       return false;
     }
   };
@@ -1649,11 +1615,9 @@ export class VFPDB {
 
       exp_where = con_vis; // genera la expresion where
     } catch (error) {
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+
+      // MessageBox( error.response.status.toString() + " " + error.response.statusText,16,"SQL Error " );
 
       console.error("SQL Error", error);
 
@@ -1675,12 +1639,10 @@ export class VFPDB {
       // Aumentamos a la rspuesta el regitro recno
       return await this.genera_tabla(data, alias);
     } catch (error) {
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+
       console.error("SQL Error", error);
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      // MessageBox(error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error "      );
     }
   };
 
@@ -1749,11 +1711,9 @@ export class VFPDB {
       if (data == null) return;
       // console.log('Db Estructura vistas===>>', data)
     } catch (error) {
-      MessageBox(
-        error.response.status.toString() + " " + error.response.statusText,
-        16,
-        "SQL Error "
-      );
+      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+
+      //MessageBox( error.response.status.toString() + " " + error.response.statusText, 16,"SQL Error " );
 
       return;
     }
@@ -1922,11 +1882,8 @@ export class VFPDB {
           // console.log('Db Estructura vista===>>', respuesta)
         } catch (error) {
           console.error("SQL Error", error);
-          MessageBox(
-            error.response.status.toString() + " " + error.response.statusText,
-            16,
-            "SQL Error "
-          );
+          alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+          //MessageBox( error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error " );
 
           return null;
         }
@@ -2221,7 +2178,8 @@ return false;
         this.session.user,
         this.session.nom_emp
       );
-      MessageBox("Back End error", 16, "SQL Error Open");
+      alert("Back End error : Session not active")
+      //MessageBox("Back End error", 16, "SQL Error Open");
 
       const router = useRouter();
       //window.close()
@@ -2283,7 +2241,7 @@ return false;
     // cancel the request,  controller.abort()
     // el signal en la llamada no llevara nada  signal
     // console.log('Db Axios call llamada  ======>>>', dat_lla, this.url)
-    this.axiosActive = true;
+   // this.axiosActive = true;
     setTimeout(() => controller.abort(), 60000); // 60 segundos
 
     do {
@@ -2296,7 +2254,7 @@ return false;
         data - The response body provided by the server. If the response from the server is a JSON, Axios will automatically parse data into a JavaScript object.
         status - The HTTP status code from the response e.g. 200, 400, 404.
          */
-        this.axiosActive = false;
+      //  this.axiosActive = false;
         const respuesta = response.data;
         console.log(
           "5 Db Axios call response  ======>>>",
@@ -2311,11 +2269,8 @@ return false;
 
         if (axios.isCancel(thrown)) {
           console.log("Request cancelled", thrown.message);
-          await MessageBox(
-            error.response.statusText,
-            16,
-            "User camcel request "
-          );
+          alert("User cancel request :")
+          //await MessageBox( error.response.statusText, 16, "User camcel request "       );
           numLogin = 3;
         } else {
           //handle the error
@@ -2330,22 +2285,35 @@ return false;
             error.response.statusText
           );
 
-          await MessageBox(
-            error.response.status.toString() + " " + error.response.statusText,
-            16,
-            "SQL Data Base Error "
-          );
+          alert("SQL Data Base Error  :"+error.response.statusText)
 
-          // si no es un error de desconexion
-          if (error.response.status.toString() != "401") {
-            const router = useRouter();
+          //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 
-            router.push("/Login");
+         
 
-            this.axiosActive = false;
-            return null;
+          // si es un error de desconexion
+          if (error.response.status.toString() == "401" ) {
+            if (this.session.nom_emp==''){
+                const router = useRouter();
+                router.push("/Login");
+                return  
+              } 
+
+           // this.axiosActive = false;
+           const { id_con } = storeToRefs(this.session); //pasa los elementos por referencia al Global
+           id_con.value=''
+
           }
           numIntentos++;
+
+         
+          if((!window.navigator.onLine && !error.response && error.code === "ERR_NETWORK") ||
+               error.toJSON().message === 'Network Error'){
+            alert('No internet connection. Try '+numIntentos.toString()+' to reconnect');
+             } else
+               return false
+
+          
           if (numIntentos == 5) {
             numLogin++;
             //const session=storeToRefs(Session)
@@ -2354,13 +2322,15 @@ return false;
 
             //          ThisForm.prop.login = false
             id_con.value = ""; // borra session
-            await this.delay(4000); // espera 10 segundos
+            await this.delay(10000); // espera 10 segundos
             if (id_con.value == "") numLogin = 3;
-          }
+          } else
+          await this.delay(2000) // espera 2 segundos para tratar de reconectar
+
         }
       } // Fin catch error
     } while (numLogin < 3);
-    this.axiosActive = false;
+   // this.axiosActive = false;
     window.close();
   }
 
@@ -2414,7 +2384,8 @@ return false;
       return resultado;
     } catch (error) {
       console.error("localAlaSql error==>", error, ins_sql);
-      MessageBox(ins_sql + " " + error, 16, "Error Ala SQL ");
+      alert('local SQL error :'+ins_sql );
+//      MessageBox(ins_sql + " " + error, 16, "Error Ala SQL ");
 
       return false;
     }
@@ -2982,7 +2953,8 @@ return false;
       console.log;
       return response.data;
     } catch (error) {
-      await MessageBox(error.response.statusText, 16, "Report Server Error  ");
+      alert("Report Server Error  :"+error.response.statusText)
+      //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
       return null;
     }
 
@@ -2999,7 +2971,7 @@ return false;
     return data;
   };
 
-  async MessageBox(
+  async MessageBox_ant(
     texto: string,
     tipo?: number,
     title?: string,

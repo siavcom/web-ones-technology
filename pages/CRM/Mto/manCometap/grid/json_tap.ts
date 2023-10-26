@@ -33,7 +33,7 @@ export class json_tap extends COLUMN {
         this.prop.ColumnCount = 0  // Columns number
         this.prop.BoundColumn =0  // the result is bound to column number 2
         this.style.zIndex = 1
-
+        this.style.width='300px'
         // this.RecordSource="" oJo
 
         ///////////////////////// 

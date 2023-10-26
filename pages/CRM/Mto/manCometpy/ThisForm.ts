@@ -36,19 +36,17 @@ export class ThisForm extends captureForm {
     super()  // inicializa la clase base
 
     this.Development = false
-    this.prop.Name = 'manCometpy'
-    this.prop.textLabel = "Definicion de proyectos"
+    this.Name = 'manCometpy'
+    this.prop.textLabel = "Tipos de proyectos"
     this.prop.RecordSource=''
-    this.prop.nem_pge = "Killo Software"
-   //this.prop.fpo_pge = new Date().toISOString().substring(0, 10)
-    this.prop.log_emp = "/img//Logo_Empresa.bmp"
+    this.prop.log_emp = "/logos/Logo_Empresa.png"
     this.prop.Status = 'A'
     this.style.display = "flex"
     this.style.background = "white"
     this.style.color = "#b94295"
     this.style.fontSize = "13px" 
     this.style.position = "center"
-    this.style.backgroundImage = "/img//Logo_Empresa.bmp"
+    this.style.backgroundImage = "/logos/Logo_Empresa.png"
    
   }
 

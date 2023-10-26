@@ -11,9 +11,11 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { captureComponent } from '@/classes/captureComponent'
 
-export class ven_ven extends COMPONENT {
+
+export class ven_ven extends captureComponent {
+
 
     constructor() {
         super()
@@ -24,14 +26,14 @@ export class ven_ven extends COMPONENT {
         this.prop.Type ='number'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comepry.ven_ven'
-
+        this.prop.Value=0
         this.prop.MaxLength=4
         this.prop.Min="0"
         this.prop.Max="9999"
-        this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
-
+        this.prop.componentStyle.width='60px' 
+        this.prop.ErrorMessage='No existe'
     }
 
     ////////////////////////////////// 
@@ -39,12 +41,22 @@ export class ven_ven extends COMPONENT {
     ///////////////////////////////////
     
     async valid() {
-      this.prop.Valid=false
-      const data=await this.Form.db.execute('select key_pri from man_comeven where ven_ven=${this.prop.Value}')
-      if (data[0] && data[0].key_pri && data[0].key_pri>0){
-          this.prop.Valid=true
+      this.Form.nom_ven.Recno=0
+      if (this.prop.Value==0 )
+        return true
+      
+      const ven_ven= this.prop.Value   
+      const m={ven_ven}
+      
+      const data=await this.Form.db.use('lla1_ven',m)
+      if (data.length==0) {
+          this.prop.Valid=false  
+          return false
       }
-      return this.prop.Valid
+      this.Form.nom_ven.Recno=data[0].recno
+      this.prop.Valid=true
+      return true    
+
     }
 
     ////////////////////////////////// 

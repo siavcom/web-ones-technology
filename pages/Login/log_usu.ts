@@ -23,7 +23,7 @@ export class log_usu extends COMPONENT {
     this.prop.Type = "text";
     this.style.width = 'auto'
     this.prop.componentStyle.width ='150px'
- 
+    this.style.zIndex=1   
     const session = Session()
     this.prop.Value=session.user
  

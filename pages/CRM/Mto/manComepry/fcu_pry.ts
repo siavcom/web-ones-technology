@@ -11,9 +11,10 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { captureComponent } from '@/classes/captureComponent'
 
-export class fcu_pry extends COMPONENT {
+
+export class fcu_pry extends captureComponent {
 
     constructor() {
         super()
@@ -24,12 +25,7 @@ export class fcu_pry extends COMPONENT {
         this.prop.Type ='date'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comepry.fcu_pry'
-        this.prop.Placeholder = 'FECHA DE CULMINACION'
         this.prop.ToolTipText ='FECHA DE CULMINACION'
-        this.prop.MaxLength=20
-        this.prop.Min="0"
-        this.prop.Max="2147483647"
-        this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
         
@@ -119,48 +115,4 @@ export class fcu_pry extends COMPONENT {
 
 
     }
-
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-      if (this.prop.ReadOnly) return false
-      if (this.prop.updateKey){ // Si es llave de actualizacion
-        await this.Form.refreshComponent(false)
-        }
-
-        return !this.prop.ReadOnly
-        //   await super.when() no hace falta el super porque en focus.capture lo hace 
-    }
-    
-
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-if( !await this.Form.valid(this.Name) && !this.prop.Valid)
-          return false
-      return true    }
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
-    }
-    */
-
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
 }

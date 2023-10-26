@@ -1,0 +1,20 @@
+{
+"contacto":{
+    "type": "edit", 
+    "label": "Contacto", 
+    "value": "",
+    "readOnly":"false" ,
+    "style":{"width":"auto"}},
+"telefono":  { 
+    "type": "edit", 
+    "label": "Teléfono", 
+    "value": "(   ) ",
+    "readOnly":"false", 
+    "style":{"width":"auto"} },
+"acuerdo": { 
+    "type": "edit", 
+    "label": "Acuerdo", 
+    "value": "",
+    "readOnly":"false", 
+    "style":{"width":"auto"} }
+}

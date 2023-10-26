@@ -45,11 +45,11 @@ const props = defineProps<{
   fpo_pge: string;
 }>()
 
-const Datos=reactive(props)
+const Datos=ref(props)
 
-Datos.nomEmp=props.nomEmp.trim()
-Datos.titleName=props.titleName
-Datos.fpo_pge=props.fpo_pge
+Datos.value.nomEmp=props.nomEmp.trim()
+Datos.value.titleName=props.titleName
+Datos.value.fpo_pge=props.fpo_pge
 //const logoEmp = ref(props.logoEmp)
 //logoEmp.value = "/logos/Logo_Empresa.png"
 //const nomEmp = ref(props.nomEmp)

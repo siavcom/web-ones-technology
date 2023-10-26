@@ -12,6 +12,13 @@ import { tdo_tdo } from "@/classes/reports/VTAS/tdo_tdo";
 import { des_fec } from "@/classes/reports/VTAS/des_fec";
 import { has_fec } from "@/classes/reports/VTAS/has_fec";
 import { alm_rep } from "./alm_rep";
+import { tip_imp } from "./tip_imp";
+import { des_fam } from "./des_fam";
+import { has_fam } from "./has_fam";
+import { sep_fam } from "./sep_fam";
+import { num_fam } from "./num_fam";
+import { des_isu } from "./des_isu";
+import { has_isu } from "./has_isu";
 
 
 // Generamos la clase en memoria 
@@ -21,6 +28,15 @@ export class reportInv extends reportForm {
   public des_fec= new des_fec()
   public has_fec= new has_fec()
   public alm_rep= new alm_rep()
+  public tip_imp= new tip_imp()
+  public des_isu= new des_isu()
+  public has_isu= new has_isu()
+  public sep_fam= new sep_fam()
+  public num_fam= new num_fam()
+  public des_fam= new des_fam()
+  public has_fam= new has_fam()
+
+  
   constructor() {
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
@@ -29,6 +45,25 @@ export class reportInv extends reportForm {
     this.des_fec.prop.TabIndex=2
     this.has_fec.prop.TabIndex=3
     this.alm_rep.prop.TabIndex=4
+    this.tip_imp.prop.TabIndex=5
+    this.des_isu.prop.TabIndex=6
+    this.has_isu.prop.TabIndex=7
+    this.has_isu.prop.Value = "ZZZZZZZZZZ"
+    this.des_isu.prop.Value = " "
+    this.sep_fam.prop.TabIndex=8
+    this.num_fam.prop.TabIndex=9
+    this.num_fam.prop.Value=1
+    this.des_fam.prop.TabIndex=10
+    this.has_fam.prop.TabIndex=11
+    //this.has_fam.prop.Type = "string"
+    //this.has_fam.prop.MaxLength=10
+    //this.has_fam.prop.Value = " "
+    //this.has_fam.prop.textLabel = "Hasta "
+   // this.has_fam.style.width='100px'
+   // this.has_fam.prop.componentStyle.width='50px'
+
+    this.tip_rep.prop.Row
+  
   }
 
 async init() {

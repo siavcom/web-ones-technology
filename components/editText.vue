@@ -47,10 +47,10 @@
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
-        <TransitionGroup name='detailJson'  >
+        <TransitionGroup name='detailJson'  tag="div">
           <details v-for="(comp, index) in compJson" key:='index'  ref="Ref">
-              <summary :style="{fontWeight: 'bold'}">{{ comp }} </summary>
-              <div v-for="(detalle) in  currentJson[comp]" >   
+              <summary :style="{fontWeight: 'bold'}" :key='index' >{{ comp }} </summary>
+              <div v-for="(detalle) in  currentJson[comp]" key:="detalle" >   
                 {{detalle.label}}       
                 <input v-model="detalle.value" :type="detalle.type?detalle.type:'text'" :readonly="detalle.readOnly?detalle.readOnly:false" :style="detalle.style?detalle.style: { width:'auto'} " >
 
@@ -78,7 +78,7 @@
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
 
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-        style="zIndex:zIndex+1">{{
+        :style="{zIndex:zIndex+1}">{{
           prop.ToolTipText
         }}</span>
       <span class="errorText" v-show="ShowError && prop.ErrorMessage.length > 1">{{ prop.ErrorMessage }}</span>
@@ -90,7 +90,7 @@
 
 
 <script setup lang="ts">
-import component from 'vue3-table-lite/ts';
+//import component from 'vue3-table-lite/ts';
 
 
 //import {format} from "date-fns"
@@ -395,6 +395,7 @@ inherit	Inherits this property from its parent element. Read about inherit
 const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   //outFocus.value = true
+  This.Form.prop.Status='P'
   This.prop.Status = 'P'
   let readValid = false
   Status.value = 'P'
@@ -404,8 +405,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   let Valor = ''
   if (!readCam) {
 
+    //console.log('editText emitValue() 1) !readCam Name=', props.prop.Name, 'isValid=',isValid,'prop:value=',This.prop.Value)
     // Si no viene del watch This.prop.Value
     if (!isValid) {
+      Valor=This.prop.Value
+      /*
       switch (props.prop.Type) {
         case 'number':
           if (!currentValue.value[1]) {
@@ -459,11 +463,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
           break;
         default:
-          Valor = Value.value
+          Valor = This.prop.Value //  Value.value
           break;
       }
+      */
+     // console.log('editText emitValue() 2) !readCam Name=', props.prop.Name, 'Valor=',Valor,'prop:value=',This.prop.Value)
+
     } else
       Valor = props.prop.Value
+
+   //console.log('editText emitValue() 3) !readCam Name=', props.prop.Name, 'Valor=',Valor,'prop:value=',This.prop.Value)
 
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
@@ -473,6 +482,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     // Si no hay error
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
+     // console.log('editText emitValue() No hay error !readCam Name=', props.prop.Name, 'Valor=',Valor)
+
+      Value.value=Valor
       emit("update:Value", Valor); // actualiza el valor Value en el componente padre
       if (props.prop.Type == 'spinner' || props.prop.Type == 'checkBox')
         await This.interactiveChange()
@@ -489,6 +501,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
           This.prop.Status = 'A'
            Status.value = 'A'
           emit("update:Status", 'A'); // actualiza el valor Status para que funcione el watch en el componente padre
+          This.Form.prop.Status = 'A'
+
           return
         }
       }
@@ -496,6 +510,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     // Reasigamos valor de Value
     if (Value.value != Valor)
+
       Value.value = Valor
 
   }
@@ -663,7 +678,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   Status.value = 'A'  // se necesita para que el watch padre funcione
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-
+  This.Form.prop.Status='A'
 
   return true
 }
@@ -706,7 +721,8 @@ const Numeros = async ($event) => {
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
   focusIn.value = 0  // Perdio el foco
-  emitValue() ///se puso await
+  This.prop.Value=Value.value   
+ // emitValue() ///se puso await
   //console.log('EditText focusOut', This.prop.Name, 'ShowError=', ShowError.value, 'Status=', This.prop.Status)
   return
 
@@ -846,22 +862,21 @@ const readCampo = async (recno: number) => {
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
-    /*
-        console.log('EditText Watch Name=', This.prop.Name,
-          'prop.Valid =', This.prop.Valid,
-          'Status=', This.prop.Status,
-          'Value=', This.prop.Value, Value.value,
-          'Valid=', This.prop.Valid,
-          'checkValue=',checkValue.value)
-    */
-
+  
     //  if (This.prop.Valid) return
     if (new_val != old_val) {
       if (This.prop.Type == 'date')
         if (new_val.slice(0, 10) == old_val.slice(0, 10))
           return
       // Value.value = This.prop.Value
-      await emitValue(false, This.prop.Valid) //se puso await
+      console.log('EditText Watch Name=', This.prop.Name,
+          'prop.Valid =', This.prop.Valid,
+          'Status=', This.prop.Status,
+          'Value=', This.prop.Value, Value.value,
+          'Valid=', This.prop.Valid,
+          'checkValue=',checkValue.value)
+     // if (Value.value != This.prop.Value)
+         await emitValue(false, This.prop.Valid) //se puso await
     }
   },
   { deep: false }

@@ -297,12 +297,12 @@ export class reportForm extends FORM {
 
 
     // Obtenemos variables Publicas
-    const Var = this.Form.Var;
+    const Var = this.Form.publicVar;
     for (let component in Var) {
       data[component] = Var[component];
       //console.log("bt_json component.value= ", data[component]);
     }
-    //console.log("bt_json obtData= ", data);
+    //console.log("bt_json obtData= ", data,this.Form.publicVar);
     this.Form.data=data
     return data;
   }

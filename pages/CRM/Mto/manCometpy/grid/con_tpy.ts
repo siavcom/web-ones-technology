@@ -25,16 +25,12 @@ export class con_tpy extends COLUMN {
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_cometpy.con_tpy'
         this.prop.ToolTipText ='Consecutivo por tipo'
-        this.prop.MaxLength=16
+        this.prop.Min='1'
+        this.prop.Max='999999'
+        this.prop.MaxLength=6
         this.prop.Capture=true
         this.prop.updateKey=false
-        this.prop.RowSource=''      // 
-        this.prop.RowSourceType = 0 //1-Value, 2-Alias, 3-Select SQL 5-Array
-        this.prop.ColumnCount = 0  // Columns number
-        this.prop.BoundColumn =0  // the result is bound to column number 2
-        this.style.zIndex = 1
-
-        // this.RecordSource="" oJo
+        this.prop.Decimals=0
 
         ///////////////////////// 
         // Props 

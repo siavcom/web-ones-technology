@@ -47,7 +47,7 @@
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
                 v-model:Status="ThisForm[compHeader].prop.Status" v-model:ShowError="ThisForm[compHeader].prop.ShowError"
                 v-model:Key="ThisForm[compHeader].prop.Key" v-model:Focus="ThisForm[compHeader].Focus"
-                v-bind:Registro="ThisForm[compHeader].Recno ? ThisForm[compHeader].Recno :0"
+                v-bind:Registro="ThisForm[compHeader].Recno ? ThisForm[compHeader].Recno : 0"
                 v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
                 v-bind:position="ThisForm[compHeader].position"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
@@ -75,7 +75,7 @@ emit
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
                     v-model:Focus="ThisForm[compMain].Focus"
-                    v-bind:Registro="ThisForm[compMain].Recno ? ThisForm[compMain].Recno : 0 "
+                    v-bind:Registro="ThisForm[compMain].Recno ? ThisForm[compMain].Recno : 0"
                     v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                     v-bind:position="ThisForm[compMain].position"
                     @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
@@ -91,12 +91,22 @@ emit
     ThisForm.prop.Status == 'A'
     -->
           <section class="footer">
-            <div v-show="ThisForm.prop.Status == 'A'">
-              <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
-            </div>
-            <div v-show="ThisForm.prop.Status != 'A'">
-              <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-            </div>
+            <TransitionGroup tag='div' >
+              <div v-show="ThisForm.prop.Status == 'A'" key='green'>
+                <svg width="100" height="100">
+                  <circle cx="50" cy="50" r="8" stroke="green" stroke-width="4" fill="green" />
+                </svg>
+
+                <!--img class='circle' src="/Iconos/circle-green.svg" style="float:left" /-->
+              </div>
+              <div v-show="ThisForm.prop.Status != 'A'" key="red">
+                <svg width="100" height="100">
+                  <circle cx="50" cy="50" r="8" stroke="red" stroke-width="4" fill="red" />
+                </svg>
+
+                <!--img class='circle' src="/Iconos/circle-red.svg" style="float:left" /-->
+              </div>
+            </TransitionGroup>
             <slot name="footer">
               <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
               v-bind:db="ref(ThisForm.db)"

@@ -117,7 +117,7 @@ export class tpy_tpy extends COMPONENT {
     }
     async when() {
       this.Form.Grid.prop.RecordSource=''
-      this.Form.bt_aceptar.prop.Disabled=false
+      this.Form.bt_aceptar.prop.Visible=true
       return true
     }
     

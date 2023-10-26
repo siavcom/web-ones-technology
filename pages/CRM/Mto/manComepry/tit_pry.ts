@@ -11,16 +11,17 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { captureComponent } from '@/classes/captureComponent'
 
-export class tit_pry extends COMPONENT {
+
+export class tit_pry extends captureComponent {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Titulo'
+        this.prop.textLabel = 'Titulo del proyecto'
         this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comepry.tit_pry'
@@ -32,6 +33,7 @@ export class tit_pry extends COMPONENT {
         this.prop.Decimals=0
         this.prop.Capture=true
         this.prop.updateKey=false
+        this.prop.componentStyle.width='600px' 
         
         
         // this.RecordSource="" oJo

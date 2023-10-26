@@ -39,7 +39,7 @@ export class ThisForm extends captureForm {
 
     this.Development = false
     this.prop.autoLoad = false
-    this.prop.Name = 'man_cometpy'
+    this.Name = 'man_cometpy'
     this.prop.textLabel = "Actividades por tipo de proyecto"
     // this.prop.RecordSource = 'man_cometpy'
     this.prop.Status = 'A'
@@ -49,7 +49,7 @@ export class ThisForm extends captureForm {
         this.style.color = "#b94295"
         this.style.fontSize = "13px" 
         this.style.position = "center"
-        this.style.backgroundImage = "/img//Logo_Empresa.bmp"
+        this.style.backgroundImage = "/logos/Logo_Empresa.png"
     */
 
 
