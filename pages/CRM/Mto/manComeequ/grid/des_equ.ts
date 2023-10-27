@@ -1,35 +1,32 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : COLUMN
-// Class : equ_usu
-// Description : equipo de trabajo
+// Class : des_equ
+// Description : DESCRIPCION
 // Author : El Fer Blocks
-// Creation : 2023-10-26
+// Creation : 2023-06-29
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from '@/classes/captureComponent'
+import { COLUMN } from '@/classes/Column'
 
-export class equ_usu extends captureComponent {
+export class des_equ extends COLUMN {
 
     constructor() {
         super()
    
        // const nom_ind=renglon[i]['nom_ind']
          
+        this.textLabel = 'Descripcion' // Column Header
         this.prop.Type ='text'
-        this.prop.textLabel = 'Equipo de trabajo'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_comepry.equ_usu'
-        this.prop.MaxLength=64
+        this.prop.ControlSource = 'vi_cap_db_equipo.des_equ'
+        this.prop.MaxLength=128
         this.prop.Capture=true
-        this.prop.updateKey=false
-        this.style.zIndex = 1
-        this.prop.MaxLength=1024
-        this.prop.componentStyle.width='640px'
+
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -115,15 +112,14 @@ export class equ_usu extends captureComponent {
 
 
     }
-/*
+
     ////////////////////////////////// 
     // event when 
     ///////////////////////////////////
     
   async when() {
-    
     }
-*/    
+    
 /*
     ////////////////////////////////// 
     // event valid 

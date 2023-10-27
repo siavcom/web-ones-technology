@@ -92,19 +92,19 @@ emit
     -->
           <section class="footer">
             <TransitionGroup tag='div' >
-              <div v-show="ThisForm.prop.Status == 'A'" key='green'>
-                <svg width="100" height="100">
+              <div v-if="ThisForm.prop.Status == 'A'" key='green'>
+                <!--svg width="100" height="100">
                   <circle cx="50" cy="50" r="8" stroke="green" stroke-width="4" fill="green" />
-                </svg>
+                </svg-->
 
-                <!--img class='circle' src="/Iconos/circle-green.svg" style="float:left" /-->
+                <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
               </div>
-              <div v-show="ThisForm.prop.Status != 'A'" key="red">
-                <svg width="100" height="100">
+              <div v-else key="red">
+                <!--svg width="100" height="100">
                   <circle cx="50" cy="50" r="8" stroke="red" stroke-width="4" fill="red" />
-                </svg>
+                </svg-->
 
-                <!--img class='circle' src="/Iconos/circle-red.svg" style="float:left" /-->
+                <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
               </div>
             </TransitionGroup>
             <slot name="footer">

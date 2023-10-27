@@ -23,7 +23,7 @@ export class tap_tap extends COLUMN {
         this.textLabel = 'Actividad' // Column Header
         this.prop.Type ='text'
         this.prop.BaseClass = 'comboBox'
-        this.prop.ControlSource = 'vi_cap_cometapy.tap_tap'
+        this.prop.ControlSource = 'vi_cap_comeapy.tap_tap'
         this.prop.RowSource = "vi_cap_cometap.des_tap,tap_tap"
         this.prop.RowSourceType = 0  //1-Value, 2-Alias,3-sql 5-Array
         this.prop.ColumnCount = 2;

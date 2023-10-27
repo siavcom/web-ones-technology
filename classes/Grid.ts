@@ -32,6 +32,8 @@ export class GRID extends COMPONENT {
     this.prop.Visible = false;
     this.prop.messageUpdate = "Grabamos la tabla";
     this.style.width='95%'
+    this.style.height="auto"
+
   }
 
   ////////////////////////////////////////

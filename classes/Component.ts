@@ -105,6 +105,7 @@ export class COMPONENT {
     Value: "",
     ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
+    When:true,
 
     componentStyle: {
       background: "white",
@@ -488,8 +489,7 @@ export class COMPONENT {
   // Descripcion: Cuando pierde el foco valida
   /////////////////////////////////////////////////////////////////
   public async valid(Valid: boolean): Promise<boolean> {
-    if (!Valid) Valid = true;
-    this.prop.Valid = Valid;
+    this.prop.Valid = true;
     return this.prop.Valid;
   }
 

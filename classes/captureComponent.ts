@@ -54,7 +54,7 @@ export class captureComponent extends COMPONENT {
       this.prop.Valid = true
       return this.prop.Valid
     }
-    
+    console.log('Valid ',this.prop.Name,'sw_when',this.sw_when)
     if ( !this.sw_when && !await this.Form.validComponent(this.Name) && !this.prop.Valid){
        return this.prop.Valid
     }

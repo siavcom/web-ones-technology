@@ -1,35 +1,58 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : COLUMN
-// Class : equ_usu
-// Description : equipo de trabajo
+// Class : tpy_tpy
+// Description : TIPO DE PROYECTO
 // Author : El Fer Blocks
-// Creation : 2023-10-26
+// Creation : 2023-06-29
 // Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from '@/classes/captureComponent'
+import { COLUMN } from '@/classes/Column'
 
-export class equ_usu extends captureComponent {
+export class tpy_tpy extends COLUMN {
 
     constructor() {
         super()
-   
+  /* 
+        this.prop.Order = 2
+        this.textLabel = 'Descripcion'
+        this.prop.BaseClass = 'editText'
+        this.prop.ControlSource = 'vi_cap_tab.des_tab'
+        this.prop.ToolTipText ='Descripción de la tabla'
+        this.style.width='600px'
+
+*/
+
+
+
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.Type ='text'
-        this.prop.textLabel = 'Equipo de trabajo'
+        this.textLabel = 'TIPO DE PROYECTO' // Column Header
+        //this.prop.Type ='text'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_comepry.equ_usu'
-        this.prop.MaxLength=64
+        this.prop.ControlSource = 'vi_cap_cometpy.tpy_tpy'
+        //this.prop.Placeholder = 'TIPO DE PROYECTO'
+        this.prop.ToolTipText ='TIPO DE PROYECTO'
+        //this.prop.MaxLength=3
+        //this.prop.Min="0"
+        //this.prop.Max="2147483647"
+        /* 
+        this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=false
-        this.style.zIndex = 1
-        this.prop.MaxLength=1024
-        this.prop.componentStyle.width='640px'
+        this.prop.updateKey=true
+        this.prop.RowSource=''      // 
+        this.prop.RowSourceType = 0 //1-Value, 2-Alias, 3-Select SQL 5-Array
+        this.prop.ColumnCount = 0  // Columns number
+        this.prop.BoundColumn =0  // the result is bound to column number 2
+        */
+        this.style.width='50px'
+
+       // this.style.zIndex = 1
+
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -115,15 +138,14 @@ export class equ_usu extends captureComponent {
 
 
     }
-/*
+
     ////////////////////////////////// 
     // event when 
     ///////////////////////////////////
     
   async when() {
-    
     }
-*/    
+    
 /*
     ////////////////////////////////// 
     // event valid 

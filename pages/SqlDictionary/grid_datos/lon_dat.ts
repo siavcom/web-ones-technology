@@ -55,8 +55,8 @@ export class lon_dat extends COLUMN {
     async valid() {
 
         if (this.prop.Value == 0) {
-            this.prop.ErrorMessage = 'El tamaño debe ser mayot a 0'
-            this.prop.Valid = false
+            this.prop.ErrorMessage = 'El tamaño debe ser mayor a 0 '
+            return false
 
 
             //console.log('ErrorMessage VALID ====>',this.prop.ErrorMessage)
@@ -66,23 +66,23 @@ export class lon_dat extends COLUMN {
             this.prop.Value != 2 &&
             this.prop.Value != 4) {
             this.prop.ErrorMessage = 'Valores permitidos 1,2 o 4'
-            this.prop.Valid = false
+            return false
         }
 
         if (this.Parent.tip_dat.prop.Value == 'V' &&
             this.prop.Value > 8000) {
             this.prop.ErrorMessage = 'Maximo valor permitido 8000'
-            this.prop.Valid = false
+            return false
         }
 
         if (this.Parent.tip_dat.prop.Value == 'C') {
             if (this.prop.Value > 8000) {
                 this.prop.ErrorMessage = 'Maximo valor permitido 8000'
-                this.prop.Valid = false
+                return  false
             }
             if (this.prop.Value =0) {
                 this.prop.ErrorMessage = 'El valor debe ser mayor a 0'
-                this.prop.Valid = false
+                return  false
             }
 
         }
@@ -90,11 +90,10 @@ export class lon_dat extends COLUMN {
         if (this.Parent.tip_dat.prop.Value == 'N' &&
             this.prop.Value + this.Parent.dec_dat.prop.Value > 38) {
             this.prop.ErrorMessage = 'La suma longitud+decimales no debe exeder 38'
-            this.prop.Valid = false
+            return false
         }
 
-        this.prop.ShowError = !this.prop.Valid
-        return this.prop.Valid
+        return true
     }
 
 }

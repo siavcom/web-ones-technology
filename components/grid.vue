@@ -57,7 +57,7 @@
                   
                   -->
                   <div v-show="item.id != This.Row" :style='{ "width": This[col.Name].style.width }'>
-                    <Transition name="columntext">
+                    <!--Transition name="columntext"-->
                       <textLabel 
                         v-bind:Registro="item.id != This.Row?item.recno:0"
                         v-bind:Id="item.id"
@@ -67,7 +67,7 @@
                         @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
                         @click.stop @focusout.stop>
                       </textLabel>
-                    </Transition>
+                    <!--/Transition-->
                   </div>
                   <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
@@ -77,7 +77,7 @@
                         v-bind:Component="ref(This.Form[col.Name])" 
                       v-bind:Show="true"
                     -->
-                  <Transition name="columninput">
+                  <!--Transition name="columninput"-->
                     <div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'>
                       <component :is="impComp(This[col.Name].prop.BaseClass)" 
                         v-model:Value="This[col.Name].prop.Value"
@@ -96,7 +96,7 @@
 
                       </component>
                     </div>
-                  </Transition>
+                  <!--/Transition-->
                 </div>
               </td>
 

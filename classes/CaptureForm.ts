@@ -107,7 +107,12 @@ export class captureForm extends FORM {
     let sw_bor = false;
     if (data.length == 0) {
       // No existe el registro
+
+      console.log('CaptureForm appendBlank this.prop.RecordSource=',this.prop.RecordSource,'m=',m)
       const result = await this.Form.db.appendBlank(this.prop.RecordSource, m);
+
+      console.log('CaptureForm appendBlank alaSql=',await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+
 
       if (result == false) return false;
      /*
