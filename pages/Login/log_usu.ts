@@ -16,6 +16,7 @@ export class log_usu extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
+    this.Form=this.Parent
     this.prop.BaseClass = 'editText'
     //this.prop.Value = ''
     this.prop.ToolTipText='user@company'

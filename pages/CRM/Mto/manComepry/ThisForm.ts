@@ -14,9 +14,9 @@
 
 import {tpy_tpy } from "./tpy_tpy" 
 import {num_pry } from "./num_pry" 
-import {equ_usu } from "./equ_usu"
+import {equ_equ } from "./equ_equ"
 import {per_pry } from "./per_pry" 
-import {des_cop } from "./des_cop" 
+import {cop_nom } from "./cop_nom" 
 import {cod_nom } from "./cod_nom" 
 import {nom_nom } from "./nom_nom" 
 import {con_con } from "./con_con" 
@@ -50,9 +50,9 @@ export class ThisForm extends captureForm {
 ////////////////////////////////////
 
    public tpy_tpy = new tpy_tpy() 
-   public des_cop = new des_cop() 
+   public cop_nom = new cop_nom() 
    public num_pry = new num_pry() 
-   public equ_usu = new equ_usu() 
+   public equ_equ = new equ_equ() 
 
    public per_pry = new per_pry() 
    public cod_nom = new cod_nom() 
@@ -91,6 +91,34 @@ export class ThisForm extends captureForm {
   //  this.Form.tpy_tpy.prop.RowSourceType = 2
   
     this.Form.db.useNodata('vi_cap_cometap')
+
+    this.tpy_tpy.prop.TabIndex=1 
+
+    this.num_pry.prop.TabIndex=3
+    this.equ_equ.prop.TabIndex=4
+ 
+    this.per_pry.prop.TabIndex=5
+    this.cod_nom.prop.TabIndex=6
+    this.nom_nom.prop.TabIndex=7
+    this.con_con.prop.TabIndex=8
+    this.noc_con.prop.TabIndex=9
+ 
+    this.fec_pry.prop.TabIndex=10
+    this.fcu_pry.prop.TabIndex=11
+    this.ven_ven.prop.TabIndex=12
+    this.nom_ven.prop.TabIndex=13
+    this.tit_pry.prop.TabIndex=14
+    this.des_pry.prop.TabIndex=15
+    this.fco_pry.prop.TabIndex=16
+    this.obs_pry.prop.TabIndex=17
+    this.mco_pry.prop.TabIndex=18
+    this.est_pry.prop.TabIndex=19
+    this.mes_pry.prop.TabIndex=20
+    this.tap_tap.prop.TabIndex=21
+
+
+    this.cop_nom.prop.TabIndex=22
+
   }
 
 //  public async init(): Promise<void> {}

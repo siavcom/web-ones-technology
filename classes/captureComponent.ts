@@ -46,7 +46,6 @@ export class captureComponent extends COMPONENT {
 
   async valid() {
     if (this.prop.ReadOnly){
-      this.prop.Valid=true
       return this.prop.Valid
     }
     

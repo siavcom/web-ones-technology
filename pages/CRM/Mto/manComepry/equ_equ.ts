@@ -13,7 +13,7 @@
 
 import { captureComponent } from '@/classes/captureComponent'
 
-export class equ_usu extends captureComponent {
+export class equ_equ extends captureComponent {
 
     constructor() {
         super()
@@ -22,14 +22,17 @@ export class equ_usu extends captureComponent {
          
         this.prop.Type ='text'
         this.prop.textLabel = 'Equipo de trabajo'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_comepry.equ_usu'
-        this.prop.MaxLength=64
+        this.prop.BaseClass = "comboBox";
+        this.prop.ControlSource = 'vi_cap_comepry.equ_equ'
+        this.prop.RowSourceType = 3;
+        this.prop.RowSource ="select des_equ,equ_equ from vi_cap_db_equipo order by equ_equ"
+        this.prop.ColumnCount = 2;
+        this.prop.BoundColumn = 2;
+        this.prop.Capture = true;
+        this.style.zIndex=3;
         this.prop.Capture=true
         this.prop.updateKey=false
-        this.style.zIndex = 1
-        this.prop.MaxLength=1024
-        this.prop.componentStyle.width='640px'
+        this.prop.componentStyle.width='400px'
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -115,60 +118,5 @@ export class equ_usu extends captureComponent {
 
 
     }
-/*
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-    
-    }
-*/    
-/*
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-        const db = this.Form.db
 
-        const View=db[this.Parent.prop.ControlSource]
-        const Value=this.Value
-        const Recno=View.Recno
-      if (this.prop.updateKey) {
-         const data= async db.localSql('select 1 as exists from ${this.Parent.prop.ControlSource} \
-                        where recno<>${recno}')
-         if (data.exists && data.exist==1){
-            MessageBox('Ya existe el campo '+this.prop.Label+' = ',this.prop.Value)
-            this.prop.Valid=false
-            this.prop.ErrorMessage='Ya existe el campo'
-            return false
-         }
-
-      }
-      this.prop.Valid=true
-      return true
-    }
-
-*/
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
-    }
-    */
-
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
 }

@@ -8,27 +8,27 @@
 ///////////////////////////////////////
 // Clase base
 ///////////////////////////////////////
-import { COLUMN } from '@/classes/Column'
-
+import { COLUMN } from "@/classes/Column";
 
 export class exp_ind extends COLUMN {
+  //  constructor(parent: Record<string, never>) {
+  constructor() {
+    super();
+    this.prop.Order = 3;
+    this.textLabel = "Expresión del indice";
+    this.prop.BaseClass = "editText";
+    this.prop.ControlSource = "vi_cap_ind.exp_ind";
+    this.prop.ToolTipText =
+      "Expresión del indice. Si es principal debe ser Variable VUE";
+    this.prop.Placeholder = "Expresión del indice";
+    this.prop.componentStyle.textTransform = "lowercase";
 
-    //  constructor(parent: Record<string, never>) {
-    constructor() {
-        super()
-        this.prop.Order = 3
-        this.textLabel = 'Expresión del indice'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_ind.exp_ind'
-        this.prop.ToolTipText ='Expresión del indice. Si es principal debe ser Variable VUE'
-        this.prop.Placeholder = "Expresión del indice"
-        this.prop.componentStyle.textTransform='lowercase'
+    this.style.flexBasis = "30%"; /* width/height  - initial value: auto */
+    this.style.width = "400px";
+  }
 
-        this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width='400px'
-    }
-
-   
-
-
+  async valid() {
+    this.prop.Value = this.prop.Value.toLowerCase();
+    return super.valid();
+  }
 }

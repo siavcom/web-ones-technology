@@ -91,22 +91,9 @@ emit
     ThisForm.prop.Status == 'A'
     -->
           <section class="footer">
-            <TransitionGroup tag='div' >
-              <div v-if="ThisForm.prop.Status == 'A'" key='green'>
-                <!--svg width="100" height="100">
-                  <circle cx="50" cy="50" r="8" stroke="green" stroke-width="4" fill="green" />
-                </svg-->
-
-                <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
-              </div>
-              <div v-else key="red">
-                <!--svg width="100" height="100">
-                  <circle cx="50" cy="50" r="8" stroke="red" stroke-width="4" fill="red" />
-                </svg-->
-
-                <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-              </div>
-            </TransitionGroup>
+            <!--Transition tag='div' -->
+                <img class='circle' :src="ThisForm.prop.Status == 'A'? '/Iconos/circle-green.svg' :'/Iconos/circle-red.svg'" style="float:left" />
+            <!--/Transition-->
             <slot name="footer">
               <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
               v-bind:db="ref(ThisForm.db)"
@@ -155,6 +142,29 @@ emit
 </template>
 
 <script  lang="ts" setup>
+/*
+
+            <TransitionGroup tag='div' >
+              <div v-if="ThisForm.prop.Status == 'A'" key='green'>
+                <!--svg width="100" height="100">
+                  <circle cx="50" cy="50" r="8" stroke="green" stroke-width="4" fill="green" />
+                </svg-->
+
+                <img class='circle' :src="ThisForm.prop.Status == 'A'? '/Iconos/circle-green.svg' :'/Iconos/circle-red.svg'" style="float:left" />
+              </div>
+              <div v-else key="red">
+                <!--svg width="100" height="100">
+                  <circle cx="50" cy="50" r="8" stroke="red" stroke-width="4" fill="red" />
+                </svg-->
+
+                <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+              </div>
+            </TransitionGroup>
+
+
+
+
+*/
 /*
 definePageMeta({
   //layout: 'default',

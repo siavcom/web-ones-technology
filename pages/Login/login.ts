@@ -17,7 +17,7 @@ export class form extends COMPONENT {
   public log_usu=new log_usu()
   public pas_usu=new pas_usu()
   public bt_aceptar=new bt_aceptar()
-
   Name = 'login'
  
+  
 }

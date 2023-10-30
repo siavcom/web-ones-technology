@@ -51,7 +51,6 @@ export class COMPONENT {
 
     First: false,
     Focus: false,
-    Format: "",
 
     Grid: false,
     id: 0,

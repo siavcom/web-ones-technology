@@ -16,7 +16,9 @@ export class emp_emp extends COMPONENT {
 
   constructor (Name:string) {
     super()
-
+    
+    this.Form=this.Parent
+    
 //    this.Name='emp_emp'
 //    this.Name='emp_emp'
     this.prop.BaseClass = 'comboBox'

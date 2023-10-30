@@ -25,9 +25,13 @@ export class nom_ind extends COLUMN {
         this.prop.ToolTipText ='Nombre del indice'
         this.prop.Placeholder = "Nombre del indice"
         this.style.width='150px'
-        
 
     }
+
+async valid(){
+   this.prop.Value=this.prop.Value.toLowerCase()
+   return super.valid()
+}    
 
 
 }

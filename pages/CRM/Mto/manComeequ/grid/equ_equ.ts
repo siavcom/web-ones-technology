@@ -2,7 +2,7 @@
 // This class component was generated automatically by web-ones-technology
 // BaseClass : COLUMN
 // Class : equ_equ
-// Description : CONCECUTIVO DE TIPO DE PROYECTO
+// Description : Nombre del equipo
 // Author : El Fer Blocks
 // Creation : 2023-06-29
 // Update Date  : 
@@ -21,13 +21,14 @@ export class equ_equ extends COLUMN {
        // const nom_ind=renglon[i]['nom_ind']
          
         this.textLabel = 'Equipo' // Column Header
-        this.prop.Type = 'number'
+        this.prop.Type = 'text'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_db_equipo.equ_equ'
-       
+        this.prop.MaxLength=128
         this.prop.Capture=true
         this.prop.updateKey=false
-
+        this.prop.ToolTipText='Nombre del equipo segmentado por "/" '
+        this.style.width='500px'
 
         ///////////////////////// 
         // Props 
@@ -112,53 +113,4 @@ export class equ_equ extends COLUMN {
 
 
     }
-
-      
-/*
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-        const db = this.Form.db
-
-        const View=db[this.Parent.prop.ControlSource]
-        const Value=this.Value
-        const Recno=View.Recno
-      if (this.prop.updateKey) {
-         const data= async db.localSql('select 1 as exists from ${this.Parent.prop.ControlSource} \
-                        where recno<>${recno}')
-         if (data.exists && data.exist==1){
-            MessageBox('Ya existe el campo '+this.prop.Label+' = ',this.prop.Value)
-            this.prop.Valid=false
-            this.prop.ErrorMessage='Ya existe el campo'
-            return false
-         }
-
-      }
-      this.prop.Valid=true
-      return true
-    }
-
-*/
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
-    }
-    */
-
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
 }

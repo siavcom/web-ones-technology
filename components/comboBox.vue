@@ -28,7 +28,10 @@
       -->
       <div v-else class="comboBox" :style='prop.componentStyle'>
 
-        <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="displayText"
+        <input class="textLabel" :style="TextLabel" 
+            :readonly="prop.Style == 2 || prop.ReadOnly" 
+            :value="displayText"
+            :tabindex="prop.TabIndex"
           ref="Ref" @keypress="keyPress($event)" @focus.prevent="toggle=false ; inputBufferBuffer='' " 
           @focusout="emitValue()"/>
 
@@ -50,7 +53,7 @@
         </div>
         <img class="imagen" v-show="!prop.ReadOnly"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.prevent="toggle = prop.ReadOnly == false ? !toggle.value : toggle.value;
-          divStyle.zIndex = toggle ? zIndex + 2 : zIndex" :tabindex="prop.TabIndex" />
+          divStyle.zIndex = toggle ? zIndex + 2 : zIndex"  />
       </div>
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
         style="zIndex:zIndex+1">{{prop.ToolTipText}}</span>

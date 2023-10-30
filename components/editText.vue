@@ -27,10 +27,12 @@
 
       <!--textArea -->
       <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
-        <textarea class="textArea" :style="componentStyle" ref="Ref" v-model="This.prop.Value"
+        <textarea class="textArea" ref="Ref"  :style="componentStyle" v-model="Value"
           :readonly="ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
           :tabindex="prop.TabIndex" type="textArea" :rows="componentStyle.rows" :cols='componentStyle.cols'
-          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
+          @keypress="keyPress($event)" 
+          @focusout="focusOut" 
+          @focus="onFocus"></textarea>
       </div>
 
       <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
@@ -79,7 +81,9 @@
       <input v-else class="text" ref="Ref" :style="componentStyle" v-model.trim="Value"
         :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" :type="prop.Type"
-        v-on:keyup.enter="$event.target.nextElementSibling.focus()" @keypress="keyPress($event)" @focusout="focusOut"
+        v-on:keyup.enter="$event.target.nextElementSibling.focus()" 
+        @keypress="keyPress($event)" 
+        @focusout="focusOut"
         @focus="onFocus">
 
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
@@ -404,7 +408,9 @@ inherit	Inherits this property from its parent element. Read about inherit
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
 
   //outFocus.value = true
+ 
   This.Form.prop.Status = 'P'
+ 
   This.prop.Status = 'P'
   let readValid = false
   Status.value = 'P'
@@ -689,7 +695,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
   This.Form.prop.Status = 'A'
 
-  //Status.value = 'A'
+ 
 
   /////////////////////////////////////////
  // nextTick(function () {

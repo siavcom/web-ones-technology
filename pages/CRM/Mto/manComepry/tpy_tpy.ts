@@ -25,10 +25,10 @@ export class tpy_tpy extends captureComponent {
     //        this.prop.RowSource ="select des_tpy,tpy_tpy from vi_cap_cometpy"
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
-    this.prop.MaxLength = 3;
     this.prop.Capture = true;
     this.prop.updateKey = true;
- 
+    this.style.zIndex=5;
+
   }
   async init() {
     const data = await this.Form.db.execute(
@@ -39,17 +39,20 @@ export class tpy_tpy extends captureComponent {
         MessageBox('No hay tabla de definición de proyectos')
     }    
     this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
-
+    this.Form.cop_nom.Value=data[0].cop_nom
+   
     this.prop.RowSource = "cometpy.des_tpy,tpy_tpy,cop_nom";
 
+    /*
     if (data[0].cop_nom == "C") 
-      this.Form.des_cop.prop.Value = "Clientes";
+          this.Form.des_cop.prop.Value = "Clientes";
     else 
       this.Form.des_cop.prop.Value = "Proveedores";
 
+    */  
     this.prop.ReadOnly=false
 
-    // await this.interactiveChange()
+   //  await this.interactiveChange()
   }
 
   async interactiveChange() {
@@ -58,7 +61,11 @@ export class tpy_tpy extends captureComponent {
     );
 
     this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
+
+    this.Form.cop_nom.Value=data[0].cop_nom
+   /*
     if (data[0].cop_nom == "C") this.Form.des_cop.prop.Value = "Clientes";
     else this.Form.des_cop.prop.Value = "Proveedores";
+   */
   }
 }

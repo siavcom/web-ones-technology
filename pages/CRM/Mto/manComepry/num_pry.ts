@@ -74,10 +74,9 @@ export class num_pry extends captureComponent {
         // lee tipos de actividades segun el tipo de proyecto
         const m={tpy_tpy:this.Form.tpy_tpy.prop.Value}
         await this.Form.db.use('vi_cap_cometap',m)
-    
 
         this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 2  //1-Value, 2-Alias,3-sql 5-Array
-
+        this.Form.equ_equ.prop.Focus=true
         return true;
       }
     }

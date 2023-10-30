@@ -3,7 +3,7 @@
 // Class : Teams
 // Description : Documentos
 // Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2023-10.25
+// Creation : 2023-10-25
 // Update Date  : 
 /////////////////////////////////////////////
 
@@ -13,8 +13,16 @@
 
 import { reportInv } from '@/classes/reports/INV/reportInv'
 import { dia_ppe } from './dia_ppe';
+import { opc_uno } from './opc_uno';
+import { opc_dos } from './opc_dos';
+import { opc_tres } from './opc_tres';
+
 export class ThisForm extends reportInv {
   public dia_ppe = new dia_ppe()
+  public opc_uno = new opc_uno()
+  public opc_dos = new opc_dos()
+  public opc_tres = new opc_tres()
+  
   constructor() {
     super()  // inicializa la clase base
     this.tab_ord='comeisu'
@@ -29,9 +37,21 @@ export class ThisForm extends reportInv {
     this.des_fec.prop.Visible=false
     this.tdo_tdo.prop.Visible=false
     this.tip_imp.prop.Visible=false
+    this.sep_fam.prop.Visible=false;
+    this.bt_pdf.prop.Visible=false;
     this.has_fec.prop.TabIndex=1;
     this.alm_rep.prop.TabIndex=2;
     this.dia_ppe.prop.TabIndex=3;
+    this.opc_uno.prop.TabIndex=4;
+    this.opc_dos.prop.TabIndex=5;
+    this.opc_tres.prop.TabIndex=6;
+    this.des_isu.prop.TabIndex=7;
+    this.has_isu.prop.TabIndex=8;
+    this.sep_fam.prop.TabIndex=9;
+    this.num_fam.prop.TabIndex=10;
+    this.des_fam.prop.TabIndex=11;
+    this.has_fam.prop.TabIndex=12;
+    
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
     
@@ -67,7 +87,9 @@ public async init(){
     const has_fam=this.has_fam.prop.Value;
     const num_fam=this.num_fam.prop.Value;
     const dia_ppe=this.dia_ppe.prop.Value;
-    
+    const opc_uno=this.opc_uno.prop.Value;
+    const opc_dos=this.opc_dos.prop.Value;
+    const opc_tres=this.opc_tres.prop.Value;
     var pri_cla=0,
         ult_cla=29,
         pos_tom=30,
@@ -103,12 +125,12 @@ public async init(){
       }
     console.log(
       "sqlQuery =",
-      ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}'  ` 
+      ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres}  ` 
       
     );
     //return `select * from ${this.vis_rep} WHERE ${localWhere} `;
    
-  return ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}' ` ;
+  return ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres} ` ;
   
    
 }
