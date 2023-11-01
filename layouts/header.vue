@@ -49,7 +49,7 @@ const Datos=ref(props)
 
 Datos.value.nomEmp=props.nomEmp.trim()
 Datos.value.titleName=props.titleName
-Datos.value.fpo_pge=props.fpo_pge
+Datos.value.fpo_pge=new Date(props.fpo_pge).toDateString()
 //const logoEmp = ref(props.logoEmp)
 //logoEmp.value = "/logos/Logo_Empresa.png"
 //const nomEmp = ref(props.nomEmp)

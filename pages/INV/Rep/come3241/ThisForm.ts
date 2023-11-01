@@ -39,6 +39,7 @@ export class ThisForm extends reportInv {
     this.tip_imp.prop.Visible=false
     this.sep_fam.prop.Visible=false;
     this.bt_pdf.prop.Visible=false;
+    this.Form.bt_pdf.prop.Disabled=true;
     this.has_fec.prop.TabIndex=1;
     this.alm_rep.prop.TabIndex=2;
     this.dia_ppe.prop.TabIndex=3;
@@ -51,7 +52,10 @@ export class ThisForm extends reportInv {
     this.num_fam.prop.TabIndex=10;
     this.des_fam.prop.TabIndex=11;
     this.has_fam.prop.TabIndex=12;
-    
+    this.alm_rep.prop.RowSource = "select des_tda,alm_tda,left(ubi_tda,8) from man_cometda order by des_tda "
+    this.alm_rep.prop.ColumnCount = 3
+    this.alm_rep.prop.ColumnWidths ="60%,15%,25%"; // Puede ser en puntos 60px,30px /
+             
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
     
@@ -61,13 +65,7 @@ export class ThisForm extends reportInv {
 public async init(){
   await super.init()
   this.var_ord.prop.Value="cla_isu";
-    console.log(
-    "===================>Init Report name=",
-    this.prop.Name,
-    "var_ord",
-    this.var_ord.prop.Value
-  );
-  
+ 
 }
 
   ///////////////////////////////////////////////////////////////

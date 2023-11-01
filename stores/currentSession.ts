@@ -96,6 +96,7 @@ export const Session = defineStore(
           // obtenemos datos de conexión
           id_con.value = res.id;
           fpo_pge.value = await stringToDate(res.fpo_pge);
+          console.log(' Fecha=',fpo_pge.value,res)
           dialect.value = res.dialect;
           console.log("Socket Connection sucefully id=", id_con.value);
         });

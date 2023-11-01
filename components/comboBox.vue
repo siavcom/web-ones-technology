@@ -26,7 +26,7 @@
         <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
           @focusout="focusOut" />{{ displayText }}
       -->
-      <div v-else class="comboBox" :style='prop.componentStyle'>
+      <div v-else class="comboBox" :style='prop.componentStyle' ref="RefCombo">
 
         <input class="textLabel" :style="TextLabel" 
             :readonly="prop.Style == 2 || prop.ReadOnly" 
@@ -41,7 +41,7 @@
           <!--CheckBox -->
           <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
-              @mouseleave="hover = false" @click="validClick(valueIndex)" :disabled="prop.ReadOnly">
+              @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
               <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
@@ -185,6 +185,7 @@ const width = reactive(['60%', '20%', '20%']);
 
 //const ReadOnly = ref(props.prop.ReadOnly)
 const Ref = ref(null)
+const RefCombo = ref(null)
 
 const Status = ref(props.prop.Status);
 Status.value = 'I'
@@ -502,7 +503,60 @@ const focusOut = async () => {
   return
 };
 
+/////////////////////////////////////////////////////////////////////
+// Se do click fuera focusOut click
+// checar canvas.removeEventListener
+//////////////////////////////////////////////////////////////////////
+/*
+function myClick(e) {
+  console.log('myClick ComboBox focus in and out ',e.target)
+       // to remove
+  const clickedEl = e.target;
+  if (RefCombo && RefCombo.value!=null)
+    if(!RefCombo.value.contains(clickedEl)) {
+       toggle.value=false
+    console.log('ComboBox focus in and out ',clickedEl,RefCombo.value)
+  }
+    else
+       window.removeEventListener('mousedown', myClick);
+    
+}
 
+
+window.addEventListener('mousedown', myClick);
+
+
+*/
+
+/*
+
+window.addEventListener('mousedown', e => {
+  // Get the element that was clicked
+  const clickedEl = e.target;
+  //
+   This.Form.clickedElement= e.target;
+    console.log('ComboBox focus in and out ',clickedEl)
+
+
+
+  if (RefCombo && RefCombo.value!=null && !RefCombo.value.contains(clickedEl)) {
+    toggle.value=false
+    console.log('ComboBox focus in and out ',clickedEl,RefCombo.value)
+  } else
+     window.removeEventListener('mousedown',e) 
+
+
+
+  // `el` is the element you're detecting clicks outside of
+  if (RefCombo.value.contains(clickedEl)) {
+     console.log('ComboBox inside ',clickedEl,RefCombo.value)
+  } else {
+    toggle.value=false
+    console.log('ComboBox outSide ')
+  }
+
+});
+*/
 
 /////////////////////////////////////////////////////////////////////
 // focusOut

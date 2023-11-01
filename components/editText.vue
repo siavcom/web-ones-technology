@@ -1,6 +1,6 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <div class="divi" v-bind:style="divStyle">
+  <div class="divi" v-bind:style="divStyle" v-show="This.prop.Visible">
     <div class="mensajes" v-show="This.prop.Visible">
 
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -408,8 +408,8 @@ inherit	Inherits this property from its parent element. Read about inherit
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
 
   //outFocus.value = true
- 
-  This.Form.prop.Status = 'P'
+  if (This.Form.prop)
+    This.Form.prop.Status = 'P'
  
   This.prop.Status = 'P'
   let readValid = false
@@ -693,6 +693,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   if (This.prop.Valid)
     This.prop.Status = 'A'
 
+  if(This.Form.prop)  
   This.Form.prop.Status = 'A'
 
  

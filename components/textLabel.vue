@@ -1,5 +1,6 @@
 <template>
-  <div v-if="prop.Visible" class="divi" v-bind:style="style">
+  <div v-show="prop.Visible"
+   class="divi" v-bind:style="style">
     <div class="mensajes" v-bind:style="componentStyle" >
       <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
       <div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle" >

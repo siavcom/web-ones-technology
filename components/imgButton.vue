@@ -2,7 +2,7 @@
   <div class="divibutton" v-show="prop.Visible" :style="style">
     <div class="mensajes">
 
-      <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly" :tabindex="prop.TabIndex"
+      <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly ||  prop.Disabled " :tabindex="prop.TabIndex"
         @focusout="focusOut" @focus="onFocus">
         <img class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly" />
         <label v-if="prop.Image.length > 0"
@@ -49,6 +49,7 @@ const props = defineProps<{
     InputMask: "";
     MaxLenght: 0;
     ReadOnly: false;
+    Disabled: false;
     Tag: "";
     Sw_val: false;
     Capture: false;

@@ -26,6 +26,7 @@ export class FORM extends COMPONENT {
   Params = [];
   public db = new VFPDB(); // conexion a la base de datos
   publicVar = {};
+  clickedElement=null;
 
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
