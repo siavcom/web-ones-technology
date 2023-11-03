@@ -53,6 +53,19 @@ export class tpy_tpy extends captureComponent {
    //  await this.interactiveChange()
   }
 
+  async when(){
+    this.Form.tap_tap.Grid.prop.RecordSource=''
+    this.Form.tap_tap.Grid.tap_tap.prop.this.prop.RowSourceType = 0
+    this.Form.tap_tap.prop.Disabled=true
+    this.Form.tap_tap.prop.Visible=false
+
+    this.Form.nom_nom.prop.Value=''
+    this.Form.nom_ven.prop.Value=''
+
+    return true
+
+  }
+
   async valid() {
     const data = await this.Form.db.localAlaSql(
       `select cop_nom from Now.cometpy where tpy_tpy='${this.prop.Value}'`

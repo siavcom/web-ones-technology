@@ -26,6 +26,7 @@ export class tap_tap extends COLUMN {
         this.prop.ControlSource = 'vi_cap_comeapy.tap_tap'
         this.prop.RowSource = "vi_cap_cometap.des_tap,tap_tap"
         this.prop.RowSourceType = 0  //1-Value, 2-Alias,3-sql 5-Array
+        
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
         this.prop.ColumnWidths ="80%,20%"

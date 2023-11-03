@@ -201,7 +201,16 @@ export class GRID extends COMPONENT {
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow(m?: {}) {
-    if (!m) m = {};
+    if (!m){
+      m = {};
+    }
+
+    for (const variable in this.Form.publicVar)
+       m[variable]=this.Form.publicVar[variable]
+
+ 
+    for (const i in this.Form.main)
+        m[this.Form.main[i]]=this.Form[this.Form.main[i]].prop.Value
 
     this.Row = -1; // Quitamos donde esta el renglon
     //this.Form.db.select(this.prop.RecordSource)

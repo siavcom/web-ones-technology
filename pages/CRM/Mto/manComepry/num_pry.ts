@@ -39,48 +39,50 @@ export class num_pry extends captureComponent {
   ///////////////////////////////////
 
   async when() {
-    super.when()
+    this.Form.tap_tap.Grid.prop.RecordSource = "";
+    this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0;
+    this.Form.tap_tap.prop.Disabled = true;
+    this.Form.tap_tap.prop.Visible = false;
+    this.Form.nom_nom.prop.Value=''
+    this.Form.nom_ven.prop.Value=''
+
+
+    super.when();
     const data = await this.Form.db.execute(`         
            select max(num_pry)+1 as num_pry from man_comepry where tpy_tpy='${this.Form.tpy_tpy.prop.Value}'`);
 
-    if (data[0] ) {
-      console.log('1 num_pry when data=',data[0],this.prop.Value)
+    if (data[0]) {
+      console.log("1 num_pry when data=", data[0], this.prop.Value);
 
-      this.prop.Valid=true  // se pone en Verdadero para que no llame rutina validacion
+      this.prop.Valid = true; // se pone en Verdadero para que no llame rutina validacion
       //this.sw_when = true;
-      if (data[0].num_pry==null)
-          this.prop.Value = 1;
-      else
-          this.prop.Value = +data[0].num_pry;
+      if (data[0].num_pry == null) this.prop.Value = 1;
+      else this.prop.Value = +data[0].num_pry;
     }
 
-    if (this.prop.Value == 0) 
-      this.prop.Value = 1;
-      this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0  //Actividades por proyecto
+    if (this.prop.Value == 0) this.prop.Value = 1;
+    this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0; //Actividades por proyecto
     return true;
   }
 
   async valid(): Promise<boolean> {
-  
     if (this.prop.Value == 0) {
-      this.prop.Valid = false;
-     // this.sw_when = false;
       return false;
     }
+    await super.valid();
+    console.log('valid num_pry Recno=',this.Form.cod_nom.Recno)
+    if (this.Form.cod_nom.Recno>0 ){
+       this.Form.bt_actividades.prop.Visible=true
+       this.Form.bt_actividades.prop.Disabled=false
+    }
 
-    console.log('Valid ',this.prop.Name) //,'sw_when',this.sw_when)
-    //if (!this.sw_when) {
-      if (await super.valid()) {
-        // lee tipos de actividades segun el tipo de proyecto
-        const m={tpy_tpy:this.Form.tpy_tpy.prop.Value}
-        await this.Form.db.use('vi_cap_cometap',m)
-
-        this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 2  //1-Value, 2-Alias,3-sql 5-Array
-       // this.Form.equ_equ.prop.Focus=true
+    return true
+    /*
+ if (await super.valid()) {
         return true;
-      }
-    //}
-   // this.sw_when = false;
+    }
     return true;
+  }
+*/
   }
 }

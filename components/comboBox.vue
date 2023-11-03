@@ -379,7 +379,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //nextTick(function () {
   //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
 
-  //  console.log('1 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
+ //  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
 
   //const result = await asignaResultado(Value.value)
   //////------------------- Asigna Resultado
@@ -387,9 +387,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
   let found = false
   for (let i = 0; i < columnas.length && !found; i++) {
-    //  console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value)
+ //    console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value,'Value=',Value.value)
     if ((typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
-      (!(typeof columnas[i].value == 'number') && Value.value == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
+      (!(typeof columnas[i].value == 'number') && Value.value.trim() == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
       displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
       found = true
     }
@@ -399,6 +399,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     Value.value = columnas[0].value
     displayText.value = columnas[0]['text'][0]
   }
+ // console.log('3 comboBox emitValue() Name', props.prop.Name, 'displayText.value=', displayText.value)
 
 
   //nextTick(function () {
@@ -514,14 +515,18 @@ const focusOut = async () => {
 function myClick(e) {
  // console.log('myClick ComboBox focus in and out ',e.target)
        // to remove
+  if (This.prop.Disabled || !This.prop.Visible )
+     return
+
   const clickedEl = e.target;
   if (RefCombo && RefCombo.value!=null)
     if(!RefCombo.value.contains(clickedEl)) {
        toggle.value=false
-   // console.log('ComboBox focus in and out ',clickedEl,RefCombo.value)
-  }
-  //  else
-  //     RefCombo.value.removeEventListener('mousedown', myClick);
+      // console.log(This.prop.Name,'ComboBox focus  out ',toggle.value)
+     }
+ //   else  console.log(This.prop.Name,'ComboBox focus in  ',toggle.value)
+
+    //     RefCombo.value.removeEventListener('mousedown', myClick);
     
 }
 
@@ -570,17 +575,16 @@ window.addEventListener('mousedown', e => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const validClick = async (num_ren: number) => {
-  
   toggle.value = false
   divStyle.value.zIndex = zIndex
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
+//  console.log('ComboBox validClick',This.prop.Name,'num_ren=',num_ren,'Value=',Value.value )
+
   emitValue()
   return
 
 };
-
-
 
 /////////////////////////////////////////////////////////////////////
 // ValidList

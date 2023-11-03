@@ -176,7 +176,7 @@ export class captureForm extends FORM {
       "refresh component ",
       this.prop.Name,
       " Recno=",
-      Recno,
+      this.Recno,
       this.noData);
     for (const i in this.main) {
       const comp = this.main[i];

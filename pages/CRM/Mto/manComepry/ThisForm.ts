@@ -33,6 +33,7 @@ import {obs_pry } from "./obs_pry"
 import {mco_pry } from "./mco_pry" 
 import {mes_pry } from "./mes_pry" 
 import {tap_tap} from "./tap_tap"
+import {bt_actividades} from "./bt_actividades"
 
 
 
@@ -71,6 +72,8 @@ export class ThisForm extends captureForm {
    public mco_pry = new mco_pry() 
    public est_pry = new est_pry() 
    public mes_pry = new mes_pry() 
+   public bt_actividades = new bt_actividades() 
+
    public tap_tap = new tap_tap() // Tabla de actividates
   
   constructor() {
@@ -100,14 +103,13 @@ export class ThisForm extends captureForm {
  
     this.per_pry.prop.TabIndex=5
     this.cod_nom.prop.TabIndex=6
-    this.nom_nom.prop.TabIndex=7
     this.con_con.prop.TabIndex=8
     this.noc_con.prop.TabIndex=9
  
     this.fec_pry.prop.TabIndex=10
     this.fcu_pry.prop.TabIndex=11
     this.ven_ven.prop.TabIndex=12
-    this.nom_ven.prop.TabIndex=13
+
     this.tit_pry.prop.TabIndex=14
     this.des_pry.prop.TabIndex=15
     this.fco_pry.prop.TabIndex=16
@@ -117,8 +119,9 @@ export class ThisForm extends captureForm {
     this.mes_pry.prop.TabIndex=20
     this.tap_tap.prop.TabIndex=21
 
-
     this.cop_nom.prop.TabIndex=22
+    this.nom_nom.prop.TabIndex=23
+    this.nom_ven.prop.TabIndex=24
 
   }
 
