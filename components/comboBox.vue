@@ -281,7 +281,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   if (!readCam) {  // Graba en AlaSql , el dato se cambio desde fuera 
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
-
+    /*
     if (typeof Valor == 'string') {
       Valor = Valor.trim()
       if (Valor == '')
@@ -289,7 +289,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
     Value.value = Valor
 
-    console.log('comboBox emitValue writeCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+    */
+ 
+   // console.log('comboBox emitValue writeCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -307,7 +309,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       inputBuffer=''
       This.prop.Valid = false
       if (await This.valid() == false) {
-        // console.log('editText emitValue() Name', props.prop.Name, 'This.valid= false')
+       // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
         ShowError.value = true
         if (This.prop.Valid)
           This.prop.Valid = false
@@ -347,7 +349,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
           Value.value = data[campo]
-          console.log('comboBox emitValue readCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+          //console.log('comboBox emitValue readCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
           if (!isValid) {
             readValid = true
@@ -438,7 +440,7 @@ const keyPress = ($event) => {
     ToolTipText.value = false
   if ($event.charCode == 13) {
 
-    console.log('Enter keyPress=', $event.charCode)
+    //console.log('Enter keyPress=', $event.charCode)
 
     //$event.charCode = 9
     // window.event.keyCode = 9;
@@ -450,7 +452,7 @@ const keyPress = ($event) => {
     return
 
   }
-  console.log('comboBox Name=',This.Name,'Key=',$event.charCode)
+  //console.log('comboBox Name=',This.Name,'Key=',$event.charCode)
 
   if ($event.charCode==32){
     inputBuffer=''
@@ -488,7 +490,7 @@ const keyPress = ($event) => {
     displayText.value = columnas[0]['text'][0]  // asigna el resultado a mostrar
 
 
-    console.log('comboBox Name=',This.Name,'buffer=',buffer,'Displaytext=',displayText.value)
+    //console.log('comboBox Name=',This.Name,'buffer=',buffer,'Displaytext=',displayText.value)
 
 
   }
@@ -504,29 +506,32 @@ const focusOut = async () => {
 };
 
 /////////////////////////////////////////////////////////////////////
+// Focus Out
 // Se do click fuera focusOut click
 // checar canvas.removeEventListener
 //////////////////////////////////////////////////////////////////////
-/*
+
 function myClick(e) {
-  console.log('myClick ComboBox focus in and out ',e.target)
+ // console.log('myClick ComboBox focus in and out ',e.target)
        // to remove
   const clickedEl = e.target;
   if (RefCombo && RefCombo.value!=null)
     if(!RefCombo.value.contains(clickedEl)) {
        toggle.value=false
-    console.log('ComboBox focus in and out ',clickedEl,RefCombo.value)
+   // console.log('ComboBox focus in and out ',clickedEl,RefCombo.value)
   }
-    else
-       window.removeEventListener('mousedown', myClick);
+  //  else
+  //     RefCombo.value.removeEventListener('mousedown', myClick);
     
 }
 
-
 window.addEventListener('mousedown', myClick);
 
+onUnmounted(() => {
+  window.removeEventListener('mousedown', myClick); // <div>
+})
 
-*/
+
 
 /*
 
@@ -558,30 +563,7 @@ window.addEventListener('mousedown', e => {
 });
 */
 
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-/*
-const focusOut_old = async () => {
 
-  await asignaResultado()
-
-  const valor = Value.value;
-
-  if (props.prop.ControlSource && props.prop.ControlSource.length > 3 && props.Registro > 0) {
-    await This.Form.db.updateCampo(valor, props.prop.ControlSource, props.Registro)
-  }
-  ToolTipText.value = true  // Activamos el ToolTipText
-  toggle.value = false
-
-  console.log('comboBox updateCampo', Value.value, props.prop.ControlSource, props.Registro)
-
-  await This.interactiveChange()
-  return
-
-};
-*/
 /////////////////////////////////////////////////////////////////////
 // Valid
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -619,23 +601,10 @@ const validList = async () => {
   }
   emitValue()
 
-  //  asignaResultado()
-
   return
-  // await emitValue()
-  //Ref.value.select()
-
-  //  Ref.value.focus()
-  //  if(props.prop.Style==2) return
-  //  Ref.value.select()
 
 };
 
-/////////////////////////////////////////////////////////////////////
-// onFocus
-// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
-//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
-/////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -691,26 +660,6 @@ const onFocus = async () => {
     };
   */
 }
-//////////////////////////////////////////
-// Lee el campo desde SQL Local
-////////////////////////////////////////
-/*
-const readCampo = async (recno: number) => {
-  // if (Status.value == 'A') {
-  //   Status.value = 'P'
-  //   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-  // }
-
-  if (recno != Recno.value) Recno.value = recno
-  const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value)
-  if (Recno.value != recno) Recno.value = recno
-
-  for (const campo in data) {
-    if (campo != 'key_pri') Value.value = data[campo]
-  }
-  renderComboBox()
-}
-*/
 /////////////////////////////////////////
 // Metodo onMounted
 /////////////////////////////////////////
@@ -721,44 +670,6 @@ const OnMounted = onMounted(() => {
 */
 
 
-//////////////////////////////////////////////////////
-// Asigna Resultado
-/////////////////////////////////////////////////////
-/*
-const asignaResultado = async (valor?: string) => {
-
-  if (props.prop.ColumnCount == 0) return;
-  if (props.prop.RowSourceType == 0) return;
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return
-  if (columnas.length == 0) return
-  if (columnas[0] == undefined) return
-
-  
-  // recorre todo los renglones en columnas
-  //if (!valor || valor=null )
-  valor = This.prop.Value // Value.value
-  //console.log('ComboBox asignaResultado columnas ',This.Name,columnas[0],valor)
-  let found=false
-  for (let i = 0; i < columnas.length; i++) {
-
-    if ((typeof columnas[i].value == 'number' && valor == columnas[i].value) ||
-      (!(typeof columnas[i].value == 'number') && valor == columnas[i].value.trim())) { // El objeto columna tiene dos campos value y text
-      displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
-      found=true
-    }
-
-  }
- if (!found){ // No se encontro el valor , asignara el primer valor
-  This.prop.Value= columnas[0].value
-  displayText.value = columnas[0]['text'][0]  
- }
-
- console.log('1 ComboBox asignaResultado ', This.Name,'displayText=',displayText.value,'props.prop.Value', Value.value)
-
-
-  return true
-}
-*/
 //////////////////////////////////////////////////////
 // Renderizado del combo box
 /////////////////////////////////////////////////////
@@ -835,7 +746,7 @@ const renderComboBox = async (readData?: boolean) => {
       // aqui me quede (arreglar lectura por alias)
       const ins_sql = 'select ' + RowSource + ' from ' + alias
       data = await This.Form.db.localSql(ins_sql)
-      console.log('comboBox data ===>', ins_sql, data)
+     // console.log('comboBox data ===>', ins_sql, data)
 
       break
     }
@@ -911,9 +822,8 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-  console.log('render combobox ===>>', This.Name)
+  //console.log('render combobox ===>>', This.Name)
 
-  //if (readData)
   emitValue(true)
   return
 
@@ -933,11 +843,10 @@ const ColumnWidth = (columnas: string) => {
 
 }
 
-
-
 ////////////////////////////////////////////////////////////////
 //                          Watchers                          //
 ////////////////////////////////////////////////////////////////
+
 ////////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
@@ -985,7 +894,7 @@ watch(
   () => Focus.value,
   (new_val, old_val) => {
     if (!Focus.value) return
-    console.log('ComboBox Set Focus', props.Name)
+//    console.log('ComboBox Set Focus', props.Name)
     if (Focus.value) {
       //      Ref.value.focus()
       //Ref.value.select()
@@ -1013,24 +922,23 @@ watch(
 
 /////////////////////////////////////////////////////////
 // watch Value
-//  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
-//          Componente
 //////////////////////////////////////////
 
 // Si se cambia de afuera
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
+/*
     console.log('comboBox Watch Name=', This.prop.Name,
       'prop.Valid =', This.prop.Valid,
       'Status=', This.prop.Status,
       'Value=', This.prop.Value, Value.value,
       'Valid=', This.prop.Valid)
 
+*/
 
-    //  if (This.prop.Valid) return
     if (new_val != old_val) {
-      // Value.value = This.prop.Value
+      Value.value = This.prop.Value
       emitValue(false, This.prop.Valid)
     }
   },
@@ -1053,48 +961,9 @@ watch(
   { deep: false }
 );
 
-/*
-
-////////////////////////////////////////
-// Registro
-// Nota: Lee de la base de datos local segun el valor de recno
 ///////////////////////////////////////
-watch(
-  () => props.Registro,
-  (new_val, old_val) => {
-    if (props.prop.ControlSource > ' ') {
-      if (Recno.value != props.Registro)
-        Recno.value = props.Registro
-      if (props.Registro == 0) {
-        Value.value = ''
-        emitValue()
-        return
-
-      }
-
-      if (new_val != old_val && new_val > 0) {
-        // console.log('Watch EditText Recno=', new_val)
-        readCampo(props.Registro)
-      }
-      //    LocalDb.ControlSource = new_val;
-
-    }
-  },
-  { deep: false }
-);
-
-
-
-watch(
-  () => props.prop.ControlSource,
-  (new_val, old_val) => {
-    LocalDb.ControlSource = new_val;
-  },
-  { deep: true }
-);
-*/
-
 // RowSoure
+///////////////////////////////////////
 watch(
   () => props.prop.RowSource,
   (new_val, old_val) => {
@@ -1105,7 +974,11 @@ watch(
   },
   { deep: true }
 );
-//RowSourceType
+
+///////////////////////////////////////
+// RowSourceType
+///////////////////////////////////////
+
 watch(
   () => props.prop.RowSourceType,
 
@@ -1120,8 +993,11 @@ watch(
   },
   { deep: false }
 );
+///////////////////////////////////////
+// Sorted
+///////////////////////////////////////
 
-//Sorted
+
 watch(
   () => props.prop.Sorted,
 
@@ -1133,7 +1009,11 @@ watch(
   },
   { deep: false }
 );
-//ColumCount
+
+///////////////////////////////////////
+// ColumCount
+///////////////////////////////////////
+
 watch(
   () => props.prop.ColumnCount,
 
@@ -1146,12 +1026,14 @@ watch(
   { deep: false }
 );
 
-
+///////////////////////////////////////
+// ColumnWidths
+///////////////////////////////////////
 watch(
   () => props.prop.ColumnWidths,
 
   (new_val, old_val) => {
-    console.log('Watch ColumnWidths', new_val)
+    // console.log('Watch ColumnWidths', new_val)
 
     if (new_val != old_val) {
       ColumnWidth(new_val)
@@ -1161,8 +1043,9 @@ watch(
   { deep: false }
 );
 
-
-//BoundColum
+///////////////////////////////////////
+// BoundColum
+///////////////////////////////////////
 watch(
   () => props.prop.BoundColumn,
 
@@ -1174,18 +1057,21 @@ watch(
   { deep: false }
 );
 
+///////////////////////////////////////
 //width
+///////////////////////////////////////
+
 watch(
   () => props.style.width,
 
   (new_val, old_val) => {
-    console.log("Cambio tamaño ", inputWidth.value);
+   // console.log("Cambio tamaño ", inputWidth.value);
     if (new_val != old_val) {
       if (props.style.width.substr(-2, 2) == 'px') {
         const len = props.style.width.length - 2
         const width: number = +props.style.width.substr(0, len) - 30
         inputWidth.value = width.toString() + 'px'
-        console.log("Cambio tamaÃ±o 2", inputWidth.value);
+        //console.log("Cambio tamaño 2", inputWidth.value);
       }
 
 
@@ -1193,16 +1079,6 @@ watch(
   },
   { deep: false }
 );
-
-/////////////////////////////////////////////
-// Computed
-/////////////////////////////////////////////
-/*
-const getZIndex = computed(() => {
-  return props.style.zIndex;
-})
-*/
-
 
 /////////////////////////////////////////
 // Metodo init 
@@ -1222,7 +1098,7 @@ const init = async () => {
   //const result = await emitValue(true)
 
 
-  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
+  //console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
 
 
   //oldVal = Value.value   // asignamos el valor viejo

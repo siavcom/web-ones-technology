@@ -1677,10 +1677,10 @@ export class VFPDB {
   // genera la tabla en alasql
   // data : json con la estructura de la tabla
   // alias : nombre que tendra la tabla
-  // sw_ini : si es useNodata
+  // noData : si es useNodata
   // obs : Borrar si no se utiliza
   /// //////////////////////////////////////////////////
-  async genera_vista(data: {}, alias: string, sw_ini?: boolean) {
+  async genera_vista(data: {}, alias: string, noData?: boolean) {
     alias = alias.trim();
     this.num_are = this.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
@@ -1723,7 +1723,7 @@ export class VFPDB {
       this.View[alias] = {}; // Generamos el nuevo alias
       this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
 
-      if (sw_ini) {
+      if (noData) {
         // agregamos todos los componente de uno por uno para no romper la reactividad
         for (const comp in data) {
           this.View[alias][comp] = data[comp]; // asignamos su estructura si es de una vista actualizable
@@ -1740,7 +1740,7 @@ export class VFPDB {
     this.View[alias].recCount = 0; // registros totales
     this.View[alias].tablaSql = alias; // tabla en servidor SQL
 
-    if (!sw_ini || data.length > 0) {
+    if (!noData || data.length > 0) {
       // si hay datos
       // Generamos el campo recno
       const recnoVal = [];
@@ -1813,10 +1813,10 @@ export class VFPDB {
   // genera la tabla en alasql
   // respuesta : json con los renglones para generar la tabla
   // alias : nombre que tendra la tabla
-  // sw_ini : si es useNodata
+  // noData : si es useNodata
   /// //////////////////////////////////////////////////
 
-  genera_tabla = async (respuesta: any, alias: string, sw_ini?: boolean) => {
+  genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => {
     alias = alias.trim();
     this.num_are = this.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
@@ -1826,13 +1826,13 @@ export class VFPDB {
 
     if (!this.View[alias]) {
       console.log("Db geneta_tabla ", alias);
-      sw_ini = true;
+      noData = true;
     } // No hay definicion de vista
 
     if (this.num_are == 0) {
       // si es una area de trabajo nueva
       this.are_tra.push(alias);
-      sw_ini = true;
+      noData = true;
     } /*
     else { // Si existe la tabla borra los registros
       // this.localAlaSql('USE Now ; ')
@@ -1845,7 +1845,7 @@ export class VFPDB {
 
     // Inicializamos la vista
 
-    if (sw_ini) {
+    if (noData) {
       this.View[alias] = {}; // Generamos el nuevo alias
       this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
       this.View[alias].tip_obj = respuesta.tip_obj; // MODEL O VIEW
@@ -1953,7 +1953,7 @@ export class VFPDB {
         this.View[alias]["tip_obj"] = respuesta.tip_obj
     */
     // console.log('Db Genera_tabla final==>',this.View[alias],alias)
-    if (sw_ini) {
+    if (noData) {
       console.log("Db genera_tabla View creada", alias, this.View[alias]);
       return await this.localAlaSql(`select * from ${alias} limit 0`);
     }

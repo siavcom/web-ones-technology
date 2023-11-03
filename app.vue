@@ -439,7 +439,7 @@ const updateIsOpen = () => {
 /// //////////////////////////////////////
 // Obten Menu
 /// ///////////////////////////////////////
-const obtMenu = (sw_ini?: boolean) => {
+const obtMenu = () => {
 
   // Borramos todos los elementos del menu
   while (Items.length > 2)

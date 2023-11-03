@@ -36,10 +36,11 @@ export class cod_nom extends captureComponent {
     if (this.prop.ReadOnly)
        return this.prop.ReadOnly
 
-    if ((this.Form.cop_nom.prop == "C" || this.Form.cop_nom.prop == "P") ){ 
+    if ((this.Form.cop_nom.prop != "C" && this.Form.cop_nom.prop != "P") ){ 
        this.prop.Valid=true
        this.prop.ReadOnly=true
     }
+
   return this.prop.ReadOnly
 
   }
@@ -55,7 +56,7 @@ export class cod_nom extends captureComponent {
     this.Form.nom_nom.Recno = 0;
     let cod_nom = this.prop.Value.trim()
 
-    const m = { cop_nom: this.Form.cop_nom, cod_nom };
+    const m = { cop_nom: this.Form.cop_nom.Value, cod_nom };
 
     if ((m.cop_nom == "C" || m.cop_nom == "P") && cod_nom.length == 0) {
       return false;

@@ -1061,8 +1061,10 @@ watch(
 watch(
   () => props.Registro,
   async (new_val, old_val) => {
+    console.log('EditText Watch Registro Name=', This.prop.Name,'new_val =', new_val, old_val)
+
     if (new_val != old_val) {
-      // console.log('EditText Watch Registro Name=', This.prop.Name,'new_val =', new_val, old_val)
+      console.log('EditText Watch Registro Name=', This.prop.Name,'new_val =', new_val, old_val)
       emitValue(true)
     }
   },
@@ -1101,6 +1103,7 @@ watch(
     if (!new_val) {
       return
     }
+    Ref.value.select()
     This.prop.Focus = false
     onFocus()
     return

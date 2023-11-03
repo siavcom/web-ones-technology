@@ -16,12 +16,12 @@ import { tip_rep } from "./tip_rep";
 import { var_ord } from "./var_ord";
 import { for_imp } from "./for_imp";
 import { report } from "./report/report";
-import {reportFields} from "./reportFields"
+import { reportFields } from "./reportFields";
 import { bt_pdf } from "./bt_pdf";
 
 export class reportForm extends FORM {
-  public mon_rep= new mon_rep()
-  public tip_rep= new tip_rep()
+  public mon_rep = new mon_rep();
+  public tip_rep = new tip_rep();
   public var_ord = new var_ord(); // variable de orden principal de la vista
   public queryPri = new queryPri();
   public queryUsu = new queryUsu();
@@ -40,24 +40,21 @@ export class reportForm extends FORM {
   query: string = ""; // query para ejecutar el reporte
   //sqlQuery: string = ""; // Query a ejecutar antes de la vista del reporte
   pdfheight = "1200px"; // PDF height
-  data={};
-  vis_ori:string=''  // vista sql original
-  for_ori:string=''  // forma JASPER original
-  
-  
+  data = {};
+  vis_ori: string = ""; // vista sql original
+  for_ori: string = ""; // forma JASPER original
+
   constructor() {
-      super()
-      this.mon_rep.prop.TabIndex=101
-      this.tip_rep.prop.TabIndex=102
-      this.var_ord.prop.TabIndex=103
-      this.queryPri.prop.TabIndex=104
-      this.queryUsu.prop.TabIndex=105
-      this.queryGen.prop.TabIndex=106
-      this.for_imp.prop.TabIndex=107
-      this.reportFields.prop.TabIndex=108
-
-    }
-
+    super();
+    this.mon_rep.prop.TabIndex = 101;
+    this.tip_rep.prop.TabIndex = 102;
+    this.var_ord.prop.TabIndex = 103;
+    this.queryPri.prop.TabIndex = 104;
+    this.queryUsu.prop.TabIndex = 105;
+    this.queryGen.prop.TabIndex = 106;
+    this.for_imp.prop.TabIndex = 107;
+    this.reportFields.prop.TabIndex = 108;
+  }
 
   public async init() {
     this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
@@ -98,7 +95,7 @@ export class reportForm extends FORM {
       nom_vis: vis_rep,
     };
     console.log("reportForm init m=", m);
-    await db.use("vi_cap_db_query", m); // todos los querys del reporte 
+    await db.use("vi_cap_db_query", m); // todos los querys del reporte
 
     // Query Principal
 
@@ -135,9 +132,7 @@ export class reportForm extends FORM {
       );
       */
 
-      if (db.session.user=='sa')
-        this.reportFields.prop.Visible=true
-       
+    if (db.session.user == "sa") this.reportFields.prop.Visible = true;
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -152,12 +147,13 @@ export class reportForm extends FORM {
   }
 
   /////////////////////////////////////
-  // gwn_where : genera la parte del where de cada modulo de condicion
-  // where : where ya generado y que se le amentara el resultado de este
+  // gen_where : genera la parte del where de cada modulo de condicion
+  // where : where ya generado y que se le aumentara el resultado de este
   // tip_con : tipo de condicion puede ser queryUsu,queryPri, queryGen
   ////////////////////////////////////////
 
   async gen_where(tip_con: string) {
+    const session = Session();
     console.log("where ===>>>", tip_con, this[tip_con]);
     var where = "";
     if (this[tip_con].activa.prop.Value == 0) return where;
@@ -194,7 +190,7 @@ export class reportForm extends FORM {
       m.cam_dat = m.cam_dat.trim();
       m.con_que = m.con_que.trim();
       m.val_que = m.val_que.trim();
-      
+
       const data1 = await this.Form.db.localAlaSql(
         `select trim(tip_dat) as tip_dat from Now.camposView where trim(cam_dat)='${m.cam_dat}' ; `
       );
@@ -209,16 +205,43 @@ export class reportForm extends FORM {
         )
           m.val_que = "'" + m.val_que + "'";
 
-        query =
-          query +
-          `${sig_uni} ${m.pai_que} ${m.cam_dat} ${m.con_que} ${m.val_que} ${m.pad_que} `;
+        switch (m.con_que) {
+          case "CHARINDEX":
+            if (session.dialect != "Postgres") {
+              m.con_que = `CHARINDEX(${m.val_que},${m.cam_dat})>0`;
+            } else {
+              m.con_que = `POSITION(${m.val_que} IN ${m.cam_dat})>0`;
+            }
+            query = query + `${sig_uni} ${m.pai_que} ${m.con_que} ${m.pad_que} `;
+
+            break;
+          case "NOCHAR":
+            if (session.dialect != "Postgres") {
+              m.con_que = `CHARINDEX(${m.val_que},${m.cam_dat})=0`;
+            } else {
+              m.con_que = `POSITION(${m.val_que} IN ${m.cam_dat})=0`;
+            }
+            query = query + `${sig_uni} ${m.pai_que} ${m.con_que} ${m.pad_que} `;
+
+            break;
+
+          default:
+            query =
+              query +
+              `${sig_uni} ${m.pai_que} ${m.cam_dat} ${m.con_que} ${m.val_que} ${m.pad_que} `;
+
+            }
+
+        //        query =
+        //          query +
+        //          `${sig_uni} ${m.pai_que} ${m.cam_dat} ${m.con_que} ${m.val_que} ${m.pad_que} `;
+
         sig_uni = m.uni_que.trim();
         if (sig_uni.trim() == "") sig_uni = " AND ";
       }
     } // EndFor
-    if (query.length>0)
-        query ="("+ query + ")";
-    
+    if (query.length > 0) query = "(" + query + ")";
+
     return query;
   }
 
@@ -226,10 +249,10 @@ export class reportForm extends FORM {
     var where: string = "";
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
     var executeQuery: string = "select * from " + this.vis_rep;
-   
+
     const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
 
-//    if (this.query.length > 1) executeQuery = this.query;
+    //    if (this.query.length > 1) executeQuery = this.query;
 
     where = await this.gen_where("queryPri");
 
@@ -248,40 +271,37 @@ export class reportForm extends FORM {
       }
     }
 
-
     if (this.ord_vis.length > 1) {
       // variables extras para el orden del select
       orden = orden + "," + this.ord_vis;
     }
 
+    if (this.sqlQuery) {
+      // si hay generacion de query
+      console.log("reportForm query Generacion custom de query");
+      executeQuery = await this.sqlQuery(where, orden);
+    } else {
+      if (where.length > 2) where = " where " + where;
 
-    if (this.sqlQuery){// si hay generacion de query
-        console.log('reportForm query Generacion custom de query')
-        executeQuery=await this.sqlQuery(where,orden)
+      executeQuery = executeQuery + where + orden;
     }
-    else {
-      if (where.length > 2) 
-          where = " where " + where;
-
-        executeQuery=executeQuery + where + orden;
-    }
-/*
+    /*
     if (this.ord_vis.length > 1) {
       // variables extras para el orden del select
       orden = orden + "," + this.ord_vis;
     }
 */
-    console.log("reportForm query", executeQuery );
+    console.log("reportForm query", executeQuery);
 
-    return executeQuery 
+    return executeQuery;
     //   init = async ()=> {
   }
 
-////////////////////////////////////////
-// metodo :obtData
-// pone en la propiedad this.Form.data todos los valores de las propiedades
-// de esta Forma
-//////////////////////////////////////
+  ////////////////////////////////////////
+  // metodo :obtData
+  // pone en la propiedad this.Form.data todos los valores de las propiedades
+  // de esta Forma
+  //////////////////////////////////////
 
   async obtData(data?: {}) {
     if (!data) data = {};
@@ -295,7 +315,6 @@ export class reportForm extends FORM {
         data[this.main[i]] = this[this.main[i]].prop.Value;
     }
 
-
     // Obtenemos variables Publicas
     const Var = this.Form.publicVar;
     for (let component in Var) {
@@ -303,7 +322,7 @@ export class reportForm extends FORM {
       //console.log("bt_json component.value= ", data[component]);
     }
     //console.log("bt_json obtData= ", data,this.Form.publicVar);
-    this.Form.data=data
+    this.Form.data = data;
     return data;
   }
 }

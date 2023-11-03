@@ -13,7 +13,7 @@
 import { COMPONENT } from '@/classes/Component'
 
 export class captureComponent extends COMPONENT {
-  sw_when:boolean=false
+  // sw_when:boolean=false
   constructor() {
     super()
     this.prop.ReadOnly = true
@@ -53,12 +53,12 @@ export class captureComponent extends COMPONENT {
       this.prop.Valid = true
       return this.prop.Valid
     }
-    console.log('Valid ',this.prop.Name,'sw_when',this.sw_when)
-    if ( !this.sw_when && !await this.Form.validComponent(this.Name) && !this.prop.Valid){
-       return this.prop.Valid
-    }
+    //console.log('Valid ',this.prop.Name,'sw_when',this.sw_when)
+//    if ( !this.sw_when && !await this.Form.validComponent(this.Name) && !this.prop.Valid){
+    
+    this.prop.Valid=await this.Form.validComponent(this.Name)
+    
 
-    this.prop.Valid=true  
     return this.prop.Valid
   }
 

@@ -39,16 +39,15 @@ export class num_pry extends captureComponent {
   ///////////////////////////////////
 
   async when() {
-    await super.when()
-
+    super.when()
     const data = await this.Form.db.execute(`         
            select max(num_pry)+1 as num_pry from man_comepry where tpy_tpy='${this.Form.tpy_tpy.prop.Value}'`);
 
     if (data[0] ) {
       console.log('1 num_pry when data=',data[0],this.prop.Value)
 
-      //this.prop.Valid=true  // se pone en Verdadero para que no llame rutina validacion
-      this.sw_when = true;
+      this.prop.Valid=true  // se pone en Verdadero para que no llame rutina validacion
+      //this.sw_when = true;
       if (data[0].num_pry==null)
           this.prop.Value = 1;
       else
@@ -57,8 +56,7 @@ export class num_pry extends captureComponent {
 
     if (this.prop.Value == 0) 
       this.prop.Value = 1;
-
-      this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0  //1-Value, 2-Alias,3-sql 5-Array
+      this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0  //Actividades por proyecto
     return true;
   }
 
@@ -66,21 +64,23 @@ export class num_pry extends captureComponent {
   
     if (this.prop.Value == 0) {
       this.prop.Valid = false;
-      this.sw_when = false;
+     // this.sw_when = false;
       return false;
     }
-    if (!this.sw_when) {
+
+    console.log('Valid ',this.prop.Name) //,'sw_when',this.sw_when)
+    //if (!this.sw_when) {
       if (await super.valid()) {
         // lee tipos de actividades segun el tipo de proyecto
         const m={tpy_tpy:this.Form.tpy_tpy.prop.Value}
         await this.Form.db.use('vi_cap_cometap',m)
 
         this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 2  //1-Value, 2-Alias,3-sql 5-Array
-        this.Form.equ_equ.prop.Focus=true
+       // this.Form.equ_equ.prop.Focus=true
         return true;
       }
-    }
-    this.sw_when = false;
+    //}
+   // this.sw_when = false;
     return true;
   }
 }

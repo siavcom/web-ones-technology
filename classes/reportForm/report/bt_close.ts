@@ -51,7 +51,8 @@ export class bt_close extends COMPONENT {
 
     this.Form.for_imp.prop.Visible=true
     this.Form.bt_obtener.prop.Visible=true
-    this.Form.bt_pdf.prop.Visible=true
+    if (!this.Form.bt_pdf.prop.Disabled)
+      this.Form.bt_pdf.prop.Visible=true
 
   
   

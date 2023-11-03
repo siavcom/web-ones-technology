@@ -65,7 +65,13 @@ export class ThisForm extends reportInv {
 public async init(){
   await super.init()
   this.var_ord.prop.Value="cla_isu";
- 
+    console.log(
+    "===================>Init Report name=",
+    this.prop.Name,
+    "var_ord",
+    this.var_ord.prop.Value
+  );
+  
 }
 
   ///////////////////////////////////////////////////////////////
@@ -121,6 +127,8 @@ public async init(){
         localWhere=localWhere+` and (substring(cla_isu,${pri_cla},${pos_tom})>='${des_fam}' and substring(cla_isu,${pri_cla},${pos_tom})<="${has_fam}") ` ;    
         localWhere=localWhere.replaceAll("'",'"')
       }
+
+    localWhere=localWhere.replaceAll("'",'"')  
     console.log(
       "sqlQuery =",
       ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres}  ` 

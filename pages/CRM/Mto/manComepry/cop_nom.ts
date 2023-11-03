@@ -18,18 +18,19 @@ export class cop_nom extends COMPONENT {
     super();
 
     this.prop.textLabel = "Afectación";
-    this.prop.Type = "text";
     this.prop.BaseClass = "comboBox";
     this.prop.ControlSource = "vi_cap_comepry.cop_nom";
-    this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array
+    this.prop.RowSourceType = 5;
+    this.prop.ColumnCount = 2;
+    this.prop.BoundColumn = 2;
     this.prop.RowSource = [
       ["Cliente", "Proveedor", "Interno"],
       ["C", "P", " "],
     ];
+    this.prop.Capture = false;
     this.prop.ReadOnly = true;
-    this.prop.ColumnCount = 2;
-    this.prop.BoundColumn = 2;
     this.prop.updateKey = false;
+
   }
 
   //////////////////////////////////

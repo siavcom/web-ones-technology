@@ -49,7 +49,7 @@ public async init(){
   ///////////////////////////////////////////////////////////////
 
   public async sqlQuery(where: string,order: string) {
-    let localWhere = where;
+    let localWhere = "";
     const des_fec =await dateToSql(this.Form.des_fec.prop.Value); //dateToSql(this.Form.des_fec.Value)
     const has_fec =await dateToSql(this.Form.has_fec.prop.Value); //dateToSql(this.Form.has_fec.Value)
     const tip_rep=this.tip_rep.prop.Value;
@@ -92,11 +92,15 @@ public async init(){
               }
       
            }
-        pos_tom=ult_cla-pri_cla ; 
-        pri_cla=pri_cla+1;
-        localWhere=localWhere+` and (substring(cla_isu,${pri_cla},${pos_tom})>='${des_fam}' and substring(cla_isu,${pri_cla},${pos_tom})<="${has_fam}") ` ;    
-        localWhere=localWhere.replaceAll("'",'"')
+       pos_tom=ult_cla-pri_cla ; 
+       pri_cla=pri_cla+1;
+       localWhere=localWhere+` (substring(cla_isu,${pri_cla},${pos_tom})>='${des_fam}' and substring(cla_isu,${pri_cla},${pos_tom})<="${has_fam}") ` ;    
+       if (where.length>0)
+       where = ' AND '+where
+       localWhere =
+       localWhere +where;
       }
+      localWhere=localWhere.replaceAll("'",'"')  
     console.log(
       "sqlQuery =",
       ` EXEC p_come3203 '${des_fec}','${has_fec}','${ini_isu}','${fin_isu}','${alm_rep}','${localWhere} ',${tip_rep},${tip_imp},'${var_ord}'  ` 
