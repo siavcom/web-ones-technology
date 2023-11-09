@@ -19,7 +19,7 @@ import { GRID } from "@/classes/Grid";
 //////////////////////////////////////
 import { con_apy } from "./con_apy";
 import { tap_tap } from "./tap_tap";
-import { des_tap } from "./des_tap";
+//import { des_tap } from "./des_tap_ant";
 import { fec_apy } from "./fec_apy";
 import { est_apy } from "./est_apy";
 import { dat_apy } from "./dat_apy";
@@ -34,7 +34,7 @@ export class Grid extends GRID {
 
   public con_apy = new con_apy();
   public tap_tap = new tap_tap();
-  public des_tap = new des_tap();
+ // public des_tap = new des_tap();
   public fec_apy = new fec_apy();
   public est_apy = new est_apy();
   public fpr_apy = new fpr_apy();

@@ -26,6 +26,15 @@ export class bt_obtener extends COMPONENT {
 
   async click() {
     this.Form.report.displayPdf.prop.Source = "";
+    const main=this.Form.main
+
+    for (let i=0;i<main.length;i++){
+       console.log('bt_close  main====>',main[i])
+       if (!this.Form[main[i]].prop.Disabled)
+        this.Form[main[i]].prop.Visible=false
+    }
+/*
+
     this.Form.report.displayPdf.prop.Visible = false;
 
     this.Form.queryPri.prop.Visible = false;
@@ -37,20 +46,7 @@ export class bt_obtener extends COMPONENT {
 
     this.Form.bt_obtener.prop.Visible = false;
     this.Form.bt_pdf.prop.Visible = false;
-/*
-    let query = "";
-
-    const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
-
-    if (this.Form.sqlQuery.length > 0)
-      try {
-        const val_eval = "`" + this.Parent.sqlQuery + "`";
-        query = eval(val_eval) + ";";
-      } catch (error) {
-        MessageBox("eval(" + this.Parent.sqlQuery + ") " + error, 16);
-        return;
-      }
- */
+    */
 
     this.Form.bt_obtener.prop.Visible = false;
     this.Form.bt_pdf.prop.Visible = false;

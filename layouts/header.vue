@@ -4,13 +4,13 @@
     <div style="width: 80%;
                             height: 55px;
                             display: flex;">
-      <img class="logoVue" :src="logo" style="width:50px;height:50px;" />
+      <!--img class="logoVue" :src="logo" style="width:50px;height:50px;" /-->
       <div class="Web-ones">
-        <img class="logoVue" :src="logo" style="width:50px;height:50px;" />eb-Ones Technology
+        <img class="logoVue" :src="logo" style="width:50px;height:50px" />eb-Ones Technology
       </div>
 
       <div class="Company" style="align-self:flex-end;margin-left: auto;">
-        <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end">
+        <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end:top:5">
 
         </div>
         <div class="dataEmp" style="display:flex; flex-wrap:wrap;item-align:flex-end">
@@ -36,7 +36,8 @@
 //vertical-align:middle;
 // @/assets/logo.pn
 
-import logo from '@/assets/logo.png'
+//import logo from '@/assets/logo.png'
+import logo from '@/WebOnes.ico'
 
 const props = defineProps<{
   logoEmp: string;

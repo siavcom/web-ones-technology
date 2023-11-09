@@ -228,7 +228,7 @@ export class captureForm extends FORM {
       this.prop.Position = "footer";
       this.prop.Visible = false;
       // this.prop.Image = "/Iconos/Accept.png";
-      this.prop.Image = "/Iconos/svg/bx-check-circle.svg";
+      this.prop.Image = "/Iconos/svg/ok-accept.svg"
       //this.prop.TabIndex= 20
       this.style.width = "20px";
     } // Fin constructor
@@ -301,7 +301,7 @@ export class captureForm extends FORM {
       this.prop.Position = "footer";
       this.prop.Visible = false;
       // this.prop.Image = "/Iconos/Accept.png";
-      this.prop.Image = "/Iconos/svg/bx-eraser.svg";
+      this.prop.Image = "/Iconos/svg/delete-color.svg"// bx-eraser.svg";
       // this.prop.TabIndex= 21
       this.style.width = "20px";
     } // Fin constructor

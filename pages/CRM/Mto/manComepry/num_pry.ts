@@ -45,6 +45,7 @@ export class num_pry extends captureComponent {
     this.Form.tap_tap.prop.Visible = false;
     this.Form.nom_nom.prop.Value=''
     this.Form.nom_ven.prop.Value=''
+    this.Form.bt_actividades.Visible=false
 
 
     super.when();

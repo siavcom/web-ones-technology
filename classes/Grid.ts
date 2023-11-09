@@ -25,12 +25,14 @@ export class GRID extends COMPONENT {
     this.prop.Row = 0;
     this.prop.textLabel = "Grid de datos";
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
-    this.prop.addButton = true;
+    this.prop.Visible = false;
+
+    this.prop.addButton = true;  // Estos componentes estan en grid.vue
     this.prop.deleteButton = true;
     this.prop.saveData = true;
     this.prop.updated = false;
-    this.prop.Visible = false;
     this.prop.messageUpdate = "Grabamos la tabla";
+
     this.style.width='95%'
     this.style.height="auto"
 
@@ -80,7 +82,7 @@ export class GRID extends COMPONENT {
         //Obtiene solo los de llaves de actualizacion
         //console.log('CaptureForm comp', comp, this[comp].prop.Valid)
         if (!this.Form[comp].prop.Valid) {
-          return;
+          return false;
         } // Si es un dato no esta  validado
 
         // asignamos variables de memoria
@@ -222,7 +224,7 @@ export class GRID extends COMPONENT {
       this.prop.RecordSource,
       "View=",
       this.Form.db.View[this.prop.RecordSource],
-      "Valores=",m
+      "Valores=",values
     );
 
     //this[this.elements[0].Name].prop.First=true

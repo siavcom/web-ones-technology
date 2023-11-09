@@ -1463,7 +1463,8 @@ export class VFPDB {
   //  Genera indices en servidor de SQL
   /// ///////////////////////////////////////////
 
-  genIndices = async (tabla: string) => {
+  genIndices = async (tabla: string,nom_ind:string) => {
+    if (!nom_ind) nom_ind=''
     if (!tabla) {
       return;
     }
@@ -1472,13 +1473,14 @@ export class VFPDB {
       id_con: "",
       tip_llamada: "GENINDICES",
       nom_tab: tabla,
+      nom_vis: nom_ind
     };
 
     try {
       const respuesta = await this.axiosCall(dat_vis);
       if (respuesta == null) return null;
-      if (respuesta.length == 0) {
-        MessageBox("Se genero el indice/indices de la tabla " + tabla);
+      if (respuesta.length > 0) {
+        MessageBox(respuesta);
         return true;
       }
     } catch (error) {
@@ -1493,22 +1495,24 @@ export class VFPDB {
   //  Genera vistas en servidor de SQL
   /// ///////////////////////////////////////////
 
-  genVistasSql = async (tabla: string) => {
+  genVistasSql = async (tabla: string,nom_vis?:string) => {
     if (!tabla) {
       return;
     }
+    if (!nom_vis) nom_vis=''
 
     const dat_vis = {
       id_con: "",
       tip_llamada: "GENVISTASSQL",
       nom_tab: tabla,
+      nom_vis : nom_vis
     };
 
     try {
       const respuesta = await this.axiosCall(dat_vis);
       if (respuesta == null) return;
-      if (respuesta.length == 0) {
-        MessageBox("Se genero las vistas remotas SQL  de tabla " + tabla);
+      if (respuesta.length > 0) {
+        MessageBox(respuesta);
         return true;
       }
     } catch (error) {

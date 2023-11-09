@@ -33,6 +33,7 @@ public Grid = new Grid()
     this.prop.BaseClass='container'
     this.prop.textLabel='Actividades del proyecto'
     this.prop.Disabled=true
+    this.prop.Visible=false
     this.style.display='block'
    
    }

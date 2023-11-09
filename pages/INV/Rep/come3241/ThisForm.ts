@@ -32,12 +32,35 @@ export class ThisForm extends reportInv {
     this.prop.Development=true
     this.vis_rep = 'vi_come3201'   // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value ='jr_come3241'   // no incluir extencion jasper o jrxml
+    
+    
     this.tip_rep.prop.Visible=false    // Muestra general odetallado
     this.mon_rep.prop.Visible=false 
     this.des_fec.prop.Visible=false
     this.tdo_tdo.prop.Visible=false
     this.tip_imp.prop.Visible=false
-    this.sep_fam.prop.Visible=false;
+
+    this.tip_rep.prop.Disabled=true    // Muestra general odetallado
+    this.mon_rep.prop.Disabled=true 
+    this.des_fec.prop.Disabled=true
+    this.tdo_tdo.prop.Disabled=true
+    this.tip_imp.prop.Disabled=true
+
+
+                                      // Campos deshabilitados e invisibles
+    this.sep_fam.prop.Visible=false
+    this.num_fam.prop.Visible=false
+    this.des_fam.prop.Visible=false
+    this.has_fam.prop.Visible=false
+
+    this.sep_fam.prop.Disabled=true
+    this.num_fam.prop.Disabled=true
+    this.des_fam.prop.Disabled=true
+    this.has_fam.prop.Disabled=true
+    
+
+
+
     this.bt_pdf.prop.Visible=false;
     this.Form.bt_pdf.prop.Disabled=true;
     this.has_fec.prop.TabIndex=1;

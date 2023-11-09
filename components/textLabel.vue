@@ -280,8 +280,8 @@ const renderComboBox = async () => {
   if (props.prop.RowSourceType < 1) return
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
-  console.log('textLabel render comboBox')
+  if (!props.prop.RowSource || props.prop.RowSource.length < 2) return;
+  console.log('textLabel render comboBox ',props.prop.Name,' RowSource=',props.prop.RowSource.length)
   try {
     //console.log('componentStyle asignaResultado renderCombo',props.Name,Value)
     const RowSource: string = props.prop.RowSource

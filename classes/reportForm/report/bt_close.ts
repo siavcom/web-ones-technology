@@ -4,8 +4,10 @@
 // Creacion : 29/May/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
-/**
- *
+/** 
+* Clase : close
+* Author : Fernando Cuadras Angulo
+* Creacion : 29/May/2023
  *
  * @export
  * @class BT_ACEPTAR
@@ -28,9 +30,16 @@ export class bt_close extends COMPONENT {
   } // Fin constructor
 
   async click() {
+    const main=this.Form.main
+    const ThisForm=this.Form
+    for (let i=0;i<main.length;i++){
+       if (!ThisForm[main[i]].prop.Disabled)
+        ThisForm[main[i]].prop.Visible=true
+    }
 
     this.Form.report.prop.Disabled=true
     this.Form.report.prop.Visible=false
+    
     this.Form.report.browse.prop.RowSource = ''
   //  this.Form.report.browse.prop.Visible = false
 

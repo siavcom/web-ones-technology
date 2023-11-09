@@ -23,7 +23,7 @@ export class ndo_doc extends COLUMN {
         this.textLabel = 'Número' // Column Header
         this.prop.Type ='number'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_comeapy.num_doc'
+        this.prop.ControlSource = 'vi_cap_comeapy.ndo_doc'
         this.prop.Decimals=0
         this.prop.updateKey=false
         this.prop.ReadOnly=true
