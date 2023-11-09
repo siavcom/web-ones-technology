@@ -66,7 +66,7 @@ export class bt_aceptar extends COMPONENT {
       let dataUpdate = false
       let data = false
       if (this.Form.grid_datos.prop.Visible &&
-        await this.Form.db.recCount('vi_cap_dat') > 4) {
+        await this.Form.db.recCount('vi_cap_comedat') > 4) {
         data = true
         this.Form.grid_datos.prop.Disabled=true
         this.Form.grid_indices.prop.Disabled=true
@@ -76,7 +76,7 @@ export class bt_aceptar extends COMPONENT {
         this.Form.bt_gen_vistas.prop.Visible = false
 
 
-        dataUpdate = await this.grabaDatos('vi_cap_dat')
+        dataUpdate = await this.grabaDatos('vi_cap_comedat')
        
 
         // return
@@ -87,26 +87,26 @@ export class bt_aceptar extends COMPONENT {
       if (this.Form.grid_indices.prop.Visible) {
     //    data = true
 
-        if (data && await this.Form.db.recCount('vi_cap_ind') > 0) {
-          if (!await this.grabaDatos('vi_cap_ind'))
+        if (data && await this.Form.db.recCount('vi_cap_comeind') > 0) {
+          if (!await this.grabaDatos('vi_cap_comeind'))
             dataUpdate = false
 
         } else
           dataUpdate = false
 
-       // await this.Form.db.useNodata('vi_cap_ind')
+       // await this.Form.db.useNodata('vi_cap_comeind')
 
       }
 
       // Vistas
       // Hay datos capturados, grabara informacion
       if (data && this.Form.grid_vistas.prop.Visible &&
-        await this.Form.db.recCount('vi_cap_vis') > 0) {
+        await this.Form.db.recCount('vi_cap_comevis') > 0) {
        // data = true
-        if (!await this.grabaDatos('vi_cap_vis'))
+        if (!await this.grabaDatos('vi_cap_comevis'))
           dataUpdate = false
 
-      //  await this.Form.db.useNodata('vi_cap_vis')
+      //  await this.Form.db.useNodata('vi_cap_comevis')
       }
 
       if (data) {
@@ -121,9 +121,9 @@ export class bt_aceptar extends COMPONENT {
 
       
         this.Form.prop.Status = 'A'
-        await this.Form.db.useNodata('vi_cap_dat')
-        await this.Form.db.useNodata('vi_cap_ind')
-        await this.Form.db.useNodata('vi_cap_vis')
+        await this.Form.db.useNodata('vi_cap_comedat')
+        await this.Form.db.useNodata('vi_cap_comeind')
+        await this.Form.db.useNodata('vi_cap_comevis')
         this.Form.grid_datos.prop.Visible=false
         this.Form.grid_indices.prop.Visible=false
         this.Form.grid_vistas.prop.Visible=false
@@ -147,8 +147,8 @@ export class bt_aceptar extends COMPONENT {
 
         if (this.Form.dic_dat.prop.Value == 'D') {
           this.Form.grid_datos.prop.Status = 'A'
-          await this.Form.db.use("vi_cap_dat ", m, "vi_cap_dat", ["con_dat"])
-          if (await this.Form.db.recCount("vi_cap_dat") == 0) {
+          await this.Form.db.use("vi_cap_comedat ", m, "vi_cap_comedat", ["con_dat"])
+          if (await this.Form.db.recCount("vi_cap_comedat") == 0) {
             await this.Form.grid_datos.appendDatos()
           }
 
@@ -159,9 +159,9 @@ export class bt_aceptar extends COMPONENT {
 
 
           // Indices SQL
-          await this.Form.db.use("vi_cap_ind", m)
+          await this.Form.db.use("vi_cap_comeind", m)
 
-          if (await this.Form.db.recCount("vi_cap_ind") == 0) {
+          if (await this.Form.db.recCount("vi_cap_comeind") == 0) {
 
             await this.Form.grid_indices.appendRow()
 
@@ -171,8 +171,8 @@ export class bt_aceptar extends COMPONENT {
 
 
           // Vistas remota de captura SQL 
-          await this.Form.db.use("vi_cap_vis", m)
-          if (await this.Form.db.recCount("vi_cap_vis") == 0) {
+          await this.Form.db.use("vi_cap_comevis", m)
+          if (await this.Form.db.recCount("vi_cap_comevis") == 0) {
             const m = {
               nom_tab: this.Form.nom_tab.prop.Value
             }
@@ -187,7 +187,7 @@ export class bt_aceptar extends COMPONENT {
 
         // Tablas del servidor de SQL 
  //       if (this.Form.dic_dat.prop.Value == 'T') { // Tablas
- //         await this.Form.db.use("vi_cap_tab", m)
+ //         await this.Form.db.use("vi_cap_cometab", m)
 //          this.Form.grid_tablas.prop.Visible = true
 //        }
 
@@ -202,9 +202,9 @@ export class bt_aceptar extends COMPONENT {
 
       // Hay datos capturados, grabara informacion 
       if (this.Form.grid_tablas.prop.Visible &&
-        await this.Form.db.recCount('vi_cap_tab') > 0) {
-        await this.grabaDatos('vi_cap_tab')
-        await this.Form.db.useNodata('vi_cap_tab')
+        await this.Form.db.recCount('vi_cap_cometab') > 0) {
+        await this.grabaDatos('vi_cap_cometab')
+        await this.Form.db.useNodata('vi_cap_cometab')
         this.prop.Disabled = false
         this.Form.prop.Status = 'A'
         this.Form.grid_tablas.prop.Visible = false
@@ -215,9 +215,10 @@ export class bt_aceptar extends COMPONENT {
       // if (await this.Form.db.select('lla1_tab') == 0) await this.Form.db.select(0)
       // await this.Form.db.useNodata("lla1_tab")
 
-      //if (await this.Form.db.select('vi_cap_tab') == 0) await this.Form.db.select(0)
-      await this.Form.db.use("vi_cap_tab", m)
-      console.log('bt_aceptar vi_cap_tab')
+      //if (await this.Form.db.select('vi_cap_cometab') == 0) await this.Form.db.select(0)
+      await this.Form.db.use("vi_cap_cometab", m)
+      console.log('bt_aceptar vi_cap_cometab',await this.Form.db.localAlaSql('select * from vi_cap_cometab'))
+
       this.Form.grid_tablas.prop.Visible = true
       //  this.Form.btGenTablas.prop.Visible = true
     }
@@ -294,7 +295,7 @@ export class bt_aceptar extends COMPONENT {
   // que quedara en la base de datos
   /////////////////////////////////
   async ObtDefTabla() {
-    const data = await this.Form.db.localSql('select * from vi_cap_dat order by con_dat ')
+    const data = await this.Form.db.localSql('select * from vi_cap_comedat order by con_dat ')
 
     // asignara consecutivo
     for (let i = 0; i < data.length; i++) {
@@ -311,10 +312,10 @@ export class bt_aceptar extends COMPONENT {
     }
     // borramos la tabla original y la reinsertamos en Cursor temporal
     await this.Form.db.Sql('Use Now ; \
-              delete from vi_cap_dat ;\
-              SELECT * INTO vi_cap_dat  FROM ?', [data])
+              delete from vi_cap_comedat ;\
+              SELECT * INTO vi_cap_comedat  FROM ?', [data])
 
-    //    return await this.grabaDatos('vi_cap_dat')
+    //    return await this.grabaDatos('vi_cap_comedat')
     //  Mandamos actualizar en la base de datos toda la vista   
   }
 
@@ -326,14 +327,14 @@ export class bt_aceptar extends COMPONENT {
     let men_txt = '' // Mensaje de texto
     let vis_act = '' // vista de actualizacion
     let grid_form = '' // grid de captura
-    if (vis_cap == 'vi_cap_dat') {
+    if (vis_cap == 'vi_cap_comedat') {
       men_txt = 'Quieres grabar la definicion de la tabla '
       vis_act = 'lla1_dat'
       grid_form = 'grid_datos'
     }
 
 
-    if (vis_cap == 'vi_cap_ind') {
+    if (vis_cap == 'vi_cap_comeind') {
       men_txt = 'Quieres grabar la definicion de indices '
       vis_act = 'lla1_ind'
       grid_form = 'grid_indices'
@@ -341,14 +342,14 @@ export class bt_aceptar extends COMPONENT {
     }
 
 
-    if (vis_cap == 'vi_cap_tab') {
+    if (vis_cap == 'vi_cap_cometab') {
       men_txt = 'Quieres grabar la definicion de las tablas SQL'
       vis_act = 'lla1_tab'
       grid_form = 'grid_tablas'
 
     }
 
-    if (vis_cap == 'vi_cap_vis') {
+    if (vis_cap == 'vi_cap_comevis') {
       men_txt = 'Quieres grabar la definicion de las vistas remotas SQL'
       vis_act = 'lla1_vis'
       grid_form = 'grid_vistas'
@@ -367,7 +368,7 @@ export class bt_aceptar extends COMPONENT {
     console.log('bt_aceptar Messagebox resultado', resultado)
 
     if (resultado == 6) {
-      if (vis_cap == 'vi_cap_dat') { // para obtener el con_dat definitivo
+      if (vis_cap == 'vi_cap_comedat') { // para obtener el con_dat definitivo
         await this.ObtDefTabla()
 
       }

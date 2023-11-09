@@ -23,7 +23,7 @@ export class dec_dat extends COLUMN {
     this.prop.Min = '0'
     this.prop.Max = '20'
     this.prop.Decimals = 0
-    this.prop.ControlSource = 'vi_cap_dat.dec_dat'
+    this.prop.ControlSource = 'vi_cap_comedat.dec_dat'
 
     this.prop.Placeholder = "Decimales de precisión"
     this.prop.ToolTipText = "Decimales de precisión"

@@ -89,12 +89,13 @@ export class ThisForm extends captureForm {
    
 
   async init(){
+
+    await this.Form.db.useNodata('vi_cap_cometap')
   //  const data=await this.Form.db.execute("select des_tpy,tpy_tpy,cop_nom from vi_cap_cometpy order by cop_nom,tpy_tpy",'cometpy') 
   //  this.Form.tpy_tpy.prop.RowSource ="cometpy.des_tpy,tpy_tpy,cop_nom"
   //  this.Form.tpy_tpy.prop.RowSourceType = 2
     await super.init() 
 
-    this.db.useNodata('vi_cap_cometap')
 
     this.tpy_tpy.prop.TabIndex=1 
 

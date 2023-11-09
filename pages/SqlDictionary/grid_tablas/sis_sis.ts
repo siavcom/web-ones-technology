@@ -19,7 +19,7 @@ export class sis_sis extends COLUMN {
         this.textLabel = 'Sistema'
         this.prop.BaseClass = 'editText'
         this.prop.ToolTipText ='Nombre de la tabla'
-        this.prop.ControlSource = 'vi_cap_tab.sis_sis'
+        this.prop.ControlSource = 'vi_cap_cometab.sis_sis'
         this.style.width = '50px' /* width/height  - initial value: auto */
     }
 

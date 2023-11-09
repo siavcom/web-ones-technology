@@ -25,7 +25,7 @@ export class nom_ind extends COMPONENT {
     this.prop.ErrorMessage = ''
     this.prop.Value = ""
     this.prop.RowSourceType =0 //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = 'vi_cap_ind.nom_ind,exp_ind'
+    this.prop.RowSource = 'vi_cap_comeind.nom_ind,exp_ind'
     this.prop.ReadOnly=false
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 1

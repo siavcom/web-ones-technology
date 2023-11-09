@@ -39,7 +39,7 @@ export class grid_vistas extends GRID {
     super()
     this.Name = 'grid_vistas'
     this.prop.textLabel= 'Definicion de vistas de captura'
-    this.prop.RecordSource='vi_cap_vis'
+    this.prop.RecordSource='vi_cap_comevis'
     this.prop.Visible= false
     this.prop.ReadOnly = false
     this.prop.autoLoad=false
@@ -55,7 +55,7 @@ export class grid_vistas extends GRID {
   public async appendRow(m?:{}) { 
    // Obtiene el consecutivo con_vis del cursor local
   
-   const data=await this.Form.db.VfpCursor("select max(num_vis) as num_vis from vi_cap_vis\
+   const data=await this.Form.db.VfpCursor("select max(num_vis) as num_vis from vi_cap_comevis\
    where  (trim(cam_vis) <> 'USU_CRE' and \
    trim(cam_vis) <> 'USU_USU' and \
    trim(cam_vis) <> 'TIE_UAC' and \

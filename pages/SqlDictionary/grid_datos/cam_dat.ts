@@ -17,7 +17,7 @@ export class cam_dat extends COLUMN {
     this.prop.Order = 2;
     this.textLabel = "Campo";
     this.prop.BaseClass = "editText";
-    this.prop.ControlSource = "vi_cap_dat.cam_dat";
+    this.prop.ControlSource = "vi_cap_comedat.cam_dat";
     this.prop.Placeholder = "Nombre del campo";
     this.prop.ToolTipText = "Nombre del campo";
     this.prop.componentStyle.textTransform = "lowercase";
@@ -49,7 +49,7 @@ export class cam_dat extends COLUMN {
     const valor = this.prop.Value.toUpperCase().trim();
     const recno = this.Recno;
     const data = await this.Form.db.localSql(
-      `select count(key_pri) as existe from vi_cap_dat where trim(upper(cam_dat))="${valor}" and recno<>${recno}`
+      `select count(key_pri) as existe from vi_cap_comedat where trim(upper(cam_dat))="${valor}" and recno<>${recno}`
     );
     if (data[0].existe > 0) {
        this.prop.Value=''

@@ -60,7 +60,7 @@ export class reportForm extends FORM {
   public async init() {
 //    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
 
-    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_dat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
+    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
     this.var_ord.prop.RowSourceType = 3;
 
     this.queryUsu.prop.Disabled = true;

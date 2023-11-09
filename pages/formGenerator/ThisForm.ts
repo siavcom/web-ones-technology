@@ -66,7 +66,7 @@ export class ThisForm extends FORM {
   
   async init() {
     try {
-      await this.Form.db.use('vi_cap_ind')
+      await this.Form.db.use('vi_cap_comeind')
    
     }
     catch (error) {

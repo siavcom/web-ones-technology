@@ -19,7 +19,7 @@ export class vue_dat extends COLUMN {
         this.prop.Order = 3
         this.textLabel = 'Valor default'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_dat.vue_dat'
+        this.prop.ControlSource = 'vi_cap_comedat.vue_dat'
         this.prop.ToolTipText ='Valor incial en typescript insertarse el registro nuevo en VUE'
         this.prop.Placeholder = "Valor inicial"
         this.style.width = '200px' 

@@ -22,7 +22,7 @@ export class lon_dat extends COLUMN {
         this.prop.Type = 'number'
         this.prop.Min = '0'
         this.prop.Decimals = 0
-        this.prop.ControlSource = 'vi_cap_dat.lon_dat'
+        this.prop.ControlSource = 'vi_cap_comedat.lon_dat'
         this.prop.ToolTipText = 'Logitud del campo'
         this.prop.Placeholder = "Longitud del campo"
         this.prop.Value = +0

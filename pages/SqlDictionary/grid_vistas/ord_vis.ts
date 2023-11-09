@@ -19,7 +19,7 @@ export class ord_vis extends COLUMN {
         this.prop.Order = 1
         this.textLabel = 'Orden'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_vis.ord_vis'
+        this.prop.ControlSource = 'vi_cap_comevis.ord_vis'
         this.prop.ToolTipText ='Variables que dan el orden de la vista'
         this.prop.Placeholder = "Orden de la vista"
         this.style.width='100px'

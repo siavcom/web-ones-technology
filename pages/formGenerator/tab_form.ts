@@ -27,7 +27,7 @@ export class tab_form extends COMPONENT {
     this.prop.ErrorMessage = ''
     this.prop.Value = ""
     this.prop.RowSourceType = 3 //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = "select des_tab,nom_tab from vi_cap_tab order by nom_tab"
+    this.prop.RowSource = "select des_tab,nom_tab from vi_cap_cometab order by nom_tab"
     this.prop.ColumnCount = 2
     this.prop.BoundColumn = 2
     this.prop.ColumnWidths = "80%,30%"
@@ -50,12 +50,12 @@ export class tab_form extends COMPONENT {
   public async valid() {
 
 //    this.Form.nom_ind.prop.RowSourceType = 0
-//    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_ind where nom_tab='${this.prop.Value}' `, 'vi_cap_ind')
+//    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
 //    this.Form.nom_ind.prop.RowSourceType = 2
 
        this.Form.vis_form.prop.RowSourceType = 0
        const nom_tab=this.prop.Value.trim()
-       this.Form.vis_form.prop.RowSource = `select des_vis,nom_vis from vi_cap_vis where nom_tab='${nom_tab}' `
+       this.Form.vis_form.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis where nom_tab='${nom_tab}' `
        this.Form.vis_form.prop.RowSourceType = 3
        this.Form.vis_form.prop.Visible = true
 

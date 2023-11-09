@@ -20,7 +20,7 @@ export class des_ind extends COLUMN {
         this.textLabel = 'Descripcion'
         this.prop.BaseClass = 'editText'
         this.prop.Type='text'
-        this.prop.ControlSource = 'vi_cap_ind.des_ind'
+        this.prop.ControlSource = 'vi_cap_comeind.des_ind'
         this.prop.ToolTipText ='Descripción del indice'
         this.prop.Placeholder = "Descripción del indice"
 

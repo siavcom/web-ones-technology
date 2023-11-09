@@ -59,7 +59,7 @@
                   <div v-show="item.id != This.Row" :style='{ "width": This[col.Name].style.width }'>
                     <!--Transition name="columntext"-->
                       <textLabel 
-                        v-bind:Registro="item.id != This.Row?item.recno:0"
+                        v-bind:Registro="item.id != This.Row?  item.recno>0 ? item.recno:0 :0"
                         v-bind:Id="item.id"
 
                         v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
@@ -87,7 +87,7 @@
                         v-model:Valid="This[col.Name].prop.Valid" 
                         v-model:ShowError="This[col.Name].prop.ShowError"
                         v-bind:Component="ref(This[col.Name])" 
-                        v-bind:Registro="item.recno"
+                        v-bind:Registro="item.recno>0 ? item.recno:0 "
                         v-bind:prop="This[col.Name].prop" 
                         v-bind:style="This[col.Name].style"
                         v-bind:position="This[col.Name].position"

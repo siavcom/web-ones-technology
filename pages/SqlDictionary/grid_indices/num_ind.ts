@@ -21,7 +21,7 @@ export class num_ind extends COLUMN {
         this.prop.Min = '0'
         this.prop.Max = '32'
         this.prop.Decimals=1
-        this.prop.ControlSource = 'vi_cap_ind.num_ind'
+        this.prop.ControlSource = 'vi_cap_comeind.num_ind'
         this.prop.Placeholder = "Consecutivo/Orden "
         this.prop.ToolTipText = 'Consecutivo/Orden. El indice 1 se toma como indice principal de captura'
         this.style.width= '35px'

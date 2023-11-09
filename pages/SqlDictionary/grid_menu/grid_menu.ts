@@ -56,7 +56,7 @@ export class grid_menu extends GRID {
   public async appendRow() { 
 /*
     // Obtiene el consecutivo con_ind del cursor local
-    const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_ind\
+    const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_comeind\
     where  (trim(cam_ind) <> 'USU_CRE' and \
     trim(cam_ind) <> 'USU_USU' and \
     trim(cam_ind) <> 'TIE_UAC' and \

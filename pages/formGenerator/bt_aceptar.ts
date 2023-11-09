@@ -60,7 +60,7 @@ export class bt_aceptar extends COMPONENT {
   
       controlSource = `'${vis_form.trim()}.'${concatena}ltrim(lower(cam_dat))`
       // En el area de trabajo reservada , generamos un select a SQL server a una vista de captura
-      // y le asignamos el nombre 'vi_cap_tab' a a tabla en el SQL local
+      // y le asignamos el nombre 'vi_cap_cometab' a a tabla en el SQL local
       const campos = `con_dat,lower(cam_dat) as cam_dat,ref_dat, tip_dat,lon_dat,dec_dat,'${espacios}' as nom_ind, 0 as updatekey, \
       1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
       0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
@@ -83,8 +83,8 @@ export class bt_aceptar extends COMPONENT {
         " update vi_cap_form set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' ")
 
       // Buscamos la expresion de indice de actualizacion
-      const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
-                          join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_form}' `, 'MEMVAR')
+      const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_comevis \
+                          join vi_cap_comeind on vi_cap_comevis.vac_vis=vi_cap_comeind.nom_ind where rtrim(nom_vis)='${vis_form}' `, 'MEMVAR')
 
       if (data.length == 0 || data[0].exp_ind.trim() == '') {
         MessageBox('No hay expresión de indice el la vista de captura', 16)
@@ -139,8 +139,8 @@ export class bt_aceptar extends COMPONENT {
         " update vi_cap_grid set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' ")
 
       // Buscamos la expresion de indice de actualizacion
-      const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
-                    join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_grid}' `, 'MEMVAR')
+      const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_comevis \
+                    join vi_cap_comeind on vi_cap_comevis.vac_vis=vi_cap_comeind.nom_ind where rtrim(nom_vis)='${vis_grid}' `, 'MEMVAR')
 
       //////////////////////
       /*      if (!this.Form.db.execute(ins_sql, 'vi_cap_grid')) {
@@ -148,8 +148,8 @@ export class bt_aceptar extends COMPONENT {
               return
             }
             // Buscamos la expresion de indice de actualizacion
-            const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_vis \
-                                join vi_cap_ind on vi_cap_vis.vac_vis=vi_cap_ind.nom_ind where rtrim(nom_vis)='${vis_grid}'    `, 'MEMVAR')
+            const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_comevis \
+                                join vi_cap_comeind on vi_cap_comevis.vac_vis=vi_cap_comeind.nom_ind where rtrim(nom_vis)='${vis_grid}'    `, 'MEMVAR')
       
             if (data.length == 0 || data[0].exp_ind.trim() == '') {
               MessageBox('No hay expresión de indice para el grid captura')

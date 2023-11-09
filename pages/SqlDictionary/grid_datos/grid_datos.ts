@@ -45,7 +45,7 @@ export class grid_datos extends GRID {
     super()
     this.Name = 'grid_datos'
     this.prop.textLabel= 'Definicion de campos'
-    this.prop.RecordSource='vi_cap_dat'
+    this.prop.RecordSource='vi_cap_comedat'
     this.prop.Visible= false
     this.prop.ReadOnly = false;
     this.prop.autoLoad=false
@@ -62,14 +62,14 @@ export class grid_datos extends GRID {
   ///////////////////////////////////////////////////
   public async appendRow() { 
    // Obtiene el consecutivo con_dat del cursor local
-   const data=await this.Form.db.localSql("select max(con_dat) as con_dat from vi_cap_dat\
+   const data=await this.Form.db.localSql("select max(con_dat) as con_dat from vi_cap_comedat\
    where  lower(trim(cam_dat)) <> 'usu_cre' and \
    lower(trim(cam_dat)) <> 'usu_usu' and \
    lower(trim(cam_dat)) <> 'tie_uac' and \
    lower(trim(cam_dat)) <> 'tie_cre' and \
    lower(trim(cam_dat)) <> 'timestamp' and \
    lower(trim(cam_dat)) <> 'key_pri' ")
-   //console.log('appenRow grid_datos',await this.Form.db.localSql('select * from vi_cap_dat' ), data[0].con_dat)
+   //console.log('appenRow grid_datos',await this.Form.db.localSql('select * from vi_cap_comedat' ), data[0].con_dat)
    //console.log('appendRow',data[0])    
    const con_dat=+data[0].con_dat > 0 ? data[0].con_dat+1 : 1       
    const m = {nom_tab:this.Form.nom_tab.prop.Value.trim(),
@@ -111,7 +111,7 @@ export class grid_datos extends GRID {
     m.dec_dat = 0
     m.des_dat = "USUARIO"
    
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 102
     m.cam_dat = "tie_uac"
@@ -121,7 +121,7 @@ export class grid_datos extends GRID {
     m.dec_dat = 0
     m.des_dat = "FECHA ULTIMA ACTUALIZACION"
   
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 103
     m.cam_dat = "usu_cre"
@@ -131,7 +131,7 @@ export class grid_datos extends GRID {
     m.dec_dat = 0
     m.des_dat = "USUARIO CREAOOR"
 
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 104
     m.cam_dat = "tie_cre"
@@ -141,7 +141,7 @@ export class grid_datos extends GRID {
     m.dec_dat = 0
     m.des_dat = "TIEMPO DE CREACION"
 
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 105
     m.cam_dat = "timestamp"
@@ -151,7 +151,7 @@ export class grid_datos extends GRID {
     m.dec_dat = 0
     m.des_dat = "TIMESTAMP"
  
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
 
     m.con_dat = 106
@@ -162,8 +162,8 @@ export class grid_datos extends GRID {
     m.dec_dat = 0
     m.des_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    "
   
-  await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
-  console.log('Grid_datos appendBlank ',await this.Form.db.localSql('select * from vi_cap_dat'))
+  await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  console.log('Grid_datos appendBlank ',await this.Form.db.localSql('select * from vi_cap_comedat'))
    return
   }
 

@@ -88,7 +88,7 @@ export class ThisForm extends FORM {
     m.des_dat = "USUARIO"
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 12
     m.cam_dat = "tie_uac"
@@ -100,7 +100,7 @@ export class ThisForm extends FORM {
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
 
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 13
     m.cam_dat = "usu_cre"
@@ -111,7 +111,7 @@ export class ThisForm extends FORM {
     m.des_dat = "USUARIO CREAOOR"
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 14
     m.cam_dat = "tie_cre"
@@ -122,7 +122,7 @@ export class ThisForm extends FORM {
     m.des_dat = "TIEMPO DE CREACION"
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
     m.con_dat = 15
     m.cam_dat = "timestamp"
@@ -133,7 +133,7 @@ export class ThisForm extends FORM {
     m.des_dat = "TIMESTAMP"
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
 
 
     m.con_dat = 16
@@ -145,8 +145,8 @@ export class ThisForm extends FORM {
     m.des_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    "
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
-  await this.Form.db.appendBlank('vi_cap_dat', m) //Incertamos un renglon en blanco
-    console.log('ThisForm appendBlank ',await this.Form.db.localSql('select * from vi_cap_dat'))
+  await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+    console.log('ThisForm appendBlank ',await this.Form.db.localSql('select * from vi_cap_comedat'))
 
 
 

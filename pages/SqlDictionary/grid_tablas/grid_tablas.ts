@@ -32,7 +32,7 @@ export class grid_tablas extends GRID {
     super()
     this.Name = 'grid_tablas'
     this.prop.textLabel= 'Tablas del SQL Server'
-    this.prop.RecordSource='vi_cap_tab'
+    this.prop.RecordSource='vi_cap_cometab'
     this.prop.Visible= false
     this.prop.ReadOnly = false
     this.prop.autoLoad=false
@@ -48,7 +48,7 @@ export class grid_tablas extends GRID {
   public async appendRow() { 
    // Obtiene el consecutivo con_tab del cursor local
    /*
-   const data=await this.Form.db.VfpCursor("select max(num_tab) as num_tab from vi_cap_tab\
+   const data=await this.Form.db.VfpCursor("select max(num_tab) as num_tab from vi_cap_cometab\
    where  (trim(cam_tab) <> 'USU_CRE' and \
    trim(cam_tab) <> 'USU_USU' and \
    trim(cam_tab) <> 'TIE_UAC' and \

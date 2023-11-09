@@ -21,7 +21,7 @@ export class uni_ind extends COLUMN {
         this.prop.Min = '0'
         this.prop.Max = '1'
         this.prop.Decimals=0
-        this.prop.ControlSource = 'vi_cap_ind.uni_ind'
+        this.prop.ControlSource = 'vi_cap_comeind.uni_ind'
         this.prop.Placeholder = "1=SI, 0=No "
         this.prop.ToolTipText = 'Consecutivo/Orden'
         this.style.width= '20px'

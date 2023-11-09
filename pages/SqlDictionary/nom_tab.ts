@@ -25,7 +25,7 @@ export class nom_tab extends COMPONENT {
     this.prop.Capture = true // al quitarlo, quito reactividad oJo
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = "select des_tab,nom_tab,sis_sis from vi_cap_tab order by sis_sis,nom_tab"
+    this.prop.RowSource = "select des_tab,nom_tab,sis_sis from vi_cap_cometab order by sis_sis,nom_tab"
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths ="60%,30%,10%";
@@ -47,9 +47,9 @@ export class nom_tab extends COMPONENT {
     this.Form.grid_datos.prop.Visible = false
     this.Form.grid_vistas.prop.Visible = false
     this.Form.grid_indices.prop.Visible = false
-    await this.Form.db.useNodata('vi_cap_dat')
-    await this.Form.db.useNodata('vi_cap_ind')
-    await this.Form.db.useNodata('vi_cap_vis')
+    await this.Form.db.useNodata('vi_cap_comedat')
+    await this.Form.db.useNodata('vi_cap_comeind')
+    await this.Form.db.useNodata('vi_cap_comevis')
     this.Form.bt_gen_model.prop.Visible = false
     this.Form.bt_gen_indices.prop.Visible = false
     this.Form.bt_gen_vistas.prop.Visible = false
@@ -66,17 +66,17 @@ export class nom_tab extends COMPONENT {
           ThisForm.grid_datos.prop.Status='A' 
     
           m.nom_tab=This.Value.trim()
-          if (await ThisForm.db.select('vi_cap_dat')==0)  await ThisForm.db.select(0)
-          await ThisForm.db.use("vi_cap_dat",m)
+          if (await ThisForm.db.select('vi_cap_comedat')==0)  await ThisForm.db.select(0)
+          await ThisForm.db.use("vi_cap_comedat",m)
     
-    //      await ThisForm.db.vista_captura(m,"vi_cap_dat") // borrar vista_captura en DataBase
+    //      await ThisForm.db.vista_captura(m,"vi_cap_comedat") // borrar vista_captura en DataBase
     
         }
     
         if (ThisForm.dic_dat.prop.Value == 'I') { // Indices
           m.nom_tab=This.Value.trim()
-          if (await ThisForm.db.select('vi_cap_ind')==0) await ThisForm.db.select(0)
-          await ThisForm.db.use("vi_cap_ind",m) 
+          if (await ThisForm.db.select('vi_cap_comeind')==0) await ThisForm.db.select(0)
+          await ThisForm.db.use("vi_cap_comeind",m) 
           ThisForm.grid_datos.prop.Visible=false
      
         }
@@ -84,8 +84,8 @@ export class nom_tab extends COMPONENT {
         if (ThisForm.dic_dat.prop.Value == 'V') // Vistas
         {
           m.nom_tab=This.Value.trim()
-          if (await ThisForm.db.select('vi_cap_vis')==0) await ThisForm.db.select(0)
-          await ThisForm.db.use("vi_cap_vis",m) 
+          if (await ThisForm.db.select('vi_cap_comevis')==0) await ThisForm.db.select(0)
+          await ThisForm.db.use("vi_cap_comevis",m) 
           ThisForm.grid_datos.prop.Visible=false
     
         }

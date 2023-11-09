@@ -33,7 +33,7 @@ export class tip_dat extends COLUMN {
       ],
       ["C", "V", "N", "D", "I", "T", "M", "L"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
-    this.prop.ControlSource = "vi_cap_dat.tip_dat";
+    this.prop.ControlSource = "vi_cap_comedat.tip_dat";
 
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;

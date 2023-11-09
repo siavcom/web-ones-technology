@@ -24,72 +24,30 @@ export class est_apy extends COLUMN {
         this.prop.Type ='text'
         this.prop.BaseClass = 'comboBox'
         this.prop.ControlSource = 'vi_cap_comeapy.est_apy'
-        this.prop.RowSource=
-        this.prop.RowSourceType=2
+        this.prop.RowSource=''
+        this.prop.RowSourceType=5
         
 
         this.prop.Capture=true
         this.prop.updateKey=false
         this.style.zIndex = 1
         this.style.width='100px'
-
-
-
     }
-/*
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
-  async when() {
-    
-    }
-*/    
-/*
-    ////////////////////////////////// 
-    // event valid 
-    ///////////////////////////////////
-    
-    async valid() {
-        const db = this.Form.db
 
-        const View=db[this.Parent.prop.ControlSource]
-        const Value=this.Value
-        const Recno=View.Recno
-      if (this.prop.updateKey) {
-         const data= async db.localSql('select 1 as exists from ${this.Parent.prop.ControlSource} \
-                        where recno<>${recno}')
-         if (data.exists && data.exist==1){
-            MessageBox('Ya existe el campo '+this.prop.Label+' = ',this.prop.Value)
-            this.prop.Valid=false
-            this.prop.ErrorMessage='Ya existe el campo'
-            return false
-         }
-
+    async init() {
+      if (!this.Form.db.View.vi_cap_cometap){
+         await this.Form.db.useNodata('vi_cap_cometap')
+         return
       }
-      this.prop.Valid=true
-      return true
+
+      const data=await this.Form.db.localAlaSql(`select est_tap from vi_cap_cometap where tap_tap='${this.Parent.tap_tap.prop.Value}'`)
+      this.prop.RowSource=eval(data[0].est_tap)
+      return 
     }
 
-*/
-
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
-    async click() {
-
+    async when() {
+      this.init()
+      return super.when() 
     }
-    */
 
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-  /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
-
-   }
-  */
 }

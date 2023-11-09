@@ -21,7 +21,7 @@ export class tpy_tpy extends COLUMN {
         this.prop.Order = 2
         this.textLabel = 'Descripcion'
         this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_tab.des_tab'
+        this.prop.ControlSource = 'vi_cap_cometab.des_tab'
         this.prop.ToolTipText ='Descripción de la tabla'
         this.style.width='600px'
 

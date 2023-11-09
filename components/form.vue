@@ -675,7 +675,7 @@ await init()
 //var result = x === true ? "passed" : "failed";
 
 
-//const vi_cap_dat = computed(() => Views.value.vi_cap_dat ? Views.value.vi_cap_dat.recnoVal : [])
+//const vi_cap_comedat = computed(() => Views.value.vi_cap_comedat ? Views.value.vi_cap_comedat.recnoVal : [])
 /*
 const sub_total = computed(() => items.reduce((acc, item) => acc += item.qty * item.price, 0))
  

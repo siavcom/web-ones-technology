@@ -39,7 +39,7 @@ export class grid_indices extends GRID {
     super()
     this.Name = 'grid_indices'
     this.prop.textLabel= 'Definicion de indices '
-    this.prop.RecordSource='vi_cap_ind'
+    this.prop.RecordSource='vi_cap_comeind'
     this.prop.Visible= false
     this.prop.ReadOnly = false
     this.prop.autoLoad=false
@@ -55,7 +55,7 @@ export class grid_indices extends GRID {
   public async appendRow() { 
    // Obtiene el consecutivo con_ind del cursor local
   
-   const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_ind ")
+   const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_comeind ")
 
    console.log('appendRow',data[0])  
     
@@ -68,7 +68,7 @@ export class grid_indices extends GRID {
    // asigna campos que no estan en el grid
    const m = {nom_tab:this.Form.nom_tab.prop.Value.trim(),
               num_ind:num_ind}
-              await this.Form.db.appendBlank('vi_cap_ind', m) //Incertamos un renglon en blanc
+              await this.Form.db.appendBlank('vi_cap_comeind', m) //Incertamos un renglon en blanc
   
   }
 

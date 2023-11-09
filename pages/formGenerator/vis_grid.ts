@@ -24,7 +24,7 @@ export class vis_grid extends COMPONENT {
     this.prop.Valid = false
     this.prop.ErrorMessage = ''
     this.prop.Value = ""
-    this.prop.RowSource = `select des_vis,nom_vis from vi_cap_vis order by nom_tab`
+    this.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis order by nom_tab`
     this.prop.RowSourceType=0
 
     this.prop.ColumnCount = 2

@@ -23,9 +23,9 @@ export class bt_gen_indices extends COMPONENT {
     if (this.prop.Disabled) return;
     this.prop.Disabled = true;
 
-    await this.Form.bt_aceptar.grabaDatos("vi_cap_ind");
+    await this.Form.bt_aceptar.grabaDatos("vi_cap_comeind");
     const indices = await this.Form.db.localAlaSql(
-      "select nom_ind from vi_cap_ind"
+      "select nom_ind from vi_cap_comeind"
     );
 
     for (let i = 0; i < indices.length; i++) {

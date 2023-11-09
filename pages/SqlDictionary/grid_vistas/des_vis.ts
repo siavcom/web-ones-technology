@@ -20,7 +20,7 @@ export class des_vis extends COLUMN {
         this.textLabel = 'Descripcion'
         this.prop.BaseClass = 'editText'
         this.prop.Type='text'
-        this.prop.ControlSource = 'vi_cap_vis.des_vis'
+        this.prop.ControlSource = 'vi_cap_comevis.des_vis'
         this.prop.ToolTipText ='Descripción de la vista'
         this.prop.Placeholder = "Descripción de la vista"
        

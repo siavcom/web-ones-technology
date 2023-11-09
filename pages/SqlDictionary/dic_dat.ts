@@ -31,7 +31,7 @@ export class dic_dat extends COMPONENT {
      // ["D", "T", "I", "V", "M"],
 
     ]; // vi_cap_doc.tdo_tdo,des_tdo
-    this.prop.ControlSource = 'vi_cap_dat.dic_dat'
+    this.prop.ControlSource = 'vi_cap_comedat.dic_dat'
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;

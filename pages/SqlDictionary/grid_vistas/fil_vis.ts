@@ -19,7 +19,7 @@ export class fil_vis extends COLUMN {
         this.textLabel = 'Campos que filtran la captura'
         this.prop.BaseClass = 'editText'
         
-        this.prop.ControlSource = 'vi_cap_vis.fil_vis'
+        this.prop.ControlSource = 'vi_cap_comevis.fil_vis'
         this.prop.ToolTipText ='Filtro de la vista'
         this.prop.Placeholder = "Variables filtro"
         this.style.width='250px'

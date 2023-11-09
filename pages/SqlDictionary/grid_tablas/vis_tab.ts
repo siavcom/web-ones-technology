@@ -18,7 +18,7 @@ export class vis_tab extends COLUMN {
         this.textLabel = 'Where vista'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
-        this.prop.ControlSource = 'vi_cap_tab.vis_tab'
+        this.prop.ControlSource = 'vi_cap_cometab.vis_tab'
         this.prop.ToolTipText ='Where en la vista de mantenimiento'
         this.style.width='600px'
     }

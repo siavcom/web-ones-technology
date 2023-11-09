@@ -19,7 +19,7 @@ export class tab_vis extends COLUMN {
         this.textLabel = 'Tablas/Join '
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
-        this.prop.ControlSource = 'vi_cap_vis.tab_vis'
+        this.prop.ControlSource = 'vi_cap_comevis.tab_vis'
         this.prop.ToolTipText ='Tablas/Join'
         this.prop.Placeholder = "Tablas"
         this.style.width='300px'

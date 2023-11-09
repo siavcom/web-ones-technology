@@ -19,7 +19,7 @@ export class cam_vis extends COLUMN {
         this.textLabel = 'Campos que contiene'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
-        this.prop.ControlSource = 'vi_cap_vis.cam_vis'
+        this.prop.ControlSource = 'vi_cap_comevis.cam_vis'
         this.prop.ToolTipText ='Campos que contiene'
         this.prop.Placeholder = "Campos que contiene"
 
