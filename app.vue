@@ -566,6 +566,9 @@ const obtSubMenu = (system: string) => {
   for (let i = 0; menu.value.length > i; i++) {
     // solo agrega menu principal
 
+    if ( menu.value[i].ico_prg==null)
+       menu.value[i].ico_prg=' '
+
     if (menu.value[i].sis_sis == system) {
       let link = '#'
       let path = {}
@@ -584,7 +587,7 @@ const obtSubMenu = (system: string) => {
         link: '#',
         name: menu.value[i].des_prg,
         tooltip: menu.value[i].des_prg,
-        icon: '/Iconos/' + menu.value[i].ico_prg.trim(),
+        icon: '/Iconos/' + menu.value[i].ico_prg.trim() ,
         path: path,
         type,
         system

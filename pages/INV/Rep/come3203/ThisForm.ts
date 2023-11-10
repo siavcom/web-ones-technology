@@ -24,7 +24,11 @@ export class ThisForm extends reportInv {
     this.vis_rep = 'vi_come3203'   // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value ='jr_come3203'   // no incluir extencion jasper o jrxml
     this.tip_rep.prop.Visible=true    // Muestra general odetallado
+    this.tip_rep.prop.Disabled=false
     this.mon_rep.prop.Visible=false 
+    this.mon_rep.prop.Disabled=true 
+    this.tdo_tdo.prop.Visible=false;
+    this.tdo_tdo.prop.Disabled=true;
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
     
@@ -33,8 +37,7 @@ export class ThisForm extends reportInv {
 
 public async init(){
   await super.init()
-  this.tdo_tdo.prop.Visible=false;
-  this.var_ord.prop.Value="";
+    this.var_ord.prop.Value="";
     console.log(
     "===================>Init Report name=",
     this.prop.Name,

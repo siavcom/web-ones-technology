@@ -37,7 +37,8 @@
 // @/assets/logo.pn
 
 //import logo from '@/assets/logo.png'
-import logo from '@/WebOnes.ico'
+
+import logo from '@/assets/WebOnes.ico'
 
 const props = defineProps<{
   logoEmp: string;

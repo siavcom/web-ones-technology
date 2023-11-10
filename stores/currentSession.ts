@@ -281,12 +281,13 @@ export const Session = defineStore(
       */
 
           var data = [];
-
+          console.log("Pinia ======leeMenu===== response=" ,response) 
           for (let i = 0; i < response.length; i++) {
             const registro = {};
             for (const nom_cam in response[i]) {
               registro[nom_cam.toLowerCase()] = response[i][nom_cam];
             }
+          
             data.push(registro); //  asigna todos los datos de cada opcion del menu
 
             const pre = data[i].tpr_prg === "S" ? "" : "-";
@@ -298,7 +299,7 @@ export const Session = defineStore(
           }
           //const menu = JSON.stringify(response.data)
           menu.value = data;
-          console.log("Pinia ======leeMenu=====", menu.value, logoEmp.value);
+          console.log("Pinia ======leeMenu=====", menu.value, logoEmp.value,response);
 
           dat_vis.query = " select * from publicvar";
 

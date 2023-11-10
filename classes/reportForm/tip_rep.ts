@@ -19,6 +19,8 @@ export class tip_rep extends COMPONENT {
     this.prop.Value = 0;
     //this.prop.TabIndex = 102;
     this.prop.Visible=false    // No muestra general o detallado
+    this.prop.Disabled=false    // No muestra general o detallado
+
   }
 
   async init() {
@@ -41,6 +43,7 @@ export class tip_rep extends COMPONENT {
       this.Form.for_imp.prop.Value = this.Form.for_ori + "_g";
       this.Form.vis_rep = this.Form.vis_ori + "_g";
     }
+   /*     cambia los fields que se muestran en el reporte
     const m={view_report:this.Form.vis_rep  }
     this.Form.reportFields.Grid.prop.RecordSource=''
     await this.Form.db.use('vi_cap_db_reportfields',m)
@@ -48,6 +51,16 @@ export class tip_rep extends COMPONENT {
     this.Form.reportFields.Grid.prop.RecordSource='vi_cap_db_reportfields'
     
     if (this.Form.db.View.vi_cap_db_reportfields.recCount==0){ // Si no tiene registros, inserta la primera vista 
+      
+      await this.Form.reportFields.Grid.appendRow()
+
+   }
+    */
+    this.Form.init()
+
+    return ;
+  }
+}
      /*
       const  data = await this.Form.db.localAlaSql('select * from Now.camposView')
      const  field={}
@@ -64,12 +77,3 @@ export class tip_rep extends COMPONENT {
       } 
       const m={fields_report : JSON.stringify(field)}
      */
-      await this.Form.reportFields.Grid.appendRow()
-
-   }
-
-    this.Form.init()
-
-    return ;
-  }
-}

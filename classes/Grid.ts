@@ -34,7 +34,9 @@ export class GRID extends COMPONENT {
     this.prop.messageUpdate = "Grabamos la tabla";
 
     this.style.width='95%'
+    this.style.minHeight="300px"
     this.style.height="auto"
+
 
   }
 
@@ -206,11 +208,11 @@ export class GRID extends COMPONENT {
     if (!m){
       m = {};
     }
-
+    // Leemos variables publicas
     for (const variable in this.Form.publicVar)
        m[variable]=this.Form.publicVar[variable]
 
- 
+    // leemos valores de los componentes de la forma
     for (const i in this.Form.main)
         m[this.Form.main[i]]=this.Form[this.Form.main[i]].prop.Value
 

@@ -34,13 +34,13 @@ export class ThisForm extends reportInv {
     this.for_imp.prop.Value ='jr_come3241'   // no incluir extencion jasper o jrxml
     
     
-    this.tip_rep.prop.Visible=false    // Muestra general odetallado
+      // Muestra general odetallado
     this.mon_rep.prop.Visible=false 
     this.des_fec.prop.Visible=false
     this.tdo_tdo.prop.Visible=false
     this.tip_imp.prop.Visible=false
 
-    this.tip_rep.prop.Disabled=true    // Muestra general odetallado
+        // Muestra general odetallado
     this.mon_rep.prop.Disabled=true 
     this.des_fec.prop.Disabled=true
     this.tdo_tdo.prop.Disabled=true
@@ -57,7 +57,8 @@ export class ThisForm extends reportInv {
     this.num_fam.prop.Disabled=true
     this.des_fam.prop.Disabled=true
     this.has_fam.prop.Disabled=true
-    
+    this.tip_rep.prop.Visible=true
+    this.tip_rep.prop.Disabled=false
 
 
 
@@ -71,10 +72,10 @@ export class ThisForm extends reportInv {
     this.opc_tres.prop.TabIndex=6;
     this.des_isu.prop.TabIndex=7;
     this.has_isu.prop.TabIndex=8;
-    this.sep_fam.prop.TabIndex=9;
-    this.num_fam.prop.TabIndex=10;
-    this.des_fam.prop.TabIndex=11;
-    this.has_fam.prop.TabIndex=12;
+    this.sep_fam.prop.TabIndex=10;
+    this.num_fam.prop.TabIndex=11;
+    this.des_fam.prop.TabIndex=12;
+    this.has_fam.prop.TabIndex=13;
     this.alm_rep.prop.RowSource = "select des_tda,alm_tda,left(ubi_tda,8) from man_cometda order by des_tda "
     this.alm_rep.prop.ColumnCount = 3
     this.alm_rep.prop.ColumnWidths ="60%,15%,25%"; // Puede ser en puntos 60px,30px /
@@ -117,6 +118,7 @@ public async init(){
     const opc_uno=this.opc_uno.prop.Value;
     const opc_dos=this.opc_dos.prop.Value;
     const opc_tres=this.opc_tres.prop.Value;
+    const tip_rep=this.tip_rep.prop.Value;
     var pri_cla=0,
         ult_cla=29,
         pos_tom=30,
@@ -154,12 +156,12 @@ public async init(){
     localWhere=localWhere.replaceAll("'",'"')  
     console.log(
       "sqlQuery =",
-      ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres}  ` 
+      ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres},${tip_rep}  ` 
       
     );
     //return `select * from ${this.vis_rep} WHERE ${localWhere} `;
    
-  return ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres} ` ;
+  return ` EXEC p_come3241 '${has_fec}','${alm_rep}','${ini_isu}','${fin_isu}',${dia_ppe},'${localWhere} ','${var_ord}',${opc_uno},${opc_dos},${opc_tres},${tip_rep} ` ;
   
    
 }

@@ -30,6 +30,14 @@ export class ThisForm extends reportInv {
     this.has_isu.prop.Visible=false
     this.tdo_tdo.prop.Visible=false
     this.alm_rep.prop.Visible=false
+    this.tip_rep.prop.Disabled=true    // Muestra general odetallado
+    this.mon_rep.prop.Disabled=true
+    this.des_fec.prop.Disabled=true
+    this.has_fec.prop.Disabled=true 
+    this.des_isu.prop.Disabled=true
+    this.has_isu.prop.Disabled=true
+    this.tdo_tdo.prop.Disabled=true
+    this.alm_rep.prop.Disabled=true
     this.sep_fam.prop.TabIndex=1
     this.num_fam.prop.TabIndex=2
     this.des_fam.prop.TabIndex=3

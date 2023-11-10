@@ -156,20 +156,21 @@
 
           </span>
           <span v-show="!scroll.bottom">
-            <span @click.capture.stop="next()">
+            <span @click="next()">
               <img src="/Iconos/next.svg" width="30">
             </span>
-            <span @click.capture.stop="last()">
+            <span @click="last()">
               <img src="/Iconos/last.svg" width="30">
             </span>
           </span>
 
           <span v-show="prop.deleteButton && This.Row >= 0" width="40" class="left-btn hide-in-print"
-            @click.capture.stop="borraRenglon()">
+            @click="borraRenglon()">
             <img src="/Iconos/delete-row.svg" width="45">
           </span>
 
-          <span v-show="prop.saveData" @click.capture.stop="saveTable()">
+          <!-- click.capture.stop -->
+          <span v-show="prop.saveData" @click="saveTable()">
             <img src="/Iconos/save-color1.svg" width="45">
           </span>
 
@@ -723,10 +724,15 @@ const appendRow = async () => {
   This.Row = -1
   scroll.controls = false
   await This.appendRow()
-
+  await last()
+  console.log('Grid Vue apendRow() scroll.dataPage',scroll.dataPage)
+  This.Row=scroll.dataPage.length-1
+       
+   
   //eventos.push(This.prop.Map + '.appendRow()')
-  load_data = true
-  RowInsert = true  // indicamos que hubo insercion de renglon
+  
+  // load_data = true
+  // RowInsert = true  // indicamos que hubo insercion de renglon
 
   /*
 

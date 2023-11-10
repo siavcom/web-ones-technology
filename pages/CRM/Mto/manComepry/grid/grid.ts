@@ -63,7 +63,27 @@ export class Grid extends GRID {
       "select ' ' as des_tdo,'   ' as tdo_tdo union select des_tdo,tdo_tdo from man_cometdo order by des_tdo",
       "cometdo"
     );
-
     return;
   }
+
+  ///////////////////////////////////////////////////
+  // Inserta renglon
+  // m : valiables de memoria
+  ///////////////////////////////////////////////////
+  
+  public async appendRow() {
+     
+     const data=await this.Form.db.localAlaSql(
+                `select json_tap from vi_cap_cometap limit 1; `+
+                'select max(con_apy)+1 as con_apy from vi_cap_comeapy')
+    console.log('appendRow data=',data[0],data[1])            
+    const  m = {con_apy:1,
+           json_tap:data[0].json_tap};
+
+    if (data[1] && data[1].con_apy ) 
+        m.con_apy=data[0].con_apy
+   super.appendRow(m)
+
+  }
+
 }

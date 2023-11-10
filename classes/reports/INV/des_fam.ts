@@ -22,6 +22,7 @@ export class des_fam extends COMPONENT {
         this.prop.BoundColumn = 2
         this.prop.ColumnWidths ="50%,30%,20%"; // Puede ser en puntos 60px,30px /
         this.prop.Visible=false
+        this.prop.Disabled=true
 
         this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
         
