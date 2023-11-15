@@ -21,13 +21,18 @@ export class cam_dat extends COLUMN {
     this.prop.Placeholder = "Nombre del campo";
     this.prop.ToolTipText = "Nombre del campo";
     this.prop.componentStyle.textTransform = "lowercase";
+    this.prop.First=true;
+    this.prop.Value='';
     this.style.width = "100px";
+
   }
 
   //////////////////////////////////
   // Evento When
   ///////////////////////////////////
   async when() {
+    if (this.prop.Value==undefined)
+       this.prop.Value=''
 
     const Value = this.prop.Value.trim().toUpperCase();
     this.prop.When=true

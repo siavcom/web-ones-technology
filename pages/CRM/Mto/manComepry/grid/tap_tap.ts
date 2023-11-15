@@ -34,16 +34,7 @@ export class tap_tap extends COLUMN {
 
 
     }
-    /*
-   async init() {
-     if (this.prop.Value>' '){
-         const data=await this.Form.localAlaSql(`select des_tab,tap_tap from vi_cap_cometap where tap_tap='${this.prop.Value}' `)
-         this.prop.RowSource=[[data[0].des_tab],[data[0].tap_tab]]
 
-     }
-
-    }
-    */
      async when() {
  
          const des_tap=await this.Form.localAlaSql(`select des_tap from vi_cap_cometap order by des_tap`)
@@ -52,6 +43,18 @@ export class tap_tap extends COLUMN {
 
          return super.when()
      }
+
+     async valid() {
+
+        const data=await this.Form.localAlaSql(`select est_tap from vi_cap_cometap where tap_tap='${this.prop.Value}'`)
+        console.log('grid tap_tap data=',data[0])
+        this.Form.est_tap.prop.RowSource=eval(data[0].est_tap)
+        this.prop.Valid=true
+        return true
+    }
+
+
+
 
 
 }

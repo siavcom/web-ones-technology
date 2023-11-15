@@ -50,7 +50,9 @@ export class bt_actividades extends COMPONENT {
        alert('Open error table '+'vi_cap_comeapy' )
        return
     }
-   console.log('bt_actividates ',await this.Form.db.localSql('select * from vi_cap_comeapy'))
+    console.log('bt_actividades vi_cap_cometap=',await this.Form.db.localAlaSql('select * from vi_cap_cometap'),' num_pry=',m.num_pry)
+
+    console.log('bt_actividates ',await this.Form.db.localSql('select * from Now.vi_cap_comeapy'))
    this.Form.tap_tap.Grid.prop.RecordSource='vi_cap_comeapy'
    if (this.Form.db.View.vi_cap_comeapy.RecCount==0)
       await this.Form.tap_tap.Grid.appendRow()

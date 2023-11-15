@@ -31,23 +31,21 @@ import { tdo_tdo } from "./tdo_tdo";
 import { ndo_doc } from "./ndo_doc";
 
 export class Grid extends GRID {
-
   public con_apy = new con_apy();
   public tap_tap = new tap_tap();
- // public des_tap = new des_tap();
+  // public des_tap = new des_tap();
   public fec_apy = new fec_apy();
   public est_apy = new est_apy();
   public fpr_apy = new fpr_apy();
   public dat_apy = new dat_apy();
 
-  public fco_apy = new fco_apy(); 
+  public fco_apy = new fco_apy();
   public res_apy = new res_apy();
   public fce_apy = new fce_apy();
- 
+
   public tdo_tdo = new tdo_tdo();
   public ndo_ndo = new ndo_doc();
 
- 
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
@@ -70,20 +68,40 @@ export class Grid extends GRID {
   // Inserta renglon
   // m : valiables de memoria
   ///////////////////////////////////////////////////
-  
+
   public async appendRow() {
-     
-     const data=await this.Form.db.localAlaSql(
-                `select json_tap from vi_cap_cometap limit 1; `+
-                'select max(con_apy)+1 as con_apy from vi_cap_comeapy')
-    console.log('appendRow data=',data[0],data[1])            
-    const  m = {con_apy:1,
-           json_tap:data[0].json_tap};
+    // if (m)
+    //  console.log('1) Grid Proyectos appendRow m=',m)
+  
+    const res = await this.Form.db.localAlaSql(
+      "select * from vi_cap_cometap where ord_tap=1"
+    );
 
-    if (data[1] && data[1].con_apy ) 
-        m.con_apy=data[0].con_apy
-   super.appendRow(m)
+    const { ...m } = res[0];
 
+    const data = await this.Form.db.localAlaSql(
+      "select max(con_apy)+1 as con_apy from Now.vi_cap_comeapy"
+    );
+
+    m.con_apy = 1;
+
+    if (data[0] && data[0].con_apy && data[0].con_apy > 1)
+      m.con_apy = data[0].con_apy;
+
+    if (m.con_apy>1){
+      const con_apy=m.con_apy-1
+      let data1 = await this.Form.db.localAlaSql(
+        `select tap_tap from Now.vi_cap_comeapy where con_apy=${con_apy} order con_apy desc limit 1` );
+      const tap_tap=data1[0].tap_tap
+      data1 = await this.Form.db.localAlaSql(
+        `select tap_tap from Now.vi_cap_cometap where tap_tap=${con_apy}` );
+
+        
+        
+
+    }
+
+    await super.appendRow(m)
+    this.tap_tap.valid()
   }
-
 }

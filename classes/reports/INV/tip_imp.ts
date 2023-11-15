@@ -23,7 +23,7 @@ export class tip_imp extends COMPONENT {
         this.prop.BoundColumn = 2
         this.prop.ColumnWidths ="75%,25%"; // Puede ser en puntos 60px,30px /
         //this.prop.Value=1 
-        this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
+        this.style.zIndex=2  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
         
     }
 }

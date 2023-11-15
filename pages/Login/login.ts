@@ -18,6 +18,6 @@ export class form extends COMPONENT {
   public pas_usu=new pas_usu()
   public bt_aceptar=new bt_aceptar()
   Name = 'login'
- 
+  Status='I' 
   
 }

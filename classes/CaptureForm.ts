@@ -67,6 +67,13 @@ export class captureForm extends FORM {
       }
     }
     thisComp.prop.Valid = true;
+    /* const m={}
+    // variables publicas
+    
+    for (const Var in this.publicVar) {
+      m[Var] = this.publicVar[Var];
+    }
+    */
 
     const { ...m } = this.publicVar; // Tomamos las variables publicas de la forma
     // Generamos variables de memoria de componentes locales y solo updateKey
@@ -77,7 +84,7 @@ export class captureForm extends FORM {
         if (!this[comp].prop.Valid) {
           // Si no esta validado
           return true;
-        } // Si es un dato no esta  validado
+        }
       }
       // asignamos variables de memoria
       if (this[comp].prop.Capture) {
@@ -85,13 +92,7 @@ export class captureForm extends FORM {
         else m[comp] = this[comp].prop.Value;
       }
     }
-
-    // variables publicas
-    /*
-    for (const Var in this.publicVar) {
-      m[Var] = this.publicVar[Var];
-    }
-    */
+ 
 
     // Leemos datos de la tabla de actualizacion
     //const tablaSql=this.db.View[this.prop.RecordSource].tablaSql .trim()

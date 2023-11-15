@@ -4,7 +4,9 @@
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
-    <form class="gridDatos">
+    <!--form class="gridDatos" -->
+    <div class="gridDatos" >
+
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
       <div class="tabla">
@@ -193,7 +195,7 @@
 
         </div>
       </div> <!-- break to a new row -->
-    </form>
+    </div>  <!--/form-->
 
   </div>
 </template>
@@ -544,6 +546,29 @@ watch(
 );
 
 
+//////////////////////////////////////////////
+// This.Row
+/////////////////////////////////////////////////
+watch(
+  () => This.Row,
+   () => {
+    
+    if (This.Row<=-10){ // hubo insercion de renglon
+      RowInsert=true
+      loadData()
+       
+    }
+  
+    console.log('RowInsert Watch Grid This.Row =',This.Row )
+
+
+  },
+  { deep: false }
+);
+
+
+
+
 
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal
@@ -573,6 +598,9 @@ const ejeEvento = (newEvento: string) => {
 }
 
 
+
+
+
 /////////////////////////////////////////
 // Metodo loadDataFromServer
 // Descripcion : se trae datos desde el servidor
@@ -580,27 +608,24 @@ const ejeEvento = (newEvento: string) => {
 
 
 const loadData = async () => {
-  This.Row = -1
+  //This.Row = -1
   load_data = false
 
   if (!scroll.rows || scroll.rows == 0) scroll.rows = 10
 
   const Rows = scroll.rows
 
-  // console.log('Grid loadData dataPage.length',scroll.dataPage.length,Rows)
-
-
-  // Se inserto un renglon, calcula la posicion donde quedo
-  if (scroll.dataPage.length >= Rows && RowInsert) {
-    scroll.page++
-
+  // Se inserto un renglon
+  if (RowInsert) {
+    let page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
+    page = Math.trunc(page)
+    if (scroll.page!=page)
+        scroll.page=page
   }
-
 
   This.Form.prop.Status = 'P'
   while (scroll.dataPage.length > 0)
     scroll.dataPage.pop() // borramos arreglon
-
 
   try {
 
@@ -655,11 +680,12 @@ const loadData = async () => {
       This.Row = RowNumber
       for (let i = 0; i < This.main.length; i++) {
         This[This.main[i]].prop.Valid = false // Ponemos no validado todos los componentes
-        console.log('loadData RowInsert', This.main[i],'Valid=')
-
       }
       RowInsert = false
-    }
+      console.log('Grid Vue loadData() RowInsert This.Row=',This.Row)
+      return
+    } 
+    This.Row=-1
 
   } catch (err) {
     console.warn('Error loadData ', err)
@@ -698,7 +724,7 @@ const next = async () => {
 
 const last = async () => {
   scroll.controls = false
-  if (scroll.bottom) return
+  if (scroll.bottom && !RowInsert) return
   scroll.page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
 
   scroll.page = Math.trunc(scroll.page)
@@ -710,7 +736,7 @@ const last = async () => {
 }
 
 const appendRow = async () => {
-
+  scroll.controls = false
   if (This.Row >= 0) {
 
     for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
@@ -721,13 +747,7 @@ const appendRow = async () => {
       }
     }
   }
-  This.Row = -1
-  scroll.controls = false
-  await This.appendRow()
-  await last()
-  console.log('Grid Vue apendRow() scroll.dataPage',scroll.dataPage)
-  This.Row=scroll.dataPage.length-1
-       
+  This.appendRow()  // Llama en la clase grid.ts
    
   //eventos.push(This.prop.Map + '.appendRow()')
   

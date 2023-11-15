@@ -86,7 +86,10 @@ export class grid_datos extends GRID {
               sou_dat : ' ',
               vue_dat : ' '
                }
-   await super.appendRow(m)   // llama a la clase base        
+   await super.appendRow(m)   // llama a la clase base  
+   console.log('2)grid_datos append blank ',await this.Form.db.localAlaSql('select *from vi_cap_comedat'))
+   
+
   }
 
   async appendDatos() {

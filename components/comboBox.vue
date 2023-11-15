@@ -51,8 +51,9 @@
             </div>
           </div>
         </div>
+        <!--toggle click.prevent -->
         <img class="imagen" v-show="!prop.ReadOnly"
-          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.prevent="toggle = prop.ReadOnly == false ? !toggle.value : toggle.value;
+          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click="toggle = prop.ReadOnly == false ? !toggle.value : toggle.value;
           divStyle.zIndex = toggle ? zIndex + 2 : zIndex"  />
       </div>
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"

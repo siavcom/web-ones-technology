@@ -1,66 +1,37 @@
 <template>
   <form class="LoginForm">
     <div class="imagen">
-      <div class="DatosUsuario">
+      <div v-if="ThisForm.prop.Status != 'A'">
+        <div class="splash-screen">
+          <div class="spinner-wrapper">
+            <div class="spinner">
+              <p>..........Loading FORM..........</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div v-else class="DatosUsuario">
         <!-- ref='esteComponente' los nombre no deben ser igual a <esteComponente -->
 
-        <component
-          :is="impComp(ThisForm.emp_emp.prop.BaseClass)"
-          v-model:Value = "ThisForm.emp_emp.prop.Value"
-          v-model:Status="ThisForm.emp_emp.prop.Status"
-          v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
-          v-model:Key="ThisForm.emp_emp.prop.Key"
-          bind:Registro="ThisForm.emp_emp.Recno"
-          :component="ref(ThisForm.emp_emp)"
-          :Registro="0"
-          :prop="ThisForm.emp_emp.prop"
-          :style="ThisForm.emp_emp.style"
-          :position="ThisForm.emp_emp.position"
-          :db="null"
-         
-          @focusout="ThisForm.emp_emp.valid()"
-        />
-        <component
-          :is="impComp(ThisForm.log_usu.prop.BaseClass)"
-          v-model:Value="ThisForm.log_usu.prop.Value"
-          v-model:Status="ThisForm.log_usu.prop.Status"
-          v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
-          v-model:Key="ThisForm.log_usu.prop.Key"
-         
-          :component="ref(ThisForm.log_usu)"
-          :Registro="0"
-          :prop="ThisForm.log_usu.prop"
-          :style="ThisForm.log_usu.style"
-          :position="ThisForm.log_usu.position"
-          :db="null"
-        
-          @keypress="ThisForm.log_usu.keyPress($event)"
-          @focusout="ThisForm.log_usu.valid()"
-        />
-        <component
-          :is="impComp(ThisForm.pas_usu.prop.BaseClass)"
-          v-model:Value="ThisForm.pas_usu.prop.Value"
-          v-model:Status="ThisForm.pas_usu.prop.Status"
-          v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
-          v-model:Key="ThisForm.pas_usu.prop.Key"
-          :component="ref(ThisForm.pas_usu)"
-          :Registro="0"
-          :prop="ThisForm.pas_usu.prop"
-          :style="ThisForm.pas_usu.style"
-          :position="ThisForm.pas_usu.position"
-          :db="null"
-          @focusout="ThisForm.pas_usu.valid()"
-        />
-        <component
-          :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)"
-          class="aceptar"
-          :component="ref(ThisForm.bt_aceptar)"
-          :prop="ThisForm.bt_aceptar.prop"
-          :style="ThisForm.bt_aceptar.style"
-          :position="ThisForm.bt_aceptar.position"
-          :imagen="ThisForm.bt_aceptar.imagen"
-          @click.stop.prevent="ThisForm.bt_aceptar.Click()"
-        />
+        <component :is="impComp(ThisForm.emp_emp.prop.BaseClass)" v-model:Value="ThisForm.emp_emp.prop.Value"
+          v-model:Status="ThisForm.emp_emp.prop.Status" v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
+          v-model:Key="ThisForm.emp_emp.prop.Key" bind:Registro="ThisForm.emp_emp.Recno"
+          :component="ref(ThisForm.emp_emp)" :Registro="0" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
+          :position="ThisForm.emp_emp.position" :db="null" @focusout="ThisForm.emp_emp.valid()" />
+        <component :is="impComp(ThisForm.log_usu.prop.BaseClass)" v-model:Value="ThisForm.log_usu.prop.Value"
+          v-model:Status="ThisForm.log_usu.prop.Status" v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
+          v-model:Key="ThisForm.log_usu.prop.Key" :component="ref(ThisForm.log_usu)" :Registro="0"
+          :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" :position="ThisForm.log_usu.position" :db="null"
+          @keypress="ThisForm.log_usu.keyPress($event)" @focusout="ThisForm.log_usu.valid()" />
+        <component :is="impComp(ThisForm.pas_usu.prop.BaseClass)" v-model:Value="ThisForm.pas_usu.prop.Value"
+          v-model:Status="ThisForm.pas_usu.prop.Status" v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
+          v-model:Key="ThisForm.pas_usu.prop.Key" :component="ref(ThisForm.pas_usu)" :Registro="0"
+          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" :db="null"
+          @focusout="ThisForm.pas_usu.valid()" />
+        <component :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :component="ref(ThisForm.bt_aceptar)"
+          :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
+          :imagen="ThisForm.bt_aceptar.imagen" @click.stop.prevent="ThisForm.bt_aceptar.Click()" />
       </div>
     </div>
   </form>
@@ -118,10 +89,10 @@ const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al 
 watch(
   () => id_con.value,
   (new_val, old_val) => {
-    if (new_val=='')
-       return
-    if (new_val!=old_val)  
-       window.history.back() // regresa a la pagina anterior   
+    if (new_val == '')
+      return
+    if (new_val != old_val)
+      window.history.back() // regresa a la pagina anterior   
 
 
   },
@@ -132,12 +103,13 @@ watch(
 const Init = new INIT() // solo se puso para evitar de errores que tenia
 
 const init = async () => {
-     await Init.Init()
+  await Init.Init()
     .then(async () => {
       //        ThisForm.Init(ref(ThisForm))  // Pasamos por referencia  al init de la clase el ThisForm
-      await ThisForm.Init() 
+      await ThisForm.Init()
     })
     .finally(async () => {
+      ThisForm.Status = 'A'
       console.log('Fin Login Form exitoso', ThisForm)
     })
 }
@@ -206,7 +178,7 @@ div.imagen {
   background-color: #f2f4f5;
   height: 220x;
   width: 180px;
- 
+
   background-image: url("/logos/Logo_Empresa.png");
   /* opacity: 0.5;*/
 }

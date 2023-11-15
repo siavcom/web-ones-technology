@@ -30,7 +30,8 @@ export class con_apy extends COLUMN {
         this.prop.Max='999'
         this.prop.Decimals=0
         this.prop.Capture=true
-        this.prop.updateKey=false
+        this.prop.updateKey=true
+        this.prop.First=true
         this.style.zIndex = 1
         this.style.width='28px'
         // this.RecordSource="" oJo

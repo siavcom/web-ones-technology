@@ -27,17 +27,15 @@ export class GRID extends COMPONENT {
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
     this.prop.Visible = false;
 
-    this.prop.addButton = true;  // Estos componentes estan en grid.vue
+    this.prop.addButton = true; // Estos componentes estan en grid.vue
     this.prop.deleteButton = true;
     this.prop.saveData = true;
     this.prop.updated = false;
     this.prop.messageUpdate = "Grabamos la tabla";
 
-    this.style.width='95%'
-    this.style.minHeight="300px"
-    this.style.height="auto"
-
-
+    this.style.width = "95%";
+    this.style.minHeight = "150px";
+    this.style.height = "auto";
   }
 
   ////////////////////////////////////////
@@ -205,29 +203,27 @@ export class GRID extends COMPONENT {
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow(m?: {}) {
-    if (!m){
+    this.prop.Disabled=true
+    //this.Row = -1;
+    if (!m) {
       m = {};
     }
+    console.log("grid appendRow this.prop.RecordSource=",this.prop.RecordSource, "m=", m);
+
     // Leemos variables publicas
     for (const variable in this.Form.publicVar)
-       m[variable]=this.Form.publicVar[variable]
+      m[variable] = this.Form.publicVar[variable];
 
     // leemos valores de los componentes de la forma
     for (const i in this.Form.main)
-        m[this.Form.main[i]]=this.Form[this.Form.main[i]].prop.Value
+      m[this.Form.main[i]] = this.Form[this.Form.main[i]].prop.Value;
 
-    this.Row = -1; // Quitamos donde esta el renglon
     //this.Form.db.select(this.prop.RecordSource)
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
-    this.prop.Valid = false;
-
-    console.log(
-      "grid Incertaremos renglon=======>",
-      this.prop.RecordSource,
-      "View=",
-      this.Form.db.View[this.prop.RecordSource],
-      "Valores=",values
-    );
+    this.prop.Disabled=false
+    this.Row = -10; // Ponemos en -10 para refrescar la pagina
+  
+    //    this.prop.Valid = false;
 
     //this[this.elements[0].Name].prop.First=true
   }

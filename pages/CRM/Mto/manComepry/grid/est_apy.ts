@@ -2,7 +2,7 @@
 // This class component was generated automatically by web-ones-technology
 // BaseClass : COLUMN
 // Class : eau_tap
-// Description : Estatus autorización
+// Description : Estatus 
 // Author : El Fer Blocks
 // Creation : 2023-07-10
 // Update Date  : 
@@ -24,9 +24,11 @@ export class est_apy extends COLUMN {
         this.prop.Type ='text'
         this.prop.BaseClass = 'comboBox'
         this.prop.ControlSource = 'vi_cap_comeapy.est_apy'
-        this.prop.RowSource=''
-        this.prop.RowSourceType=5
-        
+        this.prop.RowSource=[['InIicio','Bloqueada','Autorizada','Cancelada','Finalizada'],
+                             ['I','B','A','C','F']]
+        this.prop.RowSourceType=2                     
+        this.prop.ColumnCount = 2;
+        this.prop.BoundColumn = 2;
 
         this.prop.Capture=true
         this.prop.updateKey=false
