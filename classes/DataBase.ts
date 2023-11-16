@@ -737,11 +737,7 @@ export class VFPDB {
               m[campo] =dat_act[row][campo]!='null' ? dat_act[row][campo].trim() : ''
            //   console.log('Db tableUpdate campo=', campo,'val_def=',val_def[campo],'New=',dat_act[row][campo] )
           }
-          console.log(
-            "Db tableUpdate lee datos Now",
-            "val_def=",
-            val_def
-          );
+          //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
       
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
           if (val_def[campo]) {
@@ -755,9 +751,6 @@ export class VFPDB {
               " Old value=",
               old_dat[campo]
             );
-    
-
-           
             //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true;
           }
@@ -773,14 +766,7 @@ export class VFPDB {
         // const where = eval(this.View[nom_tab].exp_indice)
         // Aqui me quede  Ojo Junio 2023
         const where = this.View[nom_tab].exp_indice.toLowerCase();
-        console.log(
-          "Db tableUpdate exp_indice m",
-          m,
-          "where",
-          where,
-          "dat_vis.where",
-          dat_vis.where
-        );
+       // console.log("Db tableUpdate exp_indice m", m, "where", where, "dat_vis.where", dat_vis.where );
         try {
           eval(`dat_vis.where=${where}`);
         } catch (error) {
@@ -788,7 +774,7 @@ export class VFPDB {
 
           return false;
         }
-        console.log("Db tableUpdate dat_vis.where", dat_vis.where);
+        //console.log("Db tableUpdate dat_vis.where", dat_vis.where);
 
         // dat_vis.where =exp_ind    //eval(this.View[nom_tab].exp_indice)
       }

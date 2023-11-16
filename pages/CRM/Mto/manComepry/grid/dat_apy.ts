@@ -18,7 +18,7 @@ export class dat_apy extends COLUMN {
     constructor() {
         super()
         this.textLabel = 'Datos' // Column Header
-        this.prop.Type ='textArea'
+        this.prop.Type ='json'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comeapy.dat_apy'
         this.prop.MaxLength=128

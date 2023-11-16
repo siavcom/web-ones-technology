@@ -1,11 +1,11 @@
 <template>
-  <form class="LoginForm">
+  <div class="LoginForm">
     <div class="imagen">
       <div v-if="ThisForm.prop.Status != 'A'">
         <div class="splash-screen">
           <div class="spinner-wrapper">
             <div class="spinner">
-              <p>..........Loading FORM..........</p>
+              <p>.......... Loading Login ..........</p>
             </div>
           </div>
         </div>
@@ -18,23 +18,23 @@
           v-model:Status="ThisForm.emp_emp.prop.Status" v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
           v-model:Key="ThisForm.emp_emp.prop.Key" bind:Registro="ThisForm.emp_emp.Recno"
           :component="ref(ThisForm.emp_emp)" :Registro="0" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
-          :position="ThisForm.emp_emp.position" :db="null" @focusout="ThisForm.emp_emp.valid()" />
+          :position="ThisForm.emp_emp.position" />
         <component :is="impComp(ThisForm.log_usu.prop.BaseClass)" v-model:Value="ThisForm.log_usu.prop.Value"
           v-model:Status="ThisForm.log_usu.prop.Status" v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
           v-model:Key="ThisForm.log_usu.prop.Key" :component="ref(ThisForm.log_usu)" :Registro="0"
-          :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" :position="ThisForm.log_usu.position" :db="null"
-          @keypress="ThisForm.log_usu.keyPress($event)" @focusout="ThisForm.log_usu.valid()" />
+          :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" :position="ThisForm.log_usu.position" 
+            />
         <component :is="impComp(ThisForm.pas_usu.prop.BaseClass)" v-model:Value="ThisForm.pas_usu.prop.Value"
           v-model:Status="ThisForm.pas_usu.prop.Status" v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
           v-model:Key="ThisForm.pas_usu.prop.Key" :component="ref(ThisForm.pas_usu)" :Registro="0"
-          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" :db="null"
-          @focusout="ThisForm.pas_usu.valid()" />
+          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" 
+         />
         <component :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :component="ref(ThisForm.bt_aceptar)"
           :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
-          :imagen="ThisForm.bt_aceptar.imagen" @click.stop.prevent="ThisForm.bt_aceptar.Click()" />
+          :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script  lang="ts" setup>
@@ -98,6 +98,10 @@ watch(
   },
   { deep: false }
 )
+
+const bt_aceptar=()=>{
+   ThisForm.bt_aceptar.click()
+}
 
 // ////////////   Clase Base de datos ///////////////////////////////
 const Init = new INIT() // solo se puso para evitar de errores que tenia

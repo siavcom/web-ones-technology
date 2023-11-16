@@ -24,4 +24,7 @@ export class pas_usu extends COMPONENT {
     this.prop.componentStyle.width ='130px'
  
   }
+  public valid(Valid: boolean): Promise<boolean> {
+      this.Form.bt_aceptar.click()
+  }
 }

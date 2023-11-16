@@ -84,7 +84,7 @@ export class ThisForm extends captureForm {
     this.prop.textLabel = "Mantenimiento a proyectos"
     this.prop.RecordSource='vi_cap_comepry'
     this.prop.Status = 'A'
-    this.publicVar.cop_nom='C'
+//    this.publicVar.cop_nom='C'
   }
    
 

@@ -111,7 +111,7 @@ const props = withDefaults(defineProps<Props>(), {
     Type: "text",
     Visible: true,
     RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
-    RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server 5-Array
+    RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
     ColumnCount: 0,
     ColumnWidths: "", //"75%,25%"
     Sorted: false,
@@ -755,25 +755,22 @@ const renderComboBox = async (readData?: boolean) => {
 
       break
     }
-    case 3: {
-      //const data = await sql.value.localSql(props.prop.RowSource)
-      // llama la vista en el servidor de SQL
-      //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
+    case 3: {   // SQL Server Query
       data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
-      //console.log('ComboBox render data', data)
       if (data == null) {
         console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
-
         return
-
-
       }
-
-
-
+      break
+    }   
+    case 4: { // local SQL Query
+      data = await This.Form.db.localAlaSql(props.prop.RowSource)
+      if (data == null) {
+        console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
+        return
+      }
       break
     }
-
     case 5: {
       // Array , solo copiamos el arreglo
       val_col = props.prop.RowSource;

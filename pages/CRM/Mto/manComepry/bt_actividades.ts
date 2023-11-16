@@ -34,6 +34,11 @@ export class bt_actividades extends COMPONENT {
 
   async click() {
     this.prop.Visible=false
+    for (let i=0;i<this.main.length;i++){
+      // apagamos 
+      if (this.Form[main[i]].prop.Capture && !this.Form[main[i]].prop.updateKey ) 
+           this.Form[main[i]].prop.Visible=false
+    }
 
     // lee tipos de actividades segun el tipo de proyecto
     const m={tpy_tpy:this.Form.tpy_tpy.prop.Value}

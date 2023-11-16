@@ -48,8 +48,8 @@ export class con_con extends captureComponent {
     if (this.prop.Value==0)
        return true
 
-    const cop_nom=this.Parent.publicVar.cop_nom //.trim()
-    const cod_nom=this.Parent.cod_nom.prop.Value //.trim()
+    const cop_nom=this.Form.cop_nom.prop.Value   //publicVar.cop_nom //.trim()
+    const cod_nom=this.Form.cod_nom.prop.Value //.trim()
     const con_con=this.prop.Value
 
     const m={cop_nom,cod_nom,con_con}

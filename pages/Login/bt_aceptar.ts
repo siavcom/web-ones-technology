@@ -4,13 +4,10 @@
 // Creacion : Otubre/2021
 // Ult.Mod  :
 /// //////////////////////////////////////////
-// import router from '@/router'
 
-//import { OpenDb } from '@/classes/OpenDB'
 import { COMPONENT } from "@/classes/Component";
 //import { Session } from '@/stores/currentSession'
 import { storeToRefs } from "pinia";
-
 
 export class bt_aceptar extends COMPONENT {
   num_int = 0;
@@ -22,11 +19,16 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Value = "Entrar";
     this.style.width = "30%";
 
-    this.prop.Image = "/Iconos/svg/bx-check-circle.svg";
+    this.prop.Image = '/Iconos/svg/ok-accept.svg' //"/Iconos/svg/bx-check-circle.svg";
     //  this.prop.Position='footer'
   }
 
-    public async Click() {
+ /////////////////////////////////////////////////////////////////////
+  // Click
+  // Descripcion: Hace el click
+  /////////////////////////////////////////////////////////////////
+
+  public async click() {
     this.num_int++;
 
     if (this.num_int == 5) {
@@ -52,7 +54,7 @@ export class bt_aceptar extends COMPONENT {
       ThisForm.log_usu.prop.MessageError = "usuario@empresa";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
-      return false;
+      return ;
     }
 
     if (pos_arroba > 0) {
@@ -65,14 +67,14 @@ export class bt_aceptar extends COMPONENT {
       ThisForm.emp_emp.prop.MessageError = "Escoja una empresa";
       ThisForm.emp_emp.prop.Valid = false;
       ThisForm.emp_emp.prop.ShowError = true;
-      return false;
+      return ;
     }
 
     if (login.length == 0) {
       ThisForm.log_usu.prop.MessageError = "Digite usuario";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
-      return false;
+      return ;
     }
 
     if (
@@ -82,7 +84,7 @@ export class bt_aceptar extends COMPONENT {
       ThisForm.pas_usu.prop.MessageError = "Digite contraseña";
       ThisForm.pas_usu.prop.Valid = false;
       ThisForm.pas_usu.prop.ShowError = true;
-      return false;
+      return ;
     }
 
     const session = Session();
@@ -97,5 +99,6 @@ export class bt_aceptar extends COMPONENT {
     pass.value = ThisForm.pas_usu.prop.Value;
 
     //console.log('Datos login ========>>>>>>>',id_con.value,nom_emp.value,user.value,pass.value)
+   return 
   }
 }

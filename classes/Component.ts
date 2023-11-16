@@ -1,14 +1,15 @@
-//////////////////////////////////////////////
-// Clase : Componente Base
-// Author : Fernando Cuadras Angulo
-// Creacion : Noviembre/2021
-// Ult.Mod  : 20/Marzo/2023
-/////////////////////////////////////////////
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
-//import { ThisForm } from "@@/pages/come9101/ThisForm"
-//import { nextTick } from "vue"
-
+/**
+ * //////////////////////////////////////////////
+ *  Clase : Componente Base
+ *  Author : Fernando Cuadras Angulo
+ *  Creacion : Noviembre/2021
+ *  Ult.Mod  : 20/Marzo/2023
+ *
+ *  RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
+ *
+ * @export
+ * @class COMPONENT
+ */
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent={}; //this.Dom.ctx; // Contexto
@@ -81,7 +82,7 @@ export class COMPONENT {
     RecordSource: "",
     Row: 0,
     RowSource: {},
-    RowSourceType: 0, //1-Value, 2-Alias, 5-Array
+    RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
 
     Status: "I",
     Step: "1",

@@ -24,9 +24,9 @@ export class est_apy extends COLUMN {
         this.prop.Type ='text'
         this.prop.BaseClass = 'comboBox'
         this.prop.ControlSource = 'vi_cap_comeapy.est_apy'
-        this.prop.RowSource=[['InIicio','Bloqueada','Autorizada','Cancelada','Finalizada'],
+        this.prop.RowSource=[['Inicio','Bloqueada','Autorizada','Cancelada','Finalizada'],
                              ['I','B','A','C','F']]
-        this.prop.RowSourceType=2                     
+        this.prop.RowSourceType=5;                   
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
 

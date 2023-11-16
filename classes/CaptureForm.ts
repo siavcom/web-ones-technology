@@ -182,9 +182,14 @@ export class captureForm extends FORM {
     for (const i in this.main) {
       const comp = this.main[i];
 
+ 
       if (this[comp].prop.Capture) {
         if (this[comp].prop.updateKey === false) {
           // No es llave de actualizacion
+          if (!this[comp].prop.Visible)
+              this[comp].prop.Visible=true
+
+
           if (this[comp].Recno > 0) this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
 
           if (Recno > 0) {

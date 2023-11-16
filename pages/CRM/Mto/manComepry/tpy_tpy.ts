@@ -36,7 +36,7 @@ export class tpy_tpy extends captureComponent {
     if (data.length==0){
         MessageBox('No hay tabla de definición de proyectos')
     }    
-    this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
+    //this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
     this.Form.cop_nom.prop.Value=data[0].cop_nom
    
     this.prop.RowSource = "cometpy.des_tpy,tpy_tpy,cop_nom";
@@ -72,7 +72,7 @@ export class tpy_tpy extends captureComponent {
       `select cop_nom from Now.cometpy where tpy_tpy='${this.prop.Value}'`
     );
 
-    this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
+   // this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
 
     this.Form.cop_nom.prop.Value=data[0].cop_nom
    /*
