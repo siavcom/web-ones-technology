@@ -21,12 +21,11 @@ export class dat_apy extends COLUMN {
         this.prop.Type ='json'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comeapy.dat_apy'
-        this.prop.MaxLength=128
         this.prop.Capture=true
         this.prop.updateKey=false
    
 //        this.prop.componentStyle.width='250px'
-        this.style.width='250px'
+        this.style.width='300px'
         ///////////////////////// 
         // Props 
         /////////////////////////

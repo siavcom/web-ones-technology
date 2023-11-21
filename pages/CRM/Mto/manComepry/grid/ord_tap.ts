@@ -17,7 +17,7 @@ export class ord_tap extends COLUMN {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.textLabel = 'Orden de la actividad' // Column Header
+        this.textLabel = 'Orden' // Column Header
         this.prop.Type ='number'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comeapy.ord_tap'

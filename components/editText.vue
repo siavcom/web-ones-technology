@@ -53,9 +53,9 @@
         <TransitionGroup name='detailJson' tag="div">
           <details v-for="(comp, index) in compJson" key:='index' ref="Ref">
             <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp }} </summary>
-            <div v-for="(detalle) in  currentJson[comp]" key:="detalle">
+            <div  v-for="(detalle) in  currentJson[comp]" key:="detalle">
               {{ detalle.label }}
-              <input v-model="detalle.value" :type="detalle.type ? detalle.type : 'text'"
+              <input  v-model="detalle.value" :type="detalle.type ? detalle.type : 'text'"
                 :readonly="detalle.readOnly ? detalle.readOnly : false"
                 :style="detalle.style ? detalle.style : { width: 'auto' }">
 
@@ -652,7 +652,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       for (const comp in currentJson.value)
         compJson.value.push(comp)
 
-      console.log('json ===>', currentJson)
+      console.log('json ===>', currentJson.value)
 
       break;
 

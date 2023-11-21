@@ -33,29 +33,11 @@ export class GRID extends COMPONENT {
     this.prop.updated = false;
     this.prop.messageUpdate = "Grabamos la tabla";
 
-    this.style.width = "95%";
+    this.style.width ="max-content"; // "95%";
     this.style.minHeight = "150px";
     this.style.height = "auto";
   }
 
-  ////////////////////////////////////////
-  // Metodo : init
-  // Descripcion : Si es un grid de captura general y esta visible,
-  //              Inicializa la tabla
-  //              si ya tiene el RecordSource
-  /// /////////////////////////////////////
-
-  /*
-  public async init() {
-    if (this.autoLoad && this.prop.RecordSource.length > 1) {// Si hay recordSource
-      console.log('================Grid.ts Init autoLoad=============',this.autoLoad)
- 
-      await this.valid()
-      this.prop.Visible=true
-      console.log('================Grid.ts Fin Init autoLoad===========',this.autoLoad)
-    }
-  }
-  */
 
   ////////////////////////////////////////
   // Metodo : Valid

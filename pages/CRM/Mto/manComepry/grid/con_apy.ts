@@ -20,7 +20,7 @@ export class con_apy extends COLUMN {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.textLabel = 'Consecutivo' // Column Header
+        this.textLabel = 'Con.' // Column Header
         this.prop.Type ='number'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comeapy.con_apy'

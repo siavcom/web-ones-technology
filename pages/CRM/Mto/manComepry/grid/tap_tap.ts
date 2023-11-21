@@ -37,8 +37,8 @@ export class tap_tap extends COLUMN {
 
      async when() {
  
-         const des_tap=await this.Form.localAlaSql(`select des_tap from vi_cap_cometap order by des_tap`)
-         const tap_tap=await this.Form.localAlaSql(`select tap_tap from vi_cap_cometap order by des_tap`)
+         const des_tap=await this.Form.db.localAlaSql(`select des_tap from vi_cap_cometap order by des_tap`)
+         const tap_tap=await this.Form.db.localAlaSql(`select tap_tap from vi_cap_cometap order by des_tap`)
          this.prop.RowSource=[des_tap,tap_tap]
 
          return super.when()
