@@ -43,25 +43,23 @@
         <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
       </div>
-      <div v-else-if="prop.Type == 'json'" :style="componentStyle">
+      <div v-else-if="prop.Type == 'json'" :style="componentStyle" ref="Ref">
 
 
         <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
-        <TransitionGroup name='detailJson' tag="div">
-          <details v-for="(comp, index) in compJson" key:='index' ref="Ref">
-            <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp }} </summary>
-            <div  v-for="(detalle) in  currentJson[comp]" key:="detalle">
-              {{ detalle.label }}
-              <input  v-model="detalle.value" :type="detalle.type ? detalle.type : 'text'"
-                :readonly="detalle.readOnly ? detalle.readOnly : false"
-                :style="detalle.style ? detalle.style : { width: 'auto' }">
+        <!--TransitionGroup name='detailJson' tag="div"-->
+          <details v-for="(comp, index) in compJson" key:='index' >
+            <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
+              <input  v-model="comp.value" :type="comp.type ? comp.type : 'text'"
+                :readonly="comp.readOnly ?  comp.readOnly : true"
+                :style="comp.style ? comp.style : { width: 'auto' }"
+                @focusout="onBlur">
 
-            </div>
           </details>
-        </TransitionGroup>
+        <!--/TransitionGroup-->
       </div>
 
       <!--checkBox-->
@@ -589,7 +587,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
         if (campo != 'key_pri') {
           sw_dat = true
 
-          if (This.Recno != props.Registro)
+          if (props.Registro && This.Recno != props.Registro )
             This.Recno = props.Registro
 
           //This.prop.Valid = true// ya se capturo algo , se apaga Valid
@@ -647,12 +645,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     case 'json':
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
-      console.log('json ===>Value.value', JSON.parse(Value.value))
+      compJson.value=[]
       currentJson.value = JSON.parse(Value.value)
-      for (const comp in currentJson.value)
-        compJson.value.push(comp)
 
-      console.log('json ===>', currentJson.value)
+      for (const comp in currentJson.value)
+        compJson.value.push(currentJson.value[comp])
 
       break;
 

@@ -24,7 +24,6 @@ constructor() {
 
     this.textLabel = "Fecha programada"; // Column Header
     this.prop.Type = "date";
-    this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comeapy.fpr_apy";
 
     this.prop.Capture = true;

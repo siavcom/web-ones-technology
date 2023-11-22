@@ -22,7 +22,6 @@ export class fec_apy extends COLUMN {
          
         this.textLabel = 'Fecha' // Column Header
         this.prop.Type ='date'
-        this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comeapy.fec_apy'
         this.prop.Placeholder = 'Descripción'
       

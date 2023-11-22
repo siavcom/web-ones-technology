@@ -36,6 +36,7 @@ export class GRID extends COMPONENT {
     this.style.width ="max-content"; // "95%";
     this.style.minHeight = "150px";
     this.style.height = "auto";
+    this.Recno=0
   }
 
 

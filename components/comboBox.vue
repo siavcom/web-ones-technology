@@ -344,7 +344,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (campo != 'key_pri') {
           sw_dat = true
 
-          if (This.Recno != props.Registro)
+          if (props.Registro && This.Recno != props.Registro)
             This.Recno = props.Registro
 
 
@@ -414,8 +414,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Text=', Text.value)
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
-    // console.log('editText emitValue valid() Name', props.prop.Name)
-    await This.interactiveChange()
+     console.log('comboBox emitValue valid() Name', props.prop.Name,'This.prop.Value=',This.prop.Value)
+    This.interactiveChange()
     This.valid()
 
   }

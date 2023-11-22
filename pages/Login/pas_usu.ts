@@ -20,7 +20,7 @@ export class pas_usu extends COMPONENT {
  //   this.style.width = '230px'
     this.style.width = 'auto'
     this.style.zIndex = 1
- 
+    this.style.tabindex=3
     this.prop.componentStyle.width ='130px'
  
   }

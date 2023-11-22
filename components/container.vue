@@ -12,7 +12,7 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <transition name='Container'>
+  <!--transition name='Container'-->
     <div v-show="This.prop.Visible">
       <div class='container' :style="style">
         <details class='details' :open='!This.prop.Disabled' :width='style.width'>
@@ -32,7 +32,7 @@
                 v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
                 v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
                 v-model:Focus="This[compHeader].Focus" 
-                v-bind:Registro="This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
+                v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
                 v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
                 v-bind:position="This[compHeader].position"
                 @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class='main'>
-            <TransitionGroup name='detailForm' tag='div'>
+            <!--TransitionGroup name='detailForm' tag='div'-->
               <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0" >
                 <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
           v-bind:Show="true"
@@ -50,13 +50,13 @@
                   v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
                   v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
                   v-model:Focus="This[compMain].Focus" 
-                  v-bind:Registro="This[compMain].Recno == null ? 0 : This[compMain].Recno"
+                  v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
                   v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
                   v-bind:position="This[compMain].position"
                   @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
                   @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
               </div>
-            </TransitionGroup>
+            <!--/TransitionGroup-->
           </div>
           <!--/template-->
           <!--template v-slot:footer
@@ -81,7 +81,7 @@
                 v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
                 v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
                 v-model:Focus="This[compFooter].Focus" 
-                v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
+                v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
                 v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
                 v-bind:position="This[compFooter].position"
                 @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
@@ -91,7 +91,7 @@
         </details>
       </div>
     </div>
-  </transition>
+  <!--/transition-->
 </template>
 
 <script setup lang="ts">

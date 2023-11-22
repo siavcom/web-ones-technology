@@ -20,7 +20,7 @@ export class nom_ven extends captureComponent {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = 'Nombre'
+    this.prop.textLabel = 'Nombre Vendedor'
     this.prop.Type = 'text'
     this.prop.BaseClass = 'editText'
     this.prop.ControlSource = 'lla1_ven.nom_ven'

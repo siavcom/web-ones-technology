@@ -22,7 +22,7 @@ export class con_con extends captureComponent {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.prop.textLabel = 'Consigantario'
+        this.prop.textLabel = 'Consignatario'
         this.prop.Type ='number'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comepry.con_con'

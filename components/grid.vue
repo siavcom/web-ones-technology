@@ -43,9 +43,9 @@
                 v-show="i != This.Row"
                     -->
 
-              <td v-for="col in This.elements" :key="col.Id" style="padding:0">
+              <td v-for="col in This.elements" :key="col.Id" :style='{ "hight": This[col.Name].style.hight , padding:0}'>
 
-                <div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)">
+                <!--div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)"-->
                   <!--template style="This[col.Name].style" -->
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
@@ -58,7 +58,7 @@
                   v-bind:Show="item.id != This.Row"
                   
                   -->
-                  <div v-show="item.id != This.Row" :style='{ "width": This[col.Name].style.width }'>
+                  <div v-show="item.id != This.Row" >
                     <!--Transition name="columntext"-->
                       <textLabel 
                         v-bind:Registro="item.id != This.Row?  item.recno>0 ? item.recno:0 :0"
@@ -89,7 +89,7 @@
                         v-model:Valid="This[col.Name].prop.Valid" 
                         v-model:ShowError="This[col.Name].prop.ShowError"
                         v-bind:Component="ref(This[col.Name])" 
-                        v-bind:Registro="item.recno>0 ? item.recno:0 "
+                        v-bind:Registro="item.recno>0 || item.recno!=null ? item.recno:0 "
                         v-bind:prop="This[col.Name].prop" 
                         v-bind:style="This[col.Name].style"
                         v-bind:position="This[col.Name].position"
@@ -99,7 +99,7 @@
                       </component>
                     </div>
                   <!--/Transition-->
-                </div>
+                <!--/div-->
               </td>
 
               <!--td>
@@ -525,7 +525,7 @@ watch(
     for (const comp in compStatus) { // Recorre todos los estatus del grid
 
       if (compStatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
-        console.log('Grid watch estatus comp=', comp, 'Estatus', compStatus[comp])
+        console.log('Grid watch estatus comp=', comp, 'Estatus', compStatus[comp],'This.Row=',This.Row)
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 

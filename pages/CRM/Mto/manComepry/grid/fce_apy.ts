@@ -22,7 +22,6 @@ export class fce_apy extends COLUMN {
          
         this.textLabel = 'Cambio de estatus' // Column Header
         this.prop.Type ='date'
-        this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comeapy.fce_apy'
         this.prop.Placeholder = 'Descripción'
         this.prop.ReadOnly=true

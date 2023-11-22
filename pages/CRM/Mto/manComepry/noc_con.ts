@@ -21,7 +21,7 @@ export class noc_con extends captureComponent {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = 'Nombre'
+    this.prop.textLabel = 'Nombre Consignatario'
     this.prop.Type = 'text'
     this.prop.BaseClass = 'editText'
     this.prop.ControlSource = 'lla1_con.noc_con'

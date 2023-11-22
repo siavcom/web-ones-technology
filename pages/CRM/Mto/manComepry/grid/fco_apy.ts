@@ -21,7 +21,7 @@ export class fco_apy extends COLUMN {
        // const nom_ind=renglon[i]['nom_ind']
          
         this.textLabel = 'Concluye' 
-        this.prop.BaseClass = 'editText'
+        this.prop.Type ='date'
         this.prop.ControlSource = 'vi_cap_comeapy.fco_apy'
         this.prop.Placeholder = 'Descripción'
       

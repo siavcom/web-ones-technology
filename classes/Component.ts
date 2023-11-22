@@ -10,6 +10,8 @@
  * @export
  * @class COMPONENT
  */
+
+
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent={}; //this.Dom.ctx; // Contexto
@@ -17,8 +19,8 @@ export class COMPONENT {
   Form: any = {}; //this.Parent.ThisForm // Thisform
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
-
-  db: any;
+  Sql=null;
+  // db: any;
   Recno: number;
   Ref: null | undefined;
   Show: true = true;
@@ -114,6 +116,7 @@ export class COMPONENT {
       height: "85%",
       maxheight: "auto",
       maxWidth: "100%",
+      fontWeight: "normal",
       fontFamily: "Arial",
       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
       textAlign: "left",
@@ -130,6 +133,7 @@ export class COMPONENT {
     flexShrink: "0" /* do not shrink - initial value: 1 */,
     flexBasis: "auto" /* width/height  - initial value: auto */,
     flexWrap: "wrap",
+    fontWeight: "normal",
     alignContent: "center",
     background: "transparent",
     backgroundColor: "transparent", // semi "rgba(170, 187, 97, 0.5)",  //
@@ -220,6 +224,7 @@ export class COMPONENT {
 
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
+      this.Sql=this.Form.db;
 
       console.log(
         "Init constructor.name",

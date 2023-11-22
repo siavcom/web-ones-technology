@@ -24,6 +24,8 @@ export class ThisForm extends reportForm {
     this.prop.Development=true
     this.vis_rep = 'vcometap'   // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value ='rep_cometap'   // no incluir extencion jasper o jrxml
+    this.tab_ord='cometap'
+    this.var_ord.prop.Value='tap_tap'
     //this.dataView:string ='vcomepge'    // Vista de datos generales
     //this.sqlQuery=' `select des_tdo from cometdo where tdo_tdo=${this.Form.tdo_tdo.Value}` '             // Query a ejecutar antes de la vista del reporte
   } 

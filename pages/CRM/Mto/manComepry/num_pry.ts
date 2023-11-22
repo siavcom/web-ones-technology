@@ -31,6 +31,13 @@ export class num_pry extends captureComponent {
     this.prop.Capture = true;
     this.prop.updateKey = true;
     this.prop.componentStyle.width = "100px";
+    this.prop.componentStyle.fontSize="17px",
+    this.prop.componentStyle.fontWeight="bold",
+
+    this.style.width='300px'
+    this.style.fontSize= "17px"
+    this.style.fontWeigth= "bold"
+
     this.prop.Value = 0;
   }
 

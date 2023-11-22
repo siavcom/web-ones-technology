@@ -80,17 +80,22 @@ export class Grid extends GRID {
     let ord_tap=1 // Orden
 
     const data = await this.Form.db.localAlaSql(
-      "select con_apy+1 as con_apy,ord_tap,est_apy from Now.vi_cap_comeapy order by con_apy desc limit 1"
+      "select con_apy+1 as con_apy,ord_tap,est_apy,tap_tap from Now.vi_cap_comeapy where ord_tap>0 order by con_apy desc limit 1"
     );
 
     let ins_sql=''
+
+  
     if (data[0] && data[0].con_apy && data[0].con_apy > 1){
       con_apy = data[0].con_apy; 
       ord_tap = data[0].ord_tap;
       const est_apy = data[0].est_apy;
-      const res1=await this.Form.db.localAlaSql(`select efi_tap from Now.vi_cap_cometap where ord_tap=${ord_tap} `)
-      const efi_tap=res1[0].efi_tap // Estatus de autorización
+      const tap_tap= data[0].tap_tap;
 
+  
+      const res1=await this.Form.db.localAlaSql(`select efi_tap from Now.vi_cap_cometap where ord_tap=${tap_tap} `)
+      const efi_tap=res1[0].efi_tap // Estatus de autorización
+      console.log('Grid appendRow ultima actividad data=',data[0],'Estatus Final=',res1[0])
       if (efi_tap!=est_apy){ // No esta finalizada
           MessageBox('No esta finalizada la ultima actividad',16,"Error " );
 
@@ -102,13 +107,16 @@ export class Grid extends GRID {
     } else {
       ins_sql =   "select * from vi_cap_cometap where ord_tap=1";
     }
+    
+    console.log('Grid appendRow ins_sql',ins_sql,await this.Form.db.localAlaSql(ins_sql))
 
     const res = await this.Form.db.localAlaSql(ins_sql)
+    console.log('Grid appendRow res',res[0])
     const m=res[0]
     m.con_apy=con_apy
     
     await super.appendRow(m)
-    
+          
     this.tap_tap.valid()
   }
 }

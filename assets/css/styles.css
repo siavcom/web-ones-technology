@@ -46,7 +46,8 @@ div.divi{
   height:95%;
   /*  min-width: max-content;*/
   flex-shrink: 0;  /* adjustment para que funcione el width */
-  box-shadow: 0 0 5px 0.5px gray;
+ /* box-shadow: 0 0 5px 0.5px gray; */
+ 
   border-radius: 3px;
 /* box-shadow: <offset-x> <offset-y> <blur-radius> <spread> <color>; */
 

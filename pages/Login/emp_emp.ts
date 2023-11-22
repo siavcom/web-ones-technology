@@ -32,7 +32,9 @@ export class emp_emp extends COMPONENT {
     this.prop.ColumnWidths = '37%,60%'
     this.style.zIndex = 2
     this.style.width = 'auto'
+    this.style.tabindex=1
     this.prop.componentStyle.width ='200px'
+    
     let num_ren = 0
 
     if (dat_emp == null){
