@@ -32,7 +32,7 @@ export class nom_for extends COMPONENT {
     // public setFocus = async () => {
     //  this.Form.nom_tab.prop.Visible= false
     this.Form.bt_gen_forma.prop.Visible= false
-   return  await super.when()
+   return  true
   }
 
   public async valid () {

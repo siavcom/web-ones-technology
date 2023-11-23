@@ -50,7 +50,8 @@
                 v-bind:Registro="ThisForm[compHeader].Recno ? ThisForm[compHeader].Recno : 0"
                 v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
                 v-bind:position="ThisForm[compHeader].position"
-                @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
+                @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
+                @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')">
               </component>
             </div>
 
@@ -111,7 +112,8 @@ emit
                   v-bind:prop="ThisForm[compFooter].prop" v-bind:style="ThisForm[compFooter].style"
                   v-bind:position="ThisForm[compFooter].position"
                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
-                  @click.stop.prevent="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
+                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
+              <!--@click.stop.prevent-->
               </div>
             </slot>
 

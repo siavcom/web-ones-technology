@@ -34,7 +34,7 @@
             <!-------------  Renglones  -----------------------
               item.id + 1-->
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr v-for="item in scroll.dataPage" :key="item.id">
+            <tr v-for="item in scroll.dataPage" :key="item.id"     >
 
               <td class='renNumber' style="min-width:30;max-width:30px; ">{{ item.recno }}</td>
               <!-------------  Columnas  ------------------------->

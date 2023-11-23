@@ -126,13 +126,7 @@ export class <<cam_dat>> extends COMPONENT {
     ///////////////////////////////////
  
  async when() {
-    if (!super.when())
-       return false
   /////////// put your code here ///////////// 
-  
-
-
-
   return true 
 */
 /*

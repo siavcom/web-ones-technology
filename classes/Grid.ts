@@ -185,13 +185,15 @@ export class GRID extends COMPONENT {
   // Inserta renglon
   // m : valiables de memoria
   ///////////////////////////////////////////////////
-  public async appendRow(m?: {}) {
+  public async appendRow(mem?: {}) {
     this.prop.Disabled=true
     //this.Row = -1;
-    if (!m) {
-      m = {};
-    }
-    console.log("grid appendRow this.prop.RecordSource=",this.prop.RecordSource, "m=", m);
+
+    console.log("grid appendRow this.prop.RecordSource=",this.prop.RecordSource, "mem=", mem);
+    if (!mem)
+       mem={}
+
+    const  {...m} = mem;
 
     // Leemos variables publicas
     for (const variable in this.Form.publicVar)
@@ -203,6 +205,7 @@ export class GRID extends COMPONENT {
 
     //this.Form.db.select(this.prop.RecordSource)
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
+   // console.log("grid appendRow rows",await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
     this.prop.Disabled=false
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
   

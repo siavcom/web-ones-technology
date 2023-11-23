@@ -14,7 +14,7 @@
 import { COMPONENT } from '@/classes/Component'
 import { Grid} from './grid/grid'
 
-export class tap_tap extends COMPONENT {
+export class grid_tap extends COMPONENT {
 
   ////////////////////////////////////
   // component imported

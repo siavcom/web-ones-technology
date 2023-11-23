@@ -50,7 +50,8 @@ export class est_apy extends COLUMN {
 
     async when() {
       this.init()
-      return super.when() 
-    }
+        this.prop.ReadOnly = this.Parent.tap_tap.when();
+        return !this.prop.ReadOnly;
+   }
 
 }

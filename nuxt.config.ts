@@ -1,14 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+
 export default defineNuxtConfig({
-  //devtools: { enabled: true },
- devServer: {
+//$develoment :{devtools: { enabled: false }, //Shift + Alt + D in app to open
+//},   //configuracion solo en desarrollo  
+devtools: { enabled: false },
+devServer: {
     port: 3000
   },
 ssr: true,
 
 alias: {  // Quita el error a instalar Nuxt
-  //pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
+  // pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
 },
+
 imports: {
     // Auto-import pinia stores defined in `~/stores`
     dirs: ['stores']
@@ -38,9 +43,10 @@ imports: {
       },
     },
   },
+
   modules: [
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',  // Quitar para instalar Nuxt y reinstalar con npm i -D @pinia-plugin-persistedstate/nuxt --legacy-peer-deps
   ],
   pinia: {
     autoImports: [

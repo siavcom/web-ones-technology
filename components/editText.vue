@@ -43,7 +43,7 @@
         <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
       </div>
-      <div v-else-if="prop.Type == 'json'" :style="componentStyle" ref="Ref">
+      <div class='json' v-else-if="prop.Type == 'json'" :style="componentStyle" ref="Ref">
 
 
         <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
@@ -54,7 +54,7 @@
           <details v-for="(comp, index) in compJson" key:='index' >
             <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
               <input  v-model="comp.value" :type="comp.type ? comp.type : 'text'"
-                :readonly="comp.readOnly ?  comp.readOnly : true"
+                :readonly="comp.readOnly ?  true : false"
                 :style="comp.style ? comp.style : { width: 'auto' }"
                 @focusout="onBlur">
 
@@ -1135,6 +1135,14 @@ const init = async () => {
     componentStyle.height = '20px'
     componentStyle.maxHeight = '20px'
   }
+
+  if (props.prop.Type == 'json') {
+    componentStyle.borderWidth='1px'
+    componentStyle.borderStyle='solid'
+    componentStyle.borderRadius='2px'
+  }
+  
+
   if (props.prop.Type == 'number')
     componentStyle.textAlign = 'right'
 

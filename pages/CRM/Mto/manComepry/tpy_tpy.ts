@@ -59,11 +59,11 @@ export class tpy_tpy extends captureComponent {
   }
 
   async when(){
-    this.Form.tap_tap.Grid.prop.RecordSource=''
-    this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0
+    this.Form.grid_tap.Grid.prop.RecordSource=''
+    this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0
 
-    this.Form.tap_tap.prop.Disabled=true
-    this.Form.tap_tap.prop.Visible=false
+    this.Form.grid_tap.prop.Disabled=true
+    this.Form.grid_tap.prop.Visible=false
 
     this.Form.nom_nom.prop.Value=''
     this.Form.nom_ven.prop.Value=''

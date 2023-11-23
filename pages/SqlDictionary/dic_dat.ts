@@ -50,11 +50,7 @@ export class dic_dat extends COMPONENT {
   }
   
   public async when() {
-  // public setFocus = async () => {
-    await super.when()
-    console.log('bt_aceptar when')
     this.Form.nom_tab.prop.Visible = false
-    //this.Form.tip_men.prop.Visible = false
     this.Form.sis_sis.prop.Visible = false
     this.Form.tpr_prg.prop.Visible = false
     
@@ -68,7 +64,6 @@ export class dic_dat extends COMPONENT {
     this.Form.bt_gen_indices.prop.Visible = false
     this.Form.bt_gen_vistas.prop.Visible = false
     this.Form.bt_gen_all_models.Visible=true
-
 
     return !this.prop.ReadOnly
   }

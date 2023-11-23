@@ -31,12 +31,11 @@ export class num_pry extends captureComponent {
     this.prop.Capture = true;
     this.prop.updateKey = true;
     this.prop.componentStyle.width = "100px";
-    this.prop.componentStyle.fontSize="17px",
-    this.prop.componentStyle.fontWeight="bold",
-
-    this.style.width='300px'
-    this.style.fontSize= "17px"
-    this.style.fontWeigth= "bold"
+    (this.prop.componentStyle.fontSize = "17px"),
+      (this.prop.componentStyle.fontWeight = "bold"),
+      (this.style.width = "300px");
+    this.style.fontSize = "17px";
+    this.style.fontWeigth = "bold";
 
     this.prop.Value = 0;
   }
@@ -46,16 +45,14 @@ export class num_pry extends captureComponent {
   ///////////////////////////////////
 
   async when() {
-    this.Form.tap_tap.Grid.prop.RecordSource = "";
-    this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0;
-    this.Form.tap_tap.prop.Disabled = true;
-    this.Form.tap_tap.prop.Visible = false;
-    this.Form.nom_nom.prop.Value=''
-    this.Form.nom_ven.prop.Value=''
-    this.Form.bt_actividades.Visible=false
+    this.Form.grid_tap.Grid.prop.RecordSource = "";
+    this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0;
+    this.Form.grid_tap.prop.Disabled = true;
+    this.Form.grid_tap.prop.Visible = false;
+    this.Form.nom_nom.prop.Value = "";
+    this.Form.nom_ven.prop.Value = "";
+    this.Form.bt_actividades.Visible = false;
 
-
-    super.when();
     const data = await this.Form.db.execute(`         
            select max(num_pry)+1 as num_pry from man_comepry where tpy_tpy='${this.Form.tpy_tpy.prop.Value}'`);
 
@@ -69,8 +66,9 @@ export class num_pry extends captureComponent {
     }
 
     if (this.prop.Value == 0) this.prop.Value = 1;
-    this.Form.tap_tap.Grid.tap_tap.prop.RowSourceType = 0; //Actividades por proyecto
+    this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0; //Actividades por proyecto
     return true;
+
   }
 
   async valid(): Promise<boolean> {
@@ -78,13 +76,13 @@ export class num_pry extends captureComponent {
       return false;
     }
     await super.valid();
-    console.log('valid num_pry Recno=',this.Form.cod_nom.Recno)
-    if (this.Form.cod_nom.Recno>0 ){
-       this.Form.bt_actividades.prop.Visible=true
-       this.Form.bt_actividades.prop.Disabled=false
+    console.log("valid num_pry Recno=", this.Form.cod_nom.Recno);
+    if (this.Form.cod_nom.Recno > 0) {
+      this.Form.bt_actividades.prop.Visible = true;
+      this.Form.bt_actividades.prop.Disabled = false;
     }
 
-    return true
+    return true;
     /*
  if (await super.valid()) {
         return true;

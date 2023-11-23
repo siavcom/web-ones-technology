@@ -36,4 +36,9 @@ export class tdo_tdo extends COLUMN {
         this.style.width='200px'
     }
 
+    async when() {
+        this.prop.ReadOnly = this.Parent.tap_tap.when();
+        return !this.prop.ReadOnly;
+      }
+
 }

@@ -66,7 +66,7 @@ const props = defineProps<{
     Grid: false;
     MaxLength: 0;
     RowSource: ""; // vi_cap_doc.tdo_tdo,des_tdo
-    RowSourceType: 0; //1-Value, 2-Alias, 3-Local SQL 5-Array
+    RowSourceType:number; //1-Value, 2-Alias, 3-Local SQL 5-Array
     ColumnCount: 0;
     ColumnWidths: string;
     Sorted: false;
@@ -361,25 +361,17 @@ const renderComboBox = async () => {
         break
       }
       case 3: {
-        //const data = await sql.value.localSql(props.prop.RowSource)
-        // llama la vista en el servidor de SQL
-        //data = await sql.value.execute(props.prop.RowSource, alias == '' ? 'MEMVAR' : alias)
         data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
-
-
-        /*
-              // Recorremos las columnas que traiga el resultado 
-              for (const nom_obj in data[0]) {
-                const renglon = []
-                // recorremos todos los renglones que tenga el data
-                for (let ren = 0; ren < data.length; ren++) {
-                  renglon.push(data[ren][nom_obj])
-                }
-                val_col.push(renglon)
-              }
-        */
         break
+      } 
+      case 4: { // local SQL Query
+      data = await This.Form.db.localAlaSql(props.prop.RowSource)
+      if (data == null) {
+        console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
+        return
       }
+      break
+    }
 
       case 5: {
         // Array , solo copiamos el arreglo

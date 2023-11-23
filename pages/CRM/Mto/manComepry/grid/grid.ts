@@ -79,44 +79,53 @@ export class Grid extends GRID {
     let con_apy=1 // Consecutivo
     let ord_tap=1 // Orden
 
+    const con = await this.Form.db.localAlaSql(
+      "select con_apy+1 as con_apy from Now.vi_cap_comeapy order by con_apy desc limit 1"
+    )
+
+    if (con[0] && con[0].con_apy && con[0].con_apy>1 )
+        con_apy = con[0].con_apy; 
+
     const data = await this.Form.db.localAlaSql(
-      "select con_apy+1 as con_apy,ord_tap,est_apy,tap_tap from Now.vi_cap_comeapy where ord_tap>0 order by con_apy desc limit 1"
+      "select ord_tap,est_apy,tap_tap from Now.vi_cap_comeapy where ord_tap>0 order by ord_tap desc limit 1"
     );
+    console.log('Grid appendRow data=',data)
+
 
     let ins_sql=''
-
-  
-    if (data[0] && data[0].con_apy && data[0].con_apy > 1){
-      con_apy = data[0].con_apy; 
+    if (data.length>0 && data[0].ord_tap){
       ord_tap = data[0].ord_tap;
-      const est_apy = data[0].est_apy;
+      const est_apy = data[0].est_apy.trim();
       const tap_tap= data[0].tap_tap;
-
   
-      const res1=await this.Form.db.localAlaSql(`select efi_tap from Now.vi_cap_cometap where ord_tap=${tap_tap} `)
-      const efi_tap=res1[0].efi_tap // Estatus de autorización
-      console.log('Grid appendRow ultima actividad data=',data[0],'Estatus Final=',res1[0])
+      const res1=await this.Form.db.localAlaSql(`select efi_tap from Now.vi_cap_cometap where tap_tap='${tap_tap}' `)
+     // console.log('Grid appendRow ultima actividad data=',data[0],'Estatus resl=',res1)
+
+      const efi_tap=res1[0].efi_tap.trim() // Estatus de autorización
       if (efi_tap!=est_apy){ // No esta finalizada
           MessageBox('No esta finalizada la ultima actividad',16,"Error " );
-
         return
       } 
 
       ins_sql=  `select * from Now.vi_cap_cometap where ord_tap>${ord_tap} order by ord_tap limit 1 `;
-
     } else {
       ins_sql =   "select * from vi_cap_cometap where ord_tap=1";
     }
     
-    console.log('Grid appendRow ins_sql',ins_sql,await this.Form.db.localAlaSql(ins_sql))
-
     const res = await this.Form.db.localAlaSql(ins_sql)
-    console.log('Grid appendRow res',res[0])
-    const m=res[0]
-    m.con_apy=con_apy
+    console.log('Grid appendRow ins_sql',ins_sql,res)
+
+    const {...m}=res[0]   // 
+    m.con_apy=con_apy  // asigna consecutivo
     
     await super.appendRow(m)
-          
-    this.tap_tap.valid()
+    this.con_apy.prop.Valid=true
+    this.ord_tap.prop.Valid=true
+    this.tap_tap.prop.Valid=true
+    this.tap_tap.old_val=''
+
+   // console.log('Grid appendRow vi_cap_comeapy',await this.Form.db.localAlaSql('select * from vi_cap_comeapy'))
+ 
+   // this.tap_tap.interactiveChange()
   }
 }

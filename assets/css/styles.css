@@ -43,7 +43,7 @@ div.divi{
   text-align: left;
   margin :auto;
 
-  height:95%;
+  height:98%;
   /*  min-width: max-content;*/
   flex-shrink: 0;  /* adjustment para que funcione el width */
  /* box-shadow: 0 0 5px 0.5px gray; */

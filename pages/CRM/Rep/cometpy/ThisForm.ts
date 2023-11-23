@@ -24,6 +24,12 @@ export class ThisForm extends reportForm {
     this.vis_rep = 'vi_rep_cometpy'   // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value ='TiposProyectos'   // no incluir extencion jasper o jrxml
     this.for_imp.prop.Value ='rep_cometpy'   // no incluir extencion jasper o jrxml
+    this.var_ord.prop.Value='tpy_tpy'
+    this.tab_ord='cometpy'
+   this.mon_rep.prop.Visible=false
+   this.mon_rep.prop.Disabled=true
+   this.tip_rep.prop.Visible=false
+   this.tip_rep.prop.Disabled=true
   }
 
 } // End ThisForm

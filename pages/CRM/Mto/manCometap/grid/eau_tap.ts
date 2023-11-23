@@ -26,13 +26,7 @@ export class eau_tap extends COLUMN {
         this.prop.ControlSource = 'vi_cap_cometap.eau_tap'
         this.prop.MaxLength=2
         this.prop.Capture=true
-        this.prop.updateKey=false
-        this.prop.RowSource=''      // 
-        this.style.zIndex = 1
         this.style.width='20px'
-
-
-
     }
 /*
     ////////////////////////////////// 

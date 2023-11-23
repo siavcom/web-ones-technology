@@ -42,7 +42,6 @@ export class nom_tab extends COMPONENT {
   ////////////////////////////////
   public async when() {
     // public setFocus = async () => {
-    await super.when()
    // console.log('nom_tab when')
     this.Form.grid_datos.prop.Visible = false
     this.Form.grid_vistas.prop.Visible = false
@@ -53,7 +52,7 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_model.prop.Visible = false
     this.Form.bt_gen_indices.prop.Visible = false
     this.Form.bt_gen_vistas.prop.Visible = false
-   return
+   return true
   }
 
 //  public async valid() {
