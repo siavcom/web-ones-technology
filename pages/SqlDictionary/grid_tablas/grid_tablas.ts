@@ -41,28 +41,5 @@ export class grid_tablas extends GRID {
    //this.vis_tab.prop.Last= true // ultimo elemento
      }
 
-///////////////////////////////////////////////////
-  // Incerta renglon
-  // m : valiables de memoria
-  ///////////////////////////////////////////////////
-  public async appendRow() { 
-   // Obtiene el consecutivo con_tab del cursor local
-   /*
-   const data=await this.Form.db.VfpCursor("select max(num_tab) as num_tab from vi_cap_cometab\
-   where  (trim(cam_tab) <> 'USU_CRE' and \
-   trim(cam_tab) <> 'USU_USU' and \
-   trim(cam_tab) <> 'TIE_UAC' and \
-   trim(cam_tab) <> 'TIE_CRE' and \
-   trim(cam_tab) <> 'TIMESTAMP' and \
-   trim(cam_tab) <> 'KEY_PRI') ")
-
-   //console.log('appendRow',data[0])    
-   const con_tab=data[0].con_tab+.1  
-   */    
-   const m = {}
-   await super.appendRow(m)   // llama a la clase base        
-  }
-
-
 
 }

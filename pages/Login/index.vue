@@ -9,10 +9,9 @@
             </div>
           </div>
         </div>
-
       </div>
-      <div v-else class="DatosUsuario">
-        <!-- ref='esteComponente' los nombre no deben ser igual a <esteComponente -->
+      <div v-else class="prose w-full max-w-2xl h-9">
+        <!-- class="DatosUsuario" ref='esteComponente' los nombre no deben ser igual a <esteComponente -->
 
         <component :is="impComp(ThisForm.emp_emp.prop.BaseClass)" v-model:Value="ThisForm.emp_emp.prop.Value"
           v-model:Status="ThisForm.emp_emp.prop.Status" v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"

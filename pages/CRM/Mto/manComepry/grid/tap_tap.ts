@@ -37,40 +37,50 @@ export class tap_tap extends COLUMN {
   }
 
   async when() {
+    const tap_tap = this.prop.Value.trim();
+    if (this.old_val == this.prop.Value) return true;
+    const res = await this.Sql.localAlaSql(
+      `select efi_tap from Now.vi_cap_cometap where trim(tap_tap)='${tap_tap}' `
+    );
 
-    const res=await this.Form.db.localAlaSql(`select efi_tap from Now.vi_cap_cometap where tap_tap='${this.prop.Value}' `)
-    if ( res && res[0] && res[0].efi_tap.trim()==this.Parent.est_apy.prop.Value.trim()){
-        this.prop.ReadOnly=true
-        return false;
+    if (
+      res &&
+      res[0] &&
+      res[0].efi_tap != null &&
+      res[0].efi_tap.trim() == this.Parent.est_apy.prop.Value.trim()
+    ) {
+      this.prop.ReadOnly = true;
+      return false;
     }
 
-    if (this.Parent.est_apy.prop.Value)
-    this.old_val = this.prop.Value.trim();
+    if (this.Parent.est_apy.prop.Value) this.old_val = this.prop.Value.trim();
+
     return true;
   }
 
   async interactiveChange() {
-    if (this.old_val==this.prop.Value.trim())
-       return
-    const tap_tap=this.prop.Value.trim()
+    if (this.old_val == this.prop.Value.trim()) return;
+    const tap_tap = this.prop.Value.trim();
     const data = await this.Sql.localAlaSql(
-        `select est_tap,ord_tap from vi_cap_cometap where tap_tap='${tap_tap}' `
-      );
-      console.log("tpa_tpa Value=",this.prop.Value,' data=', data)
+      `select est_tap,ord_tap from vi_cap_cometap where tap_tap='${tap_tap}' `
+    );
+    console.log("tpa_tpa Value=", this.prop.Value, " data=", data);
 
-      if (data.length==0) { // No hay actividades sin orden 
-        this.prop.Valid = false;
-        return 
-      }   
-      if (data[0].ord_tap==0 || data[0].ord_tap==this.Parent.ord_tap.prop.Value) {
-        if (data[0].ord_tap!=this.Parent.ord_tap.prop.Value)
-            this.Parent.ord_tap.prop.Value = data[0].ord_tap; // actualizamos el orden
-        this.Parent.est_apy.prop.RowSource = eval(data[0].est_tap);
-        this.prop.Valid = true;
-      } else
-        this.prop.Valid = false;
-
-     return 
+    if (data.length == 0) {
+      // No hay actividades sin orden
+      this.prop.Valid = false;
+      return;
     }
-  
+    if (
+      data[0].ord_tap == 0 ||
+      data[0].ord_tap == this.Parent.ord_tap.prop.Value
+    ) {
+      if (data[0].ord_tap != this.Parent.ord_tap.prop.Value)
+        this.Parent.ord_tap.prop.Value = data[0].ord_tap; // actualizamos el orden
+      this.Parent.est_apy.prop.RowSource = eval(data[0].est_tap);
+      this.prop.Valid = true;
+    } else this.prop.Valid = false;
+
+    return;
+  }
 }

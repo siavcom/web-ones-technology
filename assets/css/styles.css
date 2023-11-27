@@ -1,7 +1,6 @@
 div.Main {
   background: white;
   margin-left: -3%;
-  
 }
 
 section.pagina {
@@ -9,9 +8,8 @@ section.pagina {
   color: #b94295;
   min-width: 375px;
   min-height: 812px;
-  
-   /* margin-top: 250px; */
- 
+
+  /* margin-top: 250px; */
 }
 div.mainForm {
   height: 100vh;
@@ -25,45 +23,44 @@ div.backGround {
   border-radius: 10px;
   padding: 60px;
   background-color: #f2f4f5;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   /*background-image: url(v-bind("props.backgroundImage"));*/
   /* opacity: 0.5;*/
 }
 
-div.divi{
+div.divi {
   /*display: inline-flex; / recomendado por raul*/
   display: inline-flex;
-  color:   #18e94c;
+  color: #18e94c;
   background: #f7f8f7;
- /* position: v-bind("props.posicion.position");
+  /* position: v-bind("props.posicion.position");
   left: v-bind("props.posicion.left");
   top : v-bind("props.posicion.top");*/
   /*z-index: v-bind("props.style.zIndex");*/
   text-align: left;
-  margin :auto;
+  margin: auto;
 
-  height:98%;
+  height: 98%;
   /*  min-width: max-content;*/
-  flex-shrink: 0;  /* adjustment para que funcione el width */
- /* box-shadow: 0 0 5px 0.5px gray; */
- 
-  border-radius: 3px;
-/* box-shadow: <offset-x> <offset-y> <blur-radius> <spread> <color>; */
+  flex-shrink: 0; /* adjustment para que funcione el width */
+  /* box-shadow: 0 0 5px 0.5px gray; */
 
+  border-radius: 3px;
+  /* box-shadow: <offset-x> <offset-y> <blur-radius> <spread> <color>; */
+}
+div.json {
+  border-radius: 3px;
 }
 
-
-div.textLabel{
+div.textLabel {
   border-radius: 3px;
-  height:80%;
-  
+  height: 80%;
 }
-div.mensajes{
+div.mensajes {
   display: inline-flex; /* recomendado por raul*/
   width: 100%;
   height: 100%;
-
 }
 
 div.img {
@@ -75,7 +72,6 @@ div.img {
   border-radius: 10%;
   padding: 0px;
   z-index: v-bind("props.style.zIndex");
-
 }
 
 label.error {
@@ -88,27 +84,23 @@ label.error {
   border-radius: 5%;
   border-color: black;
   z-index: 2;
- /* bottom: 125%;
+  /* bottom: 125%;
   left: 50%;
   margin-left: -60px;
   */
   /* Fade in tooltip */
   opacity: 1;
-
-
 }
 /* Caption del texLabel */
-span.Caption { 
-  color: rgb(0,0,0);
+span.Caption {
+  color: rgb(0, 0, 0);
   width: auto;
 }
 
-span.etiqueta { 
-  height:90%;
+span.etiqueta {
+  height: 90%;
   margin-top: 4px;
   margin-right: 3px;
-  
-
 }
 
 input.text {
@@ -122,25 +114,24 @@ input.text {
   /*min-width: 50%; */
 }
 
-.imgButton{
-  border-radius: 10% ;
+.imgButton {
+  border-radius: 10%;
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
   box-sizing: border-box;
-  height : 100%;
-  width :100%; 
+  height: 100%;
+  width: 100%;
 }
 
-.img{
-/*filter: invert(1);
+.img {
+  /*filter: invert(1);
 transform: scale(2) translate(0px, 10px);*/
-display: block;
-width :100%;
+  display: block;
+  width: 100%;
 }
 
 .button:hover {
   background-color: rgb(109, 134, 113);
 }
-
 
 input.checkBox {
   border: 1px solid rgb(0, 5, 2);
@@ -150,11 +141,9 @@ input.checkBox {
   width: 96%;
   accent-color: rgb(163, 193, 168);
   z-index: 1;
-  
+
   /*min-width: 50%; */
 }
-
-
 
 input.date {
   border: 1px solid rgb(0, 5, 2);
@@ -164,24 +153,22 @@ input.date {
   width: 96%;
   min-width: max-content;
   z-index: 1;
- 
 }
 
-input[ class="number"] {
+input[class="number"] {
   border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: right;
   width: 96%;
   z-index: 1;
-  }
-
+}
 
 /* Tooltip and error container */
 .mensajes {
   position: relative;
-/*  display: inline-block;*/
- /* border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  /*  display: inline-block;*/
+  /* border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
   /*min-width: 50%; */
 }
 
@@ -189,7 +176,7 @@ input[ class="number"] {
 .mensajes .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: #76a184 ;/*rgb(115, 181, 243);*/
+  background-color: #76a184; /*rgb(115, 181, 243);*/
   color: #fff;
   text-align: center;
   padding: 5px 0;
@@ -206,7 +193,6 @@ input[ class="number"] {
   /* Fade in tooltip */
   opacity: 1;
   transition: opacity 0.2s ease;
-  
 }
 
 /* Tooltip arrow */
@@ -226,7 +212,6 @@ input[ class="number"] {
   visibility: visible;
   opacity: 1;
 }
-
 
 /* error container */
 .error {
@@ -277,18 +262,12 @@ input[ class="number"] {
   content: "ON";
 }
 
-[type=checkbox]:checked + span:before {
-  content: '\2714';
+[type="checkbox"]:checked + span:before {
+  content: "\2714";
   position: absolute;
   top: -5px;
   left: 0;
 }
-
-
-
-
-
-
 
 /*
 .blinking{
@@ -303,119 +282,113 @@ input[ class="number"] {
 }
 */
 
-
-
 /* Erorr text */
 .mensajes .errorText {
-  
   /* height: fit-content; */
   /*visibility: visible; */
   background-color: rgb(255, 255, 255);
   color: rgb(245, 9, 9);
   text-align: center;
- /* padding: 5px 0;*/
+  /* padding: 5px 0;*/
   border-radius: 3px;
   /*border-color: #f10c0c;*/
 
   /* Position */
-  position : absolute;
+  position: absolute;
   bottom: 100%;
   border-style: double;
   z-index: 2;
-   
-  /* arrow*/ 
-  content:" ";
+
+  /* arrow*/
+  content: " ";
   left: 7px;
   margin-left: -5px;
-  border-width: 0 px; 
-  /*border-style: solid; */ 
+  border-width: 0 px;
+  /*border-style: solid; */
   /*background-color: transparent;*/
   /* border-color: #555 transparent transparent transparent; */
-  
-   /* Fade in tooltip */
-  opacity: .9;
+
+  /* Fade in tooltip */
+  opacity: 0.9;
   transition: opacity 0.2s ease;
-  animation:blinkingText 1.2s infinite;
- 
+  animation: blinkingText 1.2s infinite;
 }
-@keyframes blinkingText{
-  0%{     color: rgb(248, 8, 8);    }
-  49%{    color: rgb(248, 7, 7); }
-  60%{    color: transparent; }
-  99%{    color:transparent;  }
-  100%{   color: rgb(248, 4, 4);    }
+@keyframes blinkingText {
+  0% {
+    color: rgb(248, 8, 8);
+  }
+  49% {
+    color: rgb(248, 7, 7);
+  }
+  60% {
+    color: transparent;
+  }
+  99% {
+    color: transparent;
+  }
+  100% {
+    color: rgb(248, 4, 4);
+  }
 }
 
-.footer  {
-
-   /* flex-direction: row-reverse;*/
-
-
+.footer {
+  /* flex-direction: row-reverse;*/
 }
 
-.transition-group{
-
-  
+.transition-group {
 }
 
 /* ===============Spinner ======================  */
 .splash-screen {
   background: #f2f0ee;
-   width: 40% ;  /*60vw;*/
-   height: 40%;
- position: fixed;
- background-color: rgb(255, 255, 255);
- text-align: center;
- border-radius: 6px;
- z-index: 50;    
+  width: 40%; /*60vw;*/
+  height: 40%;
+  position: fixed;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  border-radius: 6px;
+  z-index: 50;
 }
 
 .spinner-wrapper {
- position: absolute;
- left: 50%;
- top: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
 
- transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .spinner {
- width: 80px;
- height: 80px;
- margin: 100px auto;
- background-color: #e45447;
+  width: 80px;
+  height: 80px;
+  margin: 100px auto;
+  background-color: #e45447;
 
- border-radius: 100%;
- -webkit-animation: sk-scaleout 1s infinite ease-in-out;
- animation: sk-scaleout 1s infinite ease-in-out;
+  border-radius: 100%;
+  -webkit-animation: sk-scaleout 1s infinite ease-in-out;
+  animation: sk-scaleout 1s infinite ease-in-out;
 }
 
 @-webkit-keyframes sk-scaleout {
- 0% {
-   -webkit-transform: scale(0);
- }
- 100% {
-   -webkit-transform: scale(1);
-   opacity: 0;
- }
+  0% {
+    -webkit-transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
 }
 
 @keyframes sk-scaleout {
- 0% {
-   -webkit-transform: scale(0);
-   transform: scale(0);
- }
- 100% {
-   -webkit-transform: scale(1);
-   transform: scale(1);
-   opacity: 0;
- }
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+  }
 }
-
-
-
-
-
-
-
 
 /* Tooltip arrow */
 /*
@@ -437,5 +410,3 @@ input[ class="number"] {
   opacity: 1;
 }
 */
-
-

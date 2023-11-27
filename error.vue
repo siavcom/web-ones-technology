@@ -13,14 +13,11 @@
                 <p>It looks like something broke.</p>
                 <p>Sorry about that.</p>
             </template>
-            <p style="color:#41f07b">
-                <strong>
-                    Go back to
-                    <a @click="handleError">
-                        main page.
-                    </a>
-                </strong>
-            </p>
+            <!--p style="color:#41f07b"-->
+            <button class="text-sm bg-green-500 text-black font-bold underline py-2 px-4 rounded" @click="handleError">
+                Go back to main page.
+            </button>
+            <!--/p-->
         </div>
     </NuxtLayout>
 </template>

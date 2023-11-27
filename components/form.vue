@@ -11,12 +11,12 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <div v-if="ThisForm.prop.Status == 'I'">
+  <div v-if="ThisForm.prop.Status != 'A'">
 
     <div class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
-          <p>..........Loading FORM..........</p>
+          <p>..Loading Data..</p>
         </div>
       </div>
     </div>
@@ -41,8 +41,8 @@
             <!--transition-group> -->
             <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
 
-            <div v-for="(compHeader) in ThisForm.header" :key="compHeader">
-
+            <div v-for="(compHeader) in ThisForm.header" :key="compHeader" :class="compHeader"
+              v-show='ThisForm[compHeader].prop.Visible'>
               <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
                 v-model:Status="ThisForm[compHeader].prop.Status" v-model:ShowError="ThisForm[compHeader].prop.ShowError"
@@ -71,7 +71,8 @@
 emit
               -->
               <TransitionGroup name='detailForm'>
-                <div v-for="(compMain) in ThisForm.main" :key="compMain" style="z-index:0">
+                <div v-for="(compMain) in ThisForm.main" :key="compMain" :class="compMain"
+                  v-show='ThisForm[compMain].prop.Visible'>
                   <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
@@ -93,7 +94,8 @@ emit
     -->
           <section class="footer">
             <!--Transition tag='div' -->
-                <img class='circle' :src="ThisForm.prop.Status == 'A'? '/Iconos/circle-green.svg' :'/Iconos/circle-red.svg'" style="float:left" />
+            <img class='circle' :src="ThisForm.prop.Status == 'A' ? '/Iconos/circle-green.svg' : '/Iconos/circle-red.svg'"
+              style="float:left" />
             <!--/Transition-->
             <slot name="footer">
               <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
@@ -101,7 +103,7 @@ emit
               
               -->
 
-              <div v-for="(compFooter) in ThisForm.footer" style="zIndex:0">
+              <div v-for="(compFooter) in ThisForm.footer" :class="compFooter" v-show='ThisForm[compFooter].prop.Visible'>
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
                 <component :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
                   v-bind:Component="ref(ThisForm[compFooter])" v-model:Value="ThisForm[compFooter].prop.Value"
@@ -113,7 +115,7 @@ emit
                   v-bind:position="ThisForm[compFooter].position"
                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                   @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
-              <!--@click.stop.prevent-->
+                <!--@click.stop.prevent-->
               </div>
             </slot>
 
@@ -704,6 +706,9 @@ else return 0}
 //////////////////////////////////////
 //  Importa componentes dinamicos
 ////////////////////////////////////// 
+// '@/components/' + name + '.vue')
+
+
 const impComp = ((name: string, pos?: string) => {
 
   //return eval(name)

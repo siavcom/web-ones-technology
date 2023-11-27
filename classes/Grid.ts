@@ -33,12 +33,11 @@ export class GRID extends COMPONENT {
     this.prop.updated = false;
     this.prop.messageUpdate = "Grabamos la tabla";
 
-    this.style.width ="max-content"; // "95%";
+    this.style.width = "max-content"; // "95%";
     this.style.minHeight = "150px";
     this.style.height = "auto";
-    this.Recno=0
+    this.Recno = 0;
   }
-
 
   ////////////////////////////////////////
   // Metodo : Valid
@@ -172,10 +171,12 @@ export class GRID extends COMPONENT {
     //    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1)
     //      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
 
-    this.Row = row;
-    console.log("Grid asignaRenglon ", this);
-    this[colName].prop.First = true;
+    for (let i = 0; i < this.main.length; i++) {
+      this[this.main[i]].prop.ReadOnly = false;
+    }
+    this[colName].prop.SetFocus = true;
 
+    this.Row = row;
     //nextTick(() =>
     //    this.Row=row
     // )
@@ -186,32 +187,39 @@ export class GRID extends COMPONENT {
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow(mem?: {}) {
-    this.prop.Disabled=true
+    this.prop.Disabled = true;
     //this.Row = -1;
 
-    console.log("grid appendRow this.prop.RecordSource=",this.prop.RecordSource, "mem=", mem);
-    if (!mem)
-       mem={}
+    // asignamos la primer columna de captura
+    this[this.main[0]].prop.First = true;
+    this[this.main.length - 1].prop.Last = true;
 
-    const  {...m} = mem;
+    console.log(
+      "grid appendRow this.prop.RecordSource=",
+      this.prop.RecordSource,
+      "mem=",
+      mem
+    );
+    if (!mem) mem = {};
+
+    const { ...m } = mem;
 
     // Leemos variables publicas
+
     for (const variable in this.Form.publicVar)
       m[variable] = this.Form.publicVar[variable];
 
     // leemos valores de los componentes de la forma
+
     for (const i in this.Form.main)
       m[this.Form.main[i]] = this.Form[this.Form.main[i]].prop.Value;
 
     //this.Form.db.select(this.prop.RecordSource)
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
-   // console.log("grid appendRow rows",await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
-    this.prop.Disabled=false
+    // console.log("grid appendRow rows",await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+    this.prop.Disabled = false;
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
-  
     //    this.prop.Valid = false;
-
-    //this[this.elements[0].Name].prop.First=true
   }
 
   //////////////////////////

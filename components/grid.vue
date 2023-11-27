@@ -5,7 +5,7 @@
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos" -->
-    <div class="gridDatos" >
+    <div class="gridDatos">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
@@ -34,44 +34,42 @@
             <!-------------  Renglones  -----------------------
               item.id + 1-->
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr v-for="item in scroll.dataPage" :key="item.id"     >
+            <tr v-for="item in scroll.dataPage" :key="item.recno">
 
-              <td class='renNumber' style="min-width:30;max-width:30px; ">{{ item.recno }}</td>
+              <td class='renNumber'>{{ item.recno }}</td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != This.Row"
                     -->
 
-              <td v-for="col in This.elements" :key="col.Id" :style='{ "hight": This[col.Name].style.hight , padding:0}'>
+              <td v-for="col in This.elements" :key="col.Name"
+                :style='{ "height": This[col.Name].style.height, padding: 0 }'>
 
                 <!--div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)"-->
-                  <!--template style="This[col.Name].style" -->
-                  <!--focus.capture.stop para que solo ejecute el evento en el componente actual
+                <!--template style="This[col.Name].style" -->
+                <!--focus.capture.stop para que solo ejecute el evento en el componente actual
                       al obtener el foco asigna el renglon de captura
                         @focus.capture.stop="eventos.push(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
 
                     
                     -->
-                  <!--Imprime renglones de solo los textos cuando no es captura 
+                <!--Imprime renglones de solo los textos cuando no es captura 
                   
                   v-bind:Show="item.id != This.Row"
-                  
-                  -->
-                  <div v-show="item.id != This.Row" >
-                    <!--Transition name="columntext"-->
-                      <textLabel 
-                        v-bind:Registro="item.id != This.Row?  item.recno>0 ? item.recno:0 :0"
-                        v-bind:Id="item.id"
-
-                        v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
-                        v-bind:style="This[col.Name].style"
-                        @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
-                        @click.stop @focusout.stop>
-                      </textLabel>
-                    <!--/Transition-->
-                  </div>
-                  <!--Componentes de captura
+                                    -->
+                <div v-show="item.id != This.Row">
+                  <!--Transition name="columntext"-->
+                  <textLabel v-show="item.id != This.Row"
+                    v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
+                    v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
+                    v-bind:style="This[col.Name].style"
+                    @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+                    @click.stop @focusout.stop>
+                  </textLabel>
+                  <!--/Transition-->
+                </div>
+                <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
                               y el when del componente typescript
                       Se quita el @focusout porque se hace el valid desde el componente
@@ -79,26 +77,22 @@
                         v-bind:Component="ref(This.Form[col.Name])" 
                       v-bind:Show="true"
                     -->
-                  <!--Transition name="columninput"-->
-                    <div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'>
-                      <component :is="impComp(This[col.Name].prop.BaseClass)" 
-                        v-model:Value="This[col.Name].prop.Value"
-                        v-model:Status="This[col.Name].prop.Status" 
-                        v-model:Key="This[col.Name].prop.Key"
-                        v-model:Focus="This[col.Name].Focus" 
-                        v-model:Valid="This[col.Name].prop.Valid" 
-                        v-model:ShowError="This[col.Name].prop.ShowError"
-                        v-bind:Component="ref(This[col.Name])" 
-                        v-bind:Registro="item.recno>0 || item.recno!=null ? item.recno:0 "
-                        v-bind:prop="This[col.Name].prop" 
-                        v-bind:style="This[col.Name].style"
-                        v-bind:position="This[col.Name].position"
-                        @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
-                        :style="{ 'width': This[col.Name].style.width }">
+                <!--Transition name="columninput"-->
+                <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'-->
+                <component v-if="item.id == This.Row" :is="impComp(This[col.Name].prop.BaseClass)"
+                  v-model:Value="This[col.Name].prop.Value" v-model:Status="This[col.Name].prop.Status"
+                  v-model:Key="This[col.Name].prop.Key" v-model:Focus="This[col.Name].Focus"
+                  v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
+                  v-bind:Component="ref(This[col.Name])"
+                  v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
+                  v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
+                  v-bind:position="This[col.Name].position"
+                  @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
+                  :style="{ 'width': This[col.Name].style.width }">
 
-                      </component>
-                    </div>
-                  <!--/Transition-->
+                </component>
+                <!--/div-->
+                <!--/Transition-->
                 <!--/div-->
               </td>
 
@@ -185,7 +179,7 @@
             <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-              v-model:Focus="This[compFooter].Focus" 
+              v-model:Focus="This[compFooter].Focus"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
@@ -195,7 +189,7 @@
 
         </div>
       </div> <!-- break to a new row -->
-    </div>  <!--/form-->
+    </div> <!--/form-->
 
   </div>
 </template>
@@ -294,9 +288,9 @@ const props = defineProps<{
 // Valores componente padre
 const Component = ref(props.Component)
 //const ThisGrid = Component.value
-const This:{} = Component.value
+const This: {} = Component.value
 //This['estatus'] = []
-const compStatus=reactive({})
+const compStatus = reactive({})
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
@@ -421,7 +415,7 @@ watch(
 watch(
   () => props.prop.RecordSource,
   async (RecordSource, old_val) => {
-   
+
     if (props.prop.Visible && RecordSource.length > 1) {
       console.log('grid watch RecordSource ', RecordSource, Db.View[RecordSource])
       if (Db.View[RecordSource]) {
@@ -525,7 +519,7 @@ watch(
     for (const comp in compStatus) { // Recorre todos los estatus del grid
 
       if (compStatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
-        console.log('Grid watch estatus comp=', comp, 'Estatus', compStatus[comp],'This.Row=',This.Row)
+        console.log('Grid watch estatus comp=', comp, 'Estatus', compStatus[comp], 'This.Row=', This.Row)
         Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -551,15 +545,15 @@ watch(
 /////////////////////////////////////////////////
 watch(
   () => This.Row,
-   () => {
-    
-    if (This.Row<=-10){ // hubo insercion de renglon
-      RowInsert=true
+  () => {
+
+    if (This.Row <= -10) { // hubo insercion de renglon
+      RowInsert = true
       loadData()
-       
+
     }
-  
-    console.log('RowInsert Watch Grid This.Row =',This.Row )
+
+    console.log('RowInsert Watch Grid This.Row =', This.Row)
 
 
   },
@@ -619,8 +613,8 @@ const loadData = async () => {
   if (RowInsert) {
     let page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
     page = Math.trunc(page)
-    if (scroll.page!=page)
-        scroll.page=page
+    if (scroll.page != page)
+      scroll.page = page
   }
 
   This.Form.prop.Status = 'P'
@@ -682,10 +676,10 @@ const loadData = async () => {
         This[This.main[i]].prop.Valid = false // Ponemos no validado todos los componentes
       }
       RowInsert = false
-      console.log('Grid Vue loadData() RowInsert This.Row=',This.Row)
+      console.log('Grid Vue loadData() RowInsert This.Row=', This.Row)
       return
-    } 
-    This.Row=-1
+    }
+    This.Row = -1
 
   } catch (err) {
     console.warn('Error loadData ', err)
@@ -748,9 +742,9 @@ const appendRow = async () => {
     }
   }
   This.appendRow()  // Llama en la clase grid.ts
-   
+
   //eventos.push(This.prop.Map + '.appendRow()')
-  
+
   // load_data = true
   // RowInsert = true  // indicamos que hubo insercion de renglon
 
@@ -889,7 +883,7 @@ const init = async () => {
       if (This[comp].prop.First)
         firstElement = comp
 
-      
+
       //  compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
       compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
 
@@ -897,10 +891,10 @@ const init = async () => {
 
   }
 
-  if (firstElement.length == 0) {
+  //if (firstElement.length == 0) {
 
-    This[This.elements[0].Name].prop.First = true
-  }
+  //  This[This.elements[0].Name].prop.First = true
+  // }
   // if (props.Name=='des_dat')  Ref.value.autofocus=true
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
