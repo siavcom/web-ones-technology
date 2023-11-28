@@ -28,7 +28,7 @@ export class fec_apy extends COLUMN {
     this.prop.updateKey = false;
     this.style.zIndex = 1;
     //    this.prop.componentStyle.width = "120px";
-    this.style.width = "120px";
+    this.style.width = "125px";
     // this.RecordSource="" oJo
 
     /////////////////////////

@@ -22,7 +22,7 @@ export class fpr_apy extends COLUMN {
     super();
 
     this.textLabel = "Fecha programada"; // Column Header
-    this.prop.Type = "datetime-local";
+    this.prop.Type = "datetime";
     this.prop.ControlSource = "vi_cap_comeapy.fpr_apy";
 
     this.prop.Capture = true;

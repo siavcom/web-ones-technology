@@ -11,15 +11,14 @@
  * @class COMPONENT
  */
 
-
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
-  Parent={}; //this.Dom.ctx; // Contexto
-//  Container={}; // Contenedor
+  Parent = {}; //this.Dom.ctx; // Contexto
+  //  Container={}; // Contenedor
   Form: any = {}; //this.Parent.ThisForm // Thisform
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
-  Sql=null;
+  Sql = null;
   // db: any;
   Recno: number;
   Ref: null | undefined;
@@ -54,11 +53,12 @@ export class COMPONENT {
 
     First: false,
     Focus: false,
+    Format: "", //"ke" tipo fecha seleccionada al input
 
     Grid: false,
     id: 0,
     Image: "",
-    InputMask: "",
+    InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
 
     Key: 0,
 
@@ -107,7 +107,7 @@ export class COMPONENT {
     Value: "",
     ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
-    When:true,
+    When: true,
 
     componentStyle: {
       background: "white",
@@ -224,7 +224,7 @@ export class COMPONENT {
 
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
-      this.Sql=this.Form.db;
+      this.Sql = this.Form.db;
 
       console.log(
         "Init constructor.name",
@@ -415,16 +415,16 @@ export class COMPONENT {
 
     console.log(
       "Component init Name=",
-      this.Name,
-   //   this.prop.Map,
-//     "Elements=",
-//     this.elements //,
- //     "header=",
- //     this.header,
-  //    "main=",
-  //    this.main,
-  //    "footer=",
-  //    this.footer
+      this.Name
+      //   this.prop.Map,
+      //     "Elements=",
+      //     this.elements //,
+      //     "header=",
+      //     this.header,
+      //    "main=",
+      //    this.main,
+      //    "footer=",
+      //    this.footer
     );
 
     if (this.init) {

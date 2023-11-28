@@ -1,23 +1,32 @@
 <template>
-  <div v-show="prop.Visible"
-   class="divi" v-bind:style="style">
-    <div class="mensajes" v-bind:style="componentStyle" >
-      <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
-      <div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle" >
-        <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
-        <input :class="prop.Type" readonly="true" type="checkBox" :checked="checked" />
-      </div>
-      <div v-else-if="prop.Type == 'json'" v-bind:style="componentStyle" >
-        <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
-        <input class="text" value='Json Data' readonly="true" />
-      </div>
+  <div v-show="prop.Visible" class="divi" :style="style">
+    <!--div class="mensajes" v-bind:style="componentStyle"-->
+    <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
+    <!--div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle"-->
+    <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
+    <input v-if="prop.Type == 'checkBox'" :class="prop.Type" style="componentStyle" readonly="true" type="checkBox"
+      :checked="checked" />
+    <!--/div>
+      <div v-else-if="prop.Type == 'json'" v-bind:style="componentStyle"-->
+    <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
+    <input v-else-if="prop.Type == 'json'" class="text" value='Data' style="componentStyle" readonly="true" />
+    <!--/div>
 
-      
-      <div v-else>
-        <input v-show="Text != null" :class="prop.Type" v-bind:style="componentStyle" readonly="true" v-model="Text" />
-      </div>
-    </div>
+      <div v-else-if="prop.Type == 'date'" v-bind:style="componentStyle"-->
+    <input v-else-if="prop.Type == 'date'" class="text" type="date" style="componentStyle" readonly="true"
+      v-model="Text" />
+    <!--/div>
+
+      <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="componentStyle"-->
+    <input v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local" style="componentStyle"
+      :format="This.prop.Format" readonly="true" v-model="Text" />
+    <!--/div>
+       
+      <div v-else-->
+    <input v-else v-show="Text != null" :class="prop.Type" :style="componentStyle" readonly="true" v-model="Text" />
+    <!--/div-->
   </div>
+  <!--/div-->
 </template>
 
 
@@ -39,8 +48,8 @@ const emit = defineEmits(["update"]);
 ////////////////////////////////////
 const props = defineProps<{
   //Recno: 0;
-  Registro:0;
- //Show: false;
+  Registro: 0;
+  //Show: false;
   prop: {
     This: null;
     ToolTipText: string;
@@ -66,7 +75,7 @@ const props = defineProps<{
     Grid: false;
     MaxLength: 0;
     RowSource: ""; // vi_cap_doc.tdo_tdo,des_tdo
-    RowSourceType:number; //1-Value, 2-Alias, 3-Local SQL 5-Array
+    RowSourceType: number; //1-Value, 2-Alias, 3-Local SQL 5-Array
     ColumnCount: 0;
     ColumnWidths: string;
     Sorted: false;
@@ -133,8 +142,8 @@ const componentStyle = reactive(props.style)
 
 //componentStyle.width = props.style.width
 componentStyle.height = 'fit-content'
-if (componentStyle.width=='auto') 
-  componentStyle.width='100%'
+if (componentStyle.width == 'auto')
+  componentStyle.width = '100%'
 
 let medida = ''
 
@@ -224,7 +233,7 @@ const asignaResultado = (valor?: string) => {
           // console.log("ComboBox AsignaResultado columnas =======>", props.Name,props.prop.Value,columnas[i].text[0])
 
 
-         Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
+          Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
           //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
           //console.log("AsignaResultado  Value =======>",props.Name, Resultado.value, valor)
         }
@@ -280,8 +289,8 @@ const renderComboBox = async () => {
   if (props.prop.RowSourceType < 1) return
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
-  if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource==undefined) return;
-  console.log('textLabel render comboBox ',props.prop.Name,' RowSource=',props.prop.RowSource.length)
+  if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) return;
+  console.log('textLabel render comboBox ', props.prop.Name, ' RowSource=', props.prop.RowSource.length)
   try {
     //console.log('componentStyle asignaResultado renderCombo',props.Name,Value)
     const RowSource: string = props.prop.RowSource
@@ -363,15 +372,15 @@ const renderComboBox = async () => {
       case 3: {
         data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
         break
-      } 
-      case 4: { // local SQL Query
-      data = await This.Form.db.localAlaSql(props.prop.RowSource)
-      if (data == null) {
-        console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
-        return
       }
-      break
-    }
+      case 4: { // local SQL Query
+        data = await This.Form.db.localAlaSql(props.prop.RowSource)
+        if (data == null) {
+          console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
+          return
+        }
+        break
+      }
 
       case 5: {
         // Array , solo copiamos el arreglo
@@ -402,7 +411,7 @@ const renderComboBox = async () => {
     var valor = null
 
     if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
-      valor =Text.value //Value.value // null
+      valor = Text.value //Value.value // null
 
     for (
       let ren = 0;
@@ -479,9 +488,21 @@ const readCampo = async () => {
   }
   if (props.prop.Type == 'number') {
     //Text.value = toNumberStr(Text.value);
-    Text.value =await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+    Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
 
   }
+  if (props.prop.Type == 'date') {
+    //Text.value = toNumberStr(Text.value);
+    Text.value = Text.value.slice(0, 10)
+  }
+  if (props.prop.Type == 'datetime-local') {
+    //Text.value = toNumberStr(Text.value);
+    Text.value = Text.value
+  }
+
+
+
+
   if (props.prop.Type == 'checkBox') {
     checked.value = Text.value == 1 ? true : false
     //console.log('checkBox ReadValue =',props.Name,Text.value)
@@ -512,11 +533,11 @@ watch(
 watch(
   () => props.Registro,
   (new_val, old_val) => {
-    console.log('componentStyle watch Registro',old_val,new_val)
-    if (old_val != new_val && new_val>0) readCampo()
+    console.log('componentStyle watch Registro', old_val, new_val)
+    if (old_val != new_val && new_val > 0) readCampo()
 
-    if (new_val==0)
-        Text.value=''
+    if (new_val == 0)
+      Text.value = ''
   },
   { deep: false }
 )
@@ -542,7 +563,7 @@ const init = async () => {
     componentStyle.textAlign = 'right'
 
   readCampo()
- 
+
 }
 
 init();

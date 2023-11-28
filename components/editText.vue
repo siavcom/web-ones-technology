@@ -33,14 +33,14 @@
       </div>
 
       <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
-      <div v-else-if="prop.Type.slice(0, 4) == 'date'">
-        <input :class="date" :style="componentStyle" ref="Ref" :type="prop.Type" v-model="currentDate"
-          :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-          @focusout="onBlur">
-
-        <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
+      <!--div v-else-if="prop.Type.slice(0, 4) == 'date'"-->
+      <input v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
+        :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
+        :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
+        @focusout="onBlur">
+      <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
-      </div>
+      <!--/div-->
 
 
       <div class='json' v-else-if="prop.Type == 'json'" ref="Ref" :style="componentStyle">
@@ -60,22 +60,24 @@
       </div>
 
       <!--checkBox-->
-      <div v-else-if="prop.Type == 'checkBox'">
-        <input class="checkBox" type="checkbox" id="checkbox" :style="componentStyle" ref="Ref" :readonly="ReadOnly"
-          :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue" @focus="onFocus">
+      <!--div v-else-if="prop.Type == 'checkBox'"-->
+      <input v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" id="checkbox" :style="componentStyle"
+        ref="Ref" :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex"
+        v-model="checkValue" @focus="onFocus">
 
-        <!--label for="checkbox">{{ checkValue }}</label-->
-      </div>
+      <!--label for="checkbox">{{ checkValue }}</label-->
+      <!--/div-->
       <!--Si es texto
         @focusout="focusOut"
            @change="change"
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-      <input v-else class="text" ref="Ref" :style="componentStyle" v-model.trim="Value" :readonly="ReadOnly"
-        :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder"
-        :tabindex="prop.TabIndex" :type="prop.Type" v-on:keyup.enter="$event.target.nextElementSibling.focus()"
-        @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus">
+      <input v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
+        :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength"
+        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
+        v-on:keyup.enter="$event.target.nextElementSibling.focus()" @keypress="keyPress($event)" @focusout="focusOut"
+        @focus="onFocus">
 
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
         :style="{ zIndex: zIndex + 10 }">{{
@@ -360,10 +362,14 @@ const onBlur = async () => {
 
     typeNumber.value = 'text';
   }
-  if (props.prop.Type.slice(0, 4) == 'date') {
+  if (props.prop.Type == 'date') {
     //This.prop.Value = await dateToString(currentDate.value)
     Value.value = await dateToString(currentDate.value)
 
+  }
+  if (props.prop.Type == 'datetime') {
+    //This.prop.Value = await dateToString(currentDate.value)
+    Value.value = currentDate.value
   }
 
   if (props.prop.Type == 'json') {
@@ -558,9 +564,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
             Value.value = 0
             break;
           case 'date':
-            Value.value = '1900-01-01T00:00:00'
+            Value.value = '1900-01-01' //T00:00:00'
             break;
-          case 'datetime-local':
+          case 'datetime':
             Value.value = '1900-01-01T00:00:00'
             break;
           default:
@@ -607,9 +613,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
             Value.value = 0
             break;
           case 'date':
-            Value.value = '1900-01-01T00:00:00'
+            Value.value = '1900-01-01' //'T00:00:00'
             break;
-          case 'datetime-local':
+          case 'datetime':
             Value.value = '1900-01-01T00:00:00'
             break;
           default:
@@ -657,20 +663,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       if (Value.value == '')
         Value.value = '1900-01-01'
 
-      Value.value = Value.value.slice(0, 10) + 'T00:00:00'
+      Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
       //   currentValue.value[1] = await stringToDate(Value.value)
       //   currentValue.value[0] = new Date(Value.value).toDateString()
 
       displayDate.value = new Date(Value.value).toDateString()
       currentDate.value = await stringToDate(Value.value)
-
-
-
       nextTick(function () {
-        console.log(
-          'asigna date editText emitValue() Name', props.prop.Name, 'Type=', props.prop.Type,
-          'This.prop.Value=', This.prop.Value,
-          'currentValue.value=', displayDate.value, currentDate, 'ReadOnly', This.prop.ReadOnly)
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
         emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
 
@@ -678,7 +677,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
       break;
 
-    case 'datetime-local':
+    case 'datetime':
       //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
       if (Value.value == '')
         Value.value = '1900-01-01T00:00:00'
@@ -686,13 +685,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       //   currentValue.value[1] = await stringToDate(Value.value)
       //   currentValue.value[0] = new Date(Value.value).toDateString()
 
-      displayDate.value = new Date(Value.value.slice(0, 16)).toDateString()
-      currentDate.value = await stringToDate(Value.value)
+      displayDate.value = new Date(Value.value).toTimeString()
+      currentDate.value = Value.value.slice(0, 19)
       nextTick(function () {
-        console.log(
-          'asigna date editText emitValue() Name', props.prop.Name, 'Type=', props.prop.Type,
-          'This.prop.Value=', This.prop.Value,
-          'currentValue.value=', displayDate.value, currentDate, 'ReadOnly', This.prop.ReadOnly)
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
         emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
 
