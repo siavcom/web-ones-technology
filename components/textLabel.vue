@@ -495,18 +495,18 @@ const readCampo = async () => {
     //Text.value = toNumberStr(Text.value);
     Text.value = Text.value.slice(0, 10)
   }
-  if (props.prop.Type == 'datetime-local') {
+  if (props.prop.Type == 'datetime') {
     //Text.value = toNumberStr(Text.value);
-    Text.value = Text.value
+    Text.value = Text.value.slice(0, 16)
+
   }
-
-
-
 
   if (props.prop.Type == 'checkBox') {
     checked.value = Text.value == 1 ? true : false
     //console.log('checkBox ReadValue =',props.Name,Text.value)
   }
+  console.log('TextLabel Name=', props.Name, 'Text=', Text.value)
+
   renderComboBox()
 }
 /*

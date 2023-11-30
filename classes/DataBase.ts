@@ -195,7 +195,12 @@ export class VFPDB {
         // generamos la tabla segun la estructura regresada
         return false;
       // abre  la tabla de mantenimiento
-      console.log("Db useNodata VIEW despues de generar_tabla==> ", alias,'response=',response);
+      console.log(
+        "Db useNodata VIEW despues de generar_tabla==> ",
+        alias,
+        "response=",
+        response
+      );
       if (this.View[alias] && this.View[alias].tip_obj.trim() == "VIEW") {
         alias = this.View[alias].tablaSql.trim();
         await this.useNodata(alias);
@@ -392,7 +397,8 @@ export class VFPDB {
         }
         console.log("2 Db USE " + alias + "m=".match, " exp_ind=", exp_ind);
         if (exp_ind == undefined) {
-          alert("No se pudo evaluar el indice de la tabla=" +
+          alert(
+            "No se pudo evaluar el indice de la tabla=" +
               alias +
               " indice=" +
               this.View[alias].exp_indice
@@ -489,7 +495,12 @@ export class VFPDB {
     } catch (error) {
       console.error("Axios error :", dat_vis, error);
 
-      alert("SQL Error :"+error.response.status.toString() + " " + error.response.statusText );
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       return false;
     }
@@ -567,7 +578,8 @@ export class VFPDB {
         alias
       );
       alert(
-        "ERROR :No hay nombre de tabla de actualizacion para la vista " + alias );
+        "ERROR :No hay nombre de tabla de actualizacion para la vista " + alias
+      );
       return false;
     }
 
@@ -648,11 +660,11 @@ export class VFPDB {
     let sw_insert = false;
 
     for (const row in dat_act) {
-      dat_vis.dat_act={}
+      dat_vis.dat_act = {};
       const m = {}; // valiables en memoria
       dat_vis.dat_act.key_pri = dat_act[row].key_pri;
-      dat_vis.dat_act.timestamp= dat_act[row].timestamp;   
-  
+      dat_vis.dat_act.timestamp = dat_act[row].timestamp;
+
       recno = dat_act[row].recno;
       dat_vis.tip_llamada = "INSERT";
       let sw_update = false;
@@ -664,9 +676,9 @@ export class VFPDB {
       //console.log('Db tableUpdate dat_act[row]', dat_act[row])
 
       if (dat_act[row].key_pri > 0) {
-       // dat_vis.dat_act.key_pri = dat_act[row].key_pri;
+        // dat_vis.dat_act.key_pri = dat_act[row].key_pri;
 
-       // dat_vis.dat_act.timestamp = dat_act[row].timestamp;
+        // dat_vis.dat_act.timestamp = dat_act[row].timestamp;
 
         dat_vis.tip_llamada = "UPDATE";
 
@@ -693,19 +705,15 @@ export class VFPDB {
 
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
-        if (dat_act[row][campo]==null) dat_act[row][campo]=''  
-        
-        if (typeof dat_act[row][campo]=='string'){
-          dat_act[row][campo]=dat_act[row][campo].trim()
-            if (old_dat[campo]==null)
-               old_dat[campo]=''
-            else  
-              old_dat[campo]=old_dat[campo].trim()
-         }  
+        if (dat_act[row][campo] == null) dat_act[row][campo] = "";
 
+        if (typeof dat_act[row][campo] == "string") {
+          dat_act[row][campo] = dat_act[row][campo].trim();
+          if (old_dat[campo] == null) old_dat[campo] = "";
+          else old_dat[campo] = old_dat[campo].trim();
+        }
 
-
-//        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
+        //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
 
@@ -721,27 +729,51 @@ export class VFPDB {
           (dat_vis.tip_llamada == "INSERT" ||
             old_dat[campo] != dat_act[row][campo])
         ) {
-          switch (typeof dat_act[row][campo]) {
-            case "number":
+          //cambiar segun tipo de campo en View
+
+          const tipo =
+            this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
+
+          switch (true) {
+            // switch (typeof dat_act[row][campo]) {
+            case tipo == "number" ||
+              tipo == "interger" ||
+              tipo == "smallint" ||
+              tipo == "tinyint" ||
+              tipo == "bigint":
               m[campo] = +dat_act[row][campo];
               break;
-            case "boolean":
+            case tipo == "boolean" || tipo == "logical":
               m[campo] = +dat_act[row][campo];
               break;
+
+            case tipo == "date" || tipo == "time":
+              let valor = dat_act[row][campo]; //.replaceAll('-','')
+              //valor = valor.replaceAll("T", "");
+              if (valor.length > 10 && valor.length <= 16) {
+                valor = valor + "         ";
+                valor = valor.slice(0, 16) + ":00.000Z";
+                m[campo] = new Date(valor).toISOString();
+              } else m[campo] = dat_act[row][campo]; //.slice(0, 10);
+
+              console.log("UPDATE fecha=", m.campo);
+
+              break;
+
             default:
               //            m[campo] = "'" + dat_act[row][campo] + "'"
-              
-              // se tiene que validar como string y nll ya que asi viene desde alaSQL  
-            
 
-              m[campo] =dat_act[row][campo]!='null' ? dat_act[row][campo].trim() : ''
-           //   console.log('Db tableUpdate campo=', campo,'val_def=',val_def[campo],'New=',dat_act[row][campo] )
+              // se tiene que validar como string y nll ya que asi viene desde alaSQL
+
+              m[campo] =
+                dat_act[row][campo] != "null" ? dat_act[row][campo].trim() : "";
+            //console.log('Db tableUpdate campo=', campo,'m=',m[campo],'dat_act',dat_act[row][campo] )
           }
           //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
-      
+
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
           if (val_def[campo]) {
-            dat_vis.dat_act[campo] =m[campo] // dat_act[row][campo];
+            dat_vis.dat_act[campo] = m[campo]; // dat_act[row][campo];
 
             console.log(
               "tableUpdate Actualiza CAMPO=",
@@ -755,10 +787,7 @@ export class VFPDB {
             sw_update = true;
           }
         }
-        
       }
-    
-
 
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = "";
@@ -766,7 +795,7 @@ export class VFPDB {
         // const where = eval(this.View[nom_tab].exp_indice)
         // Aqui me quede  Ojo Junio 2023
         const where = this.View[nom_tab].exp_indice.toLowerCase();
-       // console.log("Db tableUpdate exp_indice m", m, "where", where, "dat_vis.where", dat_vis.where );
+        // console.log("Db tableUpdate exp_indice m", m, "where", where, "dat_vis.where", dat_vis.where );
         try {
           eval(`dat_vis.where=${where}`);
         } catch (error) {
@@ -836,7 +865,11 @@ export class VFPDB {
             "No se pudo actualizar el registro en tabla " + alias,
             dat_vis
           );
-          alert('SQL Error: No se pudo actualizar el registro en tabla ' + alias + dat_vis);
+          alert(
+            "SQL Error: No se pudo actualizar el registro en tabla " +
+              alias +
+              dat_vis
+          );
           sw_val = false;
           if (dat_act[row].key_pri > 0) {
             // si es un dato existennte
@@ -908,7 +941,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("SQL Error : No existe la vista SQL " + alias)
+      alert("SQL Error : No existe la vista SQL " + alias);
     }
 
     let recno = 0;
@@ -928,7 +961,6 @@ export class VFPDB {
     const valores = { recno };
     const vis_act = this.View[alias].tablaSql.trim();
 
-  
     for (const campo in this.View[vis_act].val_def) {
       // const val_eval="`"+this.View[alias].val_def[valor]+"`"
       if (
@@ -938,22 +970,34 @@ export class VFPDB {
         campo != "usu_cre" &&
         campo != "usu_usu"
       ) {
-  
         const val_eval = this.View[vis_act].val_def[campo];
-        console.log('db appendBlank View=',this.View[vis_act],'val_def=',val_eval)
+        console.log(
+          "db appendBlank View=",
+          this.View[vis_act],
+          "val_def=",
+          val_eval
+        );
 
         let val_defa = null;
         try {
           val_defa = eval(val_eval);
-          console.log('db appendBlank View=',this.View[vis_act],'val_def=',val_eval,' val_defa=',val_defa)
-
+          console.log(
+            "db appendBlank View=",
+            this.View[vis_act],
+            "val_def=",
+            val_eval,
+            " val_defa=",
+            val_defa
+          );
         } catch (error) {
-          alert(" appendBlank can't eval(" +
-          val_eval +
-          ")" +
-          alias +
-          " Error=" +
-          error)
+          alert(
+            " appendBlank can't eval(" +
+              val_eval +
+              ")" +
+              alias +
+              " Error=" +
+              error
+          );
 
           console.error(
             "appendBlank can't eval(" + val_eval + ")",
@@ -1032,9 +1076,9 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert('SQL Error :No existe la vista SQL  '+ alias)
+      alert("SQL Error :No existe la vista SQL  " + alias);
 
-//      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
+      //      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
       return false;
     }
     const dat_vis = {
@@ -1094,8 +1138,8 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("SQL Error :No existe la vista SQL "+alias )
-    
+      alert("SQL Error :No existe la vista SQL " + alias);
+
       return false;
     }
 
@@ -1181,7 +1225,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert('SQL Error :No existe la vista SQL ' + alias)
+      alert("SQL Error :No existe la vista SQL " + alias);
       return;
     }
     // Leemos los datos a actualizar
@@ -1255,7 +1299,12 @@ export class VFPDB {
 
       return;
     } catch (error) {
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
       return false;
     }
   };
@@ -1414,7 +1463,12 @@ export class VFPDB {
       return respuesta;
     } catch (error) {
       console.error("SQL Error", error);
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
       return false;
     }
   };
@@ -1441,7 +1495,12 @@ export class VFPDB {
       }
     } catch (error) {
       console.log("SQL Error", error.response);
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
       return false;
     }
   };
@@ -1450,8 +1509,8 @@ export class VFPDB {
   //  Genera indices en servidor de SQL
   /// ///////////////////////////////////////////
 
-  genIndices = async (tabla: string,nom_ind:string) => {
-    if (!nom_ind) nom_ind=''
+  genIndices = async (tabla: string, nom_ind: string) => {
+    if (!nom_ind) nom_ind = "";
     if (!tabla) {
       return;
     }
@@ -1460,7 +1519,7 @@ export class VFPDB {
       id_con: "",
       tip_llamada: "GENINDICES",
       nom_tab: tabla,
-      nom_vis: nom_ind
+      nom_vis: nom_ind,
     };
 
     try {
@@ -1472,7 +1531,12 @@ export class VFPDB {
       }
     } catch (error) {
       console.error("SQL Error", error);
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       return false;
     }
@@ -1482,17 +1546,17 @@ export class VFPDB {
   //  Genera vistas en servidor de SQL
   /// ///////////////////////////////////////////
 
-  genVistasSql = async (tabla: string,nom_vis?:string) => {
+  genVistasSql = async (tabla: string, nom_vis?: string) => {
     if (!tabla) {
       return;
     }
-    if (!nom_vis) nom_vis=''
+    if (!nom_vis) nom_vis = "";
 
     const dat_vis = {
       id_con: "",
       tip_llamada: "GENVISTASSQL",
       nom_tab: tabla,
-      nom_vis : nom_vis
+      nom_vis: nom_vis,
     };
 
     try {
@@ -1504,8 +1568,12 @@ export class VFPDB {
       }
     } catch (error) {
       console.error("SQL Error", error);
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
-
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       return false;
     }
@@ -1543,7 +1611,12 @@ export class VFPDB {
       return true;
     } catch (error) {
       console.error("SQL Error", error);
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       return false;
     }
@@ -1606,7 +1679,12 @@ export class VFPDB {
 
       exp_where = con_vis; // genera la expresion where
     } catch (error) {
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       // MessageBox( error.response.status.toString() + " " + error.response.statusText,16,"SQL Error " );
 
@@ -1630,7 +1708,12 @@ export class VFPDB {
       // Aumentamos a la rspuesta el regitro recno
       return await this.genera_tabla(data, alias);
     } catch (error) {
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       console.error("SQL Error", error);
       // MessageBox(error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error "      );
@@ -1702,7 +1785,12 @@ export class VFPDB {
       if (data == null) return;
       // console.log('Db Estructura vistas===>>', data)
     } catch (error) {
-      alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+      alert(
+        "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+      );
 
       //MessageBox( error.response.status.toString() + " " + error.response.statusText, 16,"SQL Error " );
 
@@ -1873,7 +1961,12 @@ export class VFPDB {
           // console.log('Db Estructura vista===>>', respuesta)
         } catch (error) {
           console.error("SQL Error", error);
-          alert('SQL Error :'+error.response.status.toString() + " " + error.response.statusText)
+          alert(
+            "SQL Error :" +
+              error.response.status.toString() +
+              " " +
+              error.response.statusText
+          );
           //MessageBox( error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error " );
 
           return null;
@@ -2169,7 +2262,7 @@ return false;
         this.session.user,
         this.session.nom_emp
       );
-      alert("Back End error : Session not active")
+      alert("Back End error : Session not active");
       //MessageBox("Back End error", 16, "SQL Error Open");
 
       const router = useRouter();
@@ -2232,7 +2325,7 @@ return false;
     // cancel the request,  controller.abort()
     // el signal en la llamada no llevara nada  signal
     // console.log('Db Axios call llamada  ======>>>', dat_lla, this.url)
-   // this.axiosActive = true;
+    // this.axiosActive = true;
     setTimeout(() => controller.abort(), 60000); // 60 segundos
 
     do {
@@ -2245,7 +2338,7 @@ return false;
         data - The response body provided by the server. If the response from the server is a JSON, Axios will automatically parse data into a JavaScript object.
         status - The HTTP status code from the response e.g. 200, 400, 404.
          */
-      //  this.axiosActive = false;
+        //  this.axiosActive = false;
         const respuesta = response.data;
         console.log(
           "5 Db Axios call response  ======>>>",
@@ -2260,7 +2353,7 @@ return false;
 
         if (axios.isCancel(thrown)) {
           console.log("Request cancelled", thrown.message);
-          alert("User cancel request :")
+          alert("User cancel request :");
           //await MessageBox( error.response.statusText, 16, "User camcel request "       );
           numLogin = 3;
         } else {
@@ -2276,35 +2369,37 @@ return false;
             error.response.statusText
           );
 
-          alert("SQL Data Base Error  :"+error.response.statusText)
+          alert("SQL Data Base Error  :" + error.response.statusText);
 
           //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 
-         
-
           // si es un error de desconexion
-          if (error.response.status.toString() == "401" ) {
-            if (this.session.nom_emp==''){
-                const router = useRouter();
-                router.push("/Login");
-                return  
-              } 
+          if (error.response.status.toString() == "401") {
+            if (this.session.nom_emp == "") {
+              const router = useRouter();
+              router.push("/Login");
+              return;
+            }
 
-           // this.axiosActive = false;
-           const { id_con } = storeToRefs(this.session); //pasa los elementos por referencia al Global
-           id_con.value=''
-
+            // this.axiosActive = false;
+            const { id_con } = storeToRefs(this.session); //pasa los elementos por referencia al Global
+            id_con.value = "";
           }
           numIntentos++;
 
-         
-          if((!window.navigator.onLine && !error.response && error.code === "ERR_NETWORK") ||
-               error.toJSON().message === 'Network Error'){
-            alert('No internet connection. Try '+numIntentos.toString()+' to reconnect');
-             } else
-               return false
+          if (
+            (!window.navigator.onLine &&
+              !error.response &&
+              error.code === "ERR_NETWORK") ||
+            error.toJSON().message === "Network Error"
+          ) {
+            alert(
+              "No internet connection. Try " +
+                numIntentos.toString() +
+                " to reconnect"
+            );
+          } else return false;
 
-          
           if (numIntentos == 5) {
             numLogin++;
             //const session=storeToRefs(Session)
@@ -2315,13 +2410,11 @@ return false;
             id_con.value = ""; // borra session
             await this.delay(10000); // espera 10 segundos
             if (id_con.value == "") numLogin = 3;
-          } else
-          await this.delay(2000) // espera 2 segundos para tratar de reconectar
-
+          } else await this.delay(2000); // espera 2 segundos para tratar de reconectar
         }
       } // Fin catch error
     } while (numLogin < 3);
-   // this.axiosActive = false;
+    // this.axiosActive = false;
     window.close();
   }
 
@@ -2365,19 +2458,17 @@ return false;
   // ins_sql : Instruccion SQL
   /// //////////////////////////////////////
   public async localAlaSql(ins_sql: string, datos?: any) {
-/*    if (ins_sql.slice(0,9)!='DROP DATA' || ins_sql.slice(0,11)!='CREATE DATA')
+    /*    if (ins_sql.slice(0,9)!='DROP DATA' || ins_sql.slice(0,11)!='CREATE DATA')
        await alasql('USE Now ;')
-*/      
+*/
     try {
-      if (!datos)
-       return await alasql(ins_sql);
-      
-      return await alasql(ins_sql, datos);
+      if (!datos) return await alasql(ins_sql);
 
+      return await alasql(ins_sql, datos);
     } catch (error) {
       console.error("localAlaSql error==>", error, ins_sql);
-      alert('local SQL error :'+ins_sql );
-//      MessageBox(ins_sql + " " + error, 16, "Error Ala SQL ");
+      alert("local SQL error :" + ins_sql);
+      //      MessageBox(ins_sql + " " + error, 16, "Error Ala SQL ");
 
       return false;
     }
@@ -2945,7 +3036,7 @@ return false;
       console.log;
       return response.data;
     } catch (error) {
-      alert("Report Server Error  :"+error.response.statusText)
+      alert("Report Server Error  :" + error.response.statusText);
       //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
       return null;
     }

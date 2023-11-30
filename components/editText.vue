@@ -15,7 +15,7 @@
 
       <input v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
-        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="onBlur" @keypress="keyPress($event)"
+        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @keypress="keyPress($event)"
         @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
 
       <!--spinner-->
@@ -37,7 +37,7 @@
       <input v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
         :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
         :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-        @focusout="onBlur">
+        @focusout="focusOut">
       <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
       <!--/div-->
@@ -53,7 +53,7 @@
         <details v-for="( comp, index ) in  compJson " key:='index'>
           <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
           <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
-            :style="comp.style ? comp.style : { width: 'auto' }" @focusout="onBlur">
+            :style="comp.style ? comp.style : { width: 'auto' }" @focusout="focusOut">
 
         </details>
         <!--/TransitionGroup-->
@@ -350,9 +350,8 @@ const onInput = ({ target }) => {
 }
 
 
-const onBlur = async () => {
+const onBlur2 = async () => {
 
-  focusIn.value = 0  // Perdio el foco
   if (props.prop.Type == 'number') {
 
     //    Value.value = +currentValue.value[1]
@@ -787,7 +786,26 @@ const Numeros = async ($event) => {
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
   focusIn.value = 0  // Perdio el foco
-  //This.prop.Value=Value.value
+  if (props.prop.Type == 'number') {
+
+    Value.value = +currentValue.value[1]
+    typeNumber.value = 'text';
+  }
+  if (props.prop.Type == 'date') {
+    //This.prop.Value = await dateToString(currentDate.value)
+    Value.value = await dateToString(currentDate.value)
+
+  }
+  if (props.prop.Type == 'datetime') {
+    //This.prop.Value = await dateToString(currentDate.value)
+    Value.value = currentDate.value.slice(0, 16)
+  }
+
+  if (props.prop.Type == 'json') {
+    Value.value = await JSON.stringify(currentJson.value)
+
+  }
+  console.log('focusOut editText Name', This.prop.Name, 'Value=', Value.value)
   await emitValue(false, false, Value.value) //se puso await
 
   // emitValue() ///se puso await

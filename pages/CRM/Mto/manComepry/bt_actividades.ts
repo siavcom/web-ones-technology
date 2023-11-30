@@ -32,6 +32,9 @@ export class bt_actividades extends COMPONENT {
 
   async click() {
     this.prop.Visible = false;
+    this.Form.bt_graba.prop.Visible = false;
+    this.Form.bt_borra.prop.Visible = false;
+
     const main = this.Form.main;
     for (let i = 0; i < main.length; i++) {
       // apagamos
