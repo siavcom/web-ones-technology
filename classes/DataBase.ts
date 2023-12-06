@@ -703,6 +703,12 @@ export class VFPDB {
 
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
 
+      console.log(
+        "1 DataBase tableUpdate() vista de mantenimiento=",
+        tab_man,
+        this.View[tab_man]
+      );
+
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
         if (dat_act[row][campo] == null) dat_act[row][campo] = "";
@@ -731,9 +737,17 @@ export class VFPDB {
         ) {
           //cambiar segun tipo de campo en View
 
+          if (!this.View[tab_man].est_tabla[campo].tip_cam) {
+            MessageBox(
+              "Field " + campo + " inexistent in table" + tab_man,
+              16,
+              "SQL Error"
+            );
+            return false;
+          }
+
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
-
           switch (true) {
             // switch (typeof dat_act[row][campo]) {
             case tipo == "number" ||
@@ -753,9 +767,9 @@ export class VFPDB {
               if (valor.length > 10 && valor.length <= 16) {
                 valor = valor + "         ";
                 valor = valor.slice(0, 16) + ":00.000Z";
-                m[campo] = new Date(valor).toISOString();
-              } else m[campo] = dat_act[row][campo]; //.slice(0, 10);
+              } else valor = dat_act[row][campo]; //.slice(0, 10);
 
+              m[campo] = new Date(valor).toISOString();
               console.log("UPDATE fecha=", m.campo);
 
               break;
@@ -1329,7 +1343,7 @@ export class VFPDB {
     };
 
     try {
-      console.log("Begin SQLEXEC  ", new Date().toISOString(), "Query=", query);
+      //   console.log("Begin SQLEXEC  ", new Date().toISOString(), "Query=", query);
 
       const respuesta = await this.axiosCall(dat_vis);
 
@@ -1373,14 +1387,12 @@ export class VFPDB {
       let resp = await this.localAlaSql(
         ` DROP TABLE IF EXISTS Last.${alias} ; DROP TABLE IF EXISTS Now.${alias} ; `
       );
-      resp = await this.localAlaSql(`CREATE TABLE Now.${alias} ;`);
+      resp = await this.localAlaSql(` CREATE TABLE Now.${alias} ;`);
       resp = await this.localAlaSql(` SELECT * INTO Now.${alias} FROM ? ;`, [
         respuesta,
       ]);
 
-      // await this.localAlaSql(' CREATE TABLE ' + alias + ' ; \
-      // SELECT * INTO ' + alias + '  FROM ?', [respuesta])
-
+      //   await this.localAlaSql(" USE Now ");
       /*
             let resp_sql = {}
             //const resp_sql = await
@@ -1446,7 +1458,7 @@ export class VFPDB {
 
       // console.log('Db Tabla creada en Now resp ',resp_sql)
       //console.log('Db Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
-
+      /*
       console.log(
         "End SQLEXEC ",
         new Date().toISOString(),
@@ -1455,8 +1467,7 @@ export class VFPDB {
         "Registros=",
         respuesta.length
       );
-
-      // console.log('Respuesta SQL=',await this.localAlaSql( `select * from Now.${alias}` ))
+      */
 
       if (tip_res.toUpperCase() == "NULL") return true;
 

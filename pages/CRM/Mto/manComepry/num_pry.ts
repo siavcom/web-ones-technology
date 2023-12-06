@@ -45,19 +45,13 @@ export class num_pry extends captureComponent {
   ///////////////////////////////////
 
   async when() {
-    this.Form.grid_tap.Grid.prop.RecordSource = "";
-    this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0;
-    this.Form.grid_tap.prop.Disabled = true;
-    this.Form.grid_tap.prop.Visible = false;
-    this.Form.nom_nom.prop.Value = "";
-    this.Form.nom_ven.prop.Value = "";
-    this.Form.bt_actividades.Visible = false;
+    await this.Form.tpy_tpy.when();
 
     const data = await this.Form.db.execute(`         
            select max(num_pry)+1 as num_pry from man_comepry where tpy_tpy='${this.Form.tpy_tpy.prop.Value}'`);
 
     if (data[0]) {
-      console.log("1 num_pry when data=", data[0], this.prop.Value);
+      //  console.log("1 num_pry when data=", data[0], this.prop.Value);
 
       this.prop.Valid = true; // se pone en Verdadero para que no llame rutina validacion
       //this.sw_when = true;
@@ -66,29 +60,40 @@ export class num_pry extends captureComponent {
     }
 
     if (this.prop.Value == 0) this.prop.Value = 1;
+
     this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0; //Actividades por proyecto
     return true;
-
   }
 
   async valid(): Promise<boolean> {
     if (this.prop.Value == 0) {
       return false;
     }
+    this.Form.Recno = 0;
     await super.valid();
-    console.log("valid num_pry Recno=", this.Form.cod_nom.Recno);
-    if (this.Form.cod_nom.Recno > 0) {
-      this.Form.bt_actividades.prop.Visible = true;
-      this.Form.bt_actividades.prop.Disabled = false;
-    }
+    /* console.log(
+      "valid num_pry recno=",
+      this.Sql.View.vi_cap_comepry.recno,
+      "tpy_tpy=",
+      this.Form.tpy_tpy.prop.Value,
+      "num_pry=",
+      this.Form.num_pry.prop.Value
+    );
+    */
+    if (this.Sql.View.vi_cap_comepry.recno > 0) {
+      // Buscas si ya hay registro en algun componete de captura
 
-    return true;
-    /*
- if (await super.valid()) {
-        return true;
+      this.Form.per_apy.prop.Visible = true;
+      this.Form.per_apy.prop.Value = 1;
+      this.Form.bt_actividades.prop.Visible = true;
+
+      this.Form.bt_graba.Visible = true;
+      this.Form.bt_borra.Visible = false;
+    } else {
+      this.Form.per_apy.prop.Visible = false;
+      this.Form.bt_actividades.prop.Visible = false;
+      this.Form.bt_graba.Visible = true;
     }
     return true;
-  }
-*/
   }
 }

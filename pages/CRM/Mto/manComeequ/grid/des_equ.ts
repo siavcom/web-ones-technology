@@ -1,30 +1,27 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : COLUMN
-// Class : des_equ
+// Class : nom_equ
 // Description : Descripcion del equipo
 // Author : El Fer Blocks
 // Creation : 2023-10-30
-// Update Date  : 
+// Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COLUMN } from '@/classes/Column'
+import { COLUMN } from "@/classes/Column";
 
 export class des_equ extends COLUMN {
-
-    constructor() {
-        super()
-        this.textLabel = 'Descripción' // Column Header
-        this.prop.Type ='text'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_db_equipo.des_equ'
-        this.prop.MaxLength=128
-        this.prop.Capture=true
-        this.style.width='300px'
-
-    }
-
+  constructor() {
+    super();
+    this.textLabel = "Descripción"; // Column Header
+    this.prop.Type = "text";
+    this.prop.BaseClass = "editText";
+    this.prop.ControlSource = "vi_cap_db_equipo.des_equ";
+    this.prop.MaxLength = 128;
+    this.prop.Capture = true;
+    this.style.width = "300px";
+  }
 }

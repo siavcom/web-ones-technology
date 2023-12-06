@@ -35,7 +35,7 @@ export class GRID extends COMPONENT {
 
     this.style.width = "max-content"; // "95%";
     this.style.minHeight = "150px";
-    this.style.height = "auto";
+    this.style.height = "max-content";
     this.Recno = 0;
   }
 
@@ -191,15 +191,17 @@ export class GRID extends COMPONENT {
     //this.Row = -1;
 
     // asignamos la primer columna de captura
-    this[this.main[0]].prop.First = true;
-    this[this.main.length - 1].prop.Last = true;
-
     console.log(
       "grid appendRow this.prop.RecordSource=",
       this.prop.RecordSource,
       "mem=",
-      mem
+      mem,
+      "main=",
+      this.main
     );
+    this[this.main[0]].prop.First = true;
+    this[this.main[this.main.length - 1]].prop.Last = true;
+
     if (!mem) mem = {};
 
     const { ...m } = mem;

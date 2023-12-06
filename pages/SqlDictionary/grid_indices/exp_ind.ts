@@ -22,8 +22,6 @@ export class exp_ind extends COLUMN {
       "Expresión del indice. Si es principal debe ser Variable VUE";
     this.prop.Placeholder = "Expresión del indice";
     this.prop.componentStyle.textTransform = "lowercase";
-
-    this.style.flexBasis = "30%"; /* width/height  - initial value: auto */
     this.style.width = "400px";
   }
 

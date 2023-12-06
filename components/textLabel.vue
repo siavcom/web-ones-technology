@@ -23,7 +23,8 @@
     <!--/div>
        
       <div v-else-->
-    <input v-else v-show="Text != null" :class="prop.Type" :style="componentStyle" readonly="true" v-model="Text" />
+    <input v-else class="text" v-show="Text != null" :class="prop.Type" :style="componentStyle" readonly="true"
+      v-model="Text" />
     <!--/div-->
   </div>
   <!--/div-->
@@ -123,8 +124,8 @@ const Value = ref(props.prop.Value)
 
 const Text = ref(null)
 const Status = ref(props.prop.Status)
-const Caption = ref(props.prop.Caption)
-const Aling = ref('left')
+//const Caption = ref(props.prop.Caption)
+//const Aling = ref('left')
 
 //const Style=ref(props.style)
 //Style.value.width=props.style.width 
@@ -136,8 +137,6 @@ const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checked = ref(false)
 
-
-
 const componentStyle = reactive(props.style)
 
 //componentStyle.width = props.style.width
@@ -145,6 +144,7 @@ componentStyle.height = 'fit-content'
 if (componentStyle.width == 'auto')
   componentStyle.width = '100%'
 
+/*
 let medida = ''
 
 if (componentStyle.width.search("px") > 0)
@@ -152,19 +152,14 @@ if (componentStyle.width.search("px") > 0)
 if (componentStyle.width.search("%") > 0)
   medida = '%'
 
-let textWidth = +componentStyle.width.replaceAll(medida, '') - 5
+const textWidth = +componentStyle.width.replaceAll(medida, '') - 5
 componentStyle.width = textWidth.toString() + medida
+*/
 
 
-
-
-
-
-//const toggle = ref(false)
-//const hover = ref(false)
 
 //const zIndex = ref(props.style.zIndex)
-const inputWidth = ref('auto')
+//const inputWidth = ref('auto')
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
@@ -176,15 +171,6 @@ const emitValue = async () => {
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
-
-
-////////////////////////////////////////
-// Watchers : Triggers de templates
-// Descripcion : Cuando cambia el Value de la propiedad del ControlSource, asigna el Value de
-//                la vista a la propiedad de Value de la propiedad
-// Notas : Si se tiene en props, se tiene que vigilar el cambio de props.prop.Value
-
-
 
 
 //////////////////////////////////////////////////////
@@ -219,8 +205,7 @@ const asignaResultado = (valor?: string) => {
       }
     }
   }
-  else {  //aqui me quede checar cuando es por arreglo genera el value con array
-
+  else {
 
     for (let i = 0; i < columnas.length; i++) {
       try {
@@ -229,52 +214,12 @@ const asignaResultado = (valor?: string) => {
           // Encontro la posicion del value
           // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
-          //Resultado.value = columnas[i].text[0];
-          // console.log("ComboBox AsignaResultado columnas =======>", props.Name,props.prop.Value,columnas[i].text[0])
-
-
           Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
-          //     Value.value = valor // Resultado.value;  // Asigna el valor al componente
-          //console.log("AsignaResultado  Value =======>",props.Name, Resultado.value, valor)
         }
       } catch {
         console.error('comboBox columnas', columnas[i])
       }
 
-    }
-  }
-
-  emitValue()
-}
-
-
-
-
-//////////////////////////////////////////////////////
-// Asigna Resultado
-/////////////////////////////////////////////////////
-const asignaResultado2 = (valor: string) => {
-
-  if (props.prop.Status == 'I') return
-
-  // console.log('asignaResultado textLabel ColumnCount=0  ===>', props.prop.ColumnCount)
-  if (props.prop.ColumnCount == 0) {  // Si no es tipo comboBox
-    emitValue()
-    return
-  }
-  if (props.prop.RowSourceType == 0) return;
-  if (!props.prop.RowSource || props.prop.RowSource.length == 0) return;
-
-  const BoundColumn =
-    (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
-  // recorre todo los renglones en columnas
-
-
-  //console.log('texLabel asignaResultado ',valor,columnas)
-  for (let i = 0; i < columnas.length; i++) {
-    if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
-      Text.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
-      //console.log('texLabel asignaResultado escogio ',Text.value)
     }
   }
 
@@ -290,190 +235,170 @@ const renderComboBox = async () => {
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) return;
-  console.log('textLabel render comboBox ', props.prop.Name, ' RowSource=', props.prop.RowSource.length)
-  try {
-    //console.log('componentStyle asignaResultado renderCombo',props.Name,Value)
-    const RowSource: string = props.prop.RowSource
-    const pos = RowSource.indexOf(".") // posicion del punto
+  // console.log('textLabel render comboBox ', props.prop.Name, ' RowSource=', props.prop.RowSource.length)
 
-    // Obtenemos el alias
-    const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
+  //console.log('componentStyle asignaResultado renderCombo',props.Name,Value)
+  const RowSource: string = props.prop.RowSource
+  const pos = RowSource.indexOf(".") // posicion del punto
 
-    //ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
+  // Obtenemos el alias
+  const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
 
-    //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
+  const BoundColumn =
+    (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
 
-    const BoundColumn =
-      (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
+  // Numero de columnas
+  const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
 
-    // Numero de columnas
-    const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
+  //console.log('Bound Column',!(props.prop.BoundColumn)) ;
+  for (let ren = 0; ren < columnas.length; ren++) {
+    // Borra todos los renglones
+    delete columnas[ren];
+  }
+  ///////////////////////
+  // generamos un arreglo dependiendo del RowSourceType
 
-    //console.log('Bound Column',!(props.prop.BoundColumn)) ;
-    for (let ren = 0; ren < columnas.length; ren++) {
-      // Borra todos los renglones
-      delete columnas[ren];
-    }
-    ///////////////////////
-    // generamos un arreglo dependiendo del RowSourceType
+  let val_col: any = [];  // valores de columna
+  const tip_rst = props.prop.RowSourceType;
+  //const sql = props.db
+  let data = []
+  switch (tip_rst) {
 
-    let val_col: any = [];  // valores de columna
-    const tip_rst = props.prop.RowSourceType;
-    //const sql = props.db
-    let data = []
-    switch (tip_rst) {
+    case 1:    // Value o por valor directamente 
 
-      case 1:    // Value o por valor directamente 
+      {
+        let RowSource = "'" + props.prop.RowSource + "'"
+        RowSource = RowSource.replaceAll(',', "','");
+        //let pos=0;
+        //pos= props.prop.RowSource.indexOf() // similar at VFP
 
-        {
-          let RowSource = "'" + props.prop.RowSource + "'"
-          RowSource = RowSource.replaceAll(',', "','");
-          //let pos=0;
-          //pos= props.prop.RowSource.indexOf() // similar at VFP
-
-          const Values = eval("[" + RowSource + "]"); // por medio del eval generamos el arreglo
-          if (props.prop.ColumnCount == 1) {  // si solo tiene una columna
-            val_col = Values;
-          } else {  // Si tiene mas de una columna
-            let ren = 0; // renglon
-            let ele = 0; // numero de elemento
-            while (ele < Values.length) {
-              // recorremos todos los elementos
-              for (
-                let col = 0;
-                col < props.prop.ColumnCount;
-                col++ // recorre columna por columna
-              ) {
-                val_col[ren][col] = Values[ele];
-                ele++; // incrementamos el elemento
-              }
+        const Values = eval("[" + RowSource + "]"); // por medio del eval generamos el arreglo
+        if (props.prop.ColumnCount == 1) {  // si solo tiene una columna
+          val_col = Values;
+        } else {  // Si tiene mas de una columna
+          let ren = 0; // renglon
+          let ele = 0; // numero de elemento
+          while (ele < Values.length) {
+            // recorremos todos los elementos
+            for (
+              let col = 0;
+              col < props.prop.ColumnCount;
+              col++ // recorre columna por columna
+            ) {
+              val_col[ren][col] = Values[ele];
+              ele++; // incrementamos el elemento
             }
-            ren++; // incrementamos el renglon
           }
-          break;
+          ren++; // incrementamos el renglon
         }
-
-      case 2: { // Alias
-
-        // aqui me quede (arreglar lectura por alias)
-        const ins_sql = 'select ' + RowSource + ' from ' + alias
-        data = await This.Form.db.localSql(ins_sql)
-        /*
-          for (const nom_obj in data[0]) {
-            const renglon = []
-            for (let ren = 0; ren < data.length; ren++) {
-              renglon.push(data[ren][nom_obj])
-            }
-            val_col.push(renglon)
-          }
-          */
-        break
-      }
-      case 3: {
-        data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
-        break
-      }
-      case 4: { // local SQL Query
-        data = await This.Form.db.localAlaSql(props.prop.RowSource)
-        if (data == null) {
-          console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
-          return
-        }
-        break
-      }
-
-      case 5: {
-        // Array , solo copiamos el arreglo
-        val_col = props.prop.RowSource;
-
         break;
       }
-      case 6: {
-        // Field
-        break;
-      }
-    }
-    // renglon 0 ["Inventarios", "Cuentas por cobrar", "Cuentas por pagar", "Ventas","Compras","Vendedores","Estadisticas","Cierres y utilerias","Parametros generales","Contabilidad","Control vehicular","Logistica"],
-    // renglon 1 ["IN",          "CC",                 "CP",                 "VE",   "CO",     "VN",         "ES",         "CI",                 "PG",                 "CT",            "CV",               "LO" ],
 
-    if (tip_rst == 2 || tip_rst == 3) {
-      for (const nom_obj in data[0]) {
-        const renglon = []
-        for (let ren = 0; ren < data.length; ren++) {
-          renglon.push(data[ren][nom_obj])
+    case 2: { // Alias
+
+      // aqui me quede (arreglar lectura por alias)
+      const ins_sql = 'select ' + RowSource + ' from ' + alias
+      data = await This.Form.db.localSql(ins_sql)
+      /*
+        for (const nom_obj in data[0]) {
+          const renglon = []
+          for (let ren = 0; ren < data.length; ren++) {
+            renglon.push(data[ren][nom_obj])
+          }
+          val_col.push(renglon)
         }
-        val_col.push(renglon)
+        */
+      break
+    }
+    case 3: {
+      data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
+      break
+    }
+    case 4: { // local SQL Query
+      data = await This.Form.db.localAlaSql(props.prop.RowSource)
+      if (data == null) {
+        //  console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
+        return
       }
+      break
     }
 
-    // recorremos todas los renglones si es solo un columna val_col.length si no 
-    // toma el tamaño del arreglo solo de la primer columna
-    var valor = null
+    case 5: {
+      // Array , solo copiamos el arreglo
+      val_col = props.prop.RowSource;
 
-    if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
-      valor = Text.value //Value.value // null
-
-    for (
-      let ren = 0;
-      ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length);
-      ren++
-    ) {
-      // asignamos el Value del BoundColum 
-      if (props.prop.ColumnCount <= 1) { // Si solo es una columna
-        valor = val_col[ren] // si no hay valor , asigna el primer valor
-
-        // Si solo tiene una columna
-        columnas[ren] = {
-          value: val_col[ren],
-          text: [val_col[ren]],
-        };
-        //columnas[ren].text[0]= props.prop.RowSource[ren]
-      } else {
-        if (!valor)
-          valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
-
-        columnas[ren] = {  // asignamos el valor segun el BoundColumn
-          value: val_col[BoundColumn][ren], // asignamos el valor segun BoundCoulumn
-          text: [],   // un arreglo vacio y se llenara con el numero de columnas del resultado
-        };
-        // console.log("Antes de Asigna option columnCount ===>",props.prop.ColumnCount);
-        for (let col = 0; col < props.prop.ColumnCount; col++) { // recorremos todas las columnas
-          //console.log("Asigna option ===>",props.prop.RowSource,ren,col);
-
-          columnas[ren].text[col] = val_col[col][ren]; // asignamos los valore text de todas las demas columnas
-          // console.log("Asigna option ===>",ren,col.props.prop.RowSource[col][ren]);
-        }
-
+      break;
+    }
+    case 6: {
+      // Field
+      break;
+    }
+  }
+  //console.log('Text Label render data=', data)
+  if (tip_rst >= 2 || tip_rst <= 4) {
+    for (const nom_obj in data[0]) {
+      const renglon = []
+      for (let ren = 0; ren < data.length; ren++) {
+        renglon.push(data[ren][nom_obj])
       }
+      val_col.push(renglon)
     }
-    // console.log('Columnas del comboBox',columnas)
-    //props.prop.Value = valor
+  }
 
-    //console.log("Asigna render Combo box columnas", columnas);
-    //console.log('ComboBox Renderiza column ===>', props.Name, columnas)
+  // recorremos todas los renglones si es solo un columna val_col.length si no 
+  // toma el tamaño del arreglo solo de la primer columna
+  var valor = null
 
-    Text.value = valor
+  if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
+    valor = Text.value //Value.value // null
 
-    asignaResultado(valor)
+  for (
+    let ren = 0;
+    ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length);
+    ren++
+  ) {
+    // asignamos el Value del BoundColum 
+    if (props.prop.ColumnCount <= 1) { // Si solo es una columna
+      valor = val_col[ren] // si no hay valor , asigna el primer valor
 
-    //  ** ojo falta el multi select
-    /*
-    if (props.prop.MultiSelect) { // Si es multi selectccion generaramos el arreglo
-      List.value = eval('[' + Value.value.trim() + ']')
-      Value.value = data
-      emit("update:Value", Value.value)
-      Valid.value = true
+      // Si solo tiene una columna
+      columnas[ren] = {
+        value: val_col[ren],
+        text: [val_col[ren]],
+      };
+      //columnas[ren].text[0]= props.prop.RowSource[ren]
+    } else {
+      if (!valor)
+        valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
+
+      columnas[ren] = {  // asignamos el valor segun el BoundColumn
+        value: val_col[BoundColumn][ren], // asignamos el valor segun BoundCoulumn
+        text: [],   // un arreglo vacio y se llenara con el numero de columnas del resultado
+      };
+      // console.log("Antes de Asigna option columnCount ===>",props.prop.ColumnCount);
+      for (let col = 0; col < props.prop.ColumnCount; col++) { // recorremos todas las columnas
+        //console.log("Asigna option ===>",props.prop.RowSource,ren,col);
+
+        columnas[ren].text[col] = val_col[col][ren]; // asignamos los valore text de todas las demas columnas
+        // console.log("Asigna option ===>",ren,col.props.prop.RowSource[col][ren]);
+      }
 
     }
-    */
+  }
+  Text.value = valor
+  asignaResultado(valor)
 
-
+  //  ** ojo falta el multi select
+  /*
+  if (props.prop.MultiSelect) { // Si es multi selectccion generaramos el arreglo
+    List.value = eval('[' + Value.value.trim() + ']')
+    Value.value = data
+    emit("update:Value", Value.value)
+    Valid.value = true
 
   }
-  catch (error) {
-    console.error('ComboBox ', error)
+  */
 
-  }
 }
 
 const readCampo = async () => {
@@ -498,14 +423,13 @@ const readCampo = async () => {
   if (props.prop.Type == 'datetime') {
     //Text.value = toNumberStr(Text.value);
     Text.value = Text.value.slice(0, 16)
-
   }
 
   if (props.prop.Type == 'checkBox') {
     checked.value = Text.value == 1 ? true : false
     //console.log('checkBox ReadValue =',props.Name,Text.value)
   }
-  console.log('TextLabel Name=', props.Name, 'Text=', Text.value)
+  //  console.log('TextLabel Name=', props.Name, 'Text=', Text.value)
 
   renderComboBox()
 }
@@ -533,7 +457,7 @@ watch(
 watch(
   () => props.Registro,
   (new_val, old_val) => {
-    console.log('componentStyle watch Registro', old_val, new_val)
+    // console.log('componentStyle watch Registro', old_val, new_val)
     if (old_val != new_val && new_val > 0) readCampo()
 
     if (new_val == 0)
@@ -542,13 +466,6 @@ watch(
   { deep: false }
 )
 
-/////////////////////////////////////////////
-// Computed
-/////////////////////////////////////////////
-
-//const getZIndex = computed(() => {
-//  return props.style.zIndex;
-//})
 
 /////////////////////////////////////////
 // Metodo init Vfp

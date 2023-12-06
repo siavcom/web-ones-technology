@@ -5,12 +5,12 @@
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos" -->
-    <div class="gridDatos">
+    <div class="gridDatos" :style="{ height: 'auto' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
       <div class="tabla">
-        <table>
+        <table :style="{ lineHeight: '11px' }">
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
@@ -36,7 +36,7 @@
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
             <tr v-for="item in scroll.dataPage" :key="item.recno">
 
-              <td class='renNumber'>{{ item.recno }}</td>
+              <td class='renNumber' :style="{ height: '11px' }">{{ item.recno }}</td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 

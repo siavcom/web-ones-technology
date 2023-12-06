@@ -17,7 +17,7 @@ export class tpy_tpy extends captureComponent {
     super();
 
     this.prop.textLabel = "Tipo";
-   
+
     this.prop.BaseClass = "comboBox";
     this.prop.ControlSource = "vi_cap_comepry.tpy_tpy";
     this.prop.RowSourceType = 2;
@@ -25,25 +25,23 @@ export class tpy_tpy extends captureComponent {
     this.prop.BoundColumn = 2;
     this.prop.Capture = true;
     this.prop.updateKey = true;
-    this.prop.componentStyle.fontSize='17px'
-    this.prop.componentStyle.fontWeight="bold",
-    this.style.zIndex=5;
-    this.style.width='300px'
-    this.style.fontSize= "17px"
-    this.style.fontWeight="bold"
-
+    this.prop.componentStyle.fontSize = "17px";
+    (this.prop.componentStyle.fontWeight = "bold"), (this.style.zIndex = 5);
+    this.style.width = "300px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
   }
   async init() {
     const data = await this.Form.db.execute(
       "select des_tpy,tpy_tpy,cop_nom from vi_cap_cometpy order by cop_nom,tpy_tpy",
       "cometpy"
     );
-    if (data.length==0){
-        MessageBox('No hay tabla de definición de proyectos')
-    }    
+    if (data.length == 0) {
+      MessageBox("No hay tabla de definición de proyectos");
+    }
     //this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
-    this.Form.cop_nom.prop.Value=data[0].cop_nom
-   
+    this.Form.cop_nom.prop.Value = data[0].cop_nom;
+
     this.prop.RowSource = "cometpy.des_tpy,tpy_tpy,cop_nom";
 
     /*
@@ -52,24 +50,29 @@ export class tpy_tpy extends captureComponent {
     else 
       this.Form.des_cop.prop.Value = "Proveedores";
 
-    */  
-    this.prop.ReadOnly=false
+    */
+    this.prop.ReadOnly = false;
 
-   //  await this.interactiveChange()
+    //  await this.interactiveChange()
   }
 
-  async when(){
-    this.Form.grid_tap.Grid.prop.RecordSource=''
-    this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0
+  async when() {
+    this.Form.grid_tap.Grid.prop.RecordSource = "";
+    this.Form.grid_tap.Grid.tap_tap.prop.RowSourceType = 0;
+    this.Form.grid_tap.prop.Disabled = true;
+    this.Form.grid_tap.prop.Visible = false;
+    this.Form.nom_nom.prop.Value = "";
+    this.Form.nom_ven.prop.Value = "";
+    this.Form.nom_nom.prop.Value = "";
+    this.Form.nom_ven.prop.Value = "";
+    this.Form.num_pry.prop.Valid = false;
 
-    this.Form.grid_tap.prop.Disabled=true
-    this.Form.grid_tap.prop.Visible=false
-
-    this.Form.nom_nom.prop.Value=''
-    this.Form.nom_ven.prop.Value=''
-
-    return true
-
+    this.Form.per_apy.prop.Visible = false;
+    this.Form.bt_actividades.prop.Visible = false;
+    console.log("when tpy_tpy");
+    this.Form.bt_graba.prop.Visible = false;
+    this.Form.bt_borra.prop.Visible = false;
+    return true;
   }
 
   async valid() {
@@ -77,13 +80,10 @@ export class tpy_tpy extends captureComponent {
       `select cop_nom from Now.cometpy where tpy_tpy='${this.prop.Value}'`
     );
 
-   // this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
+    // this.Form.publicVar.cop_nom = data[0].cop_nom; // Se pone en el objeto Var para que cuando hage el appendBlank este en el objeto m.cop_nom
 
-    this.Form.cop_nom.prop.Value=data[0].cop_nom
-   /*
-    if (data[0].cop_nom == "C") this.Form.des_cop.prop.Value = "Clientes";
-    else this.Form.des_cop.prop.Value = "Proveedores";
-   */
-   return true
+    this.Form.cop_nom.prop.Value = data[0].cop_nom;
+    super.valid();
+    return true;
   }
 }

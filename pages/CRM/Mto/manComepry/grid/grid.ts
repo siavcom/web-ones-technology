@@ -22,7 +22,7 @@ import { ord_tap } from "./ord_tap";
 
 import { tap_tap } from "./tap_tap";
 //import { des_tap } from "./des_tap_ant";
-import { fec_apy } from "./fec_apy";
+//import { fec_apy } from "./fec_apy";
 import { est_apy } from "./est_apy";
 import { dat_apy } from "./dat_apy";
 import { fpr_apy } from "./fpr_apy";
@@ -37,13 +37,14 @@ export class Grid extends GRID {
   public ord_tap = new ord_tap();
   public tap_tap = new tap_tap();
   // public des_tap = new des_tap();
-  public fec_apy = new fec_apy();
-  public est_apy = new est_apy();
+  // public fec_apy = new fec_apy();
   public fpr_apy = new fpr_apy();
+
+  public est_apy = new est_apy();
   public dat_apy = new dat_apy();
+  public res_apy = new res_apy();
 
   public fco_apy = new fco_apy();
-  public res_apy = new res_apy();
   public fce_apy = new fce_apy();
 
   public tdo_tdo = new tdo_tdo();

@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : COLUMN
-// Class : des_tap
-// Description : Descripción
+// Class : nom_equ
+// Description : Nombre del equipo
 // Author : El Fer Blocks
-// Creation : 2023-07-10
+// Creation : 2023-10-30
 // Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -13,19 +13,17 @@
 
 import { COLUMN } from "@/classes/Column";
 
-export class des_tap extends COLUMN {
+export class org_equ extends COLUMN {
   constructor() {
     super();
-    this.textLabel = "Descripción"; // Column Header
+    this.textLabel = "Organigrama"; // Column Header
     this.prop.Type = "text";
     this.prop.BaseClass = "editText";
-    this.prop.ControlSource = "vi_cap_cometap.des_tap";
-    this.prop.Placeholder = "Descripción";
+    this.prop.ControlSource = "vi_cap_db_equipo.org_equ";
     this.prop.MaxLength = 128;
     this.prop.Capture = true;
-    this.prop.updateKey = false;
-    this.style.zIndex = 1;
-    this.prop.componentStyle.width = "250px";
-    this.style.width = "250px";
+    this.prop.Placeholder = "Estructura en el organigrama"; // Column Header
+
+    this.style.width = "300px";
   }
 }

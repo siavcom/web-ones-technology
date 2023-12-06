@@ -55,6 +55,7 @@ export class bt_actividades extends COMPONENT {
       "vi_cap_cometap.des_tap,tap_tap";
 
     m.num_pry = this.Form.num_pry.prop.Value;
+    m.per_apy = this.Form.per_apy.prop.Value;
 
     // Lee la tabla de actividades que tiene este proyecto
 

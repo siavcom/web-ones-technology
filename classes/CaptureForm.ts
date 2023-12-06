@@ -77,35 +77,41 @@ export class captureForm extends FORM {
 
     const { ...m } = this.publicVar; // Tomamos las variables publicas de la forma
     // Generamos variables de memoria de componentes locales y solo updateKey
-    for (const main in this.main) {
-      const comp = this.main[main];
-
+    // for (const main in this.main) {
+    //  const comp = this.main[main];
+    for (const comp of this.main) {
+      this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
       if (this[comp].prop.updateKey) {
         if (!this[comp].prop.Valid) {
-          // Si no esta validado
           return true;
+          /* 
+          if (!this[comp].prop.Valid) {
+          for (const i in this.main) {
+            const comp = this.main[i];
+            this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
+          }
+          return true;
+        */
+        } else {
+          // asignamos variables de memoria que se utilizaran en el use
+          if (this[comp].prop.Type == "numeric")
+            m[comp] = +this[comp].prop.Value;
+          else m[comp] = this[comp].prop.Value;
         }
       }
-      // asignamos variables de memoria
-      if (this[comp].prop.Capture) {
-        if (this[comp].prop.Type == "numeric") m[comp] = +this[comp].prop.Value;
-        else m[comp] = this[comp].prop.Value;
-      }
     }
- 
 
     // Leemos datos de la tabla de actualizacion
-    //const tablaSql=this.db.View[this.prop.RecordSource].tablaSql .trim()
     const data = await this.Form.db.use(this.prop.RecordSource, m);
 
-    //console.log('capture form valid data', data)
-    console.log("captureForm Valid m=", m, "data=", data);
+    // console.log("captureForm Valid m=", m, "data=", data);
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
     let Recno = 0;
     let sw_bor = false;
-    if (data.length == 0) {   // No hay datos
+    if (data.length == 0) {
+      // No hay datos
       console.log(
         "CaptureForm appendBlank this.prop.RecordSource=",
         this.prop.RecordSource
@@ -127,7 +133,6 @@ export class captureForm extends FORM {
 
       sw_bor = true;
     }
-    console.log('Valid Recno=',Recno)
     await this.refreshComponent(true, Recno);
     this.bt_borra.prop.Visible = sw_bor;
     this.bt_borra.prop.Disabled = !sw_bor;
@@ -157,40 +162,28 @@ export class captureForm extends FORM {
 
       Recno = 0;
 
-      console.log(
-        "======== useNodata ===========",
-        this.prop.RecordSource
-      );
+      console.log("======== useNodata ===========", this.prop.RecordSource);
       this.noData = true;
       this.bt_graba.prop.Visible = false;
       this.bt_borra.prop.Visible = false;
       // this.bt_calendario.prop.Visible = false;
     } // else this.noData = false;
 
-    this.Recno = Recno;
+    //this.Recno = Recno;
 
     // console.log('CaptureForm refresh commponent',activate)
 
     // this.bt_borra.prop.Visible = activate
     // Recorremos la forma y si es un componente de captura e quita el ReadOnly
-    console.log(
-      "refresh component ",
-      this.prop.Name,
-      " Recno=",
-      this.Recno,
-      this.noData);
-    for (const i in this.main) {
-      const comp = this.main[i];
 
- 
+    //  for (const i in this.main) {
+    //  const comp = this.main[i];
+
+    for (const comp of this.main) {
       if (this[comp].prop.Capture) {
-        if (this[comp].prop.updateKey === false) {
+        if (!this[comp].prop.updateKey) {
           // No es llave de actualizacion
-          if (!this[comp].prop.Visible)
-              this[comp].prop.Visible=true
-
-
-          if (this[comp].Recno > 0) this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
+          if (!this[comp].prop.Visible) this[comp].prop.Visible = true;
 
           if (Recno > 0) {
             this[comp].prop.ReadOnly = false;
@@ -199,7 +192,9 @@ export class captureForm extends FORM {
           }
 
           this[comp].prop.Valid = activate;
-          if (Recno > 0) this[comp].Recno = Recno; // Actualiza el registro del componente
+          if (Recno > 0) {
+            this[comp].Recno = Recno; // Actualiza el registro del componente
+          }
         } else {
           this[comp].prop.ReadOnly = false; // Si es llave de captura
           if (!activate) {
@@ -234,7 +229,7 @@ export class captureForm extends FORM {
       this.prop.Position = "footer";
       this.prop.Visible = false;
       // this.prop.Image = "/Iconos/Accept.png";
-      this.prop.Image = "/Iconos/svg/ok-accept.svg"
+      this.prop.Image = "/Iconos/svg/ok-accept.svg";
       //this.prop.TabIndex= 20
       this.style.width = "20px";
     } // Fin constructor
@@ -247,9 +242,10 @@ export class captureForm extends FORM {
       this.Parent.bt_borra.prop.Disabled = true;
 
       // Recorremos toda la forma y revisamos si estan validados
+      for (const comp of this.Parent.main) {
+        //  for (const i in this.Parent.main) {
+        //    const comp: string = this.Parent.main[i];
 
-      for (const i in this.Parent.main) {
-        const comp: string = this.Parent.main[i];
         // Checa si todos esta validados
         if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.Valid) {
           if (!(await this.Parent[comp].valid())) {
@@ -307,7 +303,7 @@ export class captureForm extends FORM {
       this.prop.Position = "footer";
       this.prop.Visible = false;
       // this.prop.Image = "/Iconos/Accept.png";
-      this.prop.Image = "/Iconos/svg/delete-color.svg"// bx-eraser.svg";
+      this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
       // this.prop.TabIndex= 21
       this.style.width = "20px";
     } // Fin constructor

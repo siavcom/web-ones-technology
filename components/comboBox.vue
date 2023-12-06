@@ -19,7 +19,6 @@
             <!--/div-->
           </option>
         </select>
-
       </div>
 
       <!--ComboBox 
@@ -293,8 +292,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (campo != 'key_pri') {
           sw_dat = true
 
-          if (props.Registro && This.Recno != props.Registro)
-            This.Recno = props.Registro
+          //if (props.Registro && This.Recno != props.Registro)
+          //  This.Recno = props.Registro
 
 
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
@@ -679,7 +678,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
   if (data[0]) {
-    if ((tip_rst == 2 || tip_rst == 3) && data.length > 0) {
+    if ((tip_rst >= 2 || tip_rst <= 4) && data.length > 0) {
       for (const nom_obj in data[0]) {
         const renglon = []
         for (let ren = 0; ren < data.length; ren++) {
@@ -690,6 +689,8 @@ const renderComboBox = async (readData?: boolean) => {
     }
   } else
     console.warn('ComboBox Name=', This.prop.Name, ' No data in ', This.prop.ControlSource)
+
+  console.log('comoBox Render', This.name, 'RowSource', 'data=', data)
 
   for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
     // asignamos el Value del BoundColum 
@@ -781,7 +782,7 @@ watch(
   () => props.Registro,
   async (new_val, old_val) => {
     if (new_val != old_val) {
-      // console.log('EditText Watch Registro Name=', This.prop.Name,'new_val =', new_val, old_val)
+      //console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
       emitValue(true)
     }
   },
@@ -1035,7 +1036,7 @@ init();
 /*  elemento click check*/
 img.imagen {
   width: 19px;
-  height: 18px;
+  height: auto;
   border-radius: 20%;
   border: 2px;
   vertical-align: bottom;

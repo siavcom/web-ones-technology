@@ -488,11 +488,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   } // elseValor = props.prop.Value
 
         */
-
-
-
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-      await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
+      const Recno = props.Registro
+      await This.Form.db.updateCampo(Valor, props.prop.ControlSource, Recno)
       // Value.value = Valor
     }
 
@@ -580,7 +578,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       //    This.Parent.Recno = props.Registro
 
       //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
+      const Recno = props.Registro
+      const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno)
       // console.log('editText emitValue() 2) readCam Name=', props.prop.Name, 'data=', data)
 
       let sw_dat = false
@@ -681,9 +680,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       if (Value.value == '')
         Value.value = '1900-01-01T00:00:00'
 
-      //   currentValue.value[1] = await stringToDate(Value.value)
-      //   currentValue.value[0] = new Date(Value.value).toDateString()
-
       displayDate.value = new Date(Value.value).toTimeString()
       currentDate.value = Value.value.slice(0, 19)
       nextTick(function () {
@@ -693,25 +689,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       })
 
       break;
-
-
-
-
   }
 
-  //console.log('5) editText emitValue() Fin Name=', props.prop.Name,'This.prop.Valid=',This.prop.Valid)
-
-
-  //Valid.value = true
-
-  //  This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
+  // dato valido para que el watch de This.prop.Value no se active
   if (This.prop.Valid)
     This.prop.Status = 'A'
 
   if (This.Form.prop)
     This.Form.prop.Status = 'A'
-
-
 
   /////////////////////////////////////////
   // nextTick(function () {
@@ -1103,9 +1088,6 @@ watch(
   (new_val, old_val) => {
     if (new_val != old_val)
       emitValue(true)
-    //readCampo(props.Registro)
-
-
   },
   { deep: false }
 );
@@ -1117,15 +1099,12 @@ watch(
 ///////////////////////////////////////
 watch(
   () => props.Registro,
-  async (new_val, old_val) => {
-    console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
+  async () => {
 
-    if (new_val != old_val) {
-      console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
-      emitValue(true)
-    }
+    // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
+    emitValue(true)
   },
-  { deep: false }
+  { deep: true }
 );
 
 /*

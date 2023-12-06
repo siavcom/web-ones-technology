@@ -19,7 +19,6 @@ export class nco_que extends COMPONENT {
     // const nom_ind=renglon[i]['nom_ind']
 
     this.prop.Type = "spinner";
-    this.prop.BaseClass = "editText";
     this.prop.textLabel = "Número";
     this.prop.Value = 1;
     this.prop.Position = "main";
@@ -82,13 +81,13 @@ export class nco_que extends COMPONENT {
 
     if (data.length == 0) {
       console.log("2 No hay datos interactiveChange ", ins_sql, "Data=", data);
-//      this.Parent.query.prop.Value = '' // limpiamos el query
+      //      this.Parent.query.prop.Value = '' // limpiamos el query
       if (this.prop.Value == 1) {
-        this.Parent.query.prop.Value = '' // limpiamos el query
-        return
-      } 
+        this.Parent.query.prop.Value = ""; // limpiamos el query
+        return;
+      }
       if (this.prop.Value > 1) {
-        this.prop.Valid=false
+        this.prop.Valid = false;
         this.prop.Value = this.prop.Value - 1;
         return;
         //this.interactiveChange()
@@ -183,12 +182,12 @@ export class nco_que extends COMPONENT {
     } // EndFor (
 
     if (sig_uni.length > 0) {
-      query = await left(query, query.length - sig_uni.length)
+      query = await left(query, query.length - sig_uni.length);
     } // Endif (
 
-    this.Parent.query.prop.Value = query.trim()
-    this.Parent.query.prop.Visible = true
-    this.Parent.bt_edit.prop.Visible = true
+    this.Parent.query.prop.Value = query.trim();
+    this.Parent.query.prop.Visible = true;
+    this.Parent.bt_edit.prop.Visible = true;
 
     if (this.Parent.Name == "queryPri") {
       // solamente query Principal
@@ -196,8 +195,7 @@ export class nco_que extends COMPONENT {
       this.Form.var_ord.prop.Value = data[0].cam_dat;
     }
 
-    
-    return
+    return;
   }
 
   //////////////////////////////////
