@@ -27,8 +27,8 @@
       -->
       <div v-else class="comboBox" :style='prop.componentStyle' ref="RefCombo">
 
-        <input class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly" :value="displayText"
-          :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
+        <input :id="Id" class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly"
+          :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
           @focus.prevent="toggle = false; inputBufferBuffer = ''" @focusout="emitValue()" />
 
         <!--span> {{ prop.Value }}</span-->
@@ -36,6 +36,8 @@
         <div class="toggle" v-if="toggle && !prop.ReadOnly">
           <!--CheckBox -->
           <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+            <!--Columnas -->
+
             <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
               @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
@@ -161,6 +163,8 @@ const ToolTipText = ref(true)
 
 const Component = ref(props.prop.This)
 const This = Component.value
+
+const Id = This.prop.Name + props.Registro.toString()
 
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 const displayText = ref("");
@@ -328,6 +332,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
   let found = false
+  if (Value.value == null) {
+    if (typeof columnas[0].value == 'number')
+      Value.value = 0
+    else
+      Value.value = ''
+  }
+
   for (let i = 0; i < columnas.length && !found; i++) {
     //    console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value,'Value=',Value.value)
     if ((typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
@@ -525,8 +536,9 @@ const validList = async () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-  ToolTipText.value = false
-  ShowError.value = false
+
+
+
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
 
@@ -566,6 +578,31 @@ const onFocus = async () => {
     }
     //ReadOnly.value=await !This.when()
     emit("update:Valid", true)
+
+    if (!This.prop.First && !This.prop.Focus)
+      return
+
+    This.prop.Focus = false
+    This.prop.First = false
+    ShowError.value = false
+
+
+    const element = document.getElementById(Id);
+
+    if ((document.activeElement != element)) {
+      // Ref.value.focus();
+      // Ref.value.select();
+
+      element.focus({ focusVisible: true });
+      element.select();
+
+    }
+    setTimeout(function () {
+      element.focus({ focusVisible: true });
+      element.select();
+
+    }, 1);
+
   }
 }
 
@@ -1014,16 +1051,10 @@ const init = async () => {
 
   //oldVal = Value.value   // asignamos el valor viejo
   // si es el primer elemento a posicionarse
-  if (props.prop.First) {
-
-    This.prop.First = false
-    if (Ref.value != null) {
-      Ref.value.select() // Hace foco con select
-      console.log('First init comboBox Name=', props.prop.Name, 'Value=', Value.value)
-
-    }
-    //Ref.value.focus()  // hace el foco como primer elemento
-
+  // si es el primer elemento a posicionarse
+  if (props.prop.First || props.prop.Focus) {
+    onFocus()
+    return
   }
 }
 

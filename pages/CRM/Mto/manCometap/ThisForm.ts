@@ -30,6 +30,7 @@ export class ThisForm extends captureForm {
   public tpy_tpy = new tpy_tpy();
   public bt_aceptar = new bt_aceptar();
   public Grid = new Grid();
+  public cop_nom = "N";
 
   constructor() {
     super(); // inicializa la clase base
@@ -46,10 +47,6 @@ export class ThisForm extends captureForm {
     await this.Form.db.execute(
       "select equ_equ,des_equ from vi_cap_db_equipo union select '          ' as equ_equ,'...Nadie' as des_equ ",
       "equipos"
-    );
-    console.log(
-      "equipos =",
-      await this.Form.db.localAlaSql("select * from Now.equipos")
     );
 
     await super.init();

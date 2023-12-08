@@ -167,19 +167,19 @@ export class GRID extends COMPONENT {
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
   public async asignaRenglon(row: number, colName: string) {
-    //   console.log('asignaRenglon row ',row,this.Form.db.View[this.prop.RecordSource].recnoVal)
     //    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1)
     //      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
 
     for (let i = 0; i < this.main.length; i++) {
       this[this.main[i]].prop.ReadOnly = false;
     }
-    this[colName].prop.SetFocus = true;
 
     this.Row = row;
-    //nextTick(() =>
-    //    this.Row=row
-    // )
+
+    nextTick(() => {
+      console.log("asignaRenglon row ", row, " Columna=", colName);
+      this[colName].prop.First = true;
+    });
   }
 
   ///////////////////////////////////////////////////
@@ -190,16 +190,6 @@ export class GRID extends COMPONENT {
     this.prop.Disabled = true;
     //this.Row = -1;
 
-    // asignamos la primer columna de captura
-    console.log(
-      "grid appendRow this.prop.RecordSource=",
-      this.prop.RecordSource,
-      "mem=",
-      mem,
-      "main=",
-      this.main
-    );
-    this[this.main[0]].prop.First = true;
     this[this.main[this.main.length - 1]].prop.Last = true;
 
     if (!mem) mem = {};
@@ -221,6 +211,17 @@ export class GRID extends COMPONENT {
     // console.log("grid appendRow rows",await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
     this.prop.Disabled = false;
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
+    this[this.main[0]].prop.First = true;
+
+    // asignamos la primer columna de captura
+    console.log(
+      "grid appendRow this.prop.RecordSource=",
+      this.prop.RecordSource,
+      "mem=",
+      mem,
+      "Row=",
+      this.Row
+    );
     //    this.prop.Valid = false;
   }
 

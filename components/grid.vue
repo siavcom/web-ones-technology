@@ -409,6 +409,7 @@ watch(
   { deep: false }
 );
 
+
 ///////////////////////////////////////////////
 // Cuando se cambia el RecordSource  
 ///////////////////////////////////////////////
@@ -549,20 +550,13 @@ watch(
 
     if (This.Row <= -10) { // hubo insercion de renglon
       RowInsert = true
-      loadData()
-
+      last()
     }
-
     console.log('RowInsert Watch Grid This.Row =', This.Row)
-
 
   },
   { deep: false }
 );
-
-
-
-
 
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal
@@ -611,6 +605,7 @@ const loadData = async () => {
 
   // Se inserto un renglon
   if (RowInsert) {
+    console.log('loadData() RowInsert')
     let page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
     page = Math.trunc(page)
     if (scroll.page != page)
@@ -670,16 +665,23 @@ const loadData = async () => {
       }
 
     }
+    This.Row = -1
     if (RowInsert) {
-      This.Row = RowNumber
-      for (let i = 0; i < This.main.length; i++) {
-        This[This.main[i]].prop.Valid = false // Ponemos no validado todos los componentes
-      }
       RowInsert = false
-      console.log('Grid Vue loadData() RowInsert This.Row=', This.Row)
+      let First = ''
+      This.Row = RowNumber
+      for (const comp of This.main) {
+        if (First == '') {
+          First = comp
+        }
+        This[comp].prop.Valid = false // Ponemos no validado todos los componentes
+      }
+      nextTick(() => {
+        console.log("asignaRenglon row ", This.Row, " Columna=", First);
+        This[First].prop.Focus = true;
+      });
       return
     }
-    This.Row = -1
 
   } catch (err) {
     console.warn('Error loadData ', err)
@@ -742,7 +744,6 @@ const appendRow = async () => {
     }
   }
   This.appendRow()  // Llama en la clase grid.ts
-
   //eventos.push(This.prop.Map + '.appendRow()')
 
   // load_data = true

@@ -30,10 +30,10 @@ export class num_pry extends captureComponent {
     this.prop.Decimals = 0;
     this.prop.Capture = true;
     this.prop.updateKey = true;
-    this.prop.componentStyle.width = "100px";
-    (this.prop.componentStyle.fontSize = "17px"),
-      (this.prop.componentStyle.fontWeight = "bold"),
-      (this.style.width = "300px");
+    this.prop.componentStyle.width = "64px";
+    this.prop.componentStyle.fontSize = "17px";
+    this.prop.componentStyle.fontWeight = "bold";
+    this.style.width = "400px";
     this.style.fontSize = "17px";
     this.style.fontWeigth = "bold";
 
@@ -80,11 +80,15 @@ export class num_pry extends captureComponent {
       this.Form.num_pry.prop.Value
     );
     */
+    this.Form.per_apy.prop.Value = 1;
     if (this.Sql.View.vi_cap_comepry.recno > 0) {
       // Buscas si ya hay registro en algun componete de captura
 
+      if (this.Form.per_pry.prop.Value == "U")
+        this.Form.per_apy.prop.Visible = false;
+      else this.Form.per_apy.prop.Visible = true;
+
       this.Form.per_apy.prop.Visible = true;
-      this.Form.per_apy.prop.Value = 1;
       this.Form.bt_actividades.prop.Visible = true;
 
       this.Form.bt_graba.Visible = true;

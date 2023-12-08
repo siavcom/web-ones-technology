@@ -134,6 +134,22 @@ export class ThisForm extends captureForm {
         this[comp].Recno = this.db.View.vi_cap_comepry.Recno;
     } */
   }
+  /*
+  /// //////////////////////////////
+  // Classe : bt_graba
+  // Descripcion : Graba los datos de la forma
+  /// //////////////////////////////
+  bt_graba() =>  bt_graba {
+    //public bt_graba() {
 
+    click() {
+      super.click();
+      if (this.Form.per_pry.prop.Value == "U")
+        this.Form.per_apy.prop.Visible = false;
+      else this.Form.per_apy.prop.Visible = true;
+    }
+  };
+
+  */
   //  public async init(): Promise<void> {}
 } // End ThisForm

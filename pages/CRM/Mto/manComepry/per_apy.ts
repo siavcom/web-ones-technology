@@ -28,6 +28,10 @@ export class per_apy extends COMPONENT {
     this.style.width = "100px";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
+
+    this.prop.componentStyle.width = "100px";
+    this.prop.componentStyle.fontSize = "17px";
+    this.prop.componentStyle.fontWeight = "bold";
   }
 
   //////////////////////////////////

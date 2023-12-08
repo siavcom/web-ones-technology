@@ -6,7 +6,6 @@
 /// //////////////////////////////////////////
 
 import { COMPONENT } from "@/classes/Component";
-//import { Session } from '@/stores/currentSession'
 import { storeToRefs } from "pinia";
 
 export class bt_aceptar extends COMPONENT {
@@ -18,12 +17,11 @@ export class bt_aceptar extends COMPONENT {
     this.prop.BaseClass = "imgButton";
     this.prop.Value = "Entrar";
     this.style.width = "30%";
-
-    this.prop.Image = '/Iconos/svg/ok-accept.svg' //"/Iconos/svg/bx-check-circle.svg";
-    //  this.prop.Position='footer'
+    this.prop.TabIndex = 4;
+    this.prop.Image = "/Iconos/svg/ok-accept.svg";
   }
 
- /////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
   // Click
   // Descripcion: Hace el click
   /////////////////////////////////////////////////////////////////
@@ -36,15 +34,6 @@ export class bt_aceptar extends COMPONENT {
       return;
     } // numero maximo de intentos = 5
 
-    // const { data:stats } = await useAsyncData( 'stats', () => $fetch( config.API_BASE_URL+'/stats') );
-
-
-    //   const {data, pending, error, refresh } = await useAsyncData('Session',
-    //      ()=>Session(pinia))
-
-    //const session = Session(pinia)
-    // Podiamos poner todas las variables de memoria globales
-
     const ThisForm = this.Form;
     let login = ThisForm.log_usu.prop.Value;
     let empresa = ThisForm.emp_emp.prop.Value;
@@ -54,7 +43,7 @@ export class bt_aceptar extends COMPONENT {
       ThisForm.log_usu.prop.MessageError = "usuario@empresa";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
-      return ;
+      return;
     }
 
     if (pos_arroba > 0) {
@@ -67,14 +56,14 @@ export class bt_aceptar extends COMPONENT {
       ThisForm.emp_emp.prop.MessageError = "Escoja una empresa";
       ThisForm.emp_emp.prop.Valid = false;
       ThisForm.emp_emp.prop.ShowError = true;
-      return ;
+      return;
     }
 
     if (login.length == 0) {
       ThisForm.log_usu.prop.MessageError = "Digite usuario";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
-      return ;
+      return;
     }
 
     if (
@@ -84,7 +73,7 @@ export class bt_aceptar extends COMPONENT {
       ThisForm.pas_usu.prop.MessageError = "Digite contraseña";
       ThisForm.pas_usu.prop.Valid = false;
       ThisForm.pas_usu.prop.ShowError = true;
-      return ;
+      return;
     }
 
     const session = Session();
@@ -92,13 +81,13 @@ export class bt_aceptar extends COMPONENT {
     const { id_con, pass, user, nom_emp } = storeToRefs(session); //pasa los elementos por referencia al Global
 
     id_con.value = "";
-    pass.value ='';
+    pass.value = "";
 
     if (nom_emp.value != empresa) nom_emp.value = empresa;
     if (user.value != login) user.value = login;
     pass.value = ThisForm.pas_usu.prop.Value;
 
     //console.log('Datos login ========>>>>>>>',id_con.value,nom_emp.value,user.value,pass.value)
-   return 
+    return;
   }
 }

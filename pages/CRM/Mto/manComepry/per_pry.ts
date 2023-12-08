@@ -5,39 +5,39 @@
 // Description : Periodicidad
 // Author : El Fer Blocks
 // Creation : 2023-07-20
-// Update Date  : 
+// Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from '@/classes/captureComponent'
-
+import { captureComponent } from "@/classes/captureComponent";
 
 export class per_pry extends captureComponent {
-
   constructor() {
-    super()
+    super();
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = 'Periodicidad'
-    this.prop.BaseClass = 'comboBox'
-    this.prop.ControlSource = 'vi_cap_comepry.per_pry'
-    this.prop.RowSourceType = 5 //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = [["Unico","Mensual","Semestral","Anual","Indefinido"],
-                           ["U", "M", "S", "A", "I"]]
-    this.prop.ColumnCount = 2
-    this.prop.BoundColumn = 2
+    this.prop.textLabel = "Periodicidad";
+    this.prop.BaseClass = "comboBox";
+    this.prop.ControlSource = "vi_cap_comepry.per_pry";
+    this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array
+    this.prop.RowSource = [
+      ["Unico", "Mensual", "Semestral", "Anual", "Semanal"],
+      ["U", "M", "S", "A", "W"],
+    ];
+    this.prop.ColumnCount = 2;
+    this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%";
-    this.prop.Capture = true
-    this.prop.updateKey = false
-    this.style.zIndex=2
-  
+    this.prop.Capture = true;
+    this.prop.updateKey = false;
+    this.style.zIndex = 2;
+
     // this.RecordSource="" oJo
 
-    ///////////////////////// 
-    // Props 
+    /////////////////////////
+    // Props
     /////////////////////////
 
     // this.prop.Valid=true
@@ -86,12 +86,10 @@ export class per_pry extends captureComponent {
     // this.prop.BoundColumn= 2
     // this.prop.ColumnWidths= "50%,50%"
 
-
     //// Column grid ////
     // this.prop.Order = 2
 
-
-    ///////////////////////// 
+    /////////////////////////
     // Style
     /////////////////////////
     //<<style>>
@@ -116,8 +114,5 @@ export class per_pry extends captureComponent {
     // this.style.textAlign= "left"
     // this.style.wordWrap= "break-word"
     // this.style.cols = "60"
-
-
   }
-
 }

@@ -13,20 +13,20 @@
 
       <!--number-->
 
-      <input v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
+      <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @keypress="keyPress($event)"
         @focus="onFocus" @input.self="onInput" pattern="([0-9]{1,15}).([0-9]{1,5})">
 
       <!--spinner-->
 
-      <input v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
+      <input :id="Id" v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
         :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
 
       <!--textArea -->
       <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
-        <textarea class="textArea" ref="Ref" :style="componentStyle" v-model="Value" :readonly="ReadOnly"
+        <textarea :id="Id" class="textArea" ref="Ref" :style="componentStyle" v-model="Value" :readonly="ReadOnly"
           :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
           :rows="componentStyle.rows" :cols='componentStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
           @focus="onFocus"></textarea>
@@ -34,7 +34,7 @@
 
       <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
       <!--div v-else-if="prop.Type.slice(0, 4) == 'date'"-->
-      <input v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
+      <input :id="Id" v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
         :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
         :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
         @focusout="focusOut">
@@ -61,7 +61,7 @@
 
       <!--checkBox-->
       <!--div v-else-if="prop.Type == 'checkBox'"-->
-      <input v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" id="checkbox" :style="componentStyle"
+      <input :id="Id" v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" :style="componentStyle"
         ref="Ref" :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex"
         v-model="checkValue" @focus="onFocus">
 
@@ -73,7 +73,7 @@
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-      <input v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
+      <input :id="Id" v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
         :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
         v-on:keyup.enter="$event.target.nextElementSibling.focus()" @keypress="keyPress($event)" @focusout="focusOut"
@@ -83,16 +83,14 @@
         :style="{ zIndex: zIndex + 10 }">{{
           prop.ToolTipText
         }}</span>
-      <span class="errorText" v-show="ShowError && prop.ErrorMessage.length > 1">{{ prop.ErrorMessage }}</span>
+      <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage : 'Invalid Input'
+      }}</span>
       <!--/div--> <!--fin class=component -->
     </div>
   </div>
 </template>
 
-
-
 <script setup lang="ts">
-//import component from 'vue3-table-lite/ts';
 
 
 //import {format} from "date-fns"
@@ -163,7 +161,7 @@ const props = defineProps<{
     Min: number;
     Max: number;
     Focus: boolean;
-    First: false;
+    First: boolean;
     Notation: 'standard'; //standard,scientific,enginniering,compact
     Style: string; // decimal, currency,percent,unit
     Currency: 'MXN'; //USD,EUR,MXN
@@ -211,6 +209,8 @@ const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true :
 
 const Component = ref(props.prop.This)
 const This = Component.value
+const Id = This.prop.Name + props.Registro.toString()
+
 const Value = ref(props.prop.Value)
 //const Recno = ref(0)
 const Valid = ref(props.prop.Valid)
@@ -227,7 +227,7 @@ const Key = ref(props.prop.Key)
 //const First = ref(props.prop.First)
 
 var oldVal = Value.value
-const ShowError = ref(false) //ref(props.prop.ShowError)
+const ShowError = ref(false)
 const checkValue = ref(false)
 
 
@@ -712,7 +712,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     //    'checkValue=', checkValue.value,
     'ValidOnRead=', This.prop.ValidOnRead,
     'readValid', readValid,
-    'focusIn=', focusIn.value)
+    'First Focus=', This.prop.First || This.prop.Focus)
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     This.valid()
@@ -729,7 +729,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   Status.value = 'A'  // se necesita para que el watch padre funcione
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   This.prop.Status = 'A'
-
   return
 }
 
@@ -805,8 +804,11 @@ const focusOut = async () => {
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
   //console.log('KeyPress===>', $event.charCode)
-  if (ShowError.value)
+  if (ShowError.value) {
     ShowError.value = false
+    if (This.prop.ShowError)
+      This.prop.ShowError = false
+  }
 
   if (!ToolTipText.value)
     ToolTipText.value = false
@@ -852,18 +854,46 @@ const focusInput = async () => {
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
-const onFocus = async () => {
-  //console.log('editText onFocus ', props.prop.Name, props.prop.ReadOnly)
+const onFocus = () => {
+
+  if (!This.prop.First && !This.prop.Focus)
+    return
   ToolTipText.value = false
-  ShowError.value = false
+
+  if ((props.prop.Type == 'json' || props.prop.Type == 'checkBox') && ShowError.value) {
+    ShowError.value = false
+    if (This.prop.ShowError)
+      This.prop.ShowError = false
+  }
   focusIn.value = 1
+  This.prop.Focus = false
+  This.prop.First = false
+
   emit("update:Value", Value.value)
-  Ref.value.focus()
-  Ref.value.select()
+  // nextTick(function () {
+
+  const element = document.getElementById(Id);
+
+  if ((document.activeElement != element)) {
+    // Ref.value.focus();
+    // Ref.value.select();
+
+    element.focus({ focusVisible: true });
+    element.select();
+
+  }
+  setTimeout(function () {
+    element.focus({ focusVisible: true });
+    element.select();
+
+  }, 1);
+
+  return
+
 
 
   if (props.prop.Type.slice(0, 4) == 'date') {
-    This.prop.Focus = true
+    // This.prop.Focus = true
     // Ref.value.focus() // hace select en el input
   }
 
@@ -971,13 +1001,8 @@ watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
 
-/*
-    if (new_val)
-      This.prop.Value = 1
-    else
-      This.prop.Value = 0
-*/  if (new_val != old_val) {
-      // Value.value=new_val ? 1 : 0
+    if (new_val != old_val) {
+
       //  console.log('watch checkValue editText Name', This.prop.Name, 'Value.value', Value.value, 'new_val=', new_val, 'old_val=', old_val)
       This.prop.Value = new_val ? 1 : 0
     }
@@ -986,6 +1011,18 @@ watch(
 )
 
 
+/////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.ShowError, //props.prop.Value, //Value.value,
+  async (new_val: boolean) => {
+    if (new_val)
+      ShowError.value = new_val
+    // console.log('watch editText Name', This.prop.Name, 'ShowError.value', new_val)
+  },
+  { deep: false }
+)
 
 /////////////////////////////////////////////////////////
 // watch currentValue
@@ -1139,25 +1176,9 @@ watch(
     if (!new_val) {
       return
     }
-
     This.prop.Focus = false
     onFocus()
     return
-    ToolTipText.value = false
-    ShowError.value = false
-    focusIn.value = 1
-
-    This.prop.Focus = false
-    //emit("update:Focus", false)
-    emit("update:Value", Value.value)
-    emit("input:currentValue") //[0]", currentValue.value[0])
-    //emit("input:currentValue[1]", currentValue.value[1])
-    emit("input:displayDate", displayDate.value)
-    emit("input:currentDate", currentDate.value)
-
-    // console.log('EditText Set Focus', This.prop.Name)
-    // Ref.value.focus()
-    Ref.value.select()
 
   },
   { deep: false }
@@ -1194,24 +1215,14 @@ const init = async () => {
   if (!This.prop.Visible)
     divStyle.height = '0%'
 
-
-
   const result = await emitValue(true)
-
-
   oldVal = Value.value   // asignamos el valor viejo
 
   // si es el primer elemento a posicionarse
-  if (props.prop.First) {
-    This.prop.First = false
-    if (Ref.value != null)
-      console.log('First init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
-    // Ref.value.focus()  // hace el foco como primer elemento
+  if (props.prop.First || props.prop.Focus) {
     onFocus()
-    //   Ref.value.select() // Hace foco con select
     return
   }
-
   console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
 }
 
