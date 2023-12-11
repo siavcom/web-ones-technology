@@ -69,7 +69,6 @@ export class tpy_tpy extends captureComponent {
 
     this.Form.per_apy.prop.Visible = false;
     this.Form.bt_actividades.prop.Visible = false;
-    console.log("when tpy_tpy");
     this.Form.bt_graba.prop.Visible = false;
     this.Form.bt_borra.prop.Visible = false;
     return true;

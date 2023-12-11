@@ -1,15 +1,11 @@
-//////////////////////////////////////////////
-// Clase : bt_actividades
-// Author : Fernando Cuadras Angulo
-// Creacion : 3 Noviembre 2023
-/////////////////////////////////////////////
 import { COMPONENT } from "@/classes/Component";
 import MessageBox from "~/plugins/2.MessageBox";
-////import { MessageBox } from '@/classes/Functions';
+
 /**
  * //////////////////////////////////////////////
  *  @Clase : bt_actividades
  *  @Author : Fernando Cuadras Angulo
+ *  @Descripcion : Muestra las actividades del proyecto
  *  @Creacion : 3 Noviembre 2023
  * /////////////////////////////////////////////
  * @export
@@ -20,11 +16,10 @@ export class bt_actividades extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.BaseClass = "imgButton";
-    this.prop.Position = "footer";
-
     this.prop.Value = "Actividades";
     this.prop.Capture = false;
+    this.prop.BaseClass = "imgButton";
+    this.prop.Position = "footer";
     this.prop.Image = "/Iconos/calendar-date.svg"; //bx-calendar.svg"
     this.prop.Visible = false;
     this.style.maxWidth = "100px";
@@ -64,6 +59,12 @@ export class bt_actividades extends COMPONENT {
       return;
     }
 
+    // Si no tiene registro la Vista local
+    console.log("Actividades view=", this.Sql.View.vi_cap_comeapy);
+    if (this.Sql.View.vi_cap_comeapy.RecCount == 0) {
+      MessageBox("No tiene actividades en este periodo");
+      return;
+    }
     this.Form.grid_tap.Grid.prop.RecordSource = "vi_cap_comeapy";
 
     //  if (this.Sql.View.vi_cap_comeapy.RecCount==0)

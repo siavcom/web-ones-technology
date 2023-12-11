@@ -81,22 +81,20 @@ export class num_pry extends captureComponent {
     );
     */
     this.Form.per_apy.prop.Value = 1;
+
     if (this.Sql.View.vi_cap_comepry.recno > 0) {
       // Buscas si ya hay registro en algun componete de captura
+      this.Form.bt_actividades.prop.Visible = true;
+      this.Form.bt_graba.prop.Visible = true;
+      this.Form.bt_borra.prop.Visible = true;
 
       if (this.Form.per_pry.prop.Value == "U")
         this.Form.per_apy.prop.Visible = false;
       else this.Form.per_apy.prop.Visible = true;
-
-      this.Form.per_apy.prop.Visible = true;
-      this.Form.bt_actividades.prop.Visible = true;
-
-      this.Form.bt_graba.Visible = true;
-      this.Form.bt_borra.Visible = false;
     } else {
-      this.Form.per_apy.prop.Visible = false;
       this.Form.bt_actividades.prop.Visible = false;
-      this.Form.bt_graba.Visible = true;
+      this.Form.per_apy.prop.Visible = false;
+      this.Form.bt_graba.prop.Visible = false;
     }
     return true;
   }

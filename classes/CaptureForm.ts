@@ -15,6 +15,7 @@ export class captureForm extends FORM {
   // se debe de poner siempre el contructor
   constructor() {
     super();
+    // asignamos a los metodos la clase padre
   }
 
   /// //////////////////////////////////////////////////
@@ -39,6 +40,16 @@ export class captureForm extends FORM {
     }
     this.bt_graba.Grid = this.gridCaptura; // asignamos el arreglo de grid
   }
+  /// /////////////////////////////////////
+  // Metodos : graba y borra
+  // Descripcion : funciones que se ejectutara despues de ejecutar
+  // botton de graba y borra.
+  // Obs: estos metodos se heredan y se mofican desde el ThisForm
+  ////////////////////////////////////////
+
+  public async graba() {}
+
+  public async borra() {}
 
   /// /////////////////////////////////////
   // Metodo : valid
@@ -281,6 +292,7 @@ export class captureForm extends FORM {
       // hay grid de captura
       //await this.lee_grid()
 
+      await this.Parent.graba();
       return;
     }
 
@@ -344,6 +356,7 @@ export class captureForm extends FORM {
 
         this.prop.Disabled = false;
       }
+      await this.Parent.borra();
     }
   })();
 }

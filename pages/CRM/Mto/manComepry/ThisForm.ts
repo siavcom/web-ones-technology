@@ -123,33 +123,15 @@ export class ThisForm extends captureForm {
     this.cop_nom.prop.TabIndex = 22;
     this.nom_nom.prop.TabIndex = 23;
     this.nom_ven.prop.TabIndex = 24;
-
-    /* for (const i in this.main) {
-      const comp = this.main[i];
-
-      if (
-        this[comp].prop.Capture &&
-        this[comp].prop.ControlSource.slice(0, 14) == "vi_cap_comepry"
-      )
-        this[comp].Recno = this.db.View.vi_cap_comepry.Recno;
-    } */
   }
-  /*
+
   /// //////////////////////////////
-  // Classe : bt_graba
+  // Classe : graba
   // Descripcion : Graba los datos de la forma
   /// //////////////////////////////
-  bt_graba() =>  bt_graba {
-    //public bt_graba() {
+  async graba() {
+    this.Form.bt_actividades.Visible = true;
+  }
 
-    click() {
-      super.click();
-      if (this.Form.per_pry.prop.Value == "U")
-        this.Form.per_apy.prop.Visible = false;
-      else this.Form.per_apy.prop.Visible = true;
-    }
-  };
-
-  */
   //  public async init(): Promise<void> {}
 } // End ThisForm
