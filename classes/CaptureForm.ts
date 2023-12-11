@@ -120,7 +120,7 @@ export class captureForm extends FORM {
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
     let Recno = 0;
-    let sw_bor = false;
+
     if (data.length == 0) {
       // No hay datos
       console.log(
@@ -138,15 +138,13 @@ export class captureForm extends FORM {
 
       Recno = result.recno;
       //this.bt_calendario.prop.Visible=false
+      this.bt_borra.prop.Visible = true;
     } else {
       Recno = data[0].recno;
       //this.bt_calendario.prop.Visible=true
-
-      sw_bor = true;
+      this.bt_borra.prop.Visible = false;
     }
     await this.refreshComponent(true, Recno);
-    this.bt_borra.prop.Visible = sw_bor;
-    this.bt_borra.prop.Disabled = !sw_bor;
 
     return true;
   } // fin metodo valid

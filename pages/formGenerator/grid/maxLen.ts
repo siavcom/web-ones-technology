@@ -8,31 +8,22 @@
 ///////////////////////////////////////
 // Clase base
 ///////////////////////////////////////
-import { COLUMN } from '@/classes/Column'
-
+import { COLUMN } from "@/classes/Column";
 
 export class maxLen extends COLUMN {
+  //  constructor(parent: Record<string, never>) {
+  constructor() {
+    super();
+    this.prop.Order = 3;
+    this.textLabel = "Valor max/logitud";
+    this.prop.BaseClass = "editText";
+    this.prop.Type = "text";
+    this.prop.ControlSource = "vi_cap_for.maxlen";
+    this.prop.ToolTipText = "Valor max/Longitud del campo";
+    this.prop.Placeholder = "Valor max/Longitud del campo";
+    this.prop.Value = "";
 
-    //  constructor(parent: Record<string, never>) {
-    constructor() {
-        super()
-        this.prop.Order = 3
-        this.textLabel = 'Valor max/logitud'
-        this.prop.BaseClass = 'editText'
-        this.prop.Type ='text'
-        this.prop.ControlSource = 'vi_cap_for.maxlen'
-        this.prop.ToolTipText ='Valor max/Longitud del campo'
-        this.prop.Placeholder = "Valor max/Longitud del campo"
-        this.prop.Value = ''
-
-        //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width='100px'
-    }
-  /*
-    async  when() {
-        if (this.Parent.tip_dat.prop=='N') 
-            this.prop.Type ='number'
-        return !this.prop.ReadOnly
-    }
-    */
- }
+    //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
+    this.style.width = "100px";
+  }
+}

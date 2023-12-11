@@ -15,7 +15,7 @@
 // import { inject, ref } from "vue";
 // import router from '@/router'
 // import { getCurrentInstance } from "vue";
-// import VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
+// import VueSimpleAlert from "vue3-simple-this.errorAlert"; // mensajes de this.errorAlerta  npm i vue-simple-this.errorAlert Vue.use(VueSimpleAlert);
 // import { DATA_TYPE } from "jsstore";
 // import { newLocalDb } from "@/services/jsstore_con_new";
 // import { oldLocalDb } from "@/services/jsstore_con_old";
@@ -139,7 +139,7 @@ export class VFPDB {
     }
 
     if (nom_vis == null) {
-      alert("No se permite nombre de vista en null");
+      this.errorAlert("No se permite nombre de vista en null");
       return false;
     }
     if (!alias) {
@@ -397,7 +397,7 @@ export class VFPDB {
         }
         console.log("2 Db USE " + alias + "m=".match, " exp_ind=", exp_ind);
         if (exp_ind == undefined) {
-          alert(
+          this.errorAlert(
             "No se pudo evaluar el indice de la tabla=" +
               alias +
               " indice=" +
@@ -421,7 +421,7 @@ export class VFPDB {
         }
 
         if (exp_whe == undefined) {
-          alert(
+          this.errorAlert(
             "No se pudo evaluar el la expresion where de la tabla=" +
               alias +
               " indice=" +
@@ -495,7 +495,7 @@ export class VFPDB {
     } catch (error) {
       console.error("Axios error :", dat_vis, error);
 
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -577,7 +577,7 @@ export class VFPDB {
         "No hay nombre de tabla de actualizacion para la vista",
         alias
       );
-      alert(
+      this.errorAlert(
         "ERROR :No hay nombre de tabla de actualizacion para la vista " + alias
       );
       return false;
@@ -607,7 +607,7 @@ export class VFPDB {
       // Solo actualiza un registro
       if (!recno) {
         // No hay registro a actualizar
-        alert("ERROR :No hay recno en " + alias);
+        this.errorAlert("ERROR :No hay recno en " + alias);
         return;
       }
       select.where = { recno };
@@ -879,7 +879,7 @@ export class VFPDB {
             "No se pudo actualizar el registro en tabla " + alias,
             dat_vis
           );
-          alert(
+          this.errorAlert(
             "SQL Error: No se pudo actualizar el registro en tabla " +
               alias +
               dat_vis
@@ -955,7 +955,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("SQL Error : No existe la vista SQL " + alias);
+      this.errorAlert("SQL Error : No existe la vista SQL " + alias);
     }
 
     let recno = 0;
@@ -1004,7 +1004,7 @@ export class VFPDB {
             val_defa
           );
         } catch (error) {
-          alert(
+          this.errorAlert(
             " appendBlank can't eval(" +
               val_eval +
               ")" +
@@ -1090,7 +1090,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("SQL Error :No existe la vista SQL  " + alias);
+      this.errorAlert("SQL Error :No existe la vista SQL  " + alias);
 
       //      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
       return false;
@@ -1152,7 +1152,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("SQL Error :No existe la vista SQL " + alias);
+      this.errorAlert("SQL Error :No existe la vista SQL " + alias);
 
       return false;
     }
@@ -1239,7 +1239,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("SQL Error :No existe la vista SQL " + alias);
+      this.errorAlert("SQL Error :No existe la vista SQL " + alias);
       return;
     }
     // Leemos los datos a actualizar
@@ -1313,7 +1313,7 @@ export class VFPDB {
 
       return;
     } catch (error) {
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1474,7 +1474,7 @@ export class VFPDB {
       return respuesta;
     } catch (error) {
       console.error("SQL Error", error);
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1506,7 +1506,7 @@ export class VFPDB {
       }
     } catch (error) {
       console.log("SQL Error", error.response);
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1542,7 +1542,7 @@ export class VFPDB {
       }
     } catch (error) {
       console.error("SQL Error", error);
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1579,7 +1579,7 @@ export class VFPDB {
       }
     } catch (error) {
       console.error("SQL Error", error);
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1622,7 +1622,7 @@ export class VFPDB {
       return true;
     } catch (error) {
       console.error("SQL Error", error);
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1690,7 +1690,7 @@ export class VFPDB {
 
       exp_where = con_vis; // genera la expresion where
     } catch (error) {
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1719,7 +1719,7 @@ export class VFPDB {
       // Aumentamos a la rspuesta el regitro recno
       return await this.genera_tabla(data, alias);
     } catch (error) {
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1796,7 +1796,7 @@ export class VFPDB {
       if (data == null) return;
       // console.log('Db Estructura vistas===>>', data)
     } catch (error) {
-      alert(
+      this.errorAlert(
         "SQL Error :" +
           error.response.status.toString() +
           " " +
@@ -1972,7 +1972,7 @@ export class VFPDB {
           // console.log('Db Estructura vista===>>', respuesta)
         } catch (error) {
           console.error("SQL Error", error);
-          alert(
+          this.errorAlert(
             "SQL Error :" +
               error.response.status.toString() +
               " " +
@@ -2248,7 +2248,7 @@ await old.terminate();
 
 }
 catch (error) {
-MessageBox.alert(
+MessageBox.this.errorAlert(
 error,
 "Error clear localDb ",
 "error"
@@ -2273,7 +2273,7 @@ return false;
         this.session.user,
         this.session.nom_emp
       );
-      alert("Back End error : Session not active");
+      this.errorAlert("Back End error : Session not active");
       //MessageBox("Back End error", 16, "SQL Error Open");
 
       const router = useRouter();
@@ -2364,7 +2364,7 @@ return false;
 
         if (axios.isCancel(thrown)) {
           console.log("Request cancelled", thrown.message);
-          alert("User cancel request :");
+          this.errorAlert("User cancel request :");
           //await MessageBox( error.response.statusText, 16, "User camcel request "       );
           numLogin = 3;
         } else {
@@ -2380,7 +2380,7 @@ return false;
             error.response.statusText
           );
 
-          alert("SQL Data Base Error  :" + error.response.statusText);
+          this.errorAlert("SQL Data Base Error  :" + error.response.statusText);
 
           //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 
@@ -2404,7 +2404,7 @@ return false;
               error.code === "ERR_NETWORK") ||
             error.toJSON().message === "Network Error"
           ) {
-            alert(
+            this.errorAlert(
               "No internet connection. Try " +
                 numIntentos.toString() +
                 " to reconnect"
@@ -2478,7 +2478,7 @@ return false;
       return await alasql(ins_sql, datos);
     } catch (error) {
       console.error("localAlaSql error==>", error, ins_sql);
-      alert("local SQL error :" + ins_sql);
+      this.errorAlert("local SQL error :" + ins_sql);
       //      MessageBox(ins_sql + " " + error, 16, "Error Ala SQL ");
 
       return false;
@@ -3047,7 +3047,7 @@ return false;
       console.log;
       return response.data;
     } catch (error) {
-      alert("Report Server Error  :" + error.response.statusText);
+      this.errorAlert("Report Server Error  :" + error.response.statusText);
       //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
       return null;
     }
@@ -3079,6 +3079,9 @@ return false;
     if (!timer) return $MessageBox(texto, tipo, title);
 
     return $MessageBox(texto, tipo, title, timer);
+  }
+  errorAlert(message: string) {
+    alert(message);
   }
 
   // Fin de la clase================================

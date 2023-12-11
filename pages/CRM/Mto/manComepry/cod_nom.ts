@@ -16,33 +16,28 @@ import { captureComponent } from "@/classes/captureComponent";
 export class cod_nom extends captureComponent {
   constructor() {
     super();
-
-    // const nom_ind=renglon[i]['nom_ind']
-
     this.prop.textLabel = "Código";
     this.prop.Type = "text";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comepry.cod_nom";
     this.prop.ToolTipText = "Codigo del cliente/proveedor";
-    this.prop.MaxLength = 12;
-    this.prop.Decimals = 0;
     this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.ErrorMessage = "Código inexistente";
+    this.style.width = "120px";
   }
 
-  async when(){
-
-    if (this.prop.ReadOnly)
-       return this.prop.ReadOnly
-
-    if ((this.Form.cop_nom.prop != "C" && this.Form.cop_nom.prop != "P") ){ 
-       this.prop.Valid=true
-       this.prop.ReadOnly=true
+  async when() {
+    if (
+      this.Form.cop_nom.prop.Value != "C" &&
+      this.Form.cop_nom.prop.Value != "P"
+    ) {
+      this.prop.Valid = true;
+      this.prop.ReadOnly = true;
     }
 
-  return this.prop.ReadOnly
-
+    //console.log("when cod_nom ReadOnly=", this.prop.ReadOnly);
+    return !this.prop.ReadOnly;
   }
 
   //////////////////////////////////
@@ -50,11 +45,14 @@ export class cod_nom extends captureComponent {
   ///////////////////////////////////
 
   async valid() {
-    if (this.prop.ReadOnly)
-       return true
+    if (this.prop.ReadOnly) return true;
+    if (this.prop.Value.trim().length == 0) {
+      this.prop.Valid = false;
+      return true;
+    }
 
     this.Form.nom_nom.Recno = 0;
-    let cod_nom = this.prop.Value.trim()
+    let cod_nom = this.prop.Value.trim();
 
     const m = { cop_nom: this.Form.cop_nom.Value, cod_nom };
 

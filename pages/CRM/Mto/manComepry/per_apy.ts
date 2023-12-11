@@ -40,25 +40,4 @@ export class per_apy extends COMPONENT {
 
     return !this.prop.ReadOnly;
   }
-
-  //////////////////////////////////
-  // event valid
-  ///////////////////////////////////
-
-  async valid() {
-    this.Form.nom_ven.Recno = 0;
-    if (this.prop.Value == 0) return true;
-
-    const ven_ven = this.prop.Value;
-    const m = { ven_ven };
-
-    const data = await this.Form.db.use("lla1_ven", m);
-    if (data.length == 0) {
-      this.prop.Valid = false;
-      return false;
-    }
-    this.Form.nom_ven.Recno = data[0].recno;
-    this.prop.Valid = true;
-    return true;
-  }
 }
