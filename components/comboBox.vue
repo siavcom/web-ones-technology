@@ -75,7 +75,6 @@ interface Props {
   prop: {};
   style: {};
   position: {};
-
 }
 
 //const props = defineProps<{
@@ -242,13 +241,15 @@ if (props.prop.textLabel.length > 0) {
 const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   toggle.value = false
-  This.prop.Status = 'P'
   let readValid = false
 
-  Status.value = 'P'
-  emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
   if (!readCam) {  // Graba en AlaSql , el dato se cambio desde fuera 
+    This.prop.Status = 'P'
+    Status.value = 'P'
+    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+
+
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
@@ -320,16 +321,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
   This.prop.Status = 'A'
-
-  /////////////////////////////////////////
-  //nextTick(function () {
-  //emit("update:formatValue", currentValue.value[0]); // actualiza el valor Value en el componente padre
-
-  //  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
-
-  //const result = await asignaResultado(Value.value)
-  //////------------------- Asigna Resultado
-
+  Status.value = 'A'  // se necesita para que el watch padre funcione
+  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
   let found = false
   if (Value.value == null) {
@@ -371,14 +364,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     This.valid()
 
   }
-
-
-  Status.value = 'A'  // se necesita para que el watch padre funcione
-  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-
-
   return true
 }
+
+
+
+
 const toggleClick = async () => {
   if (!toggle.value)
     await This.when()
@@ -536,20 +527,12 @@ const validList = async () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-
-
-
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
 
     //    if (props.Recno > 0) {
     if (Recno.value > 0) {
 
-      if (Status.value != 'P') { // actualiza su estatus a proceso
-        Status.value = 'P';  // en foco
-        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-        emit("update")
-      }
       const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value, 'Old')
       let valor = ''
       let sw_key = false
@@ -756,7 +739,11 @@ const renderComboBox = async (readData?: boolean) => {
 
   //console.log('render combobox ===>>', This.Name)
 
-  emitValue(true)
+  await emitValue(true)
+  This.prop.Status = 'A'
+  Status.value = 'A'
+  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  console.log('2) render combobox ===>>', This.prop.Name, This.prop.Status)
   return
 
 }

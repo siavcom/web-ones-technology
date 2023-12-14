@@ -46,7 +46,7 @@ export class GRID extends COMPONENT {
   //              Si no es un dato nuevo: Muestra los datos para permitir su
   //              modificacion
   /// /////////////////////////////////////
-
+  /*
   public async valid(): Promise<boolean> {
     if (this.prop.RecordSource.length < 2) {
       // No hay recordSource
@@ -97,6 +97,8 @@ export class GRID extends COMPONENT {
     return this.prop.Valid;
   }
 
+
+  */
   ////////////////////////////////////////
   // Metodo : Valid Column
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
@@ -197,31 +199,21 @@ export class GRID extends COMPONENT {
     const { ...m } = mem;
 
     // Leemos variables publicas
-
     for (const variable in this.Form.publicVar)
       m[variable] = this.Form.publicVar[variable];
 
     // leemos valores de los componentes de la forma
 
-    for (const i in this.Form.main)
-      m[this.Form.main[i]] = this.Form[this.Form.main[i]].prop.Value;
+    // for (const i in this.Form.main)
+    for (const comp of this.Form.main) m[comp] = this.Form[comp].prop.Value;
 
     //this.Form.db.select(this.prop.RecordSource)
+
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     // console.log("grid appendRow rows",await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
     this.prop.Disabled = false;
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
     this[this.main[0]].prop.First = true;
-
-    // asignamos la primer columna de captura
-    console.log(
-      "grid appendRow this.prop.RecordSource=",
-      this.prop.RecordSource,
-      "mem=",
-      mem,
-      "Row=",
-      this.Row
-    );
     //    this.prop.Valid = false;
   }
 

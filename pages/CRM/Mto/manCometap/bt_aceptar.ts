@@ -20,7 +20,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Position = "footer";
     this.prop.Value = "Aceptar";
     this.prop.Capture = false;
-    this.prop.Image = "/Iconos/svg/bx-check-circle.svg";
+    this.prop.Image = " /Iconos/svg/ok-accept.svg";
     this.prop.TabIndex = 1;
   } // Fin constructor
 

@@ -778,9 +778,23 @@ export class VFPDB {
               //            m[campo] = "'" + dat_act[row][campo] + "'"
 
               // se tiene que validar como string y nll ya que asi viene desde alaSQL
-
-              m[campo] =
-                dat_act[row][campo] != "null" ? dat_act[row][campo].trim() : "";
+              try {
+                if (dat_act[row][campo] != null) {
+                  m[campo] =
+                    typeof dat_act[row][campo] == "string"
+                      ? dat_act[row][campo].trim()
+                      : dat_act[row][campo];
+                } else m[campo] = "";
+              } catch (error) {
+                console.log(
+                  error,
+                  "campo=",
+                  campo,
+                  "Valor=",
+                  dat_act[row][campo]
+                );
+                return;
+              }
             //console.log('Db tableUpdate campo=', campo,'m=',m[campo],'dat_act',dat_act[row][campo] )
           }
           //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
@@ -985,24 +999,18 @@ export class VFPDB {
         campo != "usu_usu"
       ) {
         const val_eval = this.View[vis_act].val_def[campo];
-        console.log(
+        /* console.log(
           "db appendBlank View=",
-          this.View[vis_act],
-          "val_def=",
+          alias,
+          "Campo=",
+          campo,
+          " val_def=",
           val_eval
-        );
+        ); */
 
         let val_defa = null;
         try {
           val_defa = eval(val_eval);
-          console.log(
-            "db appendBlank View=",
-            this.View[vis_act],
-            "val_def=",
-            val_eval,
-            " val_defa=",
-            val_defa
-          );
         } catch (error) {
           this.errorAlert(
             " appendBlank can't eval(" +
@@ -2661,7 +2669,7 @@ return false;
     try {
       //     await this.localAlaSql('USE Now;')
       const ins_sql = `USE Now; UPDATE ${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`;
-      console.log("Db update ala===>", ins_sql);
+      // console.log("Db update ala===>", ins_sql);
       await this.localAlaSql(ins_sql);
     } catch (error) {
       console.error("AlaSql error==>", error);

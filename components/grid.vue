@@ -29,21 +29,22 @@
            && prop.Status == 'A' 
           -->
 
-          <tbody v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
+          <tbody class='dataGrid' v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
 
             <!-------------  Renglones  -----------------------
               item.id + 1-->
-            <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr v-for="item in scroll.dataPage" :key="item.recno">
+            <!-- :style="{ lineHeight: '100%' }"   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
+            <tr class='Rows' v-for="item in scroll.dataPage" :key="item.recno">
 
-              <td class='renNumber' :style="{ height: '11px' }">{{ item.recno }}</td>
+              <td class='renNumber' :style="{ height: '11px' }" :key="'Row_' + item.recno.toString()">{{ item.recno }}
+              </td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != This.Row"
                     -->
 
-              <td v-for="col in This.elements" :key="col.Name"
+              <td v-for="col in This.elements" :key="item.recno.toString() + col.Name"
                 :style='{ "height": This[col.Name].style.height, padding: 0 }'>
 
                 <!--div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)"-->
@@ -58,9 +59,9 @@
                   
                   v-bind:Show="item.id != This.Row"
                                     -->
-                <div v-show="item.id != This.Row">
+                <div v-show="item.id != This.Row" :key="'divText_' + item.recno.toString() + col.Name">
                   <!--Transition name="columntext"-->
-                  <textLabel v-show="item.id != This.Row"
+                  <textLabel v-show="item.id != This.Row" :key="'TextValue_' + item.recno.toString() + col.Name"
                     v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                     v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                     v-bind:style="This[col.Name].style"
@@ -80,10 +81,10 @@
                 <!--Transition name="columninput"-->
                 <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'-->
                 <component v-if="item.id == This.Row" :is="impComp(This[col.Name].prop.BaseClass)"
-                  v-model:Value="This[col.Name].prop.Value" v-model:Status="This[col.Name].prop.Status"
-                  v-model:Key="This[col.Name].prop.Key" v-model:Focus="This[col.Name].Focus"
-                  v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
-                  v-bind:Component="ref(This[col.Name])"
+                  :key="'Component_' + item.recno.toString() + col.Name" v-model:Value="This[col.Name].prop.Value"
+                  v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
+                  v-model:Focus="This[col.Name].Focus" v-model:Valid="This[col.Name].prop.Valid"
+                  v-model:ShowError="This[col.Name].prop.ShowError" v-bind:Component="ref(This[col.Name])"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
@@ -396,7 +397,7 @@ watch(
       if (old_val == 'I') {
         emitValue()
       }
-      console.log('Grid.vue watch Status load_data', load_data)
+      console.log('Grid.vue watch Status load_data', load_data, 'Status=', new_val)
       // si hay carga de datos
       if (load_data) {
         loadData()
@@ -423,7 +424,7 @@ watch(
         if (Db.View[RecordSource].recnoVal.length == 0)  // No hay renglones
           await appendRow()
 
-        loadData()
+        //    loadData()
       }
     }
   }
@@ -493,14 +494,14 @@ watch(
 watch(
   () => This.Form.eventos,
   () => {
-    console.log('=====watch thisform.eventos =======', eventos, load_data)
+    // console.log('=====watch thisform.eventos =======', eventos, load_data)
 
 
     if (!load_data) return
     if (This.Form.eventos.length == 0) {
       if (This.Form.prop.Status != 'A')
         return
-      console.log('=====watch thisform.eventos loadData()=======')
+      //  console.log('=====watch thisform.eventos loadData()=======')
       loadData()
 
     }
@@ -567,12 +568,12 @@ const ejeEvento = (newEvento: string) => {
   console.log('Grid ejeEvento', newEvento)
 
   for (const comp in compStatus) {
-    console.log('Grid ejeEvento comp=', comp, compStatus[comp])
+    // console.log('Grid ejeEvento comp=', comp, compStatus[comp])
 
     if (compStatus[comp] != 'A' && Status.value == 'A') {
 
 
-      console.log('Grid ejeEvento Status comp=', comp, 'Estatus=', compStatus[comp])
+      // console.log('Grid ejeEvento Status comp=', comp, 'Estatus=', compStatus[comp])
 
       Status.value = 'P';  // Cambia el estatus del grid a Proceso
       emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
@@ -679,7 +680,9 @@ const loadData = async () => {
       nextTick(() => {
         console.log("asignaRenglon row ", This.Row, " Columna=", First);
         This[First].prop.Focus = true;
+
       });
+      This.Form.prop.Status = 'A'
       return
     }
 
@@ -690,6 +693,8 @@ const loadData = async () => {
   }
 
   This.Form.prop.Status = 'A'
+
+
   scroll.controls = true
 
 }
@@ -733,17 +738,35 @@ const last = async () => {
 
 const appendRow = async () => {
   scroll.controls = false
+
+  // console.log('1) appendRow')
   if (This.Row >= 0) {
 
-    for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
+    //for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
 
-      if (!This[This.main[i]].prop.Valid) { // Si alguno no esta Validado
-        This[This.main[i]].prop.Focus = true
+    for (const comp of This.main) { // Recorre todos los estatus del grid
+
+      //      if (!This[This.main[i]].prop.Valid) { // Si alguno no esta Validado
+      if (!This[comp].prop.Valid) { // Si alguno no esta Validado
+        // console.warn('appendRow column not validate= ', comp)
+        This[comp].prop.Focus = true
         return
       }
     }
   }
-  This.appendRow()  // Llama en la clase grid.ts
+
+  await This.appendRow()  // Llama en la clase grid.ts
+
+  last()
+  if (!This[This.main[0]].prop.First)
+    This[This.main[0]].prop.First = true;
+
+  const rows = scroll.dataPage.length - 1
+  This.Row = scroll.dataPage[rows].id
+
+
+
+
   //eventos.push(This.prop.Map + '.appendRow()')
 
   // load_data = true

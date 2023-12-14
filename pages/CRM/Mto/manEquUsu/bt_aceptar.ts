@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // Clase : bt_aceptar
 // Author : Fernando Cuadras Angulo
-// Creacion : Agosto/2021
+// Creacion : 12/Julio/2023
 /////////////////////////////////////////////
 import { COMPONENT } from "@/classes/Component";
-////import { MessageBox } from '@/classes/Functions';
+
 /**
  *
  *
@@ -15,25 +15,20 @@ import { COMPONENT } from "@/classes/Component";
 export class bt_aceptar extends COMPONENT {
   constructor() {
     super();
-    this.Index = 1;
+
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
     this.prop.Value = "Aceptar";
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/ok-accept.svg";
     this.prop.TabIndex = 1;
+    this.style.width = "30px";
   } // Fin constructor
 
   async click() {
-    this.Form.browse.prop.RowSource = "";
-    // console.log('bt_aceptar click===>>>',this.Form.browse.prop.RowSource)
-    if (this.Form.query.prop.Value.trim() > "   ") {
-      const result = await this.Form.db.execute(
-        this.Form.query.prop.Value.trim(),
-        "sqlresult"
-      );
-      if (result) this.Form.browse.prop.RowSource = "Now.sqlresult";
-      // console.log('bt_aceptar ===>>> Datos leidos del SQL Server',this.Form.browse.prop.RowSource)
-    }
+    this.prop.Visible = false;
+    const m = { log_usu: this.Form.log_usu.prop.Value };
+    await this.Form.db.use("vi_cap_db_equusu", m);
+    this.Form.Grid.prop.RecordSource = "vi_cap_db_equusu";
   }
 }

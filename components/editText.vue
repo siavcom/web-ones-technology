@@ -404,15 +404,17 @@ inherit	Inherits this property from its parent element. Read about inherit
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
 
   //outFocus.value = true
-  if (This.Form.prop)
-    This.Form.prop.Status = 'P'
-
-  This.prop.Status = 'P'
-  let readValid = false
-  Status.value = 'P'
-  emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
   // let Valor = ''
   if (!readCam) { // En valor viene el valor actual capturado
+
+    if (This.Form.prop)
+      This.Form.prop.Status = 'P'
+
+    This.prop.Status = 'P'
+    let readValid = false
+    Status.value = 'P'
+    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+
 
     // console.log('editText emitValue() 1) !readCam Name=', props.prop.Name, 'isValid=', isValid, 'Valor=', Valor,'Value.value=', Value.value)
     // Si no viene del watch This.prop.Value
@@ -705,7 +707,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   emit("update") // emite un update en el componente padre
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
-  console.log('editText emitValue() Name', props.prop.Name, 'Type=', props.prop.Type,
+  /* 
+   console.log('editText emitValue() Name', props.prop.Name, 'Type=', props.prop.Type,
     'This.prop.Value=', This.prop.Value,
     'currentValue.value=', currentValue.value[0], currentValue.value[1],
     'currentDate.value=', currentDate.value, displayDate.value,
@@ -713,7 +716,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     'ValidOnRead=', This.prop.ValidOnRead,
     'readValid', readValid,
     'First Focus=', This.prop.First || This.prop.Focus)
-
+*/
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     This.valid()
   }
@@ -789,7 +792,7 @@ const focusOut = async () => {
     Value.value = await JSON.stringify(currentJson.value)
 
   }
-  console.log('focusOut editText Name', This.prop.Name, 'Value=', Value.value)
+  //console.log('focusOut editText Name', This.prop.Name, 'Value=', Value.value)
   await emitValue(false, false, Value.value) //se puso await
 
   // emitValue() ///se puso await
@@ -804,6 +807,7 @@ const focusOut = async () => {
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
   //console.log('KeyPress===>', $event.charCode)
+
   if (ShowError.value) {
     ShowError.value = false
     if (This.prop.ShowError)
@@ -1223,7 +1227,7 @@ const init = async () => {
     onFocus()
     return
   }
-  console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
+  // console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
 }
 
 init() // Ejecuta el init
