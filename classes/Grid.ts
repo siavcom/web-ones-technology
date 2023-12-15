@@ -41,13 +41,14 @@ export class GRID extends COMPONENT {
 
   ////////////////////////////////////////
   // Metodo : Valid
-  // Descripcion : Valida los datos de la forma. Si es un dato nuevo
+  // Descripcion : si el autoLoad= true, valida los datos de la forma. Si es un dato nuevo
   //              manda refrescar la forma para permitir su captura
   //              Si no es un dato nuevo: Muestra los datos para permitir su
   //              modificacion
   /// /////////////////////////////////////
-  /*
+
   public async valid(): Promise<boolean> {
+    console.log("Grid Valid autoload", this.prop);
     if (this.prop.RecordSource.length < 2) {
       // No hay recordSource
       this.prop.Valid = false;
@@ -97,8 +98,6 @@ export class GRID extends COMPONENT {
     return this.prop.Valid;
   }
 
-
-  */
   ////////////////////////////////////////
   // Metodo : Valid Column
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
@@ -107,11 +106,8 @@ export class GRID extends COMPONENT {
   public async validColumn(name: string) {
     const column = this[name];
 
-    this.prop.Valid = true;
-
-    if (this.prop.updateKey) {
+    if (column.prop.updateKey) {
       console.log("Column valid updateKey ", column);
-      this.Parent.prop.Valid = false;
       if (
         typeof column.prop.Value == "string" &&
         column.prop.Value.trim().length == 0
@@ -119,33 +115,36 @@ export class GRID extends COMPONENT {
         column.prop.ErrorMessage = "No permite datos en blanco";
         column.prop.ShowError = true;
         column.prop.Valid = false;
+        return false;
       }
-      if ((await this.Parent.ValidKey()) == false) {
+      if (!(await this.validKey(name, column.Recno))) {
         column.prop.ErrorMessage = "Dato duplicado";
         column.prop.ShowError = true;
         column.prop.Valid = false;
+        return false;
       }
     }
-    return this.prop.Valid;
+    return true;
   }
 
-  async validKey() {
-    if (this.prop.Valid) return true;
+  async validKey(name: string, Recno: number) {
+    //  if (this.prop.Valid) return true;
+    console.log("validKeys Recno=", Recno);
+    //const View = this.Form.Sql.View[this.prop.RecordSource];
 
-    const db = this.Form.db;
-    const View = db.View[this.Parent.prop.RecordSource];
-    const Recno = View.Recno;
     let where = " where ";
     for (let i = 0; i < this.elements.length; i++) {
       const column = this.elements[i].Name;
+      console.log("Grid  validKeys column=", column, " where=", where);
       if (this[column].prop.updateKey) {
-        if (!this[column].Valid) return true;
+        if (name != column && !this[column].Valid) return true;
 
         const comillas = this[column].prop.Type == "numeric" ? "" : "'";
         where =
           where +
+          "trim(" +
           this[column].prop.ControlSource.trim() +
-          "=" +
+          ")=" +
           comillas +
           this[column].prop.Value +
           comillas +
@@ -153,15 +152,13 @@ export class GRID extends COMPONENT {
       }
     }
     where = where + ` recno<>${Recno} `;
-    const select = `select exists(select recno from ${this.Parent.prop.RecordSource} ${where})`;
-    console.log("Grid select exists=", select);
+    const select = `select count(recno) as existe from ${this.prop.RecordSource} ${where} `;
 
-    const data = await db.localSql(select);
-    console.log("Grid ", data);
-    if (data[0].exists) this.prop.Valid = false;
-    else this.prop.Valid = true;
+    const data = await this.Sql.localSql(select);
 
-    return this.prop.Valid;
+    if (data[0].existe && data[0].existe >= 1) return false;
+
+    return true;
   }
 
   /////////////////////////////////////////////////////
@@ -179,7 +176,7 @@ export class GRID extends COMPONENT {
     this.Row = row;
 
     nextTick(() => {
-      console.log("asignaRenglon row ", row, " Columna=", colName);
+      // console.log("asignaRenglon row ", row, " Columna=", colName);
       this[colName].prop.First = true;
     });
   }

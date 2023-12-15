@@ -1,5 +1,5 @@
 <template>
-  <div v-show="prop.Visible" class="divi" :style="style">
+  <div v-show="prop.Visible" class="divi" :style="{ maxHeight: prop.Style.maxHeight }">
     <!--div class="mensajes" v-bind:style="componentStyle"-->
     <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle"-->
@@ -140,7 +140,8 @@ const checked = ref(false)
 const componentStyle = reactive(props.style)
 
 //componentStyle.width = props.style.width
-componentStyle.height = 'fit-content'
+
+//componentStyle.height = 'fit-content'
 if (componentStyle.width == 'auto')
   componentStyle.width = '100%'
 

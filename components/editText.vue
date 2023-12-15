@@ -405,13 +405,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
   //outFocus.value = true
   // let Valor = ''
+  let readValid = false
   if (!readCam) { // En valor viene el valor actual capturado
 
     if (This.Form.prop)
       This.Form.prop.Status = 'P'
 
     This.prop.Status = 'P'
-    let readValid = false
     Status.value = 'P'
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
@@ -806,7 +806,7 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
-  //console.log('KeyPress===>', $event.charCode)
+  console.log('KeyPress===>', $event.charCode)
 
   if (ShowError.value) {
     ShowError.value = false
@@ -814,8 +814,6 @@ const keyPress = ($event) => {
       This.prop.ShowError = false
   }
 
-  if (!ToolTipText.value)
-    ToolTipText.value = false
   if ($event.charCode == 13) {
 
     //console.log('Enter keyPress=', $event.charCode)
@@ -859,6 +857,9 @@ const focusInput = async () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = () => {
+
+  ToolTipText.value = false
+  ShowError.value = false
 
   if (!This.prop.First && !This.prop.Focus)
     return

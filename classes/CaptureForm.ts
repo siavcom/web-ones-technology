@@ -231,6 +231,7 @@ export class captureForm extends FORM {
     public Grid = [];
     constructor() {
       super();
+      this.prop.Name = "bt_graba";
       this.prop.Value = "Graba datos";
       this.prop.Capture = false;
       // this.prop.Sw_val = false;
@@ -306,6 +307,7 @@ export class captureForm extends FORM {
   public bt_borra = new (class extends COMPONENT {
     constructor() {
       super();
+      this.prop.Name = "bt_borra";
       this.prop.Value = "Borra registro";
       this.prop.Capture = false;
       // this.prop.Sw_val = false;

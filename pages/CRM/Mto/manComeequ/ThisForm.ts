@@ -5,48 +5,40 @@
 // Description : Capture Form para equipos de trabajo
 // Author : El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-10-27
-// Update Date  : 
+// Update Date  :
 /////////////////////////////////////////////
 
 /////////////////////////////////////////
 // Component import
 //////////////////////////////////////
 
-import {Grid} from "./grid/grid" 
-
-
+import { Grid } from "./grid/grid";
 
 ///////////////////////////////////////
-// Base class 
+// Base class
 ///////////////////////////////////////
 
-import { captureForm } from '@/classes/CaptureForm'
-
+import { captureForm } from "@/classes/CaptureForm";
 
 export class ThisForm extends captureForm {
+  ////////////////////////////////////
+  // component imported
+  ////////////////////////////////////
 
-////////////////////////////////////
-// component imported
-////////////////////////////////////
+  public Grid = new Grid();
 
-   public Grid = new Grid() 
- 
-  
   constructor() {
-    super()  // inicializa la clase base
+    super(); // inicializa la clase base
 
-    this.Development = false
-    this.Name = 'manComeequ'
-    this.prop.textLabel = "Equipos de trabajo"
-   
+    this.Development = false;
+    this.Name = "manComeequ";
+    this.prop.textLabel = "Equipos de trabajo";
   }
-
-   
-
-//  public async init(): Promise<void> {
-
-//  }
-
-
-
+  /*
+  async init() {
+    this.Grid.prop.RecordSource = "";
+    await this.Form.db.use("vi_cap_db_equipo");
+    this.Grid.prop.RecordSource = "vi_cap_db_equipo";
+  }
+  */
 } // End ThisForm

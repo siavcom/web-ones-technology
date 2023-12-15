@@ -24,21 +24,22 @@ export class FORM extends COMPONENT {
   eventos = []; // eventos a ejecutar en el stack
   estatus = []; // estatus de los componentes hijos
   Params = [];
-  public db = new VFPDB(); // conexion a la base de datos
+  db = new VFPDB(); // conexion a la base de datos
   publicVar = {};
-  clickedElement=null;
+  clickedElement = null;
 
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
     this.prop.BaseClass = "Form";
+    this.Sql = this.db;
 
     this.prop.Map = this.constructor.name;
     this.prop.Position = " "; // No hay posicion ya que es una forma
     this.Form = this;
-    
-    this.prop.Status='I'
+
+    this.prop.Status = "I";
 
     this.style.width = "90%";
     this.style.height = "96%";
@@ -64,14 +65,12 @@ export class FORM extends COMPONENT {
     this.publicVar = Var.value;
 
     console.log("ThisForm publicVar=", this.publicVar, "Params=", this.Params);
-
-    
   }
   /////////////////////////////////////////
   // After Mounted
   ////////////////////////////////////
-   
+
   public async afterMounted() {
-    this.prop.Status='A'
+    this.prop.Status = "A";
   }
 }

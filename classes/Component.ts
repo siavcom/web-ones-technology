@@ -18,7 +18,7 @@ export class COMPONENT {
   Form: any = {}; //this.Parent.ThisForm // Thisform
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
-  Sql = null;
+  Sql;
   // db: any;
   Recno: number;
   Ref: null | undefined;
@@ -32,7 +32,7 @@ export class COMPONENT {
   status: {} = {}; // status de todos los hijos del componente
 
   prop = {
-    autoLoad: true,
+    autoLoad: false,
     Autofocus: false,
 
     BaseClass: "editText",
@@ -224,7 +224,7 @@ export class COMPONENT {
 
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
-      this.Sql = this.Form.db;
+      if (this.Form.db) this.Sql = this.Form.db;
 
       console.log(
         "Init constructor.name",

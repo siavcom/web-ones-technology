@@ -21,6 +21,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Value = "Aceptar";
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/ok-accept.svg";
+    this.style.width = "30px";
     this.prop.TabIndex = 1;
   } // Fin constructor
 
@@ -28,6 +29,10 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Visible = false;
     const m = { tpy_tpy: this.Form.tpy_tpy.prop.Value };
     await this.Form.db.use("vi_cap_cometap", m);
+    console.log(
+      "bt_aceptar=",
+      await this.Sql.localAlaSql("select * from vi_cap_cometap")
+    );
 
     await this.Form.db.execute(
       `select des_tdo,tdo_tdo from man_cometdo \
