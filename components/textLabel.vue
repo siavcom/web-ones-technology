@@ -23,8 +23,8 @@
     <!--/div>
        
       <div v-else-->
-    <input v-else class="text" v-show="Text != null" :class="prop.Type" :style="componentStyle" readonly="true"
-      v-model="Text" />
+    <input v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type" :style="componentStyle"
+      readonly="true" v-model="Text" />
     <!--/div-->
   </div>
   <!--/div-->

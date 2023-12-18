@@ -114,7 +114,7 @@ export class COMPONENT {
       color: "black",
       width: "auto",
       height: "85%",
-      maxheight: "auto",
+      maxHeight: "auto",
       maxWidth: "100%",
       fontWeight: "normal",
       fontFamily: "Arial",

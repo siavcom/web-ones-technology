@@ -20,7 +20,7 @@ export class des_equ extends COLUMN {
     this.prop.Type = "text";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_db_equipo.des_equ";
-    this.prop.MaxLength = 128;
+    this.prop.MaxLength = 64;
     this.prop.Capture = true;
     this.style.width = "300px";
   }

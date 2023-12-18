@@ -5,11 +5,11 @@
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos" -->
-    <div class="gridDatos" :style="{ height: 'auto' }">
+    <div class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
-      <div class="tabla">
+      <div class="tabla" :style="{ minHeight: '150px' }">
         <table :style="{ lineHeight: '11px' }">
           <thead>
             <tr style="font-size: 13px">
@@ -59,13 +59,13 @@
                   v-bind:Show="item.id != This.Row"
                                     -->
                 <div v-show="item.id != This.Row">
-                  <!--Transition name="columntext"-->
+                  <!-- @click.stop Transition name="columntext"-->
                   <textLabel v-show="item.id != This.Row"
                     v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                     v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                     v-bind:style="This[col.Name].style"
                     @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
-                    @click.stop @focusout.stop>
+                    @focusout.stop>
                   </textLabel>
                   <!--/Transition-->
                 </div>
@@ -392,11 +392,11 @@ watch(
   () => props.prop.Status,
   (new_val, old_val) => {
 
-    if (new_val == 'A') {
-      if (old_val == 'I') {
-        emitValue()
-      }
-      console.log('Grid.vue watch Status load_data', load_data)
+    if (new_val == 'A' && old_val != 'A') {
+      // if (old_val == 'I') {
+      emitValue()
+      // }
+      console.log('Grid.vue watch Status=', new_val, ' load_data=', load_data)
       // si hay carga de datos
       if (load_data) {
         loadData()
@@ -678,7 +678,7 @@ const loadData = async () => {
         console.log("asignaRenglon row ", This.Row, " Columna=", First);
         This[First].prop.Focus = true;
       });
-      return
+      //  return
     }
 
   } catch (err) {

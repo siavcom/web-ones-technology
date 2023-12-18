@@ -21,6 +21,7 @@ export class nom_tab extends COLUMN {
     this.prop.ControlSource = "vi_cap_cometab.nom_tab";
     this.prop.componentStyle.textTransform = "lowercase";
     this.prop.Placeholder = "SQL table name";
+    this.prop.updateKey = true;
     this.style.width = "150px"; /* width/height  - initial value: auto */
   }
 }

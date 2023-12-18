@@ -17,7 +17,6 @@ export class equ_equ extends COLUMN {
   constructor() {
     super();
     this.textLabel = "Equipo"; // Column Header
-    this.prop.textLabel = "Equipo de trabajo";
     this.prop.BaseClass = "comboBox";
     this.prop.ControlSource = "vi_cap_db_equusu.equ_equ";
     this.prop.RowSourceType = 4;
@@ -28,6 +27,6 @@ export class equ_equ extends COLUMN {
     this.style.zIndex = 3;
     this.prop.Capture = true;
     this.prop.updateKey = true;
-    this.style.width = "600px";
+    this.style.width = "300px";
   }
 }

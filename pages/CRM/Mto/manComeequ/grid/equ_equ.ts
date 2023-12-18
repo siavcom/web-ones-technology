@@ -16,9 +16,6 @@ import { COLUMN } from "@/classes/Column";
 export class equ_equ extends COLUMN {
   constructor() {
     super();
-
-    // const nom_ind=renglon[i]['nom_ind']
-
     this.textLabel = "Equipo"; // Column Header
     this.prop.Type = "text";
     this.prop.BaseClass = "editText";
@@ -26,7 +23,7 @@ export class equ_equ extends COLUMN {
     this.prop.MaxLength = 32;
     this.prop.Capture = true;
     this.prop.updateKey = true;
-    this.prop.ToolTipText = "Nemonico del Equipo";
+
     this.style.width = "350px";
   }
   async when() {

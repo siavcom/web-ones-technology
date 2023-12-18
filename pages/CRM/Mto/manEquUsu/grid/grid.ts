@@ -32,5 +32,6 @@ export class Grid extends GRID {
     this.prop.ReadOnly = false;
     this.prop.autoLoad = true; // carga automaticamente la tabla en el grid
     this.style.minHeight = "300px";
+    this.style.width = "600px";
   }
 }

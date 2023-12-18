@@ -780,12 +780,41 @@ const focusOut = async () => {
   }
   if (props.prop.Type == 'date') {
     //This.prop.Value = await dateToString(currentDate.value)
+    let sw_error = false
+    if (currentDate.value < props.prop.Min) {
+      currentDate.value = props.prop.Min
+      sw_error = true
+    }
+    if (currentDate.value > props.prop.Max) {
+      currentDate.value = props.prop.Max
+      sw_error = true
+    }
+
+
     Value.value = await dateToString(currentDate.value)
+    if (sw_error) {
+      This.prop.Focus = true
+      return
+    }
 
   }
   if (props.prop.Type == 'datetime') {
     //This.prop.Value = await dateToString(currentDate.value)
+    let sw_error = false
+    if (currentDate.value < props.prop.Min) {
+      currentDate.value = props.prop.Min
+      sw_error = true
+    }
+    if (currentDate.value > props.prop.Max) {
+      currentDate.value = props.prop.Max
+      sw_error = true
+    }
+
     Value.value = currentDate.value.slice(0, 16)
+    if (sw_error) {
+      This.prop.Focus = true
+      return
+    }
   }
 
   if (props.prop.Type == 'json') {
