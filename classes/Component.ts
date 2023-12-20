@@ -60,6 +60,7 @@ export class COMPONENT {
     Image: "",
     InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
 
+    htmlId: "",
     Key: 0,
 
     Map: "", // Nos indica el mapSource del componente
@@ -160,7 +161,7 @@ export class COMPONENT {
     // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
 
     tabindex: 0,
-    zIndex: 1, // profundidad
+    zIndex: 0, // profundidad
     // textAlign: "left";
   };
 

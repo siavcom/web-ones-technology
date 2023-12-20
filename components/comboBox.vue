@@ -25,7 +25,7 @@
         <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
           @focusout="focusOut" />{{ displayText }}
       -->
-      <div v-else class="comboBox" :style='prop.componentStyle' ref="RefCombo">
+      <div v-else class="comboBox" :style='componentStyle' ref="RefCombo">
 
         <input :id="Id" class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly"
           :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
@@ -54,7 +54,7 @@
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click="toggleClick" />
       </div>
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-        style="zIndex:zIndex+10">{{ prop.ToolTipText }}</span>
+        :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
       <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     </div>
     <span v-if="prop.ShowValue">{{ prop.Value }}</span>
@@ -162,9 +162,8 @@ const ToolTipText = ref(true)
 
 const Component = ref(props.prop.This)
 const This = Component.value
-
 const Id = This.prop.Name + props.Registro.toString()
-
+This.prop.htmlId = Id
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 const displayText = ref("");
 //const width = reactive([{}]);
@@ -185,8 +184,14 @@ const ShowError = ref(false)
 Focus.value = false
 
 const divStyle = reactive(props.style)
+if (divStyle.zIndex == 0)
+  divStyle.zIndex = 100 - This.prop.TabIndex
+
 const zIndex = divStyle.zIndex
-divStyle.zIndex = zIndex + 2
+
+const componentStyle = reactive(props.prop.componentStyle)
+componentStyle.zIndex = zIndex
+
 
 const toggleZIndex = divStyle.zIndex + 1
 

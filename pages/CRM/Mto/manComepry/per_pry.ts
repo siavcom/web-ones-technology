@@ -29,7 +29,7 @@ export class per_pry extends captureComponent {
     this.prop.ColumnWidths = "75%,25%";
     this.prop.Capture = true;
     this.prop.updateKey = false;
-    this.style.zIndex = 2;
+    // this.style.zIndex = 2;
   }
   async interactiveChange() {
     if (this.prop.Value != "U") this.Form.per_apy.prop.Visible = true;

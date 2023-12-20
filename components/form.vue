@@ -11,7 +11,7 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <div v-if="ThisForm.prop.Status != 'A'">
+  <div id='ThisForm' v-if="ThisForm.prop.Status != 'A'">
 
     <div class="splash-screen">
       <div class="spinner-wrapper">

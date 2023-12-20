@@ -28,7 +28,7 @@ export class con_apy extends COLUMN {
     this.prop.updateKey = true;
     //this.prop.First=true
     this.prop.Disabled = true;
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     this.style.width = "28px";
   }
   //////////////////////////////////

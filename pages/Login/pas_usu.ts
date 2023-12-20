@@ -20,7 +20,7 @@ export class pas_usu extends COMPONENT {
     this.prop.Placeholder = "Password";
 
     this.style.width = "auto";
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     this.prop.componentStyle.width = "130px";
 
     this.num_int = 0;

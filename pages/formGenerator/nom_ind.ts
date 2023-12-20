@@ -9,43 +9,36 @@
 // Clase base
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from "@/classes/Component";
 
 export class nom_ind extends COMPONENT {
-
   //  constructor(parent: Record<string, never>) {
   constructor() {
-    super()
+    super();
 
-    this.prop.BaseClass = 'comboBox'
-    this.prop.Visible = false
+    this.prop.BaseClass = "comboBox";
+    this.prop.Visible = false;
     this.prop.textLabel = "Indices de la Tabla";
-    this.prop.Capture = true // al quitarlo, quito reactividad oJo
-    this.prop.Valid = false
-    this.prop.ErrorMessage = ''
-    this.prop.Value = ""
-    this.prop.RowSourceType =0 //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = 'vi_cap_comeind.nom_ind,exp_ind'
-    this.prop.ReadOnly=false
-    this.prop.ColumnCount = 2
-    this.prop.BoundColumn = 1
-    this.prop.ColumnWidths = "50%,50%"
-    this.prop.Visible = false
-    this.prop.Style = '2' //0=DropDown Combo 2=DropDown List
-    this.style.zIndex=3
+    this.prop.Capture = true; // al quitarlo, quito reactividad oJo
+    this.prop.Valid = false;
+    this.prop.ErrorMessage = "";
+    this.prop.Value = "";
+    this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql 5-Array
+    this.prop.RowSource = "vi_cap_comeind.nom_ind,exp_ind";
+    this.prop.ReadOnly = false;
+    this.prop.ColumnCount = 2;
+    this.prop.BoundColumn = 1;
+    this.prop.ColumnWidths = "50%,50%";
+    this.prop.Visible = false;
+    this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
+    //this.style.zIndex=3
   }
- 
+
   public async when() {
-    this.Form.bt_gen_forma.prop.Visible= false
-    this.Form.grid_form.prop.Visible = false
-    this.Form.grid_columns.prop.Visible = false
+    this.Form.bt_gen_forma.prop.Visible = false;
+    this.Form.grid_form.prop.Visible = false;
+    this.Form.grid_columns.prop.Visible = false;
 
-  return true
-}
-
-
-
+    return true;
   }
-
-
-
+}

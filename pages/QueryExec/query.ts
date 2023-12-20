@@ -5,39 +5,37 @@
 // Description : Equipo
 // Author : El Fer Blocks
 // Creation : 2023-02-17
-// Update Date  : 
+// Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from "@/classes/Component";
 
 export class query extends COMPONENT {
-
   constructor() {
-    super()
+    super();
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = 'Query SQL a ejecutar'
-    this.prop.Type = 'textArea'
-    this.prop.BaseClass = 'editText'
-    this.prop.ControlSource = ''
-    this.prop.Placeholder = 'pon aqui el query SQL'
-    this.prop.ToolTipText = ''
+    this.prop.textLabel = "Query SQL a ejecutar";
+    this.prop.Type = "textArea";
+    this.prop.BaseClass = "editText";
+    this.prop.ControlSource = "";
+    this.prop.Placeholder = "pon aqui el query SQL";
+    this.prop.ToolTipText = "";
     //this.prop.MaxLength=12
     //this.prop.Min="0"
     //this.prop.Max="999"
     //this.prop.Decimals=0
-    this.prop.Capture = true
+    this.prop.Capture = true;
     //this.prop.updateKey=true
-
 
     // this.RecordSource="" oJo
 
-    ///////////////////////// 
-    // Props 
+    /////////////////////////
+    // Props
     /////////////////////////
 
     // this.prop.Valid=true
@@ -86,12 +84,10 @@ export class query extends COMPONENT {
     // this.prop.BoundColumn= 2
     // this.prop.ColumnWidths= "50%,50%"
 
-
     //// Column grid ////
     // this.prop.Order = 2
 
-
-    ///////////////////////// 
+    /////////////////////////
     // Style
     /////////////////////////
     //<<style>>
@@ -111,27 +107,25 @@ export class query extends COMPONENT {
     // this.style.height= "auto"
     // this.style.fontSize= "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     // this.style.fontFamily= "Arial"
-    // this.style.zIndex= 100  // profundidad
+    ////this.style.zIndex= 100  // profundidad
     // this.style.alignContent= "center"
     // this.style.textAlign= "left"
     // this.style.wordWrap= "break-word"
     // this.style.cols = "60"
-
-
   }
 
-    ////////////////////////////////// 
-  // event when 
+  //////////////////////////////////
+  // event when
   ///////////////////////////////////
 
   async when() {
-    this.Parent.browse.prop.RowSource = ''
+    this.Parent.browse.prop.RowSource = "";
 
-    return true
+    return true;
   }
 
-  ////////////////////////////////// 
-  // event click 
+  //////////////////////////////////
+  // event click
   ///////////////////////////////////
   /*
   async click() {

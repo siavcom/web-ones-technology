@@ -27,7 +27,7 @@ export class fpr_apy extends COLUMN {
 
     this.prop.Capture = true;
     this.prop.updateKey = false;
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     // this.prop.componentStyle.width = "180px";
     this.style.width = "210px";
   }

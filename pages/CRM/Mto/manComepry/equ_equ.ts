@@ -25,7 +25,7 @@ export class equ_equ extends captureComponent {
       "select des_equ,equ_equ from vi_cap_db_equipo order by equ_equ";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.style.zIndex = 3;
+    // this.style.zIndex = 3;
     this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.componentStyle.width = "400px";

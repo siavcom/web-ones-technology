@@ -25,6 +25,6 @@ export class amu_tap extends COLUMN {
     this.prop.Decimals = 0;
     this.prop.Capture = true;
     this.prop.updateKey = false;
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
   }
 }

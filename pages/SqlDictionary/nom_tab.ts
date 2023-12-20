@@ -9,56 +9,53 @@
 // Clase base
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from "@/classes/Component";
 //import { nextTick } from 'vue';
 
-
 export class nom_tab extends COMPONENT {
-
   //  constructor(parent: Record<string, never>) {
   constructor() {
-    super()
-    
-    this.prop.BaseClass = 'comboBox'
-    this.prop.Visible= false
+    super();
+
+    this.prop.BaseClass = "comboBox";
+    this.prop.Visible = false;
     this.prop.textLabel = "Tablas del sistema";
-    this.prop.Capture = true // al quitarlo, quito reactividad oJo
+    this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = "select des_tab,nom_tab,sis_sis from vi_cap_cometab order by sis_sis,nom_tab"
+    this.prop.RowSource =
+      "select des_tab,nom_tab,sis_sis from vi_cap_cometab order by sis_sis,nom_tab";
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths ="60%,30%,10%";
+    this.prop.ColumnWidths = "60%,30%,10%";
     this.prop.Visible = false;
-    this.prop.MultiSelect= false;
-    this.prop.List= [],
-    this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-    this.style.width='600px'
-    this.prop.componentStyle.width ='350px'
-    this.style.zIndex=2
+    this.prop.MultiSelect = false;
+    (this.prop.List = []), (this.prop.Style = 2); //0=DropDown Combo 2=DropDown List
+    this.style.width = "600px";
+    this.prop.componentStyle.width = "350px";
+    //this.style.zIndex=2
   }
-
 
   ////////////////////////////////
   public async when() {
     // public setFocus = async () => {
-   // console.log('nom_tab when')
-    this.Form.grid_datos.prop.Visible = false
-    this.Form.grid_vistas.prop.Visible = false
-    this.Form.grid_indices.prop.Visible = false
-    await this.Form.db.useNodata('vi_cap_comedat')
-    await this.Form.db.useNodata('vi_cap_comeind')
-    await this.Form.db.useNodata('vi_cap_comevis')
-    this.Form.bt_gen_model.prop.Visible = false
-    this.Form.bt_gen_indices.prop.Visible = false
-    this.Form.bt_gen_vistas.prop.Visible = false
-   return true
+    // console.log('nom_tab when')
+    this.Form.grid_datos.prop.Visible = false;
+    this.Form.grid_vistas.prop.Visible = false;
+    this.Form.grid_indices.prop.Visible = false;
+    await this.Form.db.useNodata("vi_cap_comedat");
+    await this.Form.db.useNodata("vi_cap_comeind");
+    await this.Form.db.useNodata("vi_cap_comevis");
+    this.Form.bt_gen_model.prop.Visible = false;
+    this.Form.bt_gen_indices.prop.Visible = false;
+    this.Form.bt_gen_vistas.prop.Visible = false;
+    return true;
   }
 
-//  public async valid() {
-//    await super.valid()
+  //  public async valid() {
+  //    await super.valid()
 
-    /*    console.log('this.Value', this.prop.Value)
+  /*    console.log('this.Value', this.prop.Value)
         if (ThisForm.dic_dat.prop.Value == 'D') {  // Datos
           //ThisForm.grid_datos.renglon.length=0 // Limpiamos los renglones que tenga el grid
           ThisForm.grid_datos.prop.Visible=true 
@@ -89,6 +86,6 @@ export class nom_tab extends COMPONENT {
     
         }
     */
-//   return true
-//  }; // fin metodo valid
+  //   return true
+  //  }; // fin metodo valid
 }

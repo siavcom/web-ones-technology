@@ -22,6 +22,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/ok-accept.svg";
     this.prop.TabIndex = 1;
+    this.style.width = "30px";
   } // Fin constructor
 
   async click() {

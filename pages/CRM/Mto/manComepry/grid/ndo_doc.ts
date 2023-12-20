@@ -5,46 +5,41 @@
 // Description : Orden de la actividad
 // Author : El Fer Blocks
 // Creation : 2023-07-10
-// Update Date  : 
+// Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
 
-import { COLUMN } from '@/classes/Column'
+import { COLUMN } from "@/classes/Column";
 
 export class ndo_doc extends COLUMN {
+  constructor() {
+    super();
 
-    constructor() {
-        super()
-   
-       // const nom_ind=renglon[i]['nom_ind']
-         
-        this.textLabel = 'Número' // Column Header
-        this.prop.Type ='number'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_comeapy.ndo_doc'
-        this.prop.Decimals=0
-        this.prop.updateKey=false
-        this.prop.ReadOnly=true
-        this.style.zIndex = 1
-        this.style.width='64px'
- 
+    // const nom_ind=renglon[i]['nom_ind']
 
+    this.textLabel = "Número"; // Column Header
+    this.prop.Type = "number";
+    this.prop.BaseClass = "editText";
+    this.prop.ControlSource = "vi_cap_comeapy.ndo_doc";
+    this.prop.Decimals = 0;
+    this.prop.updateKey = false;
+    this.prop.ReadOnly = true;
+    // this.style.zIndex = 1
+    this.style.width = "64px";
+  }
 
-    }
+  //////////////////////////////////
+  // event when
+  ///////////////////////////////////
 
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
-    
   async when() {
-     this.prop.ReadOnly=true
-     return false
-    
-    }
-    
-/*
+    this.prop.ReadOnly = true;
+    return false;
+  }
+
+  /*
     ////////////////////////////////// 
     // event valid 
     ///////////////////////////////////
@@ -72,10 +67,10 @@ export class ndo_doc extends COLUMN {
 
 */
 
-    ////////////////////////////////// 
-    // event click 
-    ///////////////////////////////////
-    /*
+  //////////////////////////////////
+  // event click
+  ///////////////////////////////////
+  /*
     async click() {
 
     }

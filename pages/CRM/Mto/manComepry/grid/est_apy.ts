@@ -41,7 +41,7 @@ export class est_apy extends COLUMN {
     this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.componentStyle.width = "100px";
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     this.style.width = "110px";
   }
 

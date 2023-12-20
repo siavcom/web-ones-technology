@@ -27,7 +27,7 @@ export class est_tap extends COLUMN {
     this.prop.componentStyle.width = "250px";
     this.style.width = "250px";
 
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
 
     // this.RecordSource="" oJo
 
@@ -104,7 +104,7 @@ export class est_tap extends COLUMN {
     // this.style.height= "auto"
     // this.style.fontSize= "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     // this.style.fontFamily= "Arial"
-    // this.style.zIndex= 100  // profundidad
+    ////this.style.zIndex= 100  // profundidad
     // this.style.alignContent= "center"
     // this.style.textAlign= "left"
     // this.style.wordWrap= "break-word"

@@ -24,7 +24,7 @@ export class des_tap extends COLUMN {
     this.prop.MaxLength = 128;
     this.prop.Capture = true;
     this.prop.updateKey = false;
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     this.prop.componentStyle.width = "250px";
     this.style.width = "250px";
   }

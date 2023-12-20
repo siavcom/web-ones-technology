@@ -4,22 +4,20 @@
 // Description : Hasta que insumo
 // Author : El Fer Blocks
 // Creation : 2023-10-11
-// Update Date  : 
+// Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from "@/classes/Component";
 export class has_isu extends COMPONENT {
+  constructor() {
+    super();
 
-    constructor() {
-        super()
-
-        this.prop.textLabel = 'Hasta que insumo'
-        this.prop.Type = "string"
-        this.prop.MaxLength=30
-        this.prop.Value=" "
-        this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
-        
-    }
+    this.prop.textLabel = "Hasta que insumo";
+    this.prop.Type = "string";
+    this.prop.MaxLength = 30;
+    this.prop.Value = " ";
+    //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
+  }
 }

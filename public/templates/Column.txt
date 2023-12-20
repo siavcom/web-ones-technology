@@ -36,7 +36,7 @@ export class <<cam_dat>> extends COLUMN {
         this.prop.RowSourceType = 0 //1-Value, 2-Alias, 3-Select SQL 5-Array
         this.prop.ColumnCount = 0  // Columns number
         this.prop.BoundColumn =0  // the result is bound to column number 2
-        this.style.zIndex = 1
+       // this.style.zIndex = 1
 
         // this.RecordSource="" oJo
 
@@ -115,7 +115,7 @@ export class <<cam_dat>> extends COLUMN {
         // this.style.height= "auto"
         // this.style.fontSize= "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
         // this.style.fontFamily= "Arial"
-        // this.style.zIndex= 100  // profundidad
+        ////this.style.zIndex= 100  // profundidad
         // this.style.alignContent= "center"
         // this.style.textAlign= "left"
         // this.style.wordWrap= "break-word"

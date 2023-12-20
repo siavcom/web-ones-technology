@@ -26,7 +26,7 @@ export class fco_apy extends COLUMN {
 
     this.prop.Capture = true;
     this.prop.updateKey = false;
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     this.style.width = "140px";
   }
 }

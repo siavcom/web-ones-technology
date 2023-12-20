@@ -104,7 +104,7 @@ export class tit_pry extends captureComponent {
     // this.style.height= "auto"
     // this.style.fontSize= "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     // this.style.fontFamily= "Arial"
-    // this.style.zIndex= 100  // profundidad
+    ////this.style.zIndex= 100  // profundidad
     // this.style.alignContent= "center"
     // this.style.textAlign= "left"
     // this.style.wordWrap= "break-word"

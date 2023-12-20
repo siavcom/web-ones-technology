@@ -26,7 +26,8 @@ export class tpy_tpy extends captureComponent {
     this.prop.Capture = true;
     this.prop.updateKey = true;
     this.prop.componentStyle.fontSize = "17px";
-    (this.prop.componentStyle.fontWeight = "bold"), (this.style.zIndex = 5);
+    this.prop.componentStyle.fontWeight = "bold";
+    //this.style.zIndex = 5;
     this.style.width = "300px";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";

@@ -24,7 +24,7 @@ export class log_usu extends COMPONENT {
       "select nom_usu,log_usu from man_comeusu order by log_usu";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.style.zIndex = 3;
+    // this.style.zIndex = 3;
 
     this.prop.componentStyle.width = "400px";
   }

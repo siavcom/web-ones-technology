@@ -25,7 +25,7 @@ export class emp_emp extends COMPONENT {
     this.prop.RowSource = [[""], [""]];
     this.prop.ColumnWidths = "37%,60%";
     this.prop.TabIndex = 1;
-    this.style.zIndex = 2;
+    // this.style.zIndex = 2;
     this.style.width = "auto";
     this.prop.componentStyle.width = "200px";
 

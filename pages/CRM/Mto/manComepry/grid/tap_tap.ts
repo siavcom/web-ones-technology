@@ -31,7 +31,7 @@ export class tap_tap extends COLUMN {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "80%,20%";
-    this.style.zIndex = 1;
+    // this.style.zIndex = 1;
     this.style.width = "200px";
     this.old_val = "";
   }

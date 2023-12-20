@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : tip_for
-// Descripcion : tipo de forma de mantenimiento 
+// Descripcion : tipo de forma de mantenimiento
 // Author : Fernando Cuadras Angulo
 // Creacion : Diciembre/2021
 // Ult.Mod  : 4/Julio /2023
@@ -9,15 +9,14 @@
 // Clase base
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from "@/classes/Component";
 
 export class tip_for extends COMPONENT {
-
   //  constructor(parent: Record<string, never>) {
   constructor() {
-    super()
+    super();
 
-    this.prop.BaseClass = 'comboBox'
+    this.prop.BaseClass = "comboBox";
     this.prop.textLabel = "Forma de captura";
     this.prop.ReadOnly = false;
     this.prop.Capture = false;
@@ -31,33 +30,31 @@ export class tip_for extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%";
     this.prop.Value = "F";
-     this.style.zIndex = 5
+    // this.style.zIndex = 5
   }
 
   async when() {
+    this.Form.tab_form.prop.Visible = false;
+    this.Form.tab_grid.prop.Visible = false;
 
-    this.Form.tab_form.prop.Visible = false
-    this.Form.tab_grid.prop.Visible = false
+    this.Form.vis_form.prop.Visible = false;
+    this.Form.vis_grid.prop.Visible = false;
 
-    this.Form.vis_form.prop.Visible = false
-    this.Form.vis_grid.prop.Visible = false
+    this.Form.grid_columns.prop.Visible = false;
+    this.Form.grid_form.prop.Visible = false;
 
-    this.Form.grid_columns.prop.Visible = false
-    this.Form.grid_form.prop.Visible = false
+    this.Form.bt_gen_forma.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Visible = false;
 
-    this.Form.bt_gen_forma.prop.Visible = false
-    this.Form.bt_aceptar.prop.Visible = false
-    
-    return true
+    return true;
   }
   async valid() {
-    if (this.prop.Value == 'C' || this.prop.Value == 'F')
-      this.Form.tab_form.prop.Visible = true
+    if (this.prop.Value == "C" || this.prop.Value == "F")
+      this.Form.tab_form.prop.Visible = true;
 
-    if (this.prop.Value == 'C' || this.prop.Value == 'G')
-      this.Form.tab_grid.prop.Visible = true
+    if (this.prop.Value == "C" || this.prop.Value == "G")
+      this.Form.tab_grid.prop.Visible = true;
 
-    return true
-
+    return true;
   }
 }

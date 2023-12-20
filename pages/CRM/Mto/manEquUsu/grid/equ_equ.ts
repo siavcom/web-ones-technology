@@ -24,7 +24,7 @@ export class equ_equ extends COLUMN {
       "select des_equ,equ_equ from Now.equipos order by equ_equ";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.style.zIndex = 3;
+    // this.style.zIndex = 3;
     this.prop.Capture = true;
     this.prop.updateKey = true;
     this.style.width = "300px";
