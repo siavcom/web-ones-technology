@@ -15,19 +15,20 @@
 
     <div>
       <a href="https://vuejs.org/">VUE 3,</a>
-    </div> 
+    </div>
     <div>
-      <a href="https://nuxt.com/">NUXT 3 for front-end Framework,</a> </div>
+      <a href="https://nuxt.com/">NUXT 3 for front-end Framework,</a>
+    </div>
     <div>
       <a href="https://nodejs.org/en/">NODE,</a>
-      
+
     </div>
     <div>
       <a href="http://expressjs.com/">EXPRESS for back-end </a>
-      
+
     </div>
     <div>
-      and 
+      and
     </div>
     <div>
       Postgres or MSSQL as DataBase
@@ -46,8 +47,6 @@
     </div>
     <div> <a href="https://www.npmjs.com/package/pinia/v/0.5.2"> pinia, </a>
     </div>
-    <div> <a href="https://www.npmjs.com/package/vue-good-table-next">vue-good-table-next, </a>
-    </div>
     <div> <a href="https://www.npmjs.com/package/vue-sweetalert2">vue-sweetalert2,</a>
     </div>
     <div> <a href="https://www.npmjs.com/package/vue3-table-lite">vue3-table-lite,</a>
@@ -65,6 +64,9 @@
       <a href="https://sequelize.org/">sequelize</a>
     </div>
     <div>
+      <a href="https://socket.io/">Socket.IO</a>
+    </div>
+    <div>
       <a href="https://sourceforge.net/projects/jasperreports/">Jasper reports library</a>
     </div>
     <div>
@@ -75,7 +77,7 @@
 
 
 
-</div>
+  </div>
 </template>
 
 <style scoped>

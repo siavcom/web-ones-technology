@@ -11,7 +11,8 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <div id='ThisForm' v-if="ThisForm.prop.Status != 'A'">
+  <!--header :style="{ 'display': 'inlineBlock' }"-->
+  <div id='LoadingData' v-if="ThisForm.prop.Status != 'A'">
 
     <div class="splash-screen">
       <div class="spinner-wrapper">
@@ -25,7 +26,7 @@
 
   <transition name='Mainform'>
 
-    <div :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'Main'" v-if="ThisForm.prop.Status != 'I'">
+    <div :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'">
       <section class="pagina" :style="ThisForm.style">
         <div class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
@@ -41,7 +42,7 @@
             <!--transition-group> -->
             <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
 
-            <div v-for="(compHeader) in ThisForm.header" :key="compHeader" :class="compHeader"
+            <div v-for="( compHeader ) in  ThisForm.header " :key="compHeader" :class="compHeader"
               v-show='ThisForm[compHeader].prop.Visible'>
               <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
@@ -70,7 +71,7 @@
 emit
               -->
               <TransitionGroup name='detailForm'>
-                <div v-for="(compMain) in ThisForm.main" :key="compMain" :class="compMain"
+                <div v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
                   <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
@@ -101,7 +102,8 @@ emit
               
               -->
 
-              <div v-for="(compFooter) in ThisForm.footer" :class="compFooter" v-show='ThisForm[compFooter].prop.Visible'>
+              <div v-for="( compFooter ) in  ThisForm.footer " :class="compFooter"
+                v-show='ThisForm[compFooter].prop.Visible'>
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
                 <component :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
                   v-bind:Component="ref(ThisForm[compFooter])" v-model:Value="ThisForm[compFooter].prop.Value"
@@ -140,6 +142,7 @@ emit
 
 
   </transition>
+  <!--/header-->
 </template>
 
 <script  lang="ts" setup>

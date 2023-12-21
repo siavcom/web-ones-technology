@@ -16,7 +16,7 @@
       <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" :ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
-        @input.self="onInput" @keypress="keyPress($event)" @load="onLoad($event)">
+        @input.self="onInput" @keypress="keyPress($event)">
 
       <!--spinner-->
 
@@ -244,7 +244,7 @@ const zIndex = divStyle.zIndex
 const componentStyle = reactive(props.prop.componentStyle)
 componentStyle.zIndex = zIndex
 
-const toolTipTextStyle = { zIndex: zIndex + 10 }
+const toolTipTextStyle = { zIndex: zIndex + 20 }
 const focusIn = ref(0)
 
 const currentValue = ref(['', '']) // Valor para capturar

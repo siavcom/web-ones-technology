@@ -27,7 +27,7 @@
       -->
       <div v-else class="comboBox" :style='componentStyle' ref="RefCombo">
 
-        <input :id="Id" class="textLabel" :style="TextLabel" :readonly="prop.Style == 2 || prop.ReadOnly"
+        <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="prop.Style == 2 || prop.ReadOnly"
           :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
           @focus.prevent="toggle = false; inputBufferBuffer = ''" @focusout="emitValue()" />
 
@@ -196,15 +196,15 @@ componentStyle.zIndex = zIndex
 const toggleZIndex = divStyle.zIndex + 1
 
 const inputWidth = ref('auto')
-const labelStyle = ref({
-  width: inputWidth.value,
+const labelStyle = {
+  width: 'auto', //inputWidth.value,
   border: "1px solid rgb(0, 5, 2)",
   borderRadius: "5px",
   background: "white",
   color: "black",
   position: "relative",
   zIndex: toggleZIndex
-})
+}
 
 
 const List = ref(props.prop.List)
@@ -218,25 +218,27 @@ const columnContainer = reactive({
 let inputBuffer = ''
 
 
-const TextLabel = ref({})
+let textLabelStyle = {}
 if (props.prop.textLabel.length > 0) {
-  TextLabel.value = props.prop.componentStyle
+  textLabelStyle = props.prop.componentStyle
 } else {
-  TextLabel.value = props.style
+  textLabelStyle = componentStyle
 
-
-  //TextLabel.width = props.style.width
-  TextLabel.value.height = 'fit-content'
+  textLabelStyle.zIndex = zIndex
+  //textLabelStyle.width = props.style.width
+  textLabelStyle.height = 'fit-content'
 
   let medida = ''
 
-  if (TextLabel.value.width.search("px") > 0)
+  if (textLabelStyle.width.search("px") > 0)
     medida = 'px'
-  if (TextLabel.value.width.search("%") > 0)
+  if (textLabelStyle.width.search("%") > 0)
     medida = '%'
 
-  let textWidth = +TextLabel.value.width.replaceAll(medida, '') - 30
-  TextLabel.value.width = textWidth.toString() + medida
+  let textWidth = +textLabelStyle.width.replaceAll(medida, '') - 30
+  textLabelStyle.width = textWidth.toString() + medida
+
+
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -473,7 +475,8 @@ function myClick(e) {
   const clickedEl = e.target;
   if (RefCombo && RefCombo.value != null)
     if (!RefCombo.value.contains(clickedEl)) {
-      toggle.value = false
+      if (toggle.value)
+        toggle.value = false
       // console.log(This.prop.Name,'ComboBox focus  out ',toggle.value)
     }
 
@@ -858,7 +861,7 @@ watch(
   (new_val, old_val) => {
 
     // console.log('toggle.value', props.Name, old_val, new_val)
-    if (new_val == true) onFocus()
+    if (!old_val && new_val) onFocus()
   },
   { deep: false }
 );
@@ -1000,7 +1003,7 @@ watch(
   () => props.style.width,
 
   (new_val, old_val) => {
-    // console.log("Cambio tamaño ", inputWidth.value);
+    console.log("Cambio tamaño ", inputWidth.value);
     if (new_val != old_val) {
       if (props.style.width.substr(-2, 2) == 'px') {
         const len = props.style.width.length - 2

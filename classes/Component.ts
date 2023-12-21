@@ -199,7 +199,7 @@ export class COMPONENT {
       //      console.log('Init ThisForm', this.Name, this.Form)
       TabIndex = 1;
       sw_component = false;
-      console.log(
+      /* console.log(
         "Init constructor.name",
         this.constructor.name,
         "Name=",
@@ -207,6 +207,7 @@ export class COMPONENT {
         "Map =",
         this.prop.Map
       );
+      */
     }
     //console.log('Init TabIndex', this.Name, TabIndex,this)
 

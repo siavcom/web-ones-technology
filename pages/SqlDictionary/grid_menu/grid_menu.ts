@@ -18,6 +18,7 @@ import { des_prg } from "./des_prg";
 import { num_prg } from "./num_prg";
 import { par_prg } from "./par_prg";
 import { sis_sis } from "./sis_sis";
+import { sis_prg } from "./sis_prg";
 //import {tpr_prg} from './tpr_prg'
 import { ico_prg } from "./ico_prg";
 
@@ -31,6 +32,7 @@ export class grid_menu extends GRID {
   public par_prg = new par_prg();
   public sis_sis = new sis_sis();
   public ico_prg = new ico_prg();
+  public sis_prg = new sis_prg();
 
   //  constructor(parent: Record<string, never>) {
   constructor() {

@@ -195,16 +195,18 @@ export class VFPDB {
         // generamos la tabla segun la estructura regresada
         return false;
       // abre  la tabla de mantenimiento
+      /*
       console.log(
         "Db useNodata VIEW despues de generar_tabla==> ",
         alias,
         "response=",
         response
       );
+      */
       if (this.View[alias] && this.View[alias].tip_obj.trim() == "VIEW") {
         alias = this.View[alias].tablaSql.trim();
         await this.useNodata(alias);
-        console.log("Db useNodata VIEW salir useNodata==> ", alias);
+        /* console.log("Db useNodata VIEW salir useNodata==> ", alias);*/
       }
       //  this.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
@@ -711,6 +713,7 @@ export class VFPDB {
 
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
+        /*
         if (dat_act[row][campo] == null) dat_act[row][campo] = "";
 
         if (typeof dat_act[row][campo] == "string") {
@@ -719,6 +722,7 @@ export class VFPDB {
           else old_dat[campo] = old_dat[campo].trim();
         }
 
+        */
         //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
@@ -748,6 +752,8 @@ export class VFPDB {
 
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
+
+          console.log("Db Campo=", campo, "tipo=", tipo);
           switch (true) {
             // switch (typeof dat_act[row][campo]) {
             case tipo == "number" ||
@@ -758,10 +764,17 @@ export class VFPDB {
               m[campo] = +dat_act[row][campo];
               break;
             case tipo == "boolean" || tipo == "logical":
+              if (dat_act[row][campo] == null) dat_act[row][campo] = 0;
+              if (old_dat[campo] == null) old_dat[campo] = 0;
+
               m[campo] = +dat_act[row][campo];
               break;
 
             case tipo == "date" || tipo == "time":
+              if (dat_act[row][campo] == null)
+                dat_act[row][campo] = "1900-01-01";
+              if (old_dat[campo] == null) old_dat[campo] = "1900-01-01";
+
               let valor = dat_act[row][campo]; //.replaceAll('-','')
               //valor = valor.replaceAll("T", "");
               if (valor.length > 10 && valor.length <= 16) {
@@ -781,7 +794,7 @@ export class VFPDB {
               try {
                 if (dat_act[row][campo] != null) {
                   m[campo] =
-                    typeof dat_act[row][campo] == "string"
+                    tipo == "string"
                       ? dat_act[row][campo].trim()
                       : dat_act[row][campo];
                 } else m[campo] = "";
@@ -2028,7 +2041,7 @@ export class VFPDB {
 
       // console.log('Db ALASQL Estructura ===>',des_tab)
       // Creamos la tablas
-      console.log("Db ins_sql=", des_tab);
+      //  console.log("Db ins_sql=", des_tab);
 
       try {
         //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
