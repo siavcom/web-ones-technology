@@ -41,7 +41,8 @@ export class FORM extends COMPONENT {
 
     this.prop.Status = "I";
 
-    this.style.width = "90%";
+    //this.style.width = "99%";
+    this.style.width = "-moz-available";
     this.style.height = "96%";
     // this.style.maxWidth = '100%'
     //    this.style.maxHeight='920px'

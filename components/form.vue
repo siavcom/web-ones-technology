@@ -26,7 +26,8 @@
 
   <transition name='Mainform'>
 
-    <div :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'">
+    <div :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'"
+      :style="{ 'width': '-moz-available' }">
       <section class="pagina" :style="ThisForm.style">
         <div class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->

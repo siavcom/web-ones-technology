@@ -203,7 +203,7 @@ const labelStyle = {
   background: "white",
   color: "black",
   position: "relative",
-  zIndex: toggleZIndex
+  zIndex: divStyle.zIndex + 1
 }
 
 
@@ -212,34 +212,38 @@ const columnContainer = reactive({
   width: 'auto',
   height: 'auto',
   maxHeight: '200px',
-  zIndex: toggleZIndex
+  zIndex: divStyle.zIndex + 1
 })
 
 let inputBuffer = ''
 
 
-let textLabelStyle = {}
+// let textLabelStyle = {}
+/*
 if (props.prop.textLabel.length > 0) {
   textLabelStyle = props.prop.componentStyle
 } else {
   textLabelStyle = componentStyle
 
-  textLabelStyle.zIndex = zIndex
-  //textLabelStyle.width = props.style.width
-  textLabelStyle.height = 'fit-content'
+*/
+const { ...textLabelStyle } = divStyle
 
-  let medida = ''
+// textLabelStyle.zIndex = zIndex
 
-  if (textLabelStyle.width.search("px") > 0)
-    medida = 'px'
-  if (textLabelStyle.width.search("%") > 0)
-    medida = '%'
+textLabelStyle.height = 'fit-content'
 
-  let textWidth = +textLabelStyle.width.replaceAll(medida, '') - 30
-  textLabelStyle.width = textWidth.toString() + medida
+let medida = ''
+
+if (textLabelStyle.width.search("px") > 0)
+  medida = 'px'
+if (textLabelStyle.width.search("%") > 0)
+  medida = '%'
+
+let textWidth = +textLabelStyle.width.replaceAll(medida, '') - 30
+textLabelStyle.width = textWidth.toString() + medida
 
 
-}
+//} fin textLabel
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -1003,7 +1007,7 @@ watch(
   () => props.style.width,
 
   (new_val, old_val) => {
-    console.log("Cambio tamaño ", inputWidth.value);
+    // console.log("Cambio tamaño ", inputWidth.value);
     if (new_val != old_val) {
       if (props.style.width.substr(-2, 2) == 'px') {
         const len = props.style.width.length - 2

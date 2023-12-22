@@ -6,16 +6,14 @@
 // Ult.Mod  : 09/Junio/2023
 /////////////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
+import { COMPONENT } from "@/classes/Component";
 
 export class displayPdf extends COMPONENT {
- 
   constructor() {
-    super()
-        this.prop.BaseClass = 'embedpdf'
-        this.prop.Visible=false
-        this.style.width='1100px'
-        this.style.height='100%'
-
-   }
+    super();
+    this.prop.BaseClass = "embedpdf";
+    this.prop.Visible = false;
+    this.style.width = "-moz-available"; //1100px
+    this.style.height = "100%";
+  }
 }

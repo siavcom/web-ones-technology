@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////
 // BaseClass : reportForm
 // Class : reportVtas
-// Description : Catalogo de clientes
+// Description : Documentos de ventas
 // Author : El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-09-20
 // Update Date  : 2023-09-29
