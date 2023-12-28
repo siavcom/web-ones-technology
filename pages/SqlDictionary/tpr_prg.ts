@@ -24,8 +24,9 @@ export class tpr_prg extends COMPONENT {
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "80%,10%";
-    //this.style.width = '400px' /* width/height  - initial value: auto */
+    this.prop.ColumnWidths = "150px,10px";
+    this.style.width = "400px"; /* width/height  - initial value: auto */
+    this.prop.componentStyle.width = "200px";
     //this.style.zIndex=2
     this.prop.Visible = false;
   }

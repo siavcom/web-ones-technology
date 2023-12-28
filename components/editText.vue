@@ -131,45 +131,65 @@ const props = defineProps<{
   // Show: true;
   // Component: null;
   prop: {
-    This: null;
-    ToolTipText: string;
-    View: "";
-    Field: "";
-    Value: string;
-    Placeholder: "";
-    Format: "";
-    InputMask: "";
-    MaxLength: 0;
-    ReadOnly: false;
-    Disabled: boolean;
-    Tag: "";
-    Valid: true;
-    Capture: true;
-    Name: string;
-    textLabel: "";
-    Type: string;
-    Visible: true;
-    ControlSource: string;
-    Status: string;
-    ErrorMessage: '';
-    ShowError: boolean;
-    TabIndex: number;
-    Key: string;
-    BaseClass: "EditText";
-    Grid: false;
+
     Autofocus: false;
-    Min: number;
-    Max: number;
-    Focus: boolean;
-    First: boolean;
-    Notation: 'standard'; //standard,scientific,enginniering,compact
-    Style: string; // decimal, currency,percent,unit
+
+    BaseClass: "EditText";
+
+    Capture: true;
+    ControlSource: string;
     Currency: 'MXN'; //USD,EUR,MXN
     CurrencyDisplay: 'code'; //to use the ISO currency code.
+
     Decimals: number;
-    Nu: 'arab';//
-    When: boolean;
+    Disabled: boolean;
+
+    ErrorMessage: '';
+
+    Field: "";
+    First: boolean;
+    Focus: boolean;
+    Format: "";
+
+    Grid: false;
+
     htmlId: string;
+
+    InputMask: "";
+
+    Key: string;
+
+    MaxLength: 0;
+    Min: number;
+    Max: number;
+
+    Name: string;
+    Notation: 'standard'; //standard,scientific,enginniering,compact
+    Nu: 'arab';//
+
+
+    Placeholder: "";
+
+    ReadOnly: false;
+
+    Status: string;
+    ShowError: boolean;
+
+    Style: string; // decimal, currency,percent,unit
+
+    TabIndex: number;
+    Tag: "";
+    textLabel: "";
+    This: null;
+    ToolTipText: string;
+    Type: string;
+
+    Valid: true;
+    Value: [String, Number, Date];
+    View: "";
+    Visible: true;
+    When: boolean;
+
     componentStyle: {
       background: "white";
       padding: "5px"; // Relleno

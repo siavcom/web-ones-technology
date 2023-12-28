@@ -552,6 +552,7 @@ const obtMenu = () => {
 // Obten subMenu
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
+  console.log('SubMenu Menu=', menu.value)
   isOpen.value = true
   // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
@@ -608,7 +609,7 @@ const obtSubMenu = (system: string) => {
     subItemsPro = [...Pro]
     subMen.value = true
     isOpen.value = true
-
+    console.log('SubMenu menu ====> subMen=', Man, Rep.Pro)
   }
 }
 

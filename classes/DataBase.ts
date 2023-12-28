@@ -753,7 +753,14 @@ export class VFPDB {
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
 
-          console.log("Db Campo=", campo, "tipo=", tipo);
+          console.log(
+            "Db Campo=",
+            campo,
+            "tipo=",
+            tipo,
+            "Old=",
+            old_dat[campo]
+          );
           switch (true) {
             // switch (typeof dat_act[row][campo]) {
             case tipo == "number" ||
@@ -762,10 +769,14 @@ export class VFPDB {
               tipo == "tinyint" ||
               tipo == "bigint":
               m[campo] = +dat_act[row][campo];
+              if (dat_vis.tip_llamada != "INSERT" && old_dat[campo] == null)
+                old_dat[campo] = 0;
+
               break;
             case tipo == "boolean" || tipo == "logical":
               if (dat_act[row][campo] == null) dat_act[row][campo] = 0;
-              if (old_dat[campo] == null) old_dat[campo] = 0;
+              if (dat_vis.tip_llamada != "INSERT" && old_dat[campo] == null)
+                old_dat[campo] = 0;
 
               m[campo] = +dat_act[row][campo];
               break;
@@ -773,7 +784,8 @@ export class VFPDB {
             case tipo == "date" || tipo == "time":
               if (dat_act[row][campo] == null)
                 dat_act[row][campo] = "1900-01-01";
-              if (old_dat[campo] == null) old_dat[campo] = "1900-01-01";
+              if (dat_vis.tip_llamada != "INSERT" && old_dat[campo] == null)
+                old_dat[campo] = "1900-01-01";
 
               let valor = dat_act[row][campo]; //.replaceAll('-','')
               //valor = valor.replaceAll("T", "");
@@ -791,40 +803,38 @@ export class VFPDB {
               //            m[campo] = "'" + dat_act[row][campo] + "'"
 
               // se tiene que validar como string y nll ya que asi viene desde alaSQL
-              try {
-                if (dat_act[row][campo] != null) {
-                  m[campo] =
-                    tipo == "string"
-                      ? dat_act[row][campo].trim()
-                      : dat_act[row][campo];
-                } else m[campo] = "";
-              } catch (error) {
-                console.log(
+              //////
+              //              try {
+              if (tipo == "string") {
+                if (dat_act[row][campo] == null) dat_act[row][campo] = "";
+
+                if (dat_vis.tip_llamada != "INSERT") {
+                  if (old_dat[campo] == null) old_dat[campo] == "";
+                  else old_dat[campo] = old_dat[campo].trim();
+                }
+                m[campo] = dat_act[row][campo].trim();
+              } else m[campo] = dat_act[row][campo];
+            /*           } catch (error) {
+                console.error(
                   error,
+                  "tipo=",
+                  tipo,
                   "campo=",
                   campo,
                   "Valor=",
-                  dat_act[row][campo]
+                  m[campo]
                 );
                 return;
               }
-            //console.log('Db tableUpdate campo=', campo,'m=',m[campo],'dat_act',dat_act[row][campo] )
+ */
           }
-          //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
 
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
-          if (val_def[campo]) {
+          if (
+            val_def[campo] &&
+            (dat_vis.tip_llamada == "INSERT" || !(old_dat[campo] == m[campo]))
+          ) {
             dat_vis.dat_act[campo] = m[campo]; // dat_act[row][campo];
-
-            console.log(
-              "tableUpdate Actualiza CAMPO=",
-              campo,
-              "Valor=",
-              dat_vis.dat_act[campo],
-              " Old value=",
-              old_dat[campo]
-            );
-            //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true;
           }
         }
@@ -2372,13 +2382,13 @@ return false;
          */
         //  this.axiosActive = false;
         const respuesta = response.data;
-        console.log(
+        /* console.log(
           "5 Db Axios call response  ======>>>",
           dat_lla,
           "respuesta",
           "OK",
           respuesta
-        );
+        ); */
         return respuesta;
       } catch (thrown) {
         console.log("Axios stop=====>>>>>>> ", thrown);

@@ -191,7 +191,7 @@ export class COMPONENT {
     if (!TabIndex) TabIndex = 1;
     if (!Form) {
       // Inicializamos el this.Form
-      console.log("ThisForm.name 2", this.constructor.name);
+      //console.log("ThisForm.name 2", this.constructor.name);
 
       Form = this;
       this.prop.Map = "ThisForm"; // this.constructor.name
@@ -227,7 +227,7 @@ export class COMPONENT {
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
       if (this.Form.db) this.Sql = this.Form.db;
-
+      /*
       console.log(
         "Init constructor.name",
         this.constructor.name,
@@ -235,7 +235,7 @@ export class COMPONENT {
         this.Name,
         "Map =",
         this.prop.Map
-      );
+      ); */
     }
     for (const componente in this) {
       if (
@@ -251,7 +251,7 @@ export class COMPONENT {
       ) {
         //  console.log('Init Component '+componente,'Name==',this[componente].Name)
         if (this[componente].Name == undefined) {
-          console.error("Component ", componente + " has Name=undefined");
+          console.warn("Component ", componente + " has Name=undefined");
 
           return;
         }
@@ -414,21 +414,21 @@ export class COMPONENT {
 
     */
     this.prop.Status = "A";
-
+    /*
     console.log(
       "Component init Name=",
       this.Name
-      //   this.prop.Map,
-      //     "Elements=",
-      //     this.elements //,
-      //     "header=",
-      //     this.header,
-      //    "main=",
-      //    this.main,
-      //    "footer=",
-      //    this.footer
+         this.prop.Map,
+           "Elements=",
+           this.elements ,
+           "header=",
+           this.header,
+          "main=",
+          this.main,
+          "footer=",
+          this.footer
     );
-
+*/
     if (this.init) {
       //  console.log('Component init Name=', this.Name,'Map=', this.prop.Map)
       await this.init(); // Corre el init principal
@@ -570,6 +570,6 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
   Refe(el: any) {
     this.Ref = el.$el;
-    console.log("Columna Ref===>", this.Ref);
+    // console.log("Columna Ref===>", this.Ref);
   }
 }

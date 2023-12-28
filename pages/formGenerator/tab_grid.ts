@@ -29,12 +29,12 @@ export class tab_grid extends COMPONENT {
       "select des_tab,nom_tab from vi_cap_cometab order by nom_tab";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "80%,30%";
+
     this.prop.Visible = false;
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
-    this.prop.componentStyle.width = "400px";
-    this.style.width = "600px";
-    // this.style.zIndex = 4
+    this.prop.ColumnWidths = "350px,125px";
+    this.prop.componentStyle.width = "250px";
+    this.style.width = "400px";
   }
 
   public async when() {

@@ -28,10 +28,11 @@ export class vis_form extends COMPONENT {
 
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "80%,30%";
+
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
-    this.prop.componentStyle.width = "400px";
-    this.style.width = "600px";
+    this.prop.ColumnWidths = "350px,125px";
+    this.prop.componentStyle.width = "250px";
+    this.style.width = "400px";
     //this.style.zIndex=2
   }
 

@@ -37,8 +37,9 @@ export class bt_gen_forma extends COMPONENT {
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/ok-accept.svg";
     this.prop.Visible = false;
-    this.style.maxWidth = "min-content";
+    //this.style.maxWidth = "min-content";
     this.prop.TabIndex = 2;
+    this.style.width = "30px";
   } // Fin constructor
 
   async click() {

@@ -56,7 +56,7 @@ const props = defineProps<{
     ToolTipText: string;
     View: "";
     Field: "";
-    Value: "";
+    Value: [String, Number, Date];
     Caption: string;
     Placeholder: "";
     Format: "";

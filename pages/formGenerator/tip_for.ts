@@ -28,9 +28,10 @@ export class tip_for extends COMPONENT {
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "75%,25%";
     this.prop.Value = "F";
-    // this.style.zIndex = 5
+    this.prop.ColumnWidths = "150px,25px";
+    this.prop.componentStyle.width = "250px";
+    this.style.width = "400px";
   }
 
   async when() {

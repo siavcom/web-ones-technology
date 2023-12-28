@@ -8,23 +8,20 @@
 ///////////////////////////////////////
 // Clase base
 ///////////////////////////////////////
-import { COLUMN } from '@/classes/Column'
+import { COLUMN } from "@/classes/Column";
 
 export class wjs_vis extends COLUMN {
+  //  constructor(parent: Record<string, never>) {
+  constructor() {
+    super();
+    this.prop.Order = 3;
+    this.textLabel = "Where SQL =";
+    this.prop.BaseClass = "editText";
+    this.prop.Type = "textArea";
+    this.prop.ControlSource = "vi_cap_comevis.wjs_vis";
+    this.prop.ToolTipText = "Where SQL con macro sustitucion para TypeScript";
+    this.prop.Placeholder = "only where condition (without where =) ";
 
-    //  constructor(parent: Record<string, never>) {
-    constructor() {
-        super()
-        this.prop.Order = 3
-        this.textLabel = 'Where SQL '
-        this.prop.BaseClass = 'editText'
-        this.prop.Type = 'textArea'
-        this.prop.ControlSource = 'vi_cap_comevis.wjs_vis'
-        this.prop.ToolTipText ='Where SQL con macro sustitucion para TypeScript'
-        this.prop.Placeholder = "Where SQL"
-
-        this.style.width='300px'
-    }
-
-
+    this.style.width = "300px";
+  }
 }

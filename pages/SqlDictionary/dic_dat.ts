@@ -31,9 +31,9 @@ export class dic_dat extends COMPONENT {
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "80%,20%";
-    this.style.width = "500px";
-    this.prop.componentStyle.width = "300px";
+    this.prop.ColumnWidths = "300px,10px";
+    this.style.width = "400px";
+    this.prop.componentStyle.width = "200px";
 
     //this.style.zIndex=3
   }

@@ -249,7 +249,11 @@ export class GRID extends COMPONENT {
       // Actualiza todos los registros
       MessageBox("Datos grabados");
     } else {
-      MessageBox("No se grabaron los datos", 16, "ERROR");
+      MessageBox(
+        "No se grabaron los datos de la tabla =" + this.prop.RecordSource,
+        16,
+        "ERROR"
+      );
     }
     return resultado;
   }
