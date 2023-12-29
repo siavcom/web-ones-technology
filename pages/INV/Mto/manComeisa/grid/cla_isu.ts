@@ -16,10 +16,40 @@ import { COLUMN } from "@/classes/Column";
 export class cla_isu extends COLUMN {
   constructor() {
     super();
-    this.textLabel = "Insumo"; // Column Header
+    this.textLabel = "Clave del insumo"; // Column Header
     this.prop.ControlSource = "vi_cap_comeisa.cla_isu";
     this.prop.Capture = true;
     this.prop.updateKey = true;
     this.style.width = "300px";
+  }
+  async when() {
+    if (this.Parent.num_fam.prop.Value > 0) {
+      this.prop.ReadOnly = true;
+      this.prop.Valid = true;
+      return false;
+    } else {
+      this.prop.ReadOnly = false;
+      this.prop.Valid = false;
+      return true;
+    }
+  }
+  async valid() {
+    if (this.Parent.num_fam.prop.Value > 0) {
+      this.prop.Valid = true;
+      return true;
+    }
+    //const m = { cla_isu: this.prop.Value };
+    const res = await this.Sql.execute(
+      `select key_pri,des_isu from man_comeisu where cla_isu='${this.prop.Value}'`
+    );
+    if (res && res.length > 0 && res[0].key_pri > 0) {
+      this.Parent.des_isu.prop.Value = res[0].des_isu;
+      this.prop.Valid = true;
+      return true;
+    } else {
+      this.Parent.des_isu.prop.Value = "";
+      this.prop.Valid = false;
+      return false;
+    }
   }
 }

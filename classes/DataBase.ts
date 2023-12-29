@@ -704,31 +704,33 @@ export class VFPDB {
       }
 
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
-
+      /*
       console.log(
         "1 DataBase tableUpdate() vista de mantenimiento=",
         tab_man,
         this.View[tab_man]
       );
-
+       */
       //  recorremos todos los campos del registro  actualizar
-      for (const campo in dat_act[row]) {
-        /*
-        if (dat_act[row][campo] == null) dat_act[row][campo] = "";
-
-        if (typeof dat_act[row][campo] == "string") {
-          dat_act[row][campo] = dat_act[row][campo].trim();
-          if (old_dat[campo] == null) old_dat[campo] = "";
-          else old_dat[campo] = old_dat[campo].trim();
-        }
-
-        */
+      //for (const campo in dat_act[row]) {        //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
+      for (const campo in this.View[tab_man].est_tabla) {
         //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
-        // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
-
         const nom_campo = campo.toLowerCase();
+        console.log(" DataBase tableUpdate campo=", campo);
+        /*
+        if (!this.View[tab_man].est_tabla[campo]) {
+          // Checa si el campo existe en la tabla de mantenimeinto
+          console.log(
+            "DataBase tableUpdate not exist campo=",
+            campo,
+            "in table=",
+            tab_man
+          );
+        } else {
+         */
         if (
+          this.View[tab_man].est_tabla[campo] &&
           nom_campo != "recno" &&
           nom_campo != "tie_cre" &&
           nom_campo != "tie_uac" &&
@@ -740,7 +742,7 @@ export class VFPDB {
             old_dat[campo] != dat_act[row][campo])
         ) {
           //cambiar segun tipo de campo en View
-
+          /*
           if (!this.View[tab_man].est_tabla[campo].tip_cam) {
             MessageBox(
               "Field " + campo + " inexistent in table" + tab_man,
@@ -749,7 +751,7 @@ export class VFPDB {
             );
             return false;
           }
-
+          */
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
 
@@ -838,7 +840,7 @@ export class VFPDB {
             sw_update = true;
           }
         }
-      }
+      } // EndFor
 
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = "";

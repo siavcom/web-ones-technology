@@ -8,20 +8,18 @@
 ///////////////////////////////////////
 // Clase base
 ///////////////////////////////////////
-import { COLUMN } from '@/classes/Column'
-
+import { COLUMN } from "@/classes/Column";
 
 export class ord_vis extends COLUMN {
-
-    //  constructor(parent: Record<string, never>) {
-    constructor() {
-        super()
-        this.prop.Order = 1
-        this.textLabel = 'Orden'
-        this.prop.BaseClass = 'editText'
-        this.prop.ControlSource = 'vi_cap_comevis.ord_vis'
-        this.prop.ToolTipText ='Variables que dan el orden de la vista'
-        this.prop.Placeholder = "Orden de la vista"
-        this.style.width='100px'
-    }
+  //  constructor(parent: Record<string, never>) {
+  constructor() {
+    super();
+    this.prop.Order = 1;
+    this.textLabel = "Orden";
+    this.prop.BaseClass = "editText";
+    this.prop.ControlSource = "vi_cap_comevis.ord_vis";
+    this.prop.ToolTipText = "Variables que dan el orden de la vista";
+    this.prop.Placeholder = "Orden de la vista";
+    this.style.width = "300px";
+  }
 }

@@ -207,7 +207,10 @@ export class GRID extends COMPONENT {
     //this.Form.db.select(this.prop.RecordSource)
 
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
-    // console.log("grid appendRow rows",await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+    console.log(
+      "grid appendRow rows ",
+      await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`)
+    );
     this.prop.Disabled = false;
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
     // this[this.main[0]].prop.First = true;

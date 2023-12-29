@@ -27,8 +27,9 @@ export class bt_aceptar extends COMPONENT {
 
   async click() {
     this.prop.Visible = false;
-    const m = { alm_td: this.Form.alm_tda.prop.Value };
+    const m = { alm_tda: this.Form.alm_tda.prop.Value };
     await this.Form.db.use("vi_cap_comeisa", m);
+
     this.Form.Grid.prop.RecordSource = "vi_cap_comeisa";
   }
 }

@@ -887,38 +887,15 @@ const focusOut = async () => {
 
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
-  console.log('KeyPress===>', $event.charCode)
+  // console.log('KeyPress===>', $event.charCode)
 
   if (ShowError.value) {
     ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
-  /*
-    if ($event.charCode == 13) {
-  
-      //console.log('Enter keyPress=', $event.charCode)
-  
-      //$event.charCode = 9
-      // window.event.keyCode = 9;
-      
-      //$event.target.parentElement.nextSibling.children[1].focus()
-      //next.focus();
-      // emit('tab')
-      Key.value = $event.charCode
-    
-      // emit('customChange', event.target.value.toUpperCase())
-  
-      // new KeyboardEvent('keydown', {
-      //      keyCode: 40
-      //  })
-  
-      //revisar esto
-      // $event.dispatchEvent(new KeyboardEvent('keyTab', { 'key': 'a' }));
-      return
-    }
-  */
-  if ($event.charCode == 13) //|| // Return
+  // new KeyboardEvent('keydown', {
+  if (props.prop.Type != 'textArea' && $event.charCode == 13) //|| // Return
   // $event.charCode == 13 // Down Key  
   {
     const TabIndex = This.prop.TabIndex
