@@ -22,12 +22,12 @@
       </div>
 
       <!--ComboBox 
-        <input class="textLabel" :readonly="prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
+        <input class="textLabel" :readonly="+prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
           @focusout="focusOut" />{{ displayText }}
       -->
       <div v-else class="comboBox" :style='componentStyle' ref="RefCombo">
 
-        <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="prop.Style == 2 || prop.ReadOnly"
+        <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
           :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
           @focus.prevent="toggle = false; inputBufferBuffer = ''" @focusout="emitValue()" />
 
@@ -178,6 +178,7 @@ const ToolTipText = ref(true)
 const Component = ref(props.prop.This)
 const This = Component.value
 const Id = This.prop.Name + props.Registro.toString()
+let thisElement: Element | null
 This.prop.htmlId = Id
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 const displayText = ref("");
@@ -597,21 +598,21 @@ const onFocus = async () => {
   This.prop.First = false
   ShowError.value = false
 
-  const element = document.getElementById(Id);
+  //const element = document.getElementById(Id);
 
-  if ((document.activeElement != element)) {
+  if (document.activeElement != thisElement) {
     // Ref.value.focus();
     // Ref.value.select();
 
-    element.focus({ focusVisible: true });
-    element.select();
+    thisElement.focus({ focusVisible: true });
+    thisElement.select();
 
   }
   setTimeout(function () {
-    element.focus({ focusVisible: true });
-    element.select();
+    thisElement.focus({ focusVisible: true });
+    thisElement.select();
 
-  }, 1);
+  }, 0);
 
 }
 
@@ -1045,7 +1046,7 @@ watch(
 /////////////////////////////////////////
 
 const init = async () => {
-
+  thisElement = document.getElementById(Id)
   if (props.prop.Type == 'date') {
     componentStyle.width = '100px'
     componentStyle.height = '20px'
@@ -1072,8 +1073,9 @@ const init = async () => {
     return
   }
 }
-
-init();
+onMounted(() => {
+  init() // Ejecuta el init
+});
 </script>
 
 

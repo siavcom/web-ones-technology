@@ -19,5 +19,7 @@ export class des_isu extends COLUMN {
     this.textLabel = "Descripción"; // Column Header
     this.prop.BaseClass = "textLabel";
     this.prop.ControlSource = "vi_cap_comeisa.des_isu";
+    this.prop.Capture = false;
+    this.prop.ReadOnly = true;
   }
 }

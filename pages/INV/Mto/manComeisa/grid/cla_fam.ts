@@ -25,9 +25,11 @@ export class cla_fam extends COLUMN {
   async when() {
     if (this.Parent.num_fam.prop.Value == 0) {
       this.prop.ReadOnly = true;
+      this.prop.Valid = true;
       return false;
     } else {
       this.prop.ReadOnly = false;
+      this.prop.Valid = false;
       return true;
     }
   }

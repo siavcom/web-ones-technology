@@ -20,6 +20,8 @@ export class num_fam extends COLUMN {
     this.prop.Type = "number";
     this.prop.ControlSource = "vi_cap_comeisa.num_fam";
     this.prop.Capture = true;
+    this.prop.updateKey = true;
+    this.prop.ToolTipText = "Familia=0 es por clave de producto";
     this.prop.Min = "0";
     this.prop.Max = "2";
     this.style.width = "50px";

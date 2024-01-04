@@ -1,6 +1,6 @@
 <template>
-  <div v-show="prop.Visible" class="divi" :style="{ maxHeight: prop.Style.maxHeight }">
-    <!--div class="mensajes" v-bind:style="componentStyle"-->
+  <div v-show="prop.Visible" class="divi" :style="style">
+    <!--div class="mensajes" v-bind:style="componentStyle"    :style="{ maxHeight: style.maxHeight } -->
     <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
@@ -105,6 +105,7 @@ const props = defineProps<{
     color: "#b94295";
     width: "500px";
     height: "30px";
+    maxHeight:"auto"
     fontFamily: "Arial";
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";

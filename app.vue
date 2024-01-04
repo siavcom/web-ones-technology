@@ -41,7 +41,7 @@
 
                 <li @click="isMan = !isMan">
                   <span class="links_options">{{ Props.maintenance }}</span>
-                  <img v-show="!isMan" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
+                  <img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
 

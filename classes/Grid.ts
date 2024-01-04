@@ -202,15 +202,16 @@ export class GRID extends COMPONENT {
     // leemos valores de los componentes de la forma
 
     // for (const i in this.Form.main)
+    // Forma principal de captura
     for (const comp of this.Form.main) m[comp] = this.Form[comp].prop.Value;
 
     //this.Form.db.select(this.prop.RecordSource)
 
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
-    console.log(
+    /*console.log(
       "grid appendRow rows ",
       await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`)
-    );
+    ); */
     this.prop.Disabled = false;
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
     // this[this.main[0]].prop.First = true;
@@ -250,7 +251,7 @@ export class GRID extends COMPONENT {
     );
     if (resultado) {
       // Actualiza todos los registros
-      MessageBox("Datos grabados");
+      MessageBox("Datos actualizados correctamente de " + this.prop.textLabel);
     } else {
       MessageBox(
         "No se grabaron los datos de la tabla =" + this.prop.RecordSource,
@@ -276,10 +277,14 @@ export class GRID extends COMPONENT {
       (await this.Form.db.tableUpdate(1, false, this.prop.RecordSource)) == true
     ) {
       // Actualiza todos los registros
-      MessageBox("Datos grabados");
+      MessageBox("Renglon actualizado correctamente");
       return true;
     } else {
-      MessageBox("No se grabaron los datos", 16, "ERROR");
+      MessageBox(
+        "No se grabó el reglon de la tabla =" + this.prop.RecordSource,
+        16,
+        "ERROR"
+      );
       return false;
     }
   }

@@ -33,7 +33,13 @@ export class cla_isu extends COLUMN {
       return true;
     }
   }
+  /**
+   * Validates the value of the `prop` property.
+   *
+   * @return {boolean} Returns `true` if the value is valid, otherwise `false`.
+   */
   async valid() {
+    this.prop.Value = this.prop.Value.toUpperCase();
     if (this.Parent.num_fam.prop.Value > 0) {
       this.prop.Valid = true;
       return true;

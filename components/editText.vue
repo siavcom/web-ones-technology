@@ -13,7 +13,7 @@
 
       <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
 
-      <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" :ref="Ref"
+      <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
         @input.self="onInput" @keypress="keyPress($event)">
@@ -231,7 +231,8 @@ const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true :
 const Component = ref(props.prop.This)
 const This = Component.value
 
-const Id = This.prop.Name + props.Registro.toString()
+const Id = This.prop.Name + props.Registro.toString().trim()
+let thisElement: Element | null    //: Element | null
 This.prop.htmlId = Id
 const Value = ref(props.prop.Value)
 //const Recno = ref(0)
@@ -756,8 +757,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     //   console.log('5) editText emitValue() ERRROR en Valid Name=', props.prop.Name)
 
     ShowError.value = true
-    const element = document.getElementById(Id);
-    element.select()
+    //const element = document.getElementById(Id);
+    thisElement.select()
     //Ref.value.select() // Hace select en el componente
     return
   }
@@ -772,7 +773,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 // Numeros
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
-const Numeros = async ($event) => {
+const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 
   let stringValue = $event.data.toString()
   //x =x.replace(/\D/g, '') 
@@ -885,7 +886,7 @@ const focusOut = async () => {
 // Descripcion: Cada tecla que se presiona en el input
 /////////////////////////////////////////////////////////////////
 
-const keyPress = ($event) => {
+const keyPress = ($event: { charCode: number; preventDefault: () => void; keycode: number; charCod: number; }) => {
   // <input       @keypress="keyPress($event)"
   // console.log('KeyPress===>', $event.charCode)
 
@@ -911,13 +912,13 @@ const keyPress = ($event) => {
 
       }
     }
-    const setElement = document.getElementById(nextFocus);
+    //const setElement = document.getElementById(nextFocus);
     console.log('KeyPres nextFocus =', nextFocus)
 
     $event.preventDefault();
-    console.log('KeyPres focus =', setElement)
-    if (setElement)
-      setElement.focus()
+    // console.log('EditText keyPres Name',this.prop.Name=', setElement)
+
+    thisElement.focus()
 
     $event.keycode = 9;
     return $event.keycode;
@@ -995,24 +996,29 @@ const onFocus = () => {
   This.prop.First = false
 
   emit("update:Value", Value.value)
-  // nextTick(function () {
+  //nextTick(function () {
 
-  const element = document.getElementById(Id);
+  // const element = document.getElementById(Id);
 
-  if ((document.activeElement != element)) {
+
+
+  if (document.activeElement != thisElement) {
+
+
+    console.log('editText focus Name=', This.prop.Name, 'Id=' + Id)
     // Ref.value.focus();
     // Ref.value.select();
 
-    element.focus({ focusVisible: true });
-    element.select();
+    thisElement.focus({ focusVisible: true });
+    thisElement.select();
 
   }
   setTimeout(function () {
-    element.focus({ focusVisible: true });
-    element.select();
+    thisElement.focus({ focusVisible: true });
+    thisElement.select();
 
-  }, 1);
-
+  }, 0);
+  //})
   return
 
 
@@ -1088,7 +1094,7 @@ const readCampo = async (recno: number) => {
 // Si se cambia de afuera
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
-  async (new_val, old_val) => {
+  async (new_val: string | any[], old_val: any) => {
     if (This.prop.Status == 'P') // se cambio desde el mismo proceso
       return
 
@@ -1124,7 +1130,7 @@ watch(
 /////////////////////////////////////////////////////////////////
 watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
-  async (new_val, old_val) => {
+  async (new_val: any, old_val: any) => {
 
     if (new_val != old_val) {
 
@@ -1224,7 +1230,7 @@ watch(
 ///////////////////////////////////////
 watch(
   () => This.prop.Visible,
-  (new_val, old_val) => {
+  (new_val: any, old_val: any) => {
 
 
     if (!new_val)
@@ -1247,7 +1253,7 @@ This.prop.Visible
 ///////////////////////////////////////
 watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
-  (new_val, old_val) => {
+  (new_val: any, old_val: any) => {
     if (new_val != old_val)
       emitValue(true)
   },
@@ -1297,7 +1303,7 @@ watch(
 ///////////////////////////////////////
 watch(
   () => This.prop.Focus, //props.prop.Focus,
-  (new_val, old_val) => {
+  (new_val: any, old_val: any) => {
     if (!new_val) {
       return
     }
@@ -1314,7 +1320,8 @@ watch(
 /////////////////////////////////////////
 
 const init = async () => {
-  console.log('EditText ', This.prop.Name, 'Document element = ', Id)
+  thisElement = document.getElementById(Id)
+  console.log('EditText init onMounted', This.prop.Name, 'Document element Id=' + Id)
   if (props.prop.Type == 'date') {
     componentStyle.width = '120px'
     componentStyle.height = '20px'
@@ -1350,5 +1357,11 @@ const init = async () => {
   }
   // console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
 }
-init() // Ejecuta el init
+
+onMounted(() => {
+  init() // Ejecuta el init
+});
+
+
+
 </script>

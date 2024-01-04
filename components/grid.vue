@@ -160,8 +160,7 @@
             </span>
           </span>
 
-          <span v-show="prop.deleteButton && This.Row >= 0" width="40" class="left-btn hide-in-print"
-            @click="borraRenglon()">
+          <span v-show="prop.deleteButton && This.Row >= 0" width="40" @click.stop="borraRenglon()">
             <img src="/Iconos/delete-row.svg" width="45">
           </span>
 
@@ -763,11 +762,14 @@ const appendRow = async () => {
 const borraRenglon = async (recno?: number) => {
   scroll.controls = false
   if (!recno) {
-    //console.log('borraRenglon data Page====>',This.Row,scroll.dataPage)
 
     if (This.Row < 0) return
     // busca a cual recno pertenece el This.Row
-    for (let i = 0; scroll.dataPage.length - 1; i++) {
+
+
+    console.log('borraRenglon data Page====>', This.Row, scroll.dataPage)
+
+    for (let i = 0; i < scroll.dataPage.length; i++) {
       console.log('Grid.vue borraRenglon This.row=', This.Row, ' scroll.dataPage=', scroll.dataPage[i])
       if (scroll.dataPage[i].id == This.Row) {
         recno = scroll.dataPage[i].recno

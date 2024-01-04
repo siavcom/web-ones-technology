@@ -56,16 +56,17 @@ export class COMPONENT {
     Format: "", //"ke" tipo fecha seleccionada al input
 
     Grid: false,
+
     id: 0,
     Image: "",
     InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
 
     htmlId: "",
+
     Key: 0,
 
     Map: "", // Nos indica el mapSource del componente
     MaxLength: 254,
-
     // Datos numericos
     Max: "999999999",
     Min: "0",
@@ -87,20 +88,19 @@ export class COMPONENT {
     RowSource: {},
     RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
 
-    Status: "I",
-    Step: "1",
     ShowError: false,
     ShowValue: false,
+    SqlUpdate: false, //Si es verdadero actualiza automaticamente
+    Status: "I",
+    Step: "1",
+    Style: "decimal", // decimal, currency,percent,unit
 
     TabIndex: 0,
     Tag: "",
-    Type: "text",
     textLabel: "",
     This: null,
     ToolTipText: "",
-
-    Style: "decimal", // decimal, currency,percent,unit
-    SqlUpdate: false, //Si es verdadero actualiza automaticamente
+    Type: "text",
 
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
@@ -108,6 +108,7 @@ export class COMPONENT {
     Value: "",
     ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
+
     When: true,
 
     componentStyle: {

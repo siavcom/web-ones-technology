@@ -19,7 +19,7 @@ export class nom_tab extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = false;
-    this.prop.textLabel = "Tablas del sistema";
+    this.prop.textLabel = "Tablas del SQL Server";
     this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
@@ -30,9 +30,10 @@ export class nom_tab extends COMPONENT {
     this.prop.ColumnWidths = "60%,30%,10%";
     this.prop.Visible = false;
     this.prop.MultiSelect = false;
-    (this.prop.List = []), (this.prop.Style = 2); //0=DropDown Combo 2=DropDown List
-    this.style.width = "600px";
-    this.prop.componentStyle.width = "350px";
+    this.prop.List = [];
+    this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
+    this.style.width = "450px";
+    this.prop.componentStyle.width = "300px";
     //this.style.zIndex=2
   }
 
@@ -89,3 +90,9 @@ export class nom_tab extends COMPONENT {
   //   return true
   //  }; // fin metodo valid
 }
+/*
+man_comebpe
+ left outer join man_cometba on   man_comebpe.tba_tba=man_cometba.tba_tba
+ left outer join man_comecam on
+man_comebpe.cam_cam=man_comecam.cam_cam
+*/
