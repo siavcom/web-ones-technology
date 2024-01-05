@@ -2410,10 +2410,11 @@ return false;
           console.error(
             "Axios call BacKEnd error",
             dat_lla,
-            error.response.statusText
+            "error",
+            error.response.data
           );
 
-          this.errorAlert("SQL Data Base Error  :" + error.response.statusText);
+          this.errorAlert("SQL Data Base Error  :" + error.response.data);
 
           //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 

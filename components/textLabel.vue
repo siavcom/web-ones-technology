@@ -105,7 +105,7 @@ const props = defineProps<{
     color: "#b94295";
     width: "500px";
     height: "30px";
-    maxHeight:"auto"
+    maxHeight: "auto"
     fontFamily: "Arial";
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
@@ -145,6 +145,13 @@ const componentStyle = reactive(props.style)
 //componentStyle.height = 'fit-content'
 if (componentStyle.width == 'auto')
   componentStyle.width = '100%'
+
+if (componentStyle.maxWidth == 'auto')
+  componentStyle.maxWidth = '97%'
+
+if (componentStyle.maxHeight == 'auto')
+  componentStyle.maxHeight = '97%'
+
 
 /*
 let medida = ''
@@ -418,11 +425,11 @@ const readCampo = async () => {
     Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
 
   }
-  if (props.prop.Type == 'date') {
+  if (props.prop.Type == 'date' && Text.value != null) {
     //Text.value = toNumberStr(Text.value);
     Text.value = Text.value.slice(0, 10)
   }
-  if (props.prop.Type == 'datetime') {
+  if (props.prop.Type == 'datetime' && Text.value != null) {
     //Text.value = toNumberStr(Text.value);
     Text.value = Text.value.slice(0, 16)
   }

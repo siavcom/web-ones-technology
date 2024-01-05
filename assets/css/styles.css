@@ -174,7 +174,7 @@ input[class="number"] {
 }
 
 /* Tooltip text */
-.mensajes .tooltiptext {
+.tooltiptext {
   visibility: hidden;
   width: 120px;
   background-color: #76a184; /*rgb(115, 181, 243);*/
@@ -186,16 +186,16 @@ input[class="number"] {
   position: absolute;
   /* z-index: 1000; */
   bottom: 125%;
-  left: 50%;
+  left: 10%;
   margin-left: -60px;
 
   /* Fade in tooltip */
-  opacity: 1;
-  transition: opacity 0.2s ease;
+  /* opacity: 1; */
+  /* transition: opacity 0.2s ease; */
 }
 
 /* Tooltip arrow */
-.mensajes .tooltiptext::after {
+.tooltiptext::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -207,7 +207,7 @@ input[class="number"] {
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
-.mensajes:hover .tooltiptext {
+.inputDivi:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
 }
@@ -282,7 +282,7 @@ input[class="number"] {
 */
 
 /* Erorr text */
-.mensajes .errorText {
+.errorText {
   /* height: fit-content; */
   /*visibility: visible; */
   background-color: rgb(255, 255, 255);

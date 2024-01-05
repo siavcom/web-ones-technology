@@ -1,92 +1,92 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <div class="divi" :style="divStyle" v-show="This.prop.Visible">
-    <div class="mensajes" v-show="This.prop.Visible">
+  <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
 
-      <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
 
-      <!--mensajes de error y tooltip
+    <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
+
+    <!--mensajes de error y tooltip
     -->
-      <!--div class="component" :style="prop.componentStyle"-->
-      <!--number 
+    <!--div class="component" :style="prop.componentStyle"-->
+    <!--number 
       @input.self="onInput" -->
 
-      <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
+    <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
 
-      <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
-        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
-        @input.self="onInput" @keypress="keyPress($event)">
+    <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
+      :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
+      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
+      @input.self="onInput" @keypress="keyPress($event)">
 
-      <!--spinner-->
+    <!--spinner-->
 
-      <input :id="Id" v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
-        :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
+    <input :id="Id" v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
+      :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
+      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
 
-      <!--textArea -->
-      <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
-        <textarea :id="Id" class="textArea" ref="Ref" :style="componentStyle" v-model="Value" :readonly="ReadOnly"
-          :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
-          :rows="componentStyle.rows" :cols='componentStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
-          @focus="onFocus"></textarea>
-      </div>
+    <!--textArea -->
+    <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
+      <textarea :id="Id" class="textArea" ref="Ref" :style="componentStyle" v-model="Value" :readonly="ReadOnly"
+        :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
+        :rows="componentStyle.rows" :cols='componentStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
+        @focus="onFocus"></textarea>
+    </div>
 
-      <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
-      <!--div v-else-if="prop.Type.slice(0, 4) == 'date'"-->
-      <input :id="Id" v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
-        :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
-        :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-        @focusout="focusOut">
-      <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
+    <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
+    <!--div v-else-if="prop.Type.slice(0, 4) == 'date'"-->
+    <input :id="Id" v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
+      :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
+      :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
+      @focusout="focusOut">
+    <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
-      <!--/div-->
+    <!--/div-->
 
 
-      <div class='json' v-else-if="prop.Type == 'json'" ref="Ref" :style="componentStyle">
+    <div class='json' v-else-if="prop.Type == 'json'" ref="Ref" :style="componentStyle">
 
-        <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
+      <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
-        <!--TransitionGroup name='detailJson' tag="div"-->
-        <details v-for="(    comp, index    ) in     compJson    " key:='index'>
-          <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
-          <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
-            :style="comp.style ? comp.style : { width: 'auto' }" @focusout="focusOut">
+      <!--TransitionGroup name='detailJson' tag="div"-->
+      <details v-for="(    comp, index    ) in     compJson    " key:='index'>
+        <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
+        <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
+          :style="comp.style ? comp.style : { width: 'auto' }" @focusout="focusOut">
 
-        </details>
-        <!--/TransitionGroup-->
-      </div>
+      </details>
+      <!--/TransitionGroup-->
+    </div>
 
-      <!--checkBox-->
-      <!--div v-else-if="prop.Type == 'checkBox'"-->
-      <input :id="Id" v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" :style="componentStyle"
-        ref="Ref" :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex"
-        v-model="checkValue" @focus="onFocus">
+    <!--checkBox-->
+    <!--div v-else-if="prop.Type == 'checkBox'"-->
+    <input :id="Id" v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" :style="componentStyle" ref="Ref"
+      :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
+      @focus="onFocus" @keypress="keyPress($event)">
 
-      <!--label for="checkbox">{{ checkValue }}</label-->
-      <!--/div-->
-      <!--Si es texto
+    <!--label for=" checkbox">{{ checkValue }}</label-->
+    <!--/div-->
+    <!--Si es texto
         @focusout="focusOut"
            @change="change"
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-      <input :id="Id" v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
-        :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength"
-        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
-        @focus="onFocus">
+    <input :id="Id" v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
+      :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength"
+      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
+      @focus="onFocus">
 
-
-      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-        :style="toolTipTextStyle">{{
-          prop.ToolTipText
-        }}</span>
-      <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage : 'Invalid Input'
+    <!--div class="mensajes" v-show="This.prop.Visible"-->
+    <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
+      :style="toolTipTextStyle">{{
+        prop.ToolTipText
       }}</span>
-      <!--/div--> <!--fin class=component -->
-    </div>
+    <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage : 'Invalid Input'
+    }}</span>
+    <!--/div--> <!--fin class=component -->
+    <!--/div-->
   </div>
 </template>
 
@@ -904,7 +904,7 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
     let nextFocus = ''
     for (const element of This.Parent.main) {
       const Tab = This.Parent[element].prop.TabIndex
-      console.log('KeyPres element =', This.Parent[element].prop.htmlId, Tab, TabIndex)
+      //console.log('KeyPres element =', This.Parent[element].prop.htmlId, Tab, TabIndex)
 
       if (Tab > TabIndex && Tab < lastIndex) {
         lastIndex = Tab
@@ -916,9 +916,11 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
     console.log('KeyPres nextFocus =', nextFocus)
 
     $event.preventDefault();
+    // Obtienee elemento a hacer el focus
+    const nextElement = document.getElementById(nextFocus);
     // console.log('EditText keyPres Name',this.prop.Name=', setElement)
-
-    thisElement.focus()
+    if (nextElement)
+      nextElement.focus()
 
     $event.keycode = 9;
     return $event.keycode;

@@ -11,14 +11,11 @@
 // base class
 ///////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
-
-export class <<cam_dat>> extends COMPONENT {
+import { captureComponent } from "@/classes/captureComponent";
+export class <<cam_dat>> extends captureComponent {
 
     constructor() {
         super()
-   
-       // const nom_ind=renglon[i]['nom_ind']
          
         this.prop.textLabel = '<<textLabel>>'
         this.prop.Type ='<<Type>>'

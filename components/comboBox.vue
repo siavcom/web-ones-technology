@@ -2,63 +2,62 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <div class="divi" :style="divStyle" v-show="This.prop.Visible">
+  <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
-    <div class="mensajes" v-show="This.prop.Visible">
-      <span class="etiqueta" v-if="prop.textLabel.length > 0">{{ prop.textLabel + " " }}</span>
-      <!--List Box -->
-      <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
-        <select v-model="List" multiple>
-          <option class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex"
-            :value="columnas[valueIndex].value">
-            <!--Imprime Columnas -->
-            <!--div class="columna"  v-for="(text, col) in option.text" :key="col"
+    <!--div class="mensajes" v-show="This.prop.Visible"-->
+    <span class="etiqueta" v-if="prop.textLabel.length > 0">{{ prop.textLabel + " " }}</span>
+    <!--List Box -->
+    <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
+      <select v-model="List" multiple>
+        <option class="option" v-for="(option, valueIndex) in columnas" :value="columnas[valueIndex].value">
+          <!--Imprime Columnas -->
+          <!--div class="columna"  v-for="(text, col) in option.text" :key="col"
             -->
-            <input v-for="(text, col) in option.text" :key="col" :style="{ 'width': width[col], 'text-align': 'left' }"
-              class="input" :value="text" :disabled="prop.Disabled" :readonly="prop.ReadOnly" />
-            <!--/div-->
-          </option>
-        </select>
-      </div>
+          <input v-for="(text, col) in option.text" :style="{ 'width': width[col], 'text-align': 'left' }" class="input"
+            :value="text" :disabled="prop.Disabled" :readonly="prop.ReadOnly" />
+          <!--/div-->
+        </option>
+      </select>
+    </div>
 
-      <!--ComboBox 
+    <!--ComboBox 
         <input class="textLabel" :readonly="+prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
           @focusout="focusOut" />{{ displayText }}
       -->
-      <div v-else class="comboBox" :style='componentStyle' ref="RefCombo">
+    <div v-else class="comboBox" :style='componentStyle' ref="RefCombo">
 
-        <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
-          :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-          @focus.prevent="toggle = false; inputBufferBuffer = ''" @focusout="emitValue()" />
+      <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
+        :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
+        @focus.prevent="toggle = false; inputBufferBuffer = ''" @focusout="emitValue()" />
 
-        <!--span> {{ prop.Value }}</span-->
-        <!--Valor seleccionado click-->
-        <div class="toggle" v-if="toggle && !prop.ReadOnly">
-          <!--CheckBox -->
-          <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
-            <!--Columnas -->
+      <!--span> {{ prop.Value }}</span-->
+      <!--Valor seleccionado click-->
+      <div class="toggle" v-if="toggle && !prop.ReadOnly">
+        <!--CheckBox -->
+        <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+          <!--Columnas -->
 
-            <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
-              @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
-              <!--Imprime Columnas -->
+          <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true"
+            @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
+            <!--Imprime Columnas -->
 
-              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
-                :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
-                <label class="optionLabel" v-text="text" :style:="labelStyle" />
-              </div>
+            <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text"
+              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
+              <label class="optionLabel" v-text="text" :style:="labelStyle" />
             </div>
           </div>
         </div>
-        <!--toggle click.prevent -->
-        <img class="imagen" v-show="!prop.ReadOnly"
-          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
       </div>
-      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-        :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
-      <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
+      <!--toggle click.prevent -->
+      <img class="imagen" v-show="!prop.ReadOnly"
+        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
     </div>
-    <span v-if="prop.ShowValue">{{ prop.Value }}</span>
+    <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
+      :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
+    <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
   </div>
+  <span v-if="prop.ShowValue">{{ prop.Value }}</span>
+  <!--/div-->
 </template>
 
 <script setup lang="ts">
@@ -186,7 +185,7 @@ const displayText = ref("");
 const width = reactive(['60%', '20%', '20%']);
 
 //const ReadOnly = ref(props.prop.ReadOnly)
-const Ref = ref(null)
+//const Ref = ref(null)
 const RefCombo = ref(null)
 
 const Status = ref(props.prop.Status);
@@ -299,7 +298,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         ShowError.value = true
         if (This.prop.Valid)
           This.prop.Valid = false
-        Ref.value.select()
+        //Ref.value.select() 
+        thisElement.select();
+
         This.prop.Status = 'A'
         Status.value = 'A'
         emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
@@ -506,11 +507,6 @@ function myClick(e) {
 
 }
 
-window.addEventListener('mousedown', myClick);
-
-onUnmounted(() => {
-  window.removeEventListener('mousedown', myClick); // <div>
-})
 
 
 /////////////////////////////////////////////////////////////////////
@@ -1073,9 +1069,22 @@ const init = async () => {
     return
   }
 }
+
+
 onMounted(() => {
   init() // Ejecuta el init
 });
+
+
+onUnmounted(() => {
+  window.removeEventListener('mousedown', myClick); // <div>
+})
+
+
+window.addEventListener('mousedown', myClick);
+
+
+
 </script>
 
 
