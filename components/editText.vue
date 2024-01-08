@@ -1,8 +1,6 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
-
-
     <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
 
     <!--mensajes de error y tooltip
@@ -342,6 +340,19 @@ async function toNumberString(num) {
 }
 
 */
+
+//////////////////////////////////////////
+const focus = () => {
+
+  This.Form.eventos.push(This.prop.Map + + '.when()')
+}
+
+const click = () => {
+
+  This.Form.eventos.push(This.prop.Map + '.click()')
+}
+
+
 
 // Formateo de valores
 const onInput = ({ target }) => {
@@ -979,7 +990,12 @@ const focusInput = async () => {
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
-const onFocus = () => {
+const onFocus = async () => {
+  console.log('editText onFocus Name=', This.prop.Name, 'Map', This.prop.Map, 'ThisForm.eventos', This.Form.eventos)
+
+  //await This.when()
+  This.Form.eventos.push(This.prop.Map + '.when()')
+
 
   ToolTipText.value = false
   ShowError.value = false
@@ -1023,30 +1039,16 @@ const onFocus = () => {
   //})
   return
 
+  /*
+  
+    if (props.prop.Type.slice(0, 4) == 'date') {
+      // This.prop.Focus = true
+      // Ref.value.focus() // hace select en el input
+    }
+  
+    return
+    */
 
-
-  if (props.prop.Type.slice(0, 4) == 'date') {
-    // This.prop.Focus = true
-    // Ref.value.focus() // hace select en el input
-  }
-
-  return
-  /* if (!props.prop.Valid) {    // = false; // old revisar si se necesita
- 
-     if (props.Registro > 0) {
- 
-       if (Status.value != 'P') { // actualiza su estatus a proceso
-         Status.value = 'P';  // en foco
-         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-         emit("update")
-       }
- 
-       //  const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Recno, 'Old')
-       readCampo()
-     }
-   
-   }
-   */
 }
 
 //////////////////////////////////////////
@@ -1323,7 +1325,7 @@ watch(
 
 const init = async () => {
   thisElement = document.getElementById(Id)
-  console.log('EditText init onMounted', This.prop.Name, 'Document element Id=' + Id)
+  //console.log('EditText init onMounted', This.prop.Name, 'Document element Id=' + Id)
   if (props.prop.Type == 'date') {
     componentStyle.width = '120px'
     componentStyle.height = '20px'

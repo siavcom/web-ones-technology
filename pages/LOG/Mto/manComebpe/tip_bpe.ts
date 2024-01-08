@@ -20,7 +20,7 @@ export class tip_bpe extends captureComponent {
     this.prop.textLabel = "Publico en general";
     this.prop.Type = "checkBox";
     this.prop.ControlSource = "vi_cap_comebpe.tip_bpe";
-    this.prop.Value = 0;
+    this.prop.Value = 1;
     this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.ReadOnly = true;
@@ -48,6 +48,7 @@ export class tip_bpe extends captureComponent {
 
       this.Form.pla_bpe.prop.Visible = true;
       this.Form.cli_bpe.prop.Visible = true;
+      this.Form.cho_bpe.prop.Visible = true;
     } else {
       this.Form.cop_nom.prop.Visible = true;
       this.Form.cod_nom.prop.Visible = true;
@@ -63,6 +64,7 @@ export class tip_bpe extends captureComponent {
 
       this.Form.pla_bpe.prop.Visible = false;
       this.Form.cli_bpe.prop.Visible = false;
+      this.Form.cho_bpe.prop.Visible = false;
     }
   }
 }

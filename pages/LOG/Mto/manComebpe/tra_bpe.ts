@@ -21,17 +21,18 @@ export class tra_bpe extends captureComponent {
     this.prop.ControlSource = "vi_cap_comebpe.tra_bpe";
     this.prop.Placeholder = "Trasportista";
     this.prop.ToolTipText = "Trasportista";
-    this.prop.MaxLength = 32;
+    this.prop.MaxLength = 128;
     this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.ReadOnly = true;
+    this.prop.componentStyle.width = "512px"; // mas o menos 70 caracteres
   }
   //////////////////////////////////
   // event when
   ///////////////////////////////////
 
   async when() {
-    if (this.Form.tip_bpe.prop.Value == 0) {
+    if (this.Form.tip_bpe.prop.Value == 1) {
       this.prop.ReadOnly = false;
     } else {
       this.prop.ReadOnly = true;

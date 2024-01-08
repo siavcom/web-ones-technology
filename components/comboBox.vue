@@ -37,11 +37,11 @@
         <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
           <!--Columnas -->
 
-          <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true"
+          <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true" :key="valueIndex"
             @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
             <!--Imprime Columnas -->
 
-            <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text"
+            <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
               :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
               <label class="optionLabel" v-text="text" :style:="labelStyle" />
             </div>
@@ -56,13 +56,13 @@
       :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
     <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
   </div>
-  <span v-if="prop.ShowValue">{{ prop.Value }}</span>
+  <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
   <!--/div-->
 </template>
 
 <script setup lang="ts">
-
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Key", "update:Focus", "update:displayText"]) //, "update:Ref", "update:Recno",
+// "update:Key",
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Focus", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
 // Variables comunes globales al componente
 ////////////////////////////////////
@@ -80,6 +80,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   Registro: 0,
   Component: null,
+  // Value: undefined,
   prop: {
 
     BaseClass: "ComboBox",
@@ -286,7 +287,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       Value.value = Valor
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
-
+    This.prop.Value = Value.value
     emit("update:Value", Value.value);
     await This.interactiveChange()
 
@@ -569,14 +570,16 @@ const onFocus = async () => {
           valor = data[campo]
       }
 
-      if (props.prop.MultiSelect) { // Si es multi selectccion generaramos el arreglo
+      if (props.prop.MultiSelect) { // Si es multi seleccion generaramos el arreglo
         console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor)
         List.value = eval('[' + valor.trim() + ']')
+        This.prop.Value = Value.value
         emit("update:Value", Value.value)
 
       }
       else {
         Value.value = valor
+        This.prop.Value = Value.value
         emit("update:Value", Value.value)
       }
     }

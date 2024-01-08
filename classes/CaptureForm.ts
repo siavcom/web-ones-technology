@@ -61,6 +61,8 @@ export class captureForm extends FORM {
 
   async validComponent(compName?: string) {
     if (!compName) return false;
+    this.Form.bt_graba.prop.Visible = false;
+    this.Form.bt_borra.prop.Visible = false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
     const thisComp = this[compName];
@@ -138,11 +140,9 @@ export class captureForm extends FORM {
 
       Recno = result.recno;
       //this.bt_calendario.prop.Visible=false
-      this.bt_borra.prop.Visible = true;
     } else {
+      // hay datos
       Recno = data[0].recno;
-      //this.bt_calendario.prop.Visible=true
-      this.bt_borra.prop.Visible = false;
     }
     await this.refreshComponent(true, Recno);
 
@@ -178,11 +178,6 @@ export class captureForm extends FORM {
       // this.bt_calendario.prop.Visible = false;
     } // else this.noData = false;
 
-    //this.Recno = Recno;
-
-    // console.log('CaptureForm refresh commponent',activate)
-
-    // this.bt_borra.prop.Visible = activate
     // Recorremos la forma y si es un componente de captura e quita el ReadOnly
 
     //  for (const i in this.main) {
@@ -219,7 +214,9 @@ export class captureForm extends FORM {
       }
     }
     if (Recno > 0) {
-      this.bt_graba.prop.Visible = true;
+      if (!this.bt_graba.prop.Disabled) this.bt_graba.prop.Visible = true;
+
+      if (!this.bt_borra.prop.Disabled) this.bt_borra.prop.Visible = true;
     }
   } // fin metodo
 
@@ -234,22 +231,17 @@ export class captureForm extends FORM {
       this.prop.Name = "bt_graba";
       this.prop.Value = "Graba datos";
       this.prop.Capture = false;
-      // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
-      // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = "/Iconos/svg/ok-accept.svg";
-      //this.prop.TabIndex= 20
       this.style.width = "20px";
     } // Fin constructor
 
     async click() {
-      if (!this.prop.Visible) return;
-      this.prop.Disabled = true;
-      this.prop.Valid = false;
+      this.prop.Visible = false;
 
-      this.Parent.bt_borra.prop.Disabled = true;
+      this.Parent.bt_borra.prop.Visible = false;
 
       // Recorremos toda la forma y revisamos si estan validados
       for (const comp of this.Parent.main) {
@@ -284,14 +276,16 @@ export class captureForm extends FORM {
         return;
       }
       this.prop.Valid = true;
-      this.prop.Disabled = false;
-      this.prop.Visible = true;
-      this.Parent.bt_borra.prop.Disabled = false;
-      this.Parent.bt_borra.prop.Visible = true;
+
       // hay grid de captura
       //await this.lee_grid()
 
       await this.Parent.graba();
+
+      if (!this.prop.Disabled) this.prop.Visible = true;
+      if (!this.Parent.bt_borra.prop.Disabled)
+        this.Parent.bt_borra.prop.Visible = true;
+
       return;
     }
 
@@ -310,19 +304,16 @@ export class captureForm extends FORM {
       this.prop.Name = "bt_borra";
       this.prop.Value = "Borra registro";
       this.prop.Capture = false;
-      // this.prop.Sw_val = false;
+
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
-      // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
-      // this.prop.TabIndex= 21
       this.style.width = "20px";
     } // Fin constructor
 
     async click() {
-      if (!this.prop.Visible || this.prop.Disabled) return;
-      this.prop.Disabled = true;
+      this.prop.Visible = false;
       this.Parent.bt_graba.prop.Visible = false;
 
       if ((await MessageBox("Quieres borrar el registro", 4, "")) === 6) {
@@ -353,8 +344,6 @@ export class captureForm extends FORM {
             }
           }
         }
-
-        this.prop.Disabled = false;
       }
       await this.Parent.borra();
     }

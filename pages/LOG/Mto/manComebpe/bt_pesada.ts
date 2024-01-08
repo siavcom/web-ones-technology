@@ -26,19 +26,41 @@ export class bt_pesada extends COMPONENT {
   } // Fin constructor
 
   async click() {
+    this.prop.Disabled = true;
     if (this.Form.Recno == 0) {
       this.Form.pe2_bpe.prop.Visible = false;
       this.Form.tp2_bpe.prop.Visible = false;
       // Lee node bascula
-      this.Form.pe1_bpe.prop.Value = Math.random() * 10000;
-      this.Form.tp1_bpe.prop.Value = new Date();
+      this.Form.pe1_bpe.prop.Value = parseInt(Math.random() * 10000);
+      this.Form.tp1_bpe.prop.Value = new Date().toISOString();
+      if (
+        (await MessageBox(
+          "Pesada 1 =" + this.Form.pe1_bpe.prop.Value.toLocaleString(),
+          4,
+          "Seguro"
+        )) != 6
+      ) {
+        this.prop.Disabled = false;
+        return;
+      }
     } else {
       if (this.Form.pe2_bpe.prop.Value > 0)
         // ya no se puede volver a pesar
         return;
-      this.Form.pe2_bpe.prop.Value = Math.random() * 10000;
-      this.Form.tp2_bpe.prop.Value = new Date();
+      this.Form.pe2_bpe.prop.Value = parseInt(Math.random() * 10000);
+      this.Form.tp2_bpe.prop.Value = new Date().toISOString();
+      if (
+        (await MessageBox(
+          "Pesada 2 =" + this.Form.pe2_bpe.prop.Value.toLocaleString(),
+          4,
+          "Seguro"
+        )) != 6
+      ) {
+        this.prop.Disabled = false;
+        return;
+      }
     }
-    this.Form.bt_graba.click();
+    await this.Form.bt_graba.click();
+    this.prop.Disabled = false;
   }
 }

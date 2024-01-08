@@ -18,12 +18,12 @@ export class bpe_bpe extends captureComponent {
 
     this.prop.textLabel = "Numero de boleta";
     this.prop.Type = "number";
-    this.prop.ControlSource = "vi_cap_comebpe.bpe_bpe";
+    //this.prop.ControlSource = "vi_cap_comebpe.bpe_bpe";
     this.prop.Min = "0";
     this.prop.Max = "2147483647";
     this.prop.Capture = true;
     this.prop.updateKey = true;
-    this.prop.ReadOnly = false;
+
     this.prop.Value = 1;
 
     this.prop.componentStyle.width = "64px";
@@ -33,6 +33,9 @@ export class bpe_bpe extends captureComponent {
     this.style.fontWeight = "bold";
   }
   async when() {
+    console.log("when bpe_bpe");
+    this.Form.bt_graba.prop.Visible = false;
+
     const data = await this.Sql.execute(`         
            select max(bpe_bpe)+1 as bpe_bpe from man_comebpe where bas_bpe=${this.Form.bas_bpe.prop.Value}`);
 
@@ -63,7 +66,9 @@ export class bpe_bpe extends captureComponent {
     return true;
   }
   async valid() {
-    if (!(await super.valid())) return false;
+    if (!(await super.valid())) {
+      return false;
+    }
     const data = await this.Sql.localAlaSql(
       `select bpe_bpe from vi_cap_comebpe `
     );
@@ -82,6 +87,8 @@ export class bpe_bpe extends captureComponent {
         this.Form.pla_cam.prop.Visible = true;
         this.Form.des_mar.prop.Visible = true;
         this.Form.des_tiu.prop.Visible = true;
+
+        this.Form.cho_bpe.prop.Visible = false;
         this.Form.cli_bpe.prop.Visible = false;
         this.Form.pla_bpe.prop.Visible = false;
       } else {
@@ -99,6 +106,7 @@ export class bpe_bpe extends captureComponent {
         this.Form.des_mar.prop.Visible = false;
         this.Form.des_tiu.prop.Visible = false;
 
+        this.Form.cho_bpe.prop.Visible = true;
         this.Form.cli_bpe.prop.Visible = true;
         this.Form.pla_bpe.prop.Visible = true;
         // this.Form.cho_bpe.prop.Visible = true;
@@ -122,13 +130,12 @@ export class bpe_bpe extends captureComponent {
       this.Form.tp2_bpe.prop.Visible = false;
     }
 
-    if (this.Form.pe2_bpe.prop.Value > 0) {
+    // this.Form.bt_graba.prop.Visible = false;
+
+    if (this.Form.pe2_bpe.prop.Value > 0)
       // ya no se puede volver a pesar
       this.Form.bt_pesada.prop.Visible = false;
-      return;
-    }
-
-    this.Form.bt_pesada.prop.Visible = true;
-    this.Form.bt_pesada.prop.Disabled = false;
+    else this.Form.bt_pesada.prop.Visible = true;
+    return true;
   }
 }

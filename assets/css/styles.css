@@ -389,6 +389,10 @@ input[class="number"] {
   }
 }
 
+.ruter-link-acrive {
+  color: red;
+  @apply text-blue-500;
+}
 /* Tooltip arrow */
 /*
 .error .errortext::after {

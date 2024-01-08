@@ -11,23 +11,34 @@
         </div>
       </div>
       <div v-else class="prose w-full max-w-2xl h-9">
-        <!-- class="DatosUsuario" ref='esteComponente' los nombre no deben ser igual a <esteComponente -->
+        <!-- class="DatosUsuario" ref='esteComponente' los nombre no deben ser igual a <esteComponente 
+        v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
+        v-model:Key="ThisForm.emp_emp.prop.Key"
+         v-model:Key="ThisForm.log_usu.prop.Key"
+         v-model:Key="ThisForm.pas_usu.prop.Key" 
 
-        <component :is="impComp(ThisForm.emp_emp.prop.BaseClass)" v-model:Value="ThisForm.emp_emp.prop.Value"
-          v-model:Status="ThisForm.emp_emp.prop.Status" v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
-          v-model:Key="ThisForm.emp_emp.prop.Key" bind:Registro="ThisForm.emp_emp.Recno"
-          :component="ref(ThisForm.emp_emp)" :Registro="0" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
-          :position="ThisForm.emp_emp.position" />
-        <component :is="impComp(ThisForm.log_usu.prop.BaseClass)" v-model:Value="ThisForm.log_usu.prop.Value"
-          v-model:Status="ThisForm.log_usu.prop.Status" v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
-          v-model:Key="ThisForm.log_usu.prop.Key" :component="ref(ThisForm.log_usu)" :Registro="0"
-          :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" :position="ThisForm.log_usu.position" 
-            />
+         v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
+         v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
+        
+        bind:Registro="ThisForm.emp_emp.Recno"
+
+v-model:Value="ThisForm.emp_emp.prop.Value"
+        v-model:Status="ThisForm.emp_emp.prop.Status" :component="ref(ThisForm.emp_emp)" 
+        
+        
+        
+        
+        
+        -->
+
+        <component :is="impComp(ThisForm.emp_emp.prop.BaseClass)" :Registro="0" :prop="ThisForm.emp_emp.prop"
+          :style="ThisForm.emp_emp.style" :position="ThisForm.emp_emp.position" />
+        <component :is="impComp(ThisForm.log_usu.prop.BaseClass)" v-model:Status="ThisForm.log_usu.prop.Status"
+          :component="ref(ThisForm.log_usu)" :Registro="0" :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style"
+          :position="ThisForm.log_usu.position" />
         <component :is="impComp(ThisForm.pas_usu.prop.BaseClass)" v-model:Value="ThisForm.pas_usu.prop.Value"
-          v-model:Status="ThisForm.pas_usu.prop.Status" v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
-          v-model:Key="ThisForm.pas_usu.prop.Key" :component="ref(ThisForm.pas_usu)" :Registro="0"
-          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" 
-         />
+          v-model:Status="ThisForm.pas_usu.prop.Status" :component="ref(ThisForm.pas_usu)" :Registro="0"
+          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" />
         <component :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :component="ref(ThisForm.bt_aceptar)"
           :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
           :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
@@ -98,8 +109,8 @@ watch(
   { deep: false }
 )
 
-const bt_aceptar=()=>{
-   ThisForm.bt_aceptar.click()
+const bt_aceptar = () => {
+  ThisForm.bt_aceptar.click()
 }
 
 // ////////////   Clase Base de datos ///////////////////////////////

@@ -766,7 +766,7 @@ export class VFPDB {
           switch (true) {
             // switch (typeof dat_act[row][campo]) {
             case tipo == "number" ||
-              tipo == "interger" ||
+              tipo == "integer" ||
               tipo == "smallint" ||
               tipo == "tinyint" ||
               tipo == "bigint":
@@ -814,7 +814,18 @@ export class VFPDB {
                   if (old_dat[campo] == null) old_dat[campo] == "";
                   else old_dat[campo] = old_dat[campo].trim();
                 }
-                m[campo] = dat_act[row][campo].trim();
+                try {
+                  m[campo] = dat_act[row][campo].trim();
+                } catch (error) {
+                  console.error(
+                    "Insert camo=",
+                    campo,
+                    " Valor=",
+                    dat_act[row][campo],
+                    "Error=",
+                    error
+                  );
+                }
               } else m[campo] = dat_act[row][campo];
             /*           } catch (error) {
                 console.error(

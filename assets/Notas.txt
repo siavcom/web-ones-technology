@@ -13,7 +13,9 @@ modules
 
 vuefire
 
-useHead
+useHead ({
+  title: 'Titulo de la petaña'
+})
 
 VueUse
 

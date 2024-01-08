@@ -70,18 +70,24 @@
                                   v-bind:Show='true'
                     v-bind:db="ref(ThisForm.db)"
 emit
-              -->
+
+
+
+                    v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
+
+                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
+
+
+-->
               <TransitionGroup name='detailForm'>
                 <div v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
                   <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                    v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
                     v-model:Focus="ThisForm[compMain].Focus" :Registro="ThisForm[compMain].Recno"
                     v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                     v-bind:position="ThisForm[compMain].position"
-                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
-                    @click="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
+                    @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
                 </div>
               </TransitionGroup>
             </slot>
@@ -352,6 +358,7 @@ function sleep(sleepDuration: number) {
 
 /////////////////////////////////////////////////////
 // Ejecuta los eventos que hay en la pila de eventos
+/*
 async function eje_eve_old(numero: number) {
   try {
     //console.log('Entra a eje_eve', ThisForm.eventos[0])
@@ -428,7 +435,7 @@ async function eje_eve_old(numero: number) {
   }
 }
 
-
+*/
 
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {

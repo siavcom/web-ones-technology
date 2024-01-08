@@ -23,9 +23,9 @@ export class pro_bpe extends captureComponent {
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comebpe.pro_bpe";
     this.prop.Capture = true;
+    this.prop.MaxLength = 128;
     this.prop.updateKey = false;
     this.prop.ReadOnly = true;
-
-    this.prop.componentStyle.width = "400px";
+    this.prop.componentStyle.width = "512px"; // mas o menos 70 caracteres
   }
 }

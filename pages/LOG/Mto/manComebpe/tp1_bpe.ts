@@ -20,13 +20,17 @@ export class tp1_bpe extends captureComponent {
 
     this.prop.textLabel = "Pesada 1";
     this.prop.Type = "datetime";
-    this.prop.BaseClass = "textLabel";
+
     this.prop.ControlSource = "vi_cap_comebpe.tp1_bpe";
-    //    this.prop.Capture = true;
+    this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.ReadOnly = true;
     this.style.fontSize = "20px";
     this.style.fontWeight = "bold";
     this.style.width = "200px";
+  }
+  async when() {
+    this.prop.ReadOnly = true;
+    return false;
   }
 }

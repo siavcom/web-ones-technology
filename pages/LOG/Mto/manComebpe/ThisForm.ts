@@ -29,6 +29,7 @@ import { nom_nom } from "./nom_nom";
 import { nom_tba } from "./nom_tba";
 import { tra_bpe } from "./tra_bpe";
 import { cli_bpe } from "./cli_bpe";
+import { cho_bpe } from "./cho_bpe";
 import { pro_bpe } from "./pro_bpe";
 import { tp1_bpe } from "./tp1_bpe";
 import { pe1_bpe } from "./pe1_bpe";
@@ -66,8 +67,8 @@ export class ThisForm extends captureForm {
   public tba_tba = new tba_tba();
   public nom_tba = new nom_tba();
 
+  public cho_bpe = new cho_bpe(); // Chofer
   public cli_bpe = new cli_bpe(); // Cliente
-
   public tra_bpe = new tra_bpe(); // Trasportista
   public pro_bpe = new pro_bpe(); // producto
   public tp1_bpe = new tp1_bpe(); // Fecha Hora Pesada 1
@@ -85,7 +86,6 @@ export class ThisForm extends captureForm {
     this.prop.textLabel = "Pesadas en bascula";
     this.prop.RecordSource = "vi_cap_comebpe";
     this.prop.Status = "A";
-    this.bt_graba.prop.Visible = false;
-    this.bt_graba.prop.Disabled = false;
+    this.bt_graba.prop.Disabled = true;
   }
 } // End ThisForm
