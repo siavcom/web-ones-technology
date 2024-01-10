@@ -54,8 +54,8 @@ export class tip_bpe extends captureComponent {
       this.Form.cod_nom.prop.Visible = true;
       this.Form.nom_nom.prop.Visible = true;
 
-      this.Form.tba_tba.prop.Visible = false;
-      this.Form.nom_tba.prop.Visible = false;
+      this.Form.tba_tba.prop.Visible = true;
+      this.Form.nom_tba.prop.Visible = true;
 
       this.Form.cam_cam.prop.Visible = true;
       this.Form.pla_cam.prop.Visible = true;
@@ -65,6 +65,14 @@ export class tip_bpe extends captureComponent {
       this.Form.pla_bpe.prop.Visible = false;
       this.Form.cli_bpe.prop.Visible = false;
       this.Form.cho_bpe.prop.Visible = false;
+
+      for (const comp of this.Form.main) // ponemos como validados todos los componentes
+        if (
+          !this.Form[comp].prop.updateKey &&
+          this.Form[comp].prop.Capture &&
+          this.Form[comp].prop.Visible
+        )
+          this.Form[comp].prop.Valid = false;
     }
   }
 }

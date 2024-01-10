@@ -31,10 +31,11 @@ export class bpe_bpe extends captureComponent {
     this.prop.componentStyle.fontWeight = "bold";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
+    this.prop.First = true;
   }
   async when() {
     console.log("when bpe_bpe");
-    this.Form.bt_graba.prop.Visible = false;
+    this.Form.bt_pesada.prop.Visible = false;
 
     const data = await this.Sql.execute(`         
            select max(bpe_bpe)+1 as bpe_bpe from man_comebpe where bas_bpe=${this.Form.bas_bpe.prop.Value}`);
@@ -72,7 +73,7 @@ export class bpe_bpe extends captureComponent {
     const data = await this.Sql.localAlaSql(
       `select bpe_bpe from vi_cap_comebpe `
     );
-
+    console.log("valid bpe_bpe", data);
     if (data && data[0] && data[0].key_pri > 0) {
       if (data[0].tip_bpe == 0) {
         // Siavcom

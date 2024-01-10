@@ -5,7 +5,6 @@
 // Ult.Mod  : 26/Diciembre/2022
 /// //////////////////////////////////////////
 
-import { truncate } from "fs/promises";
 import { COMPONENT } from "./Component";
 import { FORM } from "@/classes/Form";
 
@@ -34,7 +33,7 @@ export class captureForm extends FORM {
           "Capture Form init this.prop.RecordSource=",
           this.prop.RecordSource
         );
-        await this.refreshComponent();
+        await this.refreshComponent(false);
       }
     } catch (error) {
       console.error("======Error Init=====" + this.Name, error);
@@ -62,12 +61,13 @@ export class captureForm extends FORM {
 
   async validComponent(compName?: string) {
     if (!compName) return false;
+    this.Form.bt_graba.prop.Visible = false;
+    this.Form.bt_borra.prop.Visible = false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
     const thisComp = this[compName];
 
     if (thisComp.prop.updateKey) {
-      // si es llave de captura
       if (
         (typeof thisComp.prop.Value == "string" &&
           thisComp.prop.Value.trim().length == 0) ||
@@ -78,18 +78,7 @@ export class captureForm extends FORM {
         thisComp.prop.Valid = false;
         return thisComp.prop.Valid;
       }
-    } else {
-      for (const comp of this.main) // Busca si estan validados todos los componentes de captura
-        if (
-          thisComp.prop.Visible &&
-          thisComp.prop.Capture &&
-          !this[comp].prop.Valid
-        )
-          return true;
-      if (!this.bt_graba.prop.Disabled) this.bt_graba.prop.Visible = true;
-      return true;
     }
-
     thisComp.prop.Valid = true;
     /* const m={}
     // variables publicas
@@ -106,22 +95,13 @@ export class captureForm extends FORM {
     for (const comp of this.main) {
       this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
       if (this[comp].prop.updateKey) {
-        if (!this[comp].prop.Valid) {
+        if (!this[comp].prop.Valid)
+          // Si no esta validada la llave
           return true;
-          /* 
-          if (!this[comp].prop.Valid) {
-          for (const i in this.main) {
-            const comp = this.main[i];
-            this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
-          }
-          return true;
-        */
-        } else {
-          // asignamos variables de memoria que se utilizaran en el use
-          if (this[comp].prop.Type == "numeric")
-            m[comp] = +this[comp].prop.Value;
-          else m[comp] = this[comp].prop.Value;
-        }
+
+        // asignamos variables de memoria que se utilizaran en el use
+        if (this[comp].prop.Type == "numeric") m[comp] = +this[comp].prop.Value;
+        else m[comp] = this[comp].prop.Value;
       }
     }
 
@@ -132,15 +112,11 @@ export class captureForm extends FORM {
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
-    let Recno = 0;
     let key_pri = 0;
 
     if (data.length == 0) {
       // No hay datos
-      console.log(
-        "CaptureForm appendBlank this.prop.RecordSource=",
-        this.prop.RecordSource
-      );
+
       const result = await this.Form.db.appendBlank(this.prop.RecordSource, m);
       //      console.log('CaptureForm appendBlank alaSql=',await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
@@ -150,19 +126,12 @@ export class captureForm extends FORM {
         return false;
       }
 
-      Recno = result.recno;
-      key_pri = 0;
       //this.bt_calendario.prop.Visible=false
-      this.bt_borra.prop.Visible = true;
     } else {
-      Recno = data[0].recno;
+      // hay datos
       key_pri = data[0].key_pri;
-      //this.bt_calendario.prop.Visible=true
-      this.bt_borra.prop.Visible = false;
     }
-
-    //await this.refreshComponent(true, Recno,key_pri);
-    await this.refreshComponent(Recno, key_pri);
+    await this.refreshComponent(true, key_pri);
 
     return true;
   } // fin metodo valid
@@ -172,11 +141,8 @@ export class captureForm extends FORM {
   // Descripcion : refresca los componentes
   /// /////////////////////////////////////
 
-  async refreshComponent(Recno?: number, key_pri?: number) {
-    let activate = true;
-    if (!Recno) {
-      Recno = -1;
-      activate: false;
+  async refreshComponent(activate: boolean, key_pri?: number) {
+    if (!key_pri) {
       key_pri = 0;
     }
 
@@ -185,10 +151,12 @@ export class captureForm extends FORM {
       return;
     }
 
-    if (Recno == -1) {
-      if (this.prop.RecordSource.length > 2) {
+    if (!activate) {
+      if (this.prop.RecordSource.length > 2)
         await this.Form.db.useNodata(this.prop.RecordSource);
-      } else return;
+      else return;
+
+      key_pri = 0;
 
       console.log("======== useNodata ===========", this.prop.RecordSource);
       this.noData = true;
@@ -197,11 +165,6 @@ export class captureForm extends FORM {
       // this.bt_calendario.prop.Visible = false;
     } // else this.noData = false;
 
-    //this.Recno = Recno;
-
-    // console.log('CaptureForm refresh commponent',activate)
-
-    // this.bt_borra.prop.Visible = activate
     // Recorremos la forma y si es un componente de captura e quita el ReadOnly
 
     //  for (const i in this.main) {
@@ -213,25 +176,18 @@ export class captureForm extends FORM {
           // No es llave de actualizacion
           if (!this[comp].prop.Visible) this[comp].prop.Visible = true;
 
-          if (Recno >= 0) {
-            // Cuando ya se validaron las llaves de actualizacion
+          if (key_pri > 0) {
             this[comp].prop.ReadOnly = false;
           } else {
-            this[comp].prop.ReadOnly = true; // cuando la forma esta limpia
+            this[comp].prop.ReadOnly = !activate;
           }
-          if (key_pri == 0) this[comp].prop.Valid = false;
-          else this[comp].prop.Valid = false;
 
-          if (Recno >= 0) {
-            const RecordSource = this[comp].prop.RecordSource;
-            this[comp].prop.RecordSource = "";
-
+          this[comp].prop.Valid = activate;
+          if (key_pri > 0) {
             this[comp].Recno = Recno; // Actualiza el registro del componente
-            this[comp].prop.RecordSource = RecordSource; // Hace el refresh del componente
           }
         } else {
           this[comp].prop.ReadOnly = false; // Si es llave de captura
-          /*
           if (!activate) {
             this[comp].prop.Valid = false;
           }
@@ -241,9 +197,12 @@ export class captureForm extends FORM {
             !this[comp].prop.MultiSelect
           )
             this[comp].prop.Valid = true;
-          */
         }
       }
+    }
+    if (key_pri > 0) {
+      if (!this.bt_graba.prop.Disabled) this.bt_graba.prop.Visible = true;
+      if (!this.bt_borra.prop.Disabled) this.bt_borra.prop.Visible = true;
     }
   } // fin metodo
 
@@ -258,22 +217,17 @@ export class captureForm extends FORM {
       this.prop.Name = "bt_graba";
       this.prop.Value = "Graba datos";
       this.prop.Capture = false;
-      // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
-      // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = "/Iconos/svg/ok-accept.svg";
-      //this.prop.TabIndex= 20
       this.style.width = "20px";
     } // Fin constructor
 
     async click() {
-      if (!this.prop.Visible) return;
-      this.prop.Disabled = true;
-      this.prop.Valid = false;
+      this.prop.Visible = false;
 
-      this.Parent.bt_borra.prop.Disabled = true;
+      this.Parent.bt_borra.prop.Visible = false;
 
       // Recorremos toda la forma y revisamos si estan validados
       for (const comp of this.Parent.main) {
@@ -291,7 +245,7 @@ export class captureForm extends FORM {
       console.log(
         "CaptureForm bt_graba click() ====> alaSql=",
         await this.Form.db.localAlaSql(
-          "select * from " + this.Parent.prop.RecordSource
+          "select Now.* from " + this.Parent.prop.RecordSource
         )
       );
       console.log("CaptureForm bt_graba");
@@ -308,14 +262,16 @@ export class captureForm extends FORM {
         return;
       }
       this.prop.Valid = true;
-      this.prop.Disabled = false;
-      this.prop.Visible = true;
-      this.Parent.bt_borra.prop.Disabled = false;
-      this.Parent.bt_borra.prop.Visible = true;
+
       // hay grid de captura
       //await this.lee_grid()
 
       await this.Parent.graba();
+
+      if (!this.prop.Disabled) this.prop.Visible = true;
+      if (!this.Parent.bt_borra.prop.Disabled)
+        this.Parent.bt_borra.prop.Visible = true;
+
       return;
     }
 
@@ -334,19 +290,16 @@ export class captureForm extends FORM {
       this.prop.Name = "bt_borra";
       this.prop.Value = "Borra registro";
       this.prop.Capture = false;
-      // this.prop.Sw_val = false;
+
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
-      // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
-      // this.prop.TabIndex= 21
       this.style.width = "20px";
     } // Fin constructor
 
     async click() {
-      if (!this.prop.Visible || this.prop.Disabled) return;
-      this.prop.Disabled = true;
+      this.prop.Visible = false;
       this.Parent.bt_graba.prop.Visible = false;
 
       if ((await MessageBox("Quieres borrar el registro", 4, "")) === 6) {
@@ -363,7 +316,7 @@ export class captureForm extends FORM {
           );
 
           if (result) {
-            await this.Form.refreshComponent();
+            await this.Form.refreshComponent(false);
             MessageBox("Datos borrados");
           } else {
             const data = await this.Form.db.requery(
@@ -373,12 +326,10 @@ export class captureForm extends FORM {
             MessageBox("No se pudo borrar", 16);
 
             if (data.lenght === 0) {
-              this.Form.refreshComponent();
+              this.Form.refreshComponent(false);
             }
           }
         }
-
-        this.prop.Disabled = false;
       }
       await this.Parent.borra();
     }

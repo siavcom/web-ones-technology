@@ -19,19 +19,24 @@ export class bas_bpe extends captureComponent {
 
     this.prop.textLabel = "Bascula";
     this.prop.Type = "number";
-    this.prop.ControlSource = "vi_cap_comebpe.bas_bpe";
+    //this.prop.ControlSource = "vi_cap_comebpe.bas_bpe";
     this.prop.Min = "1";
     this.prop.Max = "100";
     this.prop.Decimals = 0;
     this.prop.Capture = true;
     this.prop.updateKey = true;
     this.prop.Value = 1;
+    this.prop.ReadOnly = true;
 
     this.prop.componentStyle.width = "64px";
     this.prop.componentStyle.fontSize = "17px";
     this.prop.componentStyle.fontWeight = "bold";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
-    this.prop.First = true;
+  }
+
+  async when() {
+    this.Form.bt_pesada.prop.Visible = false;
+    return true;
   }
 }

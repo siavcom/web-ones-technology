@@ -195,16 +195,18 @@ export class VFPDB {
         // generamos la tabla segun la estructura regresada
         return false;
       // abre  la tabla de mantenimiento
+      /*
       console.log(
         "Db useNodata VIEW despues de generar_tabla==> ",
         alias,
         "response=",
         response
       );
+      */
       if (this.View[alias] && this.View[alias].tip_obj.trim() == "VIEW") {
         alias = this.View[alias].tablaSql.trim();
         await this.useNodata(alias);
-        console.log("Db useNodata VIEW salir useNodata==> ", alias);
+        /* console.log("Db useNodata VIEW salir useNodata==> ", alias);*/
       }
       //  this.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
@@ -355,7 +357,7 @@ export class VFPDB {
       this.View[alias].row = -1; // Renglon posicionado el registro
     }
 
-    if ((await this.select(alias)) == 0) {
+    if (!this.View[alias]) {
       // si el alias no existe
       console.log("Db Use UseNodata", nom_vis, alias);
       await this.useNodata(nom_vis, alias);
@@ -395,7 +397,7 @@ export class VFPDB {
 
           return false;
         }
-        console.log("2 Db USE " + alias + "m=".match, " exp_ind=", exp_ind);
+        console.log("2 Db USE " + alias + "m=", m, " exp_ind=", exp_ind);
         if (exp_ind == undefined) {
           this.errorAlert(
             "No se pudo evaluar el indice de la tabla=" +
@@ -634,10 +636,12 @@ export class VFPDB {
       }
     }
 
+    // obtenemos los datos a actualizar
+    // console.log('Db tableUpdate error recno ',await this.localAlaSql(` SELECT recno,key_pri FROM Last.${alias} `))
+    // console.log('Db tableUpdate Now update',await this.localAlaSql(`
     //  Select Viejo.* from Now.${alias} Nuevo \
     //  LEFT OUTER JOIN Last.${alias} Viejo using recno ${where}`))
 
-    // obtenemos los datos a actualizar
     const dat_act = await this.localAlaSql(
       `SELECT * FROM Now.${alias} ${where}`
     );
@@ -646,7 +650,7 @@ export class VFPDB {
     // console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
     const val_def = this.View[tab_man].val_def; // estructura de campos
 
-    // llamado AXIOS
+    // llamado a AXIOS
     const dat_vis: any = {
       id_con: "",
       tip_llamada: "",
@@ -664,7 +668,6 @@ export class VFPDB {
       dat_vis.dat_act.timestamp = dat_act[row].timestamp;
 
       recno = dat_act[row].recno;
-
       dat_vis.tip_llamada = "INSERT";
       let sw_update = false;
 
@@ -684,6 +687,7 @@ export class VFPDB {
         // Leemos los datos viejos
         const ins_sql = `SELECT * FROM Last.${alias}  WHERE recno=${recno} ;`;
         const datos = await this.localAlaSql(ins_sql);
+        // console.log('Db tableUpdate select Now ',ins_sql,datos)
 
         if (datos.length > 0) {
           old_dat = datos[0];
@@ -700,30 +704,31 @@ export class VFPDB {
       }
 
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
-
+      /*
       console.log(
         "1 DataBase tableUpdate() vista de mantenimiento=",
         tab_man,
-        this.View[tab_man],
-        "dat_act=",
-        dat_act
+        this.View[tab_man]
       );
-
+       */
       //  recorremos todos los campos del registro  actualizar
-      for (const campo in dat_act[row]) {
-        if (dat_act[row][campo] == null) dat_act[row][campo] = "";
-
-        if (typeof dat_act[row][campo] == "string") {
-          dat_act[row][campo] = dat_act[row][campo].trim();
-          if (old_dat[campo] == null) old_dat[campo] = "";
-          else old_dat[campo] = old_dat[campo].trim();
-        }
-
+      //for (const campo in dat_act[row]) {        //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
+      for (const campo in this.View[tab_man].est_tabla) {
         //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
-        // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
-
         const nom_campo = campo.toLowerCase();
+        console.log(" DataBase tableUpdate campo=", campo);
+        /*
+        if (!this.View[tab_man].est_tabla[campo]) {
+          // Checa si el campo existe en la tabla de mantenimeinto
+          console.log(
+            "DataBase tableUpdate not exist campo=",
+            campo,
+            "in table=",
+            tab_man
+          );
+        } else {
+         */
         if (
           this.View[tab_man].est_tabla[campo] &&
           nom_campo != "recno" &&
@@ -731,14 +736,14 @@ export class VFPDB {
           nom_campo != "tie_uac" &&
           nom_campo != "usu_usu" &&
           nom_campo != "usu_cre" &&
-          //          nom_campo != "key_pri" &&
+          nom_campo != "key_pri" &&
           nom_campo != "timestamp" &&
           (dat_vis.tip_llamada == "INSERT" ||
             old_dat[campo] != dat_act[row][campo])
         ) {
           //cambiar segun tipo de campo en View
           /*
-          if (this.View[tab_man].est_tabla[campo]) {
+          if (!this.View[tab_man].est_tabla[campo].tip_cam) {
             MessageBox(
               "Field " + campo + " inexistent in table" + tab_man,
               16,
@@ -749,20 +754,41 @@ export class VFPDB {
           */
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
+
+          console.log(
+            "Db Campo=",
+            campo,
+            "tipo=",
+            tipo,
+            "Old=",
+            old_dat[campo]
+          );
           switch (true) {
             // switch (typeof dat_act[row][campo]) {
             case tipo == "number" ||
-              tipo == "interger" ||
+              tipo == "integer" ||
               tipo == "smallint" ||
               tipo == "tinyint" ||
               tipo == "bigint":
               m[campo] = +dat_act[row][campo];
+              if (dat_vis.tip_llamada != "INSERT" && old_dat[campo] == null)
+                old_dat[campo] = 0;
+
               break;
             case tipo == "boolean" || tipo == "logical":
+              if (dat_act[row][campo] == null) dat_act[row][campo] = 0;
+              if (dat_vis.tip_llamada != "INSERT" && old_dat[campo] == null)
+                old_dat[campo] = 0;
+
               m[campo] = +dat_act[row][campo];
               break;
 
             case tipo == "date" || tipo == "time":
+              if (dat_act[row][campo] == null)
+                dat_act[row][campo] = "1900-01-01";
+              if (dat_vis.tip_llamada != "INSERT" && old_dat[campo] == null)
+                old_dat[campo] = "1900-01-01";
+
               let valor = dat_act[row][campo]; //.replaceAll('-','')
               //valor = valor.replaceAll("T", "");
               if (valor.length > 10 && valor.length <= 16) {
@@ -779,44 +805,53 @@ export class VFPDB {
               //            m[campo] = "'" + dat_act[row][campo] + "'"
 
               // se tiene que validar como string y nll ya que asi viene desde alaSQL
-              try {
-                if (dat_act[row][campo] != null) {
-                  m[campo] =
-                    typeof dat_act[row][campo] == "string"
-                      ? dat_act[row][campo].trim()
-                      : dat_act[row][campo];
-                } else m[campo] = "";
-              } catch (error) {
-                console.log(
+              //////
+              //              try {
+              if (tipo == "string") {
+                if (dat_act[row][campo] == null) dat_act[row][campo] = "";
+
+                if (dat_vis.tip_llamada != "INSERT") {
+                  if (old_dat[campo] == null) old_dat[campo] == "";
+                  else old_dat[campo] = old_dat[campo].trim();
+                }
+                try {
+                  m[campo] = dat_act[row][campo].trim();
+                } catch (error) {
+                  console.error(
+                    "Insert camo=",
+                    campo,
+                    " Valor=",
+                    dat_act[row][campo],
+                    "Error=",
+                    error
+                  );
+                }
+              } else m[campo] = dat_act[row][campo];
+            /*           } catch (error) {
+                console.error(
                   error,
+                  "tipo=",
+                  tipo,
                   "campo=",
                   campo,
                   "Valor=",
-                  dat_act[row][campo]
+                  m[campo]
                 );
                 return;
               }
-            //console.log('Db tableUpdate campo=', campo,'m=',m[campo],'dat_act',dat_act[row][campo] )
+ */
           }
-          //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
 
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
-          if (val_def[campo]) {
+          if (
+            val_def[campo] &&
+            (dat_vis.tip_llamada == "INSERT" || !(old_dat[campo] == m[campo]))
+          ) {
             dat_vis.dat_act[campo] = m[campo]; // dat_act[row][campo];
-
-            console.log(
-              "tableUpdate Actualiza CAMPO=",
-              campo,
-              "Valor=",
-              dat_vis.dat_act[campo],
-              " Old value=",
-              old_dat[campo]
-            );
-            //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true;
           }
         }
-      } // fin For dat_act
+      } // EndFor
 
       // generamos el where para obtener los datos despues de insertar
       dat_vis.where = "";
@@ -824,7 +859,6 @@ export class VFPDB {
         // const where = eval(this.View[nom_tab].exp_indice)
         // Aqui me quede  Ojo Junio 2023
         const where = this.View[nom_tab].exp_indice.toLowerCase();
-        // console.log("Db tableUpdate exp_indice m", m, "where", where, "dat_vis.where", dat_vis.where );
         try {
           eval(`dat_vis.where=${where}`);
         } catch (error) {
@@ -844,6 +878,9 @@ export class VFPDB {
       for (let num_int = 0; num_int < 2 && sw_update; num_int++) {
         // tratara 3 veces de actualiar el dato
         console.log("Db TableUpdate dat_vis", dat_vis);
+
+        console.log("Db tableUpdate  axiosCall dat_vis=", dat_vis);
+
         // llama el backEnd a grabar los datos
         const response = await this.axiosCall(dat_vis);
 
@@ -990,16 +1027,18 @@ export class VFPDB {
     const valores = {
       recno,
       timestamp: null,
-      tie_cre: "",
-      tie_uac: "",
-      usu_cre: "",
-      usu_usu: "",
+      tie_cre: "1900-01-01T00:00:00",
+      tie_uac: "1900-01-01T00:00:00",
+      usu_cre: 0,
+      usu_usu: 0,
       key_pri: 0,
     };
     const vis_act = this.View[alias].tablaSql.trim();
 
-    for (const campo in this.View[vis_act].val_def) {
-      // const val_eval="`"+this.View[alias].val_def[valor]+"`"
+    //    for (const campo in this.View[vis_act].val_def) {
+
+    for (const campo in this.View[alias].val_def) {
+      let val_defa = null;
       if (
         campo != "timestamp" &&
         campo != "tie_cre" &&
@@ -1008,9 +1047,9 @@ export class VFPDB {
         campo != "usu_usu" &&
         campo != "key_pri"
       ) {
-        const val_eval = this.View[vis_act].val_def[campo];
+        // const val_eval = this.View[vis_act].val_def[campo];
+        const val_eval = this.View[alias].val_def[campo];
 
-        let val_defa = null;
         try {
           val_defa = eval(val_eval);
         } catch (error) {
@@ -1031,20 +1070,22 @@ export class VFPDB {
 
           return false;
         }
-        valores[campo] = val_defa;
       }
+      //valores[campo] = val_defa;
     }
-    /*
-    if (!valores.timestamp) {
-      if (this.dialect == 'postgres')
-        valores.timestamp = 0
-      else
-        valores.timestamp = null
-    }
-    */
 
     // const val_defa = eval(this.View[alias].val_def)
-    console.log("Db DataBAse appendBlank alias ", alias, valores);
+    console.log(
+      "db appendBlank view=",
+      alias,
+      "vis_act=",
+      vis_act,
+      "val_def=",
+      this.View[alias].val_def,
+      "valores=",
+      valores
+    );
+
     try {
       await this.localAlaSql(
         "USE Now; INSERT INTO Now." + alias + " VALUES ?",
@@ -1075,9 +1116,10 @@ export class VFPDB {
     this.View[alias].row = this.View[alias].recnoVal.length - 1; // asignamos nuevo row
 
     console.log(
-      "Db DataBAse Insert Now  alaSql=====>",
-      alias,
-      await this.localAlaSql(`select * from  Last.${alias} `)
+      "db appendBlank Alias=',alias,' Select Now  alaSql=====>",
+      await this.localAlaSql(
+        `select * from  Last.${alias} where recno=${recno}`
+      )
     );
     return valores;
 
@@ -1917,6 +1959,14 @@ export class VFPDB {
   /// //////////////////////////////////////////////////
 
   genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => {
+    console.log(
+      "Db genera_tabla ",
+      alias,
+      "respuesta=",
+      respuesta,
+      "nodata=",
+      noData
+    );
     alias = alias.trim();
     this.num_are = this.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
@@ -1925,7 +1975,7 @@ export class VFPDB {
     await this.localAlaSql("DROP TABLE IF EXISTS Last." + alias + ";");
 
     if (!this.View[alias]) {
-      console.log("Db geneta_tabla ", alias);
+      console.log("Db genera_tabla ", alias);
       noData = true;
     } // No hay definicion de vista
 
@@ -2002,7 +2052,7 @@ export class VFPDB {
       this.View[alias].est_tabla = respuesta.est_tabla; // estructura de la tabla
 
       // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
-      let des_tab = " CREATE TABLE " + alias + " (recno INT PRIMARY KEY";
+      let des_tab = " CREATE TABLE Now." + alias + " (recno INT PRIMARY KEY";
 
       for (const nom_ele in respuesta.est_tabla) {
         // genera la descripcion de la tabla para generarla en alasql
@@ -2028,18 +2078,32 @@ export class VFPDB {
       des_tab = des_tab + ")";
       // console.log('Db Valores default=====>',alias,this.View[alias].val_def)
 
-      // console.log('Db ALASQL Estructura ===>',des_tab)
       // Creamos la tablas
-      console.log("Db ins_sql=", des_tab);
+      //  console.log("Db ins_sql=", des_tab);
 
       try {
-        //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
-        await this.localAlaSql("USE Now ;" + des_tab);
+        console.log(
+          "Db genera_tabla create view=",
+          alias,
+          "ins_sql ===>",
+          des_tab
+        );
 
+        //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
+        await this.localAlaSql(des_tab);
+        des_tab = des_tab.replace("Now", "Last");
         //  await this.localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
-        await this.localAlaSql("USE Last ;" + des_tab);
+
+        console.log(
+          "Db genera_tabla create view=",
+          alias,
+          "ins_sql ===>",
+          des_tab
+        );
+
+        await this.localAlaSql(des_tab);
       } catch (error) {
-        console.warn("Db ala error", error, des_tab);
+        console.warn("Db genera_tabla ala error", error, des_tab);
       }
     }
 
@@ -2059,8 +2123,15 @@ export class VFPDB {
     */
     // console.log('Db Genera_tabla final==>',this.View[alias],alias)
     if (noData) {
-      console.log("Db genera_tabla View creada", alias, this.View[alias]);
-      return await this.localAlaSql(`select * from ${alias} limit 0`);
+      console.log(
+        "Db genera_tabla View creada",
+        alias,
+        " View=",
+        this.View[alias],
+        " Estructura=",
+        await this.localAlaSql(`select * from Now.${alias} limit 0`)
+      );
+      return await this.localAlaSql(`select * from Now.${alias} limit 0`);
     }
 
     // console.log('Db Genera_tabla datos==>', respuesta)
@@ -2361,13 +2432,13 @@ return false;
          */
         //  this.axiosActive = false;
         const respuesta = response.data;
-        console.log(
+        /* console.log(
           "5 Db Axios call response  ======>>>",
           dat_lla,
           "respuesta",
           "OK",
           respuesta
-        );
+        ); */
         return respuesta;
       } catch (thrown) {
         console.log("Axios stop=====>>>>>>> ", thrown);
@@ -2387,10 +2458,11 @@ return false;
           console.error(
             "Axios call BacKEnd error",
             dat_lla,
-            error.response.statusText
+            "error",
+            error.response.data
           );
 
-          this.errorAlert("SQL Data Base Error  :" + error.response.statusText);
+          this.errorAlert("SQL Data Base Error  :" + error.response.data);
 
           //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 

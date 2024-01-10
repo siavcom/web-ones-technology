@@ -22,7 +22,7 @@ export class bt_pesada extends COMPONENT {
     this.prop.Image = "/Iconos/svg/vehicle-weight-truck.svg";
 
     this.style.maxWidth = "100px";
-    this.prop.Disabled = true;
+    this.prop.Visible = false;
   } // Fin constructor
 
   async click() {
