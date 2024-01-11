@@ -56,6 +56,7 @@ export class captureComponent extends COMPONENT {
 
     this.prop.Valid = await this.Form.validComponent(this.Name);
 
+    console.log("captureComponent valid ", this.prop.Name, this.prop.Valid);
     return this.prop.Valid;
   }
 }

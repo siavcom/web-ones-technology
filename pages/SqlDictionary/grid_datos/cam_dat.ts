@@ -22,20 +22,19 @@ export class cam_dat extends COLUMN {
     this.prop.ToolTipText = "Nombre del campo";
     this.prop.componentStyle.textTransform = "lowercase";
     //this.prop.First=true;
-    this.prop.Value='';
+    this.prop.Value = "";
     this.style.width = "100px";
-
+    this.prop.ErrorMessage = "Campo existente dentro del diccionario";
   }
 
   //////////////////////////////////
   // Evento When
   ///////////////////////////////////
   async when() {
-    if (this.prop.Value==undefined)
-       this.prop.Value=''
+    if (this.prop.Value == undefined) this.prop.Value = "";
 
     const Value = this.prop.Value.trim().toUpperCase();
-    this.prop.When=true
+    this.prop.When = true;
     if (
       Value == "USU_USU" ||
       Value == "USU_CRE" ||
@@ -45,21 +44,20 @@ export class cam_dat extends COLUMN {
       Value == "KEY_PRI"
     )
       this.prop.When = false;
-     return true;
+    return true;
   }
 
   async valid() {
-    if (!this.prop.When) return true
+    if (!this.prop.When) return true;
 
-    const valor = this.prop.Value.toUpperCase().trim();
+    this.prop.Value = this.prop.Value.toLowerCase();
+    const valor = this.prop.Value.trim();
     const recno = this.Recno;
     const data = await this.Form.db.localSql(
-      `select count(key_pri) as existe from vi_cap_comedat where trim(upper(cam_dat))="${valor}" and recno<>${recno}`
+      `select count(key_pri) as existe from vi_cap_comedat where trim(lower(cam_dat))="${valor}" and recno<>${recno}`
     );
     if (data[0].existe > 0) {
-       this.prop.Value=''
-       this.prop.ErrorMessage = "Campo existente dentro del diccionario";
-       console.log('ErrorMessage VALID ====>',this.prop.ErrorMessage)
+      this.prop.Value = "";
       return false;
     }
     return true;

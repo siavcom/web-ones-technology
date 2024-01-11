@@ -19,12 +19,16 @@ export class pe1_bpe extends captureComponent {
 
     this.prop.ControlSource = "vi_cap_comebpe.pe1_bpe";
     this.prop.Decimals = 0;
+    this.prop.Currency = "KGM";
     this.prop.Capture = true;
     this.prop.updateKey = false;
     this.prop.ReadOnly = true;
     this.prop.Disabled = true;
+    this.prop.Currency = "KGM";
     this.style.fontSize = "20px";
     this.style.fontWeight = "bold";
+    this.prop.componentStyle.fontSize = "20px";
+    this.prop.componentStyle.fontWeight = "bold";
     this.style.width = "128px";
   }
   async when() {

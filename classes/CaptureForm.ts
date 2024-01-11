@@ -152,13 +152,12 @@ export class captureForm extends FORM {
 
       Recno = result.recno;
       key_pri = 0;
-      //this.bt_calendario.prop.Visible=false
-      this.bt_borra.prop.Visible = true;
+      this.bt_borra.prop.Visible = false;
     } else {
       Recno = data[0].recno;
       key_pri = data[0].key_pri;
-      //this.bt_calendario.prop.Visible=true
-      this.bt_borra.prop.Visible = false;
+
+      this.bt_borra.prop.Visible = true;
     }
 
     //await this.refreshComponent(true, Recno,key_pri);
@@ -269,8 +268,7 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     async click() {
-      if (!this.prop.Visible) return;
-      this.prop.Disabled = true;
+      this.prop.Visible = false;
       this.prop.Valid = false;
 
       this.Parent.bt_borra.prop.Disabled = true;
@@ -283,6 +281,7 @@ export class captureForm extends FORM {
         // Checa si todos esta validados
         if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.Valid) {
           if (!(await this.Parent[comp].valid())) {
+            if (!this.prop.Disabled) this.prop.Visible = true;
             return;
           }
         }
@@ -316,6 +315,7 @@ export class captureForm extends FORM {
       //await this.lee_grid()
 
       await this.Parent.graba();
+      if (!this.prop.Disabled) this.prop.Visible = true;
       return;
     }
 

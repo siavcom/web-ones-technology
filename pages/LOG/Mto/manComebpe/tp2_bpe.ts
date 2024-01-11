@@ -24,6 +24,8 @@ export class tp2_bpe extends captureComponent {
     this.prop.ReadOnly = true;
     this.style.fontSize = "20px";
     this.style.fontWeight = "bold";
+    this.prop.componentStyle.fontSize = "20px";
+    this.prop.componentStyle.fontWeight = "bold";
     this.style.width = "200px";
   }
   async when() {

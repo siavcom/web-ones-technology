@@ -2008,6 +2008,10 @@ export class VFPDB {
         // genera la descripcion de la tabla para generarla en alasql
         des_tab =
           des_tab + "," + nom_ele + " " + respuesta.est_tabla[nom_ele].tip_cam;
+
+        if (respuesta.est_tabla[nom_ele].tip_cam == "STRING")
+          des_tab = des_tab + "(" + respuesta.est_tabla[nom_ele].lon_dat + ")";
+
         const val_def = respuesta.est_tabla[nom_ele].val_def;
         // const val_def=respuesta.est_tabla[nom_ele].replace('undefined','null')
 
@@ -2387,10 +2391,10 @@ return false;
           console.error(
             "Axios call BacKEnd error",
             dat_lla,
-            error.response.statusText
+            error.response.data
           );
 
-          this.errorAlert("SQL Data Base Error  :" + error.response.statusText);
+          this.errorAlert("SQL Data Base Error  :" + error.response.data);
 
           //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 

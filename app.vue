@@ -59,7 +59,7 @@
               <span v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
                 <li text-align="end" @click="isRep = !isRep">
                   <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
-                  <img v-show="!isRep" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
+                  <img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                   <li>
@@ -76,7 +76,7 @@
               <span v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
                 <li text-align="end" @click="isPro = !isPro">
                   <span class="links_options">{{ Props.process }}</span>
-                  <img v-show="!isPro" class="ico" src="/Iconos/svg/bx-expand-vertical.svg">
+                  <img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg">
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
                   <li>

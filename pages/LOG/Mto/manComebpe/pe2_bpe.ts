@@ -26,8 +26,12 @@ export class pe2_bpe extends captureComponent {
     this.prop.updateKey = false;
     this.prop.ReadOnly = true;
     this.prop.Disabled = true;
+    this.prop.Currency = "KGM";
     this.style.fontSize = "20px";
     this.style.fontWeight = "bold";
+    this.prop.componentStyle.fontSize = "20px";
+    this.prop.componentStyle.fontWeight = "bold";
+
     this.style.width = "128px";
   }
   async when() {

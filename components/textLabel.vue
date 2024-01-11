@@ -90,7 +90,7 @@ const props = defineProps<{
 
     Notation: 'standard'; //standard,scientific,enginniering,compact
     Style: string; // decimal, currency,percent,unit
-    Currency: 'MXN'; //USD,EUR,MXN
+    Currency: '   '; //USD,EUR,MXN
     CurrencyDisplay: 'code'; //to use the ISO currency code.
     Decimals: number;
     Nu: 'arab';//

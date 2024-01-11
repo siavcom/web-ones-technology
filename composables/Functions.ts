@@ -25,7 +25,11 @@ export const char = async (ascci: number) => {
 ////////////////////////////////////
 
 export const dateToSql = async (fecha: string) => {
-    return fecha.replaceAll("-", "").slice(0,8);
+  return fecha.replaceAll("-", "").slice(0, 8);
+};
+
+export const dateTimeToSql = async (fecha: string) => {
+  return fecha.replaceAll("-", "").slice(0, 19);
 };
 
 export const dateToString = async (texto: Date) => {
@@ -38,14 +42,31 @@ export const dateToString = async (texto: Date) => {
   return texto.toString();
 };
 
-export const stringToDate = async (texto?: string) => {
-  if (!texto || texto == null || texto == "") 
-    texto = "1900-01-01";
+export const currentTime = async () => {
+  let current = new Date();
+  let cDate =
+    current.getFullYear() +
+    "-" +
+    (current.getMonth() + 1) +
+    "-" +
+    current.getDate();
+  let cTime =
+    current.getHours() +
+    ":" +
+    current.getMinutes() +
+    ":" +
+    current.getSeconds();
+  let dateTime = cDate + " " + cTime;
+  return dateTime;
+};
 
-  let date = texto.slice(0,10);
-  
+export const stringToDate = async (texto?: string) => {
+  if (!texto || texto == null || texto == "") texto = "1900-01-01";
+
+  let date = texto.slice(0, 10);
+
   //  texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
-/*
+  /*
   if (date.length == 10) 
     date+=  " 00:00:00";
 
@@ -58,7 +79,7 @@ export const stringToDate = async (texto?: string) => {
     "date=",date
    );
 */
-   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+  return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
 export const dayToMilliseconds = async (day: number, Type?: string) => {
@@ -76,9 +97,8 @@ export const dayToMilliseconds = async (day: number, Type?: string) => {
 // data : data to sum
 // tipo : type ( 'D'=days,'W'=weeks, 'M'=months, Null=date)
 
-export const addDate = async (date:Date, data: any, tipo?: string) => {
-   
-  const thisDate=new Date(date)
+export const addDate = async (date: Date, data: any, tipo?: string) => {
+  const thisDate = new Date(date);
   if (!tipo)
     return new Date(date.getTime() + data.getTime())
       .toISOString()
@@ -93,18 +113,13 @@ export const addDate = async (date:Date, data: any, tipo?: string) => {
   let year = thisDate.getFullYear();
   let month = thisDate.getMonth();
 
-  if (tipo == "W")
-      day=day+(data*7)
+  if (tipo == "W") day = day + data * 7;
 
-  if (tipo == "D") 
-      day=day+data
-   
-  if (tipo == "Y") 
-      year=year+data
- 
-  if (tipo == "M") 
-     month=month+data;
-   
+  if (tipo == "D") day = day + data;
+
+  if (tipo == "Y") year = year + data;
+
+  if (tipo == "M") month = month + data;
 
   return new Date(year, month, day).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
@@ -175,9 +190,11 @@ export const numberFormat = async (
   } else result = num;
 
   result = sign < 0 ? "-" + num : num;
-  if (currency == "MNX" || currency == "EUR" || currency == "USD") type = "$";
+  if (result == "") result = "0";
 
-  result = type + result;
+  if (currency == "MXN" || currency == "EUR" || currency == "USD")
+    result = "$" + result;
+  else result = result + " " + currency.trim();
   // console.log("2 numberFormat result=", result);
 
   return result;

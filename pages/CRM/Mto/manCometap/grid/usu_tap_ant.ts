@@ -72,7 +72,7 @@ export class usu_tap extends COLUMN {
     // this.prop.Min="0"
     // this.prop.Max="999999999"
     // this.prop.Style= 'decimal' // decimal, currency,percent,unit
-    // this.prop.Currency= 'MXN' //USD,EUR,MXN
+    // this.prop.Currency= '   ' //USD,EUR,MXN
     // this.prop.CurrencyDisplay = 'code' //to use the ISO currency code.
     // this.prop.Decimals = 2
 

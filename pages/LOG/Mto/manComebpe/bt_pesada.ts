@@ -26,41 +26,48 @@ export class bt_pesada extends COMPONENT {
   } // Fin constructor
 
   async click() {
-    this.prop.Disabled = true;
-    if (this.Form.Recno == 0) {
+    this.prop.Visible = false;
+    if (this.Form.pe1_bpe.prop.Value == 0) {
       this.Form.pe2_bpe.prop.Visible = false;
       this.Form.tp2_bpe.prop.Visible = false;
       // Lee node bascula
-      this.Form.pe1_bpe.prop.Value = parseInt(Math.random() * 10000);
-      this.Form.tp1_bpe.prop.Value = new Date().toISOString();
+      this.Form.pe1_bpe.prop.Value = parseInt(Math.random() * 10000); //Solo obtiene los enteros
+      this.Form.tp1_bpe.prop.Value = await currentTime();
       if (
         (await MessageBox(
-          "Pesada 1 =" + this.Form.pe1_bpe.prop.Value.toLocaleString(),
+          "Pesada 1 =" + this.Form.pe1_bpe.prop.Value,
           4,
           "Seguro"
         )) != 6
       ) {
-        this.prop.Disabled = false;
+        MessageBox("Pesada 2 cancelada");
+        this.Form.pe2_bpe.prop.Value = 0;
+        this.prop.Visible = true;
         return;
       }
     } else {
       if (this.Form.pe2_bpe.prop.Value > 0)
         // ya no se puede volver a pesar
         return;
-      this.Form.pe2_bpe.prop.Value = parseInt(Math.random() * 10000);
-      this.Form.tp2_bpe.prop.Value = new Date().toISOString();
+      this.Form.pe2_bpe.prop.Value = parseInt(Math.random() * 10000); //Solo obtiene los enteros
+      this.Form.tp2_bpe.prop.Value = await currentTime();
+
       if (
         (await MessageBox(
-          "Pesada 2 =" + this.Form.pe2_bpe.prop.Value.toLocaleString(),
+          "Pesada 2 =" + this.Form.pe2_bpe.prop.Value,
           4,
           "Seguro"
         )) != 6
       ) {
-        this.prop.Disabled = false;
+        MessageBox("Pesada 2 cancelada");
+        this.Form.pe2_bpe.prop.Value = 0;
+        this.prop.Visible = true;
         return;
       }
     }
+    MessageBox("Se grabaran datos");
     await this.Form.bt_graba.click();
-    this.prop.Disabled = false;
+    this.Form.bpe_bpe.setFocus();
+    return;
   }
 }

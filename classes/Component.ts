@@ -42,7 +42,7 @@ export class COMPONENT {
     ControlSource: "",
     ColumnCount: 1,
     ColumnWidths: "75%,25%",
-    Currency: "MXN", //USD,EUR,MXN
+    Currency: "", //USD,EUR,MXN
     CurrencyDisplay: "code", //to use the ISO currency code.
 
     Development: false,

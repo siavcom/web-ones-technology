@@ -72,7 +72,7 @@
             :size="prop.MaxLength"
       -->
     <input :id="Id" v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
-      :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="prop.MaxLength" :size="prop.MaxLength"
+      :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
       @focus="onFocus">
 
@@ -136,7 +136,7 @@ const props = defineProps<{
 
     Capture: true;
     ControlSource: string;
-    Currency: 'MXN'; //USD,EUR,MXN
+    Currency: '   '; //USD,EUR,MXN
     CurrencyDisplay: 'code'; //to use the ISO currency code.
 
     Decimals: number;
@@ -251,7 +251,8 @@ var oldVal = Value.value
 const ShowError = ref(false)
 const checkValue = ref(false)
 
-
+const MaxLength = ref(props.prop.MaxLength)
+let sw_MaxLength = false
 
 const divStyle = reactive(props.style)
 
@@ -285,7 +286,7 @@ const Style=ref(props.prop.Style)
 if (!Style.value) Style.value='decimal'
 
 const Currency=ref(props.prop.Currency)
-if (!Currency.value) Currency.value='MXN'
+if (!Currency.value) Currency.value='   '
 
 const MinimumFractionDigits=ref(props.prop.Decimals) 
 if (!MinimumFractionDigits.value) MinimumFractionDigits.value=2
@@ -311,7 +312,7 @@ const toNumberStr = async (n: number) => {
   let Currency = props.prop.Currency
   let MinimumFractionDigits = props.prop.Decimals
   /* if (!Style) Style = 'decimal'
-  if (!Currency) Currency = 'MXN'
+  if (!Currency) Currency = '   '
   if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
   //console.log('textLabel Digits===>',props.Name,props.prop.Decimals,MinimumFractionDigits)
 
@@ -445,6 +446,9 @@ inherit	Inherits this property from its parent element. Read about inherit
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
+
+  const ControlSource = props.prop.ControlSource
+  const pos = ControlSource.indexOf(".") + 1;
 
   //outFocus.value = true
   // let Valor = ''
@@ -596,7 +600,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     Valor = ''
     This.prop.Valid = true
 
-    if (props.Registro == 0 || props.prop.ControlSource.length == 0) { // limpia value
+    if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
       if (props.prop.Value == null) {
         switch (props.prop.Type) {
           case 'number':
@@ -619,29 +623,32 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     }
     else {
       // leemos valor 
-      //  if (This.Parent.Recno = !props.Registro)
-      //    This.Parent.Recno = props.Registro
-
-      //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
-      const Recno = props.Registro
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno)
-      // console.log('editText emitValue() 2) readCam Name=', props.prop.Name, 'data=', data)
 
       let sw_dat = false
-      for (const campo in data) {
-        if (campo != 'key_pri') {
-          sw_dat = true
 
-          if (props.Registro && This.Recno != props.Registro)
-            This.Recno = props.Registro
+      if (pos > 1) {
 
-          //This.prop.Valid = true// ya se capturo algo , se apaga Valid
-          Value.value = data[campo]
+        //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
+        const Recno = props.Registro
+        const data = await This.Form.db.readCampo(ControlSource, Recno)
+        // console.log('editText emitValue() 2) readCam Name=', props.prop.Name, 'data=', data)
 
-          // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
 
-          if (!isValid) {
-            readValid = true
+        for (const campo in data) {
+          if (campo != 'key_pri') {
+            sw_dat = true
+
+            if (props.Registro && This.Recno != props.Registro)
+              This.Recno = props.Registro
+
+            //This.prop.Valid = true// ya se capturo algo , se apaga Valid
+            Value.value = data[campo]
+
+            // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
+
+            if (!isValid) {
+              readValid = true
+            }
           }
         }
       }
@@ -672,8 +679,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   }
 
   //console.log('4) editText emitValue() Fin Name=', props.prop.Name,'This.prop.Valid=',This.prop.Valid)
-
-
   switch (props.prop.Type) {
     case 'number':
       currentValue.value[1] = Value.value.toString()
@@ -721,8 +726,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       break;
 
     case 'datetime':
-      //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
-      if (Value.value == '')
+      console.log('editText emitValue() Time Name ', props.prop.ControlSource, 'Valor=', Valor, 'Value=', Value.value)
+      if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01T00:00:00'
 
       displayDate.value = new Date(Value.value).toTimeString()
@@ -991,7 +996,30 @@ const focusInput = async () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-  console.log('editText onFocus Name=', This.prop.Name, 'Map', This.prop.Map, 'ThisForm.eventos', This.Form.eventos)
+
+  const ControlSource = props.prop.ControlSource
+  const pos = ControlSource.indexOf(".") + 1;
+  // Calcula la longitud maxima
+
+  //  console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, 'ControlSource', ControlSource, ' View=', This.Sql.View)
+
+
+  if (pos > 1 && !sw_MaxLength) {
+    sw_MaxLength = true
+    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
+    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+
+    // console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, ' View=', This.Sql.View[tabla])
+
+    const lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
+
+
+    if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
+
+      MaxLength.value = lon_campo
+    }
+  }
+
 
   //await This.when()
   This.Form.eventos.push(This.prop.Map + '.when()')
