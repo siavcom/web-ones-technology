@@ -28,7 +28,8 @@
 
       <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false; inputBufferBuffer = ''" @focusout="emitValue()" />
+        @focus.prevent="toggle = false; inputBufferBuffer = ''; This.Form.eventos.push(This.prop.Map + '.when()')"
+        @focusout="emitValue()" />
 
       <!--span> {{ prop.Value }}</span-->
       <!--Valor seleccionado click-->
@@ -365,16 +366,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   for (let i = 0; i < columnas.length && !found; i++) {
     //    console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value,'Value=',Value.value)
     // (typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
+    console.log('comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
     if (
       (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-      Value.value.trim() == columnas[i].value) {
+      Value.value == columnas[i].value) {
       // El objeto columna tiene dos campos value y text
       displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
       found = true
     }
-
   }
-  if (!found) { // No se encontro el valor , asignara el primer valor
+  if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
     Value.value = columnas[0].value
     displayText.value = columnas[0]['text'][0]
   }
@@ -631,11 +632,7 @@ const renderComboBox = async (readData?: boolean) => {
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
   //try {
-  const RowSource: string = props.prop.RowSource
-  const pos = RowSource.indexOf(".") // posicion del punto
 
-  // Obtenemos el alias
-  const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
 
   ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
@@ -692,6 +689,11 @@ const renderComboBox = async (readData?: boolean) => {
       }
 
     case 2: { // Alias
+      const RowSource: string = props.prop.RowSource
+      const pos = RowSource.indexOf(".") // posicion del punto
+
+      // Obtenemos el alias
+      const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
 
       // aqui me quede (arreglar lectura por alias)
       const ins_sql = 'select ' + RowSource + ' from ' + alias
@@ -702,18 +704,11 @@ const renderComboBox = async (readData?: boolean) => {
     }
     case 3: {   // SQL Server Query
       data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
-      if (data == null) {
-        console.warn('comoBox Render data=null', This.name, 'RowSource', props.prop.RowSource)
-        return
-      }
+
       break
     }
     case 4: { // local SQL Query
       data = await This.Form.db.localAlaSql(props.prop.RowSource)
-      if (data == null) {
-        console.warn('comoBox Render data=null', This.name, 'RowSource', props.prop.RowSource)
-        return
-      }
       break
     }
     case 5: {
@@ -727,6 +722,7 @@ const renderComboBox = async (readData?: boolean) => {
       break;
     }
   }
+
   if (data[0]) {
     if ((tip_rst >= 2 || tip_rst <= 4) && data.length > 0) {
       for (const nom_obj in data[0]) {
@@ -1025,13 +1021,13 @@ watch(
   () => props.style.width,
 
   (new_val, old_val) => {
-    // console.log("Cambio tamaño ", inputWidth.value);
+    // console.log("Cambio tamaÃ±o ", inputWidth.value);
     if (new_val != old_val) {
       if (props.style.width.substr(-2, 2) == 'px') {
         const len = props.style.width.length - 2
         const width: number = +props.style.width.substr(0, len) - 30
         inputWidth.value = width.toString() + 'px'
-        //console.log("Cambio tamaño 2", inputWidth.value);
+        //console.log("Cambio tamaÃ±o 2", inputWidth.value);
       }
 
 

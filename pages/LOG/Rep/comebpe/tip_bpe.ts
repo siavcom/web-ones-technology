@@ -19,13 +19,14 @@ export class tip_bpe extends COMPONENT {
     this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.RowSource = [
       ["Todos", "Interno", "Público"],
-      [9,0,1],
+      ["T", "I", "P"],
     ];
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px /
-    this.prop.Value = 9;
+    this.prop.Value = "T";
     //this.style.zIndex=5  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
-    this.style.width = "300px";
+    this.style.width = "200px";
+    this.prop.componentStyle.width = "100px";
   }
 }

@@ -13,7 +13,7 @@ export const left = async (texto: string, lon: number) => {
 };
 
 export const right = async (texto: string, len: number) => {
-  return texto.substring(-len);
+  return texto.slice(-len);
 };
 
 export const char = async (ascci: number) => {
@@ -28,8 +28,13 @@ export const dateToSql = async (fecha: string) => {
   return fecha.replaceAll("-", "").slice(0, 8);
 };
 
-export const dateTimeToSql = async (fecha: string) => {
-  return fecha.replaceAll("-", "").slice(0, 19);
+export const dateTimeToSql = async (time: string) => {
+  const formato = "T00:00:00";
+  const long = 19 - time.length;
+  if (long > 0) time = time + formato.slice(-long);
+  else time = time.slice(0, 19);
+
+  return time; //.replaceAll("-", "").slice(0, 19).replaceAll("T"," ");
 };
 
 export const dateToString = async (texto: Date) => {

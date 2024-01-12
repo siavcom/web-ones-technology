@@ -16,8 +16,7 @@ export class has_fec extends COMPONENT {
   constructor() {
     super();
     this.prop.textLabel = "Hasta la fecha";
-    this.prop.Type = "dateTime";
-    this.prop.Min = "1900-01-01";
-    this.prop.Max = "2030-12-01";
+    this.prop.Type = "datetime";
+    this.prop.Value = "2020-01-01T00:00";
   }
 }

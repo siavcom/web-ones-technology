@@ -113,19 +113,19 @@ export class COMPONENT {
 
     componentStyle: {
       background: "white",
+      cols: 100,
       color: "black",
-      width: "auto",
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      fontWeight: "normal",
       height: "85%",
       maxHeight: "auto",
       maxWidth: "100%",
-      fontWeight: "normal",
-      fontFamily: "Arial",
-      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      rows: 5,
       textAlign: "left",
       textTransform: "none",
       zIndex: 1, // profundidad
-      cols: 100,
-      rows: 5,
+      width: "auto",
     },
   };
   style = {

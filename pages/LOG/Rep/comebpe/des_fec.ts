@@ -13,7 +13,11 @@ export class des_fec extends COMPONENT {
   constructor() {
     super();
     this.prop.textLabel = "Desde la fecha";
-    this.prop.Type = "dateTime";
-    this.prop.Value = "2020-01-01";
+    this.prop.Type = "datetime";
+    this.prop.Value = "2020-01-01T00:00";
+  }
+
+  async valid() {
+    this.Form.has_fec.prop.Min = this.prop.Value;
   }
 }

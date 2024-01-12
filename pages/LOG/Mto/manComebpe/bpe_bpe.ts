@@ -16,21 +16,21 @@ export class bpe_bpe extends captureComponent {
   constructor() {
     super();
 
-    this.prop.textLabel = "Numero de boleta";
+    this.prop.textLabel = "Número de boleta";
+
     this.prop.BaseClass = "comboBox";
+    //        this.prop.ControlSource = 'vi_cap_cometpy.tpy_tpy'
+    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
 
-    this.prop.RowSourceType = 3;
-    this.prop.RowSource = `select max(bpe_bpe)+1 as bpe_bpe,' Nueva Boleta' as pla_bpe from man_comebpe where bas_bpe=1`;
+    this.prop.RowSource = `select ' Nueva boleta '+cast(max(bpe_bpe)+1 as char(7)) as pla_bpe, max(bpe_bpe)+1 as bpe_bpe,' ' as cam_bpe  from man_comebpe where bas_bpe=1`;
 
-    this.prop.ColumnCount = 2;
-    this.prop.BoundColumn = 1;
-    this.prop.ColumnWidths = "64px,128px";
+    this.prop.ColumnCount = 3;
+    this.prop.BoundColumn = 2;
+    this.prop.ColumnWidths = "50%,0,50%";
 
-    this.style.width = "400px";
+    this.style.width = "250px";
 
     //this.prop.ControlSource = "vi_cap_comebpe.bpe_bpe";
-    this.prop.Min = "1";
-    this.prop.Max = "2147483647";
     this.prop.Capture = true;
     this.prop.updateKey = true;
 
@@ -41,34 +41,21 @@ export class bpe_bpe extends captureComponent {
     this.prop.componentStyle.fontWeight = "bold";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
+
     this.prop.First = true;
   }
   async when() {
-    this.prop.RowSource = "";
-    this.prop.RowSource = `select max(bpe_bpe)+1 as bpe_bpe,' Nueva Boleta' as pla_bpe from man_comebpe where bas_bpe=${this.Form.bas_bpe.prop.Value} union \
-    select bpe_bpe,case when tip_bpe=1 then pla_bpe when tip_bpe=0 then cast(cam_cam as char) end as pla_bpe from man_comebpe \
-    where pe2_bpe=0 and bas_bpe=${this.Form.bas_bpe.prop.Value} order by pla_bpe`;
+    this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql 5-Array
+    this.prop.RowSource = `select ' Nueva boleta '+cast(max(bpe_bpe)+1 as char(7)) as pla_bpe, max(bpe_bpe)+1 as bpe_bpe,'' as cam_bpe  from man_comebpe where bas_bpe=${this.Form.bas_bpe.prop.Value} union \
+    select 'Boleta '+cast(bpe_bpe as char) as pla_bpe ,bpe_bpe, \
+    case \
+       when tip_bpe=1 \ 
+          then cast(pla_bpe as char(20)) \ 
+       when tip_bpe=0 \
+         then cast(cam_cam as char) end as cam_bpe from man_comebpe \
+          where bas_bpe=${this.Form.bas_bpe.prop.Value} and pe2_bpe=0 order by pla_bpe`;
 
-    /*
-
-    console.log("when bpe_bpe");
-    this.Form.bt_pesada.prop.Visible = false;
-
-    const data = await this.Sql.execute(`         
-           select max(bpe_bpe)+1 as bpe_bpe from man_comebpe where bas_bpe=${this.Form.bas_bpe.prop.Value}`);
-
-  
-
- 
-   console.log("when bpe_bpe", data);
-
-    if (data[0]) {
-      this.prop.Valid = true; // se pone en Verdadero para que no llame rutina validacion
-      if (data[0].bpe_bpe == null) this.prop.Value = 1;
-      else this.prop.Value = +data[0].bpe_bpe;
-   
-    }
-*/
+    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
 
     if (this.prop.Value == 0) this.prop.Value = 1;
 
