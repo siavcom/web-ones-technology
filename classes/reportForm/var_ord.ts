@@ -15,14 +15,15 @@ export class var_ord extends COMPONENT {
   constructor() {
     super();
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Ordenado Por";
+    this.prop.textLabel = "Orden ";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
 
     //this.prop.ColumnWidths ="70%,10%";
-    this.prop.ColumnWidths = "400px,64px";
+    this.prop.ColumnWidths = "256px,64px";
 
     // this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
+    this.prop.componentStyle.width = "128px";
     this.style.width = "400px";
     //this.style.zIndex=2
     // this.prop.TabIndex=103

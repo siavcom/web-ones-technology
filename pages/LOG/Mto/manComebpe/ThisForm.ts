@@ -71,11 +71,12 @@ export class ThisForm extends captureForm {
   public cli_bpe = new cli_bpe(); // Cliente
   public tra_bpe = new tra_bpe(); // Trasportista
   public pro_bpe = new pro_bpe(); // producto
+  public obs_bpe = new obs_bpe(); // Observaciones
+
   public tp1_bpe = new tp1_bpe(); // Fecha Hora Pesada 1
   public pe1_bpe = new pe1_bpe(); // Pesada Uno
   public tp2_bpe = new tp2_bpe(); // Fecha hora pesada 2
   public pe2_bpe = new pe2_bpe(); // Pesada Dos
-  public obs_bpe = new obs_bpe(); // Observaciones
   public bt_pesada = new bt_pesada();
 
   constructor() {

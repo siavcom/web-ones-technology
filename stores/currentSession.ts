@@ -96,11 +96,22 @@ export const Session = defineStore(
           // obtenemos datos de conexión
           id_con.value = res.id;
           fpo_pge.value = await stringToDate(res.fpo_pge);
-          console.log(' Fecha=',fpo_pge.value,res)
+          console.log(" Fecha=", fpo_pge.value, res);
           dialect.value = res.dialect;
           console.log("Socket Connection sucefully id=", id_con.value);
         });
 
+        // Imprime PDF en el navegador
+        socket.on("pdfReport", async (res: {}) => {
+          const htmlReport = res.htmlReport;
+          await navigateTo(htmlReport, {
+            open: {
+              target: "_blank",
+            },
+          });
+        });
+
+        /*
         socket.on("loginFail", () => {
           console.log(
             "=======================Socket loginFail ===================="
@@ -108,16 +119,18 @@ export const Session = defineStore(
           pass.value = "";
           //socket.disconnect();
         });
-
+        
+        */
         socket.on("error", (error) => {
           MessageBox(error, 16, "SQL Error ");
-          if (error=='Timeout or connection error'){
-             const router = useRouter();
-             router.push("/Login");
+          if (error == "Timeout or connection error") {
+            const router = useRouter();
+            router.push("/Login");
           }
 
           console.warn("Error SQL=", error);
         });
+
         socket.on("disconnect", () => {
           socketIo.value = false;
           console.log("==============Server socket disconnected============");
@@ -281,13 +294,13 @@ export const Session = defineStore(
       */
 
           var data = [];
-          console.log("Pinia ======leeMenu===== response=" ,response) 
+          console.log("Pinia ======leeMenu===== response=", response);
           for (let i = 0; i < response.length; i++) {
             const registro = {};
             for (const nom_cam in response[i]) {
               registro[nom_cam.toLowerCase()] = response[i][nom_cam];
             }
-          
+
             data.push(registro); //  asigna todos los datos de cada opcion del menu
 
             const pre = data[i].tpr_prg === "S" ? "" : "-";
@@ -299,7 +312,12 @@ export const Session = defineStore(
           }
           //const menu = JSON.stringify(response.data)
           menu.value = data;
-          console.log("Pinia ======leeMenu=====", menu.value, logoEmp.value,response);
+          console.log(
+            "Pinia ======leeMenu=====",
+            menu.value,
+            logoEmp.value,
+            response
+          );
 
           dat_vis.query = " select * from publicvar";
 
@@ -436,6 +454,7 @@ export const Session = defineStore(
       router.push("/");
     };
 
+    // Llama al back-end para actualizar la base de datos por medio de sockets
     const updateSql = async (dat_act: {}) => {
       if (!socket) {
         openSocket();

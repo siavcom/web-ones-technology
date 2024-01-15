@@ -37,10 +37,10 @@ export class bt_pesada extends COMPONENT {
         (await MessageBox(
           "Pesada 1 =" + this.Form.pe1_bpe.prop.Value,
           4,
-          "Seguro"
+          "Correcto ?"
         )) != 6
       ) {
-        MessageBox("Pesada 2 cancelada");
+        MessageBox("Pesada cancelada");
         this.Form.pe2_bpe.prop.Value = 0;
         this.prop.Visible = true;
         return;
@@ -56,16 +56,16 @@ export class bt_pesada extends COMPONENT {
         (await MessageBox(
           "Pesada 2 =" + this.Form.pe2_bpe.prop.Value,
           4,
-          "Seguro"
+          "Correcto ?"
         )) != 6
       ) {
-        MessageBox("Pesada 2 cancelada");
+        MessageBox("Pesada cancelada");
         this.Form.pe2_bpe.prop.Value = 0;
         this.prop.Visible = true;
         return;
       }
     }
-    MessageBox("Se grabaran datos");
+
     await this.Form.bt_graba.click();
     this.Form.bpe_bpe.setFocus();
     return;

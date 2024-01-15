@@ -12,16 +12,18 @@
 ///////////////////////////////////////
 
 import { reportForm } from "@/classes/reportForm/reportForm";
-import { bas_bpe } from "./bas_bpe";
-import { tip_bpe } from "./tip_bpe";
+import { bascula } from "./bascula";
+import { tipo } from "./tipo";
 import { des_fec } from "./des_fec";
 import { has_fec } from "./has_fec";
+import { tip_imp } from "./tip_imp"; 
 
 export class ThisForm extends reportForm {
-  public bas_bpe = new bas_bpe();
-  public tip_bpe = new tip_bpe();
+  public bascula = new bascula();
+  public tipo = new tipo();
   public des_fec = new des_fec();
   public has_fec = new has_fec();
+  public tip_imp = new tip_imp();
 
   constructor() {
     super(); // inicializa la clase base
@@ -32,10 +34,11 @@ export class ThisForm extends reportForm {
     this.prop.Development = true;
     this.vis_rep = "vi_comebpe"; // nombre de la vista sql a utilizar en el reporte
     this.for_imp.prop.Value = "rep_comebpe"; // no incluir extencion jasper o jrxml
-    this.bas_bpe.prop.TabIndex = 1;
+    this.bascula.prop.TabIndex = 1;
+    this.tipo.prop.TabIndex = 2;
     this.des_fec.prop.TabIndex = 3;
     this.has_fec.prop.TabIndex = 4;
-    this.tip_bpe.prop.TabIndex = 2;
+    this.tip_imp.prop.TabIndex = 5;
     this.tip_rep.prop.Visible = false;
     this.tip_rep.prop.Disabled = true;
     this.des_fec.prop.Visible = true;
@@ -50,7 +53,6 @@ export class ThisForm extends reportForm {
 
     this.has_fec.prop.Value = this.publicVar.fpo_pge + "T23:59:59";
     this.has_fec.prop.Min = this.des_fec.prop.Value;
-
     // this.has_fec.prop.Max=this.publicVar.fpo_pge+'T23:59:59'
 
     this.var_ord.prop.Value = "bpe_bpe";
@@ -63,22 +65,27 @@ export class ThisForm extends reportForm {
     let localWhere = "";
     const des_fec = await dateTimeToSql(this.Form.des_fec.prop.Value); //dateToSql(this.Form.des_fec.Value)
     const has_fec = await dateTimeToSql(this.Form.has_fec.prop.Value); //dateToSql(this.Form.has_fec.Value)
-    const bas_bpe = this.bas_bpe.prop.Value;
+    const bas_cul = this.bascula.prop.Value;
     const var_ord = this.var_ord.prop.Value;
-    const tip_bpe = this.tip_bpe.prop.Value;
+    const int_pub = this.tipo.prop.Value;
     const vis_rep = this.vis_rep;
+    const tip_imp = this.tip_imp.prop.Value;
 
-    if (tip_bpe != "T") {
+    if (int_pub != "T") {
       if (localWhere.length > 0) localWhere = localWhere + ` and  `;
-      if (tip_bpe == "I") localWhere = localWhere + ` tip_bpe=0 `;
+      if (int_pub == "I") localWhere = localWhere + ` tip_bpe=0 `;
       else localWhere = localWhere + ` tip_bpe=1 `;
     }
-    if (bas_bpe != "T") {
+    if (bas_cul != "T") {
       if (localWhere.length > 0)
-        localWhere = localWhere + ` and bas_bpe=${bas_bpe} `;
-      else localWhere = localWhere + ` bas_bpe=${bas_bpe} `;
+        localWhere = localWhere + ` and bas_bpe=${bas_cul} `;
+      else localWhere = localWhere + ` bas_bpe=${bas_cul} `;
     }
-
+    if (tip_imp != 0) {
+      if (localWhere.length > 0)
+        localWhere = localWhere + ` and pe2_bpe=0 `;
+      else localWhere = localWhere + ` pe2_bpe=0 `;
+    }
     if (where.length > 0) where = " AND " + where;
 
     if (localWhere.length > 0) localWhere = localWhere + " and ";

@@ -28,14 +28,24 @@ export const dateToSql = async (fecha: string) => {
   return fecha.replaceAll("-", "").slice(0, 8);
 };
 
+/*
 export const dateTimeToSql = async (time: string) => {
-  const formato = "T00:00:00";
+  time = time.replaceAll("T", " ");
+
+  const formato = " 00:00:00";
   const long = 19 - time.length;
   if (long > 0) time = time + formato.slice(-long);
   else time = time.slice(0, 19);
 
-  return time; //.replaceAll("-", "").slice(0, 19).replaceAll("T"," ");
+  time = new Date(time);
+  let cDate =
+    time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate();
+  let cTime =
+    time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+
+  return (dateTime = cDate + " " + cTime);
 };
+*/
 
 export const dateToString = async (texto: Date) => {
   let date =
@@ -48,20 +58,37 @@ export const dateToString = async (texto: Date) => {
 };
 
 export const currentTime = async () => {
-  let current = new Date();
-  let cDate =
-    current.getFullYear() +
-    "-" +
-    (current.getMonth() + 1) +
-    "-" +
-    current.getDate();
-  let cTime =
-    current.getHours() +
-    ":" +
-    current.getMinutes() +
-    ":" +
-    current.getSeconds();
-  let dateTime = cDate + " " + cTime;
+  return await dateTimeToSql();
+};
+
+export const dateTimeToSql = async (stringDate?: string) => {
+  let current: Date;
+  if (!stringDate) current = new Date();
+  else current = new Date(stringDate);
+
+  const cero = "0";
+  const year = current.getFullYear() + "-";
+  let month = current.getMonth() + 1 + "-";
+  if (month.length == 2) month = cero + month;
+
+  let day = current.getDate().toString();
+
+  if (day.length == 1) day = cero + day;
+  let cDate = year + month + day;
+
+  let hours = current.getHours() + ":";
+  if (hours.length == 2) hours = cero + hours;
+
+  let minutes = current.getMinutes() + ":";
+  if (minutes.length == 2) minutes = cero + minutes;
+
+  let seconds = current.getSeconds().toString().trim();
+
+  if (seconds.length == 1) seconds = cero + seconds;
+
+  let cTime = "T" + hours + minutes + seconds;
+
+  let dateTime = cDate + cTime;
   return dateTime;
 };
 

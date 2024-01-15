@@ -29,6 +29,7 @@
 import axios from "axios";
 import alasql from "alasql";
 import { storeToRefs } from "pinia";
+import { dateTimeToSql } from "~/composables/Functions";
 
 // import { Global } from "@/Global";
 
@@ -763,17 +764,25 @@ export class VFPDB {
               break;
 
             case tipo == "date" || tipo == "time":
-              let valor = dat_act[row][campo]; //.replaceAll('-','')
-              //valor = valor.replaceAll("T", "");
-              if (valor.length > 10 && valor.length <= 16) {
-                valor = valor + "         ";
-                valor = valor.slice(0, 16) + ":00.000Z";
-              } else valor = dat_act[row][campo]; //.slice(0, 10);
+              console.log("UPDATE fecha=", dat_act[row][campo]);
 
-              m[campo] = new Date(valor).toISOString();
-              console.log("UPDATE fecha=", m.campo);
+              let valor = dat_act[row][campo].trim();
+
+              const formato = "T00:00:00"; //.000Z"
+
+              const long = 19 - valor.length;
+              if (long > 0) valor = valor + formato.slice(-long);
+              else valor = valor.slice(0, 19);
+
+              valor = valor + ".000Z";
+
+              //              valor = valor.slice(0, 24);
+
+              m[campo] = valor;
+              console.log("UPDATE fecha=", m[campo]);
 
               break;
+            //   2024-01-15T10:22:7
 
             default:
               //            m[campo] = "'" + dat_act[row][campo] + "'"
@@ -2298,7 +2307,7 @@ return false;
 
     dat_lla.id_con = this.session.id_con; // asignamos el id de connexion
 
-    /*
+    /*   Creo que ya quedo fuera de uso
    const broadcast=this.socketIo?this.session.socketId+new Date().getTime().toString():''
 
     if (broadcast>''){
@@ -2313,13 +2322,13 @@ return false;
     }
 
    */
-    // hay socket de conexion
+    // hay socket de conexion // Tenemos que poner en verdadero para utilizar sockets
 
     if (this.socket.value && false) {
       try {
         if (dat_lla.tip_llamada == "UPDATE") {
           console.log(" DataBase Socket UPDATE data =", dat_lla.dat_act);
-          /* 
+          /* // busqueda del campo timestamp para trasmitirlo
         for (const campo in dat_lla.dat_act) {
 
              console.log('Socket UPDATE campo =',campo,'valor ',dat_lla.dat_act[campo],'typeof=',typeof dat_lla.dat_act[campo])
@@ -2333,7 +2342,7 @@ return false;
          */
         }
 
-        const data = await this.session.updateSql(dat_lla);
+        const data = await this.session.updateSql(dat_lla); // llama sockets
         console.log(" DataBase Socket UPDATE ok data=", data);
         return data;
       } catch {
