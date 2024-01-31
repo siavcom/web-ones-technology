@@ -5,43 +5,43 @@
 
     <!--mensajes de error y tooltip
     -->
-    <!--div class="component" :style="prop.componentStyle"-->
+    <!--div class="component" :style="prop.inputStyle"-->
     <!--number 
       @input.self="onInput" -->
 
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
 
-    <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="componentStyle" ref="Ref"
+    <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
       :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
       @input.self="onInput" @keypress="keyPress($event)">
 
     <!--spinner-->
 
-    <input :id="Id" v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="componentStyle" ref="Ref"
+    <input :id="Id" v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
       :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
       :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
 
     <!--textArea -->
-    <div v-else-if="prop.Type == 'textArea'" :style="componentStyle">
-      <textarea :id="Id" class="textArea" ref="Ref" :style="componentStyle" v-model="Value" :readonly="ReadOnly"
+    <div v-else-if="prop.Type == 'textArea'" :style="inputStyle">
+      <textarea :id="Id" class="textArea" ref="Ref" :style="inputStyle" v-model="Value" :readonly="ReadOnly"
         :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
-        :rows="componentStyle.rows" :cols='componentStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
+        :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
         @focus="onFocus"></textarea>
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="prop.Type.slice(0, 4) == 'date'"-->
-    <input :id="Id" v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="componentStyle"
+    <input :id="Id" v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
       :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
       :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
       @focusout="focusOut">
-    <!--input v-show="focusIn == 0" class="text" :style="componentStyle" type="text" v-model="displayDate"
+    <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
 
 
-    <div class='json' v-else-if="prop.Type == 'json'" ref="Ref" :style="componentStyle">
+    <div class='json' v-else-if="prop.Type == 'json'" ref="Ref" :style="inputStyle">
 
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
@@ -59,7 +59,7 @@
 
     <!--checkBox-->
     <!--div v-else-if="prop.Type == 'checkBox'"-->
-    <input :id="Id" v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" :style="componentStyle" ref="Ref"
+    <input :id="Id" v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
       :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
       @focus="onFocus" @keypress="keyPress($event)">
 
@@ -71,7 +71,7 @@
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-    <input :id="Id" v-else class="text" ref="Ref" :style="componentStyle" :type="prop.Type" v-model.trim="Value"
+    <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="prop.Type" v-model.trim="Value"
       :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
       @focus="onFocus">
@@ -135,6 +135,24 @@ const props = defineProps<{
     BaseClass: "EditText";
 
     Capture: true;
+
+    componentStyle: {
+      background: "white",
+      cols: 100,
+      color: "black",
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      fontWeight: "normal",
+      height: "85%",
+      maxHeight: "auto",
+      maxWidth: "100%",
+      rows: 5,
+      textAlign: "left",
+      textTransform: "none",
+      zIndex: 1, // profundidad
+      width: "auto",
+    },
+
     ControlSource: string;
     Currency: '   '; //USD,EUR,MXN
     CurrencyDisplay: 'code'; //to use the ISO currency code.
@@ -188,18 +206,6 @@ const props = defineProps<{
     Visible: true;
     When: boolean;
 
-    componentStyle: {
-      background: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "200px";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: string;
-      cols: "100";
-      rows: "5";
-    };
 
   };
 
@@ -261,8 +267,8 @@ if (divStyle.zIndex == 0)
 
 const zIndex = divStyle.zIndex
 
-const componentStyle = reactive(props.prop.componentStyle)
-componentStyle.zIndex = zIndex
+const inputStyle = reactive(props.prop.componentStyle)
+inputStyle.zIndex = zIndex
 
 const toolTipTextStyle = { zIndex: zIndex + 20 }
 const focusIn = ref(0)
@@ -1355,26 +1361,26 @@ const init = async () => {
   thisElement = document.getElementById(Id)
   //console.log('EditText init onMounted', This.prop.Name, 'Document element Id=' + Id)
   if (props.prop.Type == 'date') {
-    componentStyle.width = '120px'
-    componentStyle.height = '20px'
-    componentStyle.maxHeight = '20px'
+    inputStyle.width = '120px'
+    inputStyle.height = '20px'
+    inputStyle.maxHeight = '20px'
   }
   if (props.prop.Type == 'datetime-local') {
-    componentStyle.width = '170px'
-    componentStyle.height = '20px'
-    componentStyle.maxHeight = '20px'
+    inputStyle.width = '170px'
+    inputStyle.height = '20px'
+    inputStyle.maxHeight = '20px'
   }
 
   if (props.prop.Type == 'json') {
-    componentStyle.borderWidth = '1px'
-    componentStyle.borderStyle = 'solid'
-    componentStyle.borderRadius = '2px'
+    inputStyle.borderWidth = '1px'
+    inputStyle.borderStyle = 'solid'
+    inputStyle.borderRadius = '2px'
     divStyle.height = 'auto'
   }
 
 
   if (props.prop.Type == 'number')
-    componentStyle.textAlign = 'right'
+    inputStyle.textAlign = 'right'
 
   if (!This.prop.Visible)
     divStyle.height = '0%'

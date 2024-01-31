@@ -1,6 +1,3 @@
-# clean cache 
-npx nuxi clean
-
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
@@ -10,57 +7,79 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 Make sure to install the dependencies:
 
 ```bash
-# yarn
-yarn install
-
 # npm
 npm install
 
 # pnpm
-pnpm install --shamefully-hoist
+pnpm install
+
+# yarn
+yarn install
 ```
 
 ## Development Server
 
-Start the development server on http://localhost:3000
+Start the development server on `http://localhost:3000`:
 
 ```bash
+# npm
 npm run dev
-npx nuxi dev 
+
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
 ```
 
 ## Production
 
 Build the application for production:
 
+https://nuxt.com/docs/api/commands/build
+nuxy analyze ( pre produccion)
+
+nuxi build (The build command creates a .output directory with all your application, server and dependencies ready for product
+nuxi preview (The preview command starts a server to preview your Nuxt application after running the build command.)
+
 ```bash
+# npm
 npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
 ```
 
 Locally preview production build:
 
 ```bash
+# npm
 npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
+clear npm cache
+npm cache clear --force
+verify npm cache
 
-================= < Ojo >===================================================================
+npm cache verify
 
-npx update-browserslist-db@latest
+// preparar NUXT
+sh -c nuxt prepare
 
-Sponsored by Evil Martians
-Why You Need to Call it Regularly
+npx nuxi prepare [--log-level] [rootDir]
 
-npx update-browserslist-db@latest updates caniuse-lite version in your npm, yarn or pnpm lock file.
-
-This update will bring data about new browsers to polyfills tools like Autoprefixer or Babel and reduce already unnecessary polyfills.
-
-You need to do it regularly for three reasons:
-
-    To use the latest browser?s versions and statistics in queries like last 2 versions or >1%. For example, if you created your project 2 years ago and did not update your dependencies, last 1 version will return 2-year-old browsers.
-    Actual browsers data will lead to using less polyfills. It will reduce size of JS and CSS files and improve website performance.
-    caniuse-lite deduplication: to synchronize version in different tools.
-
-
+Runing con bun
+bun run dev
+Limpia proyecto
+npx nuxi cleanup

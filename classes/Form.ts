@@ -28,7 +28,7 @@ export class FORM extends COMPONENT {
   publicVar = {};
   clickedElement = null;
   Development = false; // desarrollo
-
+  dialect = "MSSQL";
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -63,8 +63,9 @@ export class FORM extends COMPONENT {
     // asignamos en la clase db esta forma
     this.db.Form = this;
 
-    const { Var } = storeToRefs(this.db.session); // variables publicas
+    const { Var, dialect } = storeToRefs(this.db.session); // variables publicas
     this.publicVar = Var.value;
+    this.dialect = dialect.value;
 
     console.log("ThisForm publicVar=", this.publicVar, "Params=", this.Params);
   }
@@ -74,5 +75,9 @@ export class FORM extends COMPONENT {
 
   public async afterMounted() {
     this.prop.Status = "A";
+  }
+
+  public unload() {
+    console.log("Form :", this.Name, " unload");
   }
 }

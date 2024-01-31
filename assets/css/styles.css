@@ -340,12 +340,13 @@ input[class="number"] {
 /* ===============Spinner ======================  */
 .splash-screen {
   background: #f2f0ee;
-  width: 40%; /*60vw;*/
-  height: 40%;
+  width: 40px; /*60vw;*/
+  height: 40px;
   position: fixed;
   background-color: rgb(255, 255, 255);
   text-align: center;
   border-radius: 6px;
+  border: 3px;
   z-index: 50;
 }
 

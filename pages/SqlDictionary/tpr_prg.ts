@@ -25,7 +25,7 @@ export class tpr_prg extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "150px,10px";
-    this.style.width = "400px"; /* width/height  - initial value: auto */
+    this.style.width = "650px";
     this.prop.componentStyle.width = "200px";
     //this.style.zIndex=2
     this.prop.Visible = false;

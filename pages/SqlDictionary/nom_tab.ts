@@ -32,7 +32,7 @@ export class nom_tab extends COMPONENT {
     this.prop.MultiSelect = false;
     this.prop.List = [];
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
-    this.style.width = "450px";
+    this.style.width = "650px";
     this.prop.componentStyle.width = "300px";
     //this.style.zIndex=2
   }

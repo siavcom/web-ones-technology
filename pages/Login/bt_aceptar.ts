@@ -38,7 +38,16 @@ export class bt_aceptar extends COMPONENT {
     let login = ThisForm.log_usu.prop.Value;
     let empresa = ThisForm.emp_emp.prop.Value;
     const pos_arroba = login.indexOf("@", 0);
+    /* console.log(
+      "bt_entrar log_usu",
+      login,
+      "empresa",
+      empresa,
+      "pas_usu",
+      ThisForm.pas_usu.prop.Value
+    );
 
+    */
     if (login.length == pos_arroba + 1) {
       ThisForm.log_usu.prop.MessageError = "usuario@empresa";
       ThisForm.log_usu.prop.Valid = false;

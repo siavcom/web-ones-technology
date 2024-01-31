@@ -3,9 +3,9 @@
 // Author : Fernando Cuadras Angulo
 // Creacion : 16/Noviembre/2022
 // Ult.Mod  : 26/Diciembre/2022
-/// //////////////////////////////////////////
+/////////////////////////////////////////////
 
-import { truncate } from "fs/promises";
+//import { truncate } from "fs/promises";
 import { COMPONENT } from "./Component";
 import { FORM } from "@/classes/Form";
 
@@ -16,6 +16,7 @@ export class captureForm extends FORM {
   // se debe de poner siempre el contructor
   constructor() {
     super();
+    this.style.width = "-moz-available";
     // asignamos a los metodos la clase padre
   }
 

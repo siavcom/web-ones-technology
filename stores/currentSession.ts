@@ -47,6 +47,7 @@ export const Session = defineStore(
     const Var = ref(0);
     const menu = ref([]);
     let socket;
+    const sockets = {};
     let socketIo = ref(false);
     let socketId: string;
 
@@ -58,22 +59,39 @@ export const Session = defineStore(
       urlSocket = urlSocket.slice(0, lon - 1);
 
       //const socket= new io()
+      /*
       const json = {
         nom_emp: nom_emp.value,
         user: user.value,
         pass: "XASddweef12234esasasf.@dsesddsddsd",
       };
+    */
+      let force = false;
+      if (sockets[nom_emp.value])
+        sockets[nom_emp.value].connect(urlSocket, {
+          forceNew: true,
+        });
+      else
+        sockets[nom_emp.value] = io.connect(urlSocket, {
+          auth: {
+            nom_emp: nom_emp.value,
+            user: user.value,
+            pass: pass.value,
+          },
+        });
 
-      console.log(
-        "Socket url=>>>>>>>>>>>>>>>>",
-        urlSocket,
-        "json=",
-        json,
-        "id_con=",
-        id_con.value
-      );
-
-      if (!socket) {
+      socket = sockets[nom_emp.value];
+      /*
+      if (!socket || !socketIo.value) {
+        console.log(
+          "Socket url=>>>>>>>>>>>>>>>>",
+          urlSocket,
+          "id_con=",
+          id_con.value,
+          "socket=",
+          socket
+        );
+        
         socket = io(urlSocket, {
           auth: {
             nom_emp: nom_emp.value,
@@ -81,67 +99,59 @@ export const Session = defineStore(
             pass: "XASddweef12234esasasf.@dsesddsddsd",
           },
         });
-
-        //      console.log("Socket url=>>>>>>>>>>>>>>>>", urlSocket, "json=", json);
-
-        socket.on("loginFail", (res: string) => {
-          MessageBox(res, 16, "SQL Error ");
-
-          console.log("Socket loginFail res=", res);
-        });
-
-        socket.on("loginOk", async (res: {}) => {
-          socketId = socket.id;
-          //res={ id: name, dialect: options.dialect, fpo_pge }
-          // obtenemos datos de conexión
-          id_con.value = res.id;
-          fpo_pge.value = await stringToDate(res.fpo_pge);
-          console.log(" Fecha=", fpo_pge.value, res);
-          dialect.value = res.dialect;
-          console.log("Socket Connection sucefully id=", id_con.value);
-        });
-
-        // Imprime PDF en el navegador
-        socket.on("pdfReport", async (res: {}) => {
-          const htmlReport = res.htmlReport;
-          await navigateTo(htmlReport, {
-            open: {
-              target: "_blank",
-            },
-          });
-        });
-
-        /*
-        socket.on("loginFail", () => {
-          console.log(
-            "=======================Socket loginFail ===================="
-          );
-          pass.value = "";
-          //socket.disconnect();
-        });
-        
         */
-        socket.on("error", (error) => {
-          MessageBox(error, 16, "SQL Error ");
-          if (error == "Timeout or connection error") {
-            const router = useRouter();
-            router.push("/Login");
-          }
+      //      console.log("Socket url=>>>>>>>>>>>>>>>>", urlSocket, "json=", json);
 
-          console.warn("Error SQL=", error);
+      socket.on("loginFail", (res: string) => {
+        socketDisconnect(socket, res);
+      });
+
+      socket.on("loginOk", async (res: {}) => {
+        socketId = socket.id;
+        //res={ id: name, dialect: options.dialect, fpo_pge }
+        // obtenemos datos de conexión
+        id_con.value = res.id;
+        fpo_pge.value = await stringToDate(res.fpo_pge);
+        dialect.value = res.dialect;
+        leeMenu();
+
+        console.log("Socket Connection sucefully id=", id_con.value);
+      });
+
+      // Imprime PDF en el navegador
+      socket.on("pdfReport", async (res: {}) => {
+        const htmlReport = res.htmlReport;
+        await navigateTo(htmlReport, {
+          open: {
+            target: "_blank",
+          },
         });
+      });
 
-        socket.on("disconnect", () => {
-          socketIo.value = false;
-          console.log("==============Server socket disconnected============");
-        });
+      socket.on("error", (error) => {
+        MessageBox(error, 16, "SQL Error ");
+        if (error == "Timeout or connection error") {
+          const router = useRouter();
+          router.push("/Login");
+        }
 
-        /*
+        console.warn("Error SQL=", error);
+      });
+
+      socket.on("desconecta", (error: string) => {
+        socketDisconnect(socket, error);
+      });
+
+      /*
       socket.on("broadcast", (res: []) => {
       });
      */
-        socketIo.value = true;
+      socketIo.value = true;
+
+      if (socket) {
+        return true;
       }
+      return false;
     }
 
     /// /////////////  open  ///////////////////
@@ -171,28 +181,23 @@ export const Session = defineStore(
           "SQL Error "
         );
       }
-      let sw_con = false;
-      if (id_con.value.length > 8) sw_con = true;
 
-      const def_con = {
-        nom_emp: nom_emp.value,
-        user: user.value,
-        pass: password,
-      };
+      //await openSocket();
 
-      const json = JSON.stringify(def_con);
-      await openSocket();
+      if (await openSocket()) {
+        const def_con = {
+          nom_emp: nom_emp.value,
+          user: user.value,
+          pass: password,
+        };
 
-      if (socket && id_con.value == "") {
+        const json = JSON.stringify(def_con);
+
         socket.emit("login", json); // hace login
         if (password.length > 0) pass.value = "";
 
         return;
       }
-      if (socket && menu.value.length == 0) leeMenu();
-
-      return;
-
       /*
     try {
         let response = await axios.get(
@@ -294,7 +299,7 @@ export const Session = defineStore(
       */
 
           var data = [];
-          console.log("Pinia ======leeMenu===== response=", response);
+
           for (let i = 0; i < response.length; i++) {
             const registro = {};
             for (const nom_cam in response[i]) {
@@ -312,20 +317,21 @@ export const Session = defineStore(
           }
           //const menu = JSON.stringify(response.data)
           menu.value = data;
+          /*
           console.log(
             "Pinia ======leeMenu=====",
             menu.value,
             logoEmp.value,
             response
           );
-
+          */
           dat_vis.query = " select * from publicvar";
 
           try {
             // const result = await axios.post(url.value + "sql", dat_vis);
 
             socket.emit("sql async", dat_vis, (data) => {
-              console.log("Pinia Var=", Var.value);
+              /*  console.log("Pinia Var=", Var.value); */
               if (data && data.length > 0) {
                 Var.value = data[0];
                 for (const comp in Var.value) {
@@ -351,12 +357,14 @@ export const Session = defineStore(
                     }
                   }
                 }
+                /*
                 console.log(
                   "Store publicVar Var.value=",
                   Var.value,
                   id_con.value
                 );
                 console.log("Pinia Var=", Var.value);
+                */
               }
             });
           } catch (error) {
@@ -378,13 +386,13 @@ export const Session = defineStore(
     watch(
       () => nom_emp.value,
       (new_emp, old_val) => {
-        console.log(
+        /* console.log(
           "Watch Pinia nom_emp.value",
           new_emp,
           old_val,
           id_con.value
-        ); // doest not do anything
-
+        );
+        */
         if (new_emp != old_val) {
           //  id_con.value = "";
           //  menu.value = []
@@ -396,14 +404,14 @@ export const Session = defineStore(
     watch(
       () => id_con.value,
       (new_id, old_val) => {
-        console.log(
+        /* console.log(
           "Watch Pinia id_con.value=",
           new_id,
           old_val,
           "nom_emp=",
           nom_emp.value
-        ); // doest not do anything
-
+        );
+        */
         if (new_id != old_val) {
           if (new_id.length > 9 && nom_emp.value.length > 2) {
             console.log("currentSesion watch id_con", new_id, old_val);
@@ -427,7 +435,6 @@ export const Session = defineStore(
         ) {
           // pass.value = "";
 
-          console.log("======Watch Pinia password=========", password);
           open(password);
         }
       },
@@ -438,10 +445,19 @@ export const Session = defineStore(
       menu.value.filter((menu) => menu.value.done)
     );
 
-    const socketDisconnect = () => {
-      if (socket) {
-        socket.disconnect();
-      }
+    const socketDisconnect = (socket, men: string) => {
+      MessageBox(men, 16, "SQL Error ");
+      pass.value = "";
+      socketIo.value = false;
+      id_con.value = "";
+      menu.value = [];
+
+      //socket.off();
+      //socket.destroy();
+      //socket.cache.clear();
+      socket.disconnect();
+
+      console.warn("socket disconnect");
     };
 
     const sendMessage = (req: {}) => {
@@ -470,11 +486,11 @@ export const Session = defineStore(
       //        .emit("sql async", dat_act, (res: []) => {
       try {
         const response = await socket.emitWithAck("sql async", dat_act);
-        console.log("1 Socket response", response);
+        console.log("1 Session Socket emit data", response);
         return response;
-      } catch {
-        console.log("2 Socket error");
-        console.error(response);
+      } catch (err) {
+        console.error("2 Session Socket emit data", err);
+        MessageBox("Back end connection fail" + err, 16, "Error");
         return null;
       }
       /*

@@ -21,12 +21,13 @@
     </div>
 
     <!--ComboBox 
-        <input class="textLabel" :readonly="+prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
+        <input class="textInput" :readonly="+prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
           @focusout="focusOut" />{{ displayText }}
+          textInputStyle
       -->
-    <div v-else class="comboBox" :style='componentStyle' ref="RefCombo">
+    <div v-else class="comboBox" :style='divStyle' ref="RefCombo">
 
-      <input :id="Id" class="textLabel" :style="textLabelStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
+      <input :id="Id" class="textInput" :style="inputStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
         @focus.prevent="toggle = false; inputBufferBuffer = ''; This.Form.eventos.push(This.prop.Map + '.when()')"
         @focusout="emitValue()" />
@@ -92,6 +93,24 @@ const props = withDefaults(defineProps<Props>(), {
     ColumnCount: 0,
     ColumnWidths: "", //"75%,25%"
 
+    componentStyle: {
+      background: "white",
+      cols: 100,
+      color: "black",
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      fontWeight: "normal",
+      height: "85%",
+      maxHeight: "auto",
+      maxWidth: "100%",
+      rows: 5,
+      textAlign: "left",
+      textTransform: "none",
+      zIndex: 1, // profundidad
+      width: "auto",
+    },
+
+
     List: [],
 
     Disabled: false,
@@ -134,16 +153,6 @@ const props = withDefaults(defineProps<Props>(), {
     Visible: true,
     Value: [String, Number, Date],
 
-    componentStyle: {
-      background: "white",
-      padding: "5px",
-      color: "#b94295",
-      width: "auto",
-      height: "30px",
-      fontFamily: "Arial",
-      fontSize: "13px",
-      textAlign: "left",
-    },
 
   },
 
@@ -206,8 +215,8 @@ if (divStyle.zIndex == 0)
 
 const zIndex = divStyle.zIndex
 
-const componentStyle = reactive(props.prop.componentStyle)
-componentStyle.zIndex = zIndex
+const inputStyle = reactive(props.prop.componentStyle)
+inputStyle.zIndex = zIndex
 
 
 const toggleZIndex = divStyle.zIndex + 1
@@ -235,32 +244,17 @@ const columnContainer = reactive({
 let inputBuffer = ''
 
 
-// let textLabelStyle = {}
+// let textInputStyle = {}
 /*
-if (props.prop.textLabel.length > 0) {
-  textLabelStyle = props.prop.componentStyle
+if (props.prop.textInput.length > 0) {
+  textInputStyle = props.prop.inputStyle
 } else {
-  textLabelStyle = componentStyle
+  textInputStyle = inputStyle
 
 */
-const { ...textLabelStyle } = divStyle
-
-// textLabelStyle.zIndex = zIndex
-
-textLabelStyle.height = 'fit-content'
-
-let medida = ''
-
-if (textLabelStyle.width.search("px") > 0)
-  medida = 'px'
-if (textLabelStyle.width.search("%") > 0)
-  medida = '%'
-
-let textWidth = +textLabelStyle.width.replaceAll(medida, '') - 30
-textLabelStyle.width = textWidth.toString() + medida
 
 
-//} fin textLabel
+//} fin textInput
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -366,7 +360,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   for (let i = 0; i < columnas.length && !found; i++) {
     //    console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value,'Value=',Value.value)
     // (typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
-    console.log('comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
+    console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
     if (
       (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
       Value.value == columnas[i].value) {
@@ -378,7 +372,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
     Value.value = columnas[0].value
     displayText.value = columnas[0]['text'][0]
+    console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
   }
+  This.prop.Value = Value.value
+
   // console.log('3 comboBox emitValue() Name', props.prop.Name, 'displayText.value=', displayText.value)
 
 
@@ -394,7 +391,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     // console.log('comboBox emitValue valid() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
-    This.interactiveChange()
+    await This.interactiveChange()
     This.valid()
 
   }
@@ -487,27 +484,6 @@ const focusOut = async () => {
   return
 };
 
-/////////////////////////////////////////////////////////////////////
-// Focus Out
-// Se do click fuera focusOut click
-// checar canvas.removeEventListener
-//////////////////////////////////////////////////////////////////////
-
-function myClick(e) {
-  // console.log('myClick ComboBox focus in and out ',e.target)
-  // to remove
-  if (This.prop.Disabled || !This.prop.Visible)
-    return
-
-  const clickedEl = e.target;
-  if (RefCombo && RefCombo.value != null)
-    if (!RefCombo.value.contains(clickedEl)) {
-      if (toggle.value)
-        toggle.value = false
-      // console.log(This.prop.Name,'ComboBox focus  out ',toggle.value)
-    }
-
-}
 
 
 
@@ -1040,22 +1016,42 @@ watch(
 // Metodo init 
 /////////////////////////////////////////
 
-const init = async () => {
+//const init = async () => {
+onMounted(async () => {
+
   thisElement = document.getElementById(Id)
+
+
+  // textInputStyle.zIndex = zIndex
+
+  inputStyle.height = 'fit-content'
+
+  let textWidth = 0
+
+  if (inputStyle.width.search("px") > 0) {
+    textWidth = +inputStyle.width.replaceAll('px', '') - 30
+    inputStyle.width = textWidth.toString() + 'px'
+
+  }
+  if (inputStyle.width.search("%") > 0) {
+    textWidth = +inputStyle.width.replaceAll('%', '') - 5
+    inputStyle.width = textWidth.toString() + '%'
+  }
+
   if (props.prop.Type == 'date') {
-    componentStyle.width = '100px'
-    componentStyle.height = '20px'
-    componentStyle.maxHeight = '20px'
+    inputStyle.width = '100px'
+    inputStyle.height = '20px'
+    inputStyle.maxHeight = '20px'
   }
   if (props.prop.Type == 'number')
-    componentStyle.textAlign = 'right'
+    inputStyle.textAlign = 'right'
 
   if (!This.prop.Visible) {
     divStyle.height = '0%'
     //console.log('divStyle Visible', divStyle.height)
   }
 
-  //  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
+  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
 
   const result = await renderComboBox()
   //const result = await emitValue(true)
@@ -1065,24 +1061,44 @@ const init = async () => {
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
     onFocus()
-    return
+
   }
-}
+})
 
-
+/*
 onMounted(() => {
+  
   init() // Ejecuta el init
 });
-
+*/
 
 onUnmounted(() => {
   window.removeEventListener('mousedown', myClick); // <div>
 })
 
+/////////////////////////////////////////////////////////////////////
+// Focus Out
+// Se do click fuera focusOut click
+// checar canvas.removeEventListener
+//////////////////////////////////////////////////////////////////////
+
+function myClick(e) {
+  // console.log('myClick ComboBox focus in and out ',e.target)
+  // to remove
+  if (This.prop.Disabled || !This.prop.Visible || !toggle.value)
+    return
+  const clickedEl = e.target;
+  if (RefCombo && RefCombo.value != null)
+    if (!RefCombo.value.contains(clickedEl)) {
+      if (toggle.value)
+        toggle.value = false
+      // console.log(This.prop.Name,'ComboBox focus  out ',toggle.value)
+    }
+
+}
+
 
 window.addEventListener('mousedown', myClick);
-
-
 
 </script>
 
@@ -1219,35 +1235,3 @@ select[multiple]:focus option:checked {
 /*div class='column'*/
 </style>
 
-<!-- 
-list box 
-
-<script>
-export default {
-  data() {
-    return {
-      selected: 'A',
-      options: [
-        { text: 'One', value: 'A' },
-        { text: 'Two', value: 'B' },
-        { text: 'Three', value: 'C' }
-      ]
-    }
-  }
-}
-</script>
-
-<template>
-  <select v-model="selected" multiple>
-    <option v-for="option in options" :value="option.value">
-      <input style="width:50px;color:red; border-radius: 10px;background-color: #f2f4f5;" :value="option.text" /> 
-      <input style="width:50px;color:red;" :value=" option.value "/>
-    </option>
-  </select>
-
-	<div>Selected: {{ selected }}</div>
-</template>
-
-
-
- -->
