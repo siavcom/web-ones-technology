@@ -30,7 +30,7 @@ export class vis_grid extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "80%,30%";
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
-    this.prop.componentStyle.width = "400px";
+    this.inputStyle.width = "400px";
     this.style.width = "600px";
     //this.style.zIndex=2
   }

@@ -24,7 +24,7 @@ export class nom_for extends COMPONENT {
 
     this.prop.Value = ""
     this.prop.Placeholder="Page name"
-    this.prop.componentStyle.width='300px'
+    this.inputStyle.width='300px'
     this.style.width='500px'
   }
 

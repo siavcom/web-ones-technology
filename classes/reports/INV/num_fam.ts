@@ -22,7 +22,7 @@ export class num_fam extends COMPONENT {
     this.prop.Visible = false;
     this.prop.Disabled = true;
 
-    this.prop.componentStyle.width = "40px";
+    this.inputStyle.width = "40px";
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
 

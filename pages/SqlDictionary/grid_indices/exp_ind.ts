@@ -21,7 +21,7 @@ export class exp_ind extends COLUMN {
     this.prop.ToolTipText =
       "Expresión del indice. Si es principal debe ser Variable VUE";
     this.prop.Placeholder = "Expresión del indice";
-    this.prop.componentStyle.textTransform = "lowercase";
+    this.inputStyle.textTransform = "lowercase";
     this.style.width = "400px";
   }
 

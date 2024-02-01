@@ -33,7 +33,7 @@ export class tab_grid extends COMPONENT {
     this.prop.Visible = false;
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.prop.ColumnWidths = "350px,125px";
-    this.prop.componentStyle.width = "250px";
+    this.inputStyle.width = "250px";
     this.style.width = "400px";
   }
 

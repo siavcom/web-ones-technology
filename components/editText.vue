@@ -136,7 +136,7 @@ const props = defineProps<{
 
     Capture: true;
 
-    componentStyle: {
+   /* componentStyle: {
       background: "white",
       cols: 100,
       color: "black",
@@ -151,7 +151,7 @@ const props = defineProps<{
       textTransform: "none",
       zIndex: 1, // profundidad
       width: "auto",
-    },
+    },*/
 
     ControlSource: string;
     Currency: '   '; //USD,EUR,MXN
@@ -267,7 +267,9 @@ if (divStyle.zIndex == 0)
 
 const zIndex = divStyle.zIndex
 
-const inputStyle = reactive(props.prop.componentStyle)
+//const inputStyle = reactive(props.inputStyle)
+const inputStyle = reactive(This.inputStyle)
+
 inputStyle.zIndex = zIndex
 
 const toolTipTextStyle = { zIndex: zIndex + 20 }

@@ -20,7 +20,6 @@ export class des_cod extends COMPONENT {
         this.prop.BaseClass = 'editText'
         this.prop.MaxLength=12
         this.prop.Value=" "
-        this.style.zIndex=5  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
         
     }
 }

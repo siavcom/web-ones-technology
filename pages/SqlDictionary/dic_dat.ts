@@ -33,7 +33,7 @@ export class dic_dat extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "300px,10px";
     this.style.width = "400px";
-    this.prop.componentStyle.width = "200px";
+    this.inputStyle.width = "200px";
 
     //this.style.zIndex=3
   }

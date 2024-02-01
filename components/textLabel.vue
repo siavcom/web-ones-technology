@@ -1,29 +1,29 @@
 <template>
   <div v-show="prop.Visible" class="divi" :style="style">
-    <!--div class="mensajes" v-bind:style="componentStyle"    :style="{ maxHeight: style.maxHeight } -->
-    <span class="etiqueta" :v-if="props.prop.textLabel > ' '">{{ prop.textLabel + " " }}</span>
-    <!--div v-if="prop.Type == 'checkBox'" v-bind:style="componentStyle"-->
+    <!--div class="mensajes" v-bind:style="inputStyle"    :style="{ maxHeight: style.maxHeight } -->
+    <span class="etiqueta" :v-if="props.prop.textLabel > ' '"  :style="labelStyle">{{ prop.textLabel + " " }}</span>
+    <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
-    <input v-if="prop.Type == 'checkBox'" :class="prop.Type" style="componentStyle" readonly="true" type="checkBox"
+    <input v-if="prop.Type == 'checkBox'" :class="prop.Type" :style="inputStyle" readonly="true" type="checkBox"
       :checked="checked" />
     <!--/div>
-      <div v-else-if="prop.Type == 'json'" v-bind:style="componentStyle"-->
+      <div v-else-if="prop.Type == 'json'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
-    <input v-else-if="prop.Type == 'json'" class="text" value='Data' style="componentStyle" readonly="true" />
+    <input v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle" readonly="true" />
     <!--/div>
 
-      <div v-else-if="prop.Type == 'date'" v-bind:style="componentStyle"-->
-    <input v-else-if="prop.Type == 'date'" class="text" type="date" style="componentStyle" readonly="true"
+      <div v-else-if="prop.Type == 'date'" v-bind:style="inputStyle"-->
+    <input v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle" readonly="true"
       v-model="Text" />
     <!--/div>
 
-      <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="componentStyle"-->
-    <input v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local" style="componentStyle"
+      <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="inputStyle"-->
+    <input v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local" :style="inputStyle"
       :format="This.prop.Format" readonly="true" v-model="Text" />
     <!--/div>
        
       <div v-else-->
-    <input v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type" :style="componentStyle"
+    <input v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type" :style="inputStyle"
       readonly="true" v-model="Text" />
     <!--/div-->
   </div>
@@ -120,7 +120,7 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
-
+const labelStyle=reactive(This.labelStyle)
 const Value = ref(props.prop.Value)
 
 const Text = ref(null)
@@ -138,31 +138,31 @@ const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checked = ref(false)
 
-const componentStyle = reactive(props.style)
+const inputStyle = reactive(props.style)
 
-//componentStyle.width = props.style.width
+//inputStyle.width = props.style.width
 
-//componentStyle.height = 'fit-content'
-if (componentStyle.width == 'auto')
-  componentStyle.width = '100%'
+//inputStyle.height = 'fit-content'
+if (inputStyle.width == 'auto')
+  inputStyle.width = '100%'
 
-if (componentStyle.maxWidth == 'auto')
-  componentStyle.maxWidth = '97%'
+if (inputStyle.maxWidth == 'auto')
+  inputStyle.maxWidth = '97%'
 
-if (componentStyle.maxHeight == 'auto')
-  componentStyle.maxHeight = '97%'
+if (inputStyle.maxHeight == 'auto')
+  inputStyle.maxHeight = '97%'
 
 
 /*
 let medida = ''
 
-if (componentStyle.width.search("px") > 0)
+if (inputStyle.width.search("px") > 0)
   medida = 'px'
-if (componentStyle.width.search("%") > 0)
+if (inputStyle.width.search("%") > 0)
   medida = '%'
 
-const textWidth = +componentStyle.width.replaceAll(medida, '') - 5
-componentStyle.width = textWidth.toString() + medida
+const textWidth = +inputStyle.width.replaceAll(medida, '') - 5
+inputStyle.width = textWidth.toString() + medida
 */
 
 
@@ -187,7 +187,7 @@ const emitValue = async () => {
 /////////////////////////////////////////////////////
 
 const asignaResultado = (valor?: string) => {
-  //console.log('componentStyle asignaResultado ',props.Name,valor)
+  //console.log('inputStyle asignaResultado ',props.Name,valor)
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
@@ -246,7 +246,7 @@ const renderComboBox = async () => {
   if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) return;
   // console.log('textLabel render comboBox ', props.prop.Name, ' RowSource=', props.prop.RowSource.length)
 
-  //console.log('componentStyle asignaResultado renderCombo',props.Name,Value)
+  //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
   const RowSource: string = props.prop.RowSource
   const pos = RowSource.indexOf(".") // posicion del punto
 
@@ -455,7 +455,7 @@ watch(
   () => props.Show,
   (new_val, old_val) => {
     if (new_val!=old_val) { 
-        console.log('componentStyle watch Show')
+        console.log('inputStyle watch Show')
         if (props.Show) readCampo()
     }
   },
@@ -466,7 +466,7 @@ watch(
 watch(
   () => props.Registro,
   (new_val, old_val) => {
-    // console.log('componentStyle watch Registro', old_val, new_val)
+    // console.log('inputStyle watch Registro', old_val, new_val)
     if (old_val != new_val && new_val > 0) readCampo()
 
     if (new_val == 0)
@@ -486,7 +486,7 @@ watch(
 const init = async () => {
 
   if (props.prop.Type == 'number')
-    componentStyle.textAlign = 'right'
+    inputStyle.textAlign = 'right'
 
   readCampo()
 

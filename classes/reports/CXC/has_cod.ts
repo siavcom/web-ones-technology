@@ -19,7 +19,6 @@ export class has_cod extends COMPONENT {
         this.prop.Type = "string"
         this.prop.MaxLength=12
         this.prop.Value=" "
-        this.style.zIndex=5  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
         
     }
 }

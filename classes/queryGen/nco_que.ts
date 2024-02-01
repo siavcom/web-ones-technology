@@ -26,7 +26,7 @@ export class nco_que extends COMPONENT {
     this.prop.Max = "999";
     this.prop.Decimals = 0;
     this.prop.Capture = true;
-    this.prop.componentStyle.width = "40px";
+    this.inputStyle.width = "40px";
 
     this.prop.Visible = true;
     this.prop.sw_add = false;

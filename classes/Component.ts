@@ -111,7 +111,7 @@ export class COMPONENT {
 
     When: true,
 
-    componentStyle: {
+    /* componentStyle: {
       background: "white",
       cols: 100,
       color: "black",
@@ -126,8 +126,28 @@ export class COMPONENT {
       textTransform: "none",
       zIndex: 1, // profundidad
       width: "auto",
-    },
+    },*/
   };
+
+
+  labelStyle  = {
+    background: "white",
+    color: "black",
+    fontFamily: "Arial",
+    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    fontWeight: "normal",
+    height: "85%",
+    maxHeight: "auto",
+    maxWidth: "auto",
+    textAlign: "left",
+    textTransform: "none",
+    zIndex: 1, // profundidad
+    width: "auto",
+  }
+  
+  inputStyle={...this.labelStyle}
+
+
   style = {
     //display: "flex", "inline-block"
     display: "inline-flex",
@@ -162,7 +182,7 @@ export class COMPONENT {
     // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
 
     tabindex: 0,
-    zIndex: 0, // profundidad
+    zIndex: 1, // profundidad
     // textAlign: "left";
   };
 
@@ -178,6 +198,10 @@ export class COMPONENT {
     this.Name = this.constructor.name;
     this.Recno = 0;
     this.prop.This = this;
+    this.inputStyle.cols=100 // textArea cols
+    this.inputStyle.rows=5 // textArea rows
+    this.inputStyle.borderRadius= '3px'
+    
   }
 
   ///////////////////////////////////////////////////////////

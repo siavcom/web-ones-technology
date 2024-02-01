@@ -23,7 +23,7 @@ export class log_usu extends COMPONENT {
     this.prop.Type = "text";
     this.prop.Placeholder = "User";
     this.style.width = "auto";
-    this.prop.componentStyle.width = "150px";
+    this.inputStyle.width = "150px";
 
     this.prop.TabIndex = 2;
     const session = Session();

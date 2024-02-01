@@ -19,7 +19,7 @@ export class nom_ind extends COLUMN {
         this.prop.Order = 3
         this.textLabel = 'Nombre'
         this.prop.BaseClass = 'editText'
-        this.prop.componentStyle.textTransform='lowercase'
+        this.inputStyle.textTransform='lowercase'
         
         this.prop.ControlSource = 'vi_cap_comeind.nom_ind'
         this.prop.ToolTipText ='Nombre del indice'

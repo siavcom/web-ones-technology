@@ -61,13 +61,13 @@ const props = defineProps<{
     BaseClass: "imgButton";
     Image: "";
 
-    componentStyle: {
+    /* componentStyle: {
       background: "white";
       padding: "5px"; // Relleno
       color: "#b94295";
       width: "30px";
       height: "30px";
-    };
+    };*/
 
   };
 

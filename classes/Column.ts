@@ -34,8 +34,8 @@ export class COLUMN extends COMPONENT {
     //    this.componente.Name = 'component'
   }
   async init() {
-    this.prop.componentStyle.width = "95%";
-    //this.prop.componentStyle.maxWidth=this.style.width
+    this.inputStyle.width = "95%";
+    //this.inputStyle.maxWidth=this.style.width
   }
 
   async valid() {

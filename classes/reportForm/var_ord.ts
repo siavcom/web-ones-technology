@@ -22,7 +22,7 @@ export class var_ord extends COMPONENT {
     //this.prop.ColumnWidths ="70%,10%";
     this.prop.ColumnWidths = "256px,64px";
     // this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-    this.prop.componentStyle.width = "128px";
+    this.inputStyle.width = "128px";
     this.style.width = "400px";
     //this.style.zIndex=2
     // this.prop.TabIndex=103

@@ -22,6 +22,6 @@ export class fil_vis extends COLUMN {
     this.prop.ToolTipText = "Filtro de la vista";
     this.prop.Placeholder = "Variables filtro";
     this.style.width = "250px";
-    this.prop.componentStyle.textTransform = "lowercase";
+    this.inputStyle.textTransform = "lowercase";
   }
 }

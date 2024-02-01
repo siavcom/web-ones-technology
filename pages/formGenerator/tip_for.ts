@@ -30,7 +30,7 @@ export class tip_for extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.Value = "F";
     this.prop.ColumnWidths = "150px,25px";
-    this.prop.componentStyle.width = "250px";
+    this.inputStyle.width = "250px";
     this.style.width = "400px";
   }
 

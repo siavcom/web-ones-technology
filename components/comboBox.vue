@@ -5,9 +5,9 @@
   <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
-    <span class="etiqueta" v-if="prop.textLabel.length > 0">{{ prop.textLabel + " " }}</span>
+    <span class="etiqueta" v-if="prop.textLabel.length > 0"  :style="labelStyle">{{ prop.textLabel + " " }}</span>
     <!--List Box -->
-    <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='prop.componentStyle'>
+    <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='multiSelectStyle'>
       <select v-model="List" multiple>
         <option class="option" v-for="(option, valueIndex) in columnas" :value="columnas[valueIndex].value">
           <!--Imprime Columnas -->
@@ -24,12 +24,14 @@
         <input class="textInput" :readonly="+prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
           @focusout="focusOut" />{{ displayText }}
           textInputStyle
+:style='comboStyle'
+       inputBufferBuffer = '';
       -->
-    <div v-else class="comboBox" :style='divStyle' ref="RefCombo">
+    <div v-else class="comboBox"  ref="RefCombo" :style='comboStyle'>
 
       <input :id="Id" class="textInput" :style="inputStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false; inputBufferBuffer = ''; This.Form.eventos.push(This.prop.Map + '.when()')"
+        @focus.prevent="toggle = false;  This.Form.eventos.push(This.prop.Map + '.when()')"
         @focusout="emitValue()" />
 
       <!--span> {{ prop.Value }}</span-->
@@ -45,7 +47,7 @@
 
             <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
               :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
-              <label class="optionLabel" v-text="text" :style:="labelStyle" />
+              <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
             </div>
           </div>
         </div>
@@ -93,7 +95,7 @@ const props = withDefaults(defineProps<Props>(), {
     ColumnCount: 0,
     ColumnWidths: "", //"75%,25%"
 
-    componentStyle: {
+   /* componentStyle: {
       background: "white",
       cols: 100,
       color: "black",
@@ -109,7 +111,7 @@ const props = withDefaults(defineProps<Props>(), {
       zIndex: 1, // profundidad
       width: "auto",
     },
-
+    */
 
     List: [],
 
@@ -187,6 +189,9 @@ const ToolTipText = ref(true)
 
 const Component = ref(props.prop.This)
 const This = Component.value
+
+
+
 const Id = This.prop.Name + props.Registro.toString()
 let thisElement: Element | null
 This.prop.htmlId = Id
@@ -208,28 +213,47 @@ const Focus = ref(props.prop.Focus)
 
 const ShowError = ref(false)
 Focus.value = false
+const divStyle=reactive(props.style)
+//divStyle.zIndex = 100 - This.prop.TabIndex
 
-const divStyle = reactive(props.style)
-if (divStyle.zIndex == 0)
-  divStyle.zIndex = 100 - This.prop.TabIndex
 
-const zIndex = divStyle.zIndex
 
-const inputStyle = reactive(props.prop.componentStyle)
+/*
+const comboStyle = reactive(This.inputStyle) 
+
+
+if (comboStyle.zIndex == 0)
+  comboStyle.zIndex = 100 - This.prop.TabIndex
+*/
+
+const comboStyle ={ //zIndex: 100 - This.prop.TabIndex,
+      height : This.style.height
+}
+
+const zIndex = comboStyle.zIndex
+
+// const inputStyle = reactive(props.inputStyle)
+
+const inputStyle = reactive(This.inputStyle)
+
+
 inputStyle.zIndex = zIndex
 
 
-const toggleZIndex = divStyle.zIndex + 1
+const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
-const labelStyle = {
+const labelStyle=reactive(This.labelStyle)
+
+
+ const columnLabelStyle = {
   width: 'auto', //inputWidth.value,
   border: "1px solid rgb(0, 5, 2)",
   borderRadius: "5px",
   background: "white",
   color: "black",
   position: "relative",
-  zIndex: divStyle.zIndex + 1
+  zIndex: comboStyle.zIndex + 1
 }
 
 
@@ -238,7 +262,7 @@ const columnContainer = reactive({
   width: 'auto',
   height: 'auto',
   maxHeight: '200px',
-  zIndex: divStyle.zIndex + 1
+  zIndex: comboStyle.zIndex + 1
 })
 
 let inputBuffer = ''
@@ -407,7 +431,7 @@ const toggleClick = async () => {
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
 
-  divStyle.zIndex = toggle.value ? zIndex + 2 : zIndex
+  comboStyle.zIndex = toggle.value ? zIndex + 2 : zIndex
 }
 ////////////////////////////////////////////////////////////////////
 // KeyPress
@@ -494,7 +518,7 @@ const focusOut = async () => {
 /////////////////////////////////////////////////////////////////
 const validClick = async (num_ren: number) => {
   toggle.value = false
-  divStyle.zIndex = zIndex
+  comboStyle.zIndex = zIndex
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
   //  console.log('ComboBox validClick',This.prop.Name,'num_ren=',num_ren,'Value=',Value.value )
@@ -776,9 +800,9 @@ watch(
   (new_val, old_val) => {
     //console.log('watch This.prop.Visible =', new_val)
     if (!new_val)
-      divStyle.height = '0%'
+      comboStyle.height = '0%'
     else
-      divStyle.height = This.style.height
+      comboStyle.height = This.style.height
     //readCampo(props.Registro)
 
   },
@@ -853,7 +877,12 @@ watch(
 watch(
   () => toggle.value,
   (new_val, old_val) => {
-
+    if(new_val)
+     divStyle.zIndex=props.style.zIndex+1
+    else
+     divStyle.zIndex=props.style.zIndex
+    
+     
     // console.log('toggle.value', props.Name, old_val, new_val)
     if (!old_val && new_val) onFocus()
   },
@@ -1047,8 +1076,8 @@ onMounted(async () => {
     inputStyle.textAlign = 'right'
 
   if (!This.prop.Visible) {
-    divStyle.height = '0%'
-    //console.log('divStyle Visible', divStyle.height)
+    comboStyle.height = '0%'
+    //console.log('comboStyle Visible', comboStyle.height)
   }
 
   console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
@@ -1107,7 +1136,7 @@ window.addEventListener('mousedown', myClick);
 <style scoped >
 /*  elemento click check*/
 img.imagen {
-  width: 19px;
+  width: 17px;
   height: auto;
   border-radius: 20%;
   border: 2px;
@@ -1133,14 +1162,23 @@ img.imagen {
 }
 
 
-
 div.comboBox {
   display: flex;
+ /* order: 1px solid rgb(0, 5, 2);
+  border-radius: 5px; */
+ 
+}
+
+
+div.textInput
+ {
+  display: flex;
   order: 1px solid rgb(0, 5, 2);
-  border-radius: 5px;
+  border-radius: 3px;
   /* z-index: v-bind('comboZIndex'); */
 
 }
+
 
 input.input {
   background-color: initial;

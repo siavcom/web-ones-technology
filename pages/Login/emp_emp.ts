@@ -27,7 +27,7 @@ export class emp_emp extends COMPONENT {
     this.prop.TabIndex = 1;
     // this.style.zIndex = 2;
     this.style.width = "auto";
-    this.prop.componentStyle.width = "200px";
+    this.inputStyle.width = "200px";
 
     let num_ren = 0;
 

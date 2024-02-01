@@ -27,7 +27,7 @@ export class query extends COMPONENT {
     this.prop.ReadOnly= true
     this.prop.Visible=false
     this.prop.Placeholder='SQL QUERY'
-    this.prop.componentStyle.cols=80
+    this.inputStyle.cols=80
 
   }  
 }
