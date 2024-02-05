@@ -131,8 +131,8 @@ export class COMPONENT {
 
 
   labelStyle  = {
-    background: "white",
-    color: "black",
+    background: "", //transparent
+    color: "",
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     fontWeight: "normal",
@@ -561,6 +561,12 @@ export class COMPONENT {
     this.prop.Focus = true;
     //console.log('Super setFocus ==>', this.Name)
   }
+
+  public async gotFocus() {
+  }
+
+
+
 
   /////////////////////////////////////////////////////////////////////
   // pushEvent

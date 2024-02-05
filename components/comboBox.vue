@@ -65,8 +65,8 @@
 </template>
 
 <script setup lang="ts">
-// "update:Key",
-const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:Focus", "update:displayText"]) //, "update:Ref", "update:Recno",
+// "update:Key", "update:Focus"
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
 // Variables comunes globales al componente
 ////////////////////////////////////
@@ -212,7 +212,7 @@ const Focus = ref(props.prop.Focus)
 //const First = ref(props.prop.First)
 
 const ShowError = ref(false)
-Focus.value = false
+// Focus.value = false
 const divStyle=reactive(props.style)
 //divStyle.zIndex = 100 - This.prop.TabIndex
 
@@ -389,13 +389,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
       Value.value == columnas[i].value) {
       // El objeto columna tiene dos campos value y text
-      displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
+      displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
       found = true
     }
   }
   if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
     Value.value = columnas[0].value
-    displayText.value = columnas[0]['text'][0]
+    displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
     console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
   }
   This.prop.Value = Value.value
@@ -487,14 +487,15 @@ const keyPress = ($event) => {
 
 
     if (buffer == valor) {
-      displayText.value = columnas[i]['text'][0]  // asigna el resultado a mostrar
+      displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+
       Value.value = columnas[i].value
       found = true
       inputBuffer = buffer
     }
   }
   if (!found)
-    displayText.value = columnas[0]['text'][0]  // asigna el resultado a mostrar
+    displayText.value =typeof columnas[0]['text'][0]== 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]  // asigna el resultado a mostrar
 
 }
 
@@ -854,7 +855,7 @@ watch(
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
-watch(
+/* watch(
   () => Focus.value,
   (new_val, old_val) => {
     if (!Focus.value) return
@@ -868,6 +869,23 @@ watch(
   },
   { deep: false }
 );
+*/
+watch(
+  () => This.prop.Focus, //props.prop.Focus,
+  (new_val: any, old_val: any) => {
+    if (!new_val) {
+      return
+    }
+    This.prop.Focus = false
+    onFocus()
+    return
+
+  },
+  { deep: false }
+)
+
+
+
 
 
 ////////////////////////////////////////

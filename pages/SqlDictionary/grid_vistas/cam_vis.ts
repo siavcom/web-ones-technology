@@ -23,7 +23,7 @@ export class cam_vis extends COLUMN {
         this.prop.ToolTipText ='Campos que contiene'
         this.prop.Placeholder = "Campos que contiene"
 
-        this.style.width='200px'
+        this.style.width='400px'
     }
 
 

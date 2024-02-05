@@ -2382,13 +2382,23 @@ return false;
           respuesta
         );
         return respuesta;
-      } catch (thrown) {
-        console.log("Axios stop=====>>>>>>> ", thrown);
+      } catch (error) {
+        console.log("Axios stop=====>>>>>>> ", error);
+        const messageError=error.response && error.response.data ? error.response.data:''
+      
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log('Axios error.response.data',error.response.data);
+     //     console.log('Axios error.response.status',error.response.status);
+      //    console.log('Axio error.response.headers',error.response.headers);
+          
+        }
 
-        if (axios.isCancel(thrown)) {
-          console.log("Request cancelled", thrown.message);
+        if (axios.isCancel(error)) {
+          console.log("Request cancelled", error.message);
           this.errorAlert("User cancel request :");
-          //await MessageBox( error.response.statusText, 16, "User camcel request "       );
+          //await MessageBox( error.response.statusText, 16, "User cancel request "       );
           numLogin = 3;
         } else {
           //handle the error
@@ -2396,14 +2406,12 @@ return false;
           // status - The HTTP status code from the response e.g. 200, 400, 404.
           // statusText - The HTTP status message from the server response e.g. OK, Bad Request, Not Found.
 
-          const error = thrown;
-          console.error(
-            "Axios call BacKEnd error",
-            dat_lla,
-            error.response.data
-          );
+        //  const error = thrown;
+   
 
-          this.errorAlert("SQL Data Base Error  :" + error.response.data);
+//          this.errorAlert("SQL Data Base Error  :" + error.response.data);
+          await this.errorAlert("SQL Data Base Error  :" + messageError);
+
 
           //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
 
@@ -3088,23 +3096,11 @@ return false;
     return data;
   };
 
-  async MessageBox_ant(
-    texto: string,
-    tipo?: number,
-    title?: string,
-    timer?: number
-  ) {
-    const { $MessageBox } = useNuxtApp();
 
-    if (!tipo) return $MessageBox(texto);
+  async errorAlert(message: string) {
 
-    if (!title) return $MessageBox(texto, tipo);
-    if (!timer) return $MessageBox(texto, tipo, title);
-
-    return $MessageBox(texto, tipo, title, timer);
-  }
-  errorAlert(message: string) {
-    alert(message);
+   await MessageBox(message, 16, "SQL Server Error  ");
+    //alert(message);
   }
 
   // Fin de la clase================================

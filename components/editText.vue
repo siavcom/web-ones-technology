@@ -1,7 +1,7 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
-    <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
+    <span class="etiqueta" v-if="prop.textLabel" :style="labelStyle" >{{ prop.textLabel + " " }}</span>
 
     <!--mensajes de error y tooltip
     -->
@@ -110,10 +110,12 @@ import {
   // onUnmounted,
 
 } from "vue" */
+
+// , "update:Focus","update:Key",
 const emit = defineEmits(["update", "update:Value",
   "input:currentValue",  // "input:currentValue[1]",
   "input:currentDate", "input:displayDate",
-  "update:checkValue", "update:Valid", "update:Status", "update:Key", "update:Focus", 'customChange']) //, "update:ShowError", "update:Ref","update:Recno",
+  "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:ShowError", "update:Ref","update:Recno",
 
 
 ///////////////////////////////////////
@@ -234,6 +236,8 @@ const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true :
 
 const Component = ref(props.prop.This)
 const This = Component.value
+const labelStyle=reactive(This.labelStyle)
+
 
 const Id = This.prop.Name + props.Registro.toString().trim()
 let thisElement: Element | null    //: Element | null
@@ -1354,7 +1358,7 @@ watch(
   },
   { deep: false }
 )
-
+ 
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////

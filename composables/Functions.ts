@@ -247,12 +247,12 @@ export async function MessageBox(
 ) {
   const { $MessageBox } = useNuxtApp();
 
-  if (!tipo) return $MessageBox(texto);
+  if (!tipo) return await $MessageBox(texto);
 
-  if (!title) return $MessageBox(texto, tipo);
-  if (!timer) return $MessageBox(texto, tipo, title);
+  if (!title) return await $MessageBox(texto, tipo);
+  if (!timer) return await $MessageBox(texto, tipo, title);
 
-  return $MessageBox(texto, tipo, title, timer);
+  return await $MessageBox(texto, tipo, title, timer);
 }
 
 //////////////////////////////////////////////
