@@ -46,7 +46,7 @@ export class dic_dat extends COMPONENT {
 
   public async when() {
     this.Form.nom_tab.prop.Visible = false;
-    this.Form.sis_sis.prop.Visible = false;
+    this.Form.sis_sis.prop.Visible =true //false;
     this.Form.tpr_prg.prop.Visible = false;
 
     this.Form.grid_datos.prop.Visible = false;
@@ -63,22 +63,23 @@ export class dic_dat extends COMPONENT {
     return !this.prop.ReadOnly;
   }
 
-  public async valid_old() {
+  public async interactiveChange() {
     // await super.valid()
-    console.log("dic_dat valid", this.prop.Value);
+   
 
     //const This = this.prop; // Hace referencia a las propiedades del componente
 
     if (
       this.prop.Value == "D" ||
-      this.prop.Value == "V" ||
-      this.prop.Value == "I"
+      this.prop.Value == "M" 
     ) {
       // Datos , Vistas o Indices
-
-      this.Form.nom_tab.prop.Visible = true;
-      this.Form.nom_tab.setFocus();
+      this.Form.sis_sis.prop.Visible =false
+    } else
+    {
+      this.Form.sis_sis.prop.Visible =true
     }
+    
 
     return true;
   }

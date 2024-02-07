@@ -15,7 +15,7 @@ export class sis_sis extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.prop.Visible = false;
+    // this.prop.Visible = false;
     this.prop.BaseClass = "comboBox";
     this.prop.textLabel = "Menú de sistemas";
     this.prop.Capture = false;
@@ -24,7 +24,9 @@ export class sis_sis extends COMPONENT {
     this.prop.Value = "S";
     // Si es un comboBox no olvidar todas estas reglas
     this.prop.RowSource =
-      "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S'";
+      "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S'  union \
+       select '~ Configuración ~' as des_prg,'CFG' as sis_sis union \
+       select '~ Sin clasificar ~' as des_prg,'   ' as sis_sis ";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;

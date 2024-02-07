@@ -1370,6 +1370,8 @@ export class VFPDB {
 
       //  console.log('Db execute alias query,respuesta', dat_vis.query,respuesta)
       if (alias.toUpperCase() == "MEMVAR") {
+
+        console.log("Db execute MEMVAR query=",query,"respuesta=", respuesta)
         return respuesta;
       }
 

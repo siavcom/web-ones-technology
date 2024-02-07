@@ -579,7 +579,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
         // console.log('3.0) editText emitValue() Valid=false update localSQL Name=', props.prop.Name,'Value=',Value.value ,'This.prop.Value=',This.prop.Value)
 
         if (await This.valid() == false) {
-          //  console.log('3.1) editText emitValue() Valid=false update localSQL Name=', props.prop.Name,'Value=',Value.value ,'This.prop.Value=',This.prop.Value)
 
           //          ShowError.value = true
           This.prop.Valid = false
@@ -592,6 +591,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
                     Ref.value.select() // Hace select en el componente
                      return
                    */
+           // 7/Feb/2024       
+          This.Form.prop.Status = 'A'
+          
+          onFocus()
+          return        
         } //else This.prop.Valid = true
 
 
@@ -693,7 +697,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   //console.log('4) editText emitValue() Fin Name=', props.prop.Name,'This.prop.Valid=',This.prop.Valid)
   switch (props.prop.Type) {
     case 'number':
-      currentValue.value[1] = Value.value.toString()
+      currentValue.value[1] = Value.value.toString().trim()
       currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
       emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
       break;
@@ -1009,6 +1013,8 @@ const focusInput = async () => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
 
+  ToolTipText.value = false
+
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
   // Calcula la longitud maxima
@@ -1033,16 +1039,13 @@ const onFocus = async () => {
   }
 
 
-  //await This.when()
-  This.Form.eventos.push(This.prop.Map + '.when()')
+ 
 
-
-  ToolTipText.value = false
-  ShowError.value = false
-
-  if (!This.prop.First && !This.prop.Focus)
+  if (!This.prop.First && !This.prop.Focus){
+    ShowError.value = false
+    This.Form.eventos.push(This.prop.Map + '.when()')
     return
-  ToolTipText.value = false
+}
 
   if ((props.prop.Type == 'json' || props.prop.Type == 'checkBox') && ShowError.value) {
     ShowError.value = false

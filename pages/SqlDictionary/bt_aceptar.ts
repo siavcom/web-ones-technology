@@ -228,16 +228,10 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
-      // if (await this.Form.db.select('lla1_tab') == 0) await this.Form.db.select(0)
-      // await this.Form.db.useNodata("lla1_tab")
+      m.sis_sis = this.Form.sis_sis.prop.Value;
+      this.Form.sis_sis.prop.Visible = false; 
 
-      //if (await this.Form.db.select('vi_cap_cometab') == 0) await this.Form.db.select(0)
       await this.Form.db.use("vi_cap_cometab", m);
-      console.log(
-        "bt_aceptar vi_cap_cometab",
-        await this.Form.db.localAlaSql("select * from vi_cap_cometab")
-      );
-
       this.Form.grid_tablas.prop.Visible = true;
       //  this.Form.btGenTablas.prop.Visible = true
     }
