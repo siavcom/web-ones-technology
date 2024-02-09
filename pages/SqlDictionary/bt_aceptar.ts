@@ -28,7 +28,7 @@ export class bt_aceptar extends COMPONENT {
 
   async click() {
     const m = { nom_tab: this.Form.nom_tab.prop.Value };
-    console.log("bt_click this.prop.Disabled", this.prop.Disabled);
+    
     if (this.prop.Disabled) return;
     this.prop.Disabled = true;
 
@@ -52,13 +52,18 @@ export class bt_aceptar extends COMPONENT {
 
         const valor = this.Form.dic_dat.prop.Value;
         // Si es Datos , Vistas o Indices
-        if (valor == "D" || valor == "V" || valor == "I") {
+//        if (valor == "D" || valor == "V" || valor == "I") {
+          if (valor == "D" ) {
+
           this.Form.nom_tab.prop.RowSourceType = 0;
           this.Form.bt_gen_all_models.Visible = false;
           this.Form.nom_tab.prop.RowSourceType = 3;
+          this.Form.sis_sis.prop.Visible = true;
           this.Form.nom_tab.prop.Visible = true;
-
-          this.Form.nom_tab.Focus = true;
+          
+          await this.Form.sis_sis.valid()
+         
+          this.Form.sis_sis.setFocus();
         }
 
         //this.Form.dic_dat.valid()
@@ -163,7 +168,7 @@ export class bt_aceptar extends COMPONENT {
 
       if (this.Form.nom_tab.prop.Visible) {
         // Campos de las Tablas del servidor SQL
-
+        m.sis_sis = this.Form.sis_sis.prop.Value
         if (this.Form.dic_dat.prop.Value == "D") {
           this.Form.grid_datos.prop.Status = "A";
           await this.Form.db.use("vi_cap_comedat ", m, "vi_cap_comedat", [

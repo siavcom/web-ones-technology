@@ -215,6 +215,16 @@ import {
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
 
+// Mustra el progreso de carga de la forma
+const {
+  progress,
+  isLoading,
+} = useLoadingIndicator();
+
+console.log(`Loaded ${progress.value}%`); // 34%
+
+
+
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
 

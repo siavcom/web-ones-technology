@@ -5,7 +5,7 @@
   <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
-    <span class="etiqueta" v-if="prop.textLabel.length > 0"  :style="labelStyle">{{ prop.textLabel + " " }}</span>
+    <span class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel + " " }}</span>
     <!--List Box -->
     <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='multiSelectStyle'>
       <select v-model="List" multiple>
@@ -27,12 +27,11 @@
 :style='comboStyle'
        inputBufferBuffer = '';
       -->
-    <div v-else class="comboBox"  ref="RefCombo" :style='comboStyle'>
+    <div v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
 
       <input :id="Id" class="textInput" :style="inputStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false;  This.Form.eventos.push(This.prop.Map + '.when()')"
-        @focusout="emitValue()" />
+        @focus.prevent="toggle = false; This.Form.eventos.push(This.prop.Map + '.when()')" @focusout="emitValue()" />
 
       <!--span> {{ prop.Value }}</span-->
       <!--Valor seleccionado click-->
@@ -95,23 +94,23 @@ const props = withDefaults(defineProps<Props>(), {
     ColumnCount: 0,
     ColumnWidths: "", //"75%,25%"
 
-   /* componentStyle: {
-      background: "white",
-      cols: 100,
-      color: "black",
-      fontFamily: "Arial",
-      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      fontWeight: "normal",
-      height: "85%",
-      maxHeight: "auto",
-      maxWidth: "100%",
-      rows: 5,
-      textAlign: "left",
-      textTransform: "none",
-      zIndex: 1, // profundidad
-      width: "auto",
-    },
-    */
+    /* componentStyle: {
+       background: "white",
+       cols: 100,
+       color: "black",
+       fontFamily: "Arial",
+       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+       fontWeight: "normal",
+       height: "85%",
+       maxHeight: "auto",
+       maxWidth: "100%",
+       rows: 5,
+       textAlign: "left",
+       textTransform: "none",
+       zIndex: 1, // profundidad
+       width: "auto",
+     },
+     */
 
     List: [],
 
@@ -213,7 +212,7 @@ const Focus = ref(props.prop.Focus)
 
 const ShowError = ref(false)
 // Focus.value = false
-const divStyle=reactive(props.style)
+const divStyle = reactive(props.style)
 //divStyle.zIndex = 100 - This.prop.TabIndex
 
 
@@ -226,8 +225,8 @@ if (comboStyle.zIndex == 0)
   comboStyle.zIndex = 100 - This.prop.TabIndex
 */
 
-const comboStyle ={ //zIndex: 100 - This.prop.TabIndex,
-      height : This.style.height
+const comboStyle = { //zIndex: 100 - This.prop.TabIndex,
+  height: This.style.height
 }
 
 const zIndex = comboStyle.zIndex
@@ -243,10 +242,10 @@ inputStyle.zIndex = zIndex
 const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
-const labelStyle=reactive(This.labelStyle)
+const labelStyle = reactive(This.labelStyle)
 
 
- const columnLabelStyle = {
+const columnLabelStyle = {
   width: 'auto', //inputWidth.value,
   border: "1px solid rgb(0, 5, 2)",
   borderRadius: "5px",
@@ -381,17 +380,18 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   }
   //console.log('ComboBox Name=', props.prop.Name, 'Value.value=', Value.value)
 
+
   for (let i = 0; i < columnas.length && !found; i++) {
-    //    console.log('comboBox Name=',This.Name,'i=',i, 'columnas=',columnas[i].value,'Value=',Value.value)
-    // (typeof columnas[i].value == 'number' && Value.value == columnas[i].value) ||
-    console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
-    if (
-      (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-      Value.value == columnas[i].value) {
-      // El objeto columna tiene dos campos value y text
-      displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
-      found = true
-    }
+    if (columnas && columnas[0]) {
+      console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
+      if (
+        (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
+        Value.value == columnas[i].value) {
+        // El objeto columna tiene dos campos value y text
+        displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+        found = true
+      }
+    } else break
   }
   if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
     Value.value = columnas[0].value
@@ -495,7 +495,7 @@ const keyPress = ($event) => {
     }
   }
   if (!found)
-    displayText.value =typeof columnas[0]['text'][0]== 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]  // asigna el resultado a mostrar
+    displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]  // asigna el resultado a mostrar
 
 }
 
@@ -623,17 +623,26 @@ const onFocus = async () => {
 // Renderizado del combo box
 /////////////////////////////////////////////////////
 const renderComboBox = async (readData?: boolean) => {
-
-
-  //console.log('1) render combobox ===>>', This.Name, 'Value=', Value.value)
-
-
-  if (props.prop.RowSourceType < 1) return
+ //console.log('1) render combobox ===>>', This.Name, 'Value=', Value.value)
   // if (props.prop.Status == 'I') return
+
+ 
+ 
+  // 9/Feb/2024 borra las columnas si las tiene 
+  while (columnas.length > 0) {
+    columnas.pop()
+  }
+  /*
+  for (let ren = 0; ren < columnas.length; ren++) {
+    // Borra todos los renglones
+    delete columnas[ren];
+  }
+  */
+
+  
+  if (props.prop.RowSourceType < 1) return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
-  //try {
-
 
   ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
@@ -644,12 +653,14 @@ const renderComboBox = async (readData?: boolean) => {
 
   // Numero de columnas
   const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
-
-  //console.log('Bound Column',!(props.prop.BoundColumn)) ;
+/*  9/Feb/2024 se quito y se mando arriba
   for (let ren = 0; ren < columnas.length; ren++) {
     // Borra todos los renglones
     delete columnas[ren];
   }
+ */
+ 
+ 
   ///////////////////////
   // generamos un arreglo dependiendo del RowSourceType
 
@@ -812,17 +823,6 @@ watch(
 
 
 
-////////////////////////////////////////
-// ControlSource
-///////////////////////////////////////
-watch(
-  () => props.prop.ControlSource, //props.prop.ControlSource,
-  (new_val, old_val) => {
-    if (new_val != old_val)
-      emitValue(true)
-  },
-  { deep: false }
-);
 
 ////////////////////////////////////////
 // Registro
@@ -884,10 +884,6 @@ watch(
   { deep: false }
 )
 
-
-
-
-
 ////////////////////////////////////////
 // Da click para renderizar 
 ///////////////////////////////////////
@@ -895,12 +891,12 @@ watch(
 watch(
   () => toggle.value,
   (new_val, old_val) => {
-    if(new_val)
-     divStyle.zIndex=props.style.zIndex+1
+    if (new_val)
+      divStyle.zIndex = props.style.zIndex + 1
     else
-     divStyle.zIndex=props.style.zIndex
-    
-     
+      divStyle.zIndex = props.style.zIndex
+
+
     // console.log('toggle.value', props.Name, old_val, new_val)
     if (!old_val && new_val) onFocus()
   },
@@ -962,7 +958,7 @@ watch(
   () => props.prop.RowSourceType,
 
   (new_val, old_val) => {
-    if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
+   // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
 
     // console.log('ComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {
@@ -1182,14 +1178,13 @@ img.imagen {
 
 div.comboBox {
   display: flex;
- /* order: 1px solid rgb(0, 5, 2);
+  /* order: 1px solid rgb(0, 5, 2);
   border-radius: 5px; */
- 
+
 }
 
 
-div.textInput
- {
+div.textInput {
   display: flex;
   order: 1px solid rgb(0, 5, 2);
   border-radius: 3px;

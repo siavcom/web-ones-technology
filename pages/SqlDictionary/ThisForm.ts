@@ -33,9 +33,9 @@ import { FORM } from "@/classes/Form"
 
 export class ThisForm extends FORM {
   public dic_dat = new dic_dat()
+  public sis_sis = new sis_sis()
   public nom_tab = new nom_tab()
   public tpr_prg = new tpr_prg()
-  public sis_sis = new sis_sis()
   public bt_aceptar = new bt_aceptar()
   public bt_gen_indices = new bt_gen_indices()
   public bt_gen_model = new bt_gen_model()

@@ -33,6 +33,7 @@ export class tpr_prg extends COMPONENT {
 
   async when() {
     this.Form.sis_sis.prop.Visible = false;
+    this.Form.nom_tab.prop.Visible = false;
     this.Form.grid_menu.prop.Visible = false;
     return true;
   }
