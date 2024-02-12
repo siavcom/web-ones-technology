@@ -28,7 +28,7 @@ export class bt_aceptar extends COMPONENT {
 
   async click() {
     const m = { nom_tab: this.Form.nom_tab.prop.Value };
-    
+
     if (this.prop.Disabled) return;
     this.prop.Disabled = true;
 
@@ -52,17 +52,17 @@ export class bt_aceptar extends COMPONENT {
 
         const valor = this.Form.dic_dat.prop.Value;
         // Si es Datos , Vistas o Indices
-//        if (valor == "D" || valor == "V" || valor == "I") {
-          if (valor == "D" ) {
+        //        if (valor == "D" || valor == "V" || valor == "I") {
+        if (valor == "D") {
 
           this.Form.nom_tab.prop.RowSourceType = 0;
           this.Form.bt_gen_all_models.Visible = false;
           this.Form.nom_tab.prop.RowSourceType = 3;
           this.Form.sis_sis.prop.Visible = true;
           this.Form.nom_tab.prop.Visible = true;
-          
+
           await this.Form.sis_sis.valid()
-         
+
           this.Form.sis_sis.setFocus();
         }
 
@@ -121,7 +121,7 @@ export class bt_aceptar extends COMPONENT {
           //dataUpdate &&
           (await MessageBox(
             "Generamos en Servidor SQL Server la tabla:" +
-              this.Form.nom_tab.prop.Value,
+            this.Form.nom_tab.prop.Value,
             4,
             ""
           )) == 6
@@ -129,15 +129,15 @@ export class bt_aceptar extends COMPONENT {
           if (!(await this.Form.db.genTabla(this.Form.nom_tab.prop.Value))) {
             MessageBox(
               "Error al generar la tabla :" +
-                this.Form.nom_tab.prop.Value +
-                " en el Servidor SQL",
+              this.Form.nom_tab.prop.Value +
+              " en el Servidor SQL",
               16,
               "SQL ERROR"
             );
 
             console.error(
               "Error al generar/regenerar en Sql Server la tabla:" +
-                this.Form.nom_tab.prop.Value
+              this.Form.nom_tab.prop.Value
             );
           }
         }
@@ -193,6 +193,7 @@ export class bt_aceptar extends COMPONENT {
           this.Form.bt_gen_indices.prop.Visible = true;
 
           // Vistas remota de captura SQL
+          console.log('bt_aceptar m=', m)
           await this.Form.db.use("vi_cap_comevis", m);
           if ((await this.Form.db.recCount("vi_cap_comevis")) == 0) {
             const m = {
@@ -234,7 +235,7 @@ export class bt_aceptar extends COMPONENT {
       }
 
       m.sis_sis = this.Form.sis_sis.prop.Value;
-      this.Form.sis_sis.prop.Visible = false; 
+      this.Form.sis_sis.prop.Visible = false;
 
       await this.Form.db.use("vi_cap_cometab", m);
       this.Form.grid_tablas.prop.Visible = true;
@@ -407,5 +408,5 @@ export class bt_aceptar extends COMPONENT {
     }
   }
 
-  async setFocus() {}
+  async setFocus() { }
 }

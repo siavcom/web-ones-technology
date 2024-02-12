@@ -1,0 +1,82 @@
+//////////////////////////////////////////////
+// Clase : nom_tab
+// Descripcion : Nombre de la tabla base para generar la forma de captura
+// Author : Fernando Cuadras Angulo
+// Creacion : 17/Octubre/2022
+// Ult.Mod  : 4/Julio/2023
+/////////////////////////////////////////////
+///////////////////////////////////////
+// Clase base
+///////////////////////////////////////
+
+import { COMPONENT } from "@/classes/Component";
+import { initShimAsyncCodec } from "@zip.js/zip.js";
+//import { nextTick } from 'vue';
+
+export class tab_grid extends COMPONENT {
+  //  constructor(parent: Record<string, never>) {
+  constructor() {
+    super();
+
+    this.prop.BaseClass = "comboBox";
+    this.prop.Visible = true;
+    this.prop.textLabel = "Vista de captura del grid ";
+    this.prop.Capture = true;
+    this.prop.Valid = false;
+    this.prop.ErrorMessage = "";
+    this.prop.Value = 0;
+    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 4-Local SQl 5-Array
+    this.prop.RowSource = "select des_vis,nom_tab,key_pri from vi_cap_comevis order by nom_tab";
+    this.prop.ColumnCount = 3;
+    this.prop.BoundColumn = 3;
+
+    this.prop.Visible = false;
+    this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
+    //this.prop.ColumnWidths = "350px,125px";
+    this.inputStyle.width = "250px";
+    this.style.width = "400px";
+    this.prop.ColumnWidths = "70%,20%,10%";
+  }
+
+  /*
+  public async init() {
+    await this.Sql.execute('select nom_tab,des_vis,key_pri from vi_cap_comevis order by nom_tab', 'vi_cap_comevis')
+    this.prop.RowSource = "select des_vis,nom_tab,key_pri from vi_cap_comevis order by nom_tab";
+
+  }
+*/
+  public async when() {
+    this.Form.nom_ind.prop.RowSourceType = 0;
+    this.Form.bt_gen_forma.prop.Visible = false;
+    this.Form.grid_form.prop.Visible = false;
+    this.Form.grid_columns.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Visible = true;
+
+    return true;
+  }
+
+  public async valid() {
+    //    this.Form.nom_ind.prop.RowSourceType = 0
+    //    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
+    //    this.Form.nom_ind.prop.RowSourceType = 2
+
+    this.Form.vis_grid.prop.RowSourceType = 0;
+    //const nom_tab = this.prop.Value.trim();
+    const key_pri = +this.prop.Value
+    if (key_pri == 0)
+      return false
+
+    console.log("nom_tab valid key_pri=", key_pri);
+    //this.Form.vis_grid.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis where nom_tab='${nom_tab}' `;
+    this.Form.vis_grid.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis where key_pri=${key_pri} `;
+
+    this.Form.vis_grid.prop.RowSourceType = 3;
+    this.Form.vis_grid.prop.Visible = true;
+
+    //await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `,'vi_cap_comeind')
+    // this.Form.nom_ind.prop.RowSource = `select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `
+    // console.log('vi_cap_comeind ==>'+await  this.Form.db.localSql('select * from vi_cap_comeind'))
+
+    return true;
+  }
+}

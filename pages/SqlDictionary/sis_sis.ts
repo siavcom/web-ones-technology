@@ -41,6 +41,7 @@ export class sis_sis extends COMPONENT {
 
   async when() {
     this.Form.grid_menu.prop.Visible = false;
+    this.Form.dic_dat.when()
     return true;
   }
 
@@ -48,7 +49,7 @@ export class sis_sis extends COMPONENT {
   async valid() {
     if (this.Form.nom_tab.prop.Visible) {
       this.Form.nom_tab.prop.RowSourceType = 0
-     
+
       let where = ''
 
       if (this.prop.Value > '   ')

@@ -11,6 +11,7 @@
 import { GRID } from "@/classes/Grid";
 
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
+import { num_vis } from "./num_vis"
 import { nom_vis } from "./nom_vis";
 import { des_vis } from "./des_vis";
 import { tab_vis } from "./tab_vis";
@@ -23,6 +24,7 @@ import { vac_vis } from "./vac_vis";
 export class grid_vistas extends GRID {
   // Columna que tiene el grid
   // public con_vis = new COLUMN()
+  public num_vis = new num_vis()
   public nom_vis = new nom_vis();
   public des_vis = new des_vis();
   public vac_vis = new vac_vis();

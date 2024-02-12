@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : exp_ind
-// Descripcion : Expresion del indicecampo
+// Descripcion : Expresion del indice campo
 // Author : Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  05/Septiembre /2022
@@ -15,12 +15,10 @@ export class exp_ind extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "Expresión del indice";
+    this.textLabel = "Campos que contiene el indice";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comeind.exp_ind";
-    this.prop.ToolTipText =
-      "Expresión del indice. Si es principal debe ser Variable VUE";
-    this.prop.Placeholder = "Expresión del indice";
+    this.prop.Placeholder = "Campos  que contiene el indice";
     this.inputStyle.textTransform = "lowercase";
     this.style.width = "400px";
   }

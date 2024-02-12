@@ -396,18 +396,18 @@ export class VFPDB {
 
           return false;
         }
-        console.log("2 Db USE " + alias + "m=".match, " exp_ind=", exp_ind);
+        console.log("2 Db USE " + alias + "m=", m, " View =", this.View[alias]);
         if (exp_ind == undefined) {
           this.errorAlert(
             "No se pudo evaluar el indice de la tabla=" +
-              alias +
-              " indice=" +
-              this.View[alias].exp_indice
+            alias +
+            " indice=" +
+            this.View[alias].exp_indice
           );
           return false;
         }
       }
-      if (this.View[alias].exp_where.trim().length > 0) {
+      if (this.View[alias].exp_where != 'null' && this.View[alias].exp_where.trim().length > 0) {
         console.log("Db dataBase exp_where", this.View[alias].exp_where);
 
         const val_eval = "`" + this.View[alias].exp_where.trim() + "`";
@@ -424,9 +424,9 @@ export class VFPDB {
         if (exp_whe == undefined) {
           this.errorAlert(
             "No se pudo evaluar el la expresion where de la tabla=" +
-              alias +
-              " indice=" +
-              this.View[alias].exp_where
+            alias +
+            " indice=" +
+            this.View[alias].exp_where
           );
           return false;
         }
@@ -498,9 +498,9 @@ export class VFPDB {
 
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       return false;
@@ -662,7 +662,12 @@ export class VFPDB {
       dat_vis.dat_act = {};
       const m = {}; // valiables en memoria
       dat_vis.dat_act.key_pri = dat_act[row].key_pri;
-      dat_vis.dat_act.timestamp = dat_act[row].timestamp;
+
+      // si no es tabla de actualizacion delo diccionario de datos
+
+
+      if (tab_man != 'lla1_vis' && tab_man != 'lla1_dat' && tab_man != 'lla1_ind' && tab_man != 'lla1_tab')
+        dat_vis.dat_act.timestamp = dat_act[row].timestamp;
 
       recno = dat_act[row].recno;
 
@@ -905,8 +910,8 @@ export class VFPDB {
           );
           this.errorAlert(
             "SQL Error: No se pudo actualizar el registro en tabla " +
-              alias +
-              dat_vis
+            alias +
+            dat_vis
           );
           sw_val = false;
           if (dat_act[row].key_pri > 0) {
@@ -924,22 +929,22 @@ export class VFPDB {
                 await this.localAlaSql(
                   "USE Now;\
                 DELETE Now." +
-                    alias +
-                    ` WHERE recno=${dat_act[row].recno};\
+                  alias +
+                  ` WHERE recno=${dat_act[row].recno};\
                 INSERT INTO ` +
-                    alias +
-                    " VALUES ?",
+                  alias +
+                  " VALUES ?",
                   [respuesta]
                 );
 
                 await this.localAlaSql(
                   "USE Last;\
                 DELETE Last." +
-                    alias +
-                    ` WHERE recno=${dat_act[row].recno};\
+                  alias +
+                  ` WHERE recno=${dat_act[row].recno};\
                 INSERT INTO ` +
-                    alias +
-                    " VALUES ?",
+                  alias +
+                  " VALUES ?",
                   [respuesta]
                 );
               } // fin else
@@ -1025,11 +1030,11 @@ export class VFPDB {
         } catch (error) {
           this.errorAlert(
             " appendBlank can't eval(" +
-              val_eval +
-              ")" +
-              alias +
-              " Error=" +
-              error
+            val_eval +
+            ")" +
+            alias +
+            " Error=" +
+            error
           );
 
           console.error(
@@ -1061,10 +1066,10 @@ export class VFPDB {
       );
       await this.localAlaSql(
         "USE Last;INSERT INTO Last." +
-          alias +
-          " SELECT * FROM Now." +
-          alias +
-          " WHERE recno=?",
+        alias +
+        " SELECT * FROM Now." +
+        alias +
+        " WHERE recno=?",
         recno
       );
     } catch (error) {
@@ -1137,8 +1142,8 @@ export class VFPDB {
     const recno = await this.localAlaSql(
       "USE Last;\
     select recno  from Last." +
-        alias +
-        " where key_pri=?",
+      alias +
+      " where key_pri=?",
       key_pri
     );
 
@@ -1195,8 +1200,8 @@ export class VFPDB {
       const data = await this.localAlaSql(
         "USE Last;\
     select key_pri from Last." +
-          alias +
-          " where recno=?",
+        alias +
+        " where recno=?",
         recno
       );
       const key_pri = data[1][0].key_pri;
@@ -1277,8 +1282,8 @@ export class VFPDB {
     const valores = await this.localAlaSql(
       "USE Now;\
             select from " +
-        alias +
-        " where renco=?",
+      alias +
+      " where renco=?",
       recno
     );
 
@@ -1308,8 +1313,8 @@ export class VFPDB {
       await this.localAlaSql(
         "USE Now;\
               UPDATE " +
-          alias +
-          "\
+        alias +
+        "\
               set  key_pri=?,set timestamp=? where recno=? ",
         respuesta.key_pri,
         respuesta.timestamp,
@@ -1319,13 +1324,13 @@ export class VFPDB {
       await this.localAlaSql(
         "USE Last;\
               DELETE Last." +
-          alias +
-          " where recno=?;\
+        alias +
+        " where recno=?;\
               INSERT INTO Last." +
-          alias +
-          " SELECT * from Now." +
-          alias +
-          " where recno=?",
+        alias +
+        " SELECT * from Now." +
+        alias +
+        " where recno=?",
         recno,
         recno
       );
@@ -1334,9 +1339,9 @@ export class VFPDB {
     } catch (error) {
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
       return false;
     }
@@ -1345,7 +1350,7 @@ export class VFPDB {
   /// /////////////  sqlexec /////////////////////
   // query  : Query a ejecutar
   /// ///////////////////////////////////////////
-  // Aqui me quede
+
   execute = async (query: string, alias?: string, tip_res?: string) => {
     if (!alias) {
       alias = "sqlresult";
@@ -1371,7 +1376,7 @@ export class VFPDB {
       //  console.log('Db execute alias query,respuesta', dat_vis.query,respuesta)
       if (alias.toUpperCase() == "MEMVAR") {
 
-        console.log("Db execute MEMVAR query=",query,"respuesta=", respuesta)
+        console.log("Db execute MEMVAR query=", query, "respuesta=", respuesta)
         return respuesta;
       }
 
@@ -1409,7 +1414,7 @@ export class VFPDB {
         ` DROP TABLE IF EXISTS Last.${alias} ; DROP TABLE IF EXISTS Now.${alias} ; `
       );
       resp = await this.localAlaSql(` CREATE TABLE Now.${alias} ;`);
-      resp = await this.localAlaSql(` SELECT * INTO Now.${alias} FROM ? ;`, [
+      resp = await this.localAlaSql(` SELECT * INTO Now.${alias} FROM ? ; USE Now ;`, [
         respuesta,
       ]);
 
@@ -1497,9 +1502,9 @@ export class VFPDB {
       console.error("SQL Error", error);
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
       return false;
     }
@@ -1529,9 +1534,9 @@ export class VFPDB {
       console.log("SQL Error", error.response);
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
       return false;
     }
@@ -1565,9 +1570,9 @@ export class VFPDB {
       console.error("SQL Error", error);
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       return false;
@@ -1602,9 +1607,9 @@ export class VFPDB {
       console.error("SQL Error", error);
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       return false;
@@ -1645,9 +1650,9 @@ export class VFPDB {
       console.error("SQL Error", error);
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       return false;
@@ -1713,9 +1718,9 @@ export class VFPDB {
     } catch (error) {
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       // MessageBox( error.response.status.toString() + " " + error.response.statusText,16,"SQL Error " );
@@ -1742,9 +1747,9 @@ export class VFPDB {
     } catch (error) {
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       console.error("SQL Error", error);
@@ -1819,9 +1824,9 @@ export class VFPDB {
     } catch (error) {
       this.errorAlert(
         "SQL Error :" +
-          error.response.status.toString() +
-          " " +
-          error.response.statusText
+        error.response.status.toString() +
+        " " +
+        error.response.statusText
       );
 
       //MessageBox( error.response.status.toString() + " " + error.response.statusText, 16,"SQL Error " );
@@ -1884,11 +1889,11 @@ export class VFPDB {
       alasql
         .promise(
           "USE Now; CREATE TABLE " +
-            alias +
-            " ; \
+          alias +
+          " ; \
       SELECT * INTO Now." +
-            alias +
-            "  FROM ?",
+          alias +
+          "  FROM ?",
           [data]
         )
         .then(function () {
@@ -1896,12 +1901,12 @@ export class VFPDB {
           alasql
             .promise(
               "USE Last; CREATE TABLE " +
-                alias +
-                " ; \
+              alias +
+              " ; \
           SELECT * INTO " +
-                alias +
-                " FROM Now." +
-                alias
+              alias +
+              " FROM Now." +
+              alias
             )
 
             .catch(function (error) {
@@ -1995,9 +2000,9 @@ export class VFPDB {
           console.error("SQL Error", error);
           this.errorAlert(
             "SQL Error :" +
-              error.response.status.toString() +
-              " " +
-              error.response.statusText
+            error.response.status.toString() +
+            " " +
+            error.response.statusText
           );
           //MessageBox( error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error " );
 
@@ -2107,20 +2112,20 @@ export class VFPDB {
       try {
         await this.localAlaSql(
           "USE Now; CREATE TABLE Now." +
-            alias +
-            " ; \
+          alias +
+          " ; \
           SELECT * INTO Now." +
-            alias +
-            "  FROM ?",
+          alias +
+          "  FROM ?",
           [respuesta]
         );
         await this.localAlaSql(
           "USE Last; CREATE TABLE Last." +
-            alias +
-            " ; \
+          alias +
+          " ; \
           SELECT * INTO Last." +
-            alias +
-            "  FROM ?",
+          alias +
+          "  FROM ?",
           [respuesta]
         );
       } catch (error) {
@@ -2386,15 +2391,15 @@ return false;
         return respuesta;
       } catch (error) {
         console.log("Axios stop=====>>>>>>> ", error);
-        const messageError=error.response && error.response.data ? error.response.data:''
-      
+        const messageError = error.response && error.response.data ? error.response.data : ''
+
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          console.log('Axios error.response.data',error.response.data);
-     //     console.log('Axios error.response.status',error.response.status);
-      //    console.log('Axio error.response.headers',error.response.headers);
-          
+          console.log('Axios error.response.data', error.response.data);
+          //     console.log('Axios error.response.status',error.response.status);
+          //    console.log('Axio error.response.headers',error.response.headers);
+
         }
 
         if (axios.isCancel(error)) {
@@ -2408,10 +2413,10 @@ return false;
           // status - The HTTP status code from the response e.g. 200, 400, 404.
           // statusText - The HTTP status message from the server response e.g. OK, Bad Request, Not Found.
 
-        //  const error = thrown;
-   
+          //  const error = thrown;
 
-//          this.errorAlert("SQL Data Base Error  :" + error.response.data);
+
+          //          this.errorAlert("SQL Data Base Error  :" + error.response.data);
           await this.errorAlert("SQL Data Base Error  :" + messageError);
 
 
@@ -2439,8 +2444,8 @@ return false;
           ) {
             this.errorAlert(
               "No internet connection. Try " +
-                numIntentos.toString() +
-                " to reconnect"
+              numIntentos.toString() +
+              " to reconnect"
             );
           } else return false;
 
@@ -2505,6 +2510,7 @@ return false;
     /*    if (ins_sql.slice(0,9)!='DROP DATA' || ins_sql.slice(0,11)!='CREATE DATA')
        await alasql('USE Now ;')
 */
+    //  await alasql('USE Now ;') // 12/Feb/2024
     try {
       if (!datos) return await alasql(ins_sql);
 
@@ -2561,11 +2567,11 @@ return false;
           this.select(alias);
           await this.localAlaSql(
             " CREATE TABLE IF NOT EXISTS" +
-              alias +
-              " ; \
+            alias +
+            " ; \
         SELECT * INTO " +
-              alias +
-              "  FROM ?",
+            alias +
+            "  FROM ?",
             [resultado]
           );
           const resp = await this.localAlaSql("select * from " + alias);
@@ -2632,12 +2638,12 @@ return false;
 
     const data = await this.localAlaSql(
       "USE " +
-        DataBase +
-        " ; SELECT " +
-        campos +
-        ",key_pri  FROM " +
-        tabla +
-        " WHERE recno=? ;",
+      DataBase +
+      " ; SELECT " +
+      campos +
+      ",key_pri  FROM " +
+      tabla +
+      " WHERE recno=? ;",
       recno
     );
 
@@ -2850,22 +2856,22 @@ return false;
     if (despla > 0) {
       data = await this.localAlaSql(
         "USE Now; SELECT top " +
-          despla.toString +
-          "  FROM " +
-          alias +
-          " where recno>" +
-          recno.toString +
-          " order by recno "
+        despla.toString +
+        "  FROM " +
+        alias +
+        " where recno>" +
+        recno.toString +
+        " order by recno "
       );
     } else {
       data = await this.localAlaSql(
         "USE Now; SELECT top " +
-          despla.toString +
-          "  FROM " +
-          alias +
-          " where recno<" +
-          recno.toString +
-          " order by recno desc"
+        despla.toString +
+        "  FROM " +
+        alias +
+        " where recno<" +
+        recno.toString +
+        " order by recno desc"
       );
     }
 
@@ -3101,7 +3107,7 @@ return false;
 
   async errorAlert(message: string) {
 
-   await MessageBox(message, 16, "SQL Server Error  ");
+    await MessageBox(message, 16, "SQL Server Error  ");
     //alert(message);
   }
 
