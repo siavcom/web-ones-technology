@@ -11,19 +11,19 @@
 
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
 
-    <input :id="Id" v-if="prop.Type == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
+    <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
       :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
       @input.self="onInput" @keypress="keyPress($event)">
 
     <!--spinner-->
 
-    <input :id="Id" v-else-if="prop.Type == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
+    <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
       :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
       :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
 
     <!--textArea -->
-    <div v-else-if="prop.Type == 'textArea'" :style="inputStyle">
+    <div v-else-if="propType == 'textarea'" :style="inputStyle">
       <textarea :id="Id" class="textArea" ref="Ref" :style="inputStyle" v-model="Value" :readonly="ReadOnly"
         :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
         :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
@@ -31,9 +31,9 @@
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
-    <!--div v-else-if="prop.Type.slice(0, 4) == 'date'"-->
-    <input :id="Id" v-else-if="prop.Type.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
-      :type="prop.Type == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
+    <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
+    <input :id="Id" v-else-if="propType.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
+      :type="propType == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
       :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
       @focusout="focusOut">
     <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
@@ -41,7 +41,7 @@
     <!--/div-->
 
 
-    <div class='json' v-else-if="prop.Type == 'json'" ref="Ref" :style="inputStyle">
+    <div class='json' v-else-if="propType == 'json'" ref="Ref" :style="inputStyle">
 
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
@@ -58,8 +58,8 @@
     </div>
 
     <!--checkBox-->
-    <!--div v-else-if="prop.Type == 'checkBox'"-->
-    <input :id="Id" v-else-if="prop.Type == 'checkBox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
+    <!--div v-else-if="propType == 'checkBox'"-->
+    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
       :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
       @focus="onFocus" @keypress="keyPress($event)">
 
@@ -71,7 +71,7 @@
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-    <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="prop.Type" v-model.trim="Value"
+    <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
       :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
       @focus="onFocus">
@@ -236,26 +236,33 @@ const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true :
 
 const Component = ref(props.prop.This)
 const This = Component.value
+
 const labelStyle = reactive(This.labelStyle)
+const propType = This.prop.Type.toLowerCase().trim()
+/*
+if (propType != "checkbox" &&
+  propType != "radio" &&
+  propType != "json" &&
+  propType != "spinner" &&
+  propType != "date" &&
+  propType != "time" &&
+  propType != "datetime" &&
+  propType != "password") propType = "text"
 
-
+  */
 const Id = This.prop.Name + props.Registro.toString().trim()
-let thisElement: Element | null    //: Element | null
+let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
+
 const Value = ref(props.prop.Value)
-//const Recno = ref(0)
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
-//const RefInput = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 
 const Status = ref(props.prop.Status);
 const ToolTipText = ref(true)
 Status.value = 'I'
 const Key = ref(props.prop.Key)
-//const Focus = ref(props.prop.Focus)
-// Focus.value = false
-//const First = ref(props.prop.First)
 
 var oldVal = Value.value
 const ShowError = ref(false)
@@ -341,28 +348,6 @@ const toNumberStr = async (n: number) => {
 };
 
 
-
-
-/*
-async function toNumberString(num) {
-  if (Number.isInteger(num)) {
-    return num + ".0"
-  } else {
-    return num.toString();
-  }
-}
-
-*/
-
-//////////////////////////////////////////
-/*
-const click = () => {
-
-  This.Form.eventos.push(This.prop.Map + '.click()')
-}
-*/
-
-
 // Formateo de valores
 const onInput = ({ target }) => {
 
@@ -401,36 +386,6 @@ const onInput = ({ target }) => {
   oldVal = target.value
 }
 
-
-const onBlur2 = async () => {
-
-  if (props.prop.Type == 'number') {
-
-    //    Value.value = +currentValue.value[1]
-
-    // This.prop.Value = +currentValue.value[1]
-    Value.value = +currentValue.value[1]
-
-    typeNumber.value = 'text';
-  }
-  if (props.prop.Type == 'date') {
-    //This.prop.Value = await dateToString(currentDate.value)
-    Value.value = await dateToString(currentDate.value)
-
-  }
-  if (props.prop.Type == 'datetime') {
-    //This.prop.Value = await dateToString(currentDate.value)
-    Value.value = currentDate.value
-  }
-
-  if (props.prop.Type == 'json') {
-    Value.value = await JSON.stringify(currentJson.value)
-
-    //g(currentDate.value)
-  }
-
-  focusOut()
-};
 
 
 
@@ -489,9 +444,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       if (Value.value != Valor)
         Value.value = Valor
 
-      // This.prop.Value=Valor // Actualizamos el This.prop.Value para que el Valid Funcione
-
-      //  console.log('1) editText emitValue()  update localSQL Name=', props.prop.Name,'Value=',Value.value ,'This.prop.Value=',This.prop.Value)
 
       This.prop.Value = Value.value
       //  console.log('2) editText emitValue()  update localSQL Name=', props.prop.Name,'Value=',Value.value ,'This.prop.Value=',This.prop.Value)
@@ -500,7 +452,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       emit("update"); // actualiza el valor Value en el componente padre
 
 
-      if (props.prop.Type == 'spinner' || props.prop.Type == 'checkBox')
+      if (propType == 'spinner' || propType == 'checkBox')
         await This.interactiveChange()
 
       if (!isValid) {
@@ -536,7 +488,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
       if (props.prop.Value == null) {
-        switch (props.prop.Type) {
+        switch (propType) {
           case 'number':
             Value.value = 0
             break;
@@ -588,7 +540,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       }
       if (!sw_dat) { // No encontro dato
 
-        switch (props.prop.Type) {
+        switch (propType) {
           case 'number':
             Value.value = 0
 
@@ -613,7 +565,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   }
 
   //console.log('4) editText emitValue() Fin Name=', props.prop.Name,'This.prop.Valid=',This.prop.Valid)
-  switch (props.prop.Type) {
+  switch (propType) {
     case 'number':
       currentValue.value[1] = Value.value.toString().trim()
       currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
@@ -690,7 +642,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   /* 
-   console.log('editText emitValue() Name', props.prop.Name, 'Type=', props.prop.Type,
+   console.log('editText emitValue() Name', props.prop.Name, 'Type=', propType,
     'This.prop.Value=', This.prop.Value,
     'currentValue.value=', currentValue.value[0], currentValue.value[1],
     'currentDate.value=', currentDate.value, displayDate.value,
@@ -759,7 +711,7 @@ const focusOut = async () => {
   focusIn.value = 0  // Perdio el foco
   let sw_error = false
 
-  if (props.prop.Type == 'number') {
+  if (propType == 'number') {
     if (+currentValue.value[1] < props.prop.Min) {
       currentValue.value[1] = props.prop.Min
       sw_error = true
@@ -772,7 +724,7 @@ const focusOut = async () => {
     Value.value = +currentValue.value[1]
   }
 
-  if (props.prop.Type == 'date') {
+  if (propType == 'date') {
     //This.prop.Value = await dateToString(currentDate.value)
     if (currentDate.value < props.prop.Min) {
       currentDate.value = props.prop.Min
@@ -790,7 +742,7 @@ const focusOut = async () => {
     }
   }
 
-  if (props.prop.Type == 'datetime') {
+  if (propType == 'datetime') {
     //This.prop.Value = await dateToString(currentDate.value)
 
     if (currentDate.value < props.prop.Min) {
@@ -806,7 +758,7 @@ const focusOut = async () => {
 
   }
 
-  if (props.prop.Type == 'json') {
+  if (propType == 'json') {
     Value.value = await JSON.stringify(currentJson.value)
 
   }
@@ -816,7 +768,7 @@ const focusOut = async () => {
     return
   }
 
-  if (props.prop.Type == 'text') {
+  if (propType == 'text') {
     if (props.style.textTransform == 'uppercase')
       Value.value = Value.value.toUpperCase()
 
@@ -846,7 +798,7 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       This.prop.ShowError = false
   }
   // new KeyboardEvent('keydown', {
-  if (props.prop.Type != 'textArea' && $event.charCode == 13) //|| // Return
+  if (propType != 'textArea' && $event.charCode == 13) //|| // Return
   // $event.charCode == 13 // Down Key  
   {
     const TabIndex = This.prop.TabIndex
@@ -900,7 +852,7 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
        */
   }
   // caracteres permitido en input numero
-  if (props.prop.Type == 'number') {
+  if (propType == 'number') {
     if (!(($event.charCode >= 48 &&
       $event.charCode <= 57) ||
       $event.charCod == 46 || // punto
@@ -969,7 +921,7 @@ const onFocus = async () => {
   }
 
   // El showError se apaga en el keyPress cuando es un input text, number o date 
-  if ((props.prop.Type == 'json' || props.prop.Type == 'checkBox') && ShowError.value) {
+  if ((propType == 'json' || propType == 'checkBox') && ShowError.value) {
     ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
@@ -1005,46 +957,7 @@ const select = async () => {
   //})
   return
 
-  /*
-  
-    if (props.prop.Type.slice(0, 4) == 'date') {
-      // This.prop.Focus = true
-      // Ref.value.focus() // hace select en el input
-    }
-  
-    return
-    */
-
 }
-
-//////////////////////////////////////////
-// Lee el campo desde SQL Local
-////////////////////////////////////////
-/*
-const readCampo = async (recno: number) => {
- 
-  if (props.Registro == 0) { // limpia value
-    if (props.prop.Type == 'number')
-      Value.value = 0
-    else
-      Value.value = ''
- 
-    return
-  }
-  // console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
- 
-  const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
-  This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
-  for (const campo in data) {
-    if (campo != 'key_pri') {
-      Value.value = data[campo]
- 
-    }
-  }
-  emitValue(true)
-  return true
-}
-*/
 
 
 
@@ -1070,7 +983,7 @@ watch(
 
     //  if (This.prop.Valid) return
     if (new_val != old_val) {
-      if (This.prop.Type == 'date')
+      if (propType == 'date')
         if (new_val.slice(0, 10) == Value.value.slice(0, 10))
           return
       // Value.value = This.prop.Value
@@ -1137,11 +1050,11 @@ watch(
   () => currentValue.value[1], //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
  
-    if (props.prop.Type == 'number') {
+    if (propType == 'number') {
       Value.value = +new_val
     }
  
-    if (props.prop.Type == 'date') {
+    if (propType == 'date') {
       Value.value = await dateToString(new_val)
     }
     console.log('watch currentValue ', new_val,'Value.value=',Value.value)
@@ -1166,7 +1079,7 @@ watch(
  
     if (props.prop.Value != Value.value) {
  
-      if (props.prop.Type == 'checkBox') {
+      if (propType == 'checkBox') {
  
         checkValue.value = new_val == 1 ? true : false
         await This.interactiveChange()
@@ -1174,12 +1087,12 @@ watch(
  
       }
  
-      if (props.prop.Type == 'spinner') {
+      if (propType == 'spinner') {
         await This.interactiveChange()
         emitValue()
  
       }
-      if (props.prop.Type == 'number') {
+      if (propType == 'number') {
         currentValue.value[1] = toNumberStr(Value.value)
         emitValue()
       }
@@ -1256,7 +1169,7 @@ watch(
  
     if (props.prop.ControlSource > ' ') {
       if (new_val==0){
-        Value.value=props.prop.Type=='numeric'? 0 : ''
+        Value.value=propType=='numeric'? 0 : ''
         emitValue()
         return
       }
@@ -1292,18 +1205,18 @@ watch(
 const init = async () => {
   thisElement = document.getElementById(Id)
   //console.log('EditText init onMounted', This.prop.Name, 'Document element Id=' + Id)
-  if (props.prop.Type == 'date') {
+  if (propType == 'date') {
     inputStyle.width = '120px'
     inputStyle.height = '20px'
     inputStyle.maxHeight = '20px'
   }
-  if (props.prop.Type == 'datetime-local') {
+  if (propType == 'datetime-local') {
     inputStyle.width = '170px'
     inputStyle.height = '20px'
     inputStyle.maxHeight = '20px'
   }
 
-  if (props.prop.Type == 'json') {
+  if (propType == 'json') {
     inputStyle.borderWidth = '1px'
     inputStyle.borderStyle = 'solid'
     inputStyle.borderRadius = '2px'
@@ -1311,7 +1224,7 @@ const init = async () => {
   }
 
 
-  if (props.prop.Type == 'number')
+  if (propType == 'number')
     inputStyle.textAlign = 'right'
 
   if (!This.prop.Visible)

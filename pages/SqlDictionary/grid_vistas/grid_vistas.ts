@@ -16,6 +16,7 @@ import { nom_vis } from "./nom_vis";
 import { des_vis } from "./des_vis";
 import { tab_vis } from "./tab_vis";
 import { cam_vis } from "./cam_vis";
+import { whe_vis } from "./whe_vis";
 import { wjs_vis } from "./wjs_vis";
 import { ord_vis } from "./ord_vis";
 import { fil_vis } from "./fil_vis";
@@ -30,6 +31,7 @@ export class grid_vistas extends GRID {
   public vac_vis = new vac_vis();
   public cam_vis = new cam_vis();
   public tab_vis = new tab_vis();
+  public whe_vis = new whe_vis();
   public wjs_vis = new wjs_vis();
   public fil_vis = new fil_vis();
   public ord_vis = new ord_vis();

@@ -29,31 +29,37 @@
       -->
     <div v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
 
-      <input :id="Id" class="textInput" :style="inputStyle" :readonly="+prop.Style == 2 || prop.ReadOnly"
+
+      <input :id="Id" class="textInput" :style="inputStyle" :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
         @focus.prevent="toggle = false; This.Form.eventos.push(This.prop.Map + '.when()')" @focusout="emitValue()" />
 
       <!--span> {{ prop.Value }}</span-->
       <!--Valor seleccionado click-->
-      <div class="toggle" v-if="toggle && !prop.ReadOnly">
-        <!--CheckBox -->
-        <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
-          <!--Columnas -->
 
-          <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true" :key="valueIndex"
-            @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
-            <!--Imprime Columnas -->
+      <div v-show="!prop.ReadOnly && !prop.Disabled">
 
-            <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
-              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
-              <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
+        <div class="toggle" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)">
+          <!--CheckBox -->
+          <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+            <!--Columnas -->
+
+            <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true" :key="valueIndex"
+              @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
+              <!--Imprime Columnas -->
+
+              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
+                :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
+                <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
+              </div>
             </div>
           </div>
         </div>
+        <!--toggle click.prevent -->
+        <img class="imagen" v-show="!prop.ReadOnly && !prop.Disabled"
+          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
+
       </div>
-      <!--toggle click.prevent -->
-      <img class="imagen" v-show="!prop.ReadOnly"
-        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
     </div>
     <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
@@ -383,13 +389,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   for (let i = 0; i < columnas.length && !found; i++) {
     if (columnas && columnas[0]) {
-      console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
+      // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
       if (
         (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
         Value.value == columnas[i].value) {
         // El objeto columna tiene dos campos value y text
         displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
         found = true
+        console.log('comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
       }
     } else break
   }
@@ -623,11 +630,11 @@ const onFocus = async () => {
 // Renderizado del combo box
 /////////////////////////////////////////////////////
 const renderComboBox = async (readData?: boolean) => {
- //console.log('1) render combobox ===>>', This.Name, 'Value=', Value.value)
+  //console.log('1) render combobox ===>>', This.Name, 'Value=', Value.value)
   // if (props.prop.Status == 'I') return
 
- 
- 
+
+
   // 9/Feb/2024 borra las columnas si las tiene 
   while (columnas.length > 0) {
     columnas.pop()
@@ -639,7 +646,7 @@ const renderComboBox = async (readData?: boolean) => {
   }
   */
 
-  
+
   if (props.prop.RowSourceType < 1) return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
@@ -653,22 +660,22 @@ const renderComboBox = async (readData?: boolean) => {
 
   // Numero de columnas
   const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
-/*  9/Feb/2024 se quito y se mando arriba
-  for (let ren = 0; ren < columnas.length; ren++) {
-    // Borra todos los renglones
-    delete columnas[ren];
-  }
- */
- 
- 
+  /*  9/Feb/2024 se quito y se mando arriba
+    for (let ren = 0; ren < columnas.length; ren++) {
+      // Borra todos los renglones
+      delete columnas[ren];
+    }
+   */
+
+
   ///////////////////////
   // generamos un arreglo dependiendo del RowSourceType
 
   let val_col: any = [];  // valores de columna
-  const tip_rst = props.prop.RowSourceType;
+  const rowSourceType = props.prop.RowSourceType;
   //const sql = props.db
   let data = []
-  switch (tip_rst) {
+  switch (rowSourceType) {
 
     case 1:    // Value o por valor directamente 
 
@@ -735,20 +742,33 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-  if (data[0]) {
-    if ((tip_rst >= 2 || tip_rst <= 4) && data.length > 0) {
-      for (const nom_obj in data[0]) {
-        const renglon = []
-        for (let ren = 0; ren < data.length; ren++) {
-          renglon.push(data[ren][nom_obj])
-        }
-        val_col.push(renglon)
-      }
+  //if (data[0]) {
+  if ((rowSourceType >= 2 && rowSourceType <= 4)) {
+    if (data.length == 0) {
+      console.warn('1) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
+      return
     }
-  } else
-    console.warn('ComboBox Name=', This.prop.Name, ' No data in ', This.prop.ControlSource)
 
-  // console.log('comoBox Render', This.name, 'RowSource', 'data=', data)
+    for (const nom_obj in data[0]) {
+      const renglon = []
+      for (let ren = 0; ren < data.length; ren++) {
+        renglon.push(data[ren][nom_obj])
+      }
+      val_col.push(renglon)
+    }
+  }
+
+
+  // }
+  // else
+  //  console.warn('2) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
+
+
+  if (val_col.length == 0) {
+    console.warn('2) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
+    return
+  }
+
 
   for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
     // asignamos el Value del BoundColum 
@@ -958,7 +978,7 @@ watch(
   () => props.prop.RowSourceType,
 
   (new_val, old_val) => {
-   // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
+    // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
 
     // console.log('ComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {

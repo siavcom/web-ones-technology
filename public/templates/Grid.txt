@@ -33,7 +33,7 @@ export class Grid extends GRID {
     this.prop.RecordSource='<<nom_vis>>'
     this.prop.Visible= true
     this.prop.ReadOnly = false
-    this.autoLoad = true  // carga automaticamente la tabla en el grid
+    this.prop.autoLoad = true  // carga automaticamente la tabla en el grid
      }
 
 
