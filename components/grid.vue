@@ -4,12 +4,12 @@
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
-    <!--form class="gridDatos" -->
+    <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
     <div class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
-      <div class="tabla" :style="{ minHeight: '150px' }">
+      <div class="tabla" :style="{ minHeight: '150px', height: 'auto', width: 'inherit' }">
         <table :style="{ lineHeight: '11px' }">
           <thead>
             <tr style="font-size: 13px">
@@ -997,7 +997,7 @@ div.tabla {
   max-width: 900px;
   overflow-y: auto;
   overflow-x: auto;
-  width: 100%;
+  width: 95%;
 
 }
 

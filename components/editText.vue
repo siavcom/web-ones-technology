@@ -452,7 +452,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       emit("update"); // actualiza el valor Value en el componente padre
 
 
-      if (propType == 'spinner' || propType == 'checkBox')
+      if (propType == 'spinner' || propType == 'checkbox')
         await This.interactiveChange()
 
       if (!isValid) {
@@ -492,7 +492,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
           case 'number':
             Value.value = 0
             break;
-          case 'checkBox':
+          case 'checkbox':
             Value.value = 0
             break;
           case 'date':
@@ -545,7 +545,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
             Value.value = 0
 
             break;
-          case 'checkBox':
+          case 'checkbox':
             Value.value = 0
             break;
           case 'date':
@@ -567,11 +567,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   //console.log('4) editText emitValue() Fin Name=', props.prop.Name,'This.prop.Valid=',This.prop.Valid)
   switch (propType) {
     case 'number':
+      if (Value.value == null)
+        Value.value = 0
       currentValue.value[1] = Value.value.toString().trim()
       currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
       emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
       break;
-    case 'checkBox':
+    case 'checkbox':
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
       let check = Value.value == 0 ? false : true
@@ -594,7 +596,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
     case 'date':
       //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
-      if (Value.value == '')
+      if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01'
 
       Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
@@ -602,13 +604,15 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       //   currentValue.value[0] = new Date(Value.value).toDateString()
 
       displayDate.value = new Date(Value.value).toDateString()
+
       currentDate.value = await stringToDate(Value.value)
+      console.log('editText emitValue() Date Name ', props.prop.Name, 'CurrentDAte=', currentDate.value, 'Value=', Value.value)
+
       nextTick(function () {
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
         emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
 
       })
-
       break;
 
     case 'datetime':
@@ -616,8 +620,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01T00:00:00'
 
-      displayDate.value = new Date(Value.value).toTimeString()
-      currentDate.value = Value.value.slice(0, 19)
+      Value.value = Value.value.slice(0, 16)
+
+      displayDate.value = new Date(Value.value)
+      currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
       nextTick(function () {
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
         emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
@@ -625,6 +631,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       })
 
       break;
+    default:
+      if (Value.value == null)
+        Value.value = ''
+
   }
 
   // dato valido para que el watch de This.prop.Value no se active
@@ -798,7 +808,7 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       This.prop.ShowError = false
   }
   // new KeyboardEvent('keydown', {
-  if (propType != 'textArea' && $event.charCode == 13) //|| // Return
+  if (propType != 'textarea' && $event.charCode == 13) //|| // Return
   // $event.charCode == 13 // Down Key  
   {
     const TabIndex = This.prop.TabIndex
@@ -921,7 +931,7 @@ const onFocus = async () => {
   }
 
   // El showError se apaga en el keyPress cuando es un input text, number o date 
-  if ((propType == 'json' || propType == 'checkBox') && ShowError.value) {
+  if ((propType == 'json' || propType == 'checkbox') && ShowError.value) {
     ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false

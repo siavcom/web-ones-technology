@@ -202,7 +202,7 @@ export class GRID extends COMPONENT {
     // leemos valores de los componentes de la forma
 
     // for (const i in this.Form.main)
-    // Forma principal de captura
+    // Forma principal de captura. Los valores de los componentes de captura se pasan a memoria
     for (const comp of this.Form.main) m[comp] = this.Form[comp].prop.Value;
 
     //this.Form.db.select(this.prop.RecordSource)

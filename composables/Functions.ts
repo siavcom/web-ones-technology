@@ -63,8 +63,10 @@ export const currentTime = async () => {
 
 export const dateTimeToSql = async (stringDate?: string) => {
   let current: Date;
-  if (!stringDate) current = new Date();
-  else current = new Date(stringDate);
+  if (!stringDate)
+    current = new Date().toISOString();
+  else
+    current = new Date(stringDate).toISOString();
 
   const cero = "0";
   const year = current.getFullYear() + "-";
@@ -95,31 +97,25 @@ export const dateTimeToSql = async (stringDate?: string) => {
 export const stringToDate = async (texto?: string) => {
   if (!texto || texto == null || texto == "") texto = "1900-01-01";
 
-  let date = texto.slice(0, 10);
+  let date = texto.slice(0, 10) + 'Z';
 
-  //  texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
-  /*
-  if (date.length == 10) 
-    date+=  " 00:00:00";
-
-  date = date.slice(0, 19);
-  date = date.replace("T", " ");
-
- 
-  console.log(
-    "1 stringToDate texto=",texto,
-    "date=",date
-   );
-*/
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
+
+export const stringToTime = async (texto?: string) => {
+  if (!texto || texto == null || texto == "") texto = "1900-01-01T00:00";
+
+  let date = texto.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
+  return new Date(date).toISOString().substring(0, 16); // ISOString es formato 'AAAA-MM-DD'
+};
+
+
 
 export const dayToMilliseconds = async (day: number, Type?: string) => {
   if (!Type || Type.slice(0, 0).toUpperCase() == "D")
     // Dias
     return day * 1000 * 60 * 60 * 24; //Como se puede ver, multiplicamos 1000 milisegundos por sesenta segundos, por sesenta minutos, por 24 horas
-  if (!Type || Type.slice(0, 0).toUpperCase() == "W")
-    // Semanas
+  if (Type.slice(0, 0).toUpperCase() == "W" || Type.slice(0, 0).toUpperCase() == "S")    // Semanas
     return day * 1000 * 60 * 60 * 24 * 7; // Por 7 dias de la semana
 };
 
@@ -132,16 +128,17 @@ export const dayToMilliseconds = async (day: number, Type?: string) => {
 export const addDate = async (date: Date, data: any, tipo?: string) => {
   const thisDate = new Date(date);
   if (!tipo)
-    return new Date(date.getTime() + data.getTime())
-      .toISOString()
-      .substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+    tipo = 'D'
+  /*
+    if (tipo == "W" || tipo == "S" || tipo == "D") {
+      return new Date(thisDate.getTime() + (await dayToMilliseconds(data, tipo)))
+        .toISOString()
+        .substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+    }
+  */
 
-  if (tipo == "W")
-    return new Date(date.getTime() + (await dayToMilliseconds(data, tipo)))
-      .toISOString()
-      .substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 
-  let day = thisDate.getDay();
+  let day = +thisDate.toISOString().slice(8, 10)
   let year = thisDate.getFullYear();
   let month = thisDate.getMonth();
 

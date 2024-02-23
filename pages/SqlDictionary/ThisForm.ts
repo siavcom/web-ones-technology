@@ -33,15 +33,16 @@ import { FORM } from "@/classes/Form"
 
 export class ThisForm extends FORM {
   public dic_dat = new dic_dat()
+  public tpr_prg = new tpr_prg()
   public sis_sis = new sis_sis()
   public nom_tab = new nom_tab()
-  public tpr_prg = new tpr_prg()
+
   public bt_aceptar = new bt_aceptar()
   public bt_gen_indices = new bt_gen_indices()
   public bt_gen_model = new bt_gen_model()
   public bt_gen_vistas = new bt_gen_vistas()
   public bt_gen_all_models = new bt_gen_all_models()
-  
+
   public grid_datos = new grid_datos()
   public grid_indices = new grid_indices()
   public grid_vistas = new grid_vistas()
@@ -50,9 +51,9 @@ export class ThisForm extends FORM {
 
   constructor() {
     super() // inicializa la clase base
-    
+
     this.prop.Name = "SqlDictionary"
-  
+
     this.prop.tag = ""
     this.prop.textLabel = "Mantenimiento al diccionario de datos"
     this.prop.Status = "A"
@@ -145,8 +146,8 @@ export class ThisForm extends FORM {
     m.des_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    "
     m.val_tab = ""
     m.nom_tab = this.Form.nom_tab.prop.Value
-  await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-    console.log('ThisForm appendBlank ',await this.Form.db.localSql('select * from vi_cap_comedat'))
+    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+    console.log('ThisForm appendBlank ', await this.Form.db.localSql('select * from vi_cap_comedat'))
 
 
 

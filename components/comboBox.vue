@@ -350,8 +350,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (campo != 'key_pri') {
           sw_dat = true
 
-          //if (props.Registro && This.Recno != props.Registro)
-          //  This.Recno = props.Registro
+          if (props.Registro && This.Recno != props.Registro)
+            This.Recno = props.Registro
 
 
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
