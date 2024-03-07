@@ -408,13 +408,14 @@ export class VFPDB {
         }
       }
       if (this.View[alias].exp_where != 'null' && this.View[alias].exp_where.trim().length > 0) {
-        console.log("Db dataBase exp_where", this.View[alias].exp_where);
+        // console.log("Db dataBase exp_where", this.View[alias].exp_where);
 
         const val_eval = "`" + this.View[alias].exp_where.trim() + "`";
-        console.log("Db use eval where ", val_eval, m);
+
 
         try {
           exp_whe = eval(val_eval);
+          console.log("Db use eval where ", val_eval, m, 'exp_whe=', exp_whe);
         } catch (error) {
           console.error("eval =", val_eval, error);
 
@@ -753,8 +754,13 @@ export class VFPDB {
             return false;
           }
           */
+
+
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
+
+          console.log("UPDATE fecha campo=", campo, ' tipo=', tipo, ' valor=', dat_act[row][campo]);
+
           switch (true) {
             // switch (typeof dat_act[row][campo]) {
             case tipo == "number" ||
@@ -769,7 +775,6 @@ export class VFPDB {
               break;
 
             case tipo == "date" || tipo == "time":
-              console.log("UPDATE fecha=", dat_act[row][campo]);
 
               let valor = dat_act[row][campo].trim();
 
@@ -817,7 +822,7 @@ export class VFPDB {
           //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
           if (val_def[campo]) {
             dat_vis.dat_act[campo] = m[campo]; // dat_act[row][campo];
-
+            /*
             console.log(
               "tableUpdate Actualiza CAMPO=",
               campo,
@@ -826,6 +831,7 @@ export class VFPDB {
               " Old value=",
               old_dat[campo]
             );
+            */
             //console.log('Db  tableUpdate campo  actual ==========>', nom_campo, dat_act[row][campo])
             sw_update = true;
           }
@@ -2653,7 +2659,7 @@ return false;
           data[1][0][campo] = data[1][0][campo].trim();
         }
       }
-
+      this.View[tabla].Recno = recno // actualizamos el recno de la vista
       return data[1]; // todos los campos
     }
     return null;

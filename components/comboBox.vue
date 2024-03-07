@@ -30,8 +30,9 @@
     <div v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
 
 
-      <input :id="Id" class="textInput" :style="inputStyle" :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled"
-        :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
+      <input :id="Id" class="textInput" :style="inputStyle"
+        :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
+        ref="Ref" @keypress="keyPress($event)"
         @focus.prevent="toggle = false; This.Form.eventos.push(This.prop.Map + '.when()')" @focusout="emitValue()" />
 
       <!--span> {{ prop.Value }}</span-->
@@ -312,7 +313,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
     This.prop.Value = Value.value
-    emit("update:Value", Value.value);
+    console.log('comboBox emitValue Name=', props.prop.Name, 'Value=', This.prop.Value, 'Value=', Value.value)
+    //emit("update:Value", Value.value);
     await This.interactiveChange()
 
     if (!isValid) {
@@ -379,7 +381,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
   let found = false
   if (Value.value == null) {
-    if (typeof columnas[0].value == 'number')
+    if (columnas[0] && typeof columnas[0].value == 'number')
       Value.value = 0
     else
       Value.value = ''
@@ -422,8 +424,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     // console.log('comboBox emitValue valid() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
-    await This.interactiveChange()
-    This.valid()
+    //  await This.interactiveChange()
+    //  This.valid()
 
   }
   return true
@@ -672,7 +674,12 @@ const renderComboBox = async (readData?: boolean) => {
   // generamos un arreglo dependiendo del RowSourceType
 
   let val_col: any = [];  // valores de columna
+  let RowSource = props.prop.RowSource
+
   const rowSourceType = props.prop.RowSourceType;
+
+  console.log('ComboBox renderiza ', props.prop.Name, ' RowSource ===>>', RowSource, 'rowSourceType=', rowSourceType)
+
   //const sql = props.db
   let data = []
   switch (rowSourceType) {
@@ -680,7 +687,7 @@ const renderComboBox = async (readData?: boolean) => {
     case 1:    // Value o por valor directamente 
 
       {
-        let RowSource = "'" + props.prop.RowSource + "'"
+        RowSource = "'" + props.prop.RowSource + "'"
         RowSource = RowSource.replaceAll(',', "','");
         //let pos=0;
         //pos= props.prop.RowSource.indexOf() // similar at VFP
@@ -708,7 +715,6 @@ const renderComboBox = async (readData?: boolean) => {
       }
 
     case 2: { // Alias
-      const RowSource: string = props.prop.RowSource
       const pos = RowSource.indexOf(".") // posicion del punto
 
       // Obtenemos el alias
@@ -722,17 +728,18 @@ const renderComboBox = async (readData?: boolean) => {
       break
     }
     case 3: {   // SQL Server Query
-      data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
+      data = await This.Form.db.execute(RowSource, 'MEMVAR')
 
       break
     }
     case 4: { // local SQL Query
-      data = await This.Form.db.localAlaSql(props.prop.RowSource)
+
+      data = await This.Form.db.localAlaSql(RowSource)
       break
     }
     case 5: {
       // Array , solo copiamos el arreglo
-      val_col = props.prop.RowSource;
+      val_col = RowSource;
 
       break;
     }
@@ -742,10 +749,10 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-  //if (data[0]) {
+  //    if (data[0]) {
   if ((rowSourceType >= 2 && rowSourceType <= 4)) {
     if (data.length == 0) {
-      console.warn('1) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
+      console.warn('1) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', RowSource, ' RowSourceType=', props.prop.RowSourceType)
       return
     }
 
@@ -1167,7 +1174,7 @@ window.addEventListener('mousedown', myClick);
 
 
 
-<style scoped >
+<style scoped>
 /*  elemento click check*/
 img.imagen {
   width: 17px;
@@ -1305,4 +1312,3 @@ select[multiple]:focus option:checked {
 
 /*div class='column'*/
 </style>
-

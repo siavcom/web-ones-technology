@@ -79,10 +79,10 @@
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{
-        prop.ToolTipText
-      }}</span>
+    prop.ToolTipText
+  }}</span>
     <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage : 'Invalid Input'
-    }}</span>
+      }}</span>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
   </div>
@@ -598,8 +598,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
       if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01'
-
-      Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
+      console.log('editText emitValue() Date Name ', props.prop.Name, 'Value=', Value.value)
+      if (Value.value.length > 10)
+        Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
       //   currentValue.value[1] = await stringToDate(Value.value)
       //   currentValue.value[0] = new Date(Value.value).toDateString()
 
@@ -662,7 +663,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     'First Focus=', This.prop.First || This.prop.Focus)
 */
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
-    await This.valid()  // 8/Feb/2024.- Se aumenta await
+    // await This.valid()  // 8/Feb/2024.- Se aumenta await
   }
 
   if (!This.prop.Valid) {
@@ -994,8 +995,12 @@ watch(
     //  if (This.prop.Valid) return
     if (new_val != old_val) {
       if (propType == 'date')
-        if (new_val.slice(0, 10) == Value.value.slice(0, 10))
+        if (new_val == Value.value)
           return
+      //if (new_val.slice(0, 10) == Value.value.slice(0, 10))
+      //  return
+
+
       // Value.value = This.prop.Value
       /*
       console.log('EditText Watch Name=', This.prop.Name,

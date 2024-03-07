@@ -14,7 +14,7 @@
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
-              <th v-for="column in This.elements" :key="column.Id">
+              <th v-for="column in This.elements" :key="column.Id" :id="column.Name">
                 <!--Header:
                   -->
                 <div v-show="This[column.Name].prop.Visible">
@@ -44,7 +44,7 @@
                     -->
 
               <td v-for="col in This.elements" :key="item.recno.toString() + col.Name"
-                :style='{ "height": This[col.Name].style.height, padding: 0 }'>
+                :style='{ "height": This[col.Name].style.height, padding: 0 }' :headers="col.Name">
 
                 <!--div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)"-->
                 <!--template style="This[col.Name].style" -->
@@ -58,17 +58,22 @@
                   
                   v-bind:Show="item.id != This.Row"
                                     -->
-                <div v-show="item.id != This.Row">
-                  <!-- @click.stop Transition name="columntext"-->
-                  <textLabel v-show="item.id != This.Row"
-                    v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
-                    v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
-                    v-bind:style="This[col.Name].style"
-                    @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
-                    @focusout.stop>
-                  </textLabel>
-                  <!--/Transition-->
-                </div>
+                <!--div v-show="item.id != This.Row"
+                  el v-show del texLabel se cambio por v-if
+                
+                -->
+                <!-- @click.stop Transition name="columntext"-->
+                <textLabel v-if="item.id != This.Row"
+                  v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
+                  v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
+                  v-bind:style="This[col.Name].style"
+                  @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+                  @focusout.stop>
+                </textLabel>
+                <!--/Transition-->
+                <!--/div-->
+
+
                 <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
                               y el when del componente typescript
@@ -78,12 +83,16 @@
                       v-bind:Show="true"
                     -->
                 <!--Transition name="columninput"-->
-                <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'-->
+                <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'
+                v-model:Valid="This[col.Name].prop.Valid"
+                
+                
+                
+                -->
                 <component v-if="item.id == This.Row" :is="impComp(This[col.Name].prop.BaseClass)"
                   v-model:Value="This[col.Name].prop.Value" v-model:Status="This[col.Name].prop.Status"
                   v-model:Key="This[col.Name].prop.Key" v-model:Focus="This[col.Name].Focus"
-                  v-model:Valid="This[col.Name].prop.Valid" v-model:ShowError="This[col.Name].prop.ShowError"
-                  v-bind:Component="ref(This[col.Name])"
+                  v-model:ShowError="This[col.Name].prop.ShowError" v-bind:Component="ref(This[col.Name])"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
@@ -564,7 +573,7 @@ const ejeEvento = (newEvento: string) => {
   console.log('Grid ejeEvento', newEvento)
 
   for (const comp in compStatus) {
-    console.log('Grid ejeEvento comp=', comp, compStatus[comp])
+    //  console.log('Grid ejeEvento comp=', comp, compStatus[comp])
 
     if (compStatus[comp] != 'A' && Status.value == 'A') {
 
@@ -982,12 +991,6 @@ h1 {
 
 
 
-table {
-  display: block;
-  margin-top: 5px;
-}
-
-
 div.tabla {
   /*position: absolute; */
   /* no borrar se utiliza junto con div.option position:relative*/
@@ -1022,7 +1025,48 @@ input {
   padding: "5px";
   border-radius: 5%;
 }
+
+
+
+
+table {
+  display: block;
+  margin-top: 5px;
+}
+
+
 */
+
+table {
+  /* Not required only for visualizing */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table thead tr th {
+  /* you could also change td instead th depending your html code */
+  background-color: rgb(229, 247, 244);
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  /* border: 1px solid rgb(0, 5, 2);*/
+  border-left: .5px solid rgb(0, 5, 2);
+  border-right: .5px solid rgb(0, 5, 2);
+  /*border-bottom: 1px solid rgb(0, 5, 2);*/
+
+  padding: 1em;
+}
+
+td {
+
+  border-left: .5px solid rgb(0, 5, 2);
+  border-right: .5px solid rgb(0, 5, 2);
+
+  /*  border: 1px solid rgb(0, 5, 2);*/
+  /* Not required only for visualizing
+  padding: 1em; 
+   */
+}
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

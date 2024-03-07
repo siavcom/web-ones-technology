@@ -96,8 +96,9 @@ export const dateTimeToSql = async (stringDate?: string) => {
 
 export const stringToDate = async (texto?: string) => {
   if (!texto || texto == null || texto == "") texto = "1900-01-01";
-
-  let date = texto.slice(0, 10) + 'Z';
+  let date = texto
+  if (date.length > 10)
+    date = date.slice(0, 10) + 'Z';
 
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
