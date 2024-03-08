@@ -909,7 +909,7 @@ const onFocus = async () => {
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
 
-    // console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, ' View=', This.Sql.View[tabla])
+    console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, ' View=', This.Sql.View[tabla])
 
     const lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
 
@@ -993,7 +993,7 @@ watch(
       return
 
     //  if (This.prop.Valid) return
-    if (new_val != old_val) {
+    if (new_val != Value.value) {
       if (propType == 'date')
         if (new_val == Value.value)
           return
@@ -1010,9 +1010,7 @@ watch(
         'Valid=', This.prop.Valid,
         'checkValue=', checkValue.value)
         */
-      //      if (Value.value == This.prop.Value)
-      //         await emitValue(false, true) //se puso await
-      //      else
+
       Value.value = This.prop.Value
       await emitValue(false, This.prop.Valid) //se puso await
 

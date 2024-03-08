@@ -313,11 +313,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
     This.prop.Value = Value.value
-    console.log('comboBox emitValue Name=', props.prop.Name, 'Value=', This.prop.Value, 'Value=', Value.value)
-    //emit("update:Value", Value.value);
-    await This.interactiveChange()
+    //console.log('comboBox emitValue Name=', props.prop.Name, 'Value=', This.prop.Value, 'Value=', Value.value)
+
+    // await This.interactiveChange()
+
 
     if (!isValid) {
+      await This.interactiveChange()
+
       inputBuffer = ''
       This.prop.Valid = false
       if (await This.valid() == false) {
@@ -391,16 +394,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   for (let i = 0; i < columnas.length && !found; i++) {
     if (columnas && columnas[0]) {
-      // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
+      // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
       if (
         (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-        Value.value == columnas[i].value) {
+        This.prop.Value == columnas[i].value) {
         // El objeto columna tiene dos campos value y text
         displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
         found = true
-        console.log('comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
+        //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
       }
-    } else break
+    } // else break
   }
   if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
     Value.value = columnas[0].value
@@ -678,7 +681,7 @@ const renderComboBox = async (readData?: boolean) => {
 
   const rowSourceType = props.prop.RowSourceType;
 
-  console.log('ComboBox renderiza ', props.prop.Name, ' RowSource ===>>', RowSource, 'rowSourceType=', rowSourceType)
+  // console.log('ComboBox renderiza ', props.prop.Name, ' RowSource ===>>', RowSource, 'rowSourceType=', rowSourceType)
 
   //const sql = props.db
   let data = []
@@ -804,7 +807,7 @@ const renderComboBox = async (readData?: boolean) => {
 
   //console.log('2) render combobox ===>>', This.Name, 'Value=', Value.value)
 
-  await emitValue(true)
+  await emitValue(true, true)
   This.prop.Status = 'A'
   Status.value = 'A'
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
@@ -861,7 +864,7 @@ watch(
   async (new_val, old_val) => {
     if (new_val != old_val) {
       //console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
-      emitValue(true)
+      emitValue(true, true)
     }
   },
   { deep: false }
@@ -939,7 +942,9 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
 
-    if (new_val != old_val) {
+    //    console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+
+    if (new_val != Value.value) {
       Value.value = This.prop.Value
       emitValue(false, This.prop.Valid)
     }
@@ -956,7 +961,7 @@ watch(
   (new_val, old_val) => {
 
     if (new_val != old_val) {
-      emitValue(true)
+      emitValue(true, true)
     }
 
   },
@@ -1124,7 +1129,7 @@ onMounted(async () => {
   console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
 
   const result = await renderComboBox()
-  //const result = await emitValue(true)
+
 
   //oldVal = Value.value   // asignamos el valor viejo
   // si es el primer elemento a posicionarse

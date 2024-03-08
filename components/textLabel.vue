@@ -13,7 +13,8 @@
     <!--/div>
 
       <div v-else-if="prop.Type == 'date'" v-bind:style="inputStyle"-->
-    <input v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle" readonly="true" v-model="Text" />
+    <input v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle" readonly="true"
+      v-model="Text" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="inputStyle"-->
@@ -198,11 +199,11 @@ const asignaResultado = (valor?: string) => {
 
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
 
-///////////////////////// Se aumento 5/Feb/2024 //////////////////////
-let found = false
+  ///////////////////////// Se aumento 5/Feb/2024 //////////////////////
+  let found = false
 
-for (let i = 0; i < columnas.length && !found; i++) {
-   // console.log('Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
+  for (let i = 0; i < columnas.length && !found; i++) {
+    // console.log('Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
     if (
       (typeof columnas[i].value == 'string' && valor.trim() == columnas[i].value.trim()) ||
       valor == columnas[i].value) {
@@ -214,47 +215,47 @@ for (let i = 0; i < columnas.length && !found; i++) {
   if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
     //Value.value = columnas[0].value
     Text.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
-  //  console.log('TextLabelcomboBox Name=', props.prop.Name, 'No found ', 'Value=', Text.value)
+    //  console.log('TextLabelcomboBox Name=', props.prop.Name, 'No found ', 'Value=', Text.value)
   }
 
   ///////////////// Se quito 5/Feb/2024 //////////////////
-/*   
-  if (valor) {
-    //  console.log("ComboBox AsignaResultado valor columnas =======>", props.Name,valor,columnas)
-    for (let i = 0; i < columnas.length; i++) {
-      if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
-        Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
-      }
-    }
-  }
-
-
-
-
-  else {
-
-    for (let i = 0; i < columnas.length; i++) {
-      try {
-        //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
-        if (Value.value == columnas[i]['value'][0] || Value.value == columnas[i]['value']) {  // { // El objeto columna tiene dos campos value y text
-          // Encontro la posicion del value
-          // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
-
-          Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
+  /*   
+    if (valor) {
+      //  console.log("ComboBox AsignaResultado valor columnas =======>", props.Name,valor,columnas)
+      for (let i = 0; i < columnas.length; i++) {
+        if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
+          Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
         }
-      } catch {
-        console.error('comboBox columnas', columnas[i])
       }
-
     }
-  }
-*/
+  
+  
+  
+  
+    else {
+  
+      for (let i = 0; i < columnas.length; i++) {
+        try {
+          //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
+          if (Value.value == columnas[i]['value'][0] || Value.value == columnas[i]['value']) {  // { // El objeto columna tiene dos campos value y text
+            // Encontro la posicion del value
+            // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
+  
+            Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
+          }
+        } catch {
+          console.error('comboBox columnas', columnas[i])
+        }
+  
+      }
+    }
+  */
 
-/////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
 
 
 
-emitValue()
+  emitValue()
 }
 
 //////////////////////////////////////////////////////
@@ -359,7 +360,7 @@ const renderComboBox = async () => {
   }
   //console.log('Text Label render data=', data)
   if (data[0]) {
-    
+
     if (tip_rst >= 2 || tip_rst <= 4) {
       for (const nom_obj in data[0]) {
         const renglon = []
@@ -369,7 +370,8 @@ const renderComboBox = async () => {
         val_col.push(renglon)
       }
     }
-  } else
+  }
+  else
     console.warn('TextLabel combobox Name=', This.prop.Name, ' No data in ', This.prop.ControlSource)
 
   // recorremos todas los renglones si es solo un columna val_col.length si no 
@@ -413,7 +415,7 @@ const renderComboBox = async () => {
     }
   }
   //Text.value = valor
-  console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
+  //console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
 
   asignaResultado(valor)
 

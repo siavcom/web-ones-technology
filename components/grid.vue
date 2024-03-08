@@ -922,13 +922,15 @@ init(); // Ejecuta el init
 //  Importa componentes dinamicos
 ////////////////////////////////////// 
 const impComp = ((name: string) => {
+
+  name = name.toLowerCase()
   switch (name) {
-    case 'editText': {
+    case 'edittext': {
       //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       return editText
       break;
     }
-    case 'comboBox': {
+    case 'combobox': {
       return comboBox
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
@@ -938,13 +940,11 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
-    case 'imgButton': {
+    case 'imgbutton': {
       return imgButton
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
-
-
 
     default: {
       return editText
@@ -1041,6 +1041,7 @@ table {
   /* Not required only for visualizing */
   border-collapse: collapse;
   width: 100%;
+
 }
 
 table thead tr th {
@@ -1061,11 +1062,31 @@ td {
 
   border-left: .5px solid rgb(0, 5, 2);
   border-right: .5px solid rgb(0, 5, 2);
+  height: 9px;
 
   /*  border: 1px solid rgb(0, 5, 2);*/
   /* Not required only for visualizing
   padding: 1em; 
    */
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: orange;
+  /* color of the tracking area */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: blue;
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+  border: 3px solid orange;
+  /* creates padding around scroll thumb */
 }
 </style>
 
