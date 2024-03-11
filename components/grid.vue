@@ -828,11 +828,15 @@ const saveRow = async (recno?: number) => {
 }
 
 const saveTable = async () => {
-  console.log('Grid ', This.Name, 'SaveTable', This.Row)
+
   if (This.Row >= 0) {
 
     for (let i = 0; i < This.main.length; i++) {
-      if (!This[This.main[i]].prop.Valid) { // Si no validado
+
+      // Si es campo de captura
+      if (This[This.main[i]].prop.Capture == true && !This[This.main[i]].prop.Valid) { // Si no validado
+
+        console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
         This[This.main[i]].prop.Focus = true
         return
 

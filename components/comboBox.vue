@@ -352,6 +352,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
       let sw_dat = false
       for (const campo in data) {
+
+        if (campo == 'key_pri' && data.key_pri > 0)
+          This.prop.Valid = true
+
+
+
         if (campo != 'key_pri') {
           sw_dat = true
 

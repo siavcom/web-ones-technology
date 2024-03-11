@@ -10,13 +10,13 @@
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
-export default defineNuxtPlugin(  () => {
+export default defineNuxtPlugin(() => {
   return {
-    provide: { 
+    provide: {
       MessageBox: async (texto: string, tipo?: number, title?: string, timer?: number) => {
         /// ////////////////////////////
         if (!tipo)
-           tipo=0
+          tipo = 0
         const { $swal } = useNuxtApp()
         let tip_ale = 'promp' // tipo de alerta 'promp'  'alert' 'confirm' 'warning'
         let icon = 'error' // tipo de icono  warning, error, success, info, and question
@@ -36,14 +36,14 @@ export default defineNuxtPlugin(  () => {
         const confirmButtonAriaLabel = 'Thumbs up, correcto!'
 
         const reverseButtons = true
-      
+
         let valor = tipo
         let val_ini = 512
         //  const sw_16 = false
 
-        while (valor > 5 ) {
-                valor = val_ini-valor
-          if (valor > 5 ) { val_ini = val_ini / 2 }
+        while (valor > 5) {
+          valor = val_ini - valor
+          if (valor > 5) { val_ini = val_ini / 2 }
         }
         //console.warn('messageBox 2',valor,tipo)
 
@@ -101,12 +101,12 @@ export default defineNuxtPlugin(  () => {
           default:
             break
         }
-        
-        valor = valor>0 ?tipo - valor : tipo // restamos el primer resultado
-        
+
+        valor = valor > 0 ? tipo - valor : tipo // restamos el primer resultado
+
         val_ini = 512
         while (valor > 16) {
-          valor = val_ini-valor
+          valor = val_ini - valor
           if (valor > 16) { val_ini = val_ini / 2 }
         }
         //console.warn('messageBox 3',valor,tipo)
@@ -118,7 +118,7 @@ export default defineNuxtPlugin(  () => {
             tip_ale = 'alert'
             icon = 'error'
             showCancelButton = false
-            showConfirmButton = false
+            showConfirmButton = true
             // confirmButtonText = 'OK'
             showDenyButton = false
             break
@@ -129,6 +129,10 @@ export default defineNuxtPlugin(  () => {
           case 48: // Exclamation point
             tip_ale = 'warning'
             icon = 'info'
+            showCancelButton = false
+            showConfirmButton = false
+            showDenyButton = false
+
             break
           case 64: // Information icon l
             tip_ale = 'alert'
@@ -139,12 +143,12 @@ export default defineNuxtPlugin(  () => {
         }
 
 
-        valor = valor>0 ?tipo - valor : tipo // restamos el primer resultado        
-      
+        valor = valor > 0 ? tipo - valor : tipo // restamos el primer resultado        
+
 
         val_ini = 512
         while (valor > 511) {
-          valor = val_ini-valor
+          valor = val_ini - valor
           if (valor > 511) { val_ini = val_ini / 2 }
         }
         //console.warn('messageBox 4',valor,tipo)
@@ -196,12 +200,15 @@ export default defineNuxtPlugin(  () => {
           timer,
           timerProgressBar,
           reverseButtons,
+
           showConfirmButton,
           showCancelButton,
           showDenyButton,
+
           confirmButtonText,
           cancelButtonText,
           denyButtonText,
+
           confirmButtonAriaLabel,
           icon
         }).then((result) => {
