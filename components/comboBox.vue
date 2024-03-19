@@ -49,8 +49,9 @@
               @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
-              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
-                :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex }">
+              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col" :style="{
+    'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': '11px'
+  }">
                 <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
               </div>
             </div>
@@ -361,8 +362,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (campo != 'key_pri') {
           sw_dat = true
 
-          if (props.Registro && This.Recno != props.Registro)
-            This.Recno = props.Registro
+          // if (props.Registro && This.Recno != props.Registro)
+          //   This.Recno = props.Registro
 
 
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
@@ -858,8 +859,6 @@ watch(
 );
 
 
-
-
 ////////////////////////////////////////
 // Registro
 // Nota: Lee de la base de datos local segun el valor de Registro
@@ -871,6 +870,7 @@ watch(
     if (new_val != old_val) {
       //console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
       emitValue(true, true)
+      This.Recno = props.Registro
     }
   },
   { deep: false }
@@ -1099,42 +1099,51 @@ watch(
 
 //const init = async () => {
 onMounted(async () => {
+  console.log('comboBox onMounted', This.prop.Init)
+
 
   thisElement = document.getElementById(Id)
 
 
   // textInputStyle.zIndex = zIndex
 
-  inputStyle.height = 'fit-content'
+  if (This.prop.Init) {
 
-  let textWidth = 0
 
-  if (inputStyle.width.search("px") > 0) {
-    textWidth = +inputStyle.width.replaceAll('px', '') - 30
-    inputStyle.width = textWidth.toString() + 'px'
+    inputStyle.height = 'fit-content'
+
+    let textWidth = 0
+
+    if (inputStyle.width.search("px") > 0) {
+      textWidth = +inputStyle.width.replaceAll('px', '') - 30
+      inputStyle.width = textWidth.toString() + 'px'
+
+    }
+    if (inputStyle.width.search("%") > 0) {
+      textWidth = +inputStyle.width.replaceAll('%', '') - 5
+      inputStyle.width = textWidth.toString() + '%'
+    }
+
+    if (props.prop.Type == 'date') {
+      inputStyle.width = '100px'
+      inputStyle.height = '20px'
+      inputStyle.maxHeight = '20px'
+    }
+    if (props.prop.Type == 'number')
+      inputStyle.textAlign = 'right'
+
+    if (!This.prop.Visible) {
+      comboStyle.height = '0%'
+      //console.log('comboStyle Visible', comboStyle.height)
+    }
 
   }
-  if (inputStyle.width.search("%") > 0) {
-    textWidth = +inputStyle.width.replaceAll('%', '') - 5
-    inputStyle.width = textWidth.toString() + '%'
-  }
-
-  if (props.prop.Type == 'date') {
-    inputStyle.width = '100px'
-    inputStyle.height = '20px'
-    inputStyle.maxHeight = '20px'
-  }
-  if (props.prop.Type == 'number')
-    inputStyle.textAlign = 'right'
-
-  if (!This.prop.Visible) {
-    comboStyle.height = '0%'
-    //console.log('comboStyle Visible', comboStyle.height)
-  }
-
   console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
 
   const result = await renderComboBox()
+
+  This.Recno = props.Registro
+
 
 
   //oldVal = Value.value   // asignamos el valor viejo
@@ -1144,6 +1153,7 @@ onMounted(async () => {
     onFocus()
 
   }
+  This.prop.Init = false
 })
 
 /*

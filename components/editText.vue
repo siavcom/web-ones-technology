@@ -51,7 +51,7 @@
       <details v-for="(    comp, index    ) in     compJson    " key:='index'>
         <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
         <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto' }" @focusout="focusOut">
+          :style="comp.style ? comp.style : { width: 'auto', height: '11px' }" @focusout="focusOut">
 
       </details>
       <!--/TransitionGroup-->
@@ -528,8 +528,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
           if (campo != 'key_pri') {
             sw_dat = true
 
-            if (props.Registro && This.Recno != props.Registro)
-              This.Recno = props.Registro
+            //if (props.Registro && This.Recno != props.Registro)
+            //  This.Recno = props.Registro
 
             //This.prop.Valid = true// ya se capturo algo , se apaga Valid
             Value.value = data[campo]
@@ -900,6 +900,7 @@ const focusInput = async () => {
 const onFocus = async () => {
 
   ToolTipText.value = false
+  ShowError.value = false
 
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
@@ -1171,6 +1172,7 @@ watch(
 
     // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
     emitValue(true)
+    This.Recno = props.Registro
   },
   { deep: true }
 );
@@ -1248,6 +1250,8 @@ const init = async () => {
     divStyle.height = '0%'
 
   const result = await emitValue(true)
+  This.Recno = props.Registro
+
   oldVal = Value.value   // asignamos el valor viejo
 
   // si es el primer elemento a posicionarse
@@ -1259,6 +1263,7 @@ const init = async () => {
 }
 
 onMounted(() => {
+  console.log('EditText onMounted', This.prop.Name)
   init() // Ejecuta el init
 });
 

@@ -57,11 +57,13 @@ export class COMPONENT {
 
     Grid: false,
 
+    htmlId: "",
+
     id: 0,
     Image: "",
+    Init: true,
     InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
 
-    htmlId: "",
 
     Key: 0,
 
@@ -100,7 +102,7 @@ export class COMPONENT {
     textLabel: "",
     This: null,
     ToolTipText: "",
-    Type: "text",
+    Type: "text",  // text, number, date, time, checBox
 
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
@@ -111,26 +113,11 @@ export class COMPONENT {
 
     When: true,
 
-    /* componentStyle: {
-      background: "white",
-      cols: 100,
-      color: "black",
-      fontFamily: "Arial",
-      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      fontWeight: "normal",
-      height: "85%",
-      maxHeight: "auto",
-      maxWidth: "100%",
-      rows: 5,
-      textAlign: "left",
-      textTransform: "none",
-      zIndex: 1, // profundidad
-      width: "auto",
-    },*/
+
   };
 
 
-  labelStyle  = {
+  labelStyle = {
     background: "", //transparent
     color: "",
     fontFamily: "Arial",
@@ -144,8 +131,8 @@ export class COMPONENT {
     zIndex: 1, // profundidad
     width: "auto",
   }
-  
-  inputStyle={...this.labelStyle}
+
+  inputStyle = { ...this.labelStyle }
 
 
   style = {
@@ -198,10 +185,10 @@ export class COMPONENT {
     this.Name = this.constructor.name;
     this.Recno = 0;
     this.prop.This = this;
-    this.inputStyle.cols=100 // textArea cols
-    this.inputStyle.rows=5 // textArea rows
-    this.inputStyle.borderRadius= '3px'
-    
+    this.inputStyle.cols = 100 // textArea cols
+    this.inputStyle.rows = 5 // textArea rows
+    this.inputStyle.borderRadius = '3px'
+
   }
 
   ///////////////////////////////////////////////////////////
@@ -530,7 +517,7 @@ export class COMPONENT {
   // Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
   ////////////////////////////////////////////////////////////////////
 
-  public async interactiveChange() {}
+  public async interactiveChange() { }
 
   /////////////////////////////////////////////////////////////////////
   // Click

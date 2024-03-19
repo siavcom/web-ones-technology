@@ -177,6 +177,8 @@ input[class="number"] {
 .tooltiptext {
   visibility: hidden;
   width: 120px;
+  min-height: 11px;
+  max-height: 33px;
   background-color: #76a184; /*rgb(115, 181, 243);*/
   color: #fff;
   text-align: center;
@@ -294,7 +296,7 @@ input[class="number"] {
 
   /* Position */
   position: absolute;
-  bottom: 100%;
+  bottom: 50%;
   border-style: double;
   z-index: 2;
 

@@ -26,6 +26,8 @@ export class mon_rep extends COMPONENT {
     this.prop.ToolTipText = "Moneda en la cual presentara el reporte";
     this.prop.Capture = false;
     this.prop.updateKey = false;
+    this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px /
+    this.style.width = "250px";
     //  this.prop.TabIndex=101
     //this.style.zIndex=1
   }

@@ -47,10 +47,11 @@
               v-show='ThisForm[compHeader].prop.Visible'>
               <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
-                v-model:Status="ThisForm[compHeader].prop.Status" v-model:ShowError="ThisForm[compHeader].prop.ShowError"
-                v-model:Key="ThisForm[compHeader].prop.Key" v-model:Focus="ThisForm[compHeader].Focus"
-                v-bind:Registro="ThisForm[compHeader].Recno" v-bind:prop="ThisForm[compHeader].prop"
-                v-bind:style="ThisForm[compHeader].style" v-bind:position="ThisForm[compHeader].position"
+                v-model:Status="ThisForm[compHeader].prop.Status"
+                v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
+                v-model:Focus="ThisForm[compHeader].Focus" v-bind:Registro="ThisForm[compHeader].Recno"
+                v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
+                v-bind:position="ThisForm[compHeader].position"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
                 @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')">
               </component>
@@ -65,20 +66,6 @@
           <section class="main">
             <slot name="main">
 
-              <!-- @focus.capture -->
-              <!--                @focusout="ThisForm.eventos.push('ThisForm.' + compMain + '.valid()')" 
-                                  v-bind:Show='true'
-                    v-bind:db="ref(ThisForm.db)"
-emit
-
-
-
-                    v-model:ShowError="ThisForm[compMain].prop.ShowError" v-model:Key="ThisForm[compMain].prop.Key"
-
-                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
-
-
--->
               <TransitionGroup name='detailForm'>
                 <div v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
@@ -100,7 +87,8 @@ emit
     -->
           <section class="footer">
             <!--Transition tag='div' -->
-            <img class='circle' :src="ThisForm.prop.Status == 'A' ? '/Iconos/circle-green.svg' : '/Iconos/circle-red.svg'"
+            <img class='circle'
+              :src="ThisForm.prop.Status == 'A' ? '/Iconos/circle-green.svg' : '/Iconos/circle-red.svg'"
               style="float:left" />
             <!--/Transition-->
             <slot name="footer">
@@ -152,7 +140,7 @@ emit
   <!--/header-->
 </template>
 
-<script  lang="ts" setup>
+<script lang="ts" setup>
 /*
 
             <TransitionGroup tag='div' >
@@ -286,27 +274,6 @@ const embedPdf = defineAsyncComponent(() =>
 // https://vuejs.org/guide/components/async.html#basic-usage
 //////////////////////////////
 
-/////////////////////////////////////////
-// Manejo de errores personalizados 
-/////////////////////////////////////////
-/*
-// desde cualquier parte de la aplicacion
-if (!data.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
-}
-
-
-// Manejador de errores 
-export default eventHandler(() => {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Page Not Found'
-  })
-}
-
-
-
-*/
 
 
 ///////////////////////////////////////
@@ -366,86 +333,6 @@ function sleep(sleepDuration: number) {
 ////////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////
-// Ejecuta los eventos que hay en la pila de eventos
-/*
-async function eje_eve_old(numero: number) {
-  try {
-    //console.log('Entra a eje_eve', ThisForm.eventos[0])
-
-
-    if (ThisForm.eventos.length > 0) {
-      // corremos el stack de eventos a ejecutar
-      for (const nom_com in ThisForm.estatus) { //
-        // console.log('eje_eve estaus ', nom_com, ThisForm.estatus[nom_com])
-        if (ThisForm.estatus[nom_com] != "A") return; // Si el estatus del componente esta en Proceso se sale
-      }
-
-      ThisForm.prop.Status = 'P'  // Prende el foco rojo mientras ejecuta cada evento
-      // Wait for eval wrapper
-
-
-      const waitEval = (evento: string, form) => {
-        return new Promise((resolve, reject) => {
-          // Se tiene que pasar por referencia donde esta el ThisForm 
-
-          const ThisForm = form.value //ya que se trabajo solo en ambiente local
-          console.log('<<<============Iniciamos evento=========>>> ', evento, ThisForm.eventos)
-
-          resolve(eval(evento))
-          reject((error) => {
-            console.error('Hubo error al ejecutar evento', error)
-          })
-        }).
-          then(() => {
-            // borramos el evento
-
-            const new_arr = []
-            // No incluimos el evento 0
-            let num_eve = 0
-            if (ThisForm.eventos.length > 1) {
-              for (let i = 0; i < ThisForm.eventos.length; i++) {
-                if (ThisForm.eventos[i].length > 0) {
-                  new_arr[num_eve] = ThisForm.eventos[i]
-                  num_eve++
-                  console.log('ejeEvento eventos ', evento, ThisForm.eventos[i], ThisForm.eventos[i].length)
-
-                }
-              }
-            }
-            ThisForm.eventos = [...new_arr]
-            if (ThisForm.eventos.length == 0)
-              ThisForm.prop.Status = 'A'
-
-            console.log('############Evento terminado ############ ', evento, ThisForm.prop.Status, ThisForm.eventos.length, ThisForm.eventos)
-
-          });
-      }
-
-      // LLamamos el evento a ejecutar en forma sincrona
-      // Necesitamos pasar por referencia el ThisForm
-
-
-      //      waitEval(ThisForm.eventos[0], ref(ThisForm)).
-
-      const evento = ThisForm.eventos[0]
-
-      ThisForm.eventos[0] = 'A'
-      // ejecutamos el evento 
-      waitEval(evento, ref(ThisForm))
-
-      //  console.log('Stack de eventos', ThisForm.eventos)  // borramos el evento
-
-
-    }
-
-  }
-  catch (error) {
-    console.log('Error al ejecutar evento ', error)
-  }
-}
-
-*/
 
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {
@@ -458,36 +345,10 @@ const waitEval = async (evento: string) => {
     reject((error) => {
       console.error('Hubo error al ejecutar evento', error)
     })
-  })/*
-    .
-    then(() => {
-      // borramos el evento
+  })
 
-      const new_arr = []
-      // No incluimos el evento 0
-      let num_eve = 0
-      if (ThisForm.eventos.length > 1) {
-        for (let i = 0; i < ThisForm.eventos.length; i++) {
-          if (ThisForm.eventos[i] !='XXXXX' && ThisForm.eventos[i].length > 0) {
-            new_arr[num_eve] = ThisForm.eventos[i]
-            num_eve++
-            console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
 
-          }
-        }
-      }
-      ThisForm.eventos = [...new_arr]
-      if (ThisForm.eventos.length == 0)
-        ThisForm.prop.Status = 'A'
-
-      console.log('############Evento terminado ############ ', evento, ThisForm.prop.Status, ThisForm.eventos.length, ThisForm.eventos)
-
-    }) */
 }
-
-
-
-
 
 
 ////////////////////////////////
@@ -582,28 +443,6 @@ watch(
 );
 
 
-//////////////////////////////////////////////
-// revisa los estatus del grid de datos
-/*
-watch(
-  () => grid_datos,
-  (new_val, old_val) => {
-    for (const comp in grid_datos) {
-      //      console.log('Watch grid_datos  ===>', comp, grid_datos[comp])
-
-      if (grid_datos[comp] != 'A') {
-        ThisForm.estatus.grid_datos = 'P'
-        //      console.log('Watch grid_datos.estatus ===>', estatus.grid_datos)
-
-        return
-      }
-    }
-    ThisForm.estatus.grid_datos = 'A'
-  },
-  { deep: true }
-);
-
-*/
 
 const clickSalir = async () => {
   if (await MessageBox("Salimos de la forma", 4, '') == 6) {
@@ -611,10 +450,6 @@ const clickSalir = async () => {
     // window.close() // cierra la forma history.back(); // regresa forma anterior
   }
 }
-
-
-
-
 
 
 const nextFocus = async ($event) => {
@@ -633,9 +468,6 @@ const nextFocus = async ($event) => {
   console.log('Edit ', nextElement)
 
 }
-
-
-
 
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 

@@ -10,11 +10,12 @@
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
       <div class="tabla" :style="{ minHeight: '150px', height: 'auto', width: 'inherit' }">
-        <table :style="{ lineHeight: '11px' }">
+        <table :style="{ lineHeight: '1px' }"> <!--11px-->
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
-              <th v-for="column in This.elements" :key="column.Id" :id="column.Name">
+              <th v-for="column in This.elements" :key="column.Id" :id="column.Name"
+                :style="{ height: prop.headerHeight, lineHeight: '15px' }">
                 <!--Header:
                   -->
                 <div v-show="This[column.Name].prop.Visible">
@@ -271,6 +272,7 @@ const props = defineProps<{
     saveData: true;
     updated: false;
     autoLoad: boolean;
+    headerHeight: string;
   };
 
   style: {

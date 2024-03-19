@@ -11,26 +11,6 @@
         </div>
       </div>
       <div v-else class="prose w-full max-w-2xl h-9">
-        <!-- class="DatosUsuario" ref='esteComponente' los nombre no deben ser igual a <esteComponente 
-        v-model:ErrorMessage="ThisForm.emp_emp.prop.ErrorMessage"
-        v-model:Key="ThisForm.emp_emp.prop.Key"
-         v-model:Key="ThisForm.log_usu.prop.Key"
-         v-model:Key="ThisForm.pas_usu.prop.Key" 
-
-         v-model:ErrorMessage="ThisForm.log_usu.prop.ErrorMessage"
-         v-model:ErrorMessage="ThisForm.pas_usu.prop.ErrorMessage"
-        
-        bind:Registro="ThisForm.emp_emp.Recno"
-
-v-model:Value="ThisForm.emp_emp.prop.Value"
-        v-model:Status="ThisForm.emp_emp.prop.Status" :component="ref(ThisForm.emp_emp)" 
-        
-        
-        
-        
-        
-        -->
-
         <component :is="impComp(ThisForm.emp_emp.prop.BaseClass)" :Registro="0" :prop="ThisForm.emp_emp.prop"
           :style="ThisForm.emp_emp.style" :position="ThisForm.emp_emp.position" />
         <component :is="impComp(ThisForm.log_usu.prop.BaseClass)" v-model:Status="ThisForm.log_usu.prop.Status"
@@ -39,15 +19,15 @@ v-model:Value="ThisForm.emp_emp.prop.Value"
         <component :is="impComp(ThisForm.pas_usu.prop.BaseClass)" v-model:Value="ThisForm.pas_usu.prop.Value"
           v-model:Status="ThisForm.pas_usu.prop.Status" :component="ref(ThisForm.pas_usu)" :Registro="0"
           :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" />
-        <component :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :component="ref(ThisForm.bt_aceptar)"
-          :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
-          :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
+        <component :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :Registro="0"
+          :component="ref(ThisForm.bt_aceptar)" :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style"
+          :position="ThisForm.bt_aceptar.position" :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
       </div>
     </div>
   </div>
 </template>
 
-<script  lang="ts" setup>
+<script lang="ts" setup>
 /*
 import {
   ref,
@@ -166,6 +146,7 @@ const impComp = (name: string) => {
 </script>
 
 <style>
+/*
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -180,10 +161,9 @@ const impComp = (name: string) => {
 
 form.LoginForm {
   align-content: center;
-  /* width: auto;
-  height: auto; */
+  
 }
-
+*/
 div.imagen {
   align-content: center;
   border: 2px solid green;
@@ -197,36 +177,13 @@ div.imagen {
   /* opacity: 0.5;*/
 }
 
+/*
 div.DatosUsuario {
   opacity: 1;
   background-color: transparent;
   align-content: start;
   text-align: start;
-  /*
 
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
-
-  height: 10px;
-    width: 10px;
-    background-image: "@/assets/favicon.ico"
-  width: 300px;
-  align-content: center;
-  text-align: center;
-  background-color: #f2f4f5;
-  box-sizing: content-box;
-  border-width: 2px;
-  border-radius: 6px;
-  border-color: black;
-  padding: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-content: flex-start;
 */
-  /*margin-left: auto;*/
-}
 </style>

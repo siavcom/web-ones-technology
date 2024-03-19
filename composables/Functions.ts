@@ -199,9 +199,15 @@ export const numberFormat = async (
   }
 
   // add number after decimal point
+  // si la funcion nos da un verdadero significa que tiene punto decimal
   if (val.toString().includes(".")) {
+    // aumentamos los decimales
     num = num + "." + val.toString().split(".")[1];
   }
+  num = num + "."
+
+  num = num + "000000000000"
+
   // console.log("1 numberFormat number=", val, num);
   // return result with - sign if negative
   const point = num.indexOf(".");

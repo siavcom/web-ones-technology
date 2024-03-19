@@ -4,6 +4,7 @@
     <span class="etiqueta" :v-if="props.prop.textLabel > ' '" :style="labelStyle">{{ prop.textLabel + " " }}</span>
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
+
     <input v-if="prop.Type == 'checkBox'" :class="prop.Type" :style="inputStyle" readonly="true" type="checkBox"
       :checked="checked" />
     <!--/div>
@@ -26,6 +27,8 @@
     <input v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type" :style="inputStyle"
       readonly="true" v-model="Text" />
     <!--/div-->
+    <img v-if="prop.Image > '    '" class="img" :src="prop.Image" />
+
   </div>
   <!--/div-->
 </template>
@@ -60,6 +63,7 @@ const props = defineProps<{
     Caption: string;
     Placeholder: "";
     Format: "";
+    Image: "";
     InputMask: "";
     MaxLenght: 0;
     ReadOnly: false;

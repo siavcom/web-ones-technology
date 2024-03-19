@@ -11,7 +11,7 @@
       </button>
       <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
     prop.ToolTipText
-  }}</span>
+        }}</span>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@
 */
 const props = defineProps<{
   //Value: string;
+  Registro: 0;
   prop: {
     Click: false;
     ToolTipText: string;
@@ -59,6 +60,7 @@ const props = defineProps<{
     Visible: boolean;
     TabIndex: number;
     BaseClass: "imgButton";
+
     Image: "";
 
     /* componentStyle: {
@@ -105,6 +107,8 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
+This.Recno = props.Registro
+
 const Value = ref(props.prop.Value)
 const ToolTipText = ref(true)
 
@@ -117,6 +121,25 @@ watch(
   },
   { deep: false }
 );
+
+
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+watch(
+  () => props.Registro,
+  async () => {
+
+    // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
+    emitValue(true)
+    This.Recno = props.Registro
+  },
+  { deep: true }
+);
+
+
 
 /////////////////////////////////////////////////////////////////////
 // focusOut
@@ -141,27 +164,32 @@ const onFocus = async () => {
 /////////////////////////////////////////
 
 const init = async () => {
-  //await This.init()
 
+  This.Recno = props.Registro
 
-  if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
+  if (props.Registro > 0) {
+    if (props.prop.ControlSource.length > 0) {
 
-    Status.value = 'P';  // en lectura
-    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+      Status.value = 'P';  // en lectura
+      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
-    await readCampo(props.Registro)
-    if (!props.prop.First) {
+      await readCampo(props.Registro)
+      if (!props.prop.First) {
 
-      //await emitValue()
+        //await emitValue()
+      }
+      Status.value = 'A';  // Activo
+      emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
     }
-    Status.value = 'A';  // Activo
-    emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-  }
 
-};
+  };
+  // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
+}
 
+onMounted(() => {
+  init() // Ejecuta el init
+});
 
-init(); // Ejecuta el init
 
 </script>
 
