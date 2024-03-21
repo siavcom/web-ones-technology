@@ -874,13 +874,13 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
     // console.log('KeyPress number', $event.charCode)
     if (!(($event.charCode >= 48 &&
       $event.charCode <= 57) ||
-      $event.charCode == 46 || // punto
-      $event.charCode == 45   // Menos)  
+      ($event.charCode == 46 && This.prop.Decimals > 0) || // punto con decimales
+      ($event.charCode == 45 && +This.prop.Min < 0)  // Menor a cero)  
     ))
       return $event.preventDefault()
   }
 
-  //    Status.value = 'P'  //Aqui me quede
+  //    Status.value = 'P'  //Aqui me quedejjj
   //    emit("update:Status", 'P')
   if (This.prop.Status != 'P')
     This.prop.Status = 'P'

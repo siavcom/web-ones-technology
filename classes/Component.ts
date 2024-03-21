@@ -77,7 +77,7 @@ export class COMPONENT {
     Name: "",
 
     Last: false,
-    List: [],
+    ListCount: [],
 
     Order: 1,
 

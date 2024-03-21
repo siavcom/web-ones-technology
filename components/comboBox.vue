@@ -8,16 +8,30 @@
     <span class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel + " " }}</span>
     <!--List Box -->
     <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='multiSelectStyle'>
-      <select v-model="List" multiple>
-        <option class="option" v-for="(option, valueIndex) in columnas" :value="columnas[valueIndex].value">
+      <!--select v-model="List" multiple-->
+
+      <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+
+
+        <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true" :key="valueIndex"
+          @mouseleave="hover = false" @click.stop="validCheck(valueIndex)" :disabled="prop.ReadOnly">
           <!--Imprime Columnas -->
-          <!--div class="columna"  v-for="(text, col) in option.text" :key="col"
-            -->
-          <input v-for="(text, col) in option.text" :style="{ 'width': width[col], 'text-align': 'left' }" class="input"
-            :value="text" :disabled="prop.Disabled" :readonly="prop.ReadOnly" />
-          <!--/div-->
-        </option>
-      </select>
+
+          <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
+            :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': '11px' }">
+            <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
+          </div>
+          <img v-show='option.check' src="/Iconos/add-color.svg" width="15">
+          <!--div v-show='option.check'>+</div-->
+          <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
+
+        </div>
+
+
+      </div>
+
+
+      <!--/select-->
     </div>
 
     <!--ComboBox 
@@ -197,8 +211,6 @@ const ToolTipText = ref(true)
 const Component = ref(props.prop.This)
 const This = Component.value
 
-
-
 const Id = This.prop.Name + props.Registro.toString()
 let thisElement: Element | null
 This.prop.htmlId = Id
@@ -223,16 +235,6 @@ const ShowError = ref(false)
 const divStyle = reactive(props.style)
 //divStyle.zIndex = 100 - This.prop.TabIndex
 
-
-
-/*
-const comboStyle = reactive(This.inputStyle) 
-
-
-if (comboStyle.zIndex == 0)
-  comboStyle.zIndex = 100 - This.prop.TabIndex
-*/
-
 const comboStyle = { //zIndex: 100 - This.prop.TabIndex,
   height: This.style.height
 }
@@ -242,16 +244,11 @@ const zIndex = comboStyle.zIndex
 // const inputStyle = reactive(props.inputStyle)
 
 const inputStyle = reactive(This.inputStyle)
-
-
 inputStyle.zIndex = zIndex
-
-
 const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
 const labelStyle = reactive(This.labelStyle)
-
 
 const columnLabelStyle = {
   width: 'auto', //inputWidth.value,
@@ -264,7 +261,7 @@ const columnLabelStyle = {
 }
 
 
-const List = ref(props.prop.List)
+const List = ref(This.prop.ListCount)
 const columnContainer = reactive({
   width: 'auto',
   height: 'auto',
@@ -274,18 +271,6 @@ const columnContainer = reactive({
 
 let inputBuffer = ''
 
-
-// let textInputStyle = {}
-/*
-if (props.prop.textInput.length > 0) {
-  textInputStyle = props.prop.inputStyle
-} else {
-  textInputStyle = inputStyle
-
-*/
-
-
-//} fin textInput
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -362,10 +347,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (campo != 'key_pri') {
           sw_dat = true
 
-          // if (props.Registro && This.Recno != props.Registro)
-          //   This.Recno = props.Registro
-
-
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
           Value.value = data[campo]
           //console.log('comboBox emitValue readCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
@@ -397,7 +378,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       Value.value = ''
   }
   //console.log('ComboBox Name=', props.prop.Name, 'Value.value=', Value.value)
-
 
   for (let i = 0; i < columnas.length && !found; i++) {
     if (columnas && columnas[0]) {
@@ -441,9 +421,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   return true
 }
 
-
-
-
 const toggleClick = async () => {
   if (!toggle.value)
     await This.when()
@@ -466,15 +443,7 @@ const keyPress = ($event) => {
     ToolTipText.value = false
   if ($event.charCode == 13) {
 
-    //console.log('Enter keyPress=', $event.charCode)
-
-    //$event.charCode = 9
-    // window.event.keyCode = 9;
-    //const next = $event.currentTarget.nextElementSibling;
-    //$event.target.parentElement.nextSibling.children[1].focus()
-    //next.focus();
-    // emit('tab')
-    emit('customChange', $event.target.value + String.fromCharCode(9))
+    // emit('customChange', $event.target.value + String.fromCharCode(9))
     return
 
   }
@@ -548,6 +517,37 @@ const validClick = async (num_ren: number) => {
 
 };
 
+const validCheck = async (num_ren: number) => {
+  List.value = []
+  columnas[num_ren].check = !columnas[num_ren].check
+  /* columnas[num_ren].text
+
+
+  columnas[ren] = {
+        value: val_col[ren],
+        text: [val_col[ren]],
+        check: false
+*/
+
+  for (let i = 0; i < columnas.length; i++) {
+    if (columnas[i].check) {
+      List.value.push(columnas[i].value)
+    }
+  }
+  let Valores = ''
+  let coma = ''
+  for (let i = 0; i < List.value.length; i++) {
+    Valores = Valores + coma + List.value[i]
+    coma = ','
+  }
+  Value.value = Valores
+
+
+  return
+
+};
+
+
 /////////////////////////////////////////////////////////////////////
 // ValidList
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -593,9 +593,8 @@ const onFocus = async () => {
 
       if (props.prop.MultiSelect) { // Si es multi seleccion generaramos el arreglo
         console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor)
-        List.value = eval('[' + valor.trim() + ']')
-        This.prop.Value = Value.value
-        emit("update:Value", Value.value)
+        List.value = eval('[' + This.prop.Value.trim() + ']')
+
 
       }
       else {
@@ -786,20 +785,36 @@ const renderComboBox = async (readData?: boolean) => {
     return
   }
 
+  if (props.prop.MultiSelect) {
+    console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value)
+    List.value = eval('[' + This.prop.Value.trim() + ']')
+  }
 
   for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
     // asignamos el Value del BoundColum 
+    let check = false
+    if (props.prop.MultiSelect) {
+      for (let i = 0; i < List.value.length; i++) {
+        if (List.value[i] == val_col[ren]) {
+          check = true
+        }
+      }
+
+    }
     if (props.prop.ColumnCount <= 1) { // Si solo es una columna
 
       columnas[ren] = {
         value: val_col[ren],
         text: [val_col[ren]],
-      };
+        check: check
+      }
+
     } else {
 
       columnas[ren] = {  // asignamos el valor segun el BoundColumn
         value: val_col[BoundColumn][ren], // asignamos el valor segun BoundCoulumn
         text: [],   // un arreglo vacio y se llenara con el numero de columnas del resultado
+        check: check
       };
       // console.log("Antes de Asigna option columnCount ===>",props.prop.ColumnCount);
       for (let col = 0; col < props.prop.ColumnCount; col++) { // recorremos todas las columnas

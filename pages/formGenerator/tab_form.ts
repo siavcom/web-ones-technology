@@ -19,7 +19,7 @@ export class tab_form extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = true;
-    this.prop.textLabel = "Tabla de captura del form";
+    this.prop.textLabel = "Tabla de captura para el form";
     this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Valid = false;
     this.prop.ErrorMessage = "";
@@ -33,7 +33,7 @@ export class tab_form extends COMPONENT {
     this.prop.ColumnWidths = "350px,125px";
     this.inputStyle.width = "250px";
     this.style.width = "400px";
-    this.prop.Visible = false;
+    this.prop.Visible = true;
     // this.style.zIndex = 4
   }
 

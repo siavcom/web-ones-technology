@@ -1002,8 +1002,8 @@ div.tabla {
   /* no borrar se utiliza junto con div.option position:relative*/
   border: 1px solid rgb(0, 5, 2);
   border-radius: 1%;
-  max-height: 300px;
-  max-width: 900px;
+  max-height: 350px;
+  max-width: 960px;
   overflow-y: auto;
   overflow-x: auto;
   width: 95%;
