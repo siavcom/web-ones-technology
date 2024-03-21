@@ -286,6 +286,10 @@ const props = defineProps<{
 }>();
 const ThisForm = reactive(new props.ThisForm)
 
+//console.warn(router.query.params)
+//console.warn(router.currentRoute[query])
+
+
 
 /*
 let sw_session=true
@@ -310,10 +314,11 @@ ThisForm.user = user.value
 ThisForm.nom_emp = nom_emp.value
 ThisForm.fpo_pge = fpo_pge.value
 
+const router = useRouter();
+
+ThisForm.params = router.currentRoute.value.query  // Obtiene los Parametros de la URL
 
 const loading = ref(true)
-
-
 
 // asigna por referencia un Value de un objeto reactivo. Con toRefs hace todas las variables reactivas a referencia
 //export const nom_nom_value = toRef(vi_lla1_nom[0], 'nom_nom')
@@ -499,8 +504,6 @@ const init = async () => {
 
       }
 
-      //console.warn(router.query.params)
-      //console.warn(router.currentRoute[query])
 
       await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
       /*

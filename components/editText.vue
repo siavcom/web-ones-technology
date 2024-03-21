@@ -232,6 +232,9 @@ const props = defineProps<{
 }>();
 
 
+console.log('EditText init Name=', props.prop.Name)
+
+
 const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true : false)
 
 const Component = ref(props.prop.This)
@@ -868,9 +871,10 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
   }
   // caracteres permitido en input numero
   if (propType == 'number') {
+    // console.log('KeyPress number', $event.charCode)
     if (!(($event.charCode >= 48 &&
       $event.charCode <= 57) ||
-      $event.charCod == 46 || // punto
+      $event.charCode == 46 || // punto
       $event.charCode == 45   // Menos)  
     ))
       return $event.preventDefault()
@@ -1222,8 +1226,8 @@ watch(
 /////////////////////////////////////////
 
 const init = async () => {
-  thisElement = document.getElementById(Id)
-  //console.log('EditText init onMounted', This.prop.Name, 'Document element Id=' + Id)
+  //  thisElement = document.getElementById(Id)
+  console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
   if (propType == 'date') {
     inputStyle.width = '120px'
     inputStyle.height = '20px'
@@ -1262,11 +1266,19 @@ const init = async () => {
   // console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
 }
 
-onMounted(() => {
-  console.log('EditText onMounted', This.prop.Name)
-  init() // Ejecuta el init
+/*
+onUnmounted(() => {
+  console.log('EditText Desmontado onUnMounted', This.prop.Name)
+ 
 });
 
 
+
+onMounted(() => {
+  console.log('EditText Montado onMounted', This.prop.Name)
+  init() // Ejecuta el init
+});
+*/
+init()
 
 </script>

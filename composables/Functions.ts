@@ -202,11 +202,9 @@ export const numberFormat = async (
   // si la funcion nos da un verdadero significa que tiene punto decimal
   if (val.toString().includes(".")) {
     // aumentamos los decimales
-    num = num + "." + val.toString().split(".")[1];
-  }
-  num = num + "."
-
-  num = num + "000000000000"
+    num = num + "." + val.toString().split(".")[1] + '0000000000'; // Obtiene los decimales y los agrega
+  } else
+    num = num + ".000000000000"
 
   // console.log("1 numberFormat number=", val, num);
   // return result with - sign if negative
@@ -220,7 +218,10 @@ export const numberFormat = async (
     if (integers > 0) intNumber = await right(intNumber, integers);
 
     decNumber = num.slice(point, num.length);
-    if (decimals > 0) decNumber = decNumber.slice(0, decimals + 1);
+    if (decimals > 0)
+      decNumber = decNumber.slice(0, decimals + 1);
+    else
+      decNumber = decNumber.slice(0, decimals);
 
     num = intNumber + decNumber;
   } else result = num;
