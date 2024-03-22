@@ -7,7 +7,7 @@
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <span class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel + " " }}</span>
     <!--List Box -->
-    <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()" :style='multiSelectStyle'>
+    <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
 
       <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
@@ -18,7 +18,7 @@
           <!--Imprime Columnas -->
 
           <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
-            :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': '11px' }">
+            :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
             <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
           </div>
           <img v-show='option.check' src="/Iconos/add-color.svg" width="15">
@@ -63,9 +63,8 @@
               @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
-              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col" :style="{
-    'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': '11px'
-  }">
+              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
+                :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
                 <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
               </div>
             </div>
@@ -541,7 +540,6 @@ const validCheck = async (num_ren: number) => {
     coma = ','
   }
   Value.value = Valores
-
 
   return
 

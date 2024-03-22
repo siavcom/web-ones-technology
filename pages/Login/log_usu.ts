@@ -30,18 +30,4 @@ export class log_usu extends COMPONENT {
     this.prop.Value = session.user;
   }
 
-  //////////////////////////
-  // KeyPress
-  // Descripcion: Cada tecla que se presiona en el input
-  //////////////////////////
-
-  public keyPress = async ($event) => {
-    //console.log('KeyPress===>',super.keyPress($event))
-    // const key = $event.charCode // Key pressed
-  };
-
-  // public click() {
-  public click = async () => {
-    const m = {};
-  }; // fin metodo click
 }

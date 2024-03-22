@@ -5,16 +5,15 @@
 // Ult.Modificacion : 15/Febrero/2023
 /////////////////////////////////////////////
 import { COMPONENT } from "@/classes/Component";
-//import { MessageBox } from '@/classes/Functions'
 
 // importa archivos de texto
 //import Main from '/templates/Main.txt?raw'
-import Main from "/templates/Main.txt?raw";
+import Main from "@/public/templates/Main.txt?raw";
 
-import Form from "/templates/ThisForm.txt?raw";
-import Component from "/templates/Component.txt?raw";
-import Grid from "/templates/Grid.txt?raw";
-import Column from "/templates/Column.txt?raw";
+import Form from "@/public/templates/ThisForm.txt?raw";
+import Component from "@/public/templates/Component.txt?raw";
+import Grid from "@/public/templates/Grid.txt?raw";
+import Column from "@/public/templates/Column.txt?raw";
 
 //import { readFileSync } from 'fs'
 //https://github.com/gildas-lormeau/zip.js

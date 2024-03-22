@@ -41,7 +41,7 @@
     <!--/div-->
 
 
-    <div class='json' v-else-if="propType == 'json'" ref="Ref" :style="inputStyle">
+    <div class='json' v-else-if="propType == 'json'" ref="Ref">
 
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
@@ -49,9 +49,11 @@
 
       <!--TransitionGroup name='detailJson' tag="div"-->
       <details v-for="(    comp, index    ) in     compJson    " key:='index'>
-        <summary :style="{ fontWeight: 'bold' }" :key='index'>{{ comp.label }} </summary>
+        <summary :style="{ fontWeight: 'bold', height: inputStyle.height }" :key='index'><label>{{ comp.label }}
+          </label>
+        </summary>
         <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto', height: '11px' }" @focusout="focusOut">
+          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="focusOut">
 
       </details>
       <!--/TransitionGroup-->
