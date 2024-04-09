@@ -1115,7 +1115,7 @@ onMounted(async () => {
   console.log('comboBox onMounted', This.prop.Init)
 
 
-  thisElement = document.getElementById(Id)
+  thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
 
 
   // textInputStyle.zIndex = zIndex

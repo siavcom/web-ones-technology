@@ -1227,8 +1227,9 @@ watch(
 // Metodo init 
 /////////////////////////////////////////
 
-const init = async () => {
-  //  thisElement = document.getElementById(Id)
+//const init = async () => {
+onMounted(async () => {
+  thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
   console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
   if (propType == 'date') {
     inputStyle.width = '120px'
@@ -1266,12 +1267,12 @@ const init = async () => {
     return
   }
   // console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
-}
+})
 
 /*
 onUnmounted(() => {
   console.log('EditText Desmontado onUnMounted', This.prop.Name)
- 
+
 });
 
 
@@ -1281,6 +1282,6 @@ onMounted(() => {
   init() // Ejecuta el init
 });
 */
-init()
+//init()
 
 </script>

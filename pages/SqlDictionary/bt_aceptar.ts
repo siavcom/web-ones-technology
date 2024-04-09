@@ -117,6 +117,7 @@ export class bt_aceptar extends COMPONENT {
       }
 
       if (data) {
+
         if (
           //dataUpdate &&
           (await MessageBox(
@@ -139,6 +140,7 @@ export class bt_aceptar extends COMPONENT {
               "Error al generar/regenerar en Sql Server la tabla:" +
               this.Form.nom_tab.prop.Value
             );
+            return false;
           }
         }
 

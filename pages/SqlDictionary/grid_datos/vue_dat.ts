@@ -18,20 +18,20 @@ export class vue_dat extends COLUMN {
         super()
         this.prop.Order = 3
         this.textLabel = 'Valor default'
-        this.prop.BaseClass = 'editText'
+        this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comedat.vue_dat'
-        this.prop.ToolTipText ='Valor incial en typescript insertarse el registro nuevo en VUE'
-        this.prop.Placeholder = "Valor inicial"
-        this.style.width = '200px' 
+        this.prop.ToolTipText = 'Valor dafault en typescript al insertarse el registro nuevo en VUE'
+        this.prop.Placeholder = "Valor default"
+        this.style.width = '200px'
     }
 
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when() { 
-        this.prop.ReadOnly=await !this.Parent.cam_dat.when() 
-      return !this.prop.ReadOnly
-         //   await super.when(row)
+    async when() {
+        this.prop.ReadOnly = await !this.Parent.cam_dat.when()
+        return !this.prop.ReadOnly
+        //   await super.when(row)
     }
 
 
