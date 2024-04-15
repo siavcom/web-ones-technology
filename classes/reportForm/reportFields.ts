@@ -10,11 +10,11 @@
 // base class
 ///////////////////////////////////////
 
-//import { CONTAINER } from '@/classes/Container'
+//import { DETAILS } from '@/classes/Details'
 import { COMPONENT } from '@/classes/Component'
-import { con_report} from './con_report'
+import { con_report } from './con_report'
 
-import { Grid} from './fields/grid'
+import { Grid } from './fields/grid'
 
 
 export class reportFields extends COMPONENT {
@@ -27,22 +27,22 @@ export class reportFields extends COMPONENT {
 
   public con_report = new con_report()
   public Grid = new Grid()
- 
+
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
-     
+
   constructor() {
     super()
-    this.prop.Visible=true
-    this.prop.Disabled=true
-    this.prop.BaseClass='container'
-    this.prop.textLabel='Campos del reporte por pantalla'
-    this.style.display='block'
-    this.prop.TabIndex=14
-    this.prop.Visible=false
-    this.style.width='auto'
-     }
- 
+    this.prop.Visible = true
+    this.prop.Disabled = true
+    this.prop.BaseClass = 'details'
+    this.prop.textLabel = 'Campos del reporte por pantalla'
+    this.style.display = 'block'
+    this.prop.TabIndex = 14
+    this.prop.Visible = false
+    this.style.width = 'auto'
+  }
+
 
 }
 

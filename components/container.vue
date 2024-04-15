@@ -4,7 +4,7 @@
 && ----------------------------------------------------------------------------------------------
 && Autor    	: Ing. Fernando Cuadras Angulo
 && Sistema  	: Siavcom  							Version : 10.0  VUE
-&& Programa 	: Contenedor de componentes   		Mnemo   : container.vue
+&& Programa 	: Detalle contenedor de componentes   		Mnemo   : details.vue
 && Ult. mod.	: Fernando Cuadras  				Fecha   : 25/Abr/2023
 && Evento		: 
 && Objeto		: VUE
@@ -12,85 +12,84 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <!--transition name='Container'-->
-    <div v-show="This.prop.Visible">
-      <div class='container' :style="style">
-        <details class='details' :open='!This.prop.Disabled' :width='style.width'>
+  <!--transition name='Details'-->
+  <div v-show="This.prop.Visible">
+    <div class='details' :style="style">
+      <details class='details' :open='!This.prop.Disabled' :style="style">
 
-          <summary>{{ This.prop.textLabel }}</summary>
-          <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
+        <summary>{{ This.prop.textLabel }}</summary>
+        <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
 
-          <!--template v-slot:header-->
-          <!--transition-group> -->
-          <!-- @focusout="This.eventos.push('This.' + compHeader + '.valid()')"-->
+        <!--template v-slot:header-->
+        <!--transition-group> -->
+        <!-- @focusout="This.eventos.push('This.' + compHeader + '.valid()')"-->
 
-          <div class='header'>
-            <div v-for="(compHeader) in This.header">
+        <div class='header'>
+          <div v-for="(compHeader) in This.header">
 
-              <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
-                :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
-                v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
-                v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-                v-model:Focus="This[compHeader].Focus" 
-                v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
-                v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
-                v-bind:position="This[compHeader].position"
-                @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
-                @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
-            </div>
+            <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
+              :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
+              v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
+              v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
+              v-model:Focus="This[compHeader].Focus"
+              v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
+              v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
+              v-bind:position="This[compHeader].position"
+              @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
+              @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
           </div>
-          <div class='main'>
-            <!--TransitionGroup name='detailForm' tag='div'-->
-              <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0" >
-                <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
+        </div>
+        <div class='main'>
+          <!--TransitionGroup name='detailForm' tag='div'-->
+          <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
+            <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
           v-bind:Show="true"
           
                   -->
-                <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
-                  v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-                  v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-                  v-model:Focus="This[compMain].Focus" 
-                  v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
-                  v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-                  v-bind:position="This[compMain].position"
-                  @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
-                  @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
-              </div>
-            <!--/TransitionGroup-->
+            <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+              v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+              v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
+              v-model:Focus="This[compMain].Focus"
+              v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
+              v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
+              v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
+              @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
           </div>
-          <!--/template-->
-          <!--template v-slot:footer
+          <!--/TransitionGroup-->
+        </div>
+        <!--/template-->
+        <!--template v-slot:footer
                    src="/Iconos/BotonRojo.png"
         This.prop.Status == 'A'
         -->
-          <div class="footer">
-            <div v-show="This.prop.Status == 'A'">
-              <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
-            </div>
-            <div v-show="This.prop.Status != 'A'">
-              <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-            </div>
+        <div class="footer">
+          <div v-show="This.prop.Status == 'A'">
+            <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
+          </div>
+          <div v-show="This.prop.Status != 'A'">
+            <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+          </div>
 
-            <div v-for="(compFooter) in This.footer" style="zIndex:0">
-              <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
+          <div v-for="(compFooter) in This.footer" style="zIndex:0">
+            <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
           
           -->
-              <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
-                v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-                v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-                v-model:Focus="This[compFooter].Focus" 
-                v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
-                v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-                v-bind:position="This[compFooter].position"
-                @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
-                @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
-            </div>
+            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
+              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+              v-model:Focus="This[compFooter].Focus"
+              v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
+              v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
+              v-bind:position="This[compFooter].position"
+              @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+              @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
           </div>
-        </details>
-      </div>
+        </div>
+      </details>
     </div>
+  </div>
   <!--/transition-->
 </template>
 
@@ -120,7 +119,7 @@ const textLabel = resolveComponent('textLabel')
 const grid = resolveComponent('grid')
 //const browse = resolveComponent('browse')
 const browseLite = resolveComponent('browseLite')
-const container = resolveComponent('container')
+const details = resolveComponent('details')
 const embedPdf = resolveComponent('embedPdf')
 
 
@@ -192,7 +191,7 @@ const props = defineProps<{
 const Component = ref(props.Component)
 const This = Component.value
 
-console.log(' Container This =====>', This)
+console.log(' Details This =====>', This)
 This['estatus'] = []
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
@@ -377,7 +376,7 @@ watch(
     console.log('Watch estatus eventos===>', evenEjecutar)
 
     for (let i = 0; i < evenEjecutar.length; i++) {
-      console.log('Container watch ThisForm.eventos', This.Form.eventos)
+      console.log('Details watch ThisForm.eventos', This.Form.eventos)
       if (evenEjecutar[i].length > 0)
         This.Form.eventos.push(evenEjecutar[i]) // emitimos los eventos a la forma padre
     }
@@ -435,7 +434,7 @@ watch(
 
 
 const loadData = async () => {
-  console.log('container load Data')
+  console.log('details load Data')
 
 }
 
@@ -447,7 +446,7 @@ const loadData = async () => {
 // no ejecuta el evento
 /////////////////////////////////
 const ejeEvento = (newEvento: string) => {
-  console.log('Container ejeEvento', newEvento)
+  console.log('Details ejeEvento', newEvento)
 
   for (const comp in This.estatus) {
 
@@ -488,7 +487,7 @@ const init = async () => {
       }
     }
   }
-  console.log('Fin Container.vue Init This==>', This)
+  console.log('Fin Details.vue Init This==>', This)
 
 
 }
@@ -504,7 +503,7 @@ const impComp = ((name: string, pos?: string) => {
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-      console.log('Container Importo edittext')
+      //console.log('Details Importo edittext')
       return editText
       break;
     }
@@ -539,8 +538,8 @@ const impComp = ((name: string, pos?: string) => {
       return textLabel
       break
     }
-    case 'container': {
-      return container
+    case 'details': {
+      return details
       break
     }
 
@@ -568,7 +567,7 @@ const impComp = ((name: string, pos?: string) => {
 
 </script>
 <style scoped>
-div.container {
+div.details {
 
   justify-content: center;
   align-items: center;

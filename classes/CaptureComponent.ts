@@ -12,7 +12,7 @@
 
 import { COMPONENT } from "@/classes/Component";
 
-export class captureComponent extends COMPONENT {
+export class CAPTURECOMPONENT extends COMPONENT {
   // sw_when:boolean=false
   constructor() {
     super();

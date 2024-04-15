@@ -1248,7 +1248,9 @@ onMounted(async () => {
     inputStyle.borderRadius = '2px'
     divStyle.height = 'auto'
   }
-
+  if ((propType == 'textarea' || propType == 'text') && inputStyle.width == 'auto') {
+    inputStyle.width = '100%'
+  }
 
   if (propType == 'number')
     inputStyle.textAlign = 'right'

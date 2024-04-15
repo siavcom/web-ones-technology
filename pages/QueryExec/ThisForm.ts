@@ -12,9 +12,9 @@
 // Component import
 //////////////////////////////////////
 
-import {query } from "./query" 
+import { query } from "./query"
 //import {result } from "./result" 
-import {browse} from "@/classes/browse"
+import { BROWSE } from "@/classes/Browse"
 import { bt_aceptar } from "./bt_aceptar"
 
 ///////////////////////////////////////
@@ -26,15 +26,15 @@ import { FORM } from '@/classes/Form'
 
 export class ThisForm extends FORM {
 
-////////////////////////////////////
-// component imported
-////////////////////////////////////
+  ////////////////////////////////////
+  // component imported
+  ////////////////////////////////////
 
-   public query = new query() 
-   public browse = new browse() 
-   public bt_aceptar= new bt_aceptar()
- 
-  
+  public query = new query()
+  public browse = new BROWSE()
+  public bt_aceptar = new bt_aceptar()
+
+
   constructor() {
     super()  // inicializa la clase base
 
@@ -45,14 +45,14 @@ export class ThisForm extends FORM {
     this.style.display = "flex"
     this.style.background = "white"
     this.style.color = "#b94295"
-    this.style.fontSize = "13px" 
+    this.style.fontSize = "13px"
     this.style.position = "center"
     this.style.backgroundImage = "/logos/Logo_Empresa.png"
     //this.style.height='400px'
     //this.style.maxHeight='400px'
 
     // this.grid=[<<grid>>]
-   
+
 
   }
 

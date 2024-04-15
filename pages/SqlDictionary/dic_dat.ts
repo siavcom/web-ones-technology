@@ -44,9 +44,15 @@ export class dic_dat extends COMPONENT {
     this.Form.nom_tab.Visible = true;
   };
 
-  public async when() {
+  public async when(sis_sis?: boolean) {
+
+    if (!sis_sis) {
+      this.Form.sis_sis.prop.Visible = false
+    }
+
     this.Form.nom_tab.prop.Visible = false;
     this.Form.tpr_prg.prop.Visible = false;
+
 
     this.Form.grid_datos.prop.Visible = false;
     this.Form.grid_indices.prop.Visible = false;
@@ -58,12 +64,12 @@ export class dic_dat extends COMPONENT {
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
     this.Form.bt_gen_all_models.Visible = true;
-    this.interactiveChange()
+    //this.interactiveChange()
 
 
     return !this.prop.ReadOnly;
   }
-
+  /*
   public async interactiveChange() {
     // await super.valid()
 
@@ -71,12 +77,13 @@ export class dic_dat extends COMPONENT {
     //const This = this.prop; // Hace referencia a las propiedades del componente
 
     if (this.prop.Value == "M")
-      this.Form.sis_sis.prop.Visible = false
-    else
       this.Form.sis_sis.prop.Visible = true
+    else
+      this.Form.sis_sis.prop.Visible = false
 
 
 
     return true;
   }
+  */
 }

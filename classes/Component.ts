@@ -102,7 +102,7 @@ export class COMPONENT {
     textLabel: "",
     This: null,
     ToolTipText: "",
-    Type: "text",  // text, number, date, time, checBox
+    Type: "text",  // text, number, date, time, checKBox
 
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
@@ -188,6 +188,9 @@ export class COMPONENT {
     this.inputStyle.cols = 100 // textArea cols
     this.inputStyle.rows = 5 // textArea rows
     this.inputStyle.borderRadius = '3px'
+
+    if ((this.prop.Type == 'number' || this.prop.Type == 'checkBox') && typeof this.prop.Value == "string")
+      this.prop.Value = 0
 
   }
 

@@ -11,8 +11,8 @@
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from "@/classes/captureComponent";
-export class <<cam_dat>> extends captureComponent {
+import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
+export class <<cam_dat>> extends  CAPTURECOMPONENT {
 
     constructor() {
         super()

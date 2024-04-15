@@ -229,7 +229,7 @@ import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
-import container from "@/components/container.vue"
+import details from "@/components/details.vue"
 //import Grid from "vue-virtual-scroll-grid";
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
@@ -440,6 +440,7 @@ watch(
   ,
   { deep: false }
 );
+
 
 watch(
   () => props.prop.Visible,
@@ -951,6 +952,15 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+
+    case 'details': {
+      return details
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
+
+
 
     default: {
       return editText

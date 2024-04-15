@@ -258,9 +258,9 @@ const browseLite = defineAsyncComponent(() =>
 )
 
 
-//const container = resolveComponent('container')
-const container = defineAsyncComponent(() =>
-  import('@/components/container.vue')
+//const details = resolveComponent('details')
+const details = defineAsyncComponent(() =>
+  import('@/components/details.vue')
 )
 
 
@@ -612,8 +612,8 @@ const impComp = ((name: string, pos?: string) => {
       return textLabel
       break
     }
-    case 'container': {
-      return container
+    case 'details': {
+      return details
       break
     }
 
