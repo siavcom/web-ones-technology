@@ -11,12 +11,12 @@ export class DETAILS extends COMPONENT {
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
 
+
   constructor() {
     super()
     this.prop.BaseClass = 'details'
     this.prop.Position = 'main'
     this.style.maxWidth = '720px'
-
   }
 
 }

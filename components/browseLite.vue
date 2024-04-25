@@ -16,8 +16,9 @@
         :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
         :has-checkbox="table.checkBox" :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey"
         :messages="table.messages" :page-size="10"
-        :page-options="[{ value: 10, text: 10 }, { value: 25, text: 25 }, { value: 50, text: 50 }]" @do-search="doSearch"
-        @return-checked-rows="returnChequedRows" :column-filter="filter" @is-finished="table.isLoading = false">
+        :page-options="[{ value: 10, text: 10 }, { value: 25, text: 25 }, { value: 50, text: 50 }]"
+        @do-search="doSearch" @return-checked-rows="returnChequedRows" :column-filter="filter"
+        @is-finished="table.isLoading = false">
       </table-lite>
     </div>
   </div>
@@ -122,6 +123,7 @@ const props = defineProps<{
 const Component = ref(props.Component)
 const This = Component.value
 
+
 const table = This.table
 
 //const isLoading = ref(false)
@@ -171,15 +173,33 @@ const table = reactive({
 // RowSource
 ///////////////////////////////////////
 
+
+watch(
+  () => table.checkBox,
+  (new_val, old_val) => {
+
+    console.log('browseLite watch chequed===>', new_val)
+  },
+  { deep: false }
+);
+
+
+
+
+///////////////////////////
+
 watch(
   () => props.prop.RowSource,
   async (new_val, old_val) => {
     // console.log('browseLite watch RowSource===>', new_val, props.prop.RowSource)
-    table.columns = []
+    console.log('browseLite table', table.columns, 'This.table.columns', This.table.columns)
+
+    //table.columns = []
     table.rows = []
     table.oriRows = []
     table.totalRecordCount = 0
     table.filters = {}
+
 
     if (new_val == '') {
       return
@@ -187,7 +207,8 @@ watch(
     } else {
       // obtiene el primer registro para obtener logitudes y descripcion de variables
       const result = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + ' limit 1')
-      if (result.length > 0) {
+      if (result.length > 0 && table.columns.length == 0) {
+
 
         const Id = {
           label: 'Id',
@@ -199,6 +220,8 @@ watch(
         table.columns.push(Id)
 
         // genera el header 
+
+
         for (const field in result[0]) {
 
           let width = '16'
@@ -218,8 +241,11 @@ watch(
 
         }
 
-        await doSearch(0, 10, 'id', 'asc') // busca los primeros datos
+        // await doSearch(0, 10, 'id', 'asc') // busca los primeros datos
       }
+      table.columns[0].isKey = true
+      const field = table.columns[0].field
+      await doSearch(0, 10, field, 'asc') // busca los primeros datos
 
 
     }
@@ -368,11 +394,16 @@ const tableLoadingFinish = (elements) => {
 */
 
 const returnChequedRows = (rowData: []) => {
-  console.log('returnChequedRows ', rowData)
+  console.log('returnChequedRows ', rowData, 'This.prop.oneClick', This.prop.oneClick)
+  if (This.prop.oneClick && rowData.length > 0) {
+    This.prop.Value = rowData[0]
+    This.close()
+
+  }
 };
 
 const rowClicked = (rowData: []) => {
-  console.log('Clik in row ', rowData)
+  console.log('Click in row ', rowData)
 };
 
 
@@ -463,7 +494,7 @@ const isFinished = () => {
 
 
 
-   ////////// Killo Soft ////////// 
+////////// Killo Soft ////////// 
 
 
 </script>

@@ -10,83 +10,91 @@
       @input.self="onInput" -->
 
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
+    <span :title="This.prop.ToolTipText">
+      <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
+        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
+        @input.self="onInput" @keypress="keyPress($event)">
 
-    <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
-      :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
-      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
-      @input.self="onInput" @keypress="keyPress($event)">
+      <!--spinner-->
 
-    <!--spinner-->
+      <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
+        :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
 
-    <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
-      :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
-      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
+      <!--textArea -->
+      <div v-else-if="propType == 'textarea'" :style="inputStyle">
+        <textarea :id="Id" class="textArea" ref="Ref" :style="inputStyle" v-model="Value" :readonly="ReadOnly"
+          :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
+          :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
+          @focus="onFocus"></textarea>
+      </div>
 
-    <!--textArea -->
-    <div v-else-if="propType == 'textarea'" :style="inputStyle">
-      <textarea :id="Id" class="textArea" ref="Ref" :style="inputStyle" v-model="Value" :readonly="ReadOnly"
-        :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
-        :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
-        @focus="onFocus"></textarea>
-    </div>
-
-    <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
-    <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
-    <input :id="Id" v-else-if="propType.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
-      :type="propType == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
-      :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="focusOut">
-    <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
+      <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
+      <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
+      <input :id="Id" v-else-if="propType.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
+        :type="propType == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
+        :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
+        @focusout="focusOut">
+      <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
-    <!--/div-->
+      <!--/div-->
 
 
-    <div class='json' v-else-if="propType == 'json'" ref="Ref">
+      <div class='json' v-else-if="propType == 'json'" ref="Ref">
 
-      <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
+        <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
-      <!--TransitionGroup name='detailJson' tag="div"-->
-      <details v-for="(    comp, index    ) in     compJson    " key:='index'>
-        <summary :style="{ fontWeight: 'bold', height: inputStyle.height }" :key='index'><label>{{ comp.label }}
-          </label>
-        </summary>
-        <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="focusOut">
+        <!--TransitionGroup name='detailJson' tag="div"-->
+        <details v-for="(    comp, index    ) in     compJson    " key:='index'>
+          <summary :style="{ fontWeight: 'bold', height: inputStyle.height }" :key='index'><label>{{ comp.label }}
+            </label>
+          </summary>
+          <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
+            :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="focusOut">
 
-      </details>
-      <!--/TransitionGroup-->
-    </div>
+        </details>
+        <!--/TransitionGroup-->
+      </div>
 
-    <!--checkBox-->
-    <!--div v-else-if="propType == 'checkBox'"-->
-    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
-      :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
-      @focus="onFocus" @keypress="keyPress($event)">
+      <!--checkBox-->
+      <!--div v-else-if="propType == 'checkBox'"-->
+      <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
+        :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
+        @focus="onFocus" @keypress="keyPress($event)">
 
-    <!--label for=" checkbox">{{ checkValue }}</label-->
-    <!--/div-->
-    <!--Si es texto
+      <!--label for=" checkbox">{{ checkValue }}</label-->
+      <!--/div-->
+      <!--Si es texto
         @focusout="focusOut"
            @change="change"
             :maxlength="prop.MaxLength" 
             :size="prop.MaxLength"
       -->
-    <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
-      :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
-      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
-      @focus="onFocus">
+      <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
+        :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
+        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
+        @focus="onFocus">
+    </span>
 
+    <img v-if="!prop.ReadOnly && !prop.Disabled && prop.Help" class='help_icon' src="/Iconos/help-svgrepo-com.svg"
+      style="float:left" width="20" @click.prevent="help()" />
     <!--div class="mensajes" v-show="This.prop.Visible"-->
-    <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-      :style="toolTipTextStyle">{{
-    prop.ToolTipText
-  }}</span>
+    <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
+      :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
     <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage : 'Invalid Input'
       }}</span>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
+
+    <component v-for="( compMain ) in  This.main " :key="compMain" :is="impComp(This[compMain].prop.BaseClass)"
+      v-bind:Component="ref(This[compMain])" v-model:Value="This[compMain].prop.Value"
+      v-model:Status="This[compMain].prop.Status" v-model:Focus="This[compMain].Focus" :Registro="This[compMain].Recno"
+      v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style" v-bind:position="This[compMain].position">
+    </component>
+    <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" -->
   </div>
 </template>
 
@@ -114,6 +122,26 @@ import {
 } from "vue" */
 
 // , "update:Focus","update:Key",
+
+///////////////////////////////////////
+// Componentes
+//////////////////////////////////////
+
+const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
+const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
+const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
+const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
+const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
+const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const details = defineAsyncComponent(() => import('@/components/details.vue'))
+const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
+const container = defineAsyncComponent(() => import('@/components/container.vue'))
+
+///////////////////////////////////////
+// Emits
+//////////////////////////////////////
+
+
 const emit = defineEmits(["update", "update:Value",
   "input:currentValue",  // "input:currentValue[1]",
   "input:currentDate", "input:displayDate",
@@ -172,6 +200,8 @@ const props = defineProps<{
     Format: "";
 
     Grid: false;
+
+    Help: false;
 
     htmlId: string;
 
@@ -285,6 +315,7 @@ const zIndex = divStyle.zIndex
 
 //const inputStyle = reactive(props.inputStyle)
 const inputStyle = reactive(This.inputStyle)
+const inputVisible = ref(true)
 
 inputStyle.zIndex = zIndex
 
@@ -959,6 +990,11 @@ const onFocus = async () => {
   select()
   return
 }
+const help = async () => {
+  if (This.help)
+    await This.help.open()
+
+}
 const select = async () => {
   if (document.activeElement != thisElement) {
 
@@ -1274,16 +1310,121 @@ onMounted(async () => {
 /*
 onUnmounted(() => {
   console.log('EditText Desmontado onUnMounted', This.prop.Name)
-
+ 
 });
-
-
-
+ 
+ 
+ 
 onMounted(() => {
   console.log('EditText Montado onMounted', This.prop.Name)
   init() // Ejecuta el init
 });
 */
 //init()
+
+
+/////////////////////////////////////////////////
+// Componentes
+/////////////////////////////////////////////////
+
+
+//const imgButton = resolveComponent('imgButton')
+//const comboBox = resolveComponent('comboBox')
+//const editText = resolveComponent('editText')
+//const textLabel = resolveComponent('textLabel')
+//const grid = resolveComponent('grid')
+//const browse = resolveComponent('browse')
+
+//const browseLite = resolveComponent('browseLite')
+//const details = resolveComponent('details')
+//const embedPdf = resolveComponent('embedPdf')
+
+//import * from '@/components/imports/components'
+
+
+
+
+//////////////////////////////////////
+//  Importa componentes dinamicos
+////////////////////////////////////// 
+// '@/components/' + name + '.vue')
+
+
+const impComp = ((name: string, pos?: string) => {
+
+  //return eval(name)
+  console.log('Importo', name, 'impComp=', name)
+  switch (name.toLowerCase().trim()) {
+    case 'edittext': {
+      // console.log('Importo edittext')
+      return editText
+      break;
+    }
+    case 'combobox': {
+      return comboBox
+      break;
+    }
+    case 'grid': {
+      return grid
+      break;
+    }
+
+    case 'imgbutton': {
+      return imgButton
+      break;
+    }
+
+    case 'browse': {
+      //console.log('Importo Browse')
+      return browseLite
+      break;
+    }
+
+    case 'browselite': {
+
+      // console.log('Importo BrowseLite')
+      return browseLite
+      break;
+    }
+
+    case 'textlabel': {
+      return textLabel
+      break
+    }
+    case 'details': {
+      return details
+      break
+    }
+
+    case 'container': {
+      return container
+      break
+    }
+
+    case 'embedpdf': {
+      return embedPdf
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
+      break
+    }
+    default: {
+      return editText
+      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+  }
+
+  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+})
+
+
+
+
+
+
+
+
+
+
 
 </script>

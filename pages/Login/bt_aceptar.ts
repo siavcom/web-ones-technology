@@ -49,7 +49,7 @@ export class bt_aceptar extends COMPONENT {
 
     */
     if (login.length == pos_arroba + 1) {
-      ThisForm.log_usu.prop.MessageError = "usuario@empresa";
+      ThisForm.log_usu.prop.ErrorMessage = "usuario@empresa";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
       return;
@@ -62,14 +62,14 @@ export class bt_aceptar extends COMPONENT {
     }
 
     if (empresa.length == 0) {
-      ThisForm.emp_emp.prop.MessageError = "Escoja una empresa";
+      ThisForm.emp_emp.prop.ErrorMessage = "Escoja una empresa";
       ThisForm.emp_emp.prop.Valid = false;
       ThisForm.emp_emp.prop.ShowError = true;
       return;
     }
 
     if (login.length == 0) {
-      ThisForm.log_usu.prop.MessageError = "Digite usuario";
+      ThisForm.log_usu.prop.ErrorMessage = "Digite usuario";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
       return;
@@ -79,7 +79,7 @@ export class bt_aceptar extends COMPONENT {
       !ThisForm.pas_usu.prop.Value ||
       ThisForm.pas_usu.prop.Value.length === 0
     ) {
-      ThisForm.pas_usu.prop.MessageError = "Digite contraseña";
+      ThisForm.pas_usu.prop.ErrorMessage = "Digite contraseña";
       ThisForm.pas_usu.prop.Valid = false;
       ThisForm.pas_usu.prop.ShowError = true;
       return;

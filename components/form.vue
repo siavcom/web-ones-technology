@@ -223,51 +223,15 @@ const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(sessi
 // Componentes
 /////////////////////////////////////////////////
 
-//const imgButton = resolveComponent('imgButton')
-const imgButton = defineAsyncComponent(() =>
-  import('@/components/imgButton.vue'))
-
-
-//const comboBox = resolveComponent('comboBox')
-const comboBox = defineAsyncComponent(() =>
-  import('@/components/comboBox.vue'))
-
-
-//const editText = resolveComponent('editText')
-const editText = defineAsyncComponent(() =>
-  import('@/components/editText.vue')
-)
-
-
-//const textLabel = resolveComponent('textLabel')
-const textLabel = defineAsyncComponent(() =>
-  import('@/components/textLabel.vue')
-)
-
-
-//const grid = resolveComponent('grid')
-const grid = defineAsyncComponent(() =>
-  import('@/components/grid.vue')
-)
-
-//const browse = resolveComponent('browse')
-
-//const browseLite = resolveComponent('browseLite')
-const browseLite = defineAsyncComponent(() =>
-  import('@/components/browseLite.vue')
-)
-
-
-//const details = resolveComponent('details')
-const details = defineAsyncComponent(() =>
-  import('@/components/details.vue')
-)
-
-
-//const embedPdf = resolveComponent('embedPdf')
-const embedPdf = defineAsyncComponent(() =>
-  import('@/components/embedPdf.vue')
-)
+const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
+const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
+const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
+const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
+const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
+const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const details = defineAsyncComponent(() => import('@/components/details.vue'))
+const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
+const container = defineAsyncComponent(() => import('@/components/container.vue'))
 
 /////////////////////////////////////////
 // Componentes dinamicos
@@ -617,6 +581,10 @@ const impComp = ((name: string, pos?: string) => {
       break
     }
 
+    case 'container': {
+      return container
+      break
+    }
 
     case 'embedpdf': {
 

@@ -15,6 +15,9 @@ import { COMPONENT } from '@/classes/Component'
 
 export class BROWSE extends COMPONENT {
   //table = {}  // Datos de la tabla
+
+  clickResult = []
+  // oneClick = false
   rows = null // renglones resultantes por referencia
   table = {
     isLoading: false,
@@ -58,13 +61,16 @@ export class BROWSE extends COMPONENT {
       );
     },
 
-
   }
-
 
   constructor() {
     super()
     this.prop.BaseClass = 'browse'
     this.prop.RowSource = ''
+    this.prop.oneClick = false
+  }
+
+  async close() {
+    this.prop.Visible = false
   }
 }

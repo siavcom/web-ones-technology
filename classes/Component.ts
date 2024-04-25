@@ -30,6 +30,7 @@ export class COMPONENT {
   footer: [] = []; // elementos que tiene el componente en footer
   elements: [] = []; // elementos que tiene el componente
   status: {} = {}; // status de todos los hijos del componente
+  Position: [] = []; // Posicion del componente
 
   prop = {
     autoLoad: false,
@@ -55,6 +56,7 @@ export class COMPONENT {
     Focus: false,
     Format: "", //"ke" tipo fecha seleccionada al input
 
+    Help: false,
     Grid: false,
 
     htmlId: "",
@@ -153,6 +155,7 @@ export class COMPONENT {
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     width: "95%",
     height: "95%",
+    marginLeft: "5px",
     maxWidth: "auto",
     minWidth: "auto",
     maxHeight: "auto",
@@ -183,6 +186,7 @@ export class COMPONENT {
 
   constructor() {
     this.Name = this.constructor.name;
+    this.prop.Name = this.Name; //21/abril/2024
     this.Recno = 0;
     this.prop.This = this;
     this.inputStyle.cols = 100 // textArea cols
@@ -214,15 +218,7 @@ export class COMPONENT {
       //      console.log('Init ThisForm', this.Name, this.Form)
       TabIndex = 1;
       sw_component = false;
-      /* console.log(
-        "Init constructor.name",
-        this.constructor.name,
-        "Name=",
-        this.Name,
-        "Map =",
-        this.prop.Map
-      );
-      */
+
     }
     //console.log('Init TabIndex', this.Name, TabIndex,this)
 
@@ -242,15 +238,7 @@ export class COMPONENT {
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
       if (this.Form.db) this.Sql = this.Form.db;
-      /*
-      console.log(
-        "Init constructor.name",
-        this.constructor.name,
-        "Name=",
-        this.Name,
-        "Map =",
-        this.prop.Map
-      ); */
+
     }
     for (const componente in this) {
       if (
@@ -335,17 +323,7 @@ export class COMPONENT {
       // arreglo.push[comp]
     }
 
-    //arreglo=[]
 
-    /*
-    for (const i in header) {
-      const comp = header[i];
-      this[comp].prop.TabIndex = TabIndex;
-      TabIndex++;
-      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
-      // Se quito de aqui ya que el Init corre el init de c/componente
-    }
-   */
     //////////////////////  Main //////////////////////////////
 
     const mainElement = await multiFilter(elements, { Position: "main" });
@@ -363,20 +341,6 @@ export class COMPONENT {
       main.push(comp);
     }
 
-    //    arreglo=[]
-    //  console.log('2 Component mainElement Name=',this.prop.Name,'mainElement',mainElement)
-    /*
-    for (const i in main) {
-      const comp = main[i]; // Obtenemos el nombre
-
-      //   console.log('Component.ts in main comp=',comp,this[comp])
-      this[comp].prop.TabIndex = TabIndex;
-      TabIndex++;
-      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
-      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
-    }
-
-*/
 
     ///////////////// Footer ///////////////////////////////
 
@@ -396,15 +360,6 @@ export class COMPONENT {
       footer.push(comp);
     }
 
-    /*
-    for (let i = footer.length - 1; i >= 0; i--) {
-      const comp = footer[i];
-      this[comp].prop.TabIndex = TabIndex;
-      TabIndex++;
-      TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
-      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
-    }
-*/
 
     this.footer = footer.reverse();
 
@@ -415,19 +370,6 @@ export class COMPONENT {
 
     this.elements = arrayTot.concat(footerElement);
 
-    /*
-    TabIndex = maxTabIndex  // asignamos el TabIndex maximo de elementos
-    if (footer.length > 0) {
-      for (let i = footer.length - 1; i >= 0; i--) {
-        const footerName = footer[i]
-
-        this[footerName].prop.TabIndex = TabIndex
-        TabIndex++
-      }
-    }
-    this.footer = footer.reverse()
-
-    */
     this.prop.Status = "A";
     /*
     console.log(
@@ -445,7 +387,7 @@ export class COMPONENT {
     );
 */
     if (this.init) {
-      //  console.log('Component init Name=', this.Name,'Map=', this.prop.Map)
+      console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This=', this)
       await this.init(); // Corre el init principal
     }
     return TabIndex;

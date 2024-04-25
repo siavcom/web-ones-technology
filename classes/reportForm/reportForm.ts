@@ -54,11 +54,11 @@ export class reportForm extends FORM {
     this.queryGen.prop.TabIndex = 106;
     this.for_imp.prop.TabIndex = 107;
     this.reportFields.prop.TabIndex = 108;
-    this.report.prop.TabIndex=109;
+    this.report.prop.TabIndex = 109;
   }
 
   public async init() {
-//    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
+    //    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
 
     this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
     this.var_ord.prop.RowSourceType = 3;
@@ -233,7 +233,7 @@ export class reportForm extends FORM {
               query +
               `${sig_uni} ${m.pai_que} ${m.cam_dat} ${m.con_que} ${m.val_que} ${m.pad_que} `;
 
-            }
+        }
 
         //        query =
         //          query +

@@ -224,12 +224,26 @@ import {
 } from "vue";
 */
 ////import { MessageBox } from '@/classes/Functions'
-
+/*
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
 import details from "@/components/details.vue"
+*/
+
+const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
+const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
+const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
+const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
+//const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
+const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const details = defineAsyncComponent(() => import('@/components/details.vue'))
+const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
+const container = defineAsyncComponent(() => import('@/components/container.vue'))
+
+
+
 //import Grid from "vue-virtual-scroll-grid";
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
@@ -942,11 +956,13 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+    /*
     case 'grid': {
       return grid
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
+    */
     case 'imgbutton': {
       return imgButton
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
@@ -955,6 +971,12 @@ const impComp = ((name: string) => {
 
     case 'details': {
       return details
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+
+    case 'container': {
+      return container
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }

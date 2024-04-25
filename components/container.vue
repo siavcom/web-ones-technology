@@ -1,509 +1,177 @@
-<!--   
-&& ----------------------------------------------------------------------------------------------
-&&              Siavcom Software S. de R.L. de C.V.
-&& ----------------------------------------------------------------------------------------------
-&& Autor    	: Ing. Fernando Cuadras Angulo
-&& Sistema  	: Siavcom  							Version : 10.0  VUE
-&& Programa 	: Detalle contenedor de componentes   		Mnemo   : details.vue
-&& Ult. mod.	: Fernando Cuadras  				Fecha   : 25/Abr/2023
-&& Evento		: 
-&& Objeto		: VUE
-&& Comentarios	: 
-&& ----------------------------------------------------------------------------------------------
--->
 <template>
-  <!--transition name='Details'-->
-  <div v-show="This.prop.Visible">
-    <div class='details' :style="style">
-      <details class='details' :open='!This.prop.Disabled' :style="style">
+  <span :class="container" :style="This.style" v-if="This.prop.Visible">
+    <section class="mainContainer">
+      <slot name="componentes">
+        <div style="align-items:center;display:flex">
+          <label style="margin-left: 5px;">{{ This.textLabel }}</label>
+        </div>
+        <div v-if="Divi" v-for="(Ver) in  Divi" :key="Ver">
+          <div v-for=" (Ele) in  Ver" :key="Ele" style="padding-bottom:2px">
+            <component :is="impComp(Ele.prop.BaseClass)" v-bind:Component="ref(Ele)" v-model:Value="Ele.prop.Value"
+              v-model:Status="Ele.prop.Status" v-model:Focus="Ele.Focus" :Registro="Ele.Recno" :prop="Ele.prop"
+              :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()"></component>
 
-        <summary>{{ This.prop.textLabel }}</summary>
-        <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
-
-        <!--template v-slot:header-->
-        <!--transition-group> -->
-        <!-- @focusout="This.eventos.push('This.' + compHeader + '.valid()')"-->
-
-        <div class='header'>
-          <div v-for="(compHeader) in This.header">
-
-            <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
-              :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
-              v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
-              v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-              v-model:Focus="This[compHeader].Focus"
-              v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
-              v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
-              v-bind:position="This[compHeader].position"
-              @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
-              @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
           </div>
         </div>
-        <div class='main'>
-          <!--TransitionGroup name='detailForm' tag='div'-->
-          <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
-            <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
-          v-bind:Show="true"
-          
-                  -->
-            <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
-              v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-              v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-              v-model:Focus="This[compMain].Focus"
-              v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
-              v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-              v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
-              @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
-          </div>
-          <!--/TransitionGroup-->
-        </div>
-        <!--/template-->
-        <!--template v-slot:footer
-                   src="/Iconos/BotonRojo.png"
-        This.prop.Status == 'A'
-        -->
-        <div class="footer">
-          <div v-show="This.prop.Status == 'A'">
-            <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
-          </div>
-          <div v-show="This.prop.Status != 'A'">
-            <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-          </div>
 
-          <div v-for="(compFooter) in This.footer" style="zIndex:0">
-            <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
-          
-                      @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
-          
-          -->
-            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
-              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-              v-model:Focus="This[compFooter].Focus"
-              v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
-              v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-              v-bind:position="This[compFooter].position"
-              @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
-              @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
-          </div>
-        </div>
-      </details>
-    </div>
-  </div>
-  <!--/transition-->
+      </slot>
+    </section>
+
+  </span>
+
+
+
+  <!--/header-->
 </template>
 
-<script setup lang="ts">
-/*
-import {
-  //  defineEmits,
-  //  defineProps,
-  //  defineExpose,
-  ref,
-  reactive,
-  //  onUnmounted,
-  watch,
-  // toRefs,
-  toRef,
-  // onMounted,
-  // onBeforeUpdate,
-  // onUpdated,
-  // onUnmounted,
+<script lang="ts" setup>
 
-} from "vue";
-*/
-const imgButton = resolveComponent('imgButton')
-const comboBox = resolveComponent('comboBox')
-const editText = resolveComponent('editText')
-const textLabel = resolveComponent('textLabel')
-const grid = resolveComponent('grid')
-//const browse = resolveComponent('browse')
-const browseLite = resolveComponent('browseLite')
-const details = resolveComponent('details')
-const embedPdf = resolveComponent('embedPdf')
+//////////////////////////////////////////////
+// Componentes
+//////////////////////////////////////////////
+
+const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
+const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
+const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
+const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
+const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
+const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const details = defineAsyncComponent(() => import('@/components/details.vue'))
+const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
+const container = defineAsyncComponent(() => import('@/components/container.vue'))
 
 
-const emit = defineEmits([ //"update", 
-  "update:Value",
-  "update:Status",
-  "update:ErrorMessage",
-  "update:Key",
-  "update:Focus"]);
 
-///////////////////////////////////////
-// Propiedades del componente reactivas
-////////////////////////////////////
-const props = defineProps<{
-  //Recno: 0;
-  //Show: true;
+
+interface Props {
+  //Recno: number;
   Component: null;
+  // Name,
+  Registro: number;
+
+  prop: {};
+  style: {};
+  position: {};
+}
+
+//const props = defineProps<{
+const props = withDefaults(defineProps<Props>(), {
+  //Name: '',
+  Registro: 0,
+  Component: null,
+  // Value: undefined,
   prop: {
-    ToolTipText: string;
-    View: "";
-    Field: "";
-    Value: string;
-    Placeholder: "";
-    Format: "";
-    InputMask: "";
-    MaxLenght: 0;
-    ReadOnly: false;
-    Tag: "";
-    Sw_val: false;
-    Capture: true;
-    Name: "";
-    textLabel: "";
-    Type: "text";
-    Visible: true;
-    Disabled: boolean;
-    ControlSource: string;
-    Status: string;
-    ErrorMessage: string;
-    TabIndex: number;
-    Key: string;
-    BaseClass: "EditText";
-    This: false;
-    Autofocus: false;
-    RecordSource: string;
-    Rows: number;
-    //    SetFocus:false;
-    //compAddress: any;
-  };
+
+    BaseClass: "container",
+    BoundColumn: 1, // Columna donde se tomara el Value
+
+    Capture: true,
+    ControlSource: "",
+    ColumnCount: 0,
+    ColumnWidths: "", //"75%,25%"
+
+    List: [],
+
+    Disabled: false,
+
+    ErrorMessage: "",
+
+    First: false,
+    Focus: false,
+    Format: "",
+
+    InputMask: "",
+
+    MaxLength: 0,
+    MultiSelect: false,
+    //Multiple: false,
+
+    Name: "",
+
+    Placeholder: "",
+
+    ReadOnly: false,
+    RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
+    RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
+
+
+    Sorted: false,
+    Status: "",
+    ShowError: false,
+    ShowValue: false,
+    Style: 0, //0=DropDown Combo 2=DropDown List
+
+    TabIndex: 0,
+    Tag: "",
+    textLabel: "",
+    This: null,
+    ToolTipText: "",
+    Type: "text",
+
+    Valid: false,
+    Visible: true,
+    Value: [String, Number, Date],
+
+
+  },
 
   style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-  };
+    background: "white",
+    padding: "5px", // Relleno
+    color: "#b94295",
+    width: "auto",
+    height: "30px",
+    fontFamily: "Arial",
+    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left",
+    borderColor: "#000a01",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    zIndex: 1,
+
+    // inputWidth: "inherit"
+  },
   position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
-  // db: any
+    position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
+    left: 0,
+    Top: 0,
+  },
 
-}>();
-// Valores componente padre
-const Component = ref(props.Component)
-const This = Component.value
-
-console.log(' Details This =====>', This)
-This['estatus'] = []
-var load_data = false //Verdadero cuando se debe cargar datos a la pagina
-const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
-
-const Db = This.Form.db
-
-// Valores propios
-const Value = ref(props.prop.Value);
-const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
-const Status = ref(props.prop.Status);
-const ErrorMessage = ref(props.prop.ErrorMessage)
-const Key = ref(props.prop.Key)
-defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
-const Error = ref(false)
-const Focus = ref(false)
-
-
-const scroll = reactive({
-  controls: false,
-  dataPage: [],  // Elementos que compone la pagina Db.View[props.prop.RecordSource].recnoVal[elementNo]
-  top: true,     //Pprincipio de la pagina
-  bottom: false,  // Final de pagina
-  page: 0,        // Numero de pagina desplegada
-  rows: props.prop.Rows // Renglones que puede tener la pagina
 })
 
-
-
-//const LocalDb = new localDb();
-/////////////////////////////////////////////////////////////////////
-// emitValue
-// Descripcion: emite hacia el componente padre el nuavo valor asignado
-/////////////////////////////////////////////////////////////////
-const emitValue = async () => {
-  Status.value = 'A'
-  //console.log('EditBox antes emit Value ====>', props.prop.Value, Value.value)
-  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-  //emit("update") // emite un update en el componente padre
-  //console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
-  return true;
-};
-
-
-
+const Component = ref(props.Component)
+const This = props.Component.value // Component.value
+const Id = This.Name + props.Registro.toString()
+const Divi = ref(This.Divi)
 /*
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-const focusOut = async () => {
-  const valor = Value.value;
-  if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
-    // actualiza valor en localDb
-    await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
-    //await LocalDb.update(valor).then(() => { 
-    // })
+const elementArray = []
+let i = 0
+let j = 0
+const ele = []
+for (const ver in Divi.value) {
+  i++
+  for (const hor in Divi.value[ver]) {
+    const PosVer = +ver.slice(0, 4)
+    const PosHor = +hor.slice(0, 4)
+
+    if (!ele[PosVer])
+      ele[PosVer] = []
+
+    ele[PosVer][PosHor] = Divi.value[ver][hor]
+    j++
   }
-  console.log('editBox focusout ', props.Name)
-  return await emitValue()
 }
+
+const element = ref(ele)
+console.log('Divi ele=>', element.value)
 */
-//console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
-//return true;
-
-
-
-/*
-////////////////////////////////////////
-// Hacer el set focus 
-///////////////////////////////////////
-watch(
-  () => Focus.value,
-  (new_val, old_val) => {
-    console.log('EditText Set Focus', props.Name)
-    if (Focus.value) {
-      Ref.value.focus()
-      Ref.value.select()
-      Focus.value = false
-      emit("update:Focus", false)
-    }
-  },
-  { deep: false }
-);
-
-*/
-
-///////////////////////////////////////////////
-// Cuando cambia el estatus de Inicial a Activo, emite valores  
-///////////////////////////////////////////////
-
-watch(
-  () => props.prop.Status,
-  (new_val, old_val) => {
-
-    if (new_val == 'A') {
-      if (old_val == 'I') {
-        emitValue()
-      }
-      console.log('This.vue watch Status load_data', load_data)
-      // si hay carga de datos
-      if (load_data) {
-        loadData()
-      }
-
-    }
-
-
-  },
-  { deep: false }
-);
-
-///////////////////////////////////////////////
-// Cuando se cambia el RecordSource  
-///////////////////////////////////////////////
-watch(
-  () => props.prop.RecordSource,
-  (new_val, old_val) => {
-    console.log('RecordSource scroll===>', scroll)
-  }
-  ,
-  { deep: false }
-);
-
-watch(
-  () => props.prop.Visible,
-  async (new_val, old_val) => {
-    /*   
-      // Si no hay renglones , aumenta un renglon
-      if (props.prop.Visible && Db.View[props.prop.RecordSource].recnoVal.length == 0){
-         await appendRow()
-         console.log('<=======Watch grid append Row Visible =======>', new_val,props.prop.Visible && Db.View[props.prop.RecordSource].recnoVal)
-      }
-   */
-
-    if (props.prop.Visible && !old_val &&
-      props.prop.RecordSource.length > 3) {
-      //console.log('watch Visible ===>', scroll)
-      for (const componet in This) {
-
-
-
-      }
-
-
-
-    }
-  },
-  { deep: false }
-);
-
-
-
-/************************************************************************************ */
-////////////////////////////////
-// revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
-// no ejecuta el evento
-/////////////////////////////////
-
-
-watch(
-  () => eventos,
-  (new_val, old_val) => {
-    if (eventos.length == 0)
-      return
-
-    console.log('Watch estatus eventos,status This===>', new_val, This.estatus)
-
-    for (const comp in This.estatus) {
-
-      if (This.estatus[comp] != 'A' && Status.value == 'A') {
-        Status.value = 'P';  // Cambia el estatus del grid a Proceso
-        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-        return
-      }
-    }
-
-    const evenEjecutar = [...eventos]
-
-    eventos.length = 0 // borramos los eventos
-    console.log('Watch estatus eventos===>', evenEjecutar)
-
-    for (let i = 0; i < evenEjecutar.length; i++) {
-      console.log('Details watch ThisForm.eventos', This.Form.eventos)
-      if (evenEjecutar[i].length > 0)
-        This.Form.eventos.push(evenEjecutar[i]) // emitimos los eventos a la forma padre
-    }
-  }, { deep: true }
-);
-
-//////////////////////////////////////////////
-// Revisa la pila de eventos de procesos a ejecutar.
-//  Cuando ya no hay procesos a ejecutar y hay carga de datos, 
-// carga los datos de la pagina
-/////////////////////////////////////////////////
-watch(
-  () => This.Form.eventos,
-  () => {
-    if (!load_data) return
-    if (This.Form.eventos.length == 0) {
-      if (This.Form.prop.Status != 'A')
-        return
-      console.log('=====watch thisform.eventos loadData()=======')
-      loadData()
-
-    }
-  },
-  { deep: false }
-);
-
-//////////////////////////////////////////////
-// revisa los estatus de todos los componentes
-watch(
-  () => This.estatus,
-  (new_val, old_val) => {
-    console.log('<=======Watch estatus componentes =======>', This.estatus)
-
-    for (const comp in This.estatus) { // Recorre todos los estatus del grid
-
-      if (This.estatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
-        Status.value = 'P';  // Cambia el estatus del gri a Proceso
-        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-        return
-      }
-    }
-    Status.value = 'A';  // Todos los componentes del grid esta Activo
-    emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-    if (eventos.length == 0) return
-    for (let i = 0; i < eventos.length; i++)
-      This.Form.eventos.push(eventos[i])
-
-    eventos.length = 0 // borramos los eventos
-
-  },
-  { deep: true }
-);
-
-
-const loadData = async () => {
-  console.log('details load Data')
-
-}
-
-
-
-////////////////////////////////
-// Aumenta la pila de eventos a ejecutar de la forma principal
-// En caso que hay una estatus de un componente
-// no ejecuta el evento
-/////////////////////////////////
-const ejeEvento = (newEvento: string) => {
-  console.log('Details ejeEvento', newEvento)
-
-  for (const comp in This.estatus) {
-
-    if (This.estatus[comp] != 'A' && Status.value == 'A') {
-      Status.value = 'P';  // Cambia el estatus del grid a Proceso
-      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-      //        return
-    }
-  }
-
-  This.Form.eventos.push(newEvento) // emitimos los eventos a la forma padre
-
-}
-
-
-
-
-
-
-/////////////////////////////////////////
-// Metodo init Vfp
-// Aqui debemos de asignar todos los Valores inciales del componente
-// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
-// Se tiene que emitir para que cambie el Valor en el template
-/////////////////////////////////////////
-
-const init = async () => {
-
-  for (const componente in This) {
-    if (This[componente] !== undefined) {
-      if (
-        This[componente].prop &&       // Si tiene propiedades
-        This[componente].prop.Capture &&  // Si es componete de captura
-        This[componente].prop.Capture == true
-      ) {
-        This.estatus[componente] = toRef(This[componente].prop, "Status"); // stack de estatus de componentes
-      }
-    }
-  }
-  console.log('Fin Details.vue Init This==>', This)
-
-
-}
-
-init() // Ejecuta el init
-
-//////////////////////////////////////
-//  Importa componentes dinamicos
-////////////////////////////////////// 
 const impComp = ((name: string, pos?: string) => {
 
   //return eval(name)
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
-      //console.log('Details Importo edittext')
+      // console.log('Importo edittext')
       return editText
       break;
     }
@@ -522,14 +190,14 @@ const impComp = ((name: string, pos?: string) => {
     }
 
     case 'browse': {
-      console.log('Importo Browse')
+      //console.log('Importo Browse')
       return browseLite
       break;
     }
 
     case 'browselite': {
 
-      console.log('Importo BrowseLite')
+      // console.log('Importo BrowseLite')
       return browseLite
       break;
     }
@@ -542,8 +210,11 @@ const impComp = ((name: string, pos?: string) => {
       return details
       break
     }
-
-
+    /*
+        case 'container': {
+          return container
+          break
+        }*/
     case 'embedpdf': {
 
       return embedPdf
@@ -563,120 +234,6 @@ const impComp = ((name: string, pos?: string) => {
 
 
 
-
-
+//init();
 </script>
-<style scoped>
-div.details {
-
-  justify-content: center;
-  align-items: center;
-  border: 1px solid rgb(0, 5, 2);
-
-  border-radius: 5px;
-  padding: 10px 10px 10px 10px;
-}
-
-/*
-div.contenedor {
-  background: white;
-  color: #b94295;
-  min-width: 375px;
-  min-height: 812px;
-  background-image: "/logos/Logo_Empresa.png";
-  margin-top: 30%;
-
-}
-*/
-header {
-  color: #9ef1a5;
-  height: 20px;
-  border: black;
-  border-width: 1px;
-  padding: 0 10x;
-}
-
-
-
-
-.modal {
-  width: 300px;
-  margin: 0px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px 3px;
-  transition: all 0.2s ease-in;
-  font-family: Helvetica, Arial, sans-serif;
-  /*z-index: 999;*/
-}
-
-.fadeIn-enter {
-  opacity: 0;
-}
-
-.fadeIn-leave-active {
-  opacity: 0;
-  transition: all 0.2s step-end;
-}
-
-.fadeIn-enter .modal,
-.fadeIn-leave-active.modal {
-  transform: scale(1.1);
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background: #00000094;
-  z-index: 999;
-  transition: opacity 0.2s ease;
-}
-
-
-div.footer {
-  display: flex;
-  /*  flex;*/
-  /*flex-direction: column; */
-  align-items: last baseline;
-  /*center;*/
-  justify-content: space-around;
-  /*width: 100%;*/
-  height: auto;
-  background-color: #c8e0ce;
-  border: 1px solid rgb(0, 0, 0);
-  border-radius: 6px;
-  height: fit-content;
-  z-index: 0;
-  /*flex-direction: row-reverse; */
-}
-
-div.main {
-  /*display: flex;*/
-  /*  flex;*/
-  /*flex-direction: column; */
-  /*align-items: left; */
-  /*center;*/
-  /*justify-content: space-around;
-   width: 100%;
-   height: 100%;
-  */
-  text-align: left;
-  background-color: #f2f4ef;
-  /*border: 1px solid rgb(0, 0, 0);
-  border-radius: 6px; */
-  z-index: 1;
-}
-
-img.circle {
-  width: 18 px;
-  max-height: 18px;
-
-}
-</style>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
