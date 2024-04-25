@@ -75,6 +75,8 @@ export class HELP extends CONTAINER {
   }
 
   async open() {
+    this.Parent.prop.InputProp.Enabled = false
+    this.Parent.prop.InputProp.Visible = false
 
     console.log("open fields=", this.fields)
     let fields = ''
@@ -117,6 +119,20 @@ export class HELP extends CONTAINER {
     }
 
   }
+
+  async close() {
+    console.log('help close')
+    if (this.browse.prop.Value > '   ') {
+      this.Parent.prop.Value = this.browse.prop.Value
+      this.Parent.valid()
+      this.Parent.prop.Disabled = false
+      this.Parent.prop.Visible = false
+    }
+    this.Parent.prop.InputProp.Enabled = false
+    this.Parent.prop.InputProp.Visible = false
+
+  }
+
 
 
 

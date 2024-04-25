@@ -66,6 +66,7 @@ export class COMPONENT {
     Init: true,
     InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
 
+    InputProp: { Enabled: true, Visible: true },
 
     Key: 0,
 

@@ -10,7 +10,7 @@
       @input.self="onInput" -->
 
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
-    <span :title="This.prop.ToolTipText">
+    <span :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible">
       <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
@@ -79,8 +79,8 @@
         @focus="onFocus">
     </span>
 
-    <img v-if="!prop.ReadOnly && !prop.Disabled && prop.Help" class='help_icon' src="/Iconos/help-svgrepo-com.svg"
-      style="float:left" width="20" @click.prevent="help()" />
+    <img v-if="!prop.ReadOnly && !prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
+      src="/Iconos/help-svgrepo-com.svg" style="float:left" width="20" @click.prevent="help()" />
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->

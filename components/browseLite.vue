@@ -427,6 +427,8 @@ function multiFilter(array, filters) {
 
 
 const filter = async (filters?: {}, limit: number) => {
+
+  const filtro = {}
   if (!filters)
     filters = table.filters
   else
@@ -439,10 +441,33 @@ const filter = async (filters?: {}, limit: number) => {
 
   //console.log('TableLite en browseLite filters=', filters)  //, filterColumns[name])
 
-  console.log('multiFilter filters', filters)
+  console.log('0) filters ', 'Tabla origen', table.oriRows, 'Columnas', table.columns)
+
+  console.log('1) filters', filters, 'Tabla origen', table.oriRows)
+
+  for (const fil in filters) {
+    console.log('1.1) filters filtro=', fil)
+
+    for (let i = 0; i < table.columns.length; i++) {
+      console.log('1.2) filters filtro=', table.columns[i].label)
+
+      if (fil === table.columns[i].label) {
+
+        if (!filtro[table.columns[i].field])
+          filtro[table.columns[i].field] = []
+
+        filtro[table.columns[i].field].push(filters[fil])
+
+      }
+    }
+  }
+
+  console.log('2)Filters filtro=', filtro, 'Filters=', filters)
   table.rows = []
 
-  const NewRows = sw_filters ? await multiFilter(table.oriRows, filters) :
+  //  const NewRows = sw_filters ? await multiFilter(table.oriRows, filters) :
+
+  const NewRows = sw_filters ? await multiFilter(table.oriRows, filtro) :
     table.oriRows
 
 
