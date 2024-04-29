@@ -16,6 +16,7 @@ export class has_dat extends COMPONENT {
 
     this.prop.textLabel = " Y ";
     this.prop.MaxLength = 30;
+    this.prop.Visible = false;
   }
 
   async valid() {

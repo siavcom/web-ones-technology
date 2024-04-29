@@ -88,12 +88,13 @@
       }}</span>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
-
+    <!--Teleport to="body"-->
     <component v-for="( compMain ) in  This.main " :key="compMain" :is="impComp(This[compMain].prop.BaseClass)"
       v-bind:Component="ref(This[compMain])" v-model:Value="This[compMain].prop.Value"
       v-model:Status="This[compMain].prop.Status" v-model:Focus="This[compMain].Focus" :Registro="This[compMain].Recno"
       v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style" v-bind:position="This[compMain].position">
     </component>
+    <!--/Teleport-->
     <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" -->
   </div>
 </template>
@@ -136,6 +137,7 @@ const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vu
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
+const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
 
 ///////////////////////////////////////
 // Emits
@@ -865,7 +867,6 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 
       }
     }
-    //const setElement = document.getElementById(nextFocus);
     console.log('KeyPres nextFocus =', nextFocus)
 
     $event.preventDefault();
@@ -902,6 +903,13 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
        } while (next)
        */
   }
+
+
+
+  // oprimió ? (help)
+  if ((propType == 'number' || propType == 'text') && This.Help && $event.charCode == 63)
+    return help()
+
   // caracteres permitido en input numero
   if (propType == 'number') {
     // console.log('KeyPress number', $event.charCode)
@@ -1353,7 +1361,7 @@ onMounted(() => {
 const impComp = ((name: string, pos?: string) => {
 
   //return eval(name)
-  console.log('Importo', name, 'impComp=', name)
+
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
       // console.log('Importo edittext')
@@ -1398,6 +1406,11 @@ const impComp = ((name: string, pos?: string) => {
 
     case 'container': {
       return container
+      break
+    }
+
+    case 'modalcontainer': {
+      return modalContainer
       break
     }
 

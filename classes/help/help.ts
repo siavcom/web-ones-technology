@@ -1,11 +1,11 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : Grid
-// Class : vi_cap_dpy
-// Description : Capture Grid
+// BaseClass : help
+// Class : help
+// Description : Clase base de ayuda
 // Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2024-03-21
+// Creation : 2024-04-21
 // Update Date  : 
 /////////////////////////////////////////////
 
@@ -45,15 +45,12 @@ export class HELP extends CONTAINER {
     this.textLabel = 'Buscador'
     this.prop.cam_pri = ''
     this.prop.oneClick = true
-    this.prop.BaseClass = 'Container'
+    this.prop.BaseClass = 'modalContainer'   //'modalContainer'
     this.prop.Where = ''
-
 
     this.prop.Visible = false
     this.prop.Disabled = true
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
-
-
 
     this.cam_dat.Position = [0, 0]
     this.tip_con.Position = [0, 1]
@@ -71,6 +68,9 @@ export class HELP extends CONTAINER {
     this.bt_aceptar.prop.TabIndex = 8.5
     this.browse.prop.TabIndex = 8.6
     this.prop.oneClick = true
+    this.style.width = 'auto'
+
+
 
   }
 
@@ -78,7 +78,7 @@ export class HELP extends CONTAINER {
     this.Parent.prop.InputProp.Enabled = false
     this.Parent.prop.InputProp.Visible = false
 
-    console.log("open fields=", this.fields)
+
     let fields = ''
     let or = ''
     for (let i = 0; i < this.fields.length; i++) {
@@ -121,15 +121,22 @@ export class HELP extends CONTAINER {
   }
 
   async close() {
-    console.log('help close')
+    this.prop.Visible = false
     if (this.browse.prop.Value > '   ') {
       this.Parent.prop.Value = this.browse.prop.Value
       this.Parent.valid()
       this.Parent.prop.Disabled = false
-      this.Parent.prop.Visible = false
+
     }
-    this.Parent.prop.InputProp.Enabled = false
-    this.Parent.prop.InputProp.Visible = false
+    this.Parent.prop.InputProp.Enabled = true
+    this.Parent.prop.InputProp.Visible = true
+    this.Parent.prop.Visible = true
+
+    //this.Parent.prop.ReadOnly =false
+    //this.Parent.prop.Disabled =false
+    this.Parent.prop.Help = true
+
+
 
   }
 

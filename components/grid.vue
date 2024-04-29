@@ -9,8 +9,8 @@
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
-      <div class="tabla" :style="{ minHeight: '150px', height: 'auto', width: 'inherit' }">
-        <table :style="{ lineHeight: '11px' }"> <!--11px-->
+      <div class="tabla" :style="{ minHeight: '150px', height: 'fit-content', width: 'inherit' }">
+        <table :style="{ height: 'auto' }"> <!--lineHeight:11px-->
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
@@ -36,8 +36,8 @@
               item.id + 1-->
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
             <tr v-for="item in scroll.dataPage" :key="item.recno">
-
-              <td class='renNumber' :style="{ height: 'auto' }">{{ item.recno }}</td>
+              <!-- No utilizar vertical-aling en renNumber-->
+              <td class='renNumber' style="height: auto;"><label>{{ item.recno }}</label></td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
@@ -90,10 +90,10 @@
                 
                 
                 -->
-                <component v-if="item.id == This.Row" :is="impComp(This[col.Name].prop.BaseClass)"
-                  v-model:Value="This[col.Name].prop.Value" v-model:Status="This[col.Name].prop.Status"
-                  v-model:Key="This[col.Name].prop.Key" v-model:Focus="This[col.Name].Focus"
-                  v-model:ShowError="This[col.Name].prop.ShowError" v-bind:Component="ref(This[col.Name])"
+                <component v-else :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
+                  v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
+                  v-model:Focus="This[col.Name].Focus" v-model:ShowError="This[col.Name].prop.ShowError"
+                  v-bind:Component="ref(This[col.Name])"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
@@ -237,10 +237,12 @@ const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 //const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+//const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
+const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
+
 
 
 
@@ -981,8 +983,10 @@ const impComp = ((name: string) => {
       break;
     }
 
-
-
+    case 'modalcontainer': {
+      return modalContainer
+      break
+    }
 
     default: {
       return editText

@@ -1,8 +1,5 @@
 <template>
- <div class="bg-green-100">
-   
-    <slot />
-    
- </div>
- 
+   <div>
+      <slot />
+   </div>
 </template>

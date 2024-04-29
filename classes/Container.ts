@@ -21,15 +21,15 @@ export class CONTAINER extends COMPONENT {
     super()
     //this.prop.Name = null ? 'Container' : this.prop.Name
     this.Text = 'Container'
-    this.prop.BaseClass = 'container'
+    this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.style = {
-      maxWidth: '720px',
+      maxWidth: 'fit-content',
+      maxHeight: 'fit-content',
       borderStyle: 'double',
       background: 'antiquewhite',
       borderRadius: '10px',
-
-
+      padding: '20px',   //Margen entre los bordes y el contenido
     }
   }
   async init() {

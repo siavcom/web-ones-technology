@@ -1,7 +1,7 @@
 <template>
   <div v-show="prop.Visible" class="divi" :style="style">
     <!--div class="mensajes" v-bind:style="inputStyle"    :style="{ maxHeight: style.maxHeight } -->
-    <span class="etiqueta" :v-if="props.prop.textLabel > ' '" :style="labelStyle">{{ prop.textLabel + " " }}</span>
+    <div class="etiqueta" :v-if="props.prop.textLabel > ' '" :style="labelStyle">{{ prop.textLabel + " " }}</div>
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 

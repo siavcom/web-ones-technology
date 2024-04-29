@@ -232,6 +232,8 @@ const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vu
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
+const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
+
 
 /////////////////////////////////////////
 // Componentes dinamicos
@@ -585,6 +587,13 @@ const impComp = ((name: string, pos?: string) => {
       return container
       break
     }
+
+    case 'modalcontainer': {
+      return modalContainer
+      break
+    }
+
+
 
     case 'embedpdf': {
 
