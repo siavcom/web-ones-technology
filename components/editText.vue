@@ -1,6 +1,6 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
+  <div :id="Id" class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
     <span class="etiqueta" v-if="prop.textLabel" :style="labelStyle">{{ prop.textLabel + " " }}</span>
 
     <!--mensajes de error y tooltip
@@ -10,29 +10,30 @@
       @input.self="onInput" -->
 
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
-    <span :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible">
-      <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
+    <span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible">
+      <input :id="Id + '_input'" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
         :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
         @input.self="onInput" @keypress="keyPress($event)">
 
       <!--spinner-->
 
-      <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
-        :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
+      <input :id="Id + '_input'" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle"
+        ref="Ref" :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
+        :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
+        @input="emitValue(false)">
 
       <!--textArea -->
-      <div v-else-if="propType == 'textarea'" :style="inputStyle">
-        <textarea :id="Id" class="textArea" ref="Ref" :style="inputStyle" v-model="Value" :readonly="ReadOnly"
-          :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
-          :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)" @focusout="focusOut"
-          @focus="onFocus"></textarea>
+      <div :id="Id + '_textarea'" v-else-if="propType == 'textarea'" :style="inputStyle">
+        <textarea :id="Id + '_input'" class="textArea" ref="Ref" :style="inputStyle" v-model="Value"
+          :readonly="ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
+          type="textArea" :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)"
+          @focusout="focusOut" @focus="onFocus"></textarea>
       </div>
 
       <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
       <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
-      <input :id="Id" v-else-if="propType.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
+      <input :id="Id + '_input'" v-else-if="propType.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
         :type="propType == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
         :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
         @focusout="focusOut">
@@ -48,11 +49,13 @@
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
         <!--TransitionGroup name='detailJson' tag="div"-->
-        <details v-for="(    comp, index    ) in     compJson    " key:='index'>
-          <summary :style="{ fontWeight: 'bold', height: inputStyle.height }" :key='index'><label>{{ comp.label }}
+        <details :id="Id + '_detail_' + key" v-for="(    comp, index, key    ) in     compJson    " key:='index'>
+          <summary :id="Id + '_label_' + key" :style="{ fontWeight: 'bold', height: inputStyle.height }" :key='index'>
+            <label>{{ comp.label }}
             </label>
           </summary>
-          <input v-model="comp.value" :type="comp.type ? comp.type : 'text'" :readonly="comp.readOnly ? true : false"
+          <input :id="Id + '_component' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
+            :readonly="comp.readOnly ? true : false"
             :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="focusOut">
 
         </details>
@@ -61,38 +64,35 @@
 
       <!--checkBox-->
       <!--div v-else-if="propType == 'checkBox'"-->
-      <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
-        :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
-        @focus="onFocus" @keypress="keyPress($event)">
+      <input :id="Id + '_input'" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle"
+        ref="Ref" :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex"
+        v-model="checkValue" @focus="onFocus" @keypress="keyPress($event)">
 
-      <!--label for=" checkbox">{{ checkValue }}</label-->
-      <!--/div-->
-      <!--Si es texto
-        @focusout="focusOut"
-           @change="change"
-            :maxlength="prop.MaxLength" 
-            :size="prop.MaxLength"
-      -->
-      <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
+      <!--checkBox-->
+      <input :id="Id + '_input'" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
         :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
         @focus="onFocus">
     </span>
 
-    <img v-if="!prop.ReadOnly && !prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
-      src="/Iconos/help-svgrepo-com.svg" style="float:left" width="20" @click.prevent="help()" />
+    <img :id="Id + '_help'" v-if="!prop.ReadOnly && !prop.Disabled && prop.Help && This.prop.InputProp.Visible"
+      class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
+      @click.prevent="help()" />
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
-    <span class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage : 'Invalid Input'
+    <span :id="Id + '_error'" class="errorText" v-show="ShowError">{{ prop.ErrorMessage.length >= 1 ? prop.ErrorMessage
+    :
+    'Invalid Input'
       }}</span>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
     <!--Teleport to="body"-->
-    <component v-for="( compMain ) in  This.main " :key="compMain" :is="impComp(This[compMain].prop.BaseClass)"
-      v-bind:Component="ref(This[compMain])" v-model:Value="This[compMain].prop.Value"
-      v-model:Status="This[compMain].prop.Status" v-model:Focus="This[compMain].Focus" :Registro="This[compMain].Recno"
-      v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style" v-bind:position="This[compMain].position">
+    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
+      :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+      v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+      v-model:Focus="This[compMain].Focus" :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop"
+      v-bind:style="This[compMain].style" v-bind:position="This[compMain].position">
     </component>
     <!--/Teleport-->
     <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" -->
@@ -266,7 +266,6 @@ const props = defineProps<{
 }>();
 
 
-console.log('EditText init Name=', props.prop.Name)
 
 
 const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true : false)
@@ -317,7 +316,7 @@ const zIndex = divStyle.zIndex
 
 //const inputStyle = reactive(props.inputStyle)
 const inputStyle = reactive(This.inputStyle)
-const inputVisible = ref(true)
+
 
 inputStyle.zIndex = zIndex
 
@@ -1223,6 +1222,7 @@ watch(
     // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
     emitValue(true)
     This.Recno = props.Registro
+    This.recnoChange()
   },
   { deep: true }
 );
@@ -1274,7 +1274,12 @@ watch(
 //const init = async () => {
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
+  // console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
+
+
+  console.log('1) EditText Name=', This.prop.Name, 'propType=', propType, 'inputStyle=', inputStyle)
+
+
   if (propType == 'date') {
     inputStyle.width = '120px'
     inputStyle.height = '20px'
@@ -1293,6 +1298,8 @@ onMounted(async () => {
     divStyle.height = 'auto'
   }
   if ((propType == 'textarea' || propType == 'text') && inputStyle.width == 'auto') {
+    console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
+
     inputStyle.width = '100%'
   }
 
@@ -1306,6 +1313,8 @@ onMounted(async () => {
   This.Recno = props.Registro
 
   oldVal = Value.value   // asignamos el valor viejo
+
+  await This.recnoChange()
 
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {

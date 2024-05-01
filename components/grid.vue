@@ -1,24 +1,25 @@
 <template>
-  <div class="divi" v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Db.View[prop.RecordSource]"
-    :style="style" ref="Ref">
+  <div id="divi_grid" class="divi"
+    v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Db.View[prop.RecordSource]" :style="style"
+    ref="Ref">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
+    <div id="grid_datos" class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
-      <div class="tabla" :style="{ minHeight: '150px', height: 'fit-content', width: 'inherit' }">
-        <table :style="{ height: 'auto' }"> <!--lineHeight:11px-->
+      <div id="div_grid_tabla" class="tabla" :style="{ minHeight: '150px', height: 'fit-content', width: 'inherit' }">
+        <table id="grid_tabla" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
-              <th v-for="column in This.elements" :key="column.Id" :id="column.Name"
+              <th :id="'grid_th_column_header' + column.Name" v-for="column in This.elements" :key="column.Id"
                 :style="{ height: prop.headerHeight, lineHeight: '15px' }">
                 <!--Header:
                   -->
-                <div v-show="This[column.Name].prop.Visible">
+                <div :id="'div_grid_column_header' + column" v-show="This[column.Name].prop.Visible">
                   <!--Imprime como etiqueta el header de cada columna-->
                   {{ This[column.Name].textLabel }}
                 </div>
@@ -30,22 +31,24 @@
            && prop.Status == 'A' 
           -->
 
-          <tbody v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
+          <tbody id="grid_tbody" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
 
             <!-------------  Renglones  -----------------------
               item.id + 1-->
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr v-for="item in scroll.dataPage" :key="item.recno">
+            <tr :id="'grid_tr_' + item.recno" v-for="item in scroll.dataPage" :key="item.recno">
               <!-- No utilizar vertical-aling en renNumber-->
-              <td class='renNumber' style="height: auto;"><label>{{ item.recno }}</label></td>
+              <td :id="'grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{ item.recno
+                  }}</label></td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != This.Row"
                     -->
 
-              <td v-for="col in This.elements" :key="item.recno.toString() + col.Name"
-                :style='{ "height": This[col.Name].style.height, padding: 0 }' :headers="col.Name">
+              <td :id="'grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
+                :key="item.recno.toString() + col.Name" :style='{ "height": This[col.Name].style.height, padding: 0 }'
+                :headers="col.Name">
 
                 <!--div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)"-->
                 <!--template style="This[col.Name].style" -->
@@ -64,7 +67,7 @@
                 
                 -->
                 <!-- @click.stop Transition name="columntext"-->
-                <textLabel v-if="item.id != This.Row"
+                <textLabel :id="'grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                   v-bind:style="This[col.Name].style"
@@ -90,7 +93,8 @@
                 
                 
                 -->
-                <component v-else :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
+                <component :id="'grid_component_' + col.Name + '_' + item.recno" v-else
+                  :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
                   v-model:Focus="This[col.Name].Focus" v-model:ShowError="This[col.Name].prop.ShowError"
                   v-bind:Component="ref(This[col.Name])"
@@ -143,52 +147,53 @@
         }}
       </span-->
       <!--/div tolltiptext-->
-      <div class="break">
-        <div class="controles" :disabled="!scroll.controls">
+      <div id="bottom" class="break">
+        <div id="bottom_controles" class="controles" :disabled="!scroll.controls">
 
-          <span v-show="prop.addButton" width="40" @click="appendRow()">
-            <img src="/Iconos/add-color.svg" width="35">
+          <span id="botton_controles_add" v-show="prop.addButton" width="40" @click="appendRow()">
+            <img id="botton_controles_add_img" src="/Iconos/add-color.svg" width="35">
           </span>
 
-          <span v-show="scroll.page > 0">
+          <span id="botton_controles_page" v-show="scroll.page > 0">
 
-            <span @click.capture.stop="first()">
-              <img src="/Iconos/first.svg" width="30">
+            <span id="botton_controles_page_first" v-bind:style="{ 'width': '40px' }" @click.capture.stop="first()">
+              <img id="botton_controles_page_first_img" src="/Iconos/first.svg" width="30">
             </span>
 
-            <span @click.capture.stop="previous()">
-              <img src="/Iconos/previous.svg" width="30">
+            <span id="botton_controles_page_previus" @click.capture.stop="previous()">
+              <img id="botton_controles_page_previus_img" src="/Iconos/previous.svg" width="30">
             </span>
 
           </span>
-          <span v-show="!scroll.bottom">
-            <span @click="next()">
-              <img src="/Iconos/next.svg" width="30">
+          <span id="botton_controles_one__page" v-show="!scroll.bottom">
+            <span id="botton_controles_one__page_next" @click="next()">
+              <img id="botton_controles_one__page_next_img" src="/Iconos/next.svg" width="30">
             </span>
-            <span @click="last()">
-              <img src="/Iconos/last.svg" width="30">
+            <span id="botton_controles_one__page_last" @click="last()">
+              <img id="botton_controles_one__page_last_img" src="/Iconos/last.svg" width="30">
             </span>
           </span>
 
-          <span v-show="prop.deleteButton && This.Row >= 0" width="40" @click.stop="borraRenglon()">
-            <img src="/Iconos/delete-row.svg" width="45">
+          <span id="botton_controles_delete_row" v-show="prop.deleteButton && This.Row >= 0" width="40"
+            @click.stop="borraRenglon()">
+            <img id="botton_controles_delete_row_img" src="/Iconos/delete-row.svg" width="45">
           </span>
 
           <!-- click.capture.stop -->
-          <span v-show="prop.saveData" @click="saveTable()">
+          <span id="botton_controles_save" v-show="prop.saveData" @click="saveTable()">
             <img src="/Iconos/save-color1.svg" width="45">
           </span>
 
-          <div v-for="(compFooter) in This.footer" style="zIndex:0">
+          <div :id="'footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
             <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
           v-bind:Show="true"
           -->
-            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
-              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-              v-model:Focus="This[compFooter].Focus"
+            <component :id="'component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
+              v-bind:Component="ref(This[compFooter])" v-model:Value="This[compFooter].prop.Value"
+              v-model:Status="This[compFooter].prop.Status" v-model:ShowError="This[compFooter].prop.ShowError"
+              v-model:Key="This[compFooter].prop.Key" v-model:Focus="This[compFooter].Focus"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"

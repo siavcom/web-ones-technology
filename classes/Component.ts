@@ -154,7 +154,7 @@ export class COMPONENT {
 
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    width: "99%",      // 95%
+    width: "max-content",      // 95%
     height: "99%",     // 95%
     marginLeft: "0px", //5px
     maxWidth: "auto",
@@ -444,6 +444,12 @@ export class COMPONENT {
   public async init() {
     return;
   }
+
+  public async recnoChange() {
+    return;
+  }
+
+
 
   public async mounted() {
     return;

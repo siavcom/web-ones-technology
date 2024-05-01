@@ -1,24 +1,25 @@
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div class="modal-mask" v-if="This.prop.Visible">
-        <div class="modal-container" :style="This.style">
+      <div :id="'modal_mask' + This.prop.Name" class="modal-mask" v-if="This.prop.Visible">
+        <div :id="'modal_container' + This.prop.Name" class="modal-container" :style="This.style">
 
           <!--section class="mainContainer"-->
 
-          <div class="modal-header">
+          <div :id="'modal_header' + This.prop.Name" class="modal-header">
             <slot name="header">{{ This.textLabel }}</slot>
           </div>
 
 
-          <div class="modal-body">
+          <div :id="'modal_body' + This.prop.Name" class="modal-body">
             <slot name="componentes">
-              <div v-if="Divi" v-for="(Ver) in  Divi" :key="Ver">
-                <div v-for=" (Ele) in  Ver" :key="Ele" style="padding-bottom:2px">
-                  <component :is="impComp(Ele.prop.BaseClass)" v-bind:Component="ref(Ele)"
-                    v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" v-model:Focus="Ele.Focus"
-                    :Registro="Ele.Recno" :prop="Ele.prop" :style="Ele.style" :position="Ele.position"
-                    @click.capture="Ele.click()"></component>
+              <div :id="'modal_componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver">
+                <div :id="'modal_hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
+                  style="padding-bottom:2px">
+                  <component :id="'modal_componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
+                    v-bind:Component="ref(Ele)" v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status"
+                    v-model:Focus="Ele.Focus" :Registro="Ele.Recno" :prop="Ele.prop" :style="Ele.style"
+                    :position="Ele.position" @click.capture="Ele.click()"></component>
 
                 </div>
               </div>

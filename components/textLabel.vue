@@ -1,33 +1,33 @@
 <template>
-  <div v-show="prop.Visible" class="divi" :style="style">
+  <div :id="Id + '_div'" v-show="prop.Visible" class="divi" :style="style">
     <!--div class="mensajes" v-bind:style="inputStyle"    :style="{ maxHeight: style.maxHeight } -->
-    <div class="etiqueta" :v-if="props.prop.textLabel > ' '" :style="labelStyle">{{ prop.textLabel + " " }}</div>
+    <div :id="Id + '_span'" class="etiqueta" :v-if="props.prop.textLabel > ' '" :style="labelStyle">{{ prop.textLabel +
+    " " }}</div>
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 
-    <input v-if="prop.Type == 'checkBox'" :class="prop.Type" :style="inputStyle" readonly="true" type="checkBox"
-      :checked="checked" />
-    <!--/div>
-      <div v-else-if="prop.Type == 'json'" v-bind:style="inputStyle"-->
-    <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
-    <input v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle" readonly="true" />
+    <input :id="Id + '_input'" v-if="prop.Type == 'checkBox'" :class="prop.Type" :style="inputStyle" readonly="true"
+      type="checkBox" v-model="checkValue" />
+
+    <input :id="Id + '_input'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
+      readonly="true" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'date'" v-bind:style="inputStyle"-->
-    <input v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle" readonly="true"
-      v-model="Text" />
+    <input :id="Id + '_input'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle"
+      readonly="true" v-model="Text" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="inputStyle"-->
-    <input v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local" :style="inputStyle"
-      :format="This.prop.Format" readonly="true" v-model="Text" />
+    <input :id="Id + '_input'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
+      :style="inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
     <!--/div>
        
       <div v-else-->
-    <input v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type" :style="inputStyle"
-      readonly="true" v-model="Text" />
+    <input :id="Id + '_input'" v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type"
+      :style="inputStyle" readonly="true" v-model="Text" />
     <!--/div-->
-    <img v-if="prop.Image > '    '" class="img" :src="prop.Image" />
+    <img :id="Id + '_img'" v-if="prop.Image > '    '" class="img" :src="prop.Image" />
 
   </div>
   <!--/div-->
@@ -124,6 +124,9 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
+
+const Id = This.prop.Name + props.Registro.toString().trim()
+
 const labelStyle = reactive(This.labelStyle)
 const Value = ref(props.prop.Value)
 
@@ -140,7 +143,7 @@ const Status = ref(props.prop.Status)
 //const This = Component.value
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
-const checked = ref(false)
+const checkValue = ref(false)
 
 const inputStyle = reactive(props.style)
 
@@ -444,6 +447,7 @@ const readCampo = async () => {
     for (const campo in data) {
       if (campo != 'key_pri')
         Text.value = data[campo] != null ? data[campo] : ''
+      console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
     }
   }
   if (props.prop.Type == 'number') {
@@ -461,10 +465,18 @@ const readCampo = async () => {
   }
 
   if (props.prop.Type == 'checkBox') {
-    checked.value = Text.value == 1 ? true : false
-    //console.log('checkBox ReadValue =',props.Name,Text.value)
+    //checkValue.value = Text.value == 1 ? true : false
+
+    let check = +Value.value == 0 ? false : true
+    if (checkValue.value != check) {
+      checkValue.value = check
+      // emit("update:checkValue", checkValue)
+    }
+
+
+
   }
-  //  console.log('TextLabel Name=', props.Name, 'Text=', Text.value)
+
 
   renderComboBox()
 }
@@ -491,12 +503,15 @@ watch(
 
 watch(
   () => props.Registro,
-  (new_val, old_val) => {
+  async (new_val, old_val) => {
     // console.log('inputStyle watch Registro', old_val, new_val)
-    if (old_val != new_val && new_val > 0) readCampo()
-
+    if (old_val != new_val && new_val > 0) {
+      await readCampo()
+      This.recnoChange()
+    }
     if (new_val == 0)
       Text.value = ''
+
   },
   { deep: false }
 )
@@ -514,7 +529,8 @@ const init = async () => {
   if (props.prop.Type == 'number')
     inputStyle.textAlign = 'right'
 
-  readCampo()
+  await readCampo()
+  This.recnoChange()
 
 }
 

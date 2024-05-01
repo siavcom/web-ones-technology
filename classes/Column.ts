@@ -25,17 +25,14 @@ export class COLUMN extends COMPONENT {
     this.prop.Capture = true;
     this.prop.Valid = false;
     this.prop.Position = "main";
-    this.style.width = "85%";
-    this.style.height = "95%";
+    this.style.width = "99%";
+    this.style.height = "99%";
+    this.inputStyle.width = "96%";
     // Segun Vfp
     //    this.header.BaseClass = 'Header'
     //    this.header.Name = 'header'
     //    this.componente.BaseClass = 'Component'
     //    this.componente.Name = 'component'
-  }
-  async init() {
-    this.inputStyle.width = "95%";
-    //this.inputStyle.maxWidth=this.style.width
   }
 
   async valid() {

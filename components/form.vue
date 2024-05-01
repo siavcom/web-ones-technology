@@ -26,26 +26,26 @@
 
   <transition name='Mainform'>
 
-    <div :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'"
+    <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'"
       :style="{ 'width': '-moz-available' }">
       <section class="pagina" :style="ThisForm.style">
-        <div class='backGround'>
+        <div id='backGround' :class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
           <slot name="header">
 
             <!--template v-slot:header-->
             <h2 class="header2" float="left">
 
-              <div class="titFor">
+              <div id="titFor" class="titFor">
                 <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
               </div>
             </h2>
             <!--transition-group> -->
             <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
 
-            <div v-for="( compHeader ) in  ThisForm.header " :key="compHeader" :class="compHeader"
-              v-show='ThisForm[compHeader].prop.Visible'>
-              <component :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
+            <div :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
+              :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
+              <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
                 v-model:Status="ThisForm[compHeader].prop.Status"
                 v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
@@ -67,13 +67,13 @@
             <slot name="main">
 
               <TransitionGroup name='detailForm'>
-                <div v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
+                <div :id="'div_' + compMain" v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
-                  <component :is="impComp(ThisForm[compMain].prop.BaseClass)" v-bind:Component="ref(ThisForm[compMain])"
-                    v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                    v-model:Focus="ThisForm[compMain].Focus" :Registro="ThisForm[compMain].Recno"
-                    v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
-                    v-bind:position="ThisForm[compMain].position"
+                  <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
+                    v-bind:Component="ref(ThisForm[compMain])" v-model:Value="ThisForm[compMain].prop.Value"
+                    v-model:Status="ThisForm[compMain].prop.Status" v-model:Focus="ThisForm[compMain].Focus"
+                    :Registro="ThisForm[compMain].Recno" v-bind:prop="ThisForm[compMain].prop"
+                    v-bind:style="ThisForm[compMain].style" v-bind:position="ThisForm[compMain].position"
                     @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
                 </div>
               </TransitionGroup>
@@ -97,10 +97,10 @@
               
               -->
 
-              <div v-for="( compFooter ) in  ThisForm.footer " :class="compFooter"
+              <div :id="'div_' + compFooter" v-for="( compFooter ) in  ThisForm.footer " :class="compFooter"
                 v-show='ThisForm[compFooter].prop.Visible'>
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
-                <component :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
+                <component :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
                   v-bind:Component="ref(ThisForm[compFooter])" v-model:Value="ThisForm[compFooter].prop.Value"
                   v-model:Status="ThisForm[compFooter].prop.Status"
                   v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
@@ -113,9 +113,9 @@
               </div>
             </slot>
 
-            <div class="salir" @click='clickSalir()'>
+            <div id="salir" class="salir" @click='clickSalir()'>
 
-              <img class='img' src="/Iconos/exit4-color.svg" style="float:right"
+              <img id="icono_salir" class='img' src="/Iconos/exit4-color.svg" style="float:right"
                 :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
 
             </div>

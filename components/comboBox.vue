@@ -2,26 +2,30 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <div class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
+  <div :id="Id + '_div'" class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
-    <span class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel + " " }}</span>
+    <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel
+      }}</span>
     <!--List Box -->
-    <div v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
+    <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
 
-      <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+      <div :id="Id + '_columncontainer'" class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
 
 
-        <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true" :key="valueIndex"
-          @mouseleave="hover = false" @click.stop="validCheck(valueIndex)" :disabled="prop.ReadOnly">
+        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
+          @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
+          :disabled="prop.ReadOnly">
           <!--Imprime Columnas -->
 
-          <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
+          <div :id="Id + '_' + option + '_column' + col" class="columna" :disabled="prop.ReadOnly"
+            v-for="(text, col) in option.text" :key="col"
             :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
-            <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
+            <label :id="Id + '_' + option + 'label_column' + col" class="optionLabel" v-text="text"
+              :style:="columnLabelStyle" />
           </div>
-          <img v-show='option.check' src="/Iconos/add-color.svg" width="15">
+          <img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/add-color.svg" width="15">
           <!--div v-show='option.check'>+</div-->
           <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
 
@@ -41,10 +45,10 @@
 :style='comboStyle'
        inputBufferBuffer = '';
       -->
-    <div v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
+    <div :id="Id + '_comboBox'" v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
 
 
-      <input :id="Id" class="textInput" :style="inputStyle"
+      <input :id="Id + '_combobox_input_' + Id" class="textInput" :style="inputStyle"
         :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
         ref="Ref" @keypress="keyPress($event)"
         @focus.prevent="toggle = false; This.Form.eventos.push(This.prop.Map + '.when()')" @focusout="emitValue()" />
@@ -52,32 +56,36 @@
       <!--span> {{ prop.Value }}</span-->
       <!--Valor seleccionado click-->
 
-      <div v-show="!prop.ReadOnly && !prop.Disabled">
+      <div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled">
 
-        <div class="toggle" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)">
+        <div :id="Id + '_toggle'" class="toggle" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)">
           <!--CheckBox -->
-          <div class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+          <div :id="Id + '_columncontainer'" class="columContainer" @focusout="toggle = !toggle"
+            :style="columnContainer">
             <!--Columnas -->
 
-            <div class="option" v-for="(option, valueIndex) in columnas" @mouseover="hover = true" :key="valueIndex"
-              @mouseleave="hover = false" @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
+            <div :id="Id + '_options_' + valueIndex" class="option" v-for="(option, valueIndex) in columnas"
+              @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false"
+              @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
               <!--Imprime Columnas -->
 
-              <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
+              <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
+                v-for="(text, col) in option.text" :key="col"
                 :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
-                <label class="optionLabel" v-text="text" :style:="columnLabelStyle" />
+                <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
+                  :style:="columnLabelStyle" />
               </div>
             </div>
           </div>
         </div>
         <!--toggle click.prevent -->
-        <img class="imagen" v-show="!prop.ReadOnly && !prop.Disabled"
+        <img :id="Id + '_toggle_img'" class="imagen" v-show="!prop.ReadOnly && !prop.Disabled"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       </div>
     </div>
-    <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-      :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
+    <span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
+      v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
     <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
   </div>
   <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
