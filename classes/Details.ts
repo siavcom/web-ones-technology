@@ -14,7 +14,7 @@ export class DETAILS extends COMPONENT {
 
   constructor() {
     super()
-    this.prop.BaseClass = 'details'
+    this.prop.BaseClass = 'details' //  clase base de los componentes modalContainer
     this.prop.Position = 'main'
     this.style.maxWidth = '720px'
   }

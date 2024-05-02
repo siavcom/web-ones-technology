@@ -296,24 +296,28 @@ input[class="number"] {
 
   /* Position */
   position: absolute;
-  bottom: 50%;
+  /*bottom: 50%; */
   border-style: double;
   z-index: 2;
 
   /* arrow*/
   content: " ";
-  left: 7px;
-  margin-left: -5px;
+  /*left: 64px;*/
+  bottom :18px;
   border-width: 0 px;
   /*border-style: solid; */
   /*background-color: transparent;*/
   /* border-color: #555 transparent transparent transparent; */
 
   /* Fade in tooltip */
+  min-width: max-content;
   opacity: 0.9;
   transition: opacity 0.2s ease;
   animation: blinkingText 1.2s infinite;
 }
+
+
+
 @keyframes blinkingText {
   0% {
     color: rgb(248, 8, 8);

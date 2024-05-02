@@ -29,7 +29,7 @@
     <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'"
       :style="{ 'width': '-moz-available' }">
       <section class="pagina" :style="ThisForm.style">
-        <div id='backGround' :class='backGround'>
+        <div id='backGround' class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
           <slot name="header">
 

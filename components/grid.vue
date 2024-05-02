@@ -1,25 +1,26 @@
 <template>
-  <div id="divi_grid" class="divi"
+  <div :id="Id + '_divi_grid'" class="divi"
     v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Db.View[prop.RecordSource]" :style="style"
     ref="Ref">
-    <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
+    <label :id="Id + '_lable'" class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div id="grid_datos" class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
+    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
-      <div id="div_grid_tabla" class="tabla" :style="{ minHeight: '150px', height: 'fit-content', width: 'inherit' }">
-        <table id="grid_tabla" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
+      <div :id="Id + '_div_grid_tabla'" class="tabla"
+        :style="{ minHeight: '150px', height: 'fit-content', width: 'inherit' }">
+        <table :id="Id + '_grid_tabla'" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
-              <th :id="'grid_th_column_header' + column.Name" v-for="column in This.elements" :key="column.Id"
+              <th :id="Id + '_grid_th_column_header' + column.Name" v-for="column in This.elements" :key="column.Id"
                 :style="{ height: prop.headerHeight, lineHeight: '15px' }">
                 <!--Header:
                   -->
-                <div :id="'div_grid_column_header' + column" v-show="This[column.Name].prop.Visible">
+                <div :id="Id + '_div_grid_column_header' + column" v-show="This[column.Name].prop.Visible">
                   <!--Imprime como etiqueta el header de cada columna-->
                   {{ This[column.Name].textLabel }}
                 </div>
@@ -31,14 +32,13 @@
            && prop.Status == 'A' 
           -->
 
-          <tbody id="grid_tbody" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
+          <tbody :id="Id + '_grid_tbody'" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
 
-            <!-------------  Renglones  -----------------------
-              item.id + 1-->
+            <!-------------  Renglones  ------------------------>
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr :id="'grid_tr_' + item.recno" v-for="item in scroll.dataPage" :key="item.recno">
+            <tr :id="Id + '_grid_tr_' + key" v-for="(item, key) in scroll.dataPage" :key="key">
               <!-- No utilizar vertical-aling en renNumber-->
-              <td :id="'grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{ item.recno
+              <td :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{ item.recno
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
               <!--
@@ -46,7 +46,7 @@
                 v-show="i != This.Row"
                     -->
 
-              <td :id="'grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
+              <td :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name" :style='{ "height": This[col.Name].style.height, padding: 0 }'
                 :headers="col.Name">
 
@@ -67,7 +67,7 @@
                 
                 -->
                 <!-- @click.stop Transition name="columntext"-->
-                <textLabel :id="'grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
+                <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                   v-bind:style="This[col.Name].style"
@@ -93,7 +93,7 @@
                 
                 
                 -->
-                <component :id="'grid_component_' + col.Name + '_' + item.recno" v-else
+                <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
                   v-model:Focus="This[col.Name].Focus" v-model:ShowError="This[col.Name].prop.ShowError"
@@ -102,7 +102,7 @@
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
                   @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
-                  :style="{ 'width': This[col.Name].style.width }">
+                  :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 1 }">
 
                 </component>
                 <!--/div-->
@@ -147,50 +147,51 @@
         }}
       </span-->
       <!--/div tolltiptext-->
-      <div id="bottom" class="break">
-        <div id="bottom_controles" class="controles" :disabled="!scroll.controls">
+      <div :id="Id + '_bottom'" class="break">
+        <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
 
-          <span id="botton_controles_add" v-show="prop.addButton" width="40" @click="appendRow()">
-            <img id="botton_controles_add_img" src="/Iconos/add-color.svg" width="35">
+          <span :id="Id + '_botton_controles_add'" v-show="prop.addButton" width="40" @click="appendRow()">
+            <img :id="Id + '_otton_controles_add_img'" src="/Iconos/add-color.svg" width="35">
           </span>
 
-          <span id="botton_controles_page" v-show="scroll.page > 0">
+          <span :id="Id + '_botton_controles_page'" v-show="scroll.page > 0">
 
-            <span id="botton_controles_page_first" v-bind:style="{ 'width': '40px' }" @click.capture.stop="first()">
-              <img id="botton_controles_page_first_img" src="/Iconos/first.svg" width="30">
+            <span :id="Id + '_botton_controles_page_first'" v-bind:style="{ 'width': '40px' }"
+              @click.capture.stop="first()">
+              <img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/first.svg" width="30">
             </span>
 
-            <span id="botton_controles_page_previus" @click.capture.stop="previous()">
-              <img id="botton_controles_page_previus_img" src="/Iconos/previous.svg" width="30">
+            <span :id="Id + '_botton_controles_page_previus'" @click.capture.stop="previous()">
+              <img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/previous.svg" width="30">
             </span>
 
           </span>
-          <span id="botton_controles_one__page" v-show="!scroll.bottom">
-            <span id="botton_controles_one__page_next" @click="next()">
-              <img id="botton_controles_one__page_next_img" src="/Iconos/next.svg" width="30">
+          <span :id="Id + '_botton_controles_one__page'" v-show="!scroll.bottom">
+            <span :id="Id + '_botton_controles_one__page_next'" @click="next()">
+              <img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/next.svg" width="30">
             </span>
-            <span id="botton_controles_one__page_last" @click="last()">
-              <img id="botton_controles_one__page_last_img" src="/Iconos/last.svg" width="30">
+            <span :id="Id + '_botton_controles_one__page_last'" @click="last()">
+              <img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/last.svg" width="30">
             </span>
           </span>
 
-          <span id="botton_controles_delete_row" v-show="prop.deleteButton && This.Row >= 0" width="40"
+          <span :id="Id + '_botton_controles_delete_row'" v-show="prop.deleteButton && This.Row >= 0" width="40"
             @click.stop="borraRenglon()">
-            <img id="botton_controles_delete_row_img" src="/Iconos/delete-row.svg" width="45">
+            <img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/delete-row.svg" width="45">
           </span>
 
           <!-- click.capture.stop -->
-          <span id="botton_controles_save" v-show="prop.saveData" @click="saveTable()">
-            <img src="/Iconos/save-color1.svg" width="45">
+          <span :id="Id + '_botton_controles_save'" v-show="prop.saveData" @click="saveTable()">
+            <img :id="Id + '_ botton_controles_save_img'" src="/Iconos/save-color1.svg" width="45">
           </span>
 
-          <div :id="'footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
+          <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
             <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
           v-bind:Show="true"
           -->
-            <component :id="'component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
+            <component :id="Id + '_component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
               v-bind:Component="ref(This[compFooter])" v-model:Value="This[compFooter].prop.Value"
               v-model:Status="This[compFooter].prop.Status" v-model:ShowError="This[compFooter].prop.ShowError"
               v-model:Key="This[compFooter].prop.Key" v-model:Focus="This[compFooter].Focus"
@@ -249,9 +250,6 @@ const container = defineAsyncComponent(() => import('@/components/container.vue'
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
 
 
-
-
-//import Grid from "vue-virtual-scroll-grid";
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
@@ -320,6 +318,9 @@ const props = defineProps<{
 const Component = ref(props.Component)
 //const ThisGrid = Component.value
 const This: {} = Component.value
+const Id = This.prop.Name + props.Registro.toString().trim()
+
+
 //This['estatus'] = []
 const compStatus = reactive({})
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
@@ -496,9 +497,9 @@ watch(
       //console.log('Watch estatus ===>', comp, compStatus[comp])
 
       if (compStatus[comp] != 'A' && Status.value == 'A') {
-        console.log('Grid watch eventos comp=', comp, 'Estatus=', compStatus[comp])
-        Status.value = 'P';  // Cambia el estatus del grid a Proceso
-        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+        console.log('Grid watch eventos eventos=', new_val, ' comp=', comp, 'Estatus=', compStatus[comp])
+        //   Status.value = 'P';  // Cambia el estatus del grid a Proceso
+        //   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
         return
       }
@@ -553,8 +554,8 @@ watch(
 
       if (compStatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
         console.log('Grid watch estatus comp=', comp, 'Estatus', compStatus[comp], 'This.Row=', This.Row)
-        Status.value = 'P';  // Cambia el estatus del grid a Proceso
-        emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+        //  Status.value = 'P';  // Cambia el estatus del grid a Proceso
+        //   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
         return
       }
@@ -604,8 +605,8 @@ const ejeEvento = (newEvento: string) => {
 
       console.log('Grid ejeEvento Status comp=', comp, 'Estatus=', compStatus[comp])
 
-      Status.value = 'P';  // Cambia el estatus del grid a Proceso
-      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+      // Status.value = 'P';  // Cambia el estatus del grid a Proceso
+      // emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
       //        return
     }
@@ -718,11 +719,17 @@ const loadData = async () => {
     //    scroll.noResult = true;
     //    scroll.message = "Error loading data";
   }
-
+  restableceStatus()
   This.Form.prop.Status = 'A'
   scroll.controls = true
 
 }
+
+const restableceStatus = async () => {
+  for (const comp in compStatus)
+    compStatus[comp] == 'A'
+}
+
 
 const first = async () => {
   scroll.controls = false
@@ -788,7 +795,6 @@ const appendRow = async () => {
   await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
   //  await last(true) 
 
-
 }
 
 
@@ -814,15 +820,18 @@ const borraRenglon = async (recno?: number) => {
   }
   //const { $MessageBox } = useNuxtApp()
   if (await MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
+    This.prop.Status = 'A'
+    await restableceStatus()
     eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
 
     This.Row = -1 // Quitamos la posicion del renglon
-    console.log('delete borramos load_data', load_data)
+    console.log('grid delete borramos load_data', load_data, This.prop.Status)
     load_data = true
 
   }
 }
 
+/*
 const saveRow = async (recno?: number) => {
   scroll.controls = false
   if (!recno) {
@@ -850,7 +859,7 @@ const saveRow = async (recno?: number) => {
 
   }
 }
-
+*/
 const saveTable = async () => {
 
   if (This.Row >= 0) {
@@ -915,7 +924,6 @@ const init = async () => {
     ) {
       if (This[comp].prop.First)
         firstElement = comp
-
 
       //  compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
       compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes

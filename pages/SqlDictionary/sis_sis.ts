@@ -30,10 +30,10 @@ export class sis_sis extends COMPONENT {
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "200px,50px";
+    this.prop.ColumnWidth = "200px,50px";
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
     this.prop.Visible = false;
-    this.style.width = "650px";
+    this.style.width = "350px";
     this.inputStyle.width = "200px";
 
     //this.style.zIndex=2
