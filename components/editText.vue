@@ -65,7 +65,7 @@
       <!--div v-else-if="propType == 'checkBox'"-->
       <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
         :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
-        @focus="onFocus" @keypress="keyPress($event)">
+        @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)">
 
       <!--checkBox-->
       <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
@@ -90,9 +90,11 @@
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
       v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-      v-model:Focus="This[compMain].Focus" :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop"
-      v-bind:style="This[compMain].style" v-bind:position="This[compMain].position">
+      :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
+      v-bind:position="This[compMain].position"
+      @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">
     </component>
+
     <!--/Teleport-->
     <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" -->
   </div>
@@ -577,6 +579,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
             break;
           case 'checkbox':
             Value.value = 0
+
             break;
           case 'date':
             Value.value = '1900-01-01' //'T00:00:00'
@@ -826,6 +829,18 @@ const focusOut = async () => {
   return
 
 };
+
+const clickCheckBox = () => {
+
+  console.log('clickCheckBox editText Name', This.prop.Name, 'checkValue=', checkValue.value)
+  This.prop.Value = checkValue.value ? 0 : 1
+
+  This.click()
+
+}
+
+
+
 /////////////////////////////////////////////////////////////////////
 // KeyPress
 // Descripcion: Cada tecla que se presiona en el input
@@ -1270,10 +1285,6 @@ onMounted(async () => {
   console.log('1) EditText Name=', This.prop.Name, 'propType=', propType, 'thisElement=', thisElement)
 
 
-
-
-
-
   if (propType == 'date') {
     inputStyle.width = '120px'
     inputStyle.height = '20px'
@@ -1299,6 +1310,9 @@ onMounted(async () => {
 
   if (propType == 'number')
     inputStyle.textAlign = 'right'
+
+  if (propType == 'checkbox')
+    inputStyle.width = '20px'
 
   if (!This.prop.Visible)
     divStyle.height = '0%'

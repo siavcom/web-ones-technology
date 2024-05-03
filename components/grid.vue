@@ -96,8 +96,7 @@
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
-                  v-model:Focus="This[col.Name].Focus" v-model:ShowError="This[col.Name].prop.ShowError"
-                  v-bind:Component="ref(This[col.Name])"
+                  v-model:ShowError="This[col.Name].prop.ShowError" v-bind:Component="ref(This[col.Name])"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
@@ -194,7 +193,7 @@
             <component :id="Id + '_component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
               v-bind:Component="ref(This[compFooter])" v-model:Value="This[compFooter].prop.Value"
               v-model:Status="This[compFooter].prop.Status" v-model:ShowError="This[compFooter].prop.ShowError"
-              v-model:Key="This[compFooter].prop.Key" v-model:Focus="This[compFooter].Focus"
+              v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
@@ -251,7 +250,7 @@ const modalContainer = defineAsyncComponent(() => import('@/components/modalCont
 
 
 
-const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
+const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -342,7 +341,7 @@ const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
-const Focus = ref(false)
+//const Focus = ref(false)
 
 
 const scroll = reactive({

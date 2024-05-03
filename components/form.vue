@@ -49,9 +49,8 @@
                 v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
                 v-model:Status="ThisForm[compHeader].prop.Status"
                 v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
-                v-model:Focus="ThisForm[compHeader].Focus" v-bind:Registro="ThisForm[compHeader].Recno"
-                v-bind:prop="ThisForm[compHeader].prop" v-bind:style="ThisForm[compHeader].style"
-                v-bind:position="ThisForm[compHeader].position"
+                v-bind:Registro="ThisForm[compHeader].Recno" v-bind:prop="ThisForm[compHeader].prop"
+                v-bind:style="ThisForm[compHeader].style" v-bind:position="ThisForm[compHeader].position"
                 @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
                 @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')">
               </component>
@@ -71,9 +70,9 @@
                   v-show='ThisForm[compMain].prop.Visible'>
                   <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
                     v-bind:Component="ref(ThisForm[compMain])" v-model:Value="ThisForm[compMain].prop.Value"
-                    v-model:Status="ThisForm[compMain].prop.Status" v-model:Focus="ThisForm[compMain].Focus"
-                    :Registro="ThisForm[compMain].Recno" v-bind:prop="ThisForm[compMain].prop"
-                    v-bind:style="ThisForm[compMain].style" v-bind:position="ThisForm[compMain].position"
+                    v-model:Status="ThisForm[compMain].prop.Status" :Registro="ThisForm[compMain].Recno"
+                    v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
+                    v-bind:position="ThisForm[compMain].position"
                     @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
                 </div>
               </TransitionGroup>
@@ -104,9 +103,8 @@
                   v-bind:Component="ref(ThisForm[compFooter])" v-model:Value="ThisForm[compFooter].prop.Value"
                   v-model:Status="ThisForm[compFooter].prop.Status"
                   v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-                  v-model:Focus="ThisForm[compFooter].Focus" v-bind:Registro="ThisForm[compFooter].Recno"
-                  v-bind:prop="ThisForm[compFooter].prop" v-bind:style="ThisForm[compFooter].style"
-                  v-bind:position="ThisForm[compFooter].position"
+                  v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
+                  v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                   @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
                 <!--@click.stop.prevent-->

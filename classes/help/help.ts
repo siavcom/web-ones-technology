@@ -45,7 +45,7 @@ export class HELP extends CONTAINER {
     this.textLabel = 'Buscador'
     this.prop.cam_pri = ''
     this.prop.oneClick = true
-    this.prop.BaseClass = 'modalContainer'   //'modalContainer'
+    this.prop.BaseClass = 'modalContainer'
     this.prop.Where = ''
 
     this.prop.Visible = false

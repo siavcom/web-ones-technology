@@ -15,7 +15,7 @@
   <!--transition name='Details'-->
   <div v-show="This.prop.Visible">
     <div class='details' :style="style">
-      <details class='details' :open='!This.prop.Disabled' :style="style">
+      <details open class='details' @toggle="toggle" :open='!This.prop.Disabled' :style="style">
 
         <summary>{{ This.prop.textLabel }}</summary>
         <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
@@ -31,7 +31,6 @@
               :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
               v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
               v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
-              v-model:Focus="This[compHeader].Focus"
               v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
               v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
               v-bind:position="This[compHeader].position"
@@ -49,7 +48,6 @@
             <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
               v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
               v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
-              v-model:Focus="This[compMain].Focus"
               v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
               v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
               v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
@@ -79,7 +77,6 @@
             <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-              v-model:Focus="This[compFooter].Focus"
               v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
@@ -128,8 +125,8 @@ const emit = defineEmits([ //"update",
   "update:Value",
   "update:Status",
   "update:ErrorMessage",
-  "update:Key",
-  "update:Focus"]);
+  "update:Key"
+]);
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -207,7 +204,7 @@ const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
-const Focus = ref(false)
+//const Focus = ref(false)
 
 
 const scroll = reactive({
@@ -235,6 +232,15 @@ const emitValue = async () => {
   //console.log('EditBox despues emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
+
+const toggle = () => {
+  This.prop.Disabled = !This.prop.Disabled
+  console.log('toggle', props.prop.Name, 'This.prop.Disabled', This.prop.Disabled)
+  This.click()
+}
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
 
 
 

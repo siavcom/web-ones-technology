@@ -234,7 +234,7 @@ const Status = ref(props.prop.Status);
 Status.value = 'I'
 const toggle = ref(false)
 const hover = ref(false)
-const Focus = ref(props.prop.Focus)
+//const Focus = ref(props.prop.Focus)
 //const First = ref(props.prop.First)
 
 const ShowError = ref(false)
