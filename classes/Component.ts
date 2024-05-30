@@ -89,6 +89,7 @@ export class COMPONENT {
 
     ReadOnly: false,
     RecordSource: "",
+    RefValue: null, // Valor por Referencia de otro componente
     Row: 0,
     RowSource: {},
     RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
@@ -126,7 +127,7 @@ export class COMPONENT {
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     fontWeight: "normal",
-    height: "85%",
+    height: "auto", // "auto","fit-content"
     maxHeight: "auto",
     maxWidth: "auto",
     textAlign: "left",
@@ -149,6 +150,11 @@ export class COMPONENT {
     alignContent: "center",
     background: "transparent",
     backgroundColor: "transparent", // semi "rgba(170, 187, 97, 0.5)",  //
+    backgroundImage: "",
+
+    border: "",  //    backgroundImage: "",
+    bordeRadius: "", //"2px",
+
     color: "#b94295",
     cols: "60",
 
@@ -163,9 +169,10 @@ export class COMPONENT {
     minHeight: "auto",
 
     textAlign: "left",
+    padding: "",
+
     position: "relative",
     wordWrap: "break-word", // Parte las palabras
-    backgroundImage: "",
 
     // un valor negativo (usualmente tabindex="-1") significa que el elemento debe ser enfocado, pero no debe de ser accesible a través de la navegación secuencial del teclado. Es útil para crear widgets accesibles con JavaScript.
     // tabindex="0" significa que el elemento debe ser enfocado y ser accesible a través de la navegación secuencial del teclado, pero su orden relativo es definido por convención de la plataforma.

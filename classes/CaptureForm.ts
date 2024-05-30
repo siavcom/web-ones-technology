@@ -49,9 +49,9 @@ export class captureForm extends FORM {
   // Obs: estos metodos se heredan y se mofican desde el ThisForm
   ////////////////////////////////////////
 
-  public async graba() {}
+  public async graba() { }
 
-  public async borra() {}
+  public async borra() { }
 
   /// /////////////////////////////////////
   // Metodo : valid
@@ -87,7 +87,8 @@ export class captureForm extends FORM {
           !this[comp].prop.Valid
         )
           return true;
-      if (!this.bt_graba.prop.Disabled) this.bt_graba.prop.Visible = true;
+      if (!this.bt_graba.prop.Disabled)
+        this.bt_graba.prop.Visible = true;
       return true;
     }
 
@@ -157,8 +158,8 @@ export class captureForm extends FORM {
     } else {
       Recno = data[0].recno;
       key_pri = data[0].key_pri;
-
-      this.bt_borra.prop.Visible = true;
+      if (!this.bt_borra.prop.Disabled)
+        this.bt_borra.prop.Visible = true;
     }
 
     //await this.refreshComponent(true, Recno,key_pri);
@@ -269,10 +270,21 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     async click() {
+
+      console.log(
+        "CaptureForm bt_graba click() Disabled=", this.prop.Disabled, ' ====> alaSql=',
+        await this.Form.db.localAlaSql(
+          "select * from " + this.Parent.prop.RecordSource,
+          this.prop.Disabled
+        )
+      );
+
+      if (this.prop.Disabled)
+        return;
+
       this.prop.Visible = false;
       this.prop.Valid = false;
-
-      this.Parent.bt_borra.prop.Disabled = true;
+      this.Parent.bt_borra.prop.Visible = false
 
       // Recorremos toda la forma y revisamos si estan validados
       for (const comp of this.Parent.main) {
@@ -282,18 +294,13 @@ export class captureForm extends FORM {
         // Checa si todos esta validados
         if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.Valid) {
           if (!(await this.Parent[comp].valid())) {
-            if (!this.prop.Disabled) this.prop.Visible = true;
+            if (!this.prop.Disabled)
+              this.prop.Visible = true;
             return;
           }
         }
       }
 
-      console.log(
-        "CaptureForm bt_graba click() ====> alaSql=",
-        await this.Form.db.localAlaSql(
-          "select * from " + this.Parent.prop.RecordSource
-        )
-      );
       console.log("CaptureForm bt_graba");
       const result = await this.Form.db.tableUpdate(
         0,
@@ -307,16 +314,18 @@ export class captureForm extends FORM {
         MessageBox("Error al actualizar Datos", 16);
         return;
       }
-      this.prop.Valid = true;
-      this.prop.Disabled = false;
-      this.prop.Visible = true;
-      this.Parent.bt_borra.prop.Disabled = false;
-      this.Parent.bt_borra.prop.Visible = true;
       // hay grid de captura
       //await this.lee_grid()
 
+
+
+      this.prop.Valid = true;
+      if (!this.Form.bt_borra.prop.Disabled)
+        this.Parent.bt_borra.prop.Visible = true;
+      this.prop.Visible = true;
+
       await this.Parent.graba();
-      if (!this.prop.Disabled) this.prop.Visible = true;
+
       return;
     }
 
@@ -346,8 +355,9 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     async click() {
-      if (!this.prop.Visible || this.prop.Disabled) return;
-      this.prop.Disabled = true;
+      if (this.prop.Disabled)
+        return;
+      this.prop.Visible = false;
       this.Parent.bt_graba.prop.Visible = false;
 
       if ((await MessageBox("Quieres borrar el registro", 4, "")) === 6) {
@@ -378,8 +388,12 @@ export class captureForm extends FORM {
             }
           }
         }
+        if (!this.Form.bt_grana.prop.Disabled)
+          this.Parent.bt_graba.prop.Visible = true;
 
-        this.prop.Disabled = false;
+        this.prop.Visible = true;
+        return;
+        this.prop.Visible = true;
       }
       await this.Parent.borra();
     }

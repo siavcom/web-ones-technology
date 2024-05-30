@@ -31,49 +31,47 @@
       <section class="pagina" :style="ThisForm.style">
         <div id='backGround' class='backGround'>
           <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
-          <slot name="header">
+          <section class="formheader">
+            <slot name="header">
 
-            <!--template v-slot:header-->
-            <h2 class="header2" float="left">
+              <!--template v-slot:header-->
+              <h2 class="header2" float="left">
 
-              <div id="titFor" class="titFor">
-                <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
+                <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
+                  <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
+                </div>
+              </h2>
+              <!--transition-group> -->
+              <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
+
+              <div :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
+                :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
+                <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
+                  :Registro="ThisForm[compHeader].Recno" :prop="ThisForm[compHeader].prop"
+                  :style="ThisForm[compHeader].style" :position="ThisForm[compHeader].position"
+                  :Value="ThisForm[compHeader].prop.Value"
+                  @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" />
               </div>
-            </h2>
-            <!--transition-group> -->
-            <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
 
-            <div :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
-              :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
-              <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
-                v-bind:Component="ref(ThisForm[compHeader])" v-model:Value="ThisForm[compHeader].prop.Value"
-                v-model:Status="ThisForm[compHeader].prop.Status"
-                v-model:ShowError="ThisForm[compHeader].prop.ShowError" v-model:Key="ThisForm[compHeader].prop.Key"
-                v-bind:Registro="ThisForm[compHeader].Recno" v-bind:prop="ThisForm[compHeader].prop"
-                v-bind:style="ThisForm[compHeader].style" v-bind:position="ThisForm[compHeader].position"
-                @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
-                @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')">
-              </component>
-            </div>
-
-          </slot>
+            </slot>
+          </section>
           <!--/template-->
           <!--template v-slot:main-->
           <!-- Despliega todo los componentes de la forma  
       && comp!='grid_datos'
       -->
-          <section class="main">
+          <section class="formmain">
             <slot name="main">
-
+              <!--  v-bind:Component="ref(ThisForm[compMain])"  -->
               <TransitionGroup name='detailForm'>
                 <div :id="'div_' + compMain" v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
                   <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
-                    v-bind:Component="ref(ThisForm[compMain])" v-model:Value="ThisForm[compMain].prop.Value"
-                    v-model:Status="ThisForm[compMain].prop.Status" :Registro="ThisForm[compMain].Recno"
+                    v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
+                    v-bind:Component="ref(ThisForm[compMain])" :Registro="ThisForm[compMain].Recno"
                     v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
                     v-bind:position="ThisForm[compMain].position"
-                    @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')"></component>
+                    @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" />
                 </div>
               </TransitionGroup>
             </slot>
@@ -84,7 +82,7 @@
                src="/Iconos/BotonRojo.png"
     ThisForm.prop.Status == 'A'
     -->
-          <section class="footer">
+          <section class="formfooter">
             <!--Transition tag='div' -->
             <img class='circle'
               :src="ThisForm.prop.Status == 'A' ? '/Iconos/circle-green.svg' : '/Iconos/circle-red.svg'"
@@ -100,13 +98,12 @@
                 v-show='ThisForm[compFooter].prop.Visible'>
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
                 <component :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
-                  v-bind:Component="ref(ThisForm[compFooter])" v-model:Value="ThisForm[compFooter].prop.Value"
-                  v-model:Status="ThisForm[compFooter].prop.Status"
+                  v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
                   v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
-                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
+                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" />
                 <!--@click.stop.prevent-->
               </div>
             </slot>
@@ -221,6 +218,24 @@ const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(sessi
 // Componentes
 /////////////////////////////////////////////////
 
+//const MyButton = resolveComponent('MyButton')
+
+/*
+const imgButton = resolveComponent('imgButton.vue')
+const comboBox = resolveComponent('comboBox.vue')
+const editText = resolveComponent('editText.vue')
+const textLabel = resolveComponent('textLabel.vue')
+const grid = resolveComponent('grid.vue')
+const browseLite = resolveComponent('browseLite.vue')
+const details = resolveComponent('details.vue')
+const embedPdf = resolveComponent('embedPdf.vue')
+const container = resolveComponent('container.vue')
+const modalContainer = resolveComponent('modalContainer.vue')
+
+*/
+
+
+
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
 const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
@@ -231,6 +246,7 @@ const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
+
 
 
 /////////////////////////////////////////
@@ -665,13 +681,8 @@ div.contenedor {
 
 }
 */
-header {
-  color: #9ef1a5;
-  height: 75px;
-  border: black;
-  border-width: 1px;
-  padding: 0 10x;
-}
+
+
 
 img.logoVue {
   float: left;
@@ -772,38 +783,8 @@ img.circle {
   width: 18px;
 }
 
-section.footer {
-  display: flex;
-  /*  flex;*/
-  /*flex-direction: column; */
-  align-items: last baseline;
-  /*center;*/
-  justify-content: space-around;
-  /*width: 100%;*/
-  height: fit-content;
-  background-color: #c8e0ce;
-  border: 1px solid rgb(0, 0, 0);
-  border-radius: 6px;
-  z-index: 0;
-  /*flex-direction: row-reverse; */
-}
 
-section.main {
-  /*display: flex;*/
-  /*  flex;*/
-  /*flex-direction: column; */
-  /*align-items: left; */
-  /*center;*/
-  /*justify-content: space-around;
-   width: 100%;
-   height: 100%;
-  */
-  text-align: left;
-  background-color: #f2f4ef;
-  /*border: 1px solid rgb(0, 0, 0);
-  border-radius: 6px; */
-  z-index: 1;
-}
+
 
 img.bt_salir {
   background-color: rgb(255, 255, 255);

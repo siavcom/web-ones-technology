@@ -64,9 +64,9 @@ export const currentTime = async () => {
 export const dateTimeToSql = async (stringDate?: string) => {
   let current: Date;
   if (!stringDate)
-    current = new Date().toISOString();
+    current = new Date() //.toISOString();
   else
-    current = new Date(stringDate).toISOString();
+    current = new Date(stringDate) // .toISOString();
 
   const cero = "0";
   const year = current.getFullYear() + "-";
@@ -259,6 +259,22 @@ export async function MessageBox(
 
   return await $MessageBox(texto, tipo, title, timer);
 }
+
+//////////////////////////////////////////////
+// Clase : delay
+// Author : Fernando Cuadras Angulo
+// Creacion : Julio /2022
+// Ult.Mod  : 15/Enero/2023
+/////////////////////////////////////////////
+
+export async function Delay(
+  ms: number
+) {
+  await new Promise(f => setTimeout(f, ms));
+
+
+}
+
 
 //////////////////////////////////////////////
 // Clase : consoleLog

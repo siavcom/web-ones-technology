@@ -12,14 +12,14 @@
       </div>
       <div v-else class="prose w-full max-w-2xl h-9">
         <component id="emp_emp" :is="impComp(ThisForm.emp_emp.prop.BaseClass)" :Registro="0"
-          :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style" :position="ThisForm.emp_emp.position" />
-        <component id="log_usu" :is="impComp(ThisForm.log_usu.prop.BaseClass)"
+          :Value="ThisForm.emp_emp.prop.Value" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
+          :position="ThisForm.emp_emp.position" />
+        <component id="log_usu" :is="impComp(ThisForm.log_usu.prop.BaseClass)" :Value="ThisForm.log_usu.prop.Value"
           v-model:Status="ThisForm.log_usu.prop.Status" :component="ref(ThisForm.log_usu)" :Registro="0"
           :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" :position="ThisForm.log_usu.position" />
-        <component id="pas_usu" :is="impComp(ThisForm.pas_usu.prop.BaseClass)"
-          v-model:Value="ThisForm.pas_usu.prop.Value" v-model:Status="ThisForm.pas_usu.prop.Status"
-          :component="ref(ThisForm.pas_usu)" :Registro="0" :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style"
-          :position="ThisForm.pas_usu.position" />
+        <component id="pas_usu" :is="impComp(ThisForm.pas_usu.prop.BaseClass)" :Value="ThisForm.pas_usu.prop.Value"
+          v-model:Status="ThisForm.pas_usu.prop.Status" :component="ref(ThisForm.pas_usu)" :Registro="0"
+          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" />
         <component id="bt_aceptar" :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :Registro="0"
           :component="ref(ThisForm.bt_aceptar)" :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style"
           :position="ThisForm.bt_aceptar.position" :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />

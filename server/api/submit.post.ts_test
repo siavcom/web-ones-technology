@@ -1,0 +1,34 @@
+import dat_emp from './Empresas.json'
+
+export default defineEventHandler(async (event) => {
+
+  const body = await readBody(event)
+
+  console.log('=========Post Server body ', body.call)
+
+  const call = body.call
+
+  switch (call) {
+    case 'leeEmpresas':
+      body.data = dat_emp
+      break
+    default:
+  }
+  return { body }
+});
+/*
+
+<script setup lang="ts">
+
+  const { body } = await $fetch('/api/submit', {
+      method: 'post',    // llama en @/server/api/submit.post.ts
+      body: { call: 'leeEmpresas' }
+
+    })
+
+
+}
+</script>
+
+
+*/

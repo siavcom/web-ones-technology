@@ -19,7 +19,7 @@ import { acceptHMRUpdate } from "pinia";
 //import {watch} from 'vue'
 import axios from "axios";
 import { Socket, io } from "socket.io-client";
-import dat_emp from "/src/empresas/datos.json";
+//import dat_emp from "/src/empresas/datos.json";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 //import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
@@ -171,6 +171,17 @@ export const Session = defineStore(
       }
 
       try {
+
+
+        const { data } = await useFetch('/api/callServer',
+          {
+            method: 'post',    // Se necesita para que haga la llamada y retorne los datos
+            body: { call: 'leeEmpresas' }
+          }
+        )
+
+        const dat_emp = data.value
+
         url.value = dat_emp[nom_emp.value].url; // obtenemos el url del servidor node
         logoEmp.value = dat_emp[nom_emp.value].logoEmp;
       } catch (error) {

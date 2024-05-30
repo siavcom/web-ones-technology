@@ -36,7 +36,7 @@
 
             <!-------------  Renglones  ------------------------>
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr :id="Id + '_grid_tr_' + key" v-for="(item, key) in scroll.dataPage" :key="key">
+            <tr :id="Id + '_grid_tr_' + key" v-for="(item, key) in scroll.dataPage" :key="item.recno">
               <!-- No utilizar vertical-aling en renNumber-->
               <td :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{ item.recno
                   }}</label></td>
@@ -76,8 +76,6 @@
                 </textLabel>
                 <!--/Transition-->
                 <!--/div-->
-
-
                 <!--Componentes de captura
                       @focus se debe de poner capture para que funcione el focus en el componente Vue
                               y el when del componente typescript
@@ -89,9 +87,6 @@
                 <!--Transition name="columninput"-->
                 <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'
                 v-model:Valid="This[col.Name].prop.Valid"
-                
-                
-                
                 -->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"

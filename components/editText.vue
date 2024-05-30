@@ -10,32 +10,33 @@
       @input.self="onInput" -->
 
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
-    <span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible" :style="inputStyle">
+    <span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible">
       <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]" :readonly="ReadOnly"
-        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus"
-        @input.self="onInput" @keypress="keyPress($event)">
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]"
+        :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut"
+        @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)">
 
       <!--spinner-->
 
       <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
-        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="ReadOnly"
-        :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
+        :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
+        :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
+        @input="emitValue(false)">
 
       <!--textArea -->
       <div :id="Id" v-else-if="propType == 'textarea'" :style="inputStyle">
         <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" :style="inputStyle" v-model="Value"
-          :readonly="ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          type="textArea" :rows="inputStyle.rows" :cols='inputStyle.cols' @keypress="keyPress($event)"
-          @focusout="focusOut" @focus="onFocus"></textarea>
+          :readonly="This.prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
+          :tabindex="prop.TabIndex" type="textArea" :rows="inputStyle.rows" :cols='inputStyle.cols'
+          @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
       </div>
 
       <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
       <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
-      <input :id="Id" v-else-if="propType.slice(0, 4) == 'date'" class="date" ref="Ref" :style="inputStyle"
-        :type="propType == 'date' ? 'date' : 'datetime-local'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
-        :disabled="prop.Disabled" :readonly="ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-        @focusout="focusOut">
+      <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
+        :style="inputStyle" :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min" :max="prop.Max"
+        v-model="currentDate" :disabled="prop.Disabled" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex"
+        @keypress="keyPress($event)" @focusout="focusOut">
       <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
       <!--/div-->
@@ -62,21 +63,21 @@
       </div>
 
       <!--checkBox-->
-      <!--div v-else-if="propType == 'checkBox'"-->
-      <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
-        :readonly="ReadOnly" :disabled="prop.Disabled || ReadOnly" :tabindex="prop.TabIndex" v-model="checkValue"
-        @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)">
 
-      <!--checkBox-->
+      <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
+        :readonly="This.prop.ReadOnly" :disabled="prop.Disabled || This.prop.ReadOnly" :tabindex="prop.TabIndex"
+        v-model="checkValue" @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)">
+
+      <!--text-->
       <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
-        :readonly="ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
+        :readonly="prop.ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
         :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
         @focus="onFocus">
     </span>
 
-    <img :id="Id + '_help'" v-if="!prop.ReadOnly && !prop.Disabled && prop.Help && This.prop.InputProp.Visible"
-      class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
-      @click.prevent="help()" />
+    <img :id="Id + '_help'"
+      v-if="!prop.This.prop.ReadOnly && !prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
+      src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px" @click.prevent="help()" />
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
@@ -160,15 +161,14 @@ const emit = defineEmits(["update", "update:Value",
 ////////////////////////////////////
 const props = defineProps<{
   //Recno: number;
+  //Component: any;
+  Value: any;
   Registro: number;  // Se pone para el manejo de grid
-  // Show: true;
-  // Component: null;
+
   prop: {
 
     Autofocus: false;
-
     BaseClass: "EditText";
-
     Capture: true;
 
     /* componentStyle: {
@@ -224,6 +224,7 @@ const props = defineProps<{
     Placeholder: "";
 
     ReadOnly: false;
+    RefValue: null;
 
     Status: string;
     ShowError: boolean;
@@ -238,7 +239,7 @@ const props = defineProps<{
     Type: string;
 
     Valid: true;
-    Value: [String, Number, Date];
+    Value: string;
     View: "";
     Visible: true;
     When: boolean;
@@ -267,11 +268,13 @@ const props = defineProps<{
 }>();
 
 
+//const ReadOnly = computed(() => !props.prop.When ||props.prop.ReadOnly ? true : false)
 
-
-const ReadOnly = computed(() => !props.prop.When || props.prop.ReadOnly ? true : false)
+//const ReadOnly = computed(() => This.prop.ReadOnly ? true : false)
 
 const Component = ref(props.prop.This)
+//const Component = ref(props.Component)
+
 const This = Component.value
 
 const labelStyle = reactive(This.labelStyle)
@@ -292,6 +295,7 @@ let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
 
 const Value = ref(props.prop.Value)
+const Valor = toRef(This.prop, "Value")
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
@@ -560,7 +564,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
             //  This.Recno = props.Registro
 
             //This.prop.Valid = true// ya se capturo algo , se apaga Valid
-            Value.value = data[campo]
+            Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
+
+            //  This.prop.Value=Value.value
 
             // console.log('editText emitValue readCampo ',props.prop.ControlSource,'!isValid=',isValid,'Value=',Value.value)
 
@@ -658,6 +664,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
       displayDate.value = new Date(Value.value)
       currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
+
+      console.log('editText emitValue() Time Name ', props.prop.ControlSource, 'CurrentDate=', currentDate.value, 'displayDate=', displayDate, 'Value=', Value.value)
+
       nextTick(function () {
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
         emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
@@ -683,6 +692,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update") // emite un update en el componente padre
+
+
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   /* 
@@ -948,7 +959,10 @@ const focusInput = async () => {
 // Obs: el when() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-  //  This.prop.Focus = false 
+  //  This.prop.Focus = false
+
+
+  console.log('editText onFocus 1) Name=', This.prop.Name, 'This.prop=', This.prop, 'props.prop=', props.prop)
   ToolTipText.value = false
   //  ShowError.value = false
 
@@ -966,7 +980,9 @@ const onFocus = async () => {
 
     //console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, ' View=', This.Sql.View[tabla])
 
-    const lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
+    let lon_campo = This.prop.Value.length
+    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla)
+      lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
 
 
     if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
@@ -1043,40 +1059,6 @@ const select = async () => {
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
 //          Componente
 //////////////////////////////////////////
-
-// Si se cambia de afuera
-watch(
-  () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
-  async (new_val: string | any[], old_val: any) => {
-    if (This.prop.Status == 'P') // se cambio desde el mismo proceso
-      return
-
-    //  if (This.prop.Valid) return
-    if (new_val != Value.value) {
-      if (propType == 'date')
-        if (new_val == Value.value)
-          return
-      //if (new_val.slice(0, 10) == Value.value.slice(0, 10))
-      //  return
-
-
-      // Value.value = This.prop.Value
-      /*
-      console.log('EditText Watch Name=', This.prop.Name,
-        'prop.Valid =', This.prop.Valid,
-        'Status=', This.prop.Status,
-        'Value=', This.prop.Value, Value.value,
-        'Valid=', This.prop.Valid,
-        'checkValue=', checkValue.value)
-        */
-
-      Value.value = This.prop.Value
-      await emitValue(false, This.prop.Valid) //se puso await
-
-    }
-  },
-  { deep: false }
-)
 
 
 
@@ -1199,10 +1181,6 @@ watch(
 );
 
 
-
-
-This.prop.Visible
-
 ////////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
@@ -1272,6 +1250,79 @@ watch(
   { deep: false }
 )
 
+
+
+
+////////////////////////////////////////
+//
+///////////////////////////////////////
+watch(
+  () => Valor, //props.prop.Focus,
+  (new_val: any, old_val: any) => {
+
+    if (propType.slice(0, 4) == 'date')
+      console.log('>>>  RefValue EditText Watch Name=', This.prop.Name, 'Value=', This.prop.Value, 'Value.value=', Value.value)
+
+    Value.value = This.prop.RefValue.value
+
+    return
+
+  },
+  { deep: false }
+)
+
+//////////////////////////
+//Si se cambia de afuera el valor
+///////////////////////////////////////
+
+// 
+watch(
+  () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
+
+  async (new_val: any, old_val: any) => {
+
+
+
+    if (This.prop.Status == 'P') // se cambio desde el mismo proceso
+      return
+
+    //  if (This.prop.Valid) return
+    if (new_val != Value.value) {
+      //     console.log(' >>>>>   EditText Watch Name=', This.prop.Name, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'Value.value=', Value.value)
+
+      /*
+       if (propType == 'date')
+         if (new_val == Value.value)
+           return
+         */
+      //if (new_val.slice(0, 10) == Value.value.slice(0, 10))
+      //  return
+
+
+      // Value.value = This.prop.Value
+      /*
+      console.log('EditText Watch Name=', This.prop.Name,
+        'prop.Valid =', This.prop.Valid,
+        'Status=', This.prop.Status,
+        'Value=', This.prop.Value, Value.value,
+        'Valid=', This.prop.Valid,
+        'checkValue=', checkValue.value)
+        */
+
+      Value.value = This.prop.Value
+      await emitValue(false, This.prop.Valid) //se puso await
+
+    }
+  },
+  { deep: true }
+)
+
+
+
+
+
+
+
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
@@ -1316,6 +1367,9 @@ onMounted(async () => {
 
   if (!This.prop.Visible)
     divStyle.height = '0%'
+
+  if (!This.prop.RefValue == null)
+    Value.value = This.prop.RefValue.value
 
   const result = await emitValue(true)
   This.Recno = props.Registro

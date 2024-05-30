@@ -1,0 +1,11 @@
+{
+    "bascula": {
+      "type": "hidraw",
+      "port": "/dev/hidraw5",
+      "baudrate": 9600,
+      "vendorId": 2056,
+      "productId": 1542,
+      "BUFFER_SIZE": 13
+    }
+  }
+  

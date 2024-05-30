@@ -11,7 +11,7 @@
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
 
-      <div :id="Id + '_columncontainer'" class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+      <div :id="Id" class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
 
 
         <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
@@ -48,7 +48,7 @@
     <div :id="Id + '_comboBox'" v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
 
 
-      <input :id="Id + '_combobox_input_' + Id" class="textInput" :style="inputStyle"
+      <input :id="Id" class="textInput" :style="inputStyle"
         :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
         ref="Ref" @keypress="keyPress($event)"
         @focus.prevent="toggle = false; This.Form.eventos.push(This.prop.Map + '.when()')" @focusout="emitValue()" />
@@ -79,7 +79,8 @@
           </div>
         </div>
         <!--toggle click.prevent -->
-        <img :id="Id + '_toggle_img'" class="imagen" v-show="!prop.ReadOnly && !prop.Disabled"
+        <img :id="Id + '_toggle_img'" class="imagen" :style="{ 'height': inputStyle.height }"
+          v-show="!prop.ReadOnly && !prop.Disabled"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       </div>
@@ -87,6 +88,20 @@
     <span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
       v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
     <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
+
+
+
+    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
+      :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+      v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+      :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
+      v-bind:position="This[compMain].position"
+      @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">
+    </component>
+
+
+
+
   </div>
   <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
   <!--/div-->
@@ -94,6 +109,26 @@
 
 <script setup lang="ts">
 // "update:Key", "update:Focus"
+
+
+
+///////////////////////////////////////
+// Componentes
+//////////////////////////////////////
+
+const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
+const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
+const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
+const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
+const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
+const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const details = defineAsyncComponent(() => import('@/components/details.vue'))
+const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
+const container = defineAsyncComponent(() => import('@/components/container.vue'))
+const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
+
+
+
 const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
 // Variables comunes globales al componente
@@ -111,7 +146,7 @@ interface Props {
 //const props = defineProps<{
 const props = withDefaults(defineProps<Props>(), {
   Registro: 0,
-  Component: null,
+  // Component: null,
   // Value: undefined,
   prop: {
 
@@ -217,6 +252,9 @@ const ToolTipText = ref(true)
 
 const Component = ref(props.prop.This)
 const This = Component.value
+
+
+
 
 const Id = This.prop.Name + props.Registro.toString()
 let thisElement: Element | null
@@ -744,6 +782,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
     case 3: {   // SQL Server Query
       data = await This.Form.db.execute(RowSource, 'MEMVAR')
+      console.log('render comboBox data ===>', data)
 
       break
     }
@@ -1001,7 +1040,7 @@ watch(
 watch(
   () => props.prop.RowSource,
   (new_val, old_val) => {
-
+    console.log('watch ComboBox RowSource===>>', new_val)
     if (new_val != old_val) {
       renderComboBox(true)
     }
@@ -1019,7 +1058,7 @@ watch(
   (new_val, old_val) => {
     // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
 
-    // console.log('ComboBox RowSourceType===>>', new_val)
+    console.log('watchComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {
       //console.log('ComboBox renderiza por cambio enRowSourceType ===>>', new_val)
       renderComboBox(true)
@@ -1131,7 +1170,7 @@ onMounted(async () => {
   if (This.prop.Init) {
 
 
-    inputStyle.height = 'fit-content'
+    // inputStyle.height = 'fit-content'
 
     let textWidth = 0
 
@@ -1212,6 +1251,84 @@ function myClick(e) {
 
 window.addEventListener('mousedown', myClick);
 
+
+
+const impComp = ((name: string, pos?: string) => {
+
+  //return eval(name)
+
+  switch (name.toLowerCase().trim()) {
+    case 'edittext': {
+      // console.log('Importo edittext')
+      return editText
+      break;
+    }
+    case 'combobox': {
+      return comboBox
+      break;
+    }
+    case 'grid': {
+      return grid
+      break;
+    }
+
+    case 'imgbutton': {
+      return imgButton
+      break;
+    }
+
+    case 'browse': {
+
+      return browseLite
+      break;
+    }
+
+    case 'browselite': {
+
+
+      return browseLite
+      break;
+    }
+
+    case 'textlabel': {
+      return textLabel
+      break
+    }
+    case 'details': {
+      return details
+      break
+    }
+
+    case 'container': {
+      return container
+      break
+    }
+
+    case 'modalcontainer': {
+      return modalContainer
+      break
+    }
+
+    case 'embedpdf': {
+      return embedPdf
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
+      break
+    }
+    default: {
+      return editText
+      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+      break;
+    }
+  }
+
+  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+})
+
+
+
+
+
 </script>
 
 
@@ -1219,8 +1336,8 @@ window.addEventListener('mousedown', myClick);
 <style scoped>
 /*  elemento click check*/
 img.imagen {
-  width: 17px;
-  height: auto;
+  /* width: 17px;*/
+  height: 80%;
   border-radius: 20%;
   border: 2px;
   vertical-align: bottom;
