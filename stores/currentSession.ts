@@ -181,9 +181,11 @@ export const Session = defineStore(
         )
 
         const dat_emp = data.value
-
         url.value = dat_emp[nom_emp.value].url; // obtenemos el url del servidor node
-        logoEmp.value = dat_emp[nom_emp.value].logoEmp;
+
+        //  logoEmp.value = dat_emp[nom_emp.value].logoEmp;
+        logoEmp.value = await obtLogo(dat_emp[nom_emp.value].logoEmp)
+
       } catch (error) {
         console.warn("No existe empresa ", nom_emp.value);
         MessageBox(
@@ -279,9 +281,8 @@ export const Session = defineStore(
         return;
       }
 
-      // const nom_emp.value :any= Storage.getItem("nom_emp.value");
 
-      // const url = url // obtenemos el url del servidor node
+
 
       const dat_vis = {
         id_con: id_con.value,
@@ -388,6 +389,32 @@ export const Session = defineStore(
 
     function updateMenu(menuObt: any[]) {
       menu.value = menuObt;
+    }
+
+
+    //////////////////////////////////////////////
+    // funcion obtLogo
+    // Obtiene el logo de la empresa en base64 del servidor de nuxt (nitro)
+    /////////////////////////////////////////////////
+
+    async function obtLogo(fileLogoEmp: string) {
+      const call = {
+        method: 'post',    // Se necesita para que haga la llamada y retorne los datos
+        body: {
+          call: 'imgBase64',
+          nameFile: fileLogoEmp
+        }
+      }
+
+      const { data } = await useFetch('/api/callServer', call)
+      const srcLogo = data.value //document.getElementById('bannerImg');
+
+      //      localStorage.setItem("imgData", srcLogo);
+      //      console.log('4) obtLogo() header file=', srcLogo)
+      //      const dataImage = localStorage.getItem('imgData');
+      //return dataImage;
+
+      return srcLogo;
     }
 
     ///////////////////////////////////////////////////

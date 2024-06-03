@@ -1,25 +1,57 @@
-
 //import fs from '@/node_modules/file-system/file-system.js';
 
 ///////// Funciones nativas de NodeJS /////////
 import fs from 'fs'
+//import { readFile } from 'node:fs/promises'
 import { exec } from 'child_process'
 ////////////////////////////////////////////
 
 
-import dat_emp from './Empresas.json'
+//import dat_emp from './Empresas.json'
 export default defineEventHandler(async (event) => {
+  const path = '/sistemas/web-ones/public'
   const body = await readBody(event)
 
   const call = body.call  // obtiene el tipo de llamada
 
+  let data: any
+  let nameFile = ''
 
   switch (call) {
     case 'leeEmpresas':
+      data = fs.readFileSync(path + '/Empresas.json')
+      body.data = data
 
-      body.data = dat_emp
-      return dat_emp
+      return data
 
+    case 'readFile':
+      nameFile = body.nameFile.trim()
+      try {
+        const contents = fs.readFileSync(path + nameFile);
+        body.data = data
+        return data
+      } catch (error) {
+        body.data = null
+      }
+      return
+
+    case 'imgBase64':
+
+      nameFile = body.nameFile.trim()
+      console.log('1) =========================> Comienza leeArchivo data=', path + nameFile)
+      const tipArchivo = nameFile.trim().slice(-3)
+
+      try {
+        //const contents = await readFile(path + nameFile, { encoding: 'base64' });
+        const contents = fs.readFileSync(path + nameFile, { encoding: 'base64' });
+        data = `data:image/${tipArchivo};base64,` + contents
+        body.data = data
+        console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
+        return data
+      } catch (error) {
+        body.data = null
+      }
+      return //data
     case 'print':
       const Fs = fs
 
