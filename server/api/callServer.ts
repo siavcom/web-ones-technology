@@ -2,7 +2,6 @@
 
 ///////// Funciones nativas de NodeJS /////////
 import fs from 'fs'
-//import { readFile } from 'node:fs/promises'
 import { exec } from 'child_process'
 ////////////////////////////////////////////
 

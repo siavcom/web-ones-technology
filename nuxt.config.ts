@@ -1,69 +1,71 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
 export default defineNuxtConfig({
-  //$develoment :{devtools: { enabled: false }, //Shift + Alt + D in app to open
-  //},   //configuracion solo en desarrollo
+  debug: false,  // Para encontrar errorres de hidratacion
   devtools: { enabled: false },
+
   devServer: {
-    port: 3000,
+    port: 3000
   },
   ssr: true,
+  // target: 'static',
 
-  alias: {
-    // Quita el error a instalar Nuxt
-    //pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
+  alias: {  // Quita el error a instalar Nuxt
+    // pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
   },
-
-  // Pagina prerrenderizadas
-  nitro: {
-    prerender: {
-      routes: ["/Login"],
-    },
-  },
-
   imports: {
     // Auto-import pinia stores defined in `~/stores`
-    dirs: ["stores"],
+    dirs: ['stores', 'classes']
   },
-
-  // Configuracion para debug
+  // Configuracion para debug 
   /*
-  build: {
-    extend(config, ctx) {
-      if (ctx.isDev) {
-        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+    build: {
+      extend(config, ctx) {
+        if (ctx.isDev) {
+          config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+        }
       }
-    }
-  },
-  */
-  plugins: [],
+    },
+    */
+  plugins: [
+  ],
 
-  typescript: { shim: false },
-  css: ["~/assets/css/styles.css"],
+  typescript: {
+    shim: false,
+    strict: true,
+    includeWorkspace: true,
+    typecheck: true
+  },
+  css: ['~/assets/css/styles.css'],
+  // css: ['~/assets/css/styles.css', 'vue-final-modal/style.css'],
 
   // Para poder hacer los enlaces simbolicos, se aumenta los directorios
   // para que vite los acepte
   vite: {
+    resolve: {
+      preserveSymlinks: true,
+
+    },
     server: {
       fs: {
-        allow: ["/siavcom/desarrollo/desarrolloweb/Vue/web-ones/"],
+        allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
       },
     },
   },
-
-  modules: [
-    "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt", // Quitar para instalar Nuxt y reinstalar con npm i -D @pinia-plugin-persistedstate/nuxt --legacy-peer-deps
-  ],
+  modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
   pinia: {
     autoImports: [
       // automatically imports `defineStore`
-      "defineStore", // import { defineStore } from 'pinia'
-      "acceptHMRUpdate",
+      'defineStore', // import { defineStore } from 'pinia'
+      'acceptHMRUpdate',
       // ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
     ],
   },
 
+  /*
+    router: {
+      middleware: ['checkSession']
+    }
+  */
   /*
   piniaPersistedstate: {
     cookieOptions: {
@@ -72,4 +74,7 @@ export default defineNuxtConfig({
     storage: 'localStorage'  //storage: sets the storage used to persist by default ('localStorage', 'sessionStorage' or 'cookies').
   }
 */
-});
+
+
+
+})

@@ -157,7 +157,7 @@ export class reportForm extends FORM {
 
   async gen_where(tip_con: string) {
     const session = Session();
-    console.log("where ===>>>", tip_con, this[tip_con]);
+    //console.log("where ===>>>session=", session.dialect, tip_con, this[tip_con]);
     var where = "";
     if (this[tip_con].activa.prop.Value == 0) return where;
 
@@ -170,7 +170,7 @@ export class reportForm extends FORM {
 
     if (tip_con == "queryGen") tabla = "query_all";
 
-    console.log("reportForm alias");
+    //  console.log("reportForm alias");
     if (!this.Form.db.View[tabla]) {
       // Si no existe el alias
       const filter = {
@@ -244,6 +244,9 @@ export class reportForm extends FORM {
       }
     } // EndFor
     if (query.length > 0) query = "(" + query + ")";
+
+
+    console.log("where ===>>>session=", session.dialect, query);
 
     return query;
   }

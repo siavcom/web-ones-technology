@@ -45,7 +45,7 @@ export class report extends COMPONENT {
     this.prop.BaseClass = 'details'
     this.prop.textLabel = 'Reporte'
 
-    this.style.width = '95%'
+    this.style.width = '100%'
     this.style.height = '1100px'
 
     this.style.display = 'block'

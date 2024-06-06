@@ -13,7 +13,8 @@ export class displayPdf extends COMPONENT {
     super();
     this.prop.BaseClass = "embedpdf";
     this.prop.Visible = false;
-    this.style.width = "-moz-available"; //1100px
-    this.style.height = "100%";
+    this.style.height = "auto";
+    this.style.width = "100%"; //1100px
+
   }
 }

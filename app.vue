@@ -2,15 +2,15 @@
   <div class="Menu">
     <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
       <div class="logo-details" style="margin: 6px 14px 0 14px;">
-        <img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon">
+        <nuxt-img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon" />
 
         <!--i  v-else src="/Iconos/svg" class="bx icon" :class="menuIcon"></i-->
         <div class="logo_name">
           {{ menuTitle }}
         </div>
         <!--i class="bx" :class="isOpen ? 'bx-menu-alt-right' : 'bx-menu'" id="btn" @click="isOpen = !isOpen" /-->
-        <img id="btn" class="bx" :src="isOpen ? '/Iconos/svg/bx-menu-alt-right.svg' : '/Iconos/svg/bx-menu.svg'"
-          @click="isOpen = !isOpen">
+        <nuxt-img id="btn" class="bx" :src="isOpen ? '/Iconos/svg/bx-menu-alt-right.svg' : '/Iconos/svg/bx-menu.svg'"
+          @click="isOpen = !isOpen" />
       </div>
 
       <div
@@ -19,7 +19,7 @@
           <ul class="nav-list" style="overflow: visible;">
             <li v-if="isLoggedIn" @click="isOpen = true">
               <!--i class="bx bx-search" ></i-->
-              <img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
+              <nuxt-img src="/Iconos/svg/bx-search.svg" class="bx bx-search" />
               <input type="text" :placeholder="Props.searchPlaceholder"
                 @input="$emit('search-input-emit', $event.target.value)">
               <span class="tooltip">{{ Props.searchTooltip }}</span>
@@ -32,7 +32,7 @@
               <li @click="obtSubMenu(menuItem.system)">
                 <NuxtLink :to="menuItem.path" :target="menuItem.target"
                   @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
-                  <img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon" :class="menuItem.icon">
+                  <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon" :class="menuItem.icon" />
                   <span class="links_name">{{ menuItem.name }}</span>
                 </NuxtLink>
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
@@ -41,7 +41,7 @@
 
                 <li @click="isMan = !isMan">
                   <span class="links_options">{{ Props.maintenance }}</span>
-                  <img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg">
+                  <nuxt-img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg" />
                 </li>
                 <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
 
@@ -59,7 +59,7 @@
               <span v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
                 <li text-align="end" @click="isRep = !isRep">
                   <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
-                  <img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg">
+                  <nuxt-img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg" />
                 </li>
                 <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                   <li>
@@ -76,7 +76,7 @@
               <span v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
                 <li text-align="end" @click="isPro = !isPro">
                   <span class="links_options">{{ Props.process }}</span>
-                  <img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg">
+                  <nuxt-img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg" />
                 </li>
                 <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
                   <li>
@@ -92,7 +92,7 @@
               </span>
 
               <!--li v-else>
-                <img class="bx" :src="'/Iconos/'+menuItem.icon" :class="menuItem.icon" />
+                <nuxt-img class="bx" :src="'/Iconos/'+menuItem.icon" :class="menuItem.icon" />
                 <span class="links_name">{{ menuItem.name }}</span>
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
               </li-->
@@ -103,8 +103,8 @@
 
         <div v-if="isLoggedIn" class="profile">
           <div class="profile-details">
-            <img v-if="Props.profileImg" :src="Props.profileImg" alt="Props.profileImg">
-            <img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle">
+            <nuxt-img v-if="Props.profileImg" :src="Props.profileImg" alt="Props.profileImg" />
+            <nuxt-img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle" />
             <div class="name_job">
               <div class="name">
                 {{ Props.profileName }}
@@ -115,8 +115,8 @@
             </div>
           </div>
           <!--i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" /-->
-          <img v-if="Props.isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
-            @click.stop="exit()">
+          <nuxt-img v-if="Props.isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
+            @click.stop="exit()" />
         </div>
       </div>
     </div>
@@ -127,7 +127,7 @@
       <NuxtLayout name='default'>
         <NuxtPage />
       </NuxtLayout>
-      <NuxtLayout name='footer' :user="user" />
+      <NuxtLayout name='footer' :user="user" :form="Props.form" />
 
     </div>
   </div>
@@ -139,7 +139,7 @@
                               <a :href="menuItem.link!='#'  ? menuItem.link : '#'">
 
                                   <!--i class="bx" :class="menuItem.icon || 'bx-square-rounded'" /-->
-                                  <img class="bx" :src="'/Iconos/'+menuItem.icon" :class="menuItem.icon" />
+                                  <nuxt-img class="bx" :src="'/Iconos/'+menuItem.icon" :class="menuItem.icon" />
                                   <span class="links_name">{{ menuItem.name }}</span>
                               </a>
 
@@ -341,7 +341,7 @@ const session = Session()
 //const { data } = await useAsyncData('id', () => session.id_con)
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
-
+const usrMenu = menu
 //const Prop = ref(props)
 const Items = reactive(Props.menuItems)  // son los que aparecen en el html
 const itemLength = Items.length
@@ -415,7 +415,7 @@ const exit = () => {
   const tam_act = Items.length
   Items.splice(itemLength, tam_act - itemLength)
   isLoggedIn.value = false
-  menu.value = []
+  usrMenu.value = []
 }
 const back = () => window.history.back()
 /*
@@ -492,9 +492,10 @@ const obtMenu = () => {
 
   }
 
-  for (let i = 0; menu.value.length > i; i++) {
+
+  for (let i = 0; usrMenu.value.length > i; i++) {
     // solo agrega menu principal
-    if (menu.value[i].tpr_prg === 'S') {
+    if (usrMenu.value[i].tpr_prg === 'S') {
       let link = '#'
       const path = {
         path: '',
@@ -502,15 +503,21 @@ const obtMenu = () => {
         query: {}
       }
       let target = ''        //'_blank' indica ventana nueva del explorador
-      const type = menu.value[i].tpr_prg
-      const system = menu.value[i].sis_sis
+      const type = usrMenu.value[i].tpr_prg
+      const system = usrMenu.value[i].sis_sis
       const urlVue = ''
-      if (menu.value[i].prg_prg.trim() != 'null' && menu.value[i].prg_prg.trim() > ' ') {
-        link = urlVue + '/' + menu.value[i].prg_prg.trim()
-        path.path = '/' + menu.value[i].prg_prg.trim()
+
+      if (usrMenu.value[i].prg_prg.trim() != 'null' && usrMenu.value[i].prg_prg.trim() > ' ') {
+
+        link = urlVue + '/' + usrMenu.value[i].prg_prg.trim()
+        path.path = '/' + usrMenu.value[i].prg_prg.trim()
         var params = ''
-        if (menu.value[i].par_prg != null && menu.value[i].par_prg.trim().length > 0)
-          params = menu.value[i].par_prg
+        if (usrMenu.value[i].par_prg != null && usrMenu.value[i].par_prg.trim().length > 0)
+          params = usrMenu.value[i].par_prg.trim()
+
+        if (params.length > 0) {
+          console.log('Menu=', usrMenu.value[i].prg_prg.trim(), 'Params=', params)
+        }
 
         let pos = params.indexOf(',') // Posicion de la primera coma
         let num_par = 1
@@ -518,8 +525,8 @@ const obtMenu = () => {
           let param = params.substring(0, pos)
           param = param.replaceAll("'", '')
 
-          path.params['par' + num_par.toString()] = param
-          path.query['par' + num_par.toString()] = param
+          path.params['par' + num_par.toString()] = param // queda par1
+          path.query['par' + num_par.toString()] = param  // queda par2
           params = params.substring(pos + 1)
           pos = params.indexOf(',')
           num_par++
@@ -532,11 +539,12 @@ const obtMenu = () => {
         }
 
       }
-      const icon = menu.value[i].ico_prg.trim().length > 1 ? '/Iconos/' + menu.value[i].ico_prg.trim() : '/Iconos/svg/bx-door-open.svg'
+
+      const icon = usrMenu.value[i].ico_prg.trim().length > 1 ? '/Iconos/' + usrMenu.value[i].ico_prg.trim() : '/Iconos/svg/bx-door-open.svg'
       const item = {
         link: '#',
-        name: menu.value[i].des_prg,
-        tooltip: menu.value[i].des_prg,
+        name: usrMenu.value[i].des_prg,
+        tooltip: usrMenu.value[i].des_prg,
         icon,
         path: path,
         target: target,
@@ -552,7 +560,7 @@ const obtMenu = () => {
 // Obten subMenu
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
-  console.log('SubMenu Menu=', menu.value)
+  console.log('SubMenu Menu=', usrMenu.value)
   isOpen.value = true
   // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
@@ -567,31 +575,43 @@ const obtSubMenu = (system: string) => {
   const Rep = []
   const Pro = []
   //const menu = session.menu
-  for (let i = 0; menu.value.length > i; i++) {
+  for (let i = 0; usrMenu.value.length > i; i++) {
     // solo agrega menu principal
 
-    if (menu.value[i].ico_prg == null)
-      menu.value[i].ico_prg = ' '
+    if (usrMenu.value[i].ico_prg == null)
+      usrMenu.value[i].ico_prg = ' '
 
-    if (menu.value[i].sis_sis == system) {
+    if (usrMenu.value[i].sis_sis == system) {
       let link = '#'
-      let path = {}
-      const type = menu.value[i].tpr_prg
-      const system = menu.value[i].sis_sis
-      const urlVue = ' '
-      if (menu.value[i].prg_prg.trim() != null && menu.value[i].prg_prg.trim() > ' ') {
-        link = urlVue + '/' + menu.value[i].prg_prg.trim()
-        path = { path: '/' + menu.value[i].prg_prg.trim() }
 
-        if (menu.value[i].par_prg != null && menu.value[i].par_prg.trim().length > 0)
-          path.params = { par_uno: menu.value[i].par_prg.trim() }
-
+      const path = {
+        path: '',
+        params: {},
+        query: {}
       }
+
+      const type = usrMenu.value[i].tpr_prg
+      const system = usrMenu.value[i].sis_sis
+      const urlVue = ' '
+      if (usrMenu.value[i].prg_prg.trim() != null && usrMenu.value[i].prg_prg.trim() > ' ') {
+        link = urlVue + '/' + usrMenu.value[i].prg_prg.trim()
+        path.path = '/' + usrMenu.value[i].prg_prg.trim()
+
+        if (usrMenu.value[i].par_prg != null && usrMenu.value[i].par_prg.trim().length > 0) {
+
+          //path.params = { par_uno: usrMenu.value[i].par_prg.trim() }
+
+          path.query = { par_uno: usrMenu.value[i].par_prg.trim() }
+
+          console.log('SubMenu=', usrMenu.value[i].prg_prg.trim(), 'Path.params=', path.params)
+        }
+      }
+
       const item = {
         link: '#',
-        name: menu.value[i].des_prg,
-        tooltip: menu.value[i].des_prg,
-        icon: '/Iconos/' + menu.value[i].ico_prg.trim(),
+        name: usrMenu.value[i].des_prg,
+        tooltip: usrMenu.value[i].des_prg,
+        icon: '/Iconos/' + usrMenu.value[i].ico_prg.trim(),
         path: path,
         type,
         system
@@ -609,7 +629,7 @@ const obtSubMenu = (system: string) => {
     subItemsPro = [...Pro]
     subMen.value = true
     isOpen.value = true
-    console.log('SubMenu menu ====> subMen=', Man, Rep.Pro)
+    // console.log('SubMenu menu ====> subMen=', Man, Rep.Pro)
   }
 }
 
@@ -628,7 +648,7 @@ watch(
 )
 
 watch(
-  () => menu.value,
+  () => usrMenu.value,
   (menu_new, old_val) => {
     console.log('watch menu', menu_new)
     if (menu_new.length > 0) {
@@ -660,7 +680,7 @@ if (id_con.value > '' && Items.length < 3)
 
 </script>
 
-<style  scoped>
+<style scoped>
 * {
   margin: 0;
   padding: 0;

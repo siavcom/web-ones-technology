@@ -1,23 +1,13 @@
 <template>
-  <div class="img" 
-      :style="estilo" 
-      v-show="false" 
-      :disabled="prop.ReadOnly" 
-      :tabindex="prop.TabIndex"
-      >
+  <div class="img" :style="estilo" v-show="false" :disabled="prop.ReadOnly" :tabindex="prop.TabIndex">
     <div class="tooltip">
-      <v-btn
-      variant="flat"
-      color="secondary"
-      :icon="imagen.src"
-      size="large"
-      >{{prop.Value}}
+      <v-btn variant="flat" color="secondary" :icon="imagen.src" size="large">{{ prop.Value }}
 
       </v-btn>
       <!--button
         type="submit"
         :style="imagen">
-        <img
+        <nuxt-img
           class="img"
           :src="imagen.src"
           alt="prop.Value"
@@ -39,8 +29,8 @@
       /-->
 
       <span v-if="prop.ToolTipText" class="tooltiptext">{{
-        prop.ToolTipText
-      }}</span>
+    prop.ToolTipText
+  }}</span>
     </div>
   </div>
 </template>
@@ -52,10 +42,10 @@
 //import { getCurrentInstance } from "vue";
 //export const This = getCurrentInstance();
 
-const props = defineProps< {
+const props = defineProps<{
   //Value: string;
   prop: {
-    Click : false;
+    Click: false;
     ToolTipText: string;
     View: "";
     Field: "";
@@ -73,8 +63,8 @@ const props = defineProps< {
     Label: "";
     Type: "text";
     Visible: true;
-    TabIndex : number;
-    BaseClass : "imgButton";
+    TabIndex: number;
+    BaseClass: "imgButton";
   };
 
   estilo: {
@@ -88,7 +78,7 @@ const props = defineProps< {
     textAlign: "left";
     borderColor: "#000a01";
     borderWidth: "1px";
-    zIndex : 1
+    zIndex: 1
   };
   posicion: {
     position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
@@ -112,7 +102,7 @@ watch(
   () => props.prop.Value,
 
   (new_val, old_val) => {
-    console.log('Button cambio Value',new_val,old_val)
+    console.log('Button cambio Value', new_val, old_val)
   },
   { deep: false }
 );
@@ -128,15 +118,16 @@ watch(
 h1 {
   margin: 40px 0 0;
 }
+
 div.img {
   background-color: rgb(255, 255, 255);
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
   box-sizing: border-box;
   width: 80px;
-  height: auto; 
+  height: auto;
   border-radius: 10%;
   padding: 0px;
- 
+
 }
 
 /*input {
@@ -152,9 +143,7 @@ button {
   height: auto;
   padding: 5px;
   border-radius: 10%;
-}  
-
-
+}
 </style>
 <!-- 
 

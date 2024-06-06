@@ -107,6 +107,8 @@ export const Session = defineStore(
       });
 
       socket.on("loginOk", async (res: {}) => {
+
+        console.log('loginOk========>', res)
         socketId = socket.id;
         //res={ id: name, dialect: options.dialect, fpo_pge }
         // obtenemos datos de conexión

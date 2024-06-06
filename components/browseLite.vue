@@ -54,7 +54,7 @@
 :is-loading="table.isLoading"
  :max-height="table.maxheight"
     <div style="text-align: left">
-      <img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
+      <nuxt-img src="/Iconos/svg/bx-search.svg" class="bx bx-search">
 
       <label>SearchBy:</label>
       <input v-model="searchTerm" />

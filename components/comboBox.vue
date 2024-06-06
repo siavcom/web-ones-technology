@@ -25,7 +25,8 @@
             <label :id="Id + '_' + option + 'label_column' + col" class="optionLabel" v-text="text"
               :style:="columnLabelStyle" />
           </div>
-          <img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/add-color.svg" width="15">
+          <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/add-color.svg"
+            width="15" />
           <!--div v-show='option.check'>+</div-->
           <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
 
@@ -79,7 +80,7 @@
           </div>
         </div>
         <!--toggle click.prevent -->
-        <img :id="Id + '_toggle_img'" class="imagen" :style="{ 'height': inputStyle.height }"
+        <nuxt-img :id="Id + '_toggle_img'" class="imagen" :style="{ 'height': inputStyle.height }"
           v-show="!prop.ReadOnly && !prop.Disabled"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="divi" v-if="prop.Visible" :style="style">
+  <div class="divi" v-if="prop.Visible" :style="divStyle">
     <div v-if="loading && prop.Visible && BSource == ''" class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div v-else class="wraper" style="width:100%;height:100%">
+    <div v-else class="pdfWraper" style="width:100%;height:100%">
       <div class='reportViewer' style="height:100%;height:90%">
         <iframe :src="BSource" style="width:95%" height="900" />
       </div>
@@ -102,6 +102,8 @@ const props = defineProps<{
 }>();
 const BSource = ref('')
 const loading = ref(true)
+const divStyle = ref(props.style)
+divStyle.value.width = '95%'
 
 watch(
   () => props.prop.Source,
@@ -146,4 +148,3 @@ watch(
 //const Value = ref(props.prop.Value);
 //const { Value } = toRefs(props);
 </script>
-

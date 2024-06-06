@@ -175,7 +175,7 @@ div.imagen {
   height: 220x;
   width: 180px;
 
-  background-image: url("/logos/Logo_Empresa.png");
+  background-image: url("/logos/Siavcom.png");
   /* opacity: 0.5;*/
 }
 

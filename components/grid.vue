@@ -106,7 +106,7 @@
 
               <!--td>
                 <div class="left-btn hide-in-print" @click="borraRenglon(item.recno)">
-                  <img src="/Iconos/delete.jpeg" width="23">
+                  <nuxt-img src="/Iconos/delete.jpeg" width="23">
 
                 </div>
               </td-->
@@ -145,38 +145,38 @@
         <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
 
           <span :id="Id + '_botton_controles_add'" v-show="prop.addButton" width="40" @click="appendRow()">
-            <img :id="Id + '_otton_controles_add_img'" src="/Iconos/add-color.svg" width="35">
+            <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/add-color.svg" width="35" />
           </span>
 
           <span :id="Id + '_botton_controles_page'" v-show="scroll.page > 0">
 
             <span :id="Id + '_botton_controles_page_first'" v-bind:style="{ 'width': '40px' }"
               @click.capture.stop="first()">
-              <img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/first.svg" width="30">
+              <nuxt-img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/first.svg" width="30" />
             </span>
 
             <span :id="Id + '_botton_controles_page_previus'" @click.capture.stop="previous()">
-              <img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/previous.svg" width="30">
+              <nuxt-img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/previous.svg" width="30" />
             </span>
 
           </span>
           <span :id="Id + '_botton_controles_one__page'" v-show="!scroll.bottom">
             <span :id="Id + '_botton_controles_one__page_next'" @click="next()">
-              <img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/next.svg" width="30">
+              <nuxt-img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/next.svg" width="30" />
             </span>
             <span :id="Id + '_botton_controles_one__page_last'" @click="last()">
-              <img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/last.svg" width="30">
+              <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/last.svg" width="30" />
             </span>
           </span>
 
           <span :id="Id + '_botton_controles_delete_row'" v-show="prop.deleteButton && This.Row >= 0" width="40"
             @click.stop="borraRenglon()">
-            <img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/delete-row.svg" width="45">
+            <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/delete-row.svg" width="45" />
           </span>
 
           <!-- click.capture.stop -->
           <span :id="Id + '_botton_controles_save'" v-show="prop.saveData" @click="saveTable()">
-            <img :id="Id + '_ botton_controles_save_img'" src="/Iconos/save-color1.svg" width="45">
+            <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/save-color1.svg" width="45" />
           </span>
 
           <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -1049,7 +1049,7 @@ div.tabla {
   max-width: 960px;
   overflow-y: auto;
   overflow-x: auto;
-  width: 95%;
+  width: 98%;
 
 }
 

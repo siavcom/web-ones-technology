@@ -15,7 +15,7 @@
   <!--transition name='Details'-->
   <div v-show="This.prop.Visible">
     <div class='details' :style="style">
-      <details open class='details' @toggle="toggle" :open='!This.prop.Disabled' :style="style">
+      <details open class='detailsOpen' @toggle="toggle" :open='!This.prop.Disabled'>
 
         <summary>{{ This.prop.textLabel }}</summary>
         <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
@@ -24,7 +24,7 @@
         <!--transition-group> -->
         <!-- @focusout="This.eventos.push('This.' + compHeader + '.valid()')"-->
 
-        <div class='header'>
+        <div class='headerDetail'>
           <div v-for="(compHeader) in This.header">
 
             <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
@@ -38,14 +38,15 @@
               @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
           </div>
         </div>
-        <div class='main'>
+        <div class='mainDetail'>
           <!--TransitionGroup name='detailForm' tag='div'-->
           <div v-for="(compMain) in This.main" :key="compMain" style="z-index:0">
             <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
           v-bind:Show="true"
           
                   -->
-            <component :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
+            <component :is="impComp(This[compMain].prop.BaseClass)"
+              :class="This.prop.Name + '_' + This[compMain].prop.Name" v-bind:Component="ref(This[compMain])"
               v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
               v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
               v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
@@ -60,12 +61,12 @@
                    src="/Iconos/BotonRojo.png"
         This.prop.Status == 'A'
         -->
-        <div class="footer">
+        <div class="footerDetail">
           <div v-show="This.prop.Status == 'A'">
-            <img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
+            <nuxt-img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
           </div>
           <div v-show="This.prop.Status != 'A'">
-            <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+            <nuxt-img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
           </div>
 
           <div v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -580,10 +581,15 @@ div.details {
   justify-content: center;
   align-items: center;
   border: 1px solid rgb(0, 5, 2);
-
+  width: 100%;
   border-radius: 5px;
   padding: 10px 10px 10px 10px;
 }
+
+div.detailsOpen {
+  align-content: baseline;
+}
+
 
 /*
 div.contenedor {
@@ -648,7 +654,7 @@ header {
 }
 
 
-div.footer {
+div.footerDetail {
   display: flex;
   /*  flex;*/
   /*flex-direction: column; */
@@ -665,7 +671,7 @@ div.footer {
   /*flex-direction: row-reverse; */
 }
 
-div.main {
+div.mainDetail {
   /*display: flex;*/
   /*  flex;*/
   /*flex-direction: column; */

@@ -51,6 +51,7 @@ export class queryGen extends COMPONENT {
     this.prop.appendRow = true
     this.prop.deleteRow = true
     this.prop.TabIndex = 14
+    this.style.width = 'auto'
 
   }
 

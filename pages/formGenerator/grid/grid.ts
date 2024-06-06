@@ -67,7 +67,7 @@ export class grid extends GRID {
 
     //this.prop.ColumnCount=8
     this.toolTipText.prop.Last = true; // ultimo elemento
-    this.style.width = "920";
+    this.style.width = "98%";
     this.prop.saveData = false;
   }
 

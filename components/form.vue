@@ -84,7 +84,7 @@
     -->
           <section class="formfooter">
             <!--Transition tag='div' -->
-            <img class='circle'
+            <nuxt-img class='circle'
               :src="ThisForm.prop.Status == 'A' ? '/Iconos/circle-green.svg' : '/Iconos/circle-red.svg'"
               style="float:left" />
             <!--/Transition-->
@@ -110,7 +110,7 @@
 
             <div id="salir" class="salir" @click='clickSalir()'>
 
-              <img id="icono_salir" class='img' src="/Iconos/exit4-color.svg" style="float:right"
+              <nuxt-img id="icono_salir" class='img' src="/Iconos/exit4-color.svg" style="float:right"
                 :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
 
             </div>
@@ -144,14 +144,14 @@
                   <circle cx="50" cy="50" r="8" stroke="green" stroke-width="4" fill="green" />
                 </svg-->
 
-                <img class='circle' :src="ThisForm.prop.Status == 'A'? '/Iconos/circle-green.svg' :'/Iconos/circle-red.svg'" style="float:left" />
+                <nuxt-img class='circle' :src="ThisForm.prop.Status == 'A'? '/Iconos/circle-green.svg' :'/Iconos/circle-red.svg'" style="float:left" />
               </div>
               <div v-else key="red">
                 <!--svg width="100" height="100">
                   <circle cx="50" cy="50" r="8" stroke="red" stroke-width="4" fill="red" />
                 </svg-->
 
-                <img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+                <nuxt-img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
               </div>
             </TransitionGroup>
 
@@ -670,17 +670,7 @@ const impComp = ((name: string, pos?: string) => {
   transition: all 0.5s ease;
 }
 
-/*
-div.contenedor {
-  background: white;
-  color: #b94295;
-  min-width: 375px;
-  min-height: 812px;
-  background-image: "/logos/Logo_Empresa.png";
-  margin-top: 30%;
 
-}
-*/
 
 
 

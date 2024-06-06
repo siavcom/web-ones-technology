@@ -27,7 +27,7 @@
     <input :id="Id + '_input'" v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type"
       :style="inputStyle" readonly="true" v-model="Text" />
     <!--/div-->
-    <img :id="Id + '_img'" v-if="prop.Image > '    '" class="img" :src="prop.Image" />
+    <nuxt-img :id="Id + '_img'" v-if="prop.Image > '    '" class="img" :src="prop.Image" />
 
   </div>
   <!--/div-->

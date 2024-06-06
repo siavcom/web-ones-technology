@@ -4,7 +4,8 @@
     <div id="header" style="width: 98%;height: 65px; display: flex;">
       <!--img class="logoVue" :src="logo" style="width:50px;height:50px;" /-->
       <div id="webOnes" class="Web-ones">
-        <img class="logoVue" :src="logo" style="width:50px;height:50px" />eb-Ones Technology
+        <img loading="lazy" class="logoWebOnes" :src="logo" style="width:50px;height:50px" />eb-Ones
+        Technology
       </div>
 
       <div id="company" class="Company" style="align-self:flex-end;margin-left: auto;">
@@ -17,7 +18,7 @@
             <p>{{ new Date(props.fpo_pge).toDateString() }}</p>
           </div>
           <nuxt-img id="logoEmp" v-if="logoEmp && logoEmp.length > 5" class="logoEmp" :src="logoEmp"
-            style="width:auto;height:75px; float: inline-end" lodaing="lazy" />
+            style="width:auto;height:75px; float: inline-end" loading="lazy" />
 
           <!--nuxt-img id="logoEmp" v-if="srcLogo.length > 5" :src="srcLogo" class="logoEmp"
             style="width:auto;height:75px; float: inline-end" loading="lazy" /-->
@@ -34,7 +35,7 @@
 
 //import logo from '@/assets/logo.png'
 
-import logo from '@/assets/WebOnes.ico'
+import logo from '/assets/WebOnes.ico'
 
 //
 

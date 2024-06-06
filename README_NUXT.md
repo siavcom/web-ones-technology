@@ -83,3 +83,65 @@ Runing con bun
 bun run dev
 Limpia proyecto
 npx nuxi cleanup
+
+
+/////////////////////////////////////////////////////////////
+
+Instalar como demonio projecto de NODE y/o NUXT
+////////////////////////////////////////////////////////////
+
+debe de existir nvm en root
+
+sudo su
+apt install curl 
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
+
+source ~/.profile   
+
+ya instalado el nvm (node version manager)
+instalar el node en root
+
+nvm install 20.11
+
+
+Vamos a utilizar el paquete pm2 para poner nustros demonios de servidores de nuxt y node 
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-22-04
+
+sudo npm install pm2@latest -g
+ hay que posisionarnos donde corre el back-end
+
+pm2 start server_socekt.js
+
+te va dar un comando a ejecutar
+
+sudo env PATH=$PATH:/home/soporte/.config/nvm/versions/node/v20.11.1/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u soporte --hp /home/soporte
+
+por ultimo
+
+
+pm2 save
+
+
+
+aumentar projecto nuxt a pm2
+en nuxt.config.ts
+
+aumentar host:0
+
+devServer: {
+    host:'0',   // indica la direccion ip a servir
+    port: 3000
+  },
+
+
+
+pm2 start npm --name "web-ones" -- run dev
+y 
+pm2 save
+
+para guardar 
+
+
+
+
