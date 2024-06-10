@@ -29,7 +29,8 @@ export class bt_aceptar extends COMPONENT {
   public async click() {
     this.num_int++;
 
-    if (this.num_int == 5) {
+    if (this.num_int >= 5) {
+      alert("Exedió el maximo de intentos");
       window.close();
       return;
     } // numero maximo de intentos = 5
@@ -71,17 +72,17 @@ export class bt_aceptar extends COMPONENT {
     if (login.length == 0) {
       ThisForm.log_usu.prop.ErrorMessage = "Digite usuario";
       ThisForm.log_usu.prop.Valid = false;
-      ThisForm.log_usu.prop.ShowError = true;
       return;
     }
+
+    ThisForm.pas_usu.prop.Value = ThisForm.pas_usu.prop.Value.trim();
 
     if (
       !ThisForm.pas_usu.prop.Value ||
       ThisForm.pas_usu.prop.Value.length === 0
     ) {
-      ThisForm.pas_usu.prop.ErrorMessage = "Digite contraseña";
       ThisForm.pas_usu.prop.Valid = false;
-      ThisForm.pas_usu.prop.ShowError = true;
+
       return;
     }
 
@@ -92,9 +93,15 @@ export class bt_aceptar extends COMPONENT {
     id_con.value = "";
     pass.value = "";
 
-    if (nom_emp.value != empresa) nom_emp.value = empresa;
-    if (user.value != login) user.value = login;
-    pass.value = ThisForm.pas_usu.prop.Value;
+    if (nom_emp.value != empresa)
+      nom_emp.value = empresa;
+    if (user.value != login)
+      user.value = login;
+
+    const password = ThisForm.pas_usu.prop.Value;
+    //   ThisForm.pas_usu.prop.Value = ''
+
+    pass.value = password
 
     //console.log('Datos login ========>>>>>>>',id_con.value,nom_emp.value,user.value,pass.value)
     return;

@@ -516,7 +516,7 @@ const obtMenu = () => {
           params = usrMenu.value[i].par_prg.trim()
 
         if (params.length > 0) {
-          console.log('Menu=', usrMenu.value[i].prg_prg.trim(), 'Params=', params)
+          //console.log('Menu=', usrMenu.value[i].prg_prg.trim(), 'Params=', params)
         }
 
         let pos = params.indexOf(',') // Posicion de la primera coma
@@ -560,7 +560,7 @@ const obtMenu = () => {
 // Obten subMenu
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
-  console.log('SubMenu Menu=', usrMenu.value)
+  // console.log('SubMenu Menu=', usrMenu.value)
   isOpen.value = true
   // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
@@ -603,7 +603,7 @@ const obtSubMenu = (system: string) => {
 
           path.query = { par_uno: usrMenu.value[i].par_prg.trim() }
 
-          console.log('SubMenu=', usrMenu.value[i].prg_prg.trim(), 'Path.params=', path.params)
+          //console.log('SubMenu=', usrMenu.value[i].prg_prg.trim(), 'Path.params=', path.params)
         }
       }
 

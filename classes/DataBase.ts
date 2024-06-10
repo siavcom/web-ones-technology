@@ -2470,6 +2470,7 @@ return false;
       } // Fin catch error
     } while (numLogin < 3);
     // this.axiosActive = false;
+    MessageBox('Connection error. Try ' + numIntentos.toString() + ' to reconnect', 16, "ERROR");
     window.close();
   }
 
@@ -2622,7 +2623,7 @@ return false;
 
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-    // console.log('Db readCampo=', tabla, campo, recno)
+    //  console.log('Db readCampo=', tabla, campo, recno)
 
     const data = await this.readValue(tabla, campo, recno, DataBase);
     // console.log('Db Read renglon ',data[0])

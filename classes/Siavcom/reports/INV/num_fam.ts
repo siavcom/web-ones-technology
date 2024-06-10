@@ -32,6 +32,6 @@ export class num_fam extends COMPONENT {
     this.Parent.has_fam.prop.RowSource = "";
     this.Parent.des_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from man_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
     this.Parent.has_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from man_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
-    return;
+    return true;
   } //
 }

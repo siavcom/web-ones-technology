@@ -35,6 +35,12 @@ export class help extends HELP {
     ["ema_nom", "Email", "64px"]];
   }
 
+  async open() {
+    this.prop.Where = ` cop_nom='${this.Form.cop_nom.prop.Value}'  `
+    super.open()
+  }
+
+
 
 }
 

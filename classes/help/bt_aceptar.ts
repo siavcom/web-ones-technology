@@ -69,6 +69,7 @@ export class bt_aceptar extends COMPONENT {
 
     //    const data = await this.Sql.localAlaSql(`select cam_dat,ref_dat from Now.diccionario `)
     //    console.log('bt_aceptar data=', data)
+    this.Parent.browse.table.columns = []
     const columns = []
     console.log("open fields=", this.Parent.fields)
     let fields = ''

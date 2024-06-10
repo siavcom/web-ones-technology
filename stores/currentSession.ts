@@ -14,23 +14,16 @@ modules: [
 */
 
 //import { defineStore, acceptHMRUpdate } from 'pinia'
+
 import { acceptHMRUpdate } from "pinia";
 
-//import {watch} from 'vue'
-import axios from "axios";
+
+//import axios from "axios";
+
 import { Socket, io } from "socket.io-client";
-//import dat_emp from "/src/empresas/datos.json";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
+//import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 //import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
-//import store from '../stores/index'
-/*
-
-// make sure to pass.value the right store definition, `Session` in this case.
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(Session, import.meta.hot))
-}
-*/
 
 export const Session = defineStore(
   "currentSession",
@@ -101,14 +94,19 @@ export const Session = defineStore(
         });
         */
       //      console.log("Socket url=>>>>>>>>>>>>>>>>", urlSocket, "json=", json);
-
+      // Pasword invalido
       socket.on("loginFail", (res: string) => {
-        socketDisconnect(socket, res);
+
+        MessageBox(res, 16, "Login failed");
+        pass.value = "";
+
+        //socketDisconnect(socket, res);
+        return
       });
 
       socket.on("loginOk", async (res: {}) => {
 
-        console.log('loginOk========>', res)
+        // console.log('loginOk========>', res)
         socketId = socket.id;
         //res={ id: name, dialect: options.dialect, fpo_pge }
         // obtenemos datos de conexión
@@ -131,13 +129,14 @@ export const Session = defineStore(
       });
 
       socket.on("error", (error) => {
-        MessageBox(error, 16, "SQL Error ");
+        MessageBox(error, 16, "-- SQL Error --");
         if (error == "Timeout or connection error") {
           const router = useRouter();
           router.push("/Login");
         }
 
         console.warn("Error SQL=", error);
+        return
       });
 
       socket.on("desconecta", (error: string) => {
@@ -423,35 +422,22 @@ export const Session = defineStore(
     // watchers
     ////////////////////////////////////////////////////
 
-    watch(
-      () => nom_emp.value,
-      (new_emp, old_val) => {
-        /* console.log(
-          "Watch Pinia nom_emp.value",
-          new_emp,
-          old_val,
-          id_con.value
-        );
-        */
-        if (new_emp != old_val) {
-          //  id_con.value = "";
-          //  menu.value = []
-        }
-      },
-      { deep: false }
-    );
-
+    /*  watch(
+        () => nom_emp.value,
+        (new_emp, old_val) => {
+        
+          if (new_emp != old_val) {
+            //  id_con.value = "";
+            //  menu.value = []
+          }
+        },
+        { deep: false }
+      );
+  */
     watch(
       () => id_con.value,
       (new_id, old_val) => {
-        /* console.log(
-          "Watch Pinia id_con.value=",
-          new_id,
-          old_val,
-          "nom_emp=",
-          nom_emp.value
-        );
-        */
+
         if (new_id != old_val) {
           if (new_id.length > 9 && nom_emp.value.length > 2) {
             console.log("currentSesion watch id_con", new_id, old_val);
@@ -486,7 +472,7 @@ export const Session = defineStore(
     );
 
     const socketDisconnect = (socket, men: string) => {
-      MessageBox(men, 16, "SQL Error ");
+      MessageBox(men, 16, "-- SQL Error --");
       pass.value = "";
       socketIo.value = false;
       id_con.value = "";
@@ -496,7 +482,6 @@ export const Session = defineStore(
       //socket.destroy();
       //socket.cache.clear();
       socket.disconnect();
-
       console.warn("socket disconnect");
     };
 
@@ -526,10 +511,10 @@ export const Session = defineStore(
       //        .emit("sql async", dat_act, (res: []) => {
       try {
         const response = await socket.emitWithAck("sql async", dat_act);
-        console.log("1 Session Socket emit data", response);
+        //console.log("1 Session Socket emit data", response);
         return response;
       } catch (err) {
-        console.error("2 Session Socket emit data", err);
+        //console.error("2 Session Socket emit data", err);
         MessageBox("Back end connection fail" + err, 16, "Error");
         return null;
       }

@@ -79,10 +79,15 @@ export class reportForm extends FORM {
                          lower(cam_dat)='usu_cre' or lower(cam_dat)='tie_cre' \
                          THEN 'zzzzzzzzzzz' \
                          ELSE nom_tab END as nom_tab \
-        from vi_schema_views where nom_vis='${vis_rep}' `,
+        from vi_schema_views where nom_tab='${vis_rep}' `,
       "camposView",
       "NULL"
     );
+
+
+
+
+
 
     if (!db.View.camposView || db.View.camposView.recCount == 0) {
       MessageBox("No existe la vista Sql :" + vis_rep, 16, "Error  ");
@@ -95,9 +100,9 @@ export class reportForm extends FORM {
     const m = {
       prg_prg: this.prop.Name,
       par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
-      nom_vis: vis_rep,
+      nom_tab: vis_rep,
     };
-    console.log("reportForm init m=", m);
+    console.log("1) reportForm init m=", m);
     await db.use("vi_cap_db_query", m); // todos los querys del reporte
 
     // Query Principal

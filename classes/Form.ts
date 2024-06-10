@@ -29,6 +29,7 @@ export class FORM extends COMPONENT {
   clickedElement = null;
   Development = false; // desarrollo
   dialect = "MSSQL";
+
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
   constructor() {

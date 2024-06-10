@@ -32,7 +32,7 @@ export class sep_fam extends COMPONENT {
       this.Parent.has_fam.prop.Visible = true;
       this.Parent.has_fam.prop.Disabled = false;
 
-      return;
+      return true;
     }
 
     this.Parent.num_fam.prop.Visible = false;

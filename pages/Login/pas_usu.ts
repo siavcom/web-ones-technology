@@ -18,14 +18,17 @@ export class pas_usu extends COMPONENT {
     this.prop.Capture = false;
     this.prop.TabIndex = 3;
     this.prop.Placeholder = "Password";
-
     this.style.width = "auto";
-    // this.style.zIndex = 1;
     this.inputStyle.width = "130px";
+    this.prop.ErrorMessage = "Invalid password";
 
-    this.num_int = 0;
   }
-  public valid(Valid: boolean): Promise<boolean> {
-    this.Form.bt_aceptar.click();
+  public async valid(Valid: boolean) {
+    if (this.prop.Value.trim().length == 0) {
+      return false
+    }
+    await this.Form.bt_aceptar.click();
+    return true
+
   }
 }

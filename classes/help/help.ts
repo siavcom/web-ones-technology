@@ -75,9 +75,10 @@ export class HELP extends CONTAINER {
   }
 
   async open() {
-    this.Parent.prop.InputProp.Enabled = false
-    this.Parent.prop.InputProp.Visible = false
-
+    //this.Parent.prop.Help = false
+    this.des_dat.prop.Value = ''
+    this.has_dat.prop.Value = ''
+    this.Parent.prop.ReadOnly = true
 
     let fields = ''
     let or = ''
@@ -117,26 +118,24 @@ export class HELP extends CONTAINER {
       this.prop.Visible = false
       this.cam_dat.prop.RowSourceType = 0
     }
-
+    this.Parent.prop.Valid = true
   }
 
   async close() {
     this.prop.Visible = false
     if (this.browse.prop.Value > '   ') {
-      this.Parent.prop.Value = this.browse.prop.Value
-      this.Parent.valid()
-      this.Parent.prop.Disabled = false
+      console.log("help close browse.prop.Value=", this.browse.prop.Value, 'typeof=', typeof this.browse.prop.Value)
+      if (typeof this.Parent.prop.Value == "number")
+        this.Parent.prop.Value = +this.browse.prop.Value
+      else
+        this.Parent.prop.Value = this.browse.prop.Value
+
+
+      await this.Parent.valid()
 
     }
-    this.Parent.prop.InputProp.Enabled = true
-    this.Parent.prop.InputProp.Visible = true
-    this.Parent.prop.Visible = true
-
-    //this.Parent.prop.ReadOnly =false
-    //this.Parent.prop.Disabled =false
-    this.Parent.prop.Help = true
-
-
+    this.Parent.prop.ReadOnly = false
+    //this.Parent.prop.Help = true
 
   }
 

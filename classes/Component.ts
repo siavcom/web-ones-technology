@@ -31,6 +31,7 @@ export class COMPONENT {
   elements: [] = []; // elementos que tiene el componente
   status: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
+  error = false
 
   prop = {
     autoLoad: false,

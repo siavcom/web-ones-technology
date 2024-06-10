@@ -21,7 +21,7 @@ export class help extends HELP {
     this.prop.RecordSource = 'man_comecon' // tabla donde buscar datos
     this.browse.prop.textLabel = 'Consigantarios'
     this.prop.cam_pri = 'noc_con' // campo de buqueda principal
-
+    this.prop.Where = " "
 
     // Campos a mostrar en la tabla 
     this.fields = [["con_con", "Código", "32px"],
@@ -35,6 +35,11 @@ export class help extends HELP {
     ];
   }
 
+  async open() {
+    this.prop.Where = ` cop_nom='${this.Form.cop_nom.prop.Value}' and cod_nom='${this.Form.cod_nom.prop.Value}'  `
+    super.open()
+  }
+
+
 
 }
-

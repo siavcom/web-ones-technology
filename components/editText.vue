@@ -1019,8 +1019,11 @@ const onFocus = async () => {
   return
 }
 const help = async () => {
-  if (This.help)
+  if (This.help) {
+    This.prop.Valid = true
     await This.help.open()
+    This.prop.Valid = true
+  }
 
 }
 const select = async () => {
@@ -1083,11 +1086,15 @@ watch(
 // change This.prop.ShowError
 /////////////////////////////////////////////////////////////////
 watch(
-  () => This.prop.ShowError, //props.prop.Value, //Value.value,
+  () => ShowError.value, //props.prop.Value, //Value.value,
   async (new_val: boolean) => {
-    if (new_val)
-      ShowError.value = new_val
-    // console.log('watch editText Name', This.prop.Name, 'ShowError.value', new_val)
+
+    if (This.Form.error && new_val) {
+      ShowError.value = false
+    }
+
+    This.Parent.error = new_val
+    console.log('watch editText Name', This.prop.Name, 'ShowError.value', new_val)
   },
   { deep: false }
 )

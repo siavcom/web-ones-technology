@@ -22,12 +22,12 @@ export class has_dat extends COMPONENT {
   async valid() {
 
     if (this.Parent.cam_dat.Type == 'string') {
-      this.prop.Value = this.prop.Value.trim()
-
-      if (this.prop.MaxLength - (this.prop.Value.length) > 0) {
-        const ztas = 'z'.repeat(this.prop.MaxLength - (this.prop.Value.length))
-        this.prop.Value = this.prop.Value + ztas
+      const Value = this.prop.Value.trim()
+      if (this.prop.MaxLength - (Value.length) > 0) {
+        const ztas = 'z'.repeat(this.prop.MaxLength - (Value.length))
+        this.prop.Value = Value + ztas
       }
     }
+    return true
   }
 }

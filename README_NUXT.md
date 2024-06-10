@@ -134,9 +134,12 @@ devServer: {
     port: 3000
   },
 
+hacer un web-ones.sh para que corra nuxt con pm2
+con la instruccion
+npx nuxi dev
 
 
-pm2 start npm --name "web-ones" -- run dev
+pm2 start start run.sh
 y 
 pm2 save
 
