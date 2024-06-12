@@ -138,8 +138,8 @@ hacer un web-ones.sh para que corra nuxt con pm2
 con la instruccion
 npx nuxi dev
 
-
-pm2 start start run.sh
+start 
+pm2 start start web-ones.sh
 y 
 pm2 save
 

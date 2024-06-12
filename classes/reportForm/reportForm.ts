@@ -19,10 +19,24 @@ import { report } from "./report/report";
 import { reportFields } from "./reportFields";
 import { bt_pdf } from "./bt_pdf";
 
+
+import { des_dat } from './des_dat'
+import { has_dat } from './has_dat'
+import { tip_con } from './tip_con'
+//import { cam_dat } from './cam_dat'
+
 export class reportForm extends FORM {
   public mon_rep = new mon_rep();
   public tip_rep = new tip_rep();
   public var_ord = new var_ord(); // variable de orden principal de la vista
+
+
+  // public cam_dat = new cam_dat()
+  public tip_con = new tip_con()
+  public des_dat = new des_dat()
+  public has_dat = new has_dat()
+
+
   public queryPri = new queryPri();
   public queryUsu = new queryUsu();
   public queryGen = new queryGen();
@@ -44,27 +58,38 @@ export class reportForm extends FORM {
   vis_ori: string = ""; // vista sql original
   for_ori: string = ""; // forma JASPER original
 
+  fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
+
   constructor() {
     super();
     this.mon_rep.prop.TabIndex = 101;
     this.tip_rep.prop.TabIndex = 102;
     this.var_ord.prop.TabIndex = 103;
-    this.queryPri.prop.TabIndex = 104;
-    this.queryUsu.prop.TabIndex = 105;
-    this.queryGen.prop.TabIndex = 106;
-    this.for_imp.prop.TabIndex = 107;
-    this.reportFields.prop.TabIndex = 108;
-    this.report.prop.TabIndex = 109;
+
+    //  this.cam_dat.prop.TabIndex = 104;
+    this.tip_con.prop.TabIndex = 105;
+    this.des_dat.prop.TabIndex = 106;
+    this.has_dat.prop.TabIndex = 107;
+
+
+    this.queryPri.prop.TabIndex = 108;
+    this.queryUsu.prop.TabIndex = 109;
+    this.queryGen.prop.TabIndex = 110;
+    this.for_imp.prop.TabIndex = 111;
+    this.reportFields.prop.TabIndex = 112;
+    this.report.prop.TabIndex = 113;
+    this.prop.cam_pri = ''
+
   }
 
   public async init() {
     //    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from man_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
 
-    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.Form.tab_ord}' order by con_dat`;
+    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
     this.var_ord.prop.RowSourceType = 3;
 
+    this.queryPri.prop.Disabled = true;
     this.queryUsu.prop.Disabled = true;
-
     this.queryGen.prop.Disabled = true;
 
     const db = this.db;
@@ -102,11 +127,9 @@ export class reportForm extends FORM {
       par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
       nom_tab: vis_rep,
     };
-    console.log("1) reportForm init m=", m);
     await db.use("vi_cap_db_query", m); // todos los querys del reporte
 
     // Query Principal
-
     await this.asignaRecordSource("queryPri", "query_main");
 
     if (this.prop.Development == false) {
@@ -125,22 +148,18 @@ export class reportForm extends FORM {
 
     await this.asignaRecordSource("queryGen", "query_all");
 
-    this.Form.queryPri.activa.prop.Value = 1;
-    await this.Form.queryPri.nco_que.interactiveChange();
-    /*
-    console.log(
-      "Fin reportForm",
-      this.Form.queryPri.Name,
-      "Var_ord=",
-      this.Form.var_ord.prop.Value,
-      "Query=",
-      this.Form.queryPri.query.prop.Value
-      ,'camposView=', await this.Form.db.localAlaSql(
-        `select * as tip_dat from Now.camposView ; ` )
-      );
-      */
+    this.queryPri.activa.prop.Value = 0;
 
-    if (db.session.user == "sa") this.reportFields.prop.Visible = true;
+    await this.queryPri.nco_que.interactiveChange();
+
+
+    if (db.session.user == "sa") {
+      this.reportFields.prop.Visible = true;
+
+    }
+    await this.open()
+
+
   }
 
   // asignamos RecordSource y ControlSource de cada columna
@@ -176,17 +195,17 @@ export class reportForm extends FORM {
     if (tip_con == "queryGen") tabla = "query_all";
 
     //  console.log("reportForm alias");
-    if (!this.Form.db.View[tabla]) {
+    if (!this.db.View[tabla]) {
       // Si no existe el alias
       const filter = {
         usu_que: this[tip_con].usu_que,
         nco_que: this[tip_con].nco_que.prop.Value,
       };
-      await this.Form.db.localClone("vi_cap_db_query", tabla, filter);
+      await this.db.localClone("vi_cap_db_query", tabla, filter);
     }
 
     const ins_sql = `select * from ${tabla} where nco_que=${nco_que} order by ren_que`;
-    const data = await this.Form.db.localAlaSql(ins_sql);
+    const data = await this.db.localAlaSql(ins_sql);
 
     if (data.length == 0) return where; // No hay condición
 
@@ -199,7 +218,7 @@ export class reportForm extends FORM {
       m.con_que = m.con_que.trim();
       m.val_que = m.val_que.trim();
 
-      const data1 = await this.Form.db.localAlaSql(
+      const data1 = await this.db.localAlaSql(
         `select trim(tip_dat) as tip_dat from Now.camposView where trim(cam_dat)='${m.cam_dat}' ; `
       );
 
@@ -257,15 +276,45 @@ export class reportForm extends FORM {
   }
 
   public async gen_query() {
-    var where: string = "";
+
+    await this.has_dat.valid()
+
+    let where = ''
+
+    let Type = this.var_ord.Type
+    if (this.tip_con.prop.Value == 'C') {  // contenga
+      where = ` ${this.var_ord.prop.Value} like '%${this.des_dat.prop.Value.trim()}%'`
+    } else {
+      where = ` ${this.var_ord.prop.Value} >= ${this.des_dat.prop.Value} and \
+    ${this.var_ord.prop.Value} <= ${this.has_dat.prop.Value}`
+
+
+      if (Type == 'string') {
+        where = ` ${this.var_ord.prop.Value} >= '${this.des_dat.prop.Value}' and \
+           ${this.var_ord.prop.Value} <= '${this.has_dat.prop.Value}'`
+      }
+
+      if (Type == 'date' || Type == 'dateTime') {
+        const des_dat = dateToSring(this.des_dat.prop.Value)
+        const has_dat = dateToSring(this.has_dat.prop.Value)
+        where = ` ${this.var_ord.prop.Value} >= 'des_dat' and \
+           ${this.var_ord.prop.Value} <= 'has_dat'`
+      }
+    }
+    where = `  (${where}) `
+
+
+
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
     var executeQuery: string = "select * from " + this.vis_rep;
 
-    const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
+    const m = await this.obtData(); // Variable de memoria los propiedades de la forma
 
     //    if (this.query.length > 1) executeQuery = this.query;
 
-    where = await this.gen_where("queryPri");
+    const where_pri = await this.gen_where("queryPri");
+    if (where_pri.length > 3)
+      where = `${where} and ${where_pri}`
 
     if (this.queryUsu.prop.Visible) {
       const where_usu = await this.gen_where("queryUsu");
@@ -310,7 +359,7 @@ export class reportForm extends FORM {
 
   ////////////////////////////////////////
   // metodo :obtData
-  // pone en la propiedad this.Form.data todos los valores de las propiedades
+  // pone en la propiedad this.data todos los valores de las propiedades
   // de esta Forma
   //////////////////////////////////////
 
@@ -327,13 +376,60 @@ export class reportForm extends FORM {
     }
 
     // Obtenemos variables Publicas
-    const Var = this.Form.publicVar;
+    const Var = this.publicVar;
     for (let component in Var) {
       data[component] = Var[component];
       //console.log("bt_json component.value= ", data[component]);
     }
     //console.log("bt_json obtData= ", data,this.Form.publicVar);
-    this.Form.data = data;
+    this.data = data;
     return data;
   }
+
+  async open() {
+
+    this.des_dat.prop.Value = ''
+    this.has_dat.prop.Value = ''
+
+
+    let fields = ''
+    let or = ''
+    for (let i = 0; i < this.fields.length; i++) {
+      fields = fields + or + "cam_dat='" + this.fields[i][0] + "'"
+      or = ' or '
+    }
+
+    if (!this.Sql.View[this.prop.RecordSource]) {
+
+      fields = ` ( ${fields} )`
+      console.log("open fields=", fields)
+      /*      await this.Sql.execute(
+              `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
+              from vi_schema_views where nom_tab='${this.prop.RecordSource}' and ${fields} order by con_dat`,
+              'diccionario'
+            );
+      */
+
+      await this.Sql.execute(
+        `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
+        from vi_schema_views where nom_tab='${this.tab_ord}' and ${fields} order by con_dat`,
+        'diccionario'
+      );
+
+
+      for (let i = 0; i < this.fields.length; i++)
+        await this.Sql.localAlaSql(`update diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
+
+    }
+
+    this.var_ord.prop.RowSource = `diccionario.ref_dat,cam_dat`;
+    this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
+    this.var_ord.prop.Value = this.prop.cam_pri // asignamos campo principal
+    await this.var_ord.interactiveChange()
+
+
+  }
+
+
+
 }

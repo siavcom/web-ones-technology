@@ -15,7 +15,7 @@
   <!--transition name='Details'-->
   <div v-show="This.prop.Visible">
     <div class='details' :style="style">
-      <details open class='detailsOpen' @toggle="toggle" :open='!This.prop.Disabled'>
+      <details :id="Id + '_details'" class='detailsOpen' @toggle="toggle" :open='!This.prop.Disabled'>
 
         <summary>{{ This.prop.textLabel }}</summary>
         <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
@@ -205,7 +205,12 @@ const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
+var sw_ini = true
 //const Focus = ref(false)
+
+
+
+const Id = This.prop.Name
 
 
 const scroll = reactive({
@@ -235,6 +240,11 @@ const emitValue = async () => {
 };
 
 const toggle = () => {
+  if (sw_ini) {
+    sw_ini = false
+    return
+  }
+
   This.prop.Disabled = !This.prop.Disabled
   console.log('toggle', props.prop.Name, 'This.prop.Disabled', This.prop.Disabled)
   This.click()
@@ -484,6 +494,11 @@ const ejeEvento = (newEvento: string) => {
 
 const init = async () => {
 
+
+  if (This.propDisabled == false) {
+    detail.setAttribute("close", "");
+    const detail = document.getElementById(Id + "_details")
+  }
   for (const componente in This) {
     if (This[componente] !== undefined) {
       if (
@@ -496,7 +511,6 @@ const init = async () => {
     }
   }
   console.log('Fin Details.vue Init This==>', This)
-
 
 }
 

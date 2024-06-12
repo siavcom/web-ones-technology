@@ -20,14 +20,14 @@ export class query extends COMPONENT {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-   // this.prop.textLabel = 'Filtro'
+    // this.prop.textLabel = 'Filtro'
     this.prop.Type = 'textArea'
     this.prop.BaseClass = 'editText'
     this.prop.Capture = false
-    this.prop.ReadOnly= true
-    this.prop.Visible=false
-    this.prop.Placeholder='SQL QUERY'
-    this.inputStyle.cols=80
+    this.prop.ReadOnly = true
+    this.prop.Visible = false
+    this.prop.Placeholder = 'SQL QUERY'
+    this.inputStyle.cols = 80
 
-  }  
+  }
 }

@@ -17,13 +17,17 @@ export class has_dat extends COMPONENT {
     this.prop.textLabel = " Y ";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";
-    this.style.marginLeft = "10px";
     this.prop.ErrorMessage = "Valor menor al valor anterior";
+    this.style.marginLeft = "10px";
   }
 
   async valid() {
     if (this.prop.Value < this.Parent.des_dat.prop.Value)
       return false
+
+    if (this.prop.Value.trim().length == 0)
+      this.prop.Value = 'z'.repeat(this.prop.MaxLength)
+
 
     return true
   }

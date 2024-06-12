@@ -18,6 +18,9 @@ export class DETAILS extends COMPONENT {
     this.prop.Position = 'main'
     this.style.maxWidth = '720px'
     this.style.width = 'auto'
+    this.style.alignContent = 'flex-start'
+    this.browse.style.width = '-moz-available'
+
   }
 
 }

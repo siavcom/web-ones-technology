@@ -1,30 +1,80 @@
 //////////////////////////////////////////////
-// Clase : var_ord
-// Descripcion : Variable de orden de la vista del reporte
-// Author : Fernando Cuadras Angulo
-// Creacion : 24/May/2023
-// Ult.Mod  : 24/May/2023
+// BaseClass : component
+// Class : nom_ind
+// Description : Nobre del indice
+// Author : El Fer Blocks
+// Creation : 2024-04-15
+// Update Date  :
 /////////////////////////////////////////////
-
 ///////////////////////////////////////
-
+// base class
+///////////////////////////////////////
 import { COMPONENT } from "@/classes/Component";
 
 export class var_ord extends COMPONENT {
-  //  constructor(parent: Record<string, never>) {
+  Type: string
   constructor() {
     super();
-    this.prop.BaseClass = "comboBox";
     this.prop.textLabel = "Orden ";
+    this.prop.BaseClass = "comboBox";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
+    this.prop.Capture = false;
+    this.prop.updateKey = true;
+    this.prop.ColumnWidths = "200px,56px";
+    this.style.width = "256px";
+    // this.style.marginLeft = "10px";
 
-    //this.prop.ColumnWidths ="70%,10%";
-    this.prop.ColumnWidths = "256px,64px";
-    // this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-    this.inputStyle.width = "128px";
-    this.style.width = "400px";
-    //this.style.zIndex=2
-    // this.prop.TabIndex=103
+
+  }
+  async when() {
+    await this.interactiveChange()
+  }
+  async interactiveChange() {
+    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from Now.diccionario where cam_dat='${this.prop.Value}'`)
+    const tip_dat = data[0].tip_dat
+    let Type = 'string'
+    let des_Value = ''
+    let has_Value = ''
+    if (tip_dat == 'smallint' ||
+      tip_dat.slice(0, 3) == 'int' ||
+      tip_dat.slice(0, 5) == 'float' ||
+      tip_dat.slice(0, 6) == 'double' ||
+      tip_dat.slice(0, 3) == 'num'
+    ) {
+
+      Type = 'number'
+      des_Value = 0
+      has_Value = 9999999999999999
+    }
+    if (tip_dat == 'date'
+    ) {
+      Type = 'date'
+      des_Value = new Date()
+      has_Value = des_Value
+    }
+
+    if (tip_dat == 'date' ||
+      tip_dat == 'datetime'
+    ) {
+      Type = 'dateTime'
+      des_Value = new Date()
+      has_Value = des_Value
+    }
+
+    this.Type = Type
+    const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
+
+    this.Parent.des_dat.prop.Type = Type
+    this.Parent.des_dat.prop.MaxLength = lon_dat
+    this.Parent.des_dat.prop.Decimals = data[0].dec_dat
+    this.Parent.des_dat.prop.Value = des_Value
+
+    this.Parent.has_dat.prop.Type = Type
+    this.Parent.has_dat.prop.MaxLength = lon_dat
+    this.Parent.has_dat.prop.Decimals = data[0].dec_dat
+    this.Parent.has_dat.prop.Value = has_Value
+    this.Parent.tip_con.when()
+
   }
 }

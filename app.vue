@@ -2,7 +2,7 @@
   <div class="Menu">
     <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
       <div class="logo-details" style="margin: 6px 14px 0 14px;">
-        <nuxt-img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon" />
+        <img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon" />
 
         <!--i  v-else src="/Iconos/svg" class="bx icon" :class="menuIcon"></i-->
         <div class="logo_name">

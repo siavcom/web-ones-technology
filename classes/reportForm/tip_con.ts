@@ -28,12 +28,11 @@ export class tip_con extends COMPONENT {
     this.inputStyle.width = "180px";
     this.style.marginLeft = "10px";
 
-
   }
 
 
   async when() {
-    if (this.Parent.cam_dat.Type == 'string') {
+    if (this.Parent.var_ord.Type == 'string') {
       this.prop.ReadOnly = false
       return true
     }
@@ -43,7 +42,7 @@ export class tip_con extends COMPONENT {
 
   }
   async interactiveChange() {
-    if (this.Parent.cam_dat.Type == 'string')
+    if (this.Parent.var_ord.Type == 'string')
       if (this.prop.Value == 'C') {
         this.Parent.des_dat.prop.textLabel = ''
         this.Parent.has_dat.prop.Visible = false

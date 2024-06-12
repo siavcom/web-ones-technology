@@ -35,9 +35,6 @@ export class bt_aceptar extends COMPONENT {
     this.Parent.des_dat.prop.Visible = false
     this.Parent.has_dat.prop.Visible = false
 
-    if (await !this.Parent.des_dat.valid())
-      return
-
     await this.Parent.has_dat.valid()
 
     let where = ''
@@ -71,7 +68,6 @@ export class bt_aceptar extends COMPONENT {
     //    console.log('bt_aceptar data=', data)
     this.Parent.browse.table.columns = []
     const columns = []
-    console.log("open fields=", this.Parent.fields)
     let fields = ''
     let coma = ''
     for (let i = 0; i < this.Parent.fields.length; i++) {
@@ -86,6 +82,7 @@ export class bt_aceptar extends COMPONENT {
       this.Parent.browse.table.columns.push(columns[i])
 
     }
+    console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
 
 
     await this.Sql.execute(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')

@@ -26,27 +26,27 @@ export class bt_obtener extends COMPONENT {
 
   async click() {
     this.Form.report.displayPdf.prop.Source = "";
-    const main=this.Form.main
+    const main = this.Form.main
 
-    for (let i=0;i<main.length;i++){
-       console.log('bt_close  main====>',main[i])
-       if (!this.Form[main[i]].prop.Disabled)
-        this.Form[main[i]].prop.Visible=false
+    for (let i = 0; i < main.length; i++) {
+      console.log('bt_close  main====>', main[i])
+      if (!this.Form[main[i]].prop.Disabled)
+        this.Form[main[i]].prop.Visible = false
     }
-/*
-
-    this.Form.report.displayPdf.prop.Visible = false;
-
-    this.Form.queryPri.prop.Visible = false;
-    this.Form.queryUsu.prop.Visible = false;
-    this.Form.queryGen.prop.Visible = false;
-
-    this.Form.var_ord.prop.Visible = false;
-    this.Form.for_imp.prop.Visible = false;
-
-    this.Form.bt_obtener.prop.Visible = false;
-    this.Form.bt_pdf.prop.Visible = false;
-    */
+    /*
+    
+        this.Form.report.displayPdf.prop.Visible = false;
+    
+        this.Form.queryPri.prop.Visible = false;
+        this.Form.queryUsu.prop.Visible = false;
+        this.Form.queryGen.prop.Visible = false;
+    
+        this.Form.var_ord.prop.Visible = false;
+        this.Form.for_imp.prop.Visible = false;
+    
+        this.Form.bt_obtener.prop.Visible = false;
+        this.Form.bt_pdf.prop.Visible = false;
+        */
 
     this.Form.bt_obtener.prop.Visible = false;
     this.Form.bt_pdf.prop.Visible = false;
@@ -56,6 +56,7 @@ export class bt_obtener extends COMPONENT {
     this.Form.report.prop.Visible = true;
     this.Form.report.prop.Disabled = false;
     this.Parent.report.browse.table.isLoading = true;
+
     const query = await this.Form.gen_query();
     const result = await this.Form.db.execute(query, "sqlresult");
 

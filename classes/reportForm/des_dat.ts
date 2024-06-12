@@ -22,7 +22,7 @@ export class des_dat extends COMPONENT {
   }
 
   async valid() {
-    if (this.Parent.cam_dat.Type == 'string') {
+    if (this.Parent.var_ord.Type == 'string') {
       const Value = this.prop.Value.trim()
       if (Value.length == 0) {
         return false

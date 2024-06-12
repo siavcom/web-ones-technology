@@ -2,7 +2,8 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <div :id="Id + '_div'" class="divi inputDivi" :style="divStyle" v-show="This.prop.Visible">
+  <span :id="Id + '_div'" :title="This.prop.ToolTipText" class="divi inputDivi" :style="divStyle"
+    v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel
@@ -80,14 +81,13 @@
           </div>
         </div>
         <!--toggle click.prevent -->
-        <nuxt-img :id="Id + '_toggle_img'" class="imagen" :style="{ 'height': inputStyle.height }"
-          v-show="!prop.ReadOnly && !prop.Disabled"
+        <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" v-show="!prop.ReadOnly && !prop.Disabled"
           :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       </div>
     </div>
-    <span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
-      v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span>
+    <!--span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
+      v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
     <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
 
 
@@ -103,7 +103,7 @@
 
 
 
-  </div>
+  </span>
   <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
   <!--/div-->
 </template>
@@ -1336,9 +1336,9 @@ const impComp = ((name: string, pos?: string) => {
 
 <style scoped>
 /*  elemento click check*/
-img.imagen {
+.toggleImagen {
   /* width: 17px;*/
-  height: 80%;
+  min-height: 79%;
   border-radius: 20%;
   border: 2px;
   vertical-align: bottom;

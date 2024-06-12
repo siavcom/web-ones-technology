@@ -62,7 +62,14 @@ export class reportInv extends reportForm {
     // this.has_fam.style.width='100px'
     // this.has_fam.inputStyle.width='50px'
 
-    this.tip_rep.prop.Row
+    // this.tip_rep.prop.Row   --- ojo asi estaba  
+
+
+    this.prop.cam_pri = 'cla_isu' // campo de buqueda principal
+    // Campos de orden de la vista
+    this.fields = [["cla_isu", "Clave", "64px"],
+    ["des_isu", "Descripción", "100px"], ['sku_isu', 'SKU', '64px'],]
+
 
   }
 

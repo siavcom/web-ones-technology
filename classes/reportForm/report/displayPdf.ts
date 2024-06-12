@@ -15,6 +15,7 @@ export class displayPdf extends COMPONENT {
     this.prop.Visible = false;
     this.style.height = "auto";
     this.style.width = "100%"; //1100px
+    this.style.minWidth = "1200px";
 
   }
 }
