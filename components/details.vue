@@ -15,7 +15,7 @@
   <!--transition name='Details'-->
   <div v-show="This.prop.Visible">
     <div class='details' :style="style">
-      <details :id="Id + '_details'" class='detailsOpen' @toggle="toggle" :open='!This.prop.Disabled'>
+      <details :id="Id + '_details'" class='detailsOpen' @toggle="toggle" :open='openDetail'>
 
         <summary>{{ This.prop.textLabel }}</summary>
         <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
@@ -206,6 +206,7 @@ const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
 var sw_ini = true
+var openDetail = ref(false)
 //const Focus = ref(false)
 
 
@@ -246,7 +247,10 @@ const toggle = () => {
   }
 
   This.prop.Disabled = !This.prop.Disabled
-  console.log('toggle', props.prop.Name, 'This.prop.Disabled', This.prop.Disabled)
+  if (openDetail != This.prop.Disabled)
+    openDetail = This.prop.Disabled
+
+  console.log('toggle', props.prop.Name, 'This.prop.Disabled', This.prop.Disabled, openDetail)
   This.click()
 }
 ////////////////////////////////////////

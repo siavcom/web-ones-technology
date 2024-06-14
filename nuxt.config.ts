@@ -75,6 +75,21 @@ export default defineNuxtConfig({
   }
 */
 
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', href: '/favicon.ico' },]
+    }
+  },
 
+  // Variables de entorno 
+  runtimeConfig: {
+    // The private keys which are only available server-side
+    basculaServer: 'my-secret-key',
+    // Keys within public are also exposed client-side
+    public: {
+      bascula: ['19toto.freeddns.org:3010']
+    },
+  },
 
 })

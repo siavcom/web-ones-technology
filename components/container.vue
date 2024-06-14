@@ -1,33 +1,33 @@
 <template>
 
-  <div id="modal_mask" class="modal-mask" v-if="This.prop.Visible">
-    <div id="modal_container" class="modal-container" :style="This.style">
+  <!--div id="mask" class="mask" v-if="This.prop.Visible"-->
+  <div :id="Id + 'container'" class="container" v-if="This.prop.Visible" :style="This.style">
 
-      <!--section class="mainContainer"-->
+    <!--section class="mainContainer"-->
 
-      <div id="modal_header" class="modal-header">
-        <slot name="header">{{ This.textLabel }}</slot>
-      </div>
-
-
-      <div id="modal_body" class="modal-body">
-        <slot name="componentes">
-          <div :id="'modal_componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver">
-            <div :id="'modal_hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
-              style="padding-bottom:2px">
-              <component :id="'modal_componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
-                v-bind:Component="ref(Ele)" v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status"
-                :Registro="Ele.Recno" :prop="Ele.prop" :style="Ele.style" :position="Ele.position"
-                @click.capture="Ele.click()"></component>
-
-            </div>
-          </div>
-
-        </slot>
-      </div>
-      <!--/section-->
+    <div :id="Id + 'header'" class="header">
+      <slot name="header">{{ This.textLabel }}</slot>
     </div>
+
+    <div :id="Id + 'body'" class="body">
+      <slot name="componentes">
+        <div :id="Id + 'componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver"
+          :style="{ 'display': 'inline-flex' }">
+          <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
+            :style="{ 'padding-bottom': '2px', 'width': '100%' }">
+            <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
+              v-bind:Component="ref(Ele)" v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status"
+              :Registro="Ele.Recno" :prop="Ele.prop" :style="Ele.style" :position="Ele.position"
+              @click.capture="Ele.click()"></component>
+
+          </div>
+        </div>
+
+      </slot>
+    </div>
+    <!--/section-->
   </div>
+  <!--/div-->
 
 </template>
 
@@ -150,6 +150,7 @@ const Component = ref(props.Component)
 const This = props.Component.value // Component.value
 const Id = This.Name + props.Registro.toString()
 const Divi = ref(This.Divi)
+
 /*
 const elementArray = []
 let i = 0
@@ -244,63 +245,3 @@ const impComp = ((name: string, pos?: string) => {
 //init();
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-
-<style>
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  transition: opacity 0.3s ease;
-}
-
-.modal-container {
-  width: 300px;
-  margin: auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-}
-
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-default-button {
-  float: right;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
-</style>

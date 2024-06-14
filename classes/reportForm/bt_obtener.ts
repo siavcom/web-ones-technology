@@ -55,19 +55,22 @@ export class bt_obtener extends COMPONENT {
 
     this.Form.report.prop.Visible = true;
     this.Form.report.prop.Disabled = false;
+
     this.Parent.report.browse.table.isLoading = true;
 
     const query = await this.Form.gen_query();
     const result = await this.Form.db.execute(query, "sqlresult");
 
     if (!result || result.length == 0) {
-      MessageBox("No data to show");
-      this.Form.report.prop.Disabled = true;
+
       this.Form.report.bt_close.click();
+      MessageBox("No data to show");
+
       return;
     }
 
     this.Parent.report.browse.prop.RowSource = "Now.sqlresult";
+
     // console.log('bt_obtener asigno RowSource',this.Parent.report)
     this.Form.report.bt_excel.prop.Visible = true;
     this.Form.report.bt_json.prop.Visible = true;

@@ -1,5 +1,5 @@
 <template>
-  <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="style">
+  <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="This.style">
 
     <div class="wraper" style="width:100%;height:100%">
 
@@ -122,6 +122,7 @@ const props = defineProps<{
 // Valores componente padre
 const Component = ref(props.Component)
 const This = Component.value
+This.style.maxWidth = "1200px"
 
 
 const table = This.table

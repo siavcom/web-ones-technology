@@ -100,7 +100,7 @@ source ~/.profile
 
 ya instalado el nvm (node version manager)
 instalar el node en root
-
+exit
 nvm install 20.11
 
 
@@ -109,6 +109,7 @@ Vamos a utilizar el paquete pm2 para poner nustros demonios de servidores de nux
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-22-04
 
 sudo npm install pm2@latest -g
+
  hay que posisionarnos donde corre el back-end
 
 pm2 start server_socekt.js
@@ -139,7 +140,7 @@ con la instruccion
 npx nuxi dev
 
 start 
-pm2 start start web-ones.sh
+pm2 start web-ones.sh
 y 
 pm2 save
 
