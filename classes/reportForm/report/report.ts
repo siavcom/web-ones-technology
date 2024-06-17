@@ -17,7 +17,7 @@ import { displayPdf } from './displayPdf'
 import { bt_excel } from './bt_excel'
 import { bt_close } from './bt_close'
 import { bt_json } from './bt_json'
-import { BROWSE } from "@/classes/Browse"
+import { displayBrowse } from "./displayBrowse"
 //import { browseResult } from './browseResult'
 
 export class report extends CONTAINER {
@@ -28,7 +28,7 @@ export class report extends CONTAINER {
   //public mensaje=new mensaje()
 
   public displayPdf = new displayPdf()
-  public browse = new BROWSE()
+  public displayBrowse = new displayBrowse()
 
   public bt_excel = new bt_excel()
   public bt_json = new bt_json()
@@ -55,7 +55,7 @@ export class report extends CONTAINER {
 
 
     this.displayPdf.Position = [0, 0]
-    this.browse.Position = [0, 1]
+    this.displayBrowse.Position = [0, 1]
 
     this.bt_close.Position = [1, 2]
     this.bt_excel.Position = [1, 0]

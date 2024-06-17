@@ -28,8 +28,12 @@ export class bt_obtener extends COMPONENT {
     this.Form.report.displayPdf.prop.Source = "";
     const main = this.Form.main
 
+    this.Form.queryPri.prop.Visible = false
+    this.Form.queryUsu.prop.Visible = false
+    this.Form.queryGen.prop.Visible = false
+
+
     for (let i = 0; i < main.length; i++) {
-      console.log('bt_close  main====>', main[i])
       if (!this.Form[main[i]].prop.Disabled)
         this.Form[main[i]].prop.Visible = false
     }
@@ -56,7 +60,7 @@ export class bt_obtener extends COMPONENT {
     this.Form.report.prop.Visible = true;
     this.Form.report.prop.Disabled = false;
 
-    this.Parent.report.browse.table.isLoading = true;
+    this.Form.report.displayBrowse.table.isLoading = true;
 
     const query = await this.Form.gen_query();
     const result = await this.Form.db.execute(query, "sqlresult");
@@ -69,7 +73,11 @@ export class bt_obtener extends COMPONENT {
       return;
     }
 
-    this.Parent.report.browse.prop.RowSource = "Now.sqlresult";
+
+    this.Form.report.displayBrowse.prop.RowSource = "Now.sqlresult";
+    this.Form.report.displayBrowse.prop.Visible = true;
+
+
 
     // console.log('bt_obtener asigno RowSource',this.Parent.report)
     this.Form.report.bt_excel.prop.Visible = true;

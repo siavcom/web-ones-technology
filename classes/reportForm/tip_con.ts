@@ -18,8 +18,8 @@ export class tip_con extends COMPONENT {
     this.prop.BaseClass = "comboBox";
     this.prop.RowSource = [
       ["Que los datos esten entre", "El valor que contenga"],
-      ["E", "C"]],
-      this.prop.Value = "E"
+      ["E", "C"]]
+    this.prop.Value = "E"
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
@@ -32,7 +32,8 @@ export class tip_con extends COMPONENT {
 
 
   async when() {
-    if (this.Parent.var_ord.Type == 'string') {
+
+    if (this.Parent.var_ord.Type == 'text') {
       this.prop.ReadOnly = false
       return true
     }
@@ -42,14 +43,14 @@ export class tip_con extends COMPONENT {
 
   }
   async interactiveChange() {
-    if (this.Parent.var_ord.Type == 'string')
+    if (this.Parent.var_ord.Type == 'text')
       if (this.prop.Value == 'C') {
         this.Parent.des_dat.prop.textLabel = ''
         this.Parent.has_dat.prop.Visible = false
         return
       }
+    this.Parent.des_dat.prop.textLabel = 'Desde'
     this.prop.Value = 'E'
-    this.Parent.des_dat.prop.textLabel = 'Desde '
     this.Parent.has_dat.prop.Visible = true
 
   }

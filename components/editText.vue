@@ -274,7 +274,7 @@ const Component = ref(props.prop.This)
 const This = Component.value
 
 const labelStyle = reactive(This.labelStyle)
-const propType = This.prop.Type.toLowerCase().trim()
+const propType = computed(() => This.prop.Type.toLowerCase().trim())
 /*
 if (propType != "checkbox" &&
   propType != "radio" &&
@@ -419,6 +419,8 @@ inherit	Inherits this property from its parent element. Read about inherit
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
+  const Type = propType.value
+
   // false,false,Value
   // console.log('editText emitValue() readCam=', readCam, 'isValid=', isValid, 'Valor=', Valor, 'Value.value=', Value.value)
   const ControlSource = props.prop.ControlSource
@@ -466,7 +468,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       emit("update"); // actualiza el valor Value en el componente padre
 
 
-      if (propType == 'spinner' || propType == 'checkbox')
+      if (Type == 'spinner' || Type == 'checkbox')
         await This.interactiveChange()
 
       if (!isValid) {
@@ -516,7 +518,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
       if (props.prop.Value == null) {
-        switch (propType) {
+        switch (Type) {
           case 'number':
             Value.value = 0
             break;
@@ -574,7 +576,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       }
       if (!sw_dat) { // No encontro dato
 
-        switch (propType) {
+        switch (Type) {
           case 'number':
             Value.value = 0
 
@@ -599,9 +601,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
   }
 
-  //console.log('4) editText emitValue() Fin Name=', props.prop.Name,'This.prop.Valid=',This.prop.Valid)
-  switch (propType) {
+  // console.log('4) editText emitValue() Fin Name=', props.prop.Name, 'Type=', Type, 'Value = ', Value.value)
+  switch (Type) {
     case 'number':
+
+
       if (Value.value == null)
         Value.value = 0
       currentValue.value[1] = Value.value.toString().trim()
@@ -661,7 +665,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       displayDate.value = new Date(Value.value)
       currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
 
-      console.log('editText emitValue() Time Name ', props.prop.ControlSource, 'CurrentDate=', currentDate.value, 'displayDate=', displayDate, 'Value=', Value.value)
 
       nextTick(function () {
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
@@ -693,7 +696,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   /* 
-   console.log('editText emitValue() Name', props.prop.Name, 'Type=', propType,
+   console.log('editText emitValue() Name', props.prop.Name, 'Type=', Type,
     'This.prop.Value=', This.prop.Value,
     'currentValue.value=', currentValue.value[0], currentValue.value[1],
     'currentDate.value=', currentDate.value, displayDate.value,
@@ -761,8 +764,8 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 const focusOut = async () => {
   focusIn.value = 0  // Perdio el foco
   let sw_error = false
-
-  if (propType == 'number') {
+  const Type = propType.value
+  if (Type == 'number') {
     if (+currentValue.value[1] < props.prop.Min) {
       currentValue.value[1] = props.prop.Min
       sw_error = true
@@ -775,7 +778,7 @@ const focusOut = async () => {
     Value.value = +currentValue.value[1]
   }
 
-  if (propType == 'date') {
+  if (Type == 'date') {
     //This.prop.Value = await dateToString(currentDate.value)
     if (currentDate.value < props.prop.Min) {
       currentDate.value = props.prop.Min
@@ -793,7 +796,7 @@ const focusOut = async () => {
     }
   }
 
-  if (propType == 'datetime') {
+  if (Type == 'datetime') {
     //This.prop.Value = await dateToString(currentDate.value)
 
     if (currentDate.value < props.prop.Min) {
@@ -809,7 +812,7 @@ const focusOut = async () => {
 
   }
 
-  if (propType == 'json') {
+  if (Type == 'json') {
     Value.value = await JSON.stringify(currentJson.value)
 
   }
@@ -819,7 +822,7 @@ const focusOut = async () => {
     return
   }
 
-  if (propType == 'text') {
+  if (Type == 'text') {
     if (props.style.textTransform == 'uppercase')
       Value.value = Value.value.toUpperCase()
 
@@ -856,14 +859,14 @@ const clickCheckBox = () => {
 const keyPress = ($event: { charCode: number; preventDefault: () => void; keycode: number; charCod: number; }) => {
   // <input       @keypress="keyPress($event)"
   // console.log('KeyPress===>', $event.charCode)
-
+  const Type = propType.value
   if (ShowError.value) {
     ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
   // new KeyboardEvent('keydown', {
-  if (propType != 'textarea' && $event.charCode == 13) //|| // Return
+  if (Type != 'textarea' && $event.charCode == 13) //|| // Return
   // $event.charCode == 13 // Down Key  
   {
     const TabIndex = This.prop.TabIndex
@@ -919,11 +922,11 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 
 
   // oprimió ? (help)
-  if ((propType == 'number' || propType == 'text') && This.Help && $event.charCode == 63)
+  if ((Type == 'number' || Type == 'text') && This.Help && $event.charCode == 63)
     return help()
 
   // caracteres permitido en input numero
-  if (propType == 'number') {
+  if (Type == 'number') {
     // console.log('KeyPress number', $event.charCode)
     if (!(($event.charCode >= 48 &&
       $event.charCode <= 57) ||
@@ -957,7 +960,7 @@ const focusInput = async () => {
 const onFocus = async () => {
   //  This.prop.Focus = false
 
-
+  const Type = propType.value
   console.log('editText onFocus 1) Name=', This.prop.Name, 'This.prop=', This.prop, 'props.prop=', props.prop)
   ToolTipText.value = false
   //  ShowError.value = false
@@ -998,7 +1001,7 @@ const onFocus = async () => {
   }
 
   // El showError se apaga en el keyPress cuando es un input text, number o date 
-  if ((propType == 'json' || propType == 'checkbox') && ShowError.value) {
+  if ((Type == 'json' || Type == 'checkbox') && ShowError.value) {
     ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
@@ -1322,8 +1325,55 @@ watch(
 
 
 
+////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.Type, //props.prop.Value, //Value.value,
+  async (new_val: boolean) => {
+
+    console.log('EditText Watch Name=', This.prop.Name, 'new_val Type=', new_val)
+    styleAssing()
+  },
+  { deep: false }
+)
 
 
+
+const styleAssing = async () => {
+  const Type = propType.value
+
+  if (Type == 'date') {
+    inputStyle.width = '120px'
+    inputStyle.height = '20px'
+    inputStyle.maxHeight = '20px'
+  }
+  if (Type == 'datetime-local') {
+    inputStyle.width = '170px'
+    inputStyle.height = '20px'
+    inputStyle.maxHeight = '20px'
+  }
+
+  if (Type == 'json') {
+    inputStyle.borderWidth = '1px'
+    inputStyle.borderStyle = 'solid'
+    inputStyle.borderRadius = '2px'
+    divStyle.height = 'auto'
+  }
+  if ((Type == 'textarea' || Type == 'text') && inputStyle.width == 'auto') {
+    //  console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
+
+    inputStyle.width = '100%'
+  }
+
+  if (Type == 'number')
+    inputStyle.textAlign = 'right'
+
+  if (Type == 'checkbox')
+    inputStyle.width = '20px'
+
+
+}
 
 
 /////////////////////////////////////////
@@ -1335,10 +1385,9 @@ onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
   // console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
 
+  console.log('1) EditText Name=', This.prop.Name, 'propType=', propType.value, 'thisElement=', thisElement)
 
-  console.log('1) EditText Name=', This.prop.Name, 'propType=', propType, 'thisElement=', thisElement)
-
-
+  /*
   if (propType == 'date') {
     inputStyle.width = '120px'
     inputStyle.height = '20px'
@@ -1367,6 +1416,8 @@ onMounted(async () => {
 
   if (propType == 'checkbox')
     inputStyle.width = '20px'
+   */
+  styleAssing()
 
   if (!This.prop.Visible)
     divStyle.height = '0%'
@@ -1388,6 +1439,7 @@ onMounted(async () => {
   }
   // console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
 })
+
 
 /*
 onUnmounted(() => {

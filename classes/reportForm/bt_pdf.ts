@@ -31,6 +31,19 @@ export class bt_pdf extends COMPONENT {
   async click() {
     this.prop.Visible = false
 
+    const main = this.Form.main
+
+    this.Form.queryPri.prop.Visible = false
+    this.Form.queryUsu.prop.Visible = false
+    this.Form.queryGen.prop.Visible = false
+
+
+    for (let i = 0; i < main.length; i++) {
+      if (!this.Form[main[i]].prop.Disabled)
+        this.Form[main[i]].prop.Visible = false
+    }
+
+
     this.Form.report.displayPdf.prop.Source = 'XXXX'
     this.Form.report.displayPdf.prop.Visible = true
 
@@ -42,12 +55,9 @@ export class bt_pdf extends COMPONENT {
     this.Form.report.bt_json.prop.Visible = false
 
     this.Form.bt_obtener.prop.Visible = false
-    this.Form.var_ord.prop.Visible = false
-    this.Form.for_imp.prop.Visible = false
+    //this.Form.var_ord.prop.Visible = false
+    //this.Form.for_imp.prop.Visible = false
 
-    this.Form.queryPri.prop.Visible = false
-    this.Form.queryUsu.prop.Visible = false
-    this.Form.queryGen.prop.Visible = false
 
     const query = await this.Form.gen_query()
     // console.log('bt_pdf',query,this.Form.for_imp.prop.Value)

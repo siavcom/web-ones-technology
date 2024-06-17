@@ -12,9 +12,6 @@ export class displayBrowse extends BROWSE {
   constructor() {
     super();
     this.prop.Visible = false;
-    this.style.height = "auto";
-    this.style.width = "100%"; //1100px
-    this.style.maxWidth = "1200px";
 
   }
 }

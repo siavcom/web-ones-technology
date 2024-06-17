@@ -270,7 +270,7 @@ export class reportForm extends FORM {
     if (query.length > 0) query = "(" + query + ")";
 
 
-    console.log("where ===>>>session=", session.dialect, query);
+    //console.log("where ===>>>session=", session.dialect, query);
 
     return query;
   }
@@ -289,7 +289,7 @@ export class reportForm extends FORM {
     ${this.var_ord.prop.Value} <= ${this.has_dat.prop.Value}`
 
 
-      if (Type == 'string') {
+      if (Type == 'text') {
         where = ` ${this.var_ord.prop.Value} >= '${this.des_dat.prop.Value}' and \
            ${this.var_ord.prop.Value} <= '${this.has_dat.prop.Value}'`
       }
@@ -301,11 +301,12 @@ export class reportForm extends FORM {
            ${this.var_ord.prop.Value} <= 'has_dat'`
       }
     }
+
     where = `  (${where}) `
-
-
-
+    console.log('order by', this.var_ord.prop.Value)
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
+
+
     var executeQuery: string = "select * from " + this.vis_rep;
 
     const m = await this.obtData(); // Variable de memoria los propiedades de la forma
@@ -323,6 +324,9 @@ export class reportForm extends FORM {
         else where = where + " and " + where_usu;
       }
     }
+
+
+
     if (this.queryGen.prop.Visible) {
       const where_gen = await this.gen_where("queryGen");
       if (where_gen.length > 3) {
@@ -336,25 +340,25 @@ export class reportForm extends FORM {
       orden = orden + "," + this.ord_vis;
     }
 
+
+
+
     if (this.sqlQuery) {
       // si hay generacion de query
-      console.log("reportForm query Generacion custom de query");
+
       executeQuery = await this.sqlQuery(where, orden);
     } else {
       if (where.length > 2) where = " where " + where;
 
       executeQuery = executeQuery + where + orden;
     }
-    /*
-    if (this.ord_vis.length > 1) {
-      // variables extras para el orden del select
-      orden = orden + "," + this.ord_vis;
-    }
-*/
+
+
+
     console.log("reportForm query", executeQuery);
 
     return executeQuery;
-    //   init = async ()=> {
+
   }
 
   ////////////////////////////////////////
@@ -388,8 +392,8 @@ export class reportForm extends FORM {
 
   async open() {
 
-    this.des_dat.prop.Value = ''
-    this.has_dat.prop.Value = ''
+    //    this.des_dat.prop.Value = ''
+    //    this.has_dat.prop.Value = ''
 
 
     let fields = ''
@@ -402,7 +406,7 @@ export class reportForm extends FORM {
     if (!this.Sql.View[this.prop.RecordSource]) {
 
       fields = ` ( ${fields} )`
-      console.log("open fields=", fields)
+      // console.log("open fields=", fields)
       /*      await this.Sql.execute(
               `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
               from vi_schema_views where nom_tab='${this.prop.RecordSource}' and ${fields} order by con_dat`,
@@ -425,6 +429,7 @@ export class reportForm extends FORM {
     this.var_ord.prop.RowSource = `diccionario.ref_dat,cam_dat`;
     this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
     this.var_ord.prop.Value = this.prop.cam_pri // asignamos campo principal
+
     await this.var_ord.interactiveChange()
 
 

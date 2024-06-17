@@ -31,11 +31,26 @@ export class var_ord extends COMPONENT {
     await this.interactiveChange()
   }
   async interactiveChange() {
+
+    const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
+
+    let num_dat = 0
+
+    for (let i = 0; i < this.Form.fields.length; i++) {
+      if (this.Form.fields[i][0] == this.prop.Value) {
+        num_dat = i
+        break
+      }
+    }
+
     const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from Now.diccionario where cam_dat='${this.prop.Value}'`)
     const tip_dat = data[0].tip_dat
-    let Type = 'string'
-    let des_Value = ''
-    let has_Value = ''
+    const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
+
+    let Type = 'text'
+    var des_Value = this.Form.fields[num_dat][2] ? eval(this.Form.fields[num_dat][2]) : ''
+    var has_Value = this.Form.fields[num_dat][3] ? eval(this.Form.fields[num_dat][3]) : ''
+
     if (tip_dat == 'smallint' ||
       tip_dat.slice(0, 3) == 'int' ||
       tip_dat.slice(0, 5) == 'float' ||
@@ -44,37 +59,48 @@ export class var_ord extends COMPONENT {
     ) {
 
       Type = 'number'
-      des_Value = 0
-      has_Value = 9999999999999999
+      this.Form.des_dat.prop.Value = +des_Value
+      this.Form.has_dat.prop.Value = +has_Value
+
     }
     if (tip_dat == 'date'
     ) {
       Type = 'date'
-      des_Value = new Date()
-      has_Value = des_Value
+
+      this.Form.des_dat.prop.Value = await dateToSql(des_Value)
+      this.Form.has_dat.prop.Value = await dateToSql(has_Value)
     }
 
-    if (tip_dat == 'date' ||
-      tip_dat == 'datetime'
+    if (tip_dat == 'datetime'
     ) {
-      Type = 'dateTime'
-      des_Value = new Date()
-      has_Value = des_Value
+
+      Type = 'datetime'
+
+      this.Form.des_dat.prop.Value = await dateTimeToSql(des_Value)
+      this.Form.has_dat.prop.Value = await dateTimeToSql(has_Value)
     }
+
+    if (tip_dat == 'string'
+    ) {
+      Type = 'text'
+      this.Form.des_dat.prop.Value = des_Value.slice(0, lon_dat)
+      this.Form.has_dat.prop.Value = has_Value.slice(0, lon_dat)
+    }
+
 
     this.Type = Type
-    const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
 
-    this.Parent.des_dat.prop.Type = Type
-    this.Parent.des_dat.prop.MaxLength = lon_dat
-    this.Parent.des_dat.prop.Decimals = data[0].dec_dat
-    this.Parent.des_dat.prop.Value = des_Value
+    this.Form.des_dat.prop.Type = Type
+    this.Form.des_dat.prop.MaxLength = lon_dat
+    this.Form.des_dat.prop.Decimals = data[0].dec_dat
+    this.Form.des_dat.prop.Value = des_Value
 
-    this.Parent.has_dat.prop.Type = Type
-    this.Parent.has_dat.prop.MaxLength = lon_dat
-    this.Parent.has_dat.prop.Decimals = data[0].dec_dat
-    this.Parent.has_dat.prop.Value = has_Value
-    this.Parent.tip_con.when()
+    this.Form.has_dat.prop.Type = Type
+    this.Form.has_dat.prop.MaxLength = lon_dat
+    this.Form.has_dat.prop.Decimals = data[0].dec_dat
+    this.Form.tip_con.when()
+
+    console.log("fin) interactiveChange var_ord type=", this.Type, "des_dat", this.Form.des_dat.prop.Value, this.Form.has_dat.prop.Value)
 
   }
 }

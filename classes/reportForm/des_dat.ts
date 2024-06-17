@@ -13,16 +13,18 @@ import { COMPONENT } from "@/classes/Component";
 export class des_dat extends COMPONENT {
   constructor() {
     super();
+    this.prop.textLabel = "Desde ";
     this.prop.BaseClass = "editText";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";
     this.prop.ErrorMessage = "Un caracter minimo";
-    this.style.marginLeft = "22px";
+    this.style.marginLeft = "10px";
+    // this.intputStyle.width = 'auto'
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
 
   async valid() {
-    if (this.Parent.var_ord.Type == 'string') {
+    if (this.Parent.var_ord.Type == 'text') {
       const Value = this.prop.Value.trim()
       if (Value.length == 0) {
         return false

@@ -68,8 +68,11 @@ export class BROWSE extends COMPONENT {
     this.prop.BaseClass = 'browse'
     this.prop.RowSource = ''
     this.prop.oneClick = false
-    this.style.width = 'auto'
+    this.style.height = "auto";
+    this.style.maxWidth = "1200px";
+
   }
+
 
   async close() {
     this.prop.Visible = false
