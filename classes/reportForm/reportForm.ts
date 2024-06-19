@@ -281,29 +281,53 @@ export class reportForm extends FORM {
 
     let where = ''
 
-    let Type = this.var_ord.Type
+    let Type = this.var_ord.Type.toLowerCase()
+    console.log('reportForm query Type=', Type)
     if (this.tip_con.prop.Value == 'C') {  // contenga
+      // Falta dialecto para Postgres
       where = ` ${this.var_ord.prop.Value} like '%${this.des_dat.prop.Value.trim()}%'`
     } else {
-      where = ` ${this.var_ord.prop.Value} >= ${this.des_dat.prop.Value} and \
-    ${this.var_ord.prop.Value} <= ${this.has_dat.prop.Value}`
 
+      let des_dat
+      let has_dat
+      switch (Type) {
+        case 'text':
+          des_dat = "'" + this.des_dat.prop.Value.trim() + "'";
+          has_dat = "'" + this.has_dat.prop.Value.trim() + "'";
+          break;
+        case 'date':
+          des_dat = "'" + await dateToSql(this.des_dat.prop.Value) + "'";
+          has_dat = "'" + await dateToSql(this.has_dat.prop.Value) + "'";
+          break;
+        case 'datetime':
+          des_dat = "'" + await dateToSql(this.des_dat.prop.Value) + "'";
+          has_dat = "'" + await dateToSql(this.has_dat.prop.Value) + "'";
+          break;
+        default:
 
-      if (Type == 'text') {
-        where = ` ${this.var_ord.prop.Value} >= '${this.des_dat.prop.Value}' and \
-           ${this.var_ord.prop.Value} <= '${this.has_dat.prop.Value}'`
+          des_dat = this.des_dat.prop.Value;
+          has_dat = this.has_dat.prop.Value;
+          break;
       }
 
-      if (Type == 'date' || Type == 'dateTime') {
-        const des_dat = dateToSring(this.des_dat.prop.Value)
-        const has_dat = dateToSring(this.has_dat.prop.Value)
-        where = ` ${this.var_ord.prop.Value} >= 'des_dat' and \
-           ${this.var_ord.prop.Value} <= 'has_dat'`
-      }
+
+      where = ` ${this.var_ord.prop.Value} >= ${des_dat} and \
+    ${this.var_ord.prop.Value} <= ${has_dat}`
+
+
+      /*
+            if (Type == 'date' || Type == 'dateTime') {
+              const des_dat = dateToSring(this.des_dat.prop.Value)
+              const has_dat = dateToSring(this.has_dat.prop.Value)
+              where = ` ${this.var_ord.prop.Value} >= '${des_dat}' and \
+                 ${this.var_ord.prop.Value} <= '${has_dat}'`
+            }
+      */
     }
 
     where = `  (${where}) `
-    console.log('order by', this.var_ord.prop.Value)
+    //console.log('gen_query where=', where )
+
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
 
 

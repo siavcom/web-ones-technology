@@ -29,8 +29,8 @@ export class bt_json extends COMPONENT {
 
   async click() {
     const rows = await multiFilter(
-      this.Parent.browse.table.oriRows,
-      this.Parent.browse.table.filters
+      this.Parent.displayBrowse.table.oriRows,
+      this.Parent.displayBrowse.table.filters
     );
 
     if (rows.length == 0) return;  // No hay datos
@@ -41,7 +41,7 @@ export class bt_json extends COMPONENT {
     }
 
     //    rows[0]=await this.Form.obtData(rows[0])
-   // console.log("bt_json rows[0]", rows[0]);
+    // console.log("bt_json rows[0]", rows[0]);
     const objJson = JSON.stringify(rows);
     const blobJson = new Blob([objJson], { type: "text/plain" });
     saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`);

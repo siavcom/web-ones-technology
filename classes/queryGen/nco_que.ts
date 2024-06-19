@@ -59,14 +59,14 @@ export class nco_que extends COMPONENT {
     var query = "";
 
     if (this.prop.sw_add) return;
-
-    console.log(
-      "1 InteractiveChange Value=",
-      this.prop.Value,
-      this.Parent.Name,
-      await this.Form.db.localAlaSql("select * From vi_cap_db_query")
-    );
-
+    /*
+        console.log(
+          "1 InteractiveChange Value=",
+          this.prop.Value,
+          this.Parent.Name,
+          await this.Form.db.localAlaSql("select * From vi_cap_db_query")
+        );
+    */
     const q = {
       usu_que: this.Parent.usu_que,
       nco_que: +this.Parent.nco_que.prop.Value,
@@ -97,14 +97,14 @@ export class nco_que extends COMPONENT {
     this.prop.ReadOnly = false;
 
     let sig_uni = " ";
-    console.log(
+    /* console.log(
       " InteractiveChange nco_que=",
       this.prop.Value,
       "ins_sql=",
       ins_sql,
       data
     );
-
+     */
     for (let i = 0; i < data.length; i++) {
       const m = data[i]; //Scatter Memvar
 

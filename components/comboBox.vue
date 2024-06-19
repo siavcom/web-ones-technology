@@ -381,7 +381,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       //    This.Parent.Recno = props.Registro
 
       const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
-
       let sw_dat = false
       for (const campo in data) {
 

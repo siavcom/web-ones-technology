@@ -26,6 +26,15 @@ export class reportVtas extends reportForm {
     this.tdo_tdo.prop.TabIndex=1
     this.des_fec.prop.TabIndex=2
     this.has_fec.prop.TabIndex=3
+    this.prop.cam_pri = 'ndo_doc' // campo de buqueda principal
+    // Campos de orden de la vista
+    this.fields = [
+      ["ndo_doc", "Número del documento","0","99999999"],
+      ["fec_doc", "Fecha "],
+      ["cod_nom", "Cliente"],
+      ["fel_doc", "Fecha de captura"],
+      ["fve_doc", "Fecha de vencimiento"]
+    ]
   }
 
 async init() {
@@ -38,5 +47,6 @@ async init() {
   //  console.log("ThisForm des_fec=",this.des_fec.prop.Value,' has_fec', this.has_fec.prop.Value);
  }
 
+ 
 
 }

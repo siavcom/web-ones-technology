@@ -12,7 +12,7 @@
 import { COMPONENT } from "@/classes/Component";
 
 export class var_ord extends COMPONENT {
-  Type: string
+  Type: string = 'text'
   constructor() {
     super();
     this.prop.textLabel = "Orden ";

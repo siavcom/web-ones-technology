@@ -8,7 +8,6 @@
 
 // Importa las clases base a este espacio de trabajo
 import { reportForm } from "@/classes/reportForm/reportForm"   
-import { tdo_tdo } from "./tdo_tdo";
 import { des_fec } from "./des_fec";
 import { has_fec } from "./has_fec";
 
@@ -16,16 +15,22 @@ import { has_fec } from "./has_fec";
 // Generamos la clase en memoria 
 export class reportCXC extends reportForm {
 
-  public tdo_tdo= new tdo_tdo()  
   public des_fec= new des_fec()
   public has_fec= new has_fec()
   constructor() {
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
-    this.tdo_tdo.prop.TabIndex=1
-    this.des_fec.prop.TabIndex=2
-    this.has_fec.prop.TabIndex=3
+    this.des_fec.prop.TabIndex=1
+    this.has_fec.prop.TabIndex=2
+    this.des_fec.prop.Disabled=true
+    this.has_fec.prop.Visible=false
+    this.prop.cam_pri = 'cod_nom' // campo de buqueda principal
+    // Campos de orden de la vista
+    this.fields = [
+      ["cod_nom", "Código del cliente"],
+      ["nom_nom", "Nombre del cliente"]
+    ]
   }
 
 async init() {
