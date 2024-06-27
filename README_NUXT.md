@@ -95,7 +95,7 @@ debe de existir nvm en root
 sudo su
 apt install curl 
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
-
+para que tome el path en la version actual
 source ~/.profile   
 
 ya instalado el nvm (node version manager)
@@ -104,7 +104,7 @@ exit
 nvm install 20.11
 
 
-Vamos a utilizar el paquete pm2 para poner nustros demonios de servidores de nuxt y node 
+Vamos a utilizar el paquete pm2 para poner nuestros demonios de servidores de nuxt y node 
 
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-22-04
 
@@ -117,6 +117,9 @@ pm2 start server_socekt.js
 te va dar un comando a ejecutar
 
 sudo env PATH=$PATH:/home/soporte/.config/nvm/versions/node/v20.11.1/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u soporte --hp /home/soporte
+
+sudo env PATH=$PATH:/home/soporte/.config/nvm/versions/node/v18.18.2/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u soporte --hp /home/soporte
+
 
 por ultimo
 
@@ -131,7 +134,7 @@ en nuxt.config.ts
 aumentar host:0
 
 devServer: {
-    host:'0',   // indica la direccion ip a servir
+    host:'0',   // indica la direccion ip a servir. 0 indica todas las ip que tenga la computadora
     port: 3000
   },
 

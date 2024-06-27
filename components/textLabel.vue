@@ -140,7 +140,7 @@ const Status = ref(props.prop.Status)
 
 
 //defineExpose({ Caption });
-//const This = Component.value
+//const  Component = ref(props.prop.This)
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checkValue = ref(false)

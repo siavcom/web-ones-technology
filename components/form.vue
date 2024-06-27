@@ -47,9 +47,9 @@
               <div :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
                 :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
                 <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
-                  :Registro="ThisForm[compHeader].Recno" :prop="ThisForm[compHeader].prop"
-                  :style="ThisForm[compHeader].style" :position="ThisForm[compHeader].position"
-                  :Value="ThisForm[compHeader].prop.Value"
+                  :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
+                  :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
+                  :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value"
                   @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" />
               </div>
 
@@ -68,9 +68,9 @@
                   v-show='ThisForm[compMain].prop.Visible'>
                   <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                    v-bind:Component="ref(ThisForm[compMain])" :Registro="ThisForm[compMain].Recno"
-                    v-bind:prop="ThisForm[compMain].prop" v-bind:style="ThisForm[compMain].style"
-                    v-bind:position="ThisForm[compMain].position"
+                    :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
+                    :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
+                    :position="ThisForm[compMain].position"
                     @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" />
                 </div>
               </TransitionGroup>
@@ -99,7 +99,7 @@
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
                 <component :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                  v-model:ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
+                  :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
                   v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"

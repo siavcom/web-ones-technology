@@ -154,8 +154,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 })
 
-const Component = ref(props.Component)
-const This = props.Component.value // Component.value
+const Component = ref(props.prop.This)
+const This = Component.value // Component.value
 const Id = This.Name + props.Registro.toString()
 const Divi = ref(This.Divi)
 /*

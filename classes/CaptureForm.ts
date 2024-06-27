@@ -191,57 +191,61 @@ export class captureForm extends FORM {
         await this.Form.db.useNodata(this.prop.RecordSource);
       } else return;
 
-      console.log("======== useNodata ===========", this.prop.RecordSource);
       this.noData = true;
       this.bt_graba.prop.Visible = false;
       this.bt_borra.prop.Visible = false;
       // this.bt_calendario.prop.Visible = false;
     } // else this.noData = false;
 
-    //this.Recno = Recno;
-
-    // console.log('CaptureForm refresh commponent',activate)
-
-    // this.bt_borra.prop.Visible = activate
-    // Recorremos la forma y si es un componente de captura e quita el ReadOnly
-
-    //  for (const i in this.main) {
-    //  const comp = this.main[i];
 
     for (const comp of this.main) {
-      if (this[comp].prop.Capture) {
-        if (!this[comp].prop.updateKey) {
+      const Comp = this[comp]
+      //  console.log('1) displayError refreshComponent comp=', comp, 'Recno=', Recno, 'key_pri=', key_pri, 'this.prop.Valid=', Comp.prop.Valid)
+
+      if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apga
+        Comp.prop.ShowError = false
+      }
+      if (Comp.prop.Capture) {
+        if (!Comp.prop.updateKey) {
           // No es llave de actualizacion
-          if (!this[comp].prop.Visible) this[comp].prop.Visible = true;
+          if (!Comp.prop.Visible)
+            Comp.prop.Visible = true;
 
           if (Recno >= 0) {
             // Cuando ya se validaron las llaves de actualizacion
-            this[comp].prop.ReadOnly = false;
+            Comp.prop.ReadOnly = false;
           } else {
-            this[comp].prop.ReadOnly = true; // cuando la forma esta limpia
+            Comp.prop.ReadOnly = true; // cuando la forma esta limpia
           }
-          if (key_pri == 0) this[comp].prop.Valid = false;
-          else this[comp].prop.Valid = false;
+
+
+
+          if (key_pri == 0) // Si es captura y no hay llave de actualizacion, es valido  
+            Comp.prop.Valid = false // true (false);
+          else
+            Comp.prop.Valid = false;
+
+
 
           if (Recno >= 0) {
-            const RecordSource = this[comp].prop.RecordSource;
-            this[comp].prop.RecordSource = "";
+            const RecordSource = Comp.prop.RecordSource;
+            Comp.prop.RecordSource = "";
 
-            this[comp].Recno = Recno; // Actualiza el registro del componente
-            this[comp].prop.RecordSource = RecordSource; // Hace el refresh del componente
+            Comp.Recno = Recno; // Actualiza el registro del componente
+            Comp.prop.RecordSource = RecordSource; // Hace el refresh del componente
           }
         } else {
-          this[comp].prop.ReadOnly = false; // Si es llave de captura
+          Comp.prop.ReadOnly = false; // Si es llave de captura
           /*
           if (!activate) {
-            this[comp].prop.Valid = false;
+            Comp.prop.Valid = false;
           }
 
           if (
-            this[comp].prop.BaseClass == "comboBox" &&
-            !this[comp].prop.MultiSelect
+            Comp.prop.BaseClass == "comboBox" &&
+            !Comp.prop.MultiSelect
           )
-            this[comp].prop.Valid = true;
+            Comp.prop.Valid = true;
           */
         }
       }
@@ -374,7 +378,7 @@ export class captureForm extends FORM {
           );
 
           if (result) {
-            await this.Form.refreshComponent();
+            await this.refreshComponent();
             MessageBox("Datos borrados");
           } else {
             const data = await this.Form.db.requery(
@@ -384,7 +388,7 @@ export class captureForm extends FORM {
             MessageBox("No se pudo borrar", 16);
 
             if (data.lenght === 0) {
-              this.Form.refreshComponent();
+              this.refreshComponent();
             }
           }
         }

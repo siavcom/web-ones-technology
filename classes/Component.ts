@@ -506,7 +506,7 @@ export class COMPONENT {
 
   public async setFocus() {
     this.prop.Focus = true;
-    //console.log('Super setFocus ==>', this.Name)
+
   }
 
   public async gotFocus() {

@@ -53,8 +53,6 @@ export class dec_dat extends COLUMN {
 
     if (this.prop.Value + this.Parent.lon_dat.prop.Value > 38) {
       this.prop.ErrorMessage = 'La suma longitud+decimales no debe exeder 38'
-
-      this.prop.ShowError = !this.prop.Valid
       return false
     }
 

@@ -121,7 +121,7 @@ export class bt_aceptar extends COMPONENT {
         if (
           //dataUpdate &&
           (await MessageBox(
-            "Generamos en Servidor SQL Server la tabla:" +
+            "Actualizar en Servidor SQL Server la tabla:" +
             this.Form.nom_tab.prop.Value,
             4,
             ""

@@ -77,11 +77,12 @@
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
-    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ prop.ErrorMessage.length >= 1 ?
-    prop.ErrorMessage
-    :
-    'Invalid Input'
-      }}</div>
+    <div :id="Id + '_error'" class="errorText" v-show="This.prop.ShowError && !prop.ReadOnly">{{
+    prop.ErrorMessage.length >= 1 ?
+      prop.ErrorMessage
+      :
+      'Invalid Input'
+  }}</div>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
     <!--Teleport to="body"-->
@@ -146,7 +147,7 @@ const modalContainer = defineAsyncComponent(() => import('@/components/modalCont
 const emit = defineEmits(["update", "update:Value",
   "input:currentValue",  // "input:currentValue[1]",
   "input:currentDate", "input:displayDate",
-  "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
+  "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:ShowError", "update:Ref","update:Recno",
 
 
 ///////////////////////////////////////
@@ -161,7 +162,7 @@ const props = defineProps<{
   //Component: any;
   Value: any;
   Registro: number;  // Se pone para el manejo de grid
-  // displayError: boolean;
+
   prop: {
 
     Autofocus: false;
@@ -269,10 +270,10 @@ const props = defineProps<{
 
 //const ReadOnly = computed(() => This.prop.ReadOnly ? true : false)
 
+const Component = ref(props.prop.This)
 //const Component = ref(props.prop.This)
 
-const Component = ref(props.prop.This)
-const This = Component.value
+const  Component = ref(props.prop.This)
 
 const labelStyle = reactive(This.labelStyle)
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
@@ -303,7 +304,7 @@ Status.value = 'I'
 const Key = ref(props.prop.Key)
 
 var oldVal = Value.value
-const displayError = ref(false) // Se utiliza esta variable para mostrar el error y sea reactiva
+const ShowError = ref(This.prop.ShowError)
 const checkValue = ref(false)
 
 const MaxLength = ref(props.prop.MaxLength)
@@ -479,8 +480,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
           //  console.log('3.3.1) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
-          displayError.value = true
-          This.prop.ShowError = true
+          ShowError.value = true
           This.prop.Valid = false
 
           // 7/Feb/2024       
@@ -714,8 +714,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   if (!This.prop.Valid) {
     //   console.log('5) editText emitValue() ERRROR en Valid Name=', props.prop.Name)
 
-    displayError.value = true
-    This.prop.ShowError = true
+    ShowError.value = true
     //const element = document.getElementById(Id);
     select() // Hace select en el componente    thisElement.select()
     //Ref.value.select() // Hace select en el componente
@@ -863,8 +862,8 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
   // <input       @keypress="keyPress($event)"
   // console.log('KeyPress===>', $event.charCode)
   const Type = propType.value
-  if (displayError.value) {
-    displayError.value = false
+  if (ShowError.value) {
+    ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
@@ -964,8 +963,9 @@ const onFocus = async () => {
   //  This.prop.Focus = false
 
   const Type = propType.value
+  console.log('editText onFocus 1) Name=', This.prop.Name, 'This.prop=', This.prop, 'props.prop=', props.prop)
   ToolTipText.value = false
-  //  displayError.value = false
+  //  ShowError.value = false
 
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
@@ -982,12 +982,13 @@ const onFocus = async () => {
     //console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, ' View=', This.Sql.View[tabla])
 
     let lon_campo = This.prop.Value.length
-    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
+    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla)
       lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
-      if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
 
-        MaxLength.value = lon_campo
-      }
+
+    if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
+
+      MaxLength.value = lon_campo
     }
   }
 
@@ -996,14 +997,14 @@ const onFocus = async () => {
     //if (This.prop.ShowError)
     //  This.prop.ShowError = false
 
-    //displayError.value = false
+    //ShowError.value = false
     This.Form.eventos.push(This.prop.Map + '.when()')
     return
   }
 
-  // El displayError se apaga en el keyPress cuando es un input text, number o date 
-  if ((Type == 'json' || Type == 'checkbox') && displayError.value) {
-    displayError.value = false
+  // El showError se apaga en el keyPress cuando es un input text, number o date 
+  if ((Type == 'json' || Type == 'checkbox') && ShowError.value) {
+    ShowError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
@@ -1027,8 +1028,10 @@ const help = async () => {
 
 }
 const select = async () => {
-
   if (document.activeElement != thisElement) {
+
+
+    // console.log('editText focus Name=', This.prop.Name, 'Id=' + Id)
     // Ref.value.focus();
     // Ref.value.select();
 
@@ -1040,7 +1043,7 @@ const select = async () => {
     thisElement.focus({ focusVisible: true });
     thisElement.select();
 
-  }, 100);
+  }, 0);
   //})
   return
 
@@ -1062,25 +1065,6 @@ const select = async () => {
 //////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////////////////
-// change This.prop.ShowError
-/////////////////////////////////////////////////////////////////
-watch(
-  () => This.prop.ShowError,
-  () => {
-    if (displayError.value != This.prop.ShowError)
-      displayError.value = This.prop.ShowError
-    //if (This.Form.error && new_val) {
-    //  displayError.value = false
-    //}
-
-    // This.Parent.error = new_val
-    console.log('watch displayError editText Name', This.prop.Name, 'displayError.value', displayError.value)
-  },
-  { deep: false }
-);
-
-
 
 /////////////////////////////////////////////////////////////////////
 // change checkValue.value
@@ -1096,7 +1080,95 @@ watch(
     }
   },
   { deep: false }
-);
+)
+
+
+/////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => ShowError.value, //props.prop.Value, //Value.value,
+  async (new_val: boolean) => {
+
+    // if (This.Form.error && new_val) {
+    //   ShowError.value = false
+    // }
+
+    This.Parent.error = new_val
+    console.log('watch editText SowError', This.prop.Name, 'ShowError.value', new_val)
+  },
+  { deep: false }
+)
+
+/////////////////////////////////////////////////////////
+// watch currentValue
+//  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
+//          Componente
+//////////////////////////////////////////
+
+// Si se cambia de afuera
+/*
+watch(
+  () => currentValue.value[1], //props.prop.Value, //Value.value,
+  async (new_val, old_val) => {
+ 
+    if (propType == 'number') {
+      Value.value = +new_val
+    }
+ 
+    if (propType == 'date') {
+      Value.value = await dateToString(new_val)
+    }
+    console.log('watch currentValue ', new_val,'Value.value=',Value.value)
+ 
+    await emitValue()
+ 
+  },
+  { deep: false }
+)
+*/
+
+
+
+
+
+/*
+ 
+ 
+watch(
+  () => Value.value,
+  async (new_val, old_val) => {
+ 
+    if (props.prop.Value != Value.value) {
+ 
+      if (propType == 'checkBox') {
+ 
+        checkValue.value = new_val == 1 ? true : false
+        await This.interactiveChange()
+        emitValue()
+ 
+      }
+ 
+      if (propType == 'spinner') {
+        await This.interactiveChange()
+        emitValue()
+ 
+      }
+      if (propType == 'number') {
+        currentValue.value[1] = toNumberStr(Value.value)
+        emitValue()
+      }
+ 
+ 
+    }
+ 
+ 
+ 
+  },
+  { deep: false }
+)
+ 
+*/
 
 ////////////////////////////////////////
 // This.prop.Visible 
@@ -1110,6 +1182,7 @@ watch(
       divStyle.height = '0%'
     else
       divStyle.height = This.style.height
+    //readCampo(props.Registro)
 
   },
   { deep: false }
@@ -1145,6 +1218,28 @@ watch(
   { deep: true }
 );
 
+/*
+////////////////////////////////////////
+// Recno
+// Nota: Lee de la base de datos local segun el valor de recno
+///////////////////////////////////////
+watch(
+  () => props.Recno,
+  (new_val, old_val) => {
+ 
+    if (props.prop.ControlSource > ' ') {
+      if (new_val==0){
+        Value.value=propType=='numeric'? 0 : ''
+        emitValue()
+        return
+      }
+ 
+    }
+  },
+  { deep: false }
+);
+*/
+
 
 ////////////////////////////////////////
 // Hacer el set focus 
@@ -1156,13 +1251,14 @@ watch(
       return
     }
     This.prop.Focus = false
-    console.log('Focus editText Watch Name=', This.prop.Name)
     onFocus()
     return
 
   },
   { deep: false }
 )
+
+
 
 
 ////////////////////////////////////////
@@ -1186,6 +1282,8 @@ watch(
 //////////////////////////
 //Si se cambia de afuera el valor
 ///////////////////////////////////////
+
+// 
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
 
@@ -1225,10 +1323,12 @@ watch(
     }
   },
   { deep: true }
-);
+)
+
+
 
 ////////////////////////////////////////////////////////////////////
-// change This.prop.Type
+// change This.prop.ShowError
 /////////////////////////////////////////////////////////////////
 watch(
   () => This.prop.Type, //props.prop.Value, //Value.value,
@@ -1238,7 +1338,7 @@ watch(
     styleAssing()
   },
   { deep: false }
-);
+)
 
 
 
@@ -1284,6 +1384,7 @@ const styleAssing = async () => {
 
 //const init = async () => {
 onMounted(async () => {
+  ShowError.value = false
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
   // console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
 

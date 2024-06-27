@@ -309,9 +309,11 @@ const props = defineProps<{
 
 }>();
 // Valores componente padre
-const Component = ref(props.Component)
+//const Component = ref(props.prop.Component)
+const Component = ref(props.prop.This)
 //const ThisGrid = Component.value
 const This: {} = Component.value
+
 const Id = This.prop.Name + props.Registro.toString().trim()
 
 

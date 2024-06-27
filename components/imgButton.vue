@@ -107,6 +107,7 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
+
 This.Recno = props.Registro
 
 const Value = ref(props.prop.Value)

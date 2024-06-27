@@ -30,7 +30,7 @@
             <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
               :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
               v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
-              v-model:ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
+              :ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
               v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
               v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
               v-bind:position="This[compHeader].position"
@@ -48,7 +48,7 @@
             <component :is="impComp(This[compMain].prop.BaseClass)"
               :class="This.prop.Name + '_' + This[compMain].prop.Name" v-bind:Component="ref(This[compMain])"
               v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-              v-model:ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
+              :ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
               v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
               v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
               v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
@@ -77,7 +77,7 @@
           -->
             <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+              :ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
@@ -187,7 +187,7 @@ const props = defineProps<{
 
 }>();
 // Valores componente padre
-const Component = ref(props.Component)
+const Component = ref(props.prop.This)
 const This = Component.value
 
 console.log(' Details This =====>', This)

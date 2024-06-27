@@ -62,17 +62,18 @@ example:
 
 ## web components
 - Form   
-- editText 
+- editText (number,date,text,spinner,checkBox,dateTime,textArea)
 - textLabel
 - comboBox 
-- checkBox 
-- optionGroup
+- optionGroup (soon)
 - grid
+- container
 
 ## typescript components
 - Form (component container)
 - Component
   Each component have serveral properties where each properties afect  visual and database behaviour as values to.
+- componentForm
   
  ### Base properties (prop):
 

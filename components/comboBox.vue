@@ -90,8 +90,6 @@
       v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
     <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
 
-
-
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
       v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
@@ -254,9 +252,6 @@ const ToolTipText = ref(true)
 const Component = ref(props.prop.This)
 const This = Component.value
 
-
-
-
 const Id = This.prop.Name + props.Registro.toString()
 let thisElement: Element | null
 This.prop.htmlId = Id
@@ -358,6 +353,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       if (await This.valid() == false) {
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
         ShowError.value = true
+        This.prop.ShowError = true
+
         if (This.prop.Valid)
           This.prop.Valid = false
         //Ref.value.select() 
@@ -455,6 +452,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
   ShowError.value = false  // Desactivamos mensaje de error
+  This.prop.ShowError = false
+
   //  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Text=', Text.value)
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
@@ -467,8 +466,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 }
 
 const toggleClick = async () => {
-  if (!toggle.value)
+
+  if (!toggle.value) {
+    console.log('bpe_bpe when toggleClick() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'toggle=', toggle.value)
     await This.when()
+  }
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
 
@@ -481,9 +483,10 @@ const toggleClick = async () => {
 
 const keyPress = ($event) => {
 
-  if (ShowError.value)
+  if (ShowError.value) {
     ShowError.value = false
-
+    This.prop.ShowError = false
+  }
   if (!ToolTipText.value)
     ToolTipText.value = false
   if ($event.charCode == 13) {
@@ -660,6 +663,7 @@ const onFocus = async () => {
   This.prop.Focus = false
   This.prop.First = false
   ShowError.value = false
+  This.prop.ShowError = false
 
   //const element = document.getElementById(Id);
 
@@ -936,6 +940,18 @@ watch(
   { deep: false }
 );
 
+/////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.ShowError,
+  () => {
+    if (ShowError.value != This.prop.ShowError)
+      ShowError.value = This.prop.ShowError
+  },
+  { deep: false }
+);
+
 
 ////////////////////////////////////////
 // watch Valid
@@ -943,7 +959,10 @@ watch(
 watch(
   () => props.prop.Valid,
   (new_val, old_val) => {
-    if (!props.prop.Valid) ShowError.value = true
+    if (!props.prop.Valid) {
+      ShowError.value = true
+      This.prop.ShowError = true
+    }
   },
   { deep: false }
 );

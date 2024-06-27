@@ -120,7 +120,7 @@ const props = defineProps<{
 }>()
 
 // Valores componente padre
-const Component = ref(props.Component)
+const Component = ref(props.prop.This)
 const This = Component.value
 This.style.maxWidth = "1200px"
 

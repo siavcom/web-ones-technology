@@ -31,10 +31,12 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
   async when() {
     if (this.prop.ReadOnly) return false;
-    if (this.prop.updateKey)
+    if (this.prop.updateKey) {
       // Si es llave de actualizacion
       await this.Form.refreshComponent();
+      console.log("2) when name=", this.prop.Name, "updateKey=", this.prop.updateKey);
 
+    }
     return true;
   }
 
