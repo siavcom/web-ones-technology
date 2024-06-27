@@ -22,7 +22,7 @@ export class rea_dat extends COLUMN {
         this.prop.Type = 'checkBox'
         this.prop.ControlSource = 'vi_cap_comedat.rea_dat'
         this.prop.ToolTipText = '1=Permite lectura'
-        this.style.width = '200px'
+        this.style.width = '100px'
     }
 
     ////////////////////////////////// 

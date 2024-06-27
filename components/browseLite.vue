@@ -1,15 +1,26 @@
 <template>
+  <div v-if="table.isLoading" class="splash-screen">
+    <div class="splash-screen">
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <p>..Loading Data..</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
   <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="This.style">
+
+
+
 
     <div class="wraper" style="width:100%;height:100%">
 
-      <div v-if="table.isLoading" class="splash-screen">
-        <div class="spinner-wrapper">
-          <div class="spinner">
-            <p>..........Loading data..........</p>
-          </div>
-        </div>
-      </div>
+
 
 
       <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"

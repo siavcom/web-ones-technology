@@ -25,6 +25,10 @@ export class bt_obtener extends COMPONENT {
   } // Fin constructor
 
   async click() {
+    this.Form.report.bt_excel.prop.Visible = false;
+    this.Form.report.bt_json.prop.Visible = false;
+
+
     this.Form.report.displayPdf.prop.Source = "";
     const main = this.Form.main
 
