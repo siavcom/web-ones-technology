@@ -15,20 +15,30 @@
           :Value="ThisForm.emp_emp.prop.Value" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
           :position="ThisForm.emp_emp.position" />
         <component id="log_usu" :is="impComp(ThisForm.log_usu.prop.BaseClass)" :Value="ThisForm.log_usu.prop.Value"
-          v-model:Status="ThisForm.log_usu.prop.Status" :component="ref(ThisForm.log_usu)" :Registro="0"
-          :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" :position="ThisForm.log_usu.position" />
+          :Registro="0" :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style"
+          :position="ThisForm.log_usu.position" />
         <component id="pas_usu" :is="impComp(ThisForm.pas_usu.prop.BaseClass)" :Value="ThisForm.pas_usu.prop.Value"
-          v-model:Status="ThisForm.pas_usu.prop.Status" :component="ref(ThisForm.pas_usu)" :Registro="0"
-          :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" :position="ThisForm.pas_usu.position" />
+          :Registro="0" :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style"
+          :position="ThisForm.pas_usu.position" />
         <component id="bt_aceptar" :is="impComp(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :Registro="0"
-          :component="ref(ThisForm.bt_aceptar)" :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style"
-          :position="ThisForm.bt_aceptar.position" :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
+          :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
+          :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+
+/*
+      :component="ref(ThisForm.log_usu)"
+      :component="ref(ThisForm.pas_usu)"  
+      v-model:Status="ThisForm.log_usu.prop.Status"
+      v-model:Status="ThisForm.pas_usu.prop.Status"
+*/
+
+
+
 /*
 import {
   ref,
@@ -41,9 +51,9 @@ import { storeToRefs } from 'pinia'
 // ///////////////////////////////////////////////
 // Componentes
 // ///////////////////////////////////////////////
-import imgButton from '@/components/imgButton.vue'
-import comboBox from '@/components/comboBox.vue'
-import editText from '@/components/editText.vue'
+//import imgButton from '@/components/imgButton.vue'
+//import comboBox from '@/components/comboBox.vue'
+//import editText from '@/components/editText.vue'
 // import textLabel from '@/components/textLabel.vue'
 
 
@@ -60,16 +70,9 @@ import { form } from './login'
 // Arbol de componentes de ThisForm segun Vfp //
 //
 
-// const This: any = getCurrentInstance()
-// const ThisCtx = This.ctx
-
 const ThisForm = reactive(new form())
-//const emit = defineEmits(['updateStatus'])
-
-
 
 const session = Session()
-//const { data } = await useAsyncData('id', () => session.id_con)
 
 const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
@@ -84,8 +87,6 @@ watch(
       return
     if (new_val != old_val)
       window.history.back() // regresa a la pagina anterior   
-
-
   },
   { deep: false }
 )
@@ -117,11 +118,13 @@ init()
 /// ///////////////////////////////////
 const impComp = (name: string) => {
   switch (name) {
-    case 'editText': {
-      //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      return editText
-      break
-    }
+    /*
+        case 'editText': {
+          //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+          return editText
+          break
+        }
+
     case 'comboBox': {
       return comboBox
       // return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
@@ -134,9 +137,10 @@ const impComp = (name: string) => {
       // return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break
     }
-
+     */
     default: {
-      return editText
+      return defineAsyncComponent(() => import(`@/components/${name}.vue`)) //import(`@/components/editText.vue`))
+      //return editText
       // return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       break
     }

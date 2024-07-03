@@ -28,6 +28,13 @@ export class bt_aceptar extends COMPONENT {
   }
 
   async click() {
+
+    if (!await this.Parent.des_dat.valid())
+      return
+
+    this.Parent.des_dat.prop.Visible = false
+
+
     this.prop.Visible = false
 
     this.Parent.tip_con.prop.Visible = false

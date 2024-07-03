@@ -87,11 +87,12 @@
                 <!--Transition name="columninput"-->
                 <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'
                 v-model:Valid="This[col.Name].prop.Valid"
+                v-bind:Component="ref(This[col.Name])"
                 -->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
-                  v-model:ShowError="This[col.Name].prop.ShowError" v-bind:Component="ref(This[col.Name])"
+                  v-model:ShowError="This[col.Name].prop.ShowError"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
@@ -184,11 +185,12 @@
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
           v-bind:Show="true"
+          v-bind:Component="ref(This[compFooter])"
+
           -->
             <component :id="Id + '_component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
-              v-bind:Component="ref(This[compFooter])" v-model:Value="This[compFooter].prop.Value"
-              v-model:Status="This[compFooter].prop.Status" v-model:ShowError="This[compFooter].prop.ShowError"
-              v-model:Key="This[compFooter].prop.Key"
+              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
@@ -304,7 +306,7 @@ const props = defineProps<{
     Top: number;
   };
   Registro: 0;
-  Component: null;
+  //Component: null;
   //db: any
 
 }>();

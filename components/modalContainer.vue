@@ -18,10 +18,11 @@
                 <div :id="'modal_componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver">
                   <div :id="'modal_hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele, key) in  Ver" :key="Ele"
                     style="padding-bottom:2px">
+                    <!--v-bind:Component="ref(Ele)"-->
                     <component :id="'modal_componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
-                      v-bind:Component="ref(Ele)" v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status"
-                      :Registro="Ele.Recno" :prop="Ele.prop" :style="Ele.style" :position="Ele.position"
-                      @click.capture="Ele.click()"></component>
+                      v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno"
+                      :prop="Ele.prop" :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()">
+                    </component>
 
                   </div>
                 </div>
@@ -58,7 +59,7 @@ const container = defineAsyncComponent(() => import('@/components/container.vue'
 
 interface Props {
   //Recno: number;
-  Component: null;
+  // Component: null;
   // Name,
   Registro: number;
 
@@ -73,7 +74,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   //Name: '',
   Registro: 0,
-  Component: null,
+  // Component: null,
   // Value: undefined,
   prop: {
 

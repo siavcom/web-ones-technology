@@ -89,10 +89,10 @@
     <!--span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
       v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
     <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
-
+    <!-- v-bind:Component="ref(This[compMain])" 
+     v-model:Status="This[compMain].prop.Status"-->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
-      :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
-      v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+      :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
       v-bind:position="This[compMain].position"
       @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">

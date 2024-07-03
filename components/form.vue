@@ -266,6 +266,18 @@ const props = defineProps<{
 }>();
 const ThisForm = reactive(new props.ThisForm)
 
+
+// Datos forma por forma . En app.vue esta useHead
+useSeoMeta({
+  title: ThisForm.prop.Name,
+  ogTitle: 'Dessing and programing with web-ones-technology',
+  //  description: 'This is my amazing site, let me tell you all about it.',
+  //  ogDescription: 'This is my amazing site, let me tell you all about it.',
+  //ogImage: '/public/favicon.ico',
+  //  twitterCard: 'summary_large_image',
+})
+
+
 //console.warn(router.query.params)
 //console.warn(router.currentRoute[query])
 

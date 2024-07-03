@@ -707,28 +707,35 @@ export class VFPDB {
       }
 
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
-
-      console.log(
-        "1 DataBase tableUpdate() vista de mantenimiento=",
-        tab_man,
-        this.View[tab_man],
-        "dat_act=",
-        dat_act
-      );
-
+      /*
+            console.log(
+              "1 DataBase tableUpdate() vista de mantenimiento=",
+              tab_man,
+              this.View[tab_man],
+              "Row=",
+              row,
+              "dat_act=",
+              dat_act[row]
+            );
+      */
       //  recorremos todos los campos del registro  actualizar
       for (const campo in dat_act[row]) {
-        if (dat_act[row][campo] == null) dat_act[row][campo] = "";
+        console.log('Db tableUpdate campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
+        if (dat_act[row][campo] == null)
+          dat_act[row][campo] = "";
 
         if (typeof dat_act[row][campo] == "string") {
           dat_act[row][campo] = dat_act[row][campo].trim();
-          if (old_dat[campo] == null) old_dat[campo] = "";
-          else old_dat[campo] = old_dat[campo].trim();
+          if (old_dat[campo] == null)
+            old_dat[campo] = "";
+          else
+            old_dat[campo] = old_dat[campo].trim();
         }
 
         //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
+        console.log('tab_man', tab_man, 'Campo=', campo, this.View[tab_man].est_tabla[campo])
 
         const nom_campo = campo.toLowerCase();
         if (
@@ -740,7 +747,7 @@ export class VFPDB {
           nom_campo != "usu_cre" &&
           //          nom_campo != "key_pri" &&
           nom_campo != "timestamp" &&
-          (dat_vis.tip_llamada == "INSERT" ||
+          (dat_vis.tip_llamada == "INSERT" || old_dat[campo] == null ||
             old_dat[campo] != dat_act[row][campo])
         ) {
           //cambiar segun tipo de campo en View

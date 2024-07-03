@@ -15,10 +15,10 @@
           :style="{ 'display': 'inline-flex' }">
           <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
             :style="{ 'padding-bottom': '2px', 'width': '100%' }">
+            <!--v-bind:Component="ref(Ele)"-->
             <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
-              v-bind:Component="ref(Ele)" v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status"
-              :Registro="Ele.Recno" :prop="Ele.prop" :style="Ele.style" :position="Ele.position"
-              @click.capture="Ele.click()"></component>
+              v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
+              :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()"></component>
 
           </div>
         </div>
@@ -65,7 +65,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   //Name: '',
   Registro: 0,
-  Component: null,
+  // Component: null,
   // Value: undefined,
   prop: {
 

@@ -29,8 +29,12 @@ export class bt_aceptar extends COMPONENT {
   async click() {
     const m = { nom_tab: this.Form.nom_tab.prop.Value };
 
-    if (this.prop.Disabled) return;
-    this.prop.Disabled = true;
+    if (!this.prop.Visible) {
+      console.log('============>  bt_aceptar disabled')
+      return;
+    }
+
+    this.prop.Visible = false;
 
     // No es un Menu del sistema y tablas
     if (
@@ -67,7 +71,7 @@ export class bt_aceptar extends COMPONENT {
         }
 
         //this.Form.dic_dat.valid()
-        this.prop.Disabled = false;
+        this.prop.Visible = true;
         return;
       }
 
@@ -88,7 +92,7 @@ export class bt_aceptar extends COMPONENT {
 
         dataUpdate = await this.grabaDatos("vi_cap_comedat");
 
-        // return
+
       }
 
       // Indices
@@ -140,6 +144,7 @@ export class bt_aceptar extends COMPONENT {
               "Error al generar/regenerar en Sql Server la tabla:" +
               this.Form.nom_tab.prop.Value
             );
+            this.prop.Visible = true;
             return false;
           }
         }
@@ -161,8 +166,8 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_indices.prop.RecordSource;
         this.Form.grid_vistas.prop.RecordSource =
           this.Form.grid_vistas.prop.RecordSource;
-        this.prop.Disabled = false;
 
+        this.prop.Visible = true;
         return;
       }
 
@@ -216,7 +221,7 @@ export class bt_aceptar extends COMPONENT {
         //        }
       }
 
-      this.prop.Disabled = false;
+      this.prop.Visible = true;
       return;
     }
     // Tablas del servidor SQL
@@ -229,10 +234,10 @@ export class bt_aceptar extends COMPONENT {
       ) {
         await this.grabaDatos("vi_cap_cometab");
         await this.Form.db.useNodata("vi_cap_cometab");
-        this.prop.Disabled = false;
         this.Form.prop.Status = "A";
         this.Form.grid_tablas.prop.Visible = false;
 
+        this.prop.Visible = true;
         return;
       }
 
@@ -255,13 +260,14 @@ export class bt_aceptar extends COMPONENT {
         await this.grabaDatos("vi_cap_prg");
         await this.Form.db.useNodata("vi_cap_prg");
         this.Form.prop.Status = "A";
-        this.prop.Disabled = false;
+
+        this.prop.Visible = true;
         return;
       }
       /*
       if (!this.Form.tip_men.prop.Visible) { // Tipo de menu
         this.Form.tip_men.prop.Visible = true
-        this.prop.Disabled = false
+        this.prop.Visible = true
         console.log('menu tipo Programa Principal', this.Form.tip_men.prop.Visible)
         return
       }
@@ -269,7 +275,8 @@ export class bt_aceptar extends COMPONENT {
       if (!this.Form.tpr_prg.prop.Visible) {
         // Tipo de menu Mantenimientos,Procesos,Reportes
         this.Form.tpr_prg.prop.Visible = true;
-        this.prop.Disabled = false;
+
+        this.prop.Visible = true;
         return;
       }
 
@@ -279,7 +286,7 @@ export class bt_aceptar extends COMPONENT {
       ) {
         // Tipo de menu Mantenimientos,Procesos,Reportes
         this.Form.sis_sis.prop.Visible = true;
-        this.prop.Disabled = false;
+        this.prop.Visible = true;
         return;
       }
 
@@ -310,7 +317,7 @@ export class bt_aceptar extends COMPONENT {
       }
       this.Form.grid_menu.prop.Visible = true;
     } // Fin de menu de programas
-    this.prop.Disabled = false;
+    this.prop.Visible = true;
     return;
   } // Fin si es menu de programas
 

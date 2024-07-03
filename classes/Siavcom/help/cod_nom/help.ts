@@ -1,4 +1,3 @@
-
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
 // BaseClass : help
@@ -16,13 +15,14 @@ import { HELP } from "@/classes/help/help"
 export class help extends HELP {
   constructor() {
     super()
-    this.textLabel = 'Buscador de clientes'
+    this.textLabel = 'Buscador'
     this.where = ''
     this.prop.RecordSource = 'man_comenom' // tabla donde buscar datos
     this.browse.prop.textLabel = 'Clientes'
     this.prop.cam_pri = 'nom_nom' // campo de buqueda principal
+    this.prop.cop_nom = 'C'
 
-    this.prop.Where = " cop_nom='C' "
+    this.prop.Where = ""
 
     // Campos a mostrar en la tabla 
     this.fields = [["cod_nom", "Código", "32px"],
@@ -36,11 +36,16 @@ export class help extends HELP {
   }
 
   async open() {
-    this.prop.Where = ` cop_nom='${this.Form.cop_nom.prop.Value}'  `
-    super.open()
+
+    this.prop.Where = ` cop_nom='${this.cop_nom}'  `
+
+    if (this.cop_nom == 'C') {
+      this.browse.prop.textLabel = 'Clientes'
+    } else {
+      this.browse.prop.textLabel = 'Proveedores'
+
+    }
+
   }
-
-
-
 }
 

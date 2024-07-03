@@ -127,7 +127,7 @@ const props = defineProps<{
     Top: number;
   };
 
-  Component: null;
+  //Component: null;
 }>()
 
 // Valores componente padre

@@ -84,10 +84,11 @@
       }}</div>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
-    <!--Teleport to="body"-->
+    <!--Teleport to="body"
+    v-bind:Component="ref(This[compMain])"
+    -->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
-      :is="impComp(This[compMain].prop.BaseClass)" v-bind:Component="ref(This[compMain])"
-      v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
+      :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
       v-bind:position="This[compMain].position"
       @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">
@@ -271,8 +272,9 @@ const props = defineProps<{
 
 //const Component = ref(props.prop.This)
 
-const Component = ref(props.prop.This)
-const This = Component.value
+const Component = toRef(() => props.prop.This)
+console.log('editText Component=', Component.value)
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
 const labelStyle = reactive(This.labelStyle)
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
@@ -325,7 +327,7 @@ inputStyle.zIndex = zIndex
 const toolTipTextStyle = { zIndex: zIndex + 20 }
 const focusIn = ref(0)
 
-const currentValue = ref(['', '']) // Valor para capturar
+const currentValue = ref(['', '']) // Arreglo de valor para capturar
 
 const displayDate = ref('') // Valor para ver
 
@@ -391,15 +393,15 @@ const onInput = ({ target }) => {
   if (punto !== -1 && target.value.indexOf('.', punto + 1) !== -1) {
     target.value = target.value.substr(0, len - 1) // quitamos el segundo punto
   }
-  currentValue.value[1] = parseFloat(target.value)
+
+  currentValue.value[1] = parseFloat(target.value.trim())
+
+
+  console.log('Value onInput length=', currentValue.value[1].length, currentValue.value[0], target.value)
   //Value.value = parseFloat(target.value)
   //   console.log('onInput number',target.value)
   oldVal = target.value
 }
-
-
-
-
 
 /*  position
 static	Elements renders in order, as they appear in the document flow. This is default.
@@ -607,11 +609,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   switch (Type) {
     case 'number':
 
-
       if (Value.value == null)
         Value.value = 0
-      currentValue.value[1] = Value.value.toString().trim()
-      currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+      //currentValue.value[1] = Value.value.toString().trim()
+      //currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+
+      currentValue.value[0] = Value.value.toString().trim()
+      currentValue.value[1] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+
+
+
       emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
       break;
     case 'checkbox':
@@ -868,6 +875,12 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
+
+  if (Type != 'textarea' && $event.charCode == 63) { // '?'
+    help()
+    return
+  }
+
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) //|| // Return
   // $event.charCode == 13 // Down Key  
@@ -963,6 +976,8 @@ const focusInput = async () => {
 const onFocus = async () => {
   //  This.prop.Focus = false
 
+  console.log('editText onFocus Name=', This.prop.Name, 'currentValue[1].length=', currentValue.value[1].length, 'currentValue[1].length=', currentValue.value[0].length)
+
   const Type = propType.value
   ToolTipText.value = false
   //  displayError.value = false
@@ -971,7 +986,6 @@ const onFocus = async () => {
   const pos = ControlSource.indexOf(".") + 1;
   // Calcula la longitud maxima
 
-  //  console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, 'ControlSource', ControlSource, ' View=', This.Sql.View)
 
 
   if (pos > 1 && !sw_MaxLength) {
@@ -1020,6 +1034,7 @@ const onFocus = async () => {
 }
 const help = async () => {
   if (This.help) {
+    This.prop.ShowError = false
     This.prop.Valid = true
     await This.help.open()
     This.prop.Valid = true

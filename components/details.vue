@@ -26,11 +26,11 @@
 
         <div class='headerDetail'>
           <div v-for="(compHeader) in This.header">
-
+            <!-- v-bind:Component="ref(This[compHeader])"-->
             <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
-              :is="impComp(This[compHeader].prop.BaseClass)" v-bind:Component="ref(This[compHeader])"
-              v-model:Value="This[compHeader].prop.Value" v-model:Status="This[compHeader].prop.Status"
-              :ShowError="This[compHeader].prop.ShowError" v-model:Key="This[compHeader].prop.Key"
+              :is="impComp(This[compHeader].prop.BaseClass)" v-model:Value="This[compHeader].prop.Value"
+              v-model:Status="This[compHeader].prop.Status" :ShowError="This[compHeader].prop.ShowError"
+              v-model:Key="This[compHeader].prop.Key"
               v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
               v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
               v-bind:position="This[compHeader].position"
@@ -44,11 +44,11 @@
             <!--   @focusout="This.eventos.push('This.' + compMain + '.valid()')"
           v-bind:Show="true"
           
-                  -->
+               v-bind:Component="ref(This[compMain])"    -->
             <component :is="impComp(This[compMain].prop.BaseClass)"
-              :class="This.prop.Name + '_' + This[compMain].prop.Name" v-bind:Component="ref(This[compMain])"
-              v-model:Value="This[compMain].prop.Value" v-model:Status="This[compMain].prop.Status"
-              :ShowError="This[compMain].prop.ShowError" v-model:Key="This[compMain].prop.Key"
+              :class="This.prop.Name + '_' + This[compMain].prop.Name" v-model:Value="This[compMain].prop.Value"
+              v-model:Status="This[compMain].prop.Status" :ShowError="This[compMain].prop.ShowError"
+              v-model:Key="This[compMain].prop.Key"
               v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
               v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
               v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
@@ -73,11 +73,11 @@
             <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
           
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
-          
+           v-bind:Component="ref(This[compFooter])"
           -->
-            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
-              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-              :ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+            <component :is="impComp(This[compFooter].prop.BaseClass)" v-model:Value="This[compFooter].prop.Value"
+              v-model:Status="This[compFooter].prop.Status" :ShowError="This[compFooter].prop.ShowError"
+              v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
@@ -135,7 +135,7 @@ const emit = defineEmits([ //"update",
 const props = defineProps<{
   //Recno: 0;
   //Show: true;
-  Component: null;
+  //Component: null;
   prop: {
     ToolTipText: string;
     View: "";
