@@ -59,7 +59,7 @@ export class sis_sis extends COMPONENT {
       this.Form.nom_tab.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
 
     }
-
+    return true
   }
 
 }

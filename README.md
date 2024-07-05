@@ -38,6 +38,8 @@ there are some components where each one have it's own components (grid have a s
             /     |    \
         Column1 Column2 Column..n
 
+       
+
 Each component has it own propierties.
 
 - basic props
@@ -229,9 +231,6 @@ method:
 
   A grid have a several columns where each column is a input or label component where each component if bind to a SQL table field .
  
-
- 
-
 
 
 ## For a complete example, take a look in page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintennce dicctionary, you can add tables with fields, index and SQL views for manipulate data access.

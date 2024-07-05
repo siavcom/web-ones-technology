@@ -52,8 +52,7 @@
 
       <input :id="Id" class="textInput" :style="inputStyle"
         :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
-        ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false; This.Form.eventos.push(This.prop.Map + '.when()')" @focusout="emitValue()" />
+        ref="Ref" @keypress="keyPress($event)" @focus.prevent="toggle = false; when()" @focusout="emitValue()" />
 
       <!--span> {{ prop.Value }}</span-->
       <!--Valor seleccionado click-->
@@ -88,14 +87,13 @@
     </div>
     <!--span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
       v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
-    <span class="errorText" @focus.prevent="onFocus" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
+    <span class="errorText" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     <!-- v-bind:Component="ref(This[compMain])" 
      v-model:Status="This[compMain].prop.Status"-->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-      v-bind:position="This[compMain].position"
-      @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">
+      v-bind:position="This[compMain].position" @click.capture="when(true)">
     </component>
 
 
@@ -272,6 +270,7 @@ const hover = ref(false)
 //const First = ref(props.prop.First)
 
 const ShowError = ref(false)
+const sw_focus = ref(false)
 // Focus.value = false
 const divStyle = reactive(props.style)
 //divStyle.zIndex = 100 - This.prop.TabIndex
@@ -350,7 +349,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
       inputBuffer = ''
       This.prop.Valid = false
-      if (await This.valid() == false) {
+      if (!await This.valid()) {
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
         ShowError.value = true
         This.prop.ShowError = true
@@ -361,8 +360,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         thisElement.select();
 
         This.prop.Status = 'A'
-        Status.value = 'A'
-        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+        //   Status.value = 'A'
+        //   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
       }
     }
@@ -468,8 +467,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 const toggleClick = async () => {
 
   if (!toggle.value) {
-    console.log('bpe_bpe when toggleClick() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'toggle=', toggle.value)
-    await This.when()
+    console.log('bpe_bpe toggleClick() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'toggle=', toggle.value)
+    await when()
   }
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
@@ -534,6 +533,21 @@ const keyPress = ($event) => {
     displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]  // asigna el resultado a mostrar
 
 }
+
+const help = async () => {
+  if (This.help) {
+    This.prop.ShowError = false
+    This.prop.Valid = true
+    await This.help.open()
+    This.prop.Valid = true
+  }
+
+}
+
+
+
+
+
 
 
 /////////////////////////////////////////////////////////////////////
@@ -618,12 +632,25 @@ const validList = async () => {
 
 };
 
+const when = async (click: boolean) => {
+  if (!sw_focus.value) {
+    sw_focus.value = true
+    This.Form.eventos.push(This.prop.Map + '.when()')
+    console.log('2)>>>>>ComboBox when', This.prop.Name, 'sw_focus=', sw_focus.value)
+
+  }
+
+  if (click)
+    This.Form.eventos.push(This[compMain].prop.Map + '.click()')
+}
+
 /////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
+
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
 
@@ -1255,14 +1282,21 @@ onUnmounted(() => {
 function myClick(e) {
   // console.log('myClick ComboBox focus in and out ',e.target)
   // to remove
-  if (This.prop.Disabled || !This.prop.Visible || !toggle.value)
-    return
+
   const clickedEl = e.target;
+  if (This.prop.Disabled || !This.prop.Visible) {
+    if (RefCombo && RefCombo.value != null && !RefCombo.value.contains(clickedEl))
+      sw_focus.value = false
+    if (!toggle.value)
+      return
+  }
   if (RefCombo && RefCombo.value != null)
     if (!RefCombo.value.contains(clickedEl)) {
-      if (toggle.value)
+      sw_focus.value = false
+      if (toggle.value) {
         toggle.value = false
-      // console.log(This.prop.Name,'ComboBox focus  out ',toggle.value)
+      }
+      console.log(This.prop.Name, 'ComboBox focus  out ', toggle.value, 'sw_focus=', sw_focus.value)
     }
 
 }

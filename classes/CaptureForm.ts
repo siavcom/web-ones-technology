@@ -128,6 +128,12 @@ export class captureForm extends FORM {
     }
 
     // Leemos datos de la tabla de actualizacion
+    if (this.prop.RecordSource.length < 2) {
+      console.warn('No hay vista de actualizacion en el Form')
+      return
+    }
+
+
     const data = await this.Form.db.use(this.prop.RecordSource, m);
 
     // console.log("captureForm Valid m=", m, "data=", data);
@@ -181,6 +187,16 @@ export class captureForm extends FORM {
       key_pri = 0;
     }
 
+    for (const comp of this.main) {
+      const Comp = this[comp]
+      // console.log('1) displayError refreshComponent comp=', comp, 'Recno=', Recno, 'key_pri=', key_pri, 'this.prop.Valid=', Comp.prop.Valid)
+
+      if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apga
+        Comp.prop.ShowError = false
+      }
+    }
+
+
     if (this.noData && !activate) {
       // Ya se hizo el useNodata y refresh sin datos
       return;
@@ -189,7 +205,8 @@ export class captureForm extends FORM {
     if (Recno == -1) {
       if (this.prop.RecordSource.length > 2) {
         await this.Form.db.useNodata(this.prop.RecordSource);
-      } else return;
+      } else
+        return;
 
       this.noData = true;
       this.bt_graba.prop.Visible = false;
@@ -198,13 +215,11 @@ export class captureForm extends FORM {
     } // else this.noData = false;
 
 
+    console.log('0) displayError refreshComponent main=', this.main)
+
     for (const comp of this.main) {
       const Comp = this[comp]
-      //  console.log('1) displayError refreshComponent comp=', comp, 'Recno=', Recno, 'key_pri=', key_pri, 'this.prop.Valid=', Comp.prop.Valid)
 
-      if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apga
-        Comp.prop.ShowError = false
-      }
       if (Comp.prop.Capture) {
         if (!Comp.prop.updateKey) {
           // No es llave de actualizacion

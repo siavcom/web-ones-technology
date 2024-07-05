@@ -42,7 +42,9 @@
                 </div>
               </h2>
               <!--transition-group> -->
-              <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"-->
+              <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
+                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
+              -->
 
               <div :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
                 :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
@@ -50,7 +52,7 @@
                   :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                   :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
                   :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value"
-                  @click="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" />
+                  @click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" />
               </div>
 
             </slot>
@@ -62,7 +64,10 @@
       -->
           <section class="formmain">
             <slot name="main">
-              <!--  v-bind:Component="ref(ThisForm[compMain])"  -->
+              <!--  v-bind:Component="ref(ThisForm[compMain])" 
+                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
+  
+              -->
               <TransitionGroup name='detailForm'>
                 <div :id="'div_' + compMain" v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
@@ -96,13 +101,14 @@
 
               <div :id="'div_' + compFooter" v-for="( compFooter ) in  ThisForm.footer " :class="compFooter"
                 v-show='ThisForm[compFooter].prop.Visible'>
-                <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"-->
+                <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
+                      @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
+                -->
                 <component :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
                   v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
-                  @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                   @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" />
                 <!--@click.stop.prevent-->
               </div>
@@ -562,6 +568,10 @@ else return 0}
 ////////////////////////////////////// 
 // '@/components/' + name + '.vue')
 
+
+/* Con el puro nombe y en el directorio /components/global
+const impComp= computed ((name:string) =>'Lazy'+name)
+*/
 
 const impComp = ((name: string, pos?: string) => {
 

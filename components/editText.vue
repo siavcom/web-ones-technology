@@ -487,7 +487,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
           // 7/Feb/2024       
           This.Form.prop.Status = 'A'
-          This.prop.Focus = true
+          select()
+          //          This.prop.Focus = true
+          This.prop.Status = 'A'
           return
         } //else This.prop.Valid = true
 
@@ -801,7 +803,8 @@ const focusOut = async () => {
 
     Value.value = await dateToString(currentDate.value)
     if (sw_error) {
-      This.prop.Focus = true
+      select()
+      // This.prop.Focus = true
       return
     }
   }
@@ -828,7 +831,8 @@ const focusOut = async () => {
   }
 
   if (sw_error) {
-    This.prop.Focus = true
+    select()
+    //This.prop.Focus = true
     return
   }
 
@@ -852,8 +856,8 @@ const focusOut = async () => {
 
 const clickCheckBox = () => {
 
-  console.log('clickCheckBox editText Name', This.prop.Name, 'checkValue=', checkValue.value)
   This.prop.Value = checkValue.value ? 0 : 1
+  console.log('clickCheckBox editText Name', This.prop.Name, 'Value=', This.prop.Value)
 
   This.click()
 
@@ -1004,13 +1008,10 @@ const onFocus = async () => {
       }
     }
   }
+  console.log('editText onFocus  Name=', This.prop.Name, 'This.prop.Focus=', This.prop.Focus, 'This.prop.First=', This.prop.First)
 
-  // ????????
   if (!This.prop.First && !This.prop.Focus) {
-    //if (This.prop.ShowError)
-    //  This.prop.ShowError = false
 
-    //displayError.value = false
     This.Form.eventos.push(This.prop.Map + '.when()')
     return
   }
@@ -1029,7 +1030,7 @@ const onFocus = async () => {
   //nextTick(function () {
 
   // const element = document.getElementById(Id);
-  select()
+  // select()   // 4 Julio 2024
   return
 }
 const help = async () => {
@@ -1042,6 +1043,8 @@ const help = async () => {
 
 }
 const select = async () => {
+  console.log('editText select Name=', This.prop.Name, 'select()')
+  This.prop.Focus = false
 
   if (document.activeElement != thisElement) {
     // Ref.value.focus();
@@ -1116,6 +1119,7 @@ watch(
 ////////////////////////////////////////
 // This.prop.Visible 
 ///////////////////////////////////////
+/*
 watch(
   () => This.prop.Visible,
   (new_val: any, old_val: any) => {
@@ -1130,7 +1134,7 @@ watch(
   { deep: false }
 );
 
-
+*/
 ////////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
@@ -1172,7 +1176,8 @@ watch(
     }
     This.prop.Focus = false
     console.log('Focus editText Watch Name=', This.prop.Name)
-    onFocus()
+    select()
+    //onFocus()
     return
 
   },
@@ -1351,7 +1356,9 @@ onMounted(async () => {
 
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
-    onFocus()
+    props.prop.First = false
+    select()
+    //    onFocus()
     return
   }
   // console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])

@@ -88,17 +88,19 @@
                 <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'
                 v-model:Valid="This[col.Name].prop.Valid"
                 v-bind:Component="ref(This[col.Name])"
+
+
+                @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
+                  v-model:Status="This[col.Name].prop.Status"
+                  v-model:ShowError="This[col.Name].prop.ShowError"
                 -->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
-                  v-model:Status="This[col.Name].prop.Status" v-model:Key="This[col.Name].prop.Key"
-                  v-model:ShowError="This[col.Name].prop.ShowError"
+                  v-model:Key="This[col.Name].prop.Key"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
-                  @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
                   :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 1 }">
-
                 </component>
                 <!--/div-->
                 <!--/Transition-->
@@ -187,6 +189,9 @@
           v-bind:Show="true"
           v-bind:Component="ref(This[compFooter])"
 
+          
+              @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+          
           -->
             <component :id="Id + '_component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
@@ -194,7 +199,6 @@
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
               v-bind:position="This[compFooter].position"
-              @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
               @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
           </div>
 
@@ -625,6 +629,9 @@ const ejeEvento = (newEvento: string) => {
 
 
 const loadData = async () => {
+
+  if (This.prop.RecordSource.length < 2) return
+
   //This.Row = -1
   load_data = false
 
