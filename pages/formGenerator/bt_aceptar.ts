@@ -5,14 +5,13 @@
 // Ult.Mod : 10/Julio/2023
 /////////////////////////////////////////////
 import { COMPONENT } from "@/classes/Component";
-////import { MessageBox } from '@/classes/Functions';
 /**
- *
- *
- * @export
- * @class BT_ACEPTAR
- * @extends {COMPONENT}
- */
+*
+*
+* @export
+* @class BT_ACEPTAR
+* @extends {COMPONENT}
+*/
 export class bt_aceptar extends COMPONENT {
   constructor() {
     super();

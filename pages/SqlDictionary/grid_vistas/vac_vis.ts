@@ -9,7 +9,7 @@
 // Clase base
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
-////import { MessageBox } from '@/classes/Functions'
+// 
 
 
 export class vac_vis extends COLUMN {
@@ -30,30 +30,30 @@ export class vac_vis extends COLUMN {
   }
 
   public async valid() {
- 
+
     if (await super.valid()) {
-      if (this.prop.Value==null || this.prop.Value.trim() == '') {
-        this.prop.ErrorMessage='Dato en blanco'
+      if (this.prop.Value == null || this.prop.Value.trim() == '') {
+        this.prop.ErrorMessage = 'Dato en blanco'
         return false
       }
-      const indice=this.prop.Value.trim()
-      const ins_sql=`select key_pri from Now.vi_cap_comeind where trim(nom_ind)='${indice}'`
-      
+      const indice = this.prop.Value.trim()
+      const ins_sql = `select key_pri from Now.vi_cap_comeind where trim(nom_ind)='${indice}'`
+
       const res = await this.Form.db.localAlaSql(ins_sql)
 
-     // console.log('vac_vis  valid indice ===>',indice,
-     // await this.Form.db.localAlaSql('select key_pri,nom_ind from Now.vi_cap_comeind'))
+      // console.log('vac_vis  valid indice ===>',indice,
+      // await this.Form.db.localAlaSql('select key_pri,nom_ind from Now.vi_cap_comeind'))
 
 
-      if (res.length==0){
-        this.prop.ErrorMessage='No existe el indice'
-//        this.prop.ShowError=true
-        this.prop.Valid=false
+      if (res.length == 0) {
+        this.prop.ErrorMessage = 'No existe el indice'
+        //        this.prop.ShowError=true
+        this.prop.Valid = false
 
         return false
 
 
-      }  
+      }
     }
     return true
   }

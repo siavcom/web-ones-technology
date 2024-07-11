@@ -9,20 +9,21 @@
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
     <!--span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible"-->
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
-      :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]"
+      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut"
       @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)">
 
     <!--spinner-->
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
-      :disabled="prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :readonly="This.prop.ReadOnly"
-      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @input="emitValue(false)">
+      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
+      :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
+      @input="emitValue(false)">
 
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style="inputStyle">
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" :style="inputStyle" v-model="Value"
-        :readonly="This.prop.ReadOnly" :disabled="prop.Disabled" :placeholder="prop.Placeholder"
+        :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="inputStyle.rows" :cols='inputStyle.cols'
         @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
     </div>
@@ -31,8 +32,8 @@
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref" :style="inputStyle"
       :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
-      :disabled="prop.Disabled" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="focusOut">
+      :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex"
+      @keypress="keyPress($event)" @focusout="focusOut">
     <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
@@ -61,19 +62,20 @@
     <!--checkBox-->
 
     <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
-      :readonly="This.prop.ReadOnly" :disabled="prop.Disabled || This.prop.ReadOnly" :tabindex="prop.TabIndex"
+      :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled || This.prop.ReadOnly" :tabindex="prop.TabIndex"
       v-model="checkValue" @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)">
 
     <!--text-->
     <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
-      :readonly="prop.ReadOnly" :disabled="prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
+      :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
       @focus="onFocus">
     <!--/span-->
 
     <nuxt-img :id="Id + '_help'"
-      v-if="!prop.This.prop.ReadOnly && !prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
-      src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px" @click.prevent="help()" />
+      v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
+      class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
+      @click.prevent="help()" />
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
@@ -872,7 +874,7 @@ const clickCheckBox = () => {
 
 const keyPress = ($event: { charCode: number; preventDefault: () => void; keycode: number; charCod: number; }) => {
   // <input       @keypress="keyPress($event)"
-  // console.log('KeyPress===>', $event.charCode)
+  const char = +$event.charCode
   const Type = propType.value
   if (displayError.value) {
     displayError.value = false
@@ -880,7 +882,11 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       This.prop.ShowError = false
   }
 
-  if (Type != 'textarea' && $event.charCode == 63) { // '?'
+  // oprimió ? (help)
+  console.log('KeyPress===>', char, 'Type=', Type)
+
+  if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
+    console.log('Help KeyPres===>', $event.charCode)
     help()
     return
   }
@@ -941,9 +947,6 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 
 
 
-  // oprimió ? (help)
-  if ((Type == 'number' || Type == 'text') && This.Help && $event.charCode == 63)
-    return help()
 
   // caracteres permitido en input numero
   if (Type == 'number') {
@@ -978,7 +981,19 @@ const focusInput = async () => {
 // Obs: el when() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-  //  This.prop.Focus = false
+  // No se permite el focus si es solo lectura
+  if (This.prop.ReadOnly) {
+    if (!This.prop.Disabled) {
+      This.prop.Disabled = true
+      setTimeout(function () {
+        This.prop.Disabled = false
+
+      }, 100);
+    }
+    //thisElement.next(':input').focus();
+    return
+  }
+
 
   console.log('editText onFocus Name=', This.prop.Name, 'currentValue[1].length=', currentValue.value[1].length, 'currentValue[1].length=', currentValue.value[0].length)
 

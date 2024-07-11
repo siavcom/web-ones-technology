@@ -1,0 +1,219 @@
+
+https://michaelnthiessen.com/
+
+===========================================
+
+
+<div :collapse="isCollapsed">
+
+https://masteringnuxt.com/blog/24-time-saving-tips-for-nuxt3
+
+3. Use the built-in key-value storage
+
+In Nuxt we can use a simple, but powerful, built-in key-value storage:
+
+const storage = useStorage();
+const key = `session:token`;
+
+// Save the value
+await storage.setItem(key, sessionToken);
+
+// ...and retrieve it in a different API call
+const token = await storage.getItem(key);
+
+===================  Using asset directory ========
+
+The ~/assets folder in Nuxt 3 is ideal for assets that need processing.
+
+eg. images, stylesheets, icons, and fonts.
+
+When you import an asset from this folder, the bundler processes the file, generates a new filename with a hash, and replaces the import with the new filename.
+
+import image from '~/assets/image.png';
+import style from '~/assets/style.css';
+
+The ~/assets folder has the added benefit of catching missing assets during the build process.
+
+If an asset is missing, you'll get a build error, which helps you maintain your app's integrity.
+
+This won't happen with assets in the ~/public folder since they aren't processed.
+
+// Importing from ~/assets will catch missing assets
+import missingImage from '~/assets/missing-image.png'; // Build error
+
+// Referencing from ~/public won't catch missing assets
+// In your template: <img src="/missing-image.png" /> // No build error
+
+
+
+
+
+
+// Using ~/assets
+
+
+
+<script setup>
+import image from '~/assets/image.png';
+</script>
+<template>
+  <img :src="image" />
+</template>
+
+// Using ~/public
+<template>
+  <img src="/image.png" />
+</template>
+
+================ Modificadores de eventos click onFocuse lostFocues etc============
+
+    .stop - Stop the event’s propagation to other handlers
+    .prevent - Prevent default handling of the event (like a page reload for a form submission)
+    .self - Only fire events for this element, not children
+    .capture - Handle the event here before handling it at the child level
+    .once - Trigger this event once at most
+    .passive - Process the default behavior immediately, and also handle it here without blocking
+
+    const Valor=await toNumberStr(new_val)
+      if (Valor!=currentValue.value)
+          currentValue.value =  Valor
+
+=====================================
+
+Form.vue 
+
+<div v-if="ThisForm.prop.Status=='I'" class="splash-screen">
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <div>{{ '.............Loading...................' }}</div>
+        </div>
+      </div>
+    </div>
+    <div :class="ThisForm.prop.Status=='I'?'disabled':'Main'">
+
+
+
+use in nux-dev-tools fontaine
+
+nuxt layers
+
+https://vitest.dev/
+
+https://github.com/module-federation/vite
+
+https://roe.dev/blog/nuxt-server-components/
+
+https://bun.sh/
+
+
+Nitro Server
+Nitro websockets API
+utiliza sqllite nativamente con libreria db0 
+
+
+https://primevue.org/ 
+
+npm install --save-dev nuxt-primevue
+
+import InputMask from 'primevue/inputmask';
+
+<InputMask id="basic" v-model="value" mask="99-999999" placeholder="99-999999" />
+
+
+
+=========================================
+vite-plugin-vsharp
+VSharp - A Vite Plugin for Compressing Static Images with Sharp.js
+https://jw-12138.github.io/vite-plugin-vsharp/
+
+
+=====================================================
+Sending Emails with Nuxt
+https://stradoxcodes.hashnode.dev/sending-emails-with-nuxt
+
+
+
+==========================================================
+v-for igual for (let n=1;n<=5;n++)
+
+<template>
+  <ul>
+    <li v-for="n in 5">Item #{{ n }}</li>
+  </ul>
+</template>
+
+This will render out:
+
+    Item #1
+    Item #2
+    Item #3
+    Item #4
+    Item #5
+
+When we use v-for with a range, it will start at 1 and end on the specified number.
+
+=============================================
+para poner macrosubsituciones se utiliza
+definePageMeta({
+  middleware: 'login'     // esta en el direcorio middleware login
+}) 
+
+
+
+
+=================< Dragable components >==============
+https://vueschool.io/lessons/sort-the-columns-with-vue-draggable?__s=rpcx0l9fszbbtatllfdn
+=================< Carrusel >=====================================
+https://vueschool.io/lessons/create-an-image-carousel-with-vueuse?__s=rpcx0l9fszbbtatllfdn
+======================< Bar chart >======================
+https://vueschool.io/lessons/vue-js-3-bar-charts?__s=rpcx0l9fszbbtatllfdn
+====================< Open AI >===================================
+https://vueschool.io/lessons/accept-messages-in-the-ai-endpoint?__s=rpcx0l9fszbbtatllfdn
+====================< Alert dialogs >=========================
+https://vueschool.io/lessons/headless-dialogs-with-useconfirmdialog?__s=rpcx0l9fszbbtatllfdn
+===========================================
+
+6. Whatâ€s the best way to handle client side form validation in Vue? 
+We think the FormKit library is a great option for this! Learn exactly how to implement it
+ in this lesson, plus check out the whole course to see all the other benefits of FormKit.
+https://vueschool.io/lessons/how-to-validate-a-form-input?__s=rpcx0l9fszbbtatllfdn
+
+========================< Pasando funciones a hijos >====================
+
+Elemento padre que pasa la funcion parentMethod
+Parent.vue
+<template>
+  <ChildComponent :method="parentMethod" />
+</template>
+
+<script setup>
+const parentMethod = (valueFromChild) => {
+  // Do something with the value
+  console.log('From the child:', valueFromChild);
+}
+</script>
+
+
+
+Elemento hijo que usa la funcion pasada por el padre
+Child.vue
+
+import { ref, onMounted } from 'vue';
+const props = defineProps({
+  method: {
+    type: Function,
+  }
+});
+const message = ref('A message from the child component');
+
+onMounted(() => {
+  // Pass a value to the parent through the function
+  props.method(message.value);
+});
+
+
+//////////////////////////////
+oJo
+Radix Vue componentes
+ui Nuxt component
+https://ui.nuxt.com/

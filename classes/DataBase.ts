@@ -21,7 +21,7 @@
 // import { oldLocalDb } from "@/services/jsstore_con_old";
 // import { Connection } from "jsstore";
 //import workerInjector from 'jsstore/dist/worker_injector'
-//import { MessageBox } from '@/src/clases/Functions'
+
 // import dat_emp from '@/empresas/datos.json' // json con los datos de la empresa, substituye comeemp
 //import { watch } from 'vue'
 
@@ -29,7 +29,6 @@
 import axios from "axios";
 import alasql from "alasql";
 import { storeToRefs } from "pinia";
-//import { dateTimeToSql } from "~/composables/Functions";
 
 // import { Global } from "@/Global";
 

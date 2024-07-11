@@ -50,7 +50,7 @@
     <div :id="Id + '_comboBox'" v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
 
 
-      <input :id="Id" class="textInput" :style="inputStyle"
+      <input :id="Id" class="textInput" :style="inputStyle" :disabled="This.prop.Disabled"
         :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
         ref="Ref" @keypress="keyPress($event)" @focus.prevent="toggle = false; when()" @focusout="emitValue()" />
 
@@ -633,10 +633,24 @@ const validList = async () => {
 };
 
 const when = async (click: boolean) => {
+
+  // No se permite el focus si es solo lectura
+  if (This.prop.ReadOnly) {
+    console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
+    if (!This.prop.Disabled) {
+      This.prop.Disabled = true
+      setTimeout(function () {
+        This.prop.Disabled = false
+
+      }, 100);
+    }
+  }
+
+
+
   if (!sw_focus.value) {
     sw_focus.value = true
     This.Form.eventos.push(This.prop.Map + '.when()')
-    console.log('2)>>>>>ComboBox when', This.prop.Name, 'sw_focus=', sw_focus.value)
 
   }
 
@@ -650,6 +664,26 @@ const when = async (click: boolean) => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
+
+  // No se permite el focus si es solo lectura
+  if (This.prop.ReadOnly) {
+    console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
+    if (!This.prop.Disabled) {
+      This.prop.Disabled = true
+      setTimeout(function () {
+        This.prop.Disabled = false
+
+      }, 100);
+    }
+    //thisElement.next(':input').focus();
+    return
+  }
+
+
+
+
+
+
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true

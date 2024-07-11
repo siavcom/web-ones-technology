@@ -46,7 +46,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
   async valid() {
     if (this.prop.ReadOnly) {
-      return this.prop.Valid;
+      return true
     }
 
     if (!this.prop.updateKey || !this.prop.Capture) {

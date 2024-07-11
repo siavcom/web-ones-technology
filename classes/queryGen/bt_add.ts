@@ -4,14 +4,13 @@
 // Creacion : Marzo/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'
-////import { MessageBox } from '@/classes/Functions';
 /**
- *
- *
- * @export
- * @class bt_add
- * @extends {COMPONENT}
- */
+*
+*
+* @export
+* @class bt_add
+* @extends {COMPONENT}
+*/
 export class bt_add extends COMPONENT {
 
   constructor() {
@@ -19,7 +18,7 @@ export class bt_add extends COMPONENT {
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
-    this.prop.ToolTipText='Nueva condición'
+    this.prop.ToolTipText = 'Nueva condición'
     // this.prop.Value ='Nueva'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
@@ -35,9 +34,9 @@ export class bt_add extends COMPONENT {
 
   async click() {
 
-      await this.Parent.bt_edit.click(true) // se ppn en true para sumar nueva condicion
-      this.prop.Visible=false
-      this.Parent.bt_edit.prop.Visible=false
+    await this.Parent.bt_edit.click(true) // se ppn en true para sumar nueva condicion
+    this.prop.Visible = false
+    this.Parent.bt_edit.prop.Visible = false
     /*
       const m = {
       prg_prg: this.Form.Name,
