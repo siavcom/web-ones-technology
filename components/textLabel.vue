@@ -6,26 +6,26 @@
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 
-    <input :id="Id + '_input'" v-if="prop.Type == 'checkBox'" :class="prop.Type" :style="inputStyle" readonly="true"
-      type="checkBox" v-model="checkValue" />
+    <input :id="Id + '_label'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox" :style="inputStyle"
+      :checked="checkValue" />
 
-    <input :id="Id + '_input'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
+    <input :id="Id + '_label'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
       readonly="true" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'date'" v-bind:style="inputStyle"-->
-    <input :id="Id + '_input'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle"
+    <input :id="Id + '_label'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle"
       readonly="true" v-model="Text" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="inputStyle"-->
-    <input :id="Id + '_input'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
+    <input :id="Id + '_label'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
       :style="inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
     <!--/div>
        
       <div v-else-->
-    <input :id="Id + '_input'" v-else class="text" v-show="prop.Visible && Text != null" :class="prop.Type"
-      :style="inputStyle" readonly="true" v-model="Text" />
+    <input :id="Id + '_label'" v-else class="text" v-show="prop.Visible && Text != null" type="text" :style="inputStyle"
+      readonly="true" v-model="Text" />
     <!--/div-->
     <nuxt-img :id="Id + '_img'" v-if="prop.Image > '    '" class="img" :src="prop.Image" />
 
@@ -44,7 +44,7 @@ readonly="true" >
 // Ult. Modificacion  
 // 30/Sep/2022.- Fdo Cuadras
 
-const emit = defineEmits(["update"]);
+const emit = defineEmits(["update", "update:checkValue"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -132,24 +132,13 @@ const Value = ref(props.prop.Value)
 
 const Text = ref(null)
 const Status = ref(props.prop.Status)
-//const Caption = ref(props.prop.Caption)
-//const Aling = ref('left')
 
-//const Style=ref(props.style)
-//Style.value.width=props.style.width 
-
-
-//defineExpose({ Caption });
-//const  Component = ref(props.prop.This)
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checkValue = ref(false)
 
 const inputStyle = reactive(props.style)
 
-//inputStyle.width = props.style.width
-
-//inputStyle.height = 'fit-content'
 if (inputStyle.width == 'auto')
   inputStyle.width = '100%'
 
@@ -224,40 +213,6 @@ const asignaResultado = (valor?: string) => {
     Text.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
     //  console.log('TextLabelcomboBox Name=', props.prop.Name, 'No found ', 'Value=', Text.value)
   }
-
-  ///////////////// Se quito 5/Feb/2024 //////////////////
-  /*   
-    if (valor) {
-      //  console.log("ComboBox AsignaResultado valor columnas =======>", props.Name,valor,columnas)
-      for (let i = 0; i < columnas.length; i++) {
-        if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
-          Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
-        }
-      }
-    }
-  
-  
-  
-  
-    else {
-  
-      for (let i = 0; i < columnas.length; i++) {
-        try {
-          //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
-          if (Value.value == columnas[i]['value'][0] || Value.value == columnas[i]['value']) {  // { // El objeto columna tiene dos campos value y text
-            // Encontro la posicion del value
-            // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
-  
-            Text.value = columnas[i]['text'][0]   // asigna el resultado a mostrar
-          }
-        } catch {
-          console.error('comboBox columnas', columnas[i])
-        }
-  
-      }
-    }
-  */
-
   /////////////////////////////////////////////////////////////////////
 
 
@@ -466,40 +421,21 @@ const readCampo = async () => {
 
   if (props.prop.Type == 'checkBox') {
     //checkValue.value = Text.value == 1 ? true : false
-
-    let check = +Value.value == 0 ? false : true
+    let check = Text.value == 0 ? false : true
     if (checkValue.value != check) {
       checkValue.value = check
-      // emit("update:checkValue", checkValue)
     }
-
-
+    emit("update:checkValue", checkValue)
 
   }
 
+  if (props.prop.Type == 'text' || props.prop.Type == 'textArea') {
+    Text.value = Text.value.trim()
+
+  }
 
   renderComboBox()
 }
-/*
-watch(
-  () => props.prop.Visible,
-  (new_val, old_val) => {
-    console.log('textLabel Visible', props.prop.Visible)
-  },
-  { deep: false }
-)
-
-watch(
-  () => props.Show,
-  (new_val, old_val) => {
-    if (new_val!=old_val) { 
-        console.log('inputStyle watch Show')
-        if (props.Show) readCampo()
-    }
-  },
-  { deep: false }
-)
-*/
 
 watch(
   () => props.Registro,
@@ -515,7 +451,6 @@ watch(
   },
   { deep: false }
 )
-
 
 /////////////////////////////////////////
 // Metodo init Vfp

@@ -107,6 +107,7 @@ export class captureForm extends FORM {
     //  const comp = this.main[main];
     for (const comp of this.main) {
       this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
+
       if (this[comp].prop.updateKey) {
         if (!this[comp].prop.Valid) {
           return true;
@@ -123,6 +124,8 @@ export class captureForm extends FORM {
           if (this[comp].prop.Type == "numeric")
             m[comp] = +this[comp].prop.Value;
           else m[comp] = this[comp].prop.Value;
+
+          // console.log("m[comp]=", m[comp])
         }
       }
     }
@@ -215,7 +218,7 @@ export class captureForm extends FORM {
     } // else this.noData = false;
 
 
-    console.log('0) displayError refreshComponent main=', this.main)
+    //console.log('0) displayError refreshComponent main=', this.main)
 
     for (const comp of this.main) {
       const Comp = this[comp]
@@ -320,7 +323,7 @@ export class captureForm extends FORM {
         }
       }
 
-      console.log("CaptureForm bt_graba");
+      //console.log("CaptureForm bt_graba");
       const result = await this.Form.db.tableUpdate(
         0,
         false,

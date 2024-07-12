@@ -1058,7 +1058,7 @@ const help = async () => {
 
 }
 const select = async () => {
-  console.log('editText select Name=', This.prop.Name, 'select()')
+  // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
   This.prop.Focus = false
 
   if (document.activeElement != thisElement) {

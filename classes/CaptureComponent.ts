@@ -34,7 +34,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
     if (this.prop.updateKey) {
       // Si es llave de actualizacion
       await this.Form.refreshComponent();
-      console.log("2) when name=", this.prop.Name, "updateKey=", this.prop.updateKey);
+      // console.log("2) when name=", this.prop.Name, "updateKey=", this.prop.updateKey);
 
     }
     return true;
@@ -45,6 +45,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
   ///////////////////////////////////
 
   async valid() {
+
     if (this.prop.ReadOnly) {
       return true
     }
@@ -58,7 +59,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
     this.prop.Valid = await this.Form.validComponent(this.Name);
 
-    console.log("captureComponent valid ", this.prop.Name, this.prop.Valid);
+
     return this.prop.Valid;
   }
 }

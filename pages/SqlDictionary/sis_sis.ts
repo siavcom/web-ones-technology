@@ -15,7 +15,7 @@ export class sis_sis extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    // this.prop.Visible = false;
+
     this.prop.BaseClass = "comboBox";
     this.prop.textLabel = "Menú de sistemas";
     this.prop.Capture = false;
@@ -32,7 +32,8 @@ export class sis_sis extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidth = "200px,50px";
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
-    this.prop.Visible = false;
+    this.prop.Visible = true;
+
     this.style.width = "350px";
     this.inputStyle.width = "200px";
 

@@ -350,6 +350,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       inputBuffer = ''
       This.prop.Valid = false
       if (!await This.valid()) {
+
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
         ShowError.value = true
         This.prop.ShowError = true
@@ -467,7 +468,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 const toggleClick = async () => {
 
   if (!toggle.value) {
-    console.log('bpe_bpe toggleClick() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'toggle=', toggle.value)
+    //   console.log('bpe_bpe toggleClick() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'toggle=', toggle.value)
+    // thisElement.focus({ focusVisible: true })
     await when()
   }
   if (!This.prop.ReadOnly)
@@ -572,14 +574,17 @@ const validClick = async (num_ren: number) => {
   comboStyle.zIndex = zIndex
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  //  console.log('ComboBox validClick',This.prop.Name,'num_ren=',num_ren,'Value=',Value.value )
+  //console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
 
+  //  await This.interactiveChange()
   emitValue()
   return
 
 };
 
 const validCheck = async (num_ren: number) => {
+
+
   List.value = []
   columnas[num_ren].check = !columnas[num_ren].check
   /* columnas[num_ren].text
@@ -603,7 +608,7 @@ const validCheck = async (num_ren: number) => {
     coma = ','
   }
   Value.value = Valores
-
+  await This.interactiveChange()
   return
 
 };

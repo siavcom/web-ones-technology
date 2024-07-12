@@ -644,7 +644,7 @@ export class VFPDB {
     );
 
     //const dat_act = datos
-    // console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
+    //console.log('Db DataBase definicion '+tab_man,this.View[tab_man].val_def)
     const val_def = this.View[tab_man].val_def; // estructura de campos
 
     // llamado AXIOS
@@ -705,7 +705,6 @@ export class VFPDB {
         }
       }
 
-      // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
       /*
             console.log(
               "1 DataBase tableUpdate() vista de mantenimiento=",
@@ -717,8 +716,12 @@ export class VFPDB {
               dat_act[row]
             );
       */
-      //  recorremos todos los campos del registro  actualizar
-      for (const campo in dat_act[row]) {
+      // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
+
+      console.log('Db tableUpdate View tab_man=', this.View[alias])
+
+      for (const campo in this.View[tab_man].val_def) {
+        // for (const campo in dat_act[row]) {
         console.log('Db tableUpdate campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
         if (dat_act[row][campo] == null)
           dat_act[row][campo] = "";

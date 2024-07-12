@@ -31,6 +31,7 @@ export class tpr_prg extends COMPONENT {
     this.prop.Visible = false;
   }
 
+
   async when() {
     this.Form.sis_sis.prop.Visible = false;
     this.Form.nom_tab.prop.Visible = false;

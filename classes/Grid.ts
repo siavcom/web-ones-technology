@@ -246,7 +246,6 @@ export class GRID extends COMPONENT {
     if ((await MessageBox(this.prop.messageUpdate, 4, "")) != 6) return false;
 
     this.Form.prop.Visible = false;
-
     resultado = await this.Form.db.tableUpdate(
       1,
       false,

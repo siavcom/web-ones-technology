@@ -51,8 +51,10 @@ and methods
 - click
 - when
 - valid
-- focus
+- setFocus
 - interactiveChange
+- init
+- keyPress
 
 To make a reference to especific propierty you can do by using a complete name reference tree
 example:
@@ -96,6 +98,7 @@ method:
                     - number
                     - text
                     - date
+                    - dateTime
                     - spinner
                     - checkBox.
 
@@ -103,12 +106,14 @@ method:
 
 ### Visual properties.
 
-    - Autofocus: false // component who receives a focus when new register is inserted .
+    - First: false // component who receives a focus when new register is inserted .
     - Disabled: false
     - ErrorMessage: "" // Error message if component is not valid (after valid()=false or prop.Valid=false).
     - Format: ""
     - InputMask: ""
     - MaxLength: 0
+    - Min:0  // Minimun value for number
+    - Max:99999 // Maximun value for number
     - Placeholder: ""
     - Position: 'main', // main, header , footer.
     - ReadOnly: false
@@ -120,7 +125,7 @@ method:
     - ToolTipText: 'Principal name ',.
     - Visible: true
 
-### Input component Style (componentStyle)
+### Input component Style and componentStyle properties.
 
 - background: "white",
 - color: "#b94295",
@@ -134,11 +139,12 @@ method:
 - ...... serveral css style properties : .
 
 
-### Data Base properties.
+### Data Base components properties.
 
     # each prop.Value component can be gatter from a field of local SQL where :
+
     - ControlSource: "tableName.fieldName // Name of sql field.
-    - RecordSource: 'tableName'
+    - RecordSource: 'viewTableName'
     - SqlUpdate: true   //true, when lost focus component, update field component. When false, update field component since tableUpdate method
 
 ### Internal properties.
@@ -178,6 +184,8 @@ method:
           2-Alias,
           3-Query SQL Server
           5-Array
+          
+     when RowSourceType=2 or 3, you have to specify the RowSource     
 
 #### example value :
 
