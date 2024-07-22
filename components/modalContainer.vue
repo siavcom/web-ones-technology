@@ -16,11 +16,11 @@
             <div id="modal_body" class="modal-body">
               <slot name="componentes">
                 <div :id="'modal_componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver">
-                  <div :id="'modal_hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele, key) in  Ver" :key="Ele"
+                  <div v-for=" (Ele, key) in  Ver" :key="Ele" :id="'modal_hor_componentes_' + key + Ele.prop.Name"
                     style="padding-bottom:2px">
                     <!--v-bind:Component="ref(Ele)"-->
                     <component :id="'modal_componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
-                      v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno"
+                      v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="props.Registro"
                       :prop="Ele.prop" :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()">
                     </component>
 
@@ -159,6 +159,8 @@ const Component = ref(props.prop.This)
 const This = Component.value // Component.value
 const Id = This.Name + props.Registro.toString()
 const Divi = ref(This.Divi)
+
+console.log('modalContainer RECNO=', props.Registro)
 /*
 const elementArray = []
 let i = 0

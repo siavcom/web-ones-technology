@@ -4,21 +4,20 @@
     v-show="This.prop.Visible">
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.textLabel" :style="labelStyle">{{ prop.textLabel + " "
       }}</span>
-
-
     <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
     <!--span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible"-->
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
-      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="currentValue[focusIn]"
+      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut"
-      @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)">
+      @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
+      v-on:keyup.enter="clickReturn()">
 
     <!--spinner-->
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
       :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
-      @input="emitValue(false)">
+      @input="emitValue(false)" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()">
 
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style="inputStyle">
@@ -33,7 +32,7 @@
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref" :style="inputStyle"
       :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
       :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex"
-      @keypress="keyPress($event)" @focusout="focusOut">
+      @keypress="keyPress($event)" @focusout="focusOut" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()">
     <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
@@ -69,13 +68,14 @@
     <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
       :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
-      @focus="onFocus">
+      @focus="onFocus" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()">
     <!--/span-->
-
+    <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <nuxt-img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
       class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
-      @click.prevent="help()" />
+      @click="clickHelp()" />
+
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
@@ -91,18 +91,37 @@
     -->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-      :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-      v-bind:position="This[compMain].position"
+      :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
+      :style="This[compMain].style" :position="This[compMain].position"
       @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">
     </component>
-
     <!--/Teleport-->
     <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" -->
   </span>
 </template>
 
 <script setup lang="ts">
+/*
 
+
+v-on:keyup="function"
+v-on:keyup.enter="clickEnter()"
+Supported Keys: Following keys are supported:
+
+    Enter key: .enter
+    Tab key: .tab
+    Delete key: .delete
+    Esc key: .esc
+    Up key: .up
+    Down key: .down
+    Left key: .left
+    Right key: .right
+
+
+
+
+
+*/
 
 //import {format} from "date-fns"
 
@@ -275,7 +294,7 @@ const props = defineProps<{
 //const Component = ref(props.prop.This)
 
 const Component = toRef(() => props.prop.This)
-console.log('editText Component=', Component.value)
+//console.log('editText Component=', Component.value)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
 const labelStyle = reactive(This.labelStyle)
@@ -396,7 +415,7 @@ const onInput = ({ target }) => {
     target.value = target.value.substr(0, len - 1) // quitamos el segundo punto
   }
 
-  currentValue.value[1] = parseFloat(target.value.trim())
+  currentValue.value[1] = parseFloat(target.value) // valor numerico
 
 
   console.log('Value onInput length=', currentValue.value[1].length, currentValue.value[0], target.value)
@@ -615,13 +634,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
       if (Value.value == null)
         Value.value = 0
-      //currentValue.value[1] = Value.value.toString().trim()
-      //currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
 
-      currentValue.value[0] = Value.value.toString().trim()
-      currentValue.value[1] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-
-
+      currentValue.value[1] = +Value.value //.toString().trim() // Captura
+      currentValue.value[0] = await numberFormat(Value.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
 
       emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
       break;
@@ -727,9 +742,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
     displayError.value = true
     This.prop.ShowError = true
-    //const element = document.getElementById(Id);
     select() // Hace select en el componente    thisElement.select()
-    //Ref.value.select() // Hace select en el componente
     return
   }
 
@@ -776,7 +789,7 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
-  focusIn.value = 0  // Perdio el foco
+  focusIn.value = 0 // Perdio el foco
   let sw_error = false
   const Type = propType.value
   if (Type == 'number') {
@@ -883,70 +896,21 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
   }
 
   // oprimió ? (help)
-  console.log('KeyPress===>', char, 'Type=', Type)
+  console.log('>>>>>KeyPress===>', char, 'Type=', Type)
 
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
-    console.log('Help KeyPres===>', $event.charCode)
-    help()
-    return
+    console.log('1) Help KeyPres==>', $event.charCode)
+    //$event.preventDefault()
+    clickHelp()
+    console.log('2) Help KeyPres==>', $event.charCode)
+    $event.keycode = 0;
+    return $event.keycode;
+
   }
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) //|| // Return
-  // $event.charCode == 13 // Down Key  
-  {
-    const TabIndex = This.prop.TabIndex
-    let lastIndex = 999999
-    let nextFocus = ''
-    for (const element of This.Parent.main) {
-      const Tab = This.Parent[element].prop.TabIndex
-      //console.log('KeyPres element =', This.Parent[element].prop.htmlId, Tab, TabIndex)
-
-      if (Tab > TabIndex && Tab < lastIndex) {
-        lastIndex = Tab
-        nextFocus = This.Parent[element].prop.htmlId
-
-      }
-    }
-    // console.log('KeyPres nextFocus =', nextFocus)
-
-    $event.preventDefault();
-    // Obtienee elemento a hacer el focus
-    const nextElement = document.getElementById(nextFocus);
-    // console.log('EditText keyPres Name',this.prop.Name=', setElement)
-    if (nextElement)
-      nextElement.focus()
-
-    $event.keycode = 9;
-    return $event.keycode;
-    /*
-   
-   
-       const TabIndex = This.prop.TabIndex
-       //const next = $event.currentTarget.nextElementSibling;
-       const form = document  //.getElementById('ThisForm')
-       console.log('keyPress form===>', form)
-       const index = [...form].indexOf($event.target);
-       form.elements[index + 1].focus();
-   
-   
-   
-       let next = $event.currentTarget.nextSibling
-       do {
-         console.log('keyPress next ', 'Next===>>', next)
-   
-         if (next.tabIndex && next.tabIndex > TabIndex) {
-           next.focus();
-           break
-         }
-         next = next.nextSibling
-   
-       } while (next)
-       */
-  }
-
-
-
+    return //clickReturn()
 
   // caracteres permitido en input numero
   if (Type == 'number') {
@@ -959,21 +923,47 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       return $event.preventDefault()
   }
 
-  //    Status.value = 'P'  //Aqui me quedejjj
-  //    emit("update:Status", 'P')
   if (This.prop.Status != 'P')
     This.prop.Status = 'P'
   Key.value = $event.charCode
 
 
 }
-/*
-const focusInput = async () => {
-  outFocus.value = false
-  RefInput.value.select() //focus() // Hace foco con select
- 
+
+// $event.charCode == 13 // Down Key  
+const clickReturn = () => {
+
+
+  console.log('clickReturn editText Name', This.prop.Name)
+  const TabIndex = This.prop.TabIndex
+  let lastIndex = 999999
+  let nextFocus = ''
+  for (const element of This.Parent.main) {
+    const Tab = This.Parent[element].prop.TabIndex
+    //console.log('KeyPres element =', This.Parent[element].prop.htmlId, Tab, TabIndex)
+
+    if (Tab > TabIndex && Tab < lastIndex) {
+      lastIndex = Tab
+      nextFocus = This.Parent[element].prop.htmlId
+
+    }
+  }
+  // console.log('KeyPres nextFocus =', nextFocus)
+
+  // $event.preventDefault();
+  // Obtienee elemento a hacer el focus
+  const nextElement = document.getElementById(nextFocus);
+  // console.log('EditText keyPres Name',this.prop.Name=', setElement)
+  if (nextElement)
+    nextElement.focus()
+
+  //$event.keycode = 9;
+  return // $event.keycode;
 }
-*/
+
+
+
+
 /////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -994,8 +984,15 @@ const onFocus = async () => {
     return
   }
 
+  if (focusIn.value == 0) { //!This.prop.First && !This.prop.Focus && 
+    This.Form.eventos.push(This.prop.Map + '.when()')
+  }
 
-  console.log('editText onFocus Name=', This.prop.Name, 'currentValue[1].length=', currentValue.value[1].length, 'currentValue[1].length=', currentValue.value[0].length)
+
+  // currentValue[0]  perdio foco, currentValue[1] obtiene el foco
+  focusIn.value = 1  // cambia el valor en el input number 
+  This.prop.Focus = false
+  This.prop.First = false
 
   const Type = propType.value
   ToolTipText.value = false
@@ -1003,10 +1000,8 @@ const onFocus = async () => {
 
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
+
   // Calcula la longitud maxima
-
-
-
   if (pos > 1 && !sw_MaxLength) {
     sw_MaxLength = true
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
@@ -1023,13 +1018,6 @@ const onFocus = async () => {
       }
     }
   }
-  console.log('editText onFocus  Name=', This.prop.Name, 'This.prop.Focus=', This.prop.Focus, 'This.prop.First=', This.prop.First)
-
-  if (!This.prop.First && !This.prop.Focus) {
-
-    This.Form.eventos.push(This.prop.Map + '.when()')
-    return
-  }
 
   // El displayError se apaga en el keyPress cuando es un input text, number o date 
   if ((Type == 'json' || Type == 'checkbox') && displayError.value) {
@@ -1037,23 +1025,26 @@ const onFocus = async () => {
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
-  focusIn.value = 1
-  This.prop.Focus = false
-  This.prop.First = false
+
 
   emit("update:Value", Value.value)
   //nextTick(function () {
 
   // const element = document.getElementById(Id);
   // select()   // 4 Julio 2024
+
   return
 }
-const help = async () => {
+const clickHelp = async () => {
+  This.prop.ShowError = false
+  This.prop.Valid = true
+  console.log('1) editText help Name=', This.prop.Name)
+  if (focusIn.value == 0)
+    await onFocus()
+
   if (This.help) {
-    This.prop.ShowError = false
-    This.prop.Valid = true
+    console.log('2) editText help Name=', This.prop.Name, This.help)
     await This.help.open()
-    This.prop.Valid = true
   }
 
 }
@@ -1066,14 +1057,14 @@ const select = async () => {
     // Ref.value.select();
 
     thisElement.focus({ focusVisible: true });
-    thisElement.select();
+    // thisElement.select();
 
   }
   setTimeout(function () {
-    thisElement.focus({ focusVisible: true });
+    //thisElement.focus({ focusVisible: true });
     thisElement.select();
 
-  }, 100);
+  }, 300);
   //})
   return
 
@@ -1320,40 +1311,7 @@ const styleAssing = async () => {
 //const init = async () => {
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  // console.log('EditText init Name=', This.prop.Name, 'Document element Id=' + Id)
 
-  console.log('1) EditText Name=', This.prop.Name, 'propType=', propType.value, 'thisElement=', thisElement)
-
-  /*
-  if (propType == 'date') {
-    inputStyle.width = '120px'
-    inputStyle.height = '20px'
-    inputStyle.maxHeight = '20px'
-  }
-  if (propType == 'datetime-local') {
-    inputStyle.width = '170px'
-    inputStyle.height = '20px'
-    inputStyle.maxHeight = '20px'
-  }
-
-  if (propType == 'json') {
-    inputStyle.borderWidth = '1px'
-    inputStyle.borderStyle = 'solid'
-    inputStyle.borderRadius = '2px'
-    divStyle.height = 'auto'
-  }
-  if ((propType == 'textarea' || propType == 'text') && inputStyle.width == 'auto') {
-    //  console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
-
-    inputStyle.width = '100%'
-  }
-
-  if (propType == 'number')
-    inputStyle.textAlign = 'right'
-
-  if (propType == 'checkbox')
-    inputStyle.width = '20px'
-   */
   styleAssing()
 
   if (!This.prop.Visible)

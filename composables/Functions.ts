@@ -234,7 +234,7 @@ export const numberFormat = async (
   else result = result + " " + currency.trim();
   // console.log("2 numberFormat result=", result);
 
-  return result;
+  return result.trim();
 };
 
 //////////////////////////////////////////////

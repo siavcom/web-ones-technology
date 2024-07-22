@@ -10,19 +10,8 @@
 
   </div>
 
-
-
-
   <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="This.style">
-
-
-
-
     <div class="wraper" style="width:100%;height:100%">
-
-
-
-
       <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
         :has-checkbox="table.checkBox" :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey"
@@ -104,6 +93,9 @@ const pageOptions = [
 ]
 
 const props = defineProps<{
+  Value: any;
+  Registro: number;  // Se pone para el manejo de grid
+
   prop: {
     RowSource: string;
     Disabled: boolean;

@@ -39,14 +39,14 @@ export class CONTAINER extends COMPONENT {
     elementos = elementos.concat(this.header)
     elementos = elementos.concat(this.main)
     elementos = elementos.concat(this.footer)
-
+    // recorremos todos los componentes
     for (let i = 0; i < elementos.length; i++) {
       const componente = elementos[i]
 
       if (this[componente].Position && this[componente].Position.length > 0) {  // Si es componete tiene posision en la pantalla
 
       }
-      else {
+      else {  // Si tiene posicion relativa header, main o footer
         let pos_ver = 0
         let pos_hor = 0
         if (this[componente].prop.Position = 'header') {
@@ -58,7 +58,9 @@ export class CONTAINER extends COMPONENT {
         if (this[componente].prop.Position = 'footer') {
           pos_ver = 2
         }
-        pos_hor = this.Divi[pos_ver].length
+        if (this.Divi[pos_ver])
+          pos_hor = this.Divi[pos_ver].length
+
         this[componente].Position[0] = pos_ver
         this[componente].Position[1] = pos_hor
       }
@@ -74,7 +76,7 @@ export class CONTAINER extends COMPONENT {
 
     }
 
-
+    console.log('Container ', this.prop.Name, 'componentes=', this.Divi)
 
   }
 

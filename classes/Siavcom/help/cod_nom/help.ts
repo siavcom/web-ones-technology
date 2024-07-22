@@ -46,6 +46,7 @@ export class help extends HELP {
 
     }
 
+    super.open()
   }
 }
 

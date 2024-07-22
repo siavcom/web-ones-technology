@@ -33,6 +33,7 @@ export class COMPONENT {
   Position: [] = []; // Posicion del componente
   error = false
 
+
   prop = {
     autoLoad: false,
     Autofocus: false,
@@ -521,15 +522,15 @@ export class COMPONENT {
   //              Utiliza el map de la clase para saber la ruta completa de donde
   //              pertencece en la clase
   //              ThisForm
+  // Nota : No se puede utilizar este evento porque se pierde la reactiviada de array eventos
   /////////////////////////////////////////////////////////////////
-
-  public pushEvent = async (evento: string) => {
-    //console.log('Componente evento empujado====>>',this.prop.Map+ '.' + evento)
-
-    this.Form.eventos.push(this.prop.Map + "." + evento);
-    //console.log('pushEvent eventos===>',this.Form.eventos)
-  };
-
+  /*
+    public pushEvent = async (evento: string) => {
+      //console.log('======watch ThisForm.eventos Evento empujado====>>', this.prop.Map + '.' + evento)
+      this.Form.eventos.push(this.prop.Map + "." + evento);
+      console.log('<<======watch ThisForm.eventos Evento empujado====>>', this.Form.eventos)
+    };
+  */
   /////////////////////////////////////////////////////////////////////
   // KeyPress
   // Descripcion: Cada tecla que se presiona en el input

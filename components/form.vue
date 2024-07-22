@@ -270,8 +270,7 @@ const emit = defineEmits(["updateIsOpen"])
 const props = defineProps<{
   ThisForm: null;
 }>();
-const ThisForm = reactive(new props.ThisForm)
-
+const ThisForm = reactive(new props.ThisForm) // no quitar el new 
 
 // Datos forma por forma . En app.vue esta useHead
 useSeoMeta({

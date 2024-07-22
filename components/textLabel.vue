@@ -7,7 +7,7 @@
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 
     <input :id="Id + '_label'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox" :style="inputStyle"
-      :checked="checkValue" />
+      :checked="checkValue" readonly="true" />
 
     <input :id="Id + '_label'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
       readonly="true" />
@@ -228,16 +228,26 @@ const renderComboBox = async () => {
   if (props.prop.RowSourceType < 1) return
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
-  if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) return;
-  // console.log('textLabel render comboBox ', props.prop.Name, ' RowSource=', props.prop.RowSource.length)
+
+  if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) {
+    return;
+  }
+
+  console.log('textLabel render comboBox ', props.prop.Map, ' RowSource=', props.prop.RowSource)
 
   //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
   const RowSource: string = props.prop.RowSource
-  const pos = RowSource.indexOf(".") // posicion del punto
 
-  // Obtenemos el alias
-  const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
 
+  // RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
+  // this.prop.RowSource = "camposView.ref_dat,cam_dat";
+
+  if (props.prop.RowSourceType == 2) {   // Obtenemos el alias
+    const pos = RowSource.indexOf(".") // posicion del punto
+    if (pos < 2) return
+
+    const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
+  }
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
 
@@ -429,10 +439,12 @@ const readCampo = async () => {
 
   }
 
-  if (props.prop.Type == 'text' || props.prop.Type == 'textArea') {
+  if (typeof Text.value == 'string')
     Text.value = Text.value.trim()
 
-  }
+  //if (props.prop.Type == 'text' || props.prop.Type == 'textArea') {
+  //  Text.value = Text.value.trim()
+
 
   renderComboBox()
 }

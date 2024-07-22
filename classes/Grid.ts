@@ -169,13 +169,18 @@ export class GRID extends COMPONENT {
   public async asignaRenglon(row: number, colName: string) {
     //    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1)
     //      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
-
+    //let sw_recno = false
     for (let i = 0; i < this.main.length; i++) {
       this[this.main[i]].prop.ReadOnly = false;
+
+      /*
+      if (!sw_recno && this[this.main[i]].prop.updateKey) {
+        this.Recno = this.main[i].Recno;  // asigna Recno en el grid
+        sw_recno = true
+      } */
     }
 
     this.Row = row;
-
     nextTick(() => {
       // console.log("asignaRenglon row ", row, " Columna=", colName);
       this[colName].prop.First = true;

@@ -528,7 +528,7 @@ watch(
 watch(
   () => This.Form.eventos,
   () => {
-    console.log('=====watch thisform.eventos =======', eventos, load_data)
+    // console.log('=====watch thisform.eventos =======', eventos, load_data)
 
 
     if (!load_data) return
