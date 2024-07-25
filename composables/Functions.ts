@@ -275,6 +275,25 @@ export async function Delay(
 
 }
 
+//////////////////////////////////////////////
+// Clase : Dime2DArray
+// Author : Fernando Cuadras Angulo
+// Creacion : Julio /2024
+// Ult.Mod  : 24/Julio/2024
+// Descripcion: Crea un array de dos dimensiones
+/////////////////////////////////////////////
+
+
+export async function Dime2D(rows) {
+  var arr = [];
+
+  for (var i = 0; i < rows; i++) {
+    arr[i] = [];
+  }
+
+  return arr;
+}
+
 
 //////////////////////////////////////////////
 // Clase : consoleLog

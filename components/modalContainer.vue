@@ -15,15 +15,19 @@
 
             <div id="modal_body" class="modal-body">
               <slot name="componentes">
-                <div :id="'modal_componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver">
-                  <div v-for=" (Ele, key) in  Ver" :key="Ele" :id="'modal_hor_componentes_' + key + Ele.prop.Name"
-                    style="padding-bottom:2px">
-                    <!--v-bind:Component="ref(Ele)"-->
-                    <component :id="'modal_componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
-                      v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="props.Registro"
-                      :prop="Ele.prop" :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()">
-                    </component>
+                <div :id="'componentes_divi_' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver">
+                  <div :id="'block_' + key"
+                    :style="This.block[key] && This.block[key].style ? This.block[key].style : ''">
+                    <label v-if="This.block[key] && This.block[key].title">{{ This.block[key].title }}</label>
+                    <div v-for=" (Ele, key) in  Ver" :key="Ele" :id="'modal_hor_componentes_' + key + Ele.prop.Name"
+                      style="padding-bottom:2px">
+                      <!--v-bind:Component="ref(Ele)"-->
+                      <component :id="'modal_componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
+                        v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="props.Registro"
+                        :prop="Ele.prop" :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()">
+                      </component>
 
+                    </div>
                   </div>
                 </div>
 
@@ -158,9 +162,49 @@ const props = withDefaults(defineProps<Props>(), {
 const Component = ref(props.prop.This)
 const This = Component.value // Component.value
 const Id = This.Name + props.Registro.toString()
-const Divi = ref(This.Divi)
 
-console.log('modalContainer RECNO=', props.Registro)
+console.log('modalContainer Name=', This.prop.Name, 'This.Divi=', This.Divi)
+
+//const Divi = ref(This.Divi)
+// Generamos la Matriz Divi de forma dinamica para mostrar los elementos
+//************************** */
+
+
+// Buscamos cuantos Divi hay que generar
+const arr = [];
+
+let j = 0
+for (let i = 0; i < This.Divi.length; i++) {
+  if (This.Divi[i]) {
+    arr[j] = []
+    j++
+  }
+}
+
+
+//const arr =await  Dime2D(j) // Create Array(j);
+
+//******************************* */
+//const Divi = ref([[], [], []])
+const Divi = ref(arr)
+let x = 0
+
+for (let i = 0; i < This.Divi.length; i++) {
+  if (This.Divi[i]) {
+    let y = 0
+    for (let j = 0; j < This.Divi[i].length; j++) {
+      if (This.Divi[i][j]) {
+        console.log('1) modalContainer x,y=', x, y, This.Divi[i][j])
+        Divi.value[x][y] = This.Divi[i][j]
+        // console.log('2) modalContainer Divi=', Divi.value[x][y])
+        y++
+      }
+    }
+    x++
+  }
+}
+
+console.log('modalContainer Divis=', This.Divi, Divi.value)
 /*
 const elementArray = []
 let i = 0

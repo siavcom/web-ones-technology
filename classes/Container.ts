@@ -11,6 +11,7 @@ export class CONTAINER extends COMPONENT {
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
   Divi = []
+  block = [{}]
   /* {
     header: [],
     main: [],

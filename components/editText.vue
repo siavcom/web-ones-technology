@@ -1059,12 +1059,15 @@ const select = async () => {
     thisElement.focus({ focusVisible: true });
     // thisElement.select();
 
-  }
-  setTimeout(function () {
-    //thisElement.focus({ focusVisible: true });
-    thisElement.select();
+    setTimeout(function () {
+      //thisElement.focus({ focusVisible: true });
+      thisElement.select();
 
-  }, 300);
+    }, 300);
+
+
+
+  }
   //})
   return
 
