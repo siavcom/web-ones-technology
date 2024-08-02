@@ -81,7 +81,8 @@
         </div>
         <!--toggle click.prevent -->
         <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" v-show="!prop.ReadOnly && !prop.Disabled"
-          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
+          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick"
+          :style='toggleStyle' />
 
       </div>
     </div>
@@ -279,11 +280,25 @@ const comboStyle = { //zIndex: 100 - This.prop.TabIndex,
   height: This.style.height
 }
 
+
+
+
 const zIndex = comboStyle.zIndex
 
 // const inputStyle = reactive(props.inputStyle)
 
 const inputStyle = reactive(This.inputStyle)
+
+const toggleStyle = {
+  height: "13px" //This.style.height
+}
+
+if (inputStyle.height == "auto")
+  toggleStyle.height = "13px"
+else
+  toggleStyle.height = inputStyle.height
+
+
 inputStyle.zIndex = zIndex
 const toggleZIndex = comboStyle.zIndex + 1
 

@@ -19,6 +19,8 @@ export class des_dat extends COMPONENT {
     this.prop.Value = " ";
     this.prop.ErrorMessage = "Un caracter minimo";
     this.style.marginLeft = "10px";
+    // this.style.width = "auto";
+    this.inputStyle.width = "128px";
     // this.intputStyle.width = 'auto'
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }

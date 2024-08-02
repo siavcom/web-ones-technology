@@ -11,7 +11,30 @@ export class CONTAINER extends COMPONENT {
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
   Divi = []
-  block = [{}]
+  block = [] //{}
+
+
+  container =
+    {
+      component: {
+      },
+      prop: {
+        Visible: true
+      },
+      style: {
+        border: '1px solid rgb(0, 0, 0)',
+        background: 'bisque',
+        borderRadius: '10px',
+        boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
+        padding: '10px',
+        // display: 'inline-flex',
+        width: '-moz-available'
+      },
+      title: ''
+    }
+
+
+
   /* {
     header: [],
     main: [],
@@ -32,6 +55,9 @@ export class CONTAINER extends COMPONENT {
       borderRadius: '10px',
       padding: '20px',   //Margen entre los bordes y el contenido
     }
+    // Estilo de cada contenedor del modal
+
+
   }
   async init() {
     await super.init()

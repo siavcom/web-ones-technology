@@ -52,15 +52,59 @@ export class HELP extends CONTAINER {
     this.prop.Disabled = true
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
 
-    this.cam_dat.Position = [0, 0]
-    this.tip_con.Position = [0, 1]
-    this.des_dat.Position = [0, 2]
-    this.has_dat.Position = [0, 3]
-    this.browse.Position = [0, 4]
 
-    this.bt_aceptar.Position = [1, 0]
-    this.bt_close.Position = [1, 1]
+    this.block[0] = {
+      component: {
+        [0]: this.cam_dat,
+        [1]: this.tip_con,
+        [2]: this.des_dat,
+        [3]: this.has_dat,
+        [4]: this.browse,
 
+      },
+      prop: {
+        Visible: true
+      },
+
+      style: {
+        border: '1px solid rgb(0, 0, 0)',
+        background: 'bisque',
+        borderRadius: '10px',
+        boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
+        padding: '10px',
+        // display: 'inline-flex',
+        width: '-moz-available'
+      },
+      title: '',
+
+    }
+
+
+    this.block[1] = {
+      component: {
+
+        [0]: this.bt_aceptar,
+        [1]: this.bt_close
+      },
+      prop: {
+        Visible: true
+      },
+
+      style: {
+      },
+      title: ''
+    }
+
+    /*
+        this.cam_dat.Position = [0, 0]
+        this.tip_con.Position = [0, 1]
+        this.des_dat.Position = [0, 2]
+        this.has_dat.Position = [0, 3]
+        this.browse.Position = [0, 4]
+    
+        this.bt_aceptar.Position = [1, 0]
+        this.bt_close.Position = [1, 1]
+    */
     this.cam_dat.prop.TabIndex = 8.1
     this.tip_con.prop.TabIndex = 8.2
     this.des_dat.prop.TabIndex = 8.3

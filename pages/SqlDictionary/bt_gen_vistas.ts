@@ -27,13 +27,13 @@ export class bt_gen_vistas extends COMPONENT {
     const vistas = await this.Form.db.localAlaSql("select nom_vis from vi_cap_comevis");
 
     for (let i = 0; i < vistas.length; i++) {
-      if  (await MessageBox("Geneneramos la vista " +vistas[i].nom_vis +" en SQL Server de la tabla :" +
-            this.Form.nom_tab.prop.Value,4, "" ) == 6 ) {
-        const error = await this.Form.db.genVistasSql( this.Form.nom_tab.prop.Value,vistas[i].nom_vis);
-        if (error.length)
+      if (await MessageBox("Geneneramos la vista " + vistas[i].nom_vis + " en SQL Server de la tabla :" +
+        this.Form.nom_tab.prop.Value, 4, "") == 6) {
+        const error = await this.Form.db.genVistasSql(this.Form.nom_tab.prop.Value, vistas[i].nom_vis);
+        if (error && error.length)
           console.error(
-            "Error al generar/regenerar las vistas remotas de la tabla:" +
-              this.Form.nom_tab.prop.Value
+            "Error al generar la vista remotas de la tabla:" +
+            this.Form.nom_tab.prop.Value + ' ' + error
           );
       }
     }

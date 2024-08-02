@@ -19,6 +19,7 @@ export class has_dat extends COMPONENT {
     this.prop.Value = " ";
     this.prop.ErrorMessage = "Valor menor al valor anterior";
     this.style.marginLeft = "10px";
+    this.inputStyle.width = "128px";
     //this.intputStyle.width = 'auto';
   }
 

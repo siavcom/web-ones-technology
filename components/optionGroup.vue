@@ -4,32 +4,19 @@
     <label v-show="Error">{{ prop.ErrorMessage }}</label>
     <div class="tooltip">
       <!--Etiqueta del componente -->
-      
+
       <span class="etiqueta" v-if="prop.Label">{{ prop.Label + " " }}</span>
       <!--Input del componente -->
-      <div
-        class="optionButton"
-        v-for="(items,valueIndex) in componente"
-        :key="valueIndex"
-  
-      >
-        <input
-          class='optionButton'
-          :value="items.prop.PickValue"
-          v-model="Valor"
-          @change="valid"
-          @focus="onFocus"
-          :v-show="items.prop.Visible"
-          :disabled="prop.ReadOnly"
-          type="radio"
-        >
-        <label >{{ items.prop.Caption }}</label>
+      <div class="optionButton" v-for="(items, valueIndex) in componente" :key="valueIndex">
+        <input class='optionButton' :value="items.prop.PickValue" v-model="Valor" @change="valid" @focus="onFocus"
+          :v-show="items.prop.Visible" :disabled="prop.ReadOnly" type="radio">
+        <label>{{ items.prop.Caption }}</label>
       </div>
     </div>
     <span v-if="prop.ToolTipText" class="tooltiptext">
       {{
-        prop.ToolTipText
-      }}
+    prop.ToolTipText
+  }}
     </span>
     <!--/div-->
   </div>
@@ -47,7 +34,7 @@
 
 
 */
-import {
+/*import {
   defineEmits,
   defineProps,
   ref,
@@ -62,6 +49,7 @@ import {
   // onUnmounted,
 
 } from "vue";
+*/
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage"]);
 import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
@@ -104,7 +92,7 @@ const props = defineProps<{
     textAlign: "left";
     borderColor: "#000a01";
     borderWidth: "1px";
-    display :"inlineFlex"
+    display: "inlineFlex"
   };
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
@@ -128,16 +116,16 @@ const LocalDb = new localDb();
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const valid = async () => {
-  Value.value=Valor.value;
+  Value.value = Valor.value;
   console.log('Entro al valid del Option Group', Value.value)
-/*
-emit("update:Value", Value.value); // actualiza el valor en el componente padre
-  emit("update") // emite un update en el componente padre
-
-  if (Value.value > '') return;
-*/
+  /*
+  emit("update:Value", Value.value); // actualiza el valor en el componente padre
+    emit("update") // emite un update en el componente padre
+  
+    if (Value.value > '') return;
+  */
   const valor = Value.value;
-   if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
+  if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
     await LocalDb.update(valor).then(() => { // actualiza valor en localDb
     })
   }
@@ -212,10 +200,10 @@ watch(
 watch(
   () => props.prop.Value,
   (new_val, old_val) => {
-    console.log('optionGroup watch Value Valor==>',new_val)
+    console.log('optionGroup watch Value Valor==>', new_val)
     Valor.value = new_val;
- 
-},
+
+  },
   { deep: false }
 );
 
@@ -233,7 +221,7 @@ const init = async () => {
 init(); // Ejecuta el init
 </script>
 
-<style scoped >
+<style scoped>
 /*  elemento click check*/
 div.optionButton {
   display: contents;

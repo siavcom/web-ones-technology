@@ -56,6 +56,7 @@ export class bt_close extends COMPONENT {
     this.Form.queryPri.prop.Visible = true
     this.Form.queryUsu.prop.Visible = true
     this.Form.queryGen.prop.Visible = true
+    this.Form.reportFields.prop.Visible = true
 
     this.Form.for_imp.prop.Visible = true
     this.Form.bt_obtener.prop.Visible = true

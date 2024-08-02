@@ -35,26 +35,13 @@ export class bt_obtener extends COMPONENT {
     this.Form.queryPri.prop.Visible = false
     this.Form.queryUsu.prop.Visible = false
     this.Form.queryGen.prop.Visible = false
+    this.Form.reportFields.prop.Visible = false
 
 
     for (let i = 0; i < main.length; i++) {
       if (!this.Form[main[i]].prop.Disabled)
         this.Form[main[i]].prop.Visible = false
     }
-    /*
-    
-        this.Form.report.displayPdf.prop.Visible = false;
-    
-        this.Form.queryPri.prop.Visible = false;
-        this.Form.queryUsu.prop.Visible = false;
-        this.Form.queryGen.prop.Visible = false;
-    
-        this.Form.var_ord.prop.Visible = false;
-        this.Form.for_imp.prop.Visible = false;
-    
-        this.Form.bt_obtener.prop.Visible = false;
-        this.Form.bt_pdf.prop.Visible = false;
-        */
 
     this.Form.bt_obtener.prop.Visible = false;
     this.Form.bt_pdf.prop.Visible = false;

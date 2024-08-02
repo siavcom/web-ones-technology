@@ -412,7 +412,7 @@ const readCampo = async () => {
     for (const campo in data) {
       if (campo != 'key_pri')
         Text.value = data[campo] != null ? data[campo] : ''
-      console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
+      // console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
     }
   }
   if (props.prop.Type == 'number') {

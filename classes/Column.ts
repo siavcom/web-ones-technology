@@ -26,8 +26,11 @@ export class COLUMN extends COMPONENT {
     this.prop.Valid = false;
     this.prop.Position = "main";
     this.style.width = "99%";
-    this.style.height = "99%";
+    this.style.height = "auto"; //99%";
     this.inputStyle.width = "96%";
+    this.inputStyle.height = "auto";  // auto para que en los componentes como json,
+    // se ajusten a lo  alto
+
     // Segun Vfp
     //    this.header.BaseClass = 'Header'
     //    this.header.Name = 'header'

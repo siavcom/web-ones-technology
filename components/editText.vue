@@ -171,6 +171,10 @@ const emit = defineEmits(["update", "update:Value",
   "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
 
 
+
+console.log('editText Meta Server===>', import.meta.server)
+console.log('editText Meta Client====>', import.meta.client)
+
 ///////////////////////////////////////
 // Propiedades del componente reactivas
 // Notas : 
@@ -895,22 +899,20 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       This.prop.ShowError = false
   }
 
-  // oprimió ? (help)
-  console.log('>>>>>KeyPress===>', char, 'Type=', Type)
 
+  // console.log('>>>>>KeyPress===>', char, 'Type=', Type)
+  // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
     console.log('1) Help KeyPres==>', $event.charCode)
     //$event.preventDefault()
     clickHelp()
-    console.log('2) Help KeyPres==>', $event.charCode)
     $event.keycode = 0;
     return $event.keycode;
-
   }
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) //|| // Return
-    return //clickReturn()
+    return // clickReturn()
 
   // caracteres permitido en input numero
   if (Type == 'number') {
@@ -1061,7 +1063,8 @@ const select = async () => {
 
     setTimeout(function () {
       //thisElement.focus({ focusVisible: true });
-      thisElement.select();
+      if (thisElement.select)
+        thisElement.select();
 
     }, 300);
 

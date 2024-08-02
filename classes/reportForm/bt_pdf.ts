@@ -36,6 +36,8 @@ export class bt_pdf extends COMPONENT {
     this.Form.queryPri.prop.Visible = false
     this.Form.queryUsu.prop.Visible = false
     this.Form.queryGen.prop.Visible = false
+    this.Form.reportFields.prop.Visible = false
+
 
 
     for (let i = 0; i < main.length; i++) {

@@ -32,7 +32,8 @@
            && prop.Status == 'A' 
           -->
 
-          <tbody :id="Id + '_grid_tbody'" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
+          <tbody :id="Id + '_grid_tbody'" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0"
+            style="height: auto">
 
             <!-------------  Renglones  ------------------------>
             <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->

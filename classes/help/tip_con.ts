@@ -25,9 +25,9 @@ export class tip_con extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "160px,0px";
     this.style.width = "200px";
-    this.inputStyle.width = "180px";
     this.style.marginLeft = "10px";
-
+    this.inputStyle.height = '23px'
+    this.inputStyle.width = '172px'
 
   }
 

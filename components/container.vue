@@ -10,25 +10,45 @@
     </div>
 
     <div :id="Id + 'body'" class="body">
-      <slot name="componentes">
-        <div :id="Id + 'componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver"
-          :style="{ 'display': 'inline-flex' }">
-          <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
-            :style="{ 'padding-bottom': '2px', 'width': '100%' }">
-            <!--v-bind:Component="ref(Ele)"-->
-            <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
-              v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
-              :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()"></component>
-
+      <div v-if="!This.block || This.block.length == 0" :id="Id + 'no_block'">
+        <slot name="componentes">
+          <div :id="Id + 'componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver"
+            :style="{ 'display': 'inline-flex' }">
+            <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
+              :style="{ 'padding-bottom': '2px', 'width': '100%' }">
+              <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
+                v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
+                :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()"></component>
+            </div>
           </div>
-        </div>
 
-      </slot>
+        </slot>
+      </div>
+      <div v-else :id="Id + 'blocks'">
+        <slot name="componentes">
+          <div :id="'componentes_divi_' + key" v-for="(block, key) in  This.block" :key="key">
+            <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style ? block.style : ''">
+              <label v-if="block.title">{{ block.title }}</label>
+              <div v-for=" (component, key) in block.component" :key="key"
+                :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+                <!--v-bind:Component="ref(Ele)"-->
+                <component :id="'modal_componentes_' + key + component.prop.Name"
+                  :is="impComp(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                  v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
+                  :style="component.style" :position="component.position" @click.capture="component.click()">
+                </component>
+
+              </div>
+            </div>
+          </div>
+
+        </slot>
+
+      </div>
+      <!--/section-->
     </div>
-    <!--/section-->
+    <!--/div-->
   </div>
-  <!--/div-->
-
 </template>
 
 <script lang="ts" setup>
@@ -151,6 +171,7 @@ const This = Component.value
 
 
 const Id = This.Name + props.Registro.toString()
+console.log('Container Name=', This.prop.Name, 'blocks=', This.block)
 const Divi = ref(This.Divi)
 
 /*

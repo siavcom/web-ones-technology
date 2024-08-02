@@ -71,14 +71,67 @@ export class reportForm extends FORM {
     this.des_dat.prop.TabIndex = 106;
     this.has_dat.prop.TabIndex = 107;
 
-
     this.queryPri.prop.TabIndex = 108;
     this.queryUsu.prop.TabIndex = 109;
     this.queryGen.prop.TabIndex = 110;
+
     this.for_imp.prop.TabIndex = 111;
     this.reportFields.prop.TabIndex = 112;
     this.report.prop.TabIndex = 113;
+
     this.prop.cam_pri = ''
+
+    /*
+    
+        this.block[0] = structuredClone(this.container)
+        this.block[0].component = {
+          [0]: this.mon_rep,
+          [1]: this.tip_rep,
+          [2]: this.var_ord
+    
+    
+        }
+    
+       
+    
+        this.block[1] = structuredClone(this.container)
+        this.block[1].component = {
+          [0]: this.tip_con,
+          [1]: this.des_dat,
+          [2]: this.has_dat
+    
+    
+        }
+    
+        this.block[1].title = 'Rango'
+    
+    
+        this.block[2] = structuredClone(this.container)
+        this.block[2].component = {
+          [0]: this.queryPri,
+          [1]: this.queryUsu,
+          [2]: this.queryGen
+        }
+    
+        this.block[2].title = 'Condiciones'
+    
+    
+    
+        this.block[3] = structuredClone(this.container)
+        this.block[3].component = {
+          [0]: this.for_imp,
+          [1]: this.reportFields,
+          [2]: this.bt_obtener,
+          [3]: this.bt_pdf,
+          [4]: this.report
+    
+        }
+    
+    
+        this.block[3].title = 'Reporte'
+    
+    */
+
 
   }
 
