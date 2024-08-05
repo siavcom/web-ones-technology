@@ -28,7 +28,10 @@ export class CONTAINER extends COMPONENT {
         boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
         padding: '10px',
         // display: 'inline-flex',
-        width: '-moz-available'
+        width: '-moz-available',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'space-around' // 'space-between'  
       },
       title: ''
     }

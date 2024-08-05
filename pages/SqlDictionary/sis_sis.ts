@@ -42,7 +42,7 @@ export class sis_sis extends COMPONENT {
 
   async when() {
     this.Form.grid_menu.prop.Visible = false;
-    this.Form.dic_dat.when(true)
+    //  this.Form.dic_dat.when(true)
     return true;
   }
 

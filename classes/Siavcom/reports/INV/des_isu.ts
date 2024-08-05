@@ -13,10 +13,8 @@ import { COMPONENT } from "@/classes/Component";
 export class des_isu extends COMPONENT {
   constructor() {
     super();
-
     this.prop.textLabel = "Desde que insumo";
-    this.prop.Type = "text";
-    this.prop.BaseClass = "editText";
+    this.prop.Type = "string";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente

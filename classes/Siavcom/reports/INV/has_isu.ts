@@ -14,7 +14,7 @@ export class has_isu extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Hasta que insumo";
+    this.prop.textLabel = "Hasta  que insumo";
     this.prop.Type = "string";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";

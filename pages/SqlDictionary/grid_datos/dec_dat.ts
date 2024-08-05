@@ -36,12 +36,11 @@ export class dec_dat extends COLUMN {
   ///////////////////////////////////
   async when() {
     if (this.Parent.tip_dat.prop.Value != 'N' &&
-      this.Parent.tip_dat.prop.Value != 'D') {
+      this.Parent.tip_dat.prop.Value != 'I') {
       this.prop.Value = '0'
       this.prop.ReadOnly = true
       this.prop.Valid = true
-
-      return !this.prop.ReadOnly
+      return false
     }
 
     this.prop.ReadOnly = await !this.Parent.cam_dat.when()

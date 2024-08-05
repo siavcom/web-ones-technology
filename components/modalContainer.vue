@@ -16,8 +16,9 @@
             <div id="modal_body" class="modal-body">
               <slot name="componentes">
                 <div :id="'componentes_divi_' + key" v-for="(block, key) in  This.block" :key="key">
-                  <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style ? block.style : ''">
-                    <label v-if="block.title">{{ block.title }}</label>
+                  <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+                  <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
                     <div v-for=" (component, key) in block.component" :key="key"
                       :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
                       <!--v-bind:Component="ref(Ele)"-->
