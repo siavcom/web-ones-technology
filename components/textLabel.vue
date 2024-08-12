@@ -139,8 +139,12 @@ const checkValue = ref(false)
 
 const inputStyle = reactive(props.style)
 
-if (inputStyle.width == 'auto')
+if (inputStyle.width == 'auto' && props.prop.Type != 'checkBox')
   inputStyle.width = '100%'
+
+if (props.prop.Type == 'checkbox')
+  inputStyle.width = '20px'
+
 
 if (inputStyle.maxWidth == 'auto')
   inputStyle.maxWidth = '97%'
