@@ -241,7 +241,7 @@ export class bt_aceptar extends COMPONENT {
       }
 
       m.sis_sis = this.Form.sis_sis.prop.Value;
-      this.Form.sis_sis.prop.Visible = false;
+      // this.Form.sis_sis.prop.Visible = false;
 
       await this.Form.db.use("vi_cap_cometab", m);
       this.Form.grid_tablas.prop.Visible = true;

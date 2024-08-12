@@ -6,6 +6,7 @@
     v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
+
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel
       }}</span>
     <!--List Box -->
@@ -14,18 +15,25 @@
 
       <div :id="Id" class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
 
-
         <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
           :disabled="prop.ReadOnly">
           <!--Imprime Columnas -->
 
-          <div :id="Id + '_' + option + '_column' + col" class="columna" :disabled="prop.ReadOnly"
+          <!--div :id="Id + '_' + option + '_column' + col" class="columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col"
             :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
             <label :id="Id + '_' + option + 'label_column' + col" class="optionLabel" v-text="text"
               :style:="columnLabelStyle" />
+          </div-->
+
+          <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
+            v-for="(text, col) in option.text" :key="col"
+            :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
+            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
+              :style:="columnLabelStyle" />
           </div>
+
           <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/add-color.svg"
             width="15" />
           <!--div v-show='option.check'>+</div-->
@@ -35,7 +43,6 @@
 
 
       </div>
-
 
       <!--/select-->
     </div>
@@ -61,8 +68,8 @@
 
         <div :id="Id + '_toggle'" class="toggle" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)">
           <!--CheckBox -->
-          <div :id="Id + '_columncontainer'" class="columContainer" @focusout="toggle = !toggle"
-            :style="columnContainer">
+          <div :id="Id + '_columncontainer'" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)" class="columContainer"
+            @focusout="toggle = !toggle" :style="columnContainer">
             <!--Columnas -->
 
             <div :id="Id + '_options_' + valueIndex" class="option" v-for="(option, valueIndex) in columnas"
@@ -76,6 +83,7 @@
                 <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
                   :style:="columnLabelStyle" />
               </div>
+
             </div>
           </div>
         </div>
@@ -103,6 +111,7 @@
   </span>
   <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
   <!--/div-->
+
 </template>
 
 <script setup lang="ts">
@@ -255,6 +264,10 @@ const Id = This.prop.Name + props.Registro.toString()
 let thisElement: Element | null
 This.prop.htmlId = Id
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
+
+while (columnas.length > 0)
+  columnas.pop()
+
 const displayText = ref("");
 //const width = reactive([{}]);
 const width = reactive(['60%', '20%', '20%']);
@@ -266,6 +279,8 @@ const RefCombo = ref(null)
 const Status = ref(props.prop.Status);
 Status.value = 'I'
 const toggle = ref(false)
+
+
 const hover = ref(false)
 //const Focus = ref(props.prop.Focus)
 //const First = ref(props.prop.First)
@@ -274,7 +289,11 @@ const ShowError = ref(false)
 const sw_focus = ref(false)
 // Focus.value = false
 const divStyle = reactive(props.style)
+
+if (props.prop.MultiSelect)
+  divStyle.minHeight = 'max-content'
 //divStyle.zIndex = 100 - This.prop.TabIndex
+
 
 const comboStyle = { //zIndex: 100 - This.prop.TabIndex,
   height: This.style.height
@@ -319,11 +338,15 @@ const columnLabelStyle = {
 const List = ref(This.prop.ListCount)
 const columnContainer = reactive({
   width: 'auto',
-  height: 'auto',
-  maxHeight: '200px',
+  height: 'auto', //height: min-content
+  maxHeight: '200px', //
   zIndex: comboStyle.zIndex + 1
 })
 
+if (props.prop.MultiSelect) {
+  columnContainer.height = 'min-content'
+  columnContainer.maxHeight = 'min-content'
+}
 let inputBuffer = ''
 
 
@@ -333,26 +356,34 @@ let inputBuffer = ''
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
+  if (!readCam)
+    readCam = false
+
+  if (!isValid)
+    isValid = false
+
   toggle.value = false
   let readValid = false
 
+  console.log('1) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'readCam=', readCam, 'Value = ', Value.value)
 
-  if (!readCam) {  // Graba en AlaSql , el dato se cambio desde fuera 
+
+  if (!readCam) {  // Se cambio el valor del campo.  Graba el valor en Sql localmente.
     This.prop.Status = 'P'
     Status.value = 'P'
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
-
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    // console.log('comboBox emitValue writeCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+    console.log('2) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'Value=', Value.value)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
       Value.value = Valor
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
+
     This.prop.Value = Value.value
     //console.log('comboBox emitValue Name=', props.prop.Name, 'Value=', This.prop.Value, 'Value=', Value.value)
 
@@ -361,9 +392,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     if (!isValid) {
       await This.interactiveChange()
-
-      inputBuffer = ''
       This.prop.Valid = false
+      inputBuffer = ''
+      //      This.prop.Valid = false
       if (!await This.valid()) {
 
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
@@ -383,7 +414,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
 
   }
-  else {  // Lectura de campo
+  else {  // Cuando es una lectura de campo
 
     if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
       // Actualizamos el registro del form
@@ -436,23 +467,28 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   }
   //console.log('ComboBox Name=', props.prop.Name, 'Value.value=', Value.value)
 
-  for (let i = 0; i < columnas.length && !found; i++) {
-    if (columnas && columnas[0]) {
-      // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
-      if (
-        (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-        This.prop.Value == columnas[i].value) {
-        // El objeto columna tiene dos campos value y text
-        displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
-        found = true
-        //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
-      }
-    } // else break
-  }
-  if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
-    Value.value = columnas[0].value
-    displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
-    console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
+  if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
+    for (let i = 0; i < columnas.length && !found; i++) {
+      if (columnas && columnas[0]) {
+        // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+        if (
+          (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
+          This.prop.Value == columnas[i].value) {
+          // El objeto columna tiene dos campos value y text
+          displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+          found = true
+          //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
+        }
+      } // else break
+    }
+
+
+
+    if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
+      Value.value = columnas[0].value
+      displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
+      console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
+    }
   }
   This.prop.Value = Value.value
 
@@ -562,23 +598,18 @@ const help = async () => {
 }
 
 
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////
 // focusOut
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
+
+/*
 const focusOut = async () => {
   emitValue()
   return
 };
 
-
-
-
+*/
 /////////////////////////////////////////////////////////////////////
 // Valid
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -599,54 +630,44 @@ const validClick = async (num_ren: number) => {
 
 const validCheck = async (num_ren: number) => {
 
-
-  List.value = []
   columnas[num_ren].check = !columnas[num_ren].check
-  /* columnas[num_ren].text
-
-
-  columnas[ren] = {
-        value: val_col[ren],
-        text: [val_col[ren]],
-        check: false
-*/
-
+  // Si es un Multiselect clcula el valor resultante
+  console.log('comboBox validCheck ', 'columnas=', columnas)
+  const resultado = []
   for (let i = 0; i < columnas.length; i++) {
     if (columnas[i].check) {
-      List.value.push(columnas[i].value)
+      resultado.push(columnas[i].value)
     }
   }
-  let Valores = ''
+  let ValResultante = ''
   let coma = ''
-  for (let i = 0; i < List.value.length; i++) {
-    Valores = Valores + coma + List.value[i]
+
+  for (let i = 0; i < resultado.length; i++) {
+    ValResultante = ValResultante + coma + resultado[i]
     coma = ','
   }
-  Value.value = Valores
-  await This.interactiveChange()
+  Value.value = ValResultante
+  console.log('comboBox evalidCheck ', 'Value=', Value.value)
+  // This.prop.Value = Value.value
+  emitValue()
+  //This.prop.Value = ValResultante
+  //
+
   return
 
 };
 
 
 /////////////////////////////////////////////////////////////////////
-// ValidList
+// ValidList (solo MultiSelect)
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const validList = async () => {
-  toggle.value = false
-  // if (!toggle.value) return
+  //toggle.value = false
 
-  for (let i = 0; i < List.value.length; i++) {
-    if (i == 0)
-      Value.value = ''
-    else
-      Value.value = Value.value + ','
-
-    Value.value = Value.value + List.value[i]
-  }
-  emitValue()
+  console.log('ComboBox validList', This.prop.Name, 'Value=', Value.value)
+  //emitValue()
 
   return
 
@@ -703,8 +724,6 @@ const onFocus = async () => {
 
 
 
-
-
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
 
@@ -720,10 +739,9 @@ const onFocus = async () => {
       }
 
       if (props.prop.MultiSelect) { // Si es multi seleccion generaramos el arreglo
-        console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor)
-        List.value = eval('[' + This.prop.Value.trim() + ']')
-
-
+        console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor, This.prop.Value)
+        if (This.prop.Value.trim().length > 0)
+          List.value = eval('[' + This.prop.Value.trim() + ']')
       }
       else {
         Value.value = valor
@@ -765,20 +783,28 @@ const onFocus = async () => {
 }
 
 
-
 //////////////////////////////////////////////////////
 // Renderizado del combo box
 /////////////////////////////////////////////////////
 const renderComboBox = async (readData?: boolean) => {
+
+
+  //console.log(' 0-) Render Multiselect comboBox prop.Name=', props.prop.Name, ' List.value=', List.value, ' columnas.length=', columnas.length)
+
+  if (columnas.length > 0) return
+
   //console.log('1) render combobox ===>>', This.Name, 'Value=', Value.value)
   // if (props.prop.Status == 'I') return
 
 
 
   // 9/Feb/2024 borra las columnas si las tiene 
-  while (columnas.length > 0) {
-    columnas.pop()
-  }
+  // se cambia cada ves que se renderiza en el watch o init
+  //  while (columnas.length > 0)
+  //  columnas.pop()
+
+
+
   /*
   for (let ren = 0; ren < columnas.length; ren++) {
     // Borra todos los renglones
@@ -791,7 +817,8 @@ const renderComboBox = async (readData?: boolean) => {
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
 
-  ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
+
+  await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
   //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
 
@@ -916,8 +943,13 @@ const renderComboBox = async (readData?: boolean) => {
   }
 
   if (props.prop.MultiSelect) {
-    console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value)
-    List.value = eval('[' + This.prop.Value.trim() + ']')
+
+    if (This.prop.Value.trim().length > 0) {
+      const listValue = "['" + This.prop.Value.trim().replaceAll(",", "','") + "']"
+      eval('List.value=' + listValue)
+
+    }
+
   }
 
   for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
@@ -925,9 +957,14 @@ const renderComboBox = async (readData?: boolean) => {
     let check = false
     if (props.prop.MultiSelect) {
       for (let i = 0; i < List.value.length; i++) {
-        if (List.value[i] == val_col[ren]) {
+        if (props.prop.ColumnCount <= 1 && List.value[i] == val_col[ren]) {
           check = true
         }
+
+        if (props.prop.ColumnCount > 1 && List.value[i] == val_col[BoundColumn][ren]) {
+          check = true
+        }
+
       }
 
     }
@@ -957,7 +994,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-  //console.log('2) render combobox ===>>', This.Name, 'Value=', Value.value)
+  console.log('2) render combobox ===>>', This.Name, 'Value=', Value.value, 'columnas=', columnas)
 
   await emitValue(true, true)
   This.prop.Status = 'A'
@@ -1088,15 +1125,15 @@ watch(
   () => toggle.value,
   (new_val, old_val) => {
     if (new_val)
-      divStyle.zIndex = props.style.zIndex + 1
+      divStyle.zIndex = props.style.zIndex + 2  // aumenta el z index cuando despliaga las columnas
     else
       divStyle.zIndex = props.style.zIndex
 
 
-    // console.log('toggle.value', props.Name, old_val, new_val)
+    console.log('watch toggle.value', props.Name, old_val, new_val)
     if (!old_val && new_val) onFocus()
   },
-  { deep: false }
+  { deep: true }
 );
 
 /////////////////////////////////////////////////////////
@@ -1110,7 +1147,7 @@ watch(
 
     //    console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
 
-    if (new_val != Value.value) {
+    if (This.prop.Value != Value.value) {
       Value.value = This.prop.Value
       emitValue(false, This.prop.Valid)
     }
@@ -1142,6 +1179,10 @@ watch(
   (new_val, old_val) => {
     console.log('watch ComboBox RowSource===>>', new_val)
     if (new_val != old_val) {
+      // 9/Feb/2024 borra las columnas si las tiene 
+      while (columnas.length > 0)
+        columnas.pop()
+
       renderComboBox(true)
     }
   },
@@ -1160,7 +1201,10 @@ watch(
 
     console.log('watchComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {
-      //console.log('ComboBox renderiza por cambio enRowSourceType ===>>', new_val)
+      // 9/Feb/2024 borra las columnas si las tiene 
+      while (columnas.length > 0)
+        columnas.pop()
+
       renderComboBox(true)
     }
   },
@@ -1177,6 +1221,10 @@ watch(
   (new_val, old_val) => {
     if (new_val != old_val) {
       //console.log('ComboBox renderiza por cambio en Sorted ===>>', new_val)
+      // 9/Feb/2024 borra las columnas si las tiene 
+      while (columnas.length > 0)
+        columnas.pop()
+
       renderComboBox(true);
     }
   },
@@ -1192,7 +1240,9 @@ watch(
 
   (new_val, old_val) => {
     if (new_val != old_val) {
-      // console.log('ComboBox renderiza por cambio en ColumnCount ===>>', new_val)
+      while (columnas.length > 0)
+        columnas.pop()
+
       renderComboBox(true);
     }
   },
@@ -1224,6 +1274,9 @@ watch(
 
   (new_val, old_val) => {
     if (new_val != old_val) {
+      while (columnas.length > 0)
+        columnas.pop()
+
       renderComboBox(true);
     }
   },
@@ -1298,10 +1351,14 @@ onMounted(async () => {
     }
 
   }
-  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value, 'displayText=', displayText.value)
+
+  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value,
+    ' props.prop.RowSourceType=', props.prop.RowSourceType,
+    ' props.prop.RowSource=', props.prop.RowSource,
+    ' props.prop.ColumnCount=', props.prop.ColumnCount)
+
 
   const result = await renderComboBox()
-
   This.Recno = props.Registro
 
 
@@ -1337,6 +1394,8 @@ function myClick(e) {
   // console.log('myClick ComboBox focus in and out ',e.target)
   // to remove
 
+  // console.log(This.prop.Name, '1) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
+
   const clickedEl = e.target;
   if (This.prop.Disabled || !This.prop.Visible) {
     if (RefCombo && RefCombo.value != null && !RefCombo.value.contains(clickedEl))
@@ -1344,15 +1403,22 @@ function myClick(e) {
     if (!toggle.value)
       return
   }
-  if (RefCombo && RefCombo.value != null)
+
+
+  console.log(This.prop.Name, '2) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
+
+
+  if (RefCombo && RefCombo.value != null) {
+
     if (!RefCombo.value.contains(clickedEl)) {
       sw_focus.value = false
       if (toggle.value) {
         toggle.value = false
       }
-      console.log(This.prop.Name, 'ComboBox focus  out ', toggle.value, 'sw_focus=', sw_focus.value)
     }
 
+
+  }
 }
 
 
@@ -1575,6 +1641,37 @@ select[multiple]:focus option:checked {
 }
 
 
-
 /*div class='column'*/
+
+div.multi {
+  box-shadow: 0 4px 8px 0, 0 6px 20px 0;
+  cursor: pointer;
+  display: flex;
+  justifyContent: space-around;
+  position: relative;
+  /* no borrar se utiliza junto con div.toggle position:absolute*/
+  /* border: 1px solid rgb(0, 5, 2);*/
+  padding: 5px 10px;
+  /* espacio top left right booton ,vertical horizontal */
+
+  background: #e3e6e4;
+  color: #292b2a;
+  /* #0b0c0c negro;   #7a18e9; morado*/
+  /*este es el color que toman los elementos desplegados**/
+  /*display: table-row;   /*list-item;  /* inline-block;
+
+ /* margin-left: -60px; */
+  /* bottom: 125%;
+ /* left: 50%;
+  margin-left: -60px;*/
+  opacity: 1;
+  /* z-index: v-bind("props.style.zIndex" ); */
+  /* v-bind('zIndex') la capa en la cual se presenta donde 0 la mas abajo */
+  right: 0%;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+  z-index: v-bind('toggleZIndex')
+    /* transition: opacity 0.3s;*/
+}
 </style>

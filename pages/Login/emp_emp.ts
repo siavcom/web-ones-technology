@@ -17,7 +17,6 @@ export class emp_emp extends COMPONENT {
     this.Form = this.Parent;
     this.prop.BaseClass = "comboBox";
     this.prop.textLabel = "Empresa";
-    //this.prop.MultiSelect = true;
     this.prop.Capture = true;
     this.prop.RowSourceType = 5; // 1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
@@ -87,7 +86,6 @@ export class emp_emp extends COMPONENT {
     }
 
   }
-
 
   public valid = async () => {
     const ThisForm = this.Form;

@@ -352,8 +352,8 @@ export class reportForm extends FORM {
           has_dat = "'" + await dateToSql(this.has_dat.prop.Value) + "'";
           break;
         case 'datetime':
-          des_dat = "'" + await dateToSql(this.des_dat.prop.Value) + "'";
-          has_dat = "'" + await dateToSql(this.has_dat.prop.Value) + "'";
+          des_dat = "'" + await dateTimeToSql(this.des_dat.prop.Value) + "'";
+          has_dat = "'" + await dateTimeToSql(this.has_dat.prop.Value) + "'";
           break;
         default:
 

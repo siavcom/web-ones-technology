@@ -36,8 +36,10 @@
             style="height: auto">
 
             <!-------------  Renglones  ------------------------>
-            <!--   tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-            <tr :id="Id + '_grid_tr_' + key" v-for="(item, key) in scroll.dataPage" :key="item.recno">
+            <!--TypeError: item is undefined            tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
+
+            <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage" v-for="(item, key) in scroll.dataPage"
+              :key="item.recno">
               <!-- No utilizar vertical-aling en renNumber-->
               <td :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{ item.recno
                   }}</label></td>
