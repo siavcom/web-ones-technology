@@ -1364,6 +1364,7 @@ export class VFPDB {
 
   /// /////////////  sqlexec /////////////////////
   // query  : Query a ejecutar
+  // tip_res: D=Data T=Text J=JSON NULL=no data returned
   /// ///////////////////////////////////////////
 
   execute = async (query: string, alias?: string, tip_res?: string) => {
@@ -1372,7 +1373,13 @@ export class VFPDB {
     }
 
     if (!tip_res) {
-      tip_res = "T";
+      tip_res = "D";
+    } else {
+      tip_res = tip_res.toUpperCase()
+      if (tip_res != "T" && tip_res != "J" && tip_res != "NULL") {
+        tip_res = 'D'
+
+      }
     }
 
     const dat_vis = {
@@ -1495,22 +1502,11 @@ export class VFPDB {
         // console.log('Db exec ',this.View[alias])
       }
 
-      //* ******************* */
 
-      // console.log('Db Tabla creada en Now resp ',resp_sql)
-      //console.log('Db Tabla creada en Now  ', await this.localAlaSql('USE Now ; SELECT * FROM ' + alias))
-      /*
-      console.log(
-        "End SQLEXEC ",
-        new Date().toISOString(),
-        "Alias=",
-        alias,
-        "Registros=",
-        respuesta.length
-      );
-      */
 
       if (tip_res.toUpperCase() == "NULL") return true;
+      if (tip_res == 'J') return JSON.stringify(respuesta)
+
 
       return respuesta;
     } catch (error) {

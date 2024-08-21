@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
     case 'imgBase64':
 
       nameFile = body.nameFile.trim()
-      console.log('1) =========================> Comienza leeArchivo data=', path + nameFile)
+      //console.log('1) =========================> Comienza leeArchivo data=', path + nameFile)
       const tipArchivo = nameFile.trim().slice(-3)
 
       try {
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
         const contents = fs.readFileSync(path + nameFile, { encoding: 'base64' });
         data = `data:image/${tipArchivo};base64,` + contents
         body.data = data
-        console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
+        // console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
         return data
       } catch (error) {
         body.data = null

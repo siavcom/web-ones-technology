@@ -365,7 +365,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   toggle.value = false
   let readValid = false
 
-  console.log('1) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'readCam=', readCam, 'Value = ', Value.value)
+  // console.log('1) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'readCam=', readCam, 'Value = ', Value.value)
 
 
   if (!readCam) {  // Se cambio el valor del campo.  Graba el valor en Sql localmente.
@@ -1351,13 +1351,12 @@ onMounted(async () => {
     }
 
   }
-
-  console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value,
-    ' props.prop.RowSourceType=', props.prop.RowSourceType,
-    ' props.prop.RowSource=', props.prop.RowSource,
-    ' props.prop.ColumnCount=', props.prop.ColumnCount)
-
-
+  /*
+    console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value,
+      ' props.prop.RowSourceType=', props.prop.RowSourceType,
+      ' props.prop.RowSource=', props.prop.RowSource,
+      ' props.prop.ColumnCount=', props.prop.ColumnCount)
+  */
   const result = await renderComboBox()
   This.Recno = props.Registro
 
@@ -1405,7 +1404,7 @@ function myClick(e) {
   }
 
 
-  console.log(This.prop.Name, '2) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
+  //console.log(This.prop.Name, '2) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
 
 
   if (RefCombo && RefCombo.value != null) {

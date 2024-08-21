@@ -6,7 +6,7 @@
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: 'inherit' }">
+    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '-moz-available' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>

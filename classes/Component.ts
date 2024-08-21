@@ -218,23 +218,19 @@ export class COMPONENT {
     if (this.prop.Name.length == 0) this.prop.Name = this.Name;
     let sw_component = true;
     if (!TabIndex) TabIndex = 1;
-    if (!Form) {
-      // Inicializamos el this.Form
-      //console.log("ThisForm.name 2", this.constructor.name);
+
+    if (!Form) {   // Inicializamos el this.Form
 
       Form = this;
       this.prop.Map = "ThisForm"; // this.constructor.name
-
-      //      console.log('Init ThisForm', this.Name, this.Form)
-      TabIndex = 1;
-      sw_component = false;
-
+      TabIndex = 1;  // inicializamos el TabIndex
+      sw_component = false; // No es un componente del Form
     }
+
     //console.log('Init TabIndex', this.Name, TabIndex,this)
 
     this.Form = Form;
-
-    let maxTabIndex = 1;
+    let maxTabIndex = 1; // primer TabIndex
     let id = 0;
     //let comp = {}
     let header: [] = [];
@@ -247,9 +243,9 @@ export class COMPONENT {
 
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
-      if (this.Form.db) this.Sql = this.Form.db;
-
+      if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
     }
+
     for (const componente in this) {
       if (
         componente != "Parent" &&
@@ -263,13 +259,11 @@ export class COMPONENT {
         this[componente].Init
       ) {
         //  console.log('Init Component '+componente,'Name==',this[componente].Name)
-        if (this[componente].Name == undefined) {
+        if (this[componente].Name == undefined) { // Si no es un componente del Form
           console.warn("Component ", componente + " has Name=undefined");
-
           return;
         }
-        // const name = this[componente].Name.trim()
-        // let name = this[componente].constructor.name
+
         const name = componente;
         //        console.log('Component =',componente,'contructor.name=',this[componente].constructor.name)
 
@@ -291,35 +285,29 @@ export class COMPONENT {
           // return
         }
         // name=componente  // Modificar para el compilador
+
+        // asigna posicion en el Form Header, Main o Footer 
         const Position = this[componente].prop.Position.trim().toLowerCase();
-
-        //if (Position == "header") header.push(name);
-
-        // if (Position == "main") main.push(name);
-
-        //  if (Position == "footer") footer.push(name);
 
         const component = {
           Name: name,
           Id: this[componente].prop.TabIndex, // this[componente].prop.Order,
           Position: Position,
         };
-        elements.push(component);
+        elements.push(component);  // generamos el array de elementos
 
         this[componente].Parent = this; // Asignamos el Parent ref(this)
 
         id++;
       }
     }
-
-    // Ordenamos los elementos segun su TabIndex
+    // Recorrido todos los componentes sorteamos los elementos segun su TabIndex
     elements.sort((a, b) => {
       return a.Id - b.Id;
     });
 
-    // console.log('1 Component mainElement Name=',this.prop.Name,'mainElement',mainElement)
     /////////////////////// Header ////////////////////////////////////
-    //let arreglo:[]=[]
+    // Obtenemos solo los elementos del Header
     const headerElement = await multiFilter(elements, { Position: "header" });
     for (const i in headerElement) {
       const comp = headerElement[i].Name; // Obtenemos el nombre
@@ -333,17 +321,32 @@ export class COMPONENT {
       // arreglo.push[comp]
     }
 
-
     //////////////////////  Main //////////////////////////////
-
+    // Obtenemos solo los elementos del Main
     const mainElement = await multiFilter(elements, { Position: "main" });
 
-    for (const i in mainElement) {
+    for (const i in mainElement) {  // recorremos todos los componentes del main
       const comp = mainElement[i].Name; // Obtenemos el nombre
 
-      //   console.log('Component.ts in main comp=',comp,this[comp])
-      this[comp].prop.TabIndex = TabIndex;
+      this[comp].prop.TabIndex = TabIndex; // asignamos el TabIndex
       TabIndex++;
+
+      // Si un componente contenedor y tiene bloques 
+      if (this[comp].block && this[comp].block.length > 0) {
+
+        for (const numero in this[comp].block) { // Recorremos todos los bloques
+          if (this[comp].block[numero].component && this[comp].block[numero].component.length > 0) {
+
+            for (const comName in this[comp].block[numero].component) { // Recorremos todos los componentes del bloque
+              this[comp].block[numero].component[comName].prop.TabIndex = TabIndex;
+              TabIndex++;
+              //    TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+              //    if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
+            }
+          }
+        }
+      }
+
       TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
       if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
 
@@ -353,7 +356,7 @@ export class COMPONENT {
 
 
     ///////////////// Footer ///////////////////////////////
-
+    // Obtenemos solo los elementos del Footer
     const footerElement = await multiFilter(elements, { Position: "footer" });
     for (const i in footerElement) {
       // Solo componentes es main
@@ -403,53 +406,7 @@ export class COMPONENT {
     return TabIndex;
   }
 
-  ///////////////////////////////////////////////////////////
-  // InitForm : Iicializa los valores de toda la forma en cada/componente
-  ////////////////////////////////////////////////
-  /*
-  public async InitForm_ant(Form: any) {
-    const elements: [] = []
-    //console.log('Inicializando componente Parent ===> ', this.Name,this.Parent)
 
-    //console.log('InitForm  componente Parent ===> ',this.Name)
-
-    if (this.Name != 'ThisForm' && this.Parent.prop) { // Si tiene propiedades 
-      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
-    }
-    //console.log('Mapa clase ======>', this.Name, this.prop.Map)
-    for (const componente in this) {
-      if (componente !== 'db' &&
-        componente !== 'Ref' &&
-        componente !== 'Parent' &&
-        this[componente] != null &&
-        this[componente] != undefined &&
-        this[componente] &&
-        this[componente].prop &&
-        this[componente].InitForm
-      ) {
-        const component = {
-          Name: this[componente].Name,
-          Id: this[componente].prop.Order,
-          Position: this[componente].prop.Position
-        }
-        elements.push(component)
-
-        this[componente]['Parent'] = this // ref(this) Pasamos el padre al componente hijo
-        await this[componente]['InitForm'](Form) //Hacemos el InitForm a cada componente hijo
-        if (this[componente]['init']) await this[componente]['init']() // Init del componente
-      }
-    }
-    this.elements = elements
-
-
-    this.Form = Form  // asigna la forma a la propiedad Form 
-    //console.log('Init form ====>', this.Name)
-    this.prop.Status = 'A'
-    console.log('Componente Inicializado =========> ', this.Name, this.elements)
-    // console.log('Init Componente this.Form',this.Form)
-  }
-
-  */
   public async init() {
     return;
   }
@@ -457,8 +414,6 @@ export class COMPONENT {
   public async recnoChange() {
     return;
   }
-
-
 
   public async mounted() {
     return;

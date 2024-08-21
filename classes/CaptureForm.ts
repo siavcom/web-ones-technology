@@ -415,7 +415,7 @@ export class captureForm extends FORM {
 
         this.prop.Visible = true;
         return;
-        this.prop.Visible = true;
+
       }
       await this.Parent.borra();
     }

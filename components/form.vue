@@ -39,6 +39,8 @@
 
                 <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
                   <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
+                  <!--label text-align="right">{{ ThisForm.prop.Name }}</label-->
+
                 </div>
               </h2>
               <!--transition-group> -->

@@ -38,7 +38,7 @@
     <!--/div-->
 
 
-    <div :id="Id + '_div_json'" class='json' v-else-if="propType == 'json'" ref="Ref">
+    <div :id="Id + '_div_json'" class='json' v-else-if="propType == 'json'" ref="Ref" :style="inputStyle">
 
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
@@ -187,6 +187,7 @@ const props = defineProps<{
   //Component: any;
   Value: any;
   Registro: number;  // Se pone para el manejo de grid
+  // Block: number;
   // displayError: boolean;
   prop: {
 
@@ -658,7 +659,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
       compJson.value = []
-      currentJson.value = JSON.parse(Value.value)
+      if (Value.value.trim().length > 5) {
+        try {
+          currentJson.value = JSON.parse(Value.value)
+        } catch (error) {
+          await MessageBox('Error Invalid Json  :' + Value.value, 'Error')
+          currentJson.value = []
+        }
+      }
 
       for (const comp in currentJson.value)
         compJson.value.push(currentJson.value[comp])
@@ -736,7 +744,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     'ValidOnRead=', This.prop.ValidOnRead,
     'readValid', readValid,
     'First Focus=', This.prop.First || This.prop.Focus)
-*/
+  */
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     // await This.valid()  // 8/Feb/2024.- Se aumenta await
   }
@@ -933,37 +941,48 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 }
 
 // $event.charCode == 13 // Down Key  
-const clickReturn = () => {
+const clickReturn = async () => {
+  await emitValue(false) // Emite valores al parent y valida
 
+  if (!This.prop.Valid)
+    return
 
-  console.log('clickReturn editText Name', This.prop.Name)
+  console.log('clickReturn editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
   const TabIndex = This.prop.TabIndex
   let lastIndex = 999999
   let nextFocus = ''
+
+
   for (const element of This.Parent.main) {
-    const Tab = This.Parent[element].prop.TabIndex
-    //console.log('KeyPres element =', This.Parent[element].prop.htmlId, Tab, TabIndex)
 
-    if (Tab > TabIndex && Tab < lastIndex) {
-      lastIndex = Tab
-      nextFocus = This.Parent[element].prop.htmlId
 
+    if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
+      !This.Parent[element].prop.Disabled) {
+      const Tab = This.Parent[element].prop.TabIndex
+
+      if (Tab > TabIndex && Tab < lastIndex) {
+        lastIndex = Tab
+        nextFocus = This.Parent[element].prop.htmlId
+        break
+      }
     }
   }
-  // console.log('KeyPres nextFocus =', nextFocus)
+
 
   // $event.preventDefault();
   // Obtienee elemento a hacer el focus
   const nextElement = document.getElementById(nextFocus);
   // console.log('EditText keyPres Name',this.prop.Name=', setElement)
-  if (nextElement)
+  if (nextElement) {
+    console.log('clickReturn nextFocus =', nextFocus)
+    nextElement.focus()
     nextElement.focus()
 
-  //$event.keycode = 9;
-  return // $event.keycode;
+    //$event.keycode = 9;
+    return // $event.keycode;
+  }
+
 }
-
-
 
 
 /////////////////////////////////////////////////////////////////////
@@ -1009,10 +1028,10 @@ const onFocus = async () => {
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
 
-    //console.log('editText onFocus 1) Name=', This.prop.Name, 'Map', This.prop.Map, ' View=', This.Sql.View[tabla])
 
     let lon_campo = This.prop.Value.length
     if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
+      //  console.log('editText onFocus 1) Name=', This.prop.Name, 'campo:', campo, 'View:', This.Sql.View[tabla].est_tabla)
       lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
       if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
 
@@ -1135,17 +1154,17 @@ watch(
 watch(
   () => This.prop.Visible,
   (new_val: any, old_val: any) => {
-
-
+ 
+ 
     if (!new_val)
       divStyle.height = '0%'
     else
       divStyle.height = This.style.height
-
+ 
   },
   { deep: false }
 );
-
+ 
 */
 ////////////////////////////////////////
 // ControlSource

@@ -139,18 +139,21 @@ const checkValue = ref(false)
 
 const inputStyle = reactive(props.style)
 
+
+// el width y maxWidth de 99% fue lo mejor para los grid de columnas  
+// con 97% se desalinea horizontalmente en el grid de columnas
 if (inputStyle.width == 'auto' && props.prop.Type != 'checkBox')
-  inputStyle.width = '100%'
+  inputStyle.width = '99%'
 
 if (props.prop.Type == 'checkbox')
   inputStyle.width = '20px'
 
 
 if (inputStyle.maxWidth == 'auto')
-  inputStyle.maxWidth = '97%'
+  inputStyle.maxWidth = '99%'
 
 if (inputStyle.maxHeight == 'auto')
-  inputStyle.maxHeight = '97%'
+  inputStyle.maxHeight = '99%'
 
 
 /*
