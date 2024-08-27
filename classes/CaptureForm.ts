@@ -405,7 +405,7 @@ export class captureForm extends FORM {
 
             MessageBox("No se pudo borrar", 16);
 
-            if (data.lenght === 0) {
+            if (data.length === 0) {
               this.refreshComponent();
             }
           }

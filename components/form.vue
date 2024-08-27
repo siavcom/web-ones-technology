@@ -242,11 +242,33 @@ const modalContainer = resolveComponent('modalContainer.vue')
 
 */
 
+/* 
+///////////////////////////////////////////////////////////////////////
+// Nuxt 4 :
+//  -. Se debe de cambiar los componentes al directorio components/global 
+//  -. Se debe de aumentar el Lazy al nombre de cada componente
+//  -. En el htnl en :is=":is="ThisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
+//
+///////////////////////////////////////////////////////////////////////
 
+const imgButton = computed(() => resolveComponent('LazyimgButton.vue'))
+const editText = computed(() => resolveComponent('LazyeditText.vue'))
+const comboBox = computed(() => resolveComponent('LazycomboBox.vue'))
+const textLabel = computed(() => resolveComponent('LazytextLabel.vue'))
+const grid = computed(() => resolveComponent('Lazygrid.vue'))
+const browseLite = computed(() => resolveComponent('LazybrowseLite.vue'))
+const details = computed(() => resolveComponent('Lazydetails.vue'))
+const embedPdf = computed(() => resolveComponent('LazyembedPdf.vue'))
+const container = computed(() => resolveComponent('Lazycontainer.vue'))
+const modalContainer = computed(() => resolveComponent('LazymodalContainer.vue'))
+
+*/
+
+// en html en :is="imgButtonr" pasar directamente el nombre del componente en el que se va a trabajar
 
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
-const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
+const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
 const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
@@ -570,13 +592,18 @@ else return 0}
 // '@/components/' + name + '.vue')
 
 
-/* Con el puro nombe y en el directorio /components/global
-const impComp= computed ((name:string) =>'Lazy'+name)
-*/
+
+///////////////////////////////////////////////////////////////////////
+// Nuxt 4 :
+//  -. Se debe de cambiar los componentes al directorio components/global 
+//  -. Se debe de aumentar el Lazy al nombre de cada componente
+//  -. En el htnl en :is=":is="ThisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
+//
+// Con el puro nombe y en el directorio /components/global
+// const impComp= computed ((name:string) =>'Lazy'+name)
+///////////////////////////////////////////////////////////////////////
 
 const impComp = ((name: string, pos?: string) => {
-
-  //return eval(name)
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {

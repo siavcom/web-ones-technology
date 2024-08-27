@@ -1,12 +1,12 @@
 <template>
-  <div :id="Id + '_divi_grid'" class="divi"
+  <div :id="Id + '_main_divi_grid'" class="divi"
     v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Db.View[prop.RecordSource]" :style="style"
     ref="Ref">
     <label :id="Id + '_lable'" class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '-moz-available' }">
+    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99%' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
@@ -1060,10 +1060,10 @@ div.tabla {
   border: 1px solid rgb(0, 5, 2);
   border-radius: 1%;
   max-height: 350px;
-  max-width: 960px;
+  /* max-width: 960px; */
   overflow-y: auto;
   overflow-x: auto;
-  width: 98%;
+  width: 99%;
 
 }
 

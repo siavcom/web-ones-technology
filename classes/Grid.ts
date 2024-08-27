@@ -34,7 +34,7 @@ export class GRID extends COMPONENT {
     this.prop.messageUpdate = "Grabamos la tabla";
     this.prop.headerHeight = "30px";
 
-    this.style.width = "max-content"; // "95%";
+    this.style.width = '-moz-available' //"max-content"
     this.style.minHeight = "150px";
     this.style.height = "max-content";
     this.Recno = 0;

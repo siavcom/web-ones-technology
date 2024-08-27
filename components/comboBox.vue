@@ -13,7 +13,7 @@
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
 
-      <div :id="Id" class="columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+      <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
 
         <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
@@ -295,14 +295,13 @@ if (props.prop.MultiSelect)
 //divStyle.zIndex = 100 - This.prop.TabIndex
 
 
-const comboStyle = { //zIndex: 100 - This.prop.TabIndex,
-  height: This.style.height
-}
+const zIndex = ref(This.style.zIndex)
 
+const comboStyle = reactive({
+  height: This.style.height,
+  zIndex: zIndex.value
+})
 
-
-
-const zIndex = comboStyle.zIndex
 
 // const inputStyle = reactive(props.inputStyle)
 
@@ -340,7 +339,7 @@ const columnContainer = reactive({
   width: 'auto',
   height: 'auto', //height: min-content
   maxHeight: '200px', //
-  zIndex: comboStyle.zIndex + 1
+  //zIndex: comboStyle.zIndex + 1
 })
 
 if (props.prop.MultiSelect) {
@@ -526,7 +525,7 @@ const toggleClick = async () => {
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
 
-  comboStyle.zIndex = toggle.value ? zIndex + 2 : zIndex
+  comboStyle.zIndex = toggle.value ? zIndex.value + 2 : zIndex.value
 }
 ////////////////////////////////////////////////////////////////////
 // KeyPress
@@ -617,7 +616,7 @@ const focusOut = async () => {
 /////////////////////////////////////////////////////////////////
 const validClick = async (num_ren: number) => {
   toggle.value = false
-  comboStyle.zIndex = zIndex
+  comboStyle.zIndex = zIndex.value
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
   //console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
