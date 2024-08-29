@@ -549,7 +549,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     This.prop.Valid = true
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
-      if (props.prop.Value == null) {
+      if (ControlSource.length > 0 || props.prop.Value == null) {
         switch (Type) {
           case 'number':
             Value.value = 0
@@ -1187,7 +1187,7 @@ watch(
   () => props.Registro,
   async () => {
 
-    // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
+    console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
     emitValue(true)
     This.Recno = props.Registro
     This.recnoChange()

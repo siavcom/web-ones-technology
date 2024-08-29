@@ -17,6 +17,7 @@ export class captureForm extends FORM {
   constructor() {
     super();
     this.style.width = "-moz-available";
+
     // asignamos a los metodos la clase padre
   }
 
