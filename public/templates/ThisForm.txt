@@ -44,7 +44,11 @@ export class ThisForm extends captureForm {
     //this.style.fontSize = "13px" 
     //this.style.position = "center"
   
-   
+    this.asignaRecno()  // asigna recno a c/componente de captura de la forma
+    
+
+
+
 
   }
 

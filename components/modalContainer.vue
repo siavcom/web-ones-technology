@@ -317,16 +317,23 @@ const impComp = ((name: string, pos?: string) => {
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   transition: opacity 0.3s ease;
+
 }
 
 .modal-container {
-  width: 300px;
+  /*width: 300px;*/
   margin: auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
+  overflow: auto;
+
+  scrollbar-color: deeppink indigo;
+  scrollbar-width: thin;
+  scrollbar-gutter: auto;
+
 }
 
 .modal-header h3 {

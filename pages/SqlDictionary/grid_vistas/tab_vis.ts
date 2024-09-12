@@ -16,14 +16,14 @@ export class tab_vis extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Tablas/Join '
+        this.textLabel = 'FROM <Table/Join table> '
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comevis.tab_vis'
-        this.prop.ToolTipText ='Tablas/Join'
+        this.prop.ToolTipText = 'Tablas/Join'
         this.prop.Placeholder = "Tablas"
-        this.style.width='400px'
-        }
+        this.style.width = '400px'
+    }
 
 
 }

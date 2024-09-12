@@ -27,10 +27,7 @@
               </th>
             </tr>
           </thead>
-          <!-------------  Detalle   -----------------------
-          
-           && prop.Status == 'A' 
-          -->
+          <!---------------------------  Detalle  --------------------------------->
 
           <tbody :id="Id + '_grid_tbody'" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0"
             style="height: auto">
@@ -586,9 +583,16 @@ watch(
   () => This.Row,
   () => {
 
+    //"item.recno > 0 || item.recno != null ? item.recno : 0"
+
     if (This.Row <= -10) { // hubo insercion de renglon
       last(true)
 
+    } else {
+      const alias = This.prop.RecordSource
+      This.Sql.View[alias].recno = This.Row + 1
+      This.Sql.bof(alias)
+      This.Sql.eof(alias)
     }
   },
   { deep: false }

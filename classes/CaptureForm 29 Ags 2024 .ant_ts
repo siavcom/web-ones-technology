@@ -2,7 +2,7 @@
 // Clase : Forma de captura tabla sencilla
 // Author : Fernando Cuadras Angulo
 // Creacion : 16/Noviembre/2022
-// Ult.Mod  : 26/Diciembre/2022
+// Ult.Mod  : 28/Agosto/2024
 /////////////////////////////////////////////
 
 //import { truncate } from "fs/promises";
@@ -12,7 +12,6 @@ import { FORM } from "@/classes/Form";
 export class captureForm extends FORM {
   public gridCaptura: [] = [];
   public noData = false;
-  public First = null
 
   // se debe de poner siempre el contructor
   constructor() {
@@ -20,19 +19,11 @@ export class captureForm extends FORM {
     this.style.width = "-moz-available";
 
     // asignamos los Recno de los componentes de main 
-
-  }
-
-
-  async asignaRecno() {
-    for (const comp in this) {
-      const Comp = this[comp]
-      // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
-        Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
-      }
+    for (const comp of this.main) {
+      this[comp].prop.Recno = ref(this.Recno)
     }
   }
+
   /// //////////////////////////////////////////////////
   // Metodo init
   // Aqui se deben de asignar las areas de trabajo de los archivos
@@ -44,17 +35,17 @@ export class captureForm extends FORM {
 
     try {
       if (this.prop.RecordSource.length > 1) {
-
+        console.log(
+          "Capture Form init this.prop.RecordSource=",
+          this.prop.RecordSource
+        );
         await this.refreshComponent();
       }
     } catch (error) {
       console.error("======Error Init=====" + this.Name, error);
     }
-    // aqui me quede . Hay que poner en ThisForm de de la pagina en el constructor
-    // cada componente.prop.Recno=ref(this.Recno)
     this.bt_graba.Grid = this.gridCaptura; // asignamos el arreglo de grid
   }
-
   /// /////////////////////////////////////
   // Metodos : graba y borra
   // Descripcion : funciones que se ejectutara despues de ejecutar
@@ -65,7 +56,6 @@ export class captureForm extends FORM {
   public async graba() { }
 
   public async borra() { }
-
 
   /// /////////////////////////////////////
   // Metodo : valid
@@ -107,7 +97,13 @@ export class captureForm extends FORM {
     }
 
     thisComp.prop.Valid = true;
-
+    /* const m={}
+    // variables publicas
+    
+    for (const Var in this.publicVar) {
+      m[Var] = this.publicVar[Var];
+    }
+    */
 
     const { ...m } = this.publicVar; // Tomamos las variables publicas de la forma
     // Generamos variables de memoria de componentes locales y solo updateKey
@@ -116,13 +112,8 @@ export class captureForm extends FORM {
     for (const comp of this.main) {
       // 29 Ags 2024  this[comp].Recno = 0; // ponemos en cero para ejecutar un refresh
 
-      // Asigna cual es el componente First de la forma
-      if (!this.First && this[comp].prop.First)
-        this.First = this[comp]
-
-
       if (this[comp].prop.updateKey) {
-        if (!this[comp].prop.Valid) {  // si el componente no es valido
+        if (!this[comp].prop.Valid) {
           return true;
 
         } else {
@@ -142,19 +133,24 @@ export class captureForm extends FORM {
       return
     }
 
+
     const data = await this.Form.db.use(this.prop.RecordSource, m);
+
+    // console.log("captureForm Valid m=", m, "data=", data);
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
 
     // 29 Ags 2024     let Recno = 0;
-    if (this.Recno != 0)
-      this.Recno = 0
-
+    this.Recno = 0
     let key_pri = 0;
 
     if (data.length == 0) {
       // No hay datos
+      console.log(
+        "CaptureForm appendBlank this.prop.RecordSource=",
+        this.prop.RecordSource
+      );
       const result = await this.Form.db.appendBlank(this.prop.RecordSource, m);
       //      console.log('CaptureForm appendBlank alaSql=',await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
@@ -166,6 +162,7 @@ export class captureForm extends FORM {
       // 29 Ags 2024
       //Recno = result.recno;
       this.Recno = result.recno   // asignamos el thisrecno de la vista leida
+
 
       key_pri = 0;
       this.bt_borra.prop.Visible = false;
@@ -179,6 +176,7 @@ export class captureForm extends FORM {
         this.bt_borra.prop.Visible = true;
     }
 
+    //await this.refreshComponent(true, Recno,key_pri);
     await this.refreshComponent(this.Recno, key_pri);
 
     return true;
@@ -193,13 +191,15 @@ export class captureForm extends FORM {
     let activate = true;
     if (!Recno) {
       Recno = -1;
+      activate: false;
       key_pri = 0;
     }
 
     for (const comp of this.main) {
       const Comp = this[comp]
+      // console.log('1) displayError refreshComponent comp=', comp, 'Recno=', Recno, 'key_pri=', key_pri, 'this.prop.Valid=', Comp.prop.Valid)
 
-      if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apaga
+      if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apga
         Comp.prop.ShowError = false
       }
     }
@@ -210,20 +210,15 @@ export class captureForm extends FORM {
       return;
     }
 
-    if (Recno == -1) { // Inicializamos la forma
-      this.noData = true;
-      this.bt_graba.prop.Visible = false;
-      this.bt_borra.prop.Visible = false;
-      if (this.Recno != 0)
-        this.Recno = 0 // por referencia se pasa el valor component.Recno=0
-
-      if (this.prop.RecordSource.length > 2) { // Si hay vista
-        if (!this.Sql.View[this.prop.RecordSource] || this.Sql.View[this.prop.RecordSource].recno > 0) {
-          await this.Form.db.useNodata(this.prop.RecordSource);
-        }
+    if (Recno == -1) {
+      if (this.prop.RecordSource.length > 2) {
+        await this.Form.db.useNodata(this.prop.RecordSource);
       } else
         return;
 
+      this.noData = true;
+      this.bt_graba.prop.Visible = false;
+      this.bt_borra.prop.Visible = false;
       // this.bt_calendario.prop.Visible = false;
     } // else this.noData = false;
 
@@ -239,12 +234,14 @@ export class captureForm extends FORM {
           if (!Comp.prop.Visible)
             Comp.prop.Visible = true;
 
-          if (Recno >= 0) {  // Solo si ya es una captura
+          if (Recno >= 0) {
             // Cuando ya se validaron las llaves de actualizacion
             Comp.prop.ReadOnly = false;
-          } else {  // Inicializacion de la captura
+          } else {
             Comp.prop.ReadOnly = true; // cuando la forma esta limpia
           }
+
+
 
           if (key_pri == 0) // Si es captura y no hay llave de actualizacion, es valido  
             Comp.prop.Valid = false // true (false);
@@ -252,8 +249,7 @@ export class captureForm extends FORM {
             Comp.prop.Valid = false;
 
 
-          //Se quita el 4 Septiembre 2024 
-          /*
+
           if (Recno >= 0) {
             const RecordSource = Comp.prop.RecordSource;
             Comp.prop.RecordSource = "";
@@ -263,13 +259,19 @@ export class captureForm extends FORM {
 
             Comp.prop.RecordSource = RecordSource; // Hace el refresh del componente
           }
-          */
-
-
-
         } else {
           Comp.prop.ReadOnly = false; // Si es llave de captura
+          /*
+          if (!activate) {
+            Comp.prop.Valid = false;
+          }
 
+          if (
+            Comp.prop.BaseClass == "comboBox" &&
+            !Comp.prop.MultiSelect
+          )
+            Comp.prop.Valid = true;
+          */
         }
       }
     }
@@ -338,8 +340,13 @@ export class captureForm extends FORM {
       if (result) {
         MessageBox("Datos actualizados");
       } else {
-        await this.requery()
+        MessageBox("Error al actualizar Datos", 16);
+        return;
       }
+      // hay grid de captura
+      //await this.lee_grid()
+
+
 
       this.prop.Valid = true;
       if (!this.Form.bt_borra.prop.Disabled)
@@ -395,45 +402,29 @@ export class captureForm extends FORM {
             true
           );
 
-
-          console.log("borra registro", result, 'this=', this);
-          this.Recno = 0  // Ponemos en 0 el recno para borrar los datos
           if (result) {
-            //            await this.refreshComponent();
+            await this.refreshComponent();
             MessageBox("Datos borrados");
           } else {
-            return await this.requery()
+            const data = await this.Form.db.requery(
+              this.Form.prop.RecordSource
+            );
+
+            MessageBox("No se pudo borrar", 16);
+
+            if (data.length === 0) {
+              this.refreshComponent();
+            }
           }
         }
-        if (!this.Form.bt_graba.prop.Disabled && this.Recno > 0) {
+        if (!this.Form.bt_grana.prop.Disabled)
           this.Parent.bt_graba.prop.Visible = true;
-          this.prop.Visible = true;
-          return
-        }
-        this.First.Focus()  // asemos focon en el primer elemento
 
-
+        this.prop.Visible = true;
         return;
 
       }
       await this.Parent.borra();
     }
   })();
-
-
-  async requery() {
-
-    this.Recno = 0
-    MessageBox("Error al actualizar/borrar Datos", 16);
-
-    const data = await this.Form.db.requery(this.Form.prop.RecordSource);
-    if (data.length > 0)
-      this.Recno = data[0].Recno
-    else {
-      MessageBox("Registro borrado por otro usuario", 16);
-      this.First.Focus()
-    }
-
-    return;
-  }
 }

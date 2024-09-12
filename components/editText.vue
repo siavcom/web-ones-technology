@@ -1031,7 +1031,7 @@ const onFocus = async () => {
 
     let lon_campo = This.prop.Value.length
     if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
-      //  console.log('editText onFocus 1) Name=', This.prop.Name, 'campo:', campo, 'View:', This.Sql.View[tabla].est_tabla)
+
       lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
       if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
 
@@ -1172,6 +1172,8 @@ watch(
 watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
   (new_val: any, old_val: any) => {
+
+    console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
     if (new_val != old_val)
       emitValue(true)
   },
@@ -1187,13 +1189,29 @@ watch(
   () => props.Registro,
   async () => {
 
-    console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
+    // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
     emitValue(true)
     This.Recno = props.Registro
     This.recnoChange()
   },
   { deep: true }
 );
+
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+/*
+watch(
+  () => This.prop.Recno,
+  async () => {
+    console.log('EditText Watch Recno Name=', This.prop.Name, 'new_val =', This.prop.Recno)
+  },
+  { deep: true }
+);
+*/
+
 
 
 ////////////////////////////////////////
@@ -1350,6 +1368,22 @@ onMounted(async () => {
 
   oldVal = Value.value   // asignamos el valor viejo
 
+
+  const ControlSource = props.prop.ControlSource
+  const pos = ControlSource.indexOf(".") + 1;
+
+  if (pos > 2) {
+    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
+    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+
+    /*
+    if (This.Sql.View[tabla]) {
+      const Recno = toRef(This.Sql.View[tabla].recno)
+      console.log('xxxxxx editText init Name=', This.prop.Name, 'campo:', campo, 'tabla:', tabla, 'recno:', This.Recno)
+
+    }
+     */
+  }
   await This.recnoChange()
 
   // si es el primer elemento a posicionarse

@@ -99,7 +99,7 @@
     <span class="errorText" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     <!-- v-bind:Component="ref(This[compMain])" 
      v-model:Status="This[compMain].prop.Status"-->
-    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
+    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
       v-bind:position="This[compMain].position" @click.capture="when(true)">
@@ -375,7 +375,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    console.log('2) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'Value=', Value.value)
+    //console.log('2) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'Value=', Value.value)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -470,8 +470,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     for (let i = 0; i < columnas.length && !found; i++) {
       if (columnas && columnas[0]) {
         // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
-        if (
-          (typeof columnas[i].value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
+        if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
           This.prop.Value == columnas[i].value) {
           // El objeto columna tiene dos campos value y text
           displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
@@ -486,7 +485,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
       Value.value = columnas[0].value
       displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
-      console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
+      //console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
     }
   }
   This.prop.Value = Value.value
@@ -631,7 +630,7 @@ const validCheck = async (num_ren: number) => {
 
   columnas[num_ren].check = !columnas[num_ren].check
   // Si es un Multiselect clcula el valor resultante
-  console.log('comboBox validCheck ', 'columnas=', columnas)
+  //console.log('comboBox validCheck ', 'columnas=', columnas)
   const resultado = []
   for (let i = 0; i < columnas.length; i++) {
     if (columnas[i].check) {
@@ -646,7 +645,7 @@ const validCheck = async (num_ren: number) => {
     coma = ','
   }
   Value.value = ValResultante
-  console.log('comboBox evalidCheck ', 'Value=', Value.value)
+  //console.log('comboBox evalidCheck ', 'Value=', Value.value)
   // This.prop.Value = Value.value
   emitValue()
   //This.prop.Value = ValResultante
@@ -665,7 +664,7 @@ const validCheck = async (num_ren: number) => {
 const validList = async () => {
   //toggle.value = false
 
-  console.log('ComboBox validList', This.prop.Name, 'Value=', Value.value)
+  // console.log('ComboBox validList', This.prop.Name, 'Value=', Value.value)
   //emitValue()
 
   return
@@ -676,7 +675,7 @@ const when = async (click: boolean) => {
 
   // No se permite el focus si es solo lectura
   if (This.prop.ReadOnly) {
-    console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
+    // console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
     if (!This.prop.Disabled) {
       This.prop.Disabled = true
       setTimeout(function () {
@@ -707,7 +706,7 @@ const onFocus = async () => {
 
   // No se permite el focus si es solo lectura
   if (This.prop.ReadOnly) {
-    console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
+    //console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
     if (!This.prop.Disabled) {
       This.prop.Disabled = true
       setTimeout(function () {
@@ -738,7 +737,7 @@ const onFocus = async () => {
       }
 
       if (props.prop.MultiSelect) { // Si es multi seleccion generaramos el arreglo
-        console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor, This.prop.Value)
+        //console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor, This.prop.Value)
         if (This.prop.Value.trim().length > 0)
           List.value = eval('[' + This.prop.Value.trim() + ']')
       }
@@ -792,7 +791,6 @@ const renderComboBox = async (readData?: boolean) => {
 
   if (columnas.length > 0) return
 
-  //console.log('1) render combobox ===>>', This.Name, 'Value=', Value.value)
   // if (props.prop.Status == 'I') return
 
 
@@ -811,6 +809,7 @@ const renderComboBox = async (readData?: boolean) => {
   }
   */
 
+  //  console.log('1) render combobox ===>>', This.Name)
 
   if (props.prop.RowSourceType < 1) return
   if (props.prop.ColumnCount == 0) return
@@ -819,7 +818,7 @@ const renderComboBox = async (readData?: boolean) => {
 
   await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
-  //console.log('ComboBox renderiza  ===>>', props.Name,props.prop.Status)
+
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
@@ -893,7 +892,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
     case 3: {   // SQL Server Query
       data = await This.Form.db.execute(RowSource, 'MEMVAR')
-      console.log('render comboBox data ===>', data)
+      //console.log('render comboBox data ===>', data)
 
       break
     }
@@ -993,7 +992,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-  console.log('2) render combobox ===>>', This.Name, 'Value=', Value.value, 'columnas=', columnas)
+  //console.log('2) render combobox ===>>', This.Name, 'Value=', Value.value, 'columnas=', columnas)
 
   await emitValue(true, true)
   This.prop.Status = 'A'
@@ -1129,7 +1128,7 @@ watch(
       divStyle.zIndex = props.style.zIndex
 
 
-    console.log('watch toggle.value', props.Name, old_val, new_val)
+    //console.log('watch toggle.value', props.Name, old_val, new_val)
     if (!old_val && new_val) onFocus()
   },
   { deep: true }
@@ -1176,7 +1175,7 @@ watch(
 watch(
   () => props.prop.RowSource,
   (new_val, old_val) => {
-    console.log('watch ComboBox RowSource===>>', new_val)
+    //console.log('watch ComboBox RowSource===>>', new_val)
     if (new_val != old_val) {
       // 9/Feb/2024 borra las columnas si las tiene 
       while (columnas.length > 0)
@@ -1198,7 +1197,7 @@ watch(
   (new_val, old_val) => {
     // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
 
-    console.log('watchComboBox RowSourceType===>>', new_val)
+    //console.log('watchComboBox RowSourceType===>>', new_val)
     if (new_val != old_val) {
       // 9/Feb/2024 borra las columnas si las tiene 
       while (columnas.length > 0)
@@ -1311,7 +1310,7 @@ watch(
 
 //const init = async () => {
 onMounted(async () => {
-  console.log('comboBox onMounted', This.prop.Init)
+  // console.log('comboBox onMounted name=', This.prop.Name)
 
 
   thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
@@ -1421,8 +1420,6 @@ function myClick(e) {
 
 
 window.addEventListener('mousedown', myClick);
-
-
 
 const impComp = ((name: string, pos?: string) => {
 

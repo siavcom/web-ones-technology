@@ -16,7 +16,7 @@
 
 - Make a simple program in typescript (class based), but with out knowledge of web programming (HTML, CSS, VUE).
 
-It's based in use a main form (like ThisForm in VFP) made in typescript only, where each form has it owns components ( editBox, comboBox,checkBox grid ,etc) and has it own methods (click(), when, valid() etc())  forming a component tree.
+It's based in use a main form (like ThisForm in VFP) made in typescript only, where each form has it owns components ( editBox, comboBox, checkBox, grid, modalContainer ,etc) and has it own methods (click(), when, valid() etc())  forming a component tree.
 
                     this.Form
                     /   |   \
@@ -183,6 +183,7 @@ method:
           1-Value.
           2-Alias,
           3-Query SQL Server
+          4-Local Sql
           5-Array
           
      when RowSourceType=2 or 3, you have to specify the RowSource     
@@ -200,6 +201,10 @@ method:
 
 #### example SQL Server :
     - RowSourceType : 3
+    - RowSource : 'select cod_nom,nom_nom from lla1_nom order by nom_nom'
+
+#### example Local SQL :
+    - RowSourceType : 4
     - RowSource : 'select cod_nom,nom_nom from lla1_nom order by nom_nom'
 
 #### example array :

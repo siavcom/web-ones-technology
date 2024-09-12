@@ -2109,7 +2109,9 @@ export class VFPDB {
       // Asignamos los valores a la vista
 
       //      this.View[alias] = response; // asignamos su estructura  y filtros de condiciones
+      // console.log("1) Db genera_tabla View creada", alias, 'recno=', this.View[alias].recno);
       this.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
+      // console.log("2) Db genera_tabla View creada", alias, 'recno=', this.View[alias].recno);
       this.View[alias].recCount = respuesta.length; // registros totales
       //    this.View[alias]["tablaSql"] = alias // tabla en servidor SQL
       this.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
@@ -2755,94 +2757,128 @@ return false;
   // despla : Si es numerico brinca al recno con ese numero,
   //          Si es string top=brinca la primer registro del alias, botton=brinca la ultimo registro del alias
   /// //////////////////////////////////////
-  goto = async (despla: unknown) => {
-    if (!this.are_tra[this.num_are - 1]) {
-      return false;
+  goto = async (despla: undefined, alias?: string) => {
+
+    if (!alias) {
+      if (!this.are_tra[this.num_are - 1]) {
+        return false;
+      }
+      alias = this.are_tra[this.num_are - 1];
     }
-    const alias = this.are_tra[this.num_are - 1];
 
     this.View[alias].eof = false;
     this.View[alias].bof = false;
 
     let data = [];
     let recno = 0;
+
+    await this.localAlaSql("USE Now")
+
     if (typeof despla === "number") {
       recno = despla;
-    } else {
-      // desplazamiento top o bottom
+    } else {  // desplazamiento top o bottom
+      recno = 0
       if (despla == "top") {
         data = await this.localAlaSql(
-          "USE Now; SELECT top 1 recno   FROM " + alias + " order by recno desc"
+          "SELECT top 1 recno   FROM " + alias + " order by recno desc"
         );
       }
       if (despla == "bottom") {
         data = await this.localAlaSql(
-          "USE Now; SELECT top 1 recno   FROM " + alias + " order by recno "
+          "SELECT top 1 recno   FROM " + alias + " order by recno "
         );
       }
 
-      if (data.length > 1) {
-        recno = data[1][0][recno]; // un solo campo
+      if (data.length == 0) { // No hay datos
+        this.View[alias].row = -1;
+        this.View[alias].eof = true;
+        this.View[alias].bof = true;
+        return null;
       }
+
+      recno = data[0][recno];
       this.View[alias].row = -1;
-      if (recno > 0) {
-        for (let row = 0; this.View[alias].recnoVal.lenght; row++) {
-          if (this.View[alias].recnoVal[row].recno == recno) {
-            this.View[alias].row = row;
-            break;
-          }
+      for (let row = 0; this.View[alias].recnoVal.lenght; row++) {
+        if (this.View[alias].recnoVal[row].recno == recno) {
+          this.View[alias].row = row;
+          break;
         }
         //          this.View[alias].row   = this.View[alias].recnoVal
         //          this.View[alias].recno = this.nowValue(alias, 'recno', recno) // asignamos valores del alias posicionado
-      } else {
-        // this.View[alias].recnoVal = []
-        this.View[alias].row = -1;
-        if (despla == "top") {
-          this.View[alias].eof = true;
-        } else {
-          this.View[alias].bof = true;
-        }
-
-        return false;
       }
     }
 
     // leedatos
-    data = await this.localAlaSql(
-      "USE Now; SELECT *   FROM " + alias + "  where recno=?",
-      recno
-    );
-    // console.log('Db goto data ',data[1][0])
+    if (recno == 0)  // se posiciona en el registro actual
+      recno = this.View[alias].recno
 
-    if (data[1].length > 0) {
+    if (recno == 0) { // no has datos
+      this.View[alias].row = -1;
+      this.View[alias].eof = true;
+      this.View[alias].bof = true;
+      return null;
+    }
+
+    data = await this.localAlaSql(" SELECT *   FROM " + alias + "  where recno=?", recno);
+
+    if (data.length > 0) {
       this.View[alias].recno = recno;
       const row = this.View[alias].recnoVal.find((ele) => ele.recno == recno);
       this.View[alias].row = row.id;
-      this.View[alias].data = data[1][0];
-      // console.log('Db goto view',this.View[alias])
-      if (data[1].length == 1) {
-        this.View[alias].eof = true;
-        this.View[alias].bof = true;
-      }
-
-      return data[1][0];
+      this.View[alias].data = data[0]
+      this.bof(alias)
+      this.eof(alias)
+      console.log("2) goto View=", this.View[alias]);
+      return this.View[alias].data;
     }
 
-    /*
-        for (let i = 0; i < this.View[alias].recnoVal.length; i++) {
-          if (recno==this.View[alias].recnoVal[i].recno){
-             row=i
-             break
-          }
-        }
-    */
     this.View[alias].eof = true;
     this.View[alias].recno = 0;
     this.View[alias].row = -1;
-    this.View[alias].data = {};
+    this.View[alias].data = [];
 
     return null;
   };
+
+  //////////////////////////////////////////////
+  // bof : Indica si esta a principo del archivo
+  //////////////////////////////////////////////
+
+  bof = async (alias?: string) => {
+    if (!alias) {
+      alias = this.are_tra[this.num_are - 1];
+    }
+
+    await this.localAlaSql("USE Now")
+    const data = await this.localAlaSql(" SELECT MIN(recno) as recno   FROM " + alias);
+    if (data.length > 0)
+      if (data[0].recno == this.View[alias].recno) {
+        this.View[alias].bof == true
+        return true
+      }
+
+    this.View[alias].bof == true
+    return true
+  }
+  //////////////////////////////////////////////
+  // eof : Indica si esta a fin del archivo
+  //////////////////////////////////////////////
+
+  eof = async (alias?: string) => {
+    if (!alias) {
+      alias = this.are_tra[this.num_are - 1];
+    }
+    await this.localAlaSql("USE Now")
+    const data = await this.localAlaSql(" SELECT MAX(recno) as recno   FROM " + alias);
+    if (data.length > 0)
+      if (data[0].recno == this.View[alias].recno) {
+        this.View[alias].eof == true
+        return true
+      }
+
+    this.View[alias].eof == true
+    return true
+  }
 
   /// /////////////////////////////////////////////////
   // skip : se mueve registro en forma relativa donde este el recno
@@ -2913,34 +2949,57 @@ return false;
   // scatter Lee los datos del registro actual
   // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
   /// //////////////////////////////////////
-  scatter = async (tipo?: String, fields?: []) => {
-    let resultado = {};
-    if (!this.are_tra[this.num_are - 1]) {
-      return false;
-    }
-    const alias = this.are_tra[this.num_are - 1];
-    //    const recno = this.View[alias].recnoVal[this.View[alias].row]
-    const recno = this.View[alias].recnoVal[this.View[alias].row].recno;
+  scatter = async (tipo: String, aliasFields?: undefined, alias?: string) => {
+    let resultado = [];
+    let fields = []
 
-    const data = await this.goto(recno); // lee los datos actuales
-    if (data[1] && data[1].length == 0) {
-      return null;
+    if (tipo.toLowerCase() == "fields") {
+      if (!aliasFields)
+        return false
+      fields = aliasFields
     }
 
-    if (tipo.toLowerCase() == "MEMVAR") {
-      resultado = data[1];
+    if (!aliasFields) {
+      if (!this.are_tra[this.num_are - 1]) {
+        return false;
+      }
+      alias = this.are_tra[this.num_are - 1];
+    }
+    else
+      if (tipo.toLowerCase() == "memvar")
+        alias = aliasFields
+
+
+    if (!alias) {
+      if (!this.are_tra[this.num_are - 1]) {
+        return false;
+      }
+      alias = this.are_tra[this.num_are - 1];
     }
 
-    if (tipo.toLowerCase() == "FIELDS") {
+    // checar diferencia entre recnoVal y recno
+    // const recno = this.View[alias].recnoVal[this.View[alias].row].recno;
+
+    const data = await this.goto(0, alias); // lee los datos actuales
+
+    if (data == null) {
+
+      return data;
+    }
+
+    if (tipo.toLowerCase() == "memvar") {
+
+      return data;
+    }
+
+    if (tipo.toLowerCase() == "fields") {
       for (let i = 0; i < fields.length; i++) {
         const field = fields[i];
-        resultado[field] = data[1][field];
+        resultado[field] = data[field];
       }
     }
-    if (data[1].length > 0) {
-      return data[1];
-    }
-    return null;
+
+    return resultado
   };
 
   /// //////////////////////////////

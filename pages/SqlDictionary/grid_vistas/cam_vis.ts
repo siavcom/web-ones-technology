@@ -16,14 +16,14 @@ export class cam_vis extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Campos que contiene'
+        this.textLabel = 'SELECT <fields>'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comevis.cam_vis'
-        this.prop.ToolTipText ='Campos que contiene'
+        this.prop.ToolTipText = 'Campos que contiene'
         this.prop.Placeholder = "Campos que contiene"
 
-        this.style.width='400px'
+        this.style.width = '400px'
     }
 
 
