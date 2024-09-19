@@ -231,6 +231,7 @@ export class GRID extends COMPONENT {
   // row: renglon a borrar
   /////////////////////////
   async deleteRow(recno: number) {
+
     await this.Form.db.delete(
       recno,
       this.prop.RecordSource,

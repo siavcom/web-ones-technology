@@ -67,7 +67,28 @@ export class COMPONENT {
     Image: "",
     Init: true,
     InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
-
+    /*
+        // # represents numbers 0 - 9
+        '#': { pattern: /[0-9]/ },
+    
+        // X represents alphanumeric characters 0 - 9, a - z and A - Z
+        'X': { pattern: /[0-9a-zA-Z]/ },
+    
+        // S represents alphabets a - z and A - Z
+        'S': { pattern: /[a-zA-Z]/ },
+    
+        // A represents alphabets a - z and A - Z transformed to uppercase
+        'A': { pattern: /[a-zA-Z]/, uppercase: true },
+    
+        // a represents alphabets a - z and A - Z transformed to lowercase
+        'a': { pattern: /[a-zA-Z]/, lowercase: true },
+    
+        // ! escapes next token (mask !# will render #)
+        '!': { escape: true },
+    
+        // * is a repeat symbol that allows repeating current token until it’s valid (e.g. mask #* for all digits or A* A* A* A* for ALLOW FOUR WORDS ONLY)
+        '*': { repeat: true }
+    */
     InputProp: { Enabled: true, Visible: true },
 
     Key: 0,

@@ -10,21 +10,26 @@
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut"
       @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      v-on:keyup.enter="clickReturn()">
+      v-on:keyup.enter="clickReturn()" @contextmenu="handler($event)">
 
+    <!--  v-maska="maska" @maska="onMaska" data-maska-reversed
+      :data-maska-number-fraction="props.prop.Decimals" data-maska-number-unsigned
+      
+    -->
     <!--spinner-->
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
       :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
-      @input="emitValue(false)" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()">
+      @input="emitValue(false)" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
+      @contextmenu="handler($event)">
 
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style="inputStyle">
-      <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" :style="inputStyle" v-model="Value"
+      <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style="inputStyle" v-model="Value"
         :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="inputStyle.rows" :cols='inputStyle.cols'
-        @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus"></textarea>
+        @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus" @contextmenu="handler($event)"></textarea>
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
@@ -32,7 +37,8 @@
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref" :style="inputStyle"
       :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
       :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex"
-      @keypress="keyPress($event)" @focusout="focusOut" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()">
+      @keypress="keyPress($event)" @focusout="focusOut" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
+      @contextmenu="handler($event)">
     <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
@@ -45,14 +51,14 @@
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
       <!--TransitionGroup name='detailJson' tag="div"-->
-      <details :id="Id + '_detail_' + key" v-for="(    comp, index, key    ) in     compJson    " key:='index'>
+      <details :id="Id + '_detail_' + key" v-for="(    comp, index, key    ) in compJson    " key:='index'>
         <summary :id="Id" :style="{ fontWeight: 'bold', height: inputStyle.height }" :key='index'>
           <label>{{ comp.label }}
           </label>
         </summary>
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
           :readonly="comp.readOnly ? true : false" :style="comp.style ? comp.style : { width: 'auto', height: '13px' }"
-          @focusout="focusOut">
+          @focusout="focusOut" @contextmenu="handler($event)">
 
       </details>
       <!--/TransitionGroup-->
@@ -62,13 +68,15 @@
 
     <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style="inputStyle" ref="Ref"
       :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled || This.prop.ReadOnly" :tabindex="prop.TabIndex"
-      v-model="checkValue" @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)">
+      v-model="checkValue" @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)"
+      @contextmenu="handler($event)">
 
     <!--text-->
-    <input :id="Id" v-else class="text" ref="Ref" :style="inputStyle" :type="propType" v-model.trim="Value"
-      :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength" :size="prop.MaxLength"
-      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="focusOut"
-      @focus="onFocus" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()">
+    <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style="inputStyle" :type="propType"
+      v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
+      :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
+      @focusout="focusOut" @focus="onFocus" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
+      @contextmenu="handler($event)" v-maska="maska" @maska="onMaska">
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <nuxt-img :id="Id + '_help'"
@@ -80,16 +88,16 @@
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
       :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
     <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ prop.ErrorMessage.length >= 1 ?
-    prop.ErrorMessage
-    :
-    'Invalid Input'
+      prop.ErrorMessage
+      :
+      'Invalid Input'
       }}</div>
     <!--/div--> <!--fin class=component -->
     <!--/div-->
     <!--Teleport to="body"
     v-bind:Component="ref(This[compMain])"
     -->
-    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in  This.main " :key="compMain"
+    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
       :style="This[compMain].style" :position="This[compMain].position"
@@ -123,7 +131,6 @@ Supported Keys: Following keys are supported:
 
 */
 
-//import {format} from "date-fns"
 
 /*
 import {
@@ -143,7 +150,9 @@ import {
 
 } from "vue" */
 
-// , "update:Focus","update:Key",
+
+import { vMaska } from "maska/vue"
+
 
 ///////////////////////////////////////
 // Componentes
@@ -294,9 +303,6 @@ const props = defineProps<{
 
 //const ReadOnly = computed(() => !props.prop.When ||props.prop.ReadOnly ? true : false)
 
-//const ReadOnly = computed(() => This.prop.ReadOnly ? true : false)
-
-//const Component = ref(props.prop.This)
 
 const Component = toRef(() => props.prop.This)
 //console.log('editText Component=', Component.value)
@@ -363,6 +369,38 @@ const currentJson = ref({})
 const compJson = ref([])
 
 const typeNumber = ref('text');
+
+const maska = ref({
+  mask: props.prop.InputMask,
+
+  tokens: {
+    //'!': { pattern: /[0-9a-zA-Z]/, transform: (chr: string) => chr.toUpperCase() },
+    // X represents alphanumeric characters 0 - 9, a - z and A - Z
+    'X': { pattern: /[0-9a-zA-Z]/ },
+
+    // S represents alphabets a - z and A - Z
+    'S': { pattern: /[a-zA-Z]/ },
+
+    // A represents alphabets a - z and A - Z transformed to uppercase
+    'A': { pattern: /[0-9a-zA-Z]/, transform: (chr: string) => chr.toUpperCase() }, //uppercase: true },
+
+    // a represents alphabets a - z and A - Z transformed to lowercase
+    'a': { pattern: /[0-9a-zA-Z]/, transform: (chr: string) => chr.toLowerCase() },   //lowercase: true },
+
+    '9': { pattern: /[0-9]/ }, // :[0-9]:repeated" 
+  }
+
+})
+
+/*
+if (props.prop.InputMask.trim().length == 0)
+  maska.value.mask = '*'.repeat(props.prop.MaxLength)
+*/
+
+// convierte "!" en "A" en el inpputMask (VFP)
+maska.value.mask = maska.value.mask.replace(/!/gi, 'A')
+
+//console.log('EditBox name=', props.prop.Name, 'maska.value.mask=', maska.value.mask)
 
 
 const toNumberStr = async (n: number) => {
@@ -1310,6 +1348,16 @@ watch(
 );
 
 
+const onMaska = (event: CustomEvent<MaskaDetail>) => {
+  console.log('onMaska=', {
+    masked: event.detail.masked,
+    unmasked: event.detail.unmasked,
+    completed: event.detail.completed
+  })
+}
+
+
+
 
 const styleAssing = async () => {
   const Type = propType.value
@@ -1345,8 +1393,17 @@ const styleAssing = async () => {
 
 
 }
-
-
+/**
+ * Handler for right click event on the component
+ *
+ * @param {MouseEvent} event - the event
+ */
+const handler = (event) => {
+  if (event.which === 3) {
+    console.log("==================>>>>>>Right mouse down ", This.prop.Map);
+  }
+  event.preventDefault();
+}
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
@@ -1511,15 +1568,6 @@ const impComp = ((name: string, pos?: string) => {
 
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
-
-
-
-
-
-
-
-
-
 
 
 </script>

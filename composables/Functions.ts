@@ -167,6 +167,11 @@ export const multiFilter = (array: [], filters: {}) => {
   );
 };
 
+
+export const asc = (letra: string) => {
+  return letra.charCodeAt(0)
+}
+
 ///////////////////////////////////////////////
 // Funciones de números
 ///////////////////////////////////////////////
@@ -293,6 +298,53 @@ export async function Dime2D(rows) {
 
   return arr;
 }
+////////////////////////////////////////////
+
+//////////////////////////////////////////////
+// Clase : objetToLowercase
+// Author : Fernando Cuadras Angulo
+// Creacion :Septiembre /2024
+// Descripcion: recorre un objeto y pasa sus nombres a lowercase Crea un array de dos dimensiones
+/////////////////////////////////////////////
+
+/**
+ * objToLowerCase
+ * 
+ * Recorre un objeto y pasa sus nombres a lowercase
+ * 
+ * @param {object} data - objeto a recorrer
+ * @returns {object} objeto con nombres de propiedades en lowercase
+ */
+export function objToLowerCase(data: {}) {
+
+  const objeto = {}
+  for (const ele in data) {
+    objeto[ele.toLowerCase()] = data[ele]
+  }
+
+  console.log('objToLowerCase res=', objeto)
+  return objeto
+
+}
+
+/**
+ * Rounds a number to a specified number of decimal places.
+ * @param {number} n The number to round.
+ * @param {number} [digits=0] The number of decimal places to round to.
+ * @returns {number} The rounded number.
+ */
+export function roundTo(n: number, digits?: number) {
+  if (!digits) {
+    digits = 0;
+  }
+
+  let multiplicator = Math.pow(10, digits);
+  n = parseFloat((n * multiplicator).toFixed(11));
+  var test = (Math.round(n) / multiplicator);
+  return +(test.toFixed(digits));
+}
+
+
 
 
 //////////////////////////////////////////////

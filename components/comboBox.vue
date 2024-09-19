@@ -59,7 +59,8 @@
 
       <input :id="Id" class="textInput" :style="inputStyle" :disabled="This.prop.Disabled"
         :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
-        ref="Ref" @keypress="keyPress($event)" @focus.prevent="toggle = false; when()" @focusout="emitValue()" />
+        ref="Ref" @keypress="keyPress($event)" @focus.prevent="toggle = false; when()" @focusout="emitValue()"
+        @contextmenu="handler($event)" />
 
       <!--span> {{ prop.Value }}</span-->
       <!--Valor seleccionado click-->
@@ -1420,6 +1421,20 @@ function myClick(e) {
 
 
 window.addEventListener('mousedown', myClick);
+
+/**
+ * Handler for right click event on the component
+ *
+ * @param {MouseEvent} event - the event
+ */
+const handler = (event) => {
+  if (event.which === 3) {
+    console.log("==================>>>>>>Right mouse down ", This.prop.Map);
+  }
+  event.preventDefault();
+}
+
+
 
 const impComp = ((name: string, pos?: string) => {
 

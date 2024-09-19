@@ -1120,6 +1120,7 @@ export class VFPDB {
   // row : Renglon donde se encuentra el registro a borrar
   /// ////////////////////////////////////////////
   deleteRow = async (key_pri: number, alias: any) => {
+    console.log("Db deleteRow ", key_pri, alias);
     if (key_pri <= 0) {
       return;
     }
@@ -1145,7 +1146,7 @@ export class VFPDB {
     const condicion = {}; // Generamos la condicion
     dat_vis.where = { key_pri }; // obtenemos el key_pri a borrar
     try {
-      //  console.log('Db deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
+      console.log('Db deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
       const response = await this.axiosCall(dat_vis);
       if (response == null) return null;
 
@@ -1181,6 +1182,8 @@ export class VFPDB {
   // row : Renglon donde se encuentra el registro a borrar
   /// ////////////////////////////////////////////
   delete = async (recno: number, alias: string, SqlUpdate: boolean) => {
+
+
     if (!SqlUpdate) {
       SqlUpdate = false;
     }
