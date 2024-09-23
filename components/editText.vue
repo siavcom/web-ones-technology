@@ -432,16 +432,38 @@ const onInput = ({ target }) => {
     Value.value = 0
     return
   }
+  let key = Key.value
 
-  const valor = target.value.replace(/[^0-9.]/g, "").trim()  // solo admite numeros y punto decimal
+  console.log('1) EditBox onInput Name=', props.prop.Name, 'key=', key)
 
 
-  if (valor.length == 0) {
-    target.value = oldVal
-    return
+  if ((key < 48 || key > 57) && // no es un numero 
+    (key != 46 && key != 45)) // no es punto y no es signo menos
+  {
+
+    const char = String.fromCharCode(key)
+    target.value = target.value.replace(char, '')
+
   }
-  else
-    target.value = valor
+
+  if (key == 45) {// si es signo menos pero no permite negativos
+    target.value = target.value.replace('-', '')
+    if (target.value.indexOf('-') >= 0) {
+      target.value = target.value.replace('-', '')
+      key = 0
+    }
+  }
+  /*
+  const valor = target.value.replace(/[^0-9.]/g, "").trim()  // solo admite numeros y punto decimal
+    console.log('onInput ', valor)
+    if (valor.length == 0) {
+      target.value = oldVal
+      return
+    }
+    else
+      target.value = valor
+  
+  */
 
   const len = target.value.length
   //Value.value = parseInt(target.value);
@@ -454,14 +476,34 @@ const onInput = ({ target }) => {
      }
  */
   // busca si se digito mas de un punto
-  if (punto !== -1 && target.value.indexOf('.', punto + 1) !== -1) {
-    target.value = target.value.substr(0, len - 1) // quitamos el segundo punto
+  if (punto >= 0) {
+    if (target.value.indexOf('.', punto + 1) > 0)
+      target.value = target.value.substr(0, len - 1) // quitamos el segundo punto
+    else { // checa decimales
+      const decimales = target.value.substr(punto + 1)
+      if (decimales.length > This.prop.Decimals)
+        target.value = target.value.substr(0, len - 1)
+    }
   }
 
-  currentValue.value[1] = parseFloat(target.value) // valor numerico
+  if (key == 45) // si puso un signo negativo
+    target.value = '-' + target.value
 
+  let valorNumerico = parseFloat(target.value) // valor numerico   
 
-  console.log('Value onInput length=', currentValue.value[1].length, currentValue.value[0], target.value)
+  console.log('2) EditBox onInput Name=', props.prop.Name, 'valorNumerico=', valorNumerico)
+
+  if (+valorNumerico < props.prop.Min)
+    target.value = target.value.substr(0, len - 1)
+
+  if (+valorNumerico > props.prop.Max)
+    target.value = target.value.substr(0, len - 1)
+
+  currentValue.value[1] = target.value // valor numerico
+  currentValue.value[0] = parseFloat(target.value) // valor numerico
+
+  // console.log('EditBox onInput Name=', props.prop.Name, 'currentValue.value[0]=', currentValue.value[0])
+
   //Value.value = parseFloat(target.value)
   //   console.log('onInput number',target.value)
   oldVal = target.value
@@ -474,7 +516,7 @@ fixed	The element is positioned relative to the browser window
 relative	The element is positioned relative to its normal position, so "left:20" adds 20 pixels to the element's LEFT position
 sticky	The element is positioned based on the user's scroll position
 A sticky element toggles between relative and fixed, depending on the scroll position. It is positioned relative until a given offset position is met in the viewport - then it "sticks" in place (like position:fixed).
-
+ 
 Note: Not supported in IE/Edge 15 or earlier. Supported in Safari from version 6.1 with a Webkit prefix.
 initial	Sets this property to its default value. Read about initial
 inherit	Inherits this property from its parent element. Read about inherit
@@ -843,16 +885,21 @@ const focusOut = async () => {
   let sw_error = false
   const Type = propType.value
   if (Type == 'number') {
-    if (+currentValue.value[1] < props.prop.Min) {
-      currentValue.value[1] = props.prop.Min
+    /*
+    if (+currentValue.value[0] < props.prop.Min) {
+      currentValue.value[0] = props.prop.Min
       sw_error = true
     }
-    if (+currentValue.value[1] > props.prop.Max) {
-      currentValue.value[1] = props.prop.Max
+   
+    if (+currentValue.value[0] > props.prop.Max) {
+      currentValue.value[0] = props.prop.Max
       sw_error = true
     }
+      */
+
     typeNumber.value = 'text';
-    Value.value = +currentValue.value[1]
+    Value.value = +currentValue.value[0]
+    console.log('focusOut editText Name', props.prop.Name, 'Value=', Value.value)
   }
 
   if (Type == 'date') {
@@ -961,18 +1008,10 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
     return // clickReturn()
 
   // caracteres permitido en input numero
-  if (Type == 'number') {
-    // console.log('KeyPress number', $event.charCode)
-    if (!(($event.charCode >= 48 &&
-      $event.charCode <= 57) ||
-      ($event.charCode == 46 && This.prop.Decimals > 0) || // punto con decimales
-      ($event.charCode == 45 && +This.prop.Min < 0)  // Menor a cero)  
-    ))
-      return $event.preventDefault()
-  }
 
   if (This.prop.Status != 'P')
     This.prop.Status = 'P'
+
   Key.value = $event.charCode
 
 
@@ -1437,7 +1476,7 @@ onMounted(async () => {
     if (This.Sql.View[tabla]) {
       const Recno = toRef(This.Sql.View[tabla].recno)
       console.log('xxxxxx editText init Name=', This.prop.Name, 'campo:', campo, 'tabla:', tabla, 'recno:', This.Recno)
-
+ 
     }
      */
   }
