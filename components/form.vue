@@ -48,7 +48,7 @@
                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
               -->
 
-              <div :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
+              <div nuxt-client :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
                 :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
                 <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
                   :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
@@ -71,7 +71,7 @@
   
               -->
               <TransitionGroup name='detailForm'>
-                <div :id="'div_' + compMain" v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
+                <div nuxt-client :id="'div_' + compMain" v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
                   v-show='ThisForm[compMain].prop.Visible'>
                   <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
@@ -106,7 +106,7 @@
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
                       @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                 -->
-                <component :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
+                <component nuxt-client :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"

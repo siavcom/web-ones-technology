@@ -290,6 +290,8 @@ const ShowError = ref(false)
 const sw_focus = ref(false)
 // Focus.value = false
 const divStyle = reactive(props.style)
+if (divStyle.height == 'auto')
+  divStyle.height = '18px'
 
 if (props.prop.MultiSelect)
   divStyle.minHeight = 'max-content'
@@ -339,7 +341,7 @@ const List = ref(This.prop.ListCount)
 const columnContainer = reactive({
   width: 'auto',
   height: 'auto', //height: min-content
-  maxHeight: '200px', //
+  maxHeight: '250px', //
   //zIndex: comboStyle.zIndex + 1
 })
 
@@ -415,7 +417,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   }
   else {  // Cuando es una lectura de campo
-
     if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
       // Actualizamos el registro del form
 
@@ -424,6 +425,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       //    This.Parent.Recno = props.Registro
 
       const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
+
       let sw_dat = false
       for (const campo in data) {
 
@@ -465,20 +467,26 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     else
       Value.value = ''
   }
-  //console.log('ComboBox Name=', props.prop.Name, 'Value.value=', Value.value)
+  console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
 
+
+  
   if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
     for (let i = 0; i < columnas.length && !found; i++) {
-      if (columnas && columnas[0]) {
-        // console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+      console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
+
+      //if (columnas && columnas[0]) {
         if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-          This.prop.Value == columnas[i].value) {
-          // El objeto columna tiene dos campos value y text
+          Value.value == columnas[i].value) {
+
+
+            // El objeto columna tiene dos campos value y text
           displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+          console.log('Encontro Valor comboBox Name=', props.prop.Name,  'displayi=', displayText.value, 'This.prop.Value=', This.prop.Value )
           found = true
           //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
         }
-      } // else break
+    //  } // else break
     }
 
 
@@ -1338,7 +1346,7 @@ onMounted(async () => {
 
     if (props.prop.Type == 'date') {
       inputStyle.width = '100px'
-      inputStyle.height = '20px'
+      inputStyle.height = '18px'
       inputStyle.maxHeight = '20px'
     }
     if (props.prop.Type == 'number')

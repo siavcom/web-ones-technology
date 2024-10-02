@@ -8,14 +8,41 @@
 //////////////////////////////////////
 // Funciones String
 //////////////////////////////////////
+
+/**
+ * Devuelve el código ASCII de un caracter
+ * @param {string} char - Char.
+ * @returns {number} - Código ASCII.
+ */
+export const asc = (letra: string) => {
+  return letra.charCodeAt(0)
+}
+
+/**
+ * Left function
+ * @param {string} texto - Texto a extraer a la izquierda
+ * @param {number} lon - Longitud de la cadena a extraer
+ * @returns {string} Cadena extraida a la izquierda
+ */
 export const left = async (texto: string, lon: number) => {
   return texto.substring(0, lon);
 };
 
+/**
+ * Right function
+ * @param {string} texto - Texto a extraer a la derecha
+ * @param {number} len - Longitud de la cadena a extraer
+ * @returns {string} Cadena extraida a la derecha
+ */
 export const right = async (texto: string, len: number) => {
   return texto.slice(-len);
 };
 
+/**
+ * Char function
+ * @param {number} ascci - ASCCI number
+ * @returns {string} Character corresponding to the number
+ */
 export const char = async (ascci: number) => {
   return String.fromCharCode(ascci);
 };
@@ -24,6 +51,11 @@ export const char = async (ascci: number) => {
 // Funciones Fecha
 ////////////////////////////////////
 
+/**
+ * Convierte una fecha tipo string en formato AAAA-MM-DD a tipo string en formato AAAAMMDD para SQL Server.
+ * @param {string} fecha - Texto a convertir. Si no se pasa parametro, se devuelve la fecha actual.
+ * @returns {string} - La fecha convertida a AAAAMMDD.
+ */
 export const dateToSql = async (fecha: string) => {
   return fecha.replaceAll("-", "").slice(0, 8);
 };
@@ -47,6 +79,11 @@ export const dateTimeToSql = async (time: string) => {
 };
 */
 
+/**
+ * Convierte una fecha tipo Date en una cadena tipo string.
+ * @param {Date} texto - Fecha a convertir. Si no se pasa parametro, se devuelve la fecha "1900-01-01".
+ * @returns {string} - La fecha convertida en una cadena tipo string.
+ */
 export const dateToString = async (texto: Date) => {
   let date =
     texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
@@ -57,10 +94,19 @@ export const dateToString = async (texto: Date) => {
   return texto.toString();
 };
 
+/**
+ * Returns the current time as a string in format 'AAAA-MM-DD HH24:MI:SS'
+ * @returns {string} - The current time as a string in format 'AAAA-MM-DD HH24:MI:SS'
+ */
 export const currentTime = async () => {
   return await dateTimeToSql();
 };
 
+/**
+ * Converts a date object to a string in the ISO format 'AAAA-MM-DDTHH24:MI:SS'
+ * @param {string} stringDate - The date string to convert. If not passed, the current date is used.
+ * @returns {string} - The date string in the ISO format 'AAAA-MM-DDTHH24:MI:SS'
+ */
 export const dateTimeToSql = async (stringDate?: string) => {
   let current: Date;
   if (!stringDate)
@@ -94,24 +140,47 @@ export const dateTimeToSql = async (stringDate?: string) => {
   return dateTime;
 };
 
+/**
+ * Convert a string to a date.
+ * @param {string} [texto] A string in the format 'AAAA-MM-DD'
+ * or 'AAAA-MM-DDTHH:MM:SSZ'. If not provided, the function
+ * will return the date '1900-01-01'.
+ * @returns {string} The date in the format 'AAAA-MM-DD'
+ */
 export const stringToDate = async (texto?: string) => {
-  if (!texto || texto == null || texto == "") texto = "1900-01-01";
+  if (!texto || texto == null || texto == "" || texto == null)
+    texto = "1900-01-01";
   let date = texto
-  if (date.length > 10)
+  if (date.length >= 10)
     date = date.slice(0, 10) + 'Z';
-
+  console.log('stringToDate date=', date)
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
+/**
+ * Convierte una cadena de texto en una fecha tipo ISOString.
+ * Si no se pasa parametro, se devuelve la fecha actual.
+ * El formato de entrada debe ser "AAAA-MM-DDTHH:MM" o "AAAA-MM-DD".
+ * El formato de salida es "AAAA-MM-DDTHH:MM"
+ * @param {string} texto - Texto a convertir. Si no se pasa parametro, se devuelve la fecha actual.
+ * @returns {Promise<string>} - La fecha convertida a ISOString.
+ */
 export const stringToTime = async (texto?: string) => {
-  if (!texto || texto == null || texto == "") texto = "1900-01-01T00:00";
+  if (!texto || texto == null || texto == "" || texto == undefined) texto = "1900-01-01T00:00";
 
   let date = texto.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
   return new Date(date).toISOString().substring(0, 16); // ISOString es formato 'AAAA-MM-DD'
 };
 
 
-
+/**
+ * Convierte dias o semanas en milisegundos.
+ * Si Type es nulo o 'D', se convierten dias a milisegundos.
+ * Si Type es 'W' o 'S', se convierten semanas a milisegundos.
+ * @param {number} day - Numero de dias o semanas a convertir.
+ * @param {string} [Type] - Tipo de conversion. 'D' para dias, 'W' para semanas, 'S' para semanas.
+ * @returns {Promise<number>} - El numero de milisegundos correspondiente.
+ */
 export const dayToMilliseconds = async (day: number, Type?: string) => {
   if (!Type || Type.slice(0, 0).toUpperCase() == "D")
     // Dias
@@ -126,6 +195,13 @@ export const dayToMilliseconds = async (day: number, Type?: string) => {
 // data : data to sum
 // tipo : type ( 'D'=days,'W'=weeks, 'M'=months, Null=date)
 
+/**
+ * Suma una fecha.
+ * @param {Date} date - Fecha a sumar.
+ * @param {number} data - Numero de dias o semanas a sumar.
+ * @param {string} [tipo] - Tipo de suma. 'D' para dias, 'W' para semanas, 'M' para meses, 'Y' para a os.
+ * @returns {Promise<string>} - La fecha resultante en formato 'AAAA-MM-DD'.
+ */
 export const addDate = async (date: Date, data: any, tipo?: string) => {
   const thisDate = new Date(date);
   if (!tipo)
@@ -159,6 +235,13 @@ export const addDate = async (date: Date, data: any, tipo?: string) => {
 ///////////////////////////////////////////////
 
 // Filtra un array segun el valor del filter= { Position: "header" }
+
+/**
+ * Filtra un array segun el valor del filter= { Position: "header" }
+ * @param {Array} array - Arreglo de objetos.
+ * @param {Object} filters - Objeto con las claves y valores a filtrar, ejemplo. { Position: "header" }
+ * @returns {Array} - Un nuevo array con los elementos filtrados.
+ */
 export const multiFilter = (array: [], filters: {}) => {
   return array.filter((o) =>
     Object.keys(filters).every((k) =>
@@ -168,14 +251,19 @@ export const multiFilter = (array: [], filters: {}) => {
 };
 
 
-export const asc = (letra: string) => {
-  return letra.charCodeAt(0)
-}
 
 ///////////////////////////////////////////////
 // Funciones de números
 ///////////////////////////////////////////////
 
+/**
+ * Convierte un número en una cadena con separadores de miles, decimales y signo.
+ * @param {number} val - Número a convertir.
+ * @param {string} [currency] - Moneda a utilizar ('MXN', 'EUR', 'USD'). Default: ""
+ * @param {number} [integers] - Número de enteros a mostrar. Default: 0
+ * @param {number} [decimals] - Número de decimales a mostrar. Default: 0
+ * @returns {string} - Cadena formateada.
+ */
 export const numberFormat = async (
   val: number,
   currency?: string,
@@ -243,6 +331,10 @@ export const numberFormat = async (
 };
 
 //////////////////////////////////////////////
+// Fucniones varias
+//////////////////////////////////////////////
+
+//////////////////////////////////////////////
 // Clase : MessageBox
 // Author : Fernando Cuadras Angulo
 // Creacion : Julio /2022
@@ -272,6 +364,11 @@ export async function MessageBox(
 // Ult.Mod  : 15/Enero/2023
 /////////////////////////////////////////////
 
+/**
+ * Delay the execution of the next line of code by a given number of milliseconds.
+ * @param {number} ms - The number of milliseconds to delay.
+ * @returns {Promise<void>} - A promise that resolves after the given number of milliseconds has passed.
+ */
 export async function Delay(
   ms: number
 ) {
@@ -289,6 +386,11 @@ export async function Delay(
 /////////////////////////////////////////////
 
 
+/**
+ * Crea un array de dos dimensiones con la cantidad de filas especificadas
+ * @param {number} rows - La cantidad de filas que se desean en el array
+ * @returns {array} - Un array de dos dimensiones con la cantidad de filas especificadas
+ */
 export async function Dime2D(rows) {
   var arr = [];
 
@@ -315,7 +417,7 @@ export async function Dime2D(rows) {
  * @param {object} data - objeto a recorrer
  * @returns {object} objeto con nombres de propiedades en lowercase
  */
-export function objToLowerCase(data: {}) {
+export async function objToLowerCase(data: {}) {
 
   const objeto = {}
   for (const ele in data) {

@@ -881,6 +881,13 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
+  
+  if (displayError.value) {
+    displayError.value = false
+    if (This.prop.ShowError)
+      This.prop.ShowError = false
+  }
+
   focusIn.value = 0 // Perdio el foco
   let sw_error = false
   const Type = propType.value
@@ -992,7 +999,6 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       This.prop.ShowError = false
   }
 
-
   // console.log('>>>>>KeyPress===>', char, 'Type=', Type)
   // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
@@ -1013,7 +1019,8 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
     This.prop.Status = 'P'
 
   Key.value = $event.charCode
-
+  This.prop.Key = $event.charCode
+  This.keyPress()
 
 }
 
@@ -1403,12 +1410,12 @@ const styleAssing = async () => {
 
   if (Type == 'date') {
     inputStyle.width = '120px'
-    inputStyle.height = '20px'
+    inputStyle.height = '18px'
     inputStyle.maxHeight = '20px'
   }
   if (Type == 'datetime-local') {
     inputStyle.width = '170px'
-    inputStyle.height = '20px'
+    inputStyle.height = '18px'
     inputStyle.maxHeight = '20px'
   }
 
@@ -1448,6 +1455,8 @@ const handler = (event) => {
 /////////////////////////////////////////
 
 //const init = async () => {
+//await callOnce(async () => {
+
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
 

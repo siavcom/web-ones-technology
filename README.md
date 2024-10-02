@@ -38,8 +38,7 @@ there are some components where each one have it's own components (grid have a s
             /     |    \
         Column1 Column2 Column..n
 
-       
-
+     
 Each component has it own propierties.
 
 - basic props

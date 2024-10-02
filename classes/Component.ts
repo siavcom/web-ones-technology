@@ -139,10 +139,7 @@ export class COMPONENT {
     Visible: true,
 
     When: true,
-
-
   };
-
 
   labelStyle = {
     background: "", //transparent
@@ -161,50 +158,42 @@ export class COMPONENT {
 
   inputStyle = { ...this.labelStyle }
 
-
   style = {
     //display: "flex", "inline-block"
+    alignContent: "baseline",
+    background: "transparent",
+    backgroundColor: "transparent", // semi "rgba(170, 187, 97, 0.5)",  //
+    backgroundImage: "",
+    border: "",  //    backgroundImage: "",
+    bordeRadius: "", //"2px",
+    color: "#b94295",
+    cols: "60",
     display: "inline-flex",
     flexGrow: "0" /* do not grow   - initial value: 0 */,
     flexShrink: "0" /* do not shrink - initial value: 1 */,
     flexBasis: "auto" /* width/height  - initial value: auto */,
     flexWrap: "wrap",
     fontWeight: "normal",
-    alignContent: "center",
-    background: "transparent",
-    backgroundColor: "transparent", // semi "rgba(170, 187, 97, 0.5)",  //
-    backgroundImage: "",
-
-    border: "",  //    backgroundImage: "",
-    bordeRadius: "", //"2px",
-
-    color: "#b94295",
-    cols: "60",
-
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    width: "max-content",      // 95%
     height: "99%",     // 95%
+    maxHeight: "auto",
     marginLeft: "0px", //5px
     maxWidth: "auto",
-    minWidth: "auto",
-    maxHeight: "auto",
     minHeight: "auto",
-
-    textAlign: "left",
+    minWidth: "auto",
     padding: "",
-
     position: "relative",
-    wordWrap: "break-word", // Parte las palabras
-
     // un valor negativo (usualmente tabindex="-1") significa que el elemento debe ser enfocado, pero no debe de ser accesible a través de la navegación secuencial del teclado. Es útil para crear widgets accesibles con JavaScript.
     // tabindex="0" significa que el elemento debe ser enfocado y ser accesible a través de la navegación secuencial del teclado, pero su orden relativo es definido por convención de la plataforma.
     // un valor positivo significa que debe poder recoger el foco y alcanzable a través de la navegación secuencial del teclado; su orden relativo es definido por el valor del atributo: la secuencia sigue el aumento del número de tabindex.
     // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
-
     tabindex: 0,
+    textAlign: "left",
+    width: "max-content",      // 95%
+    wordWrap: "break-word", // Parte las palabras
     zIndex: 1, // profundidad
-    // textAlign: "left";
+
   };
 
   position = {
@@ -214,6 +203,7 @@ export class COMPONENT {
   };
 
   imagen = { src: "" };
+  old_value = null
 
   constructor() {
     this.Name = this.constructor.name;
@@ -444,6 +434,13 @@ export class COMPONENT {
   // Valid
   // Descripcion: Cuando pierde el foco valida
   /////////////////////////////////////////////////////////////////
+
+  /**
+   * @description
+   * Cuando pierde el foco valida
+   * @param {boolean} Valid - Indica si es valido o no
+   * @returns {Promise<boolean>} - Indica si es valido o no
+   */
   public async valid(Valid: boolean): Promise<boolean> {
     this.prop.Valid = true;
     return this.prop.Valid;
@@ -454,6 +451,7 @@ export class COMPONENT {
   // Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
   ////////////////////////////////////////////////////////////////////
 
+
   public async interactiveChange() { }
 
   /////////////////////////////////////////////////////////////////////
@@ -461,6 +459,12 @@ export class COMPONENT {
   // Descripcion: Hace el click
   /////////////////////////////////////////////////////////////////
 
+  /**
+   * Click
+   * Descripcion: Hace el click en el componente
+   * 
+   * @returns void
+   */
   public async click() {
     return;
   }
@@ -470,6 +474,12 @@ export class COMPONENT {
   // Descripcion: Cuando recibe el foco
   /////////////////////////////////////////////////////////////////
 
+  /**
+   * When VFP
+   * Descripcion: Cuando recibe el foco
+   * 
+   * @returns boolean
+   */
   public async when() {
     return !this.prop.ReadOnly;
   }
@@ -481,16 +491,21 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
   //public setFocus = async () => {
 
+  /**
+   * Setea el foco en el elemento actual.
+   * @returns void
+   */
   public async setFocus() {
     this.prop.Focus = true;
 
   }
 
+  /////////////////////////////////////////////////////////////////////
+  // GotFocus
+  // Descripcion: Llamado cuando el elemento recibe el foco
+  /////////////////////////////////////////////////////////////////
   public async gotFocus() {
   }
-
-
-
 
   /////////////////////////////////////////////////////////////////////
   // pushEvent
@@ -513,8 +528,13 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
 
   //public keyPress = async ($event) => {
-  public keyPress($event) {
-    this.prop.Key = $event.charCode;
+
+  /**
+   * Cada tecla que se presiona en el input
+   * @returns El valor de la tecla presionada
+   */
+  public keyPress() {
+    //   public keyPress($event) {  
     return this.prop.Key;
     //  console.log('KeyPress===>', key)
   }

@@ -1,4 +1,8 @@
 # Nuxt 3 Minimal Starter
+npx nuxi dev
+npx nuxi cleanup
+
+##
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
@@ -32,6 +36,7 @@ pnpm run dev
 yarn dev
 ```
 
+ 
 ## Production
 
 Build the application for production:
