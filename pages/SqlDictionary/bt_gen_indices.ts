@@ -15,7 +15,7 @@ export class bt_gen_indices extends COMPONENT {
     this.prop.Value = "Genera Indices";
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/index.svg";
-    this.style.width = "24px";
+    this.style.width = "64px";
   } // Fin constructor
 
   // public click = async () => {

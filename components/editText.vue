@@ -76,7 +76,8 @@
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
       @focusout="focusOut" @focus="onFocus" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
-      @contextmenu="handler($event)" v-maska="maska" @maska="onMaska">
+      @contextmenu="handler($event)" v-maska="maska" @maska="onMaska"
+      @click.capture="This.Form.eventos.push(This.prop.Map + '.click()')">
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <nuxt-img :id="Id + '_help'"
@@ -881,16 +882,26 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
-  
+  if (This.prop.ReadOnly || This.prop.Disabled) {
+
+    return
+  }
+
+
   if (displayError.value) {
     displayError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
 
+
+
+
   focusIn.value = 0 // Perdio el foco
+
   let sw_error = false
   const Type = propType.value
+
   if (Type == 'number') {
     /*
     if (+currentValue.value[0] < props.prop.Min) {
@@ -906,7 +917,7 @@ const focusOut = async () => {
 
     typeNumber.value = 'text';
     Value.value = +currentValue.value[0]
-    console.log('focusOut editText Name', props.prop.Name, 'Value=', Value.value)
+
   }
 
   if (Type == 'date') {
@@ -1068,6 +1079,16 @@ const clickReturn = async () => {
 
 }
 
+
+/**
+ * Agrega el evento click al array de eventos del form
+ * @return {void}
+ */
+
+const click = () => {
+  This.Form.eventos.push(This.prop.Map + '.click()')
+
+}
 
 /////////////////////////////////////////////////////////////////////
 // onFocus
@@ -1406,7 +1427,10 @@ const onMaska = (event: CustomEvent<MaskaDetail>) => {
 
 
 const styleAssing = async () => {
-  const Type = propType.value
+  console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
+
+
+  const Type = propType.value.toLowerCase()
 
   if (Type == 'date') {
     inputStyle.width = '120px'
@@ -1434,9 +1458,10 @@ const styleAssing = async () => {
   if (Type == 'number')
     inputStyle.textAlign = 'right'
 
-  if (Type == 'checkbox')
+  if (Type == 'checkbox') {
+    console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
     inputStyle.width = '20px'
-
+  }
 
 }
 /**
@@ -1459,7 +1484,7 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-
+  console.log('1) editText onMounted Name=', This.prop.Name, 'thisElement=', thisElement)
   styleAssing()
 
   if (!This.prop.Visible)
@@ -1515,7 +1540,7 @@ onMounted(() => {
   init() // Ejecuta el init
 });
 */
-//init()
+
 
 
 /////////////////////////////////////////////////

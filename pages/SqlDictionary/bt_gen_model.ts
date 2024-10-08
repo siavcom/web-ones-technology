@@ -19,7 +19,7 @@ export class bt_gen_model extends COMPONENT {
     this.prop.Value = "Genera sequalize MODEL"
     this.prop.TabIndex=1
     this.prop.Image = "/Iconos/svg/data-modelling.svg"
-    this.style.width='24px'
+    this.style.width = "64px";
 
   } // Fin constructor
 

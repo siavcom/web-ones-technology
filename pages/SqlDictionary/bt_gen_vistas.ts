@@ -15,7 +15,7 @@ export class bt_gen_vistas extends COMPONENT {
     this.prop.Value = "Genera vistas";
     this.prop.TabIndex = 4;
     this.prop.Image = "/Iconos/svg/view-eye.svg";
-    this.style.width = "24px";
+    this.style.width = "64px";
   } // Fin constructor
 
   // public click = async () => {

@@ -1,18 +1,18 @@
 <template>
   <div class="divibutton" v-show="prop.Visible" :style="style">
-    <div class="mensajes">
-
-      <button class='button' type="submit" v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
-        :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus">
-        <img class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly" />
-        <label v-if="prop.Image.length > 0"
-          :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
-          :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
-      </button>
-      <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
-    prop.ToolTipText
-        }}</span>
-    </div>
+    <!--div class="mensajes"-->
+    <!--type="submit"-->
+    <button class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex"
+      @focusout="focusOut" @focus="onFocus" :style="inputStyle">
+      <img class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly" />
+      <label v-if="prop.Image.length > 0"
+        :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
+        :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
+    </button>
+    <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
+      prop.ToolTipText
+      }}</span>
+    <!--/div-->
   </div>
 </template>
 
@@ -107,7 +107,13 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
+const inputStyle = reactive(This.inputStyle)
+//inputStyle.width = This.style.width
+//inputStyle.height = This.style.height
 
+
+if (inputStyle.width == 'auto')
+  inputStyle.width = '100%'
 This.Recno = props.Registro
 
 const Value = ref(props.prop.Value)
@@ -153,8 +159,16 @@ const focusOut = async () => {
 };
 
 const onFocus = async () => {
+
   ToolTipText.value = false  // Activamos el ToolTipText
+  await This.when()
+  if (!This.prop.Disabled && !This.prop.ReadOnly) {
+    This.Form.eventos.push(This.prop.Map + '.click()')
+
+  }
 }
+
+
 
 
 /////////////////////////////////////////

@@ -1,51 +1,38 @@
 <template>
-  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style">
+  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi_label" :style="style">
     <!--div class="mensajes" v-bind:style="inputStyle"    :style="{ maxHeight: style.maxHeight } -->
-    <div :id="Id + '_labelText'" class="etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
-      :style="labelStyle">{{ prop.textLabel +
-        " " }}</div>
-
+    <div :id="Id + '_span'" class="etiqueta" :v-if="props.prop.textLabel > ' '" :style="labelStyle">{{ prop.textLabel +
+      " " }}</div>
     <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
     <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 
-    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox" :style="inputStyle"
+    <input :id="Id + '_label'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox" :style="inputStyle"
       :checked="checkValue" readonly="true" />
 
-    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
+    <input :id="Id + '_label'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
       readonly="true" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'date'" v-bind:style="inputStyle"-->
-    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle"
+    <input :id="Id + '_label'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle"
       readonly="true" v-model="Text" />
     <!--/div>
 
       <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="inputStyle"-->
-    <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
+    <input :id="Id + '_label'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
       :style="inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
-
-
-    <!--div :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="inputStyle" -->
-    <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="inputStyle">
-      <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
-      <label v-if="Text.length > 0"
-        :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
-    </button>
-
     <!--/div>
        
       <div v-else-->
-    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="inputStyle"
+    <input :id="Id + '_label'" v-else class="text" v-show="prop.Visible && Text != null" type="text" :style="inputStyle"
       readonly="true" v-model="Text" />
     <!--/div-->
+    <nuxt-img :id="Id + '_img'" v-if="prop.Image > '    '" class="img" :src="prop.Image" />
 
-
-    <div v-if="Type != 'imgButton' && prop.Image > '    '">
-      <nuxt-img :id="Id + '_imagen'" v-if="Type != 'imgButton' && prop.Image > '    '" class="img" :src="prop.Image" />
-    </div>
   </div>
   <!--/div-->
 </template>
+
 
 
 <!--textarea v-else-if="prop.Type == 'textArea'" class="text" 
@@ -70,50 +57,84 @@ const props = defineProps<{
   //Show: false;
   prop: {
 
-    This: null;
-    ToolTipText: string;
-    View: "";
-    Field: "";
-    Value: [String, Number, Date];
-    Caption: string;
-    Placeholder: "";
-    Format: "";
-    Image: "";
-    InputMask: "";
-    MaxLenght: 0;
-    ReadOnly: false;
-    Tag: "";
-    Valid: false;
+    Autofocus: false;
+    BaseClass: "EditText";
     Capture: true;
-    Name: "";
-    textLabel: "";
-    Type: string;
-    Visible: true;
-    ControlSource: "";
-    Key: string;
-    BaseClass: string;
-    Grid: false;
-    MaxLength: 0;
-    RowSource: ""; // vi_cap_doc.tdo_tdo,des_tdo
-    RowSourceType: number; //1-Value, 2-Alias, 3-Local SQL 5-Array
-    ColumnCount: 0;
-    ColumnWidths: string;
-    Sorted: false;
-    BoundColumn: 1; // Columna donde se tomara el Value
-    Multiple: false;
-    Status: string;
-    ErrorMessage: string;
-    ShowValue: false;
-    TabIndex: number;
-    Notation: 'standard'; //standard,scientific,enginniering,compact
-    Style: string; // decimal, currency,percent,unit
+
+    /* componentStyle: {
+       background: "white",
+       cols: 100,
+       color: "black",
+       fontFamily: "Arial",
+       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+       fontWeight: "normal",
+       height: "85%",
+       maxHeight: "auto",
+       maxWidth: "100%",
+       rows: 5,
+       textAlign: "left",
+       textTransform: "none",
+       zIndex: 1, // profundidad
+       width: "auto",
+     },*/
+
+    ControlSource: string;
     Currency: '   '; //USD,EUR,MXN
     CurrencyDisplay: 'code'; //to use the ISO currency code.
+
     Decimals: number;
+    Disabled: boolean;
+
+    ErrorMessage: '';
+
+    Field: "";
+    First: boolean;
+    Focus: boolean;
+    Format: "";
+
+    Grid: false;
+
+    Help: false;
+
+    htmlId: string;
+
+    InputMask: "";
+
+    Key: string;
+
+    MaxLength: 0;
+    Min: number;
+    Max: number;
+
+    Name: string;
+    Notation: 'standard'; //standard,scientific,enginniering,compact
     Nu: 'arab';//
 
 
-    //compAddress: any;
+    Placeholder: "";
+
+    ReadOnly: false;
+    RefValue: null;
+
+    Status: string;
+    ShowError: boolean;
+
+    Style: string; // decimal, currency,percent,unit
+
+    TabIndex: number;
+    Tag: "";
+    textLabel: "";
+    This: null;
+    ToolTipText: string;
+    Type: string;
+
+    Valid: true;
+    Value: string;
+    View: "";
+    Visible: true;
+    When: boolean;
+
+
   };
 
   style: {
@@ -127,6 +148,9 @@ const props = defineProps<{
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
   };
+  inputStyle: {
+    background: "white";
+  };
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -135,8 +159,9 @@ const props = defineProps<{
   //db: any
 }>();
 
-const Component = ref(props.prop.This)
-const This = Component.value
+const Component = toRef(() => props.prop.This)
+//console.log('editText Component=', Component.value)
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
 const Id = This.prop.Name + props.Registro.toString().trim()
 
@@ -150,18 +175,14 @@ const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checkValue = ref(false)
 
-//const inputStyle = reactive(props.style)
 const inputStyle = reactive(This.inputStyle)
-//inputStyle.color = "#b94295"
-const Type = ref(props.prop.Type.toLowerCase())
-
 
 // el width y maxWidth de 99% fue lo mejor para los grid de columnas  
 // con 97% se desalinea horizontalmente en el grid de columnas
-if (inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
+if (inputStyle.width == 'auto' && props.prop.Type != 'checkBox')
   inputStyle.width = '99%'
 
-if (props.prop.Type.toLowerCase() == 'checkbox')
+if (props.prop.Type == 'checkbox')
   inputStyle.width = '20px'
 
 
@@ -438,7 +459,6 @@ const readCampo = async () => {
       // console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
     }
   }
-
   if (props.prop.Type == 'number') {
     //Text.value = toNumberStr(Text.value);
     Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
@@ -500,11 +520,6 @@ const init = async () => {
   if (props.prop.Type == 'number')
     inputStyle.textAlign = 'right'
 
-  Text.value = props.prop.Value
-
-  if (This.prop.BaseClass == "imgButton")
-    Type.value = 'imgButton'
-
   await readCampo()
   This.recnoChange()
 
@@ -512,8 +527,3 @@ const init = async () => {
 
 init();
 </script>
-<style scoped>
-.button {
-  background-color: bind("props.style.backgroundColor")
-}
-</style>

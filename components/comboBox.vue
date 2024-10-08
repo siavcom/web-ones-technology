@@ -378,7 +378,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    //console.log('2) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'Value=', Value.value)
+    console.log('2) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'Value=', Value.value)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -467,13 +467,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     else
       Value.value = ''
   }
-  console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
+ // console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
 
 
   
   if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
     for (let i = 0; i < columnas.length && !found; i++) {
-      console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
+   //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
 
       //if (columnas && columnas[0]) {
         if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
@@ -482,7 +482,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
             // El objeto columna tiene dos campos value y text
           displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
-          console.log('Encontro Valor comboBox Name=', props.prop.Name,  'displayi=', displayText.value, 'This.prop.Value=', This.prop.Value )
+          console.log('Encontro Valor comboBox Name=',This.Parent.prop.Name,props.prop.Name,  'displayText=', displayText.value, 'This.prop.Value=', This.prop.Value )
           found = true
           //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
         }
@@ -1152,7 +1152,7 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
 
-    //    console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
 
     if (This.prop.Value != Value.value) {
       Value.value = This.prop.Value
