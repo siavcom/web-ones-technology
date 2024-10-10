@@ -12,9 +12,7 @@
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
-
       <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
-
         <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
           :disabled="prop.ReadOnly">
@@ -35,7 +33,7 @@
           </div>
 
           <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/add-color.svg"
-            width="15" />
+            width="5%" />
           <!--div v-show='option.check'>+</div-->
           <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
 
@@ -290,18 +288,36 @@ const ShowError = ref(false)
 const sw_focus = ref(false)
 // Focus.value = false
 const divStyle = reactive(props.style)
-if (divStyle.height == 'auto')
-  divStyle.height = '18px'
 
-if (props.prop.MultiSelect)
-  divStyle.minHeight = 'max-content'
+
+if (props.prop.MultiSelect) {
+  if (!divStyle.borderStyle)
+    divStyle.borderStyle = "solid"
+  if (!divStyle.borderRadius)
+    divStyle.borderRadius = "4px"
+
+  if (!divStyle.borderColor)
+    divStyle.borderColor = 'black';
+  if (!divStyle.borderWidth)
+    divStyle.borderWidth = '1px'
+}
+
+if (divStyle.width == 'auto')
+  divStyle.width = 'fit-content'
+
+//if (divStyle.height == 'auto')
+//  divStyle.height = '18px'
+
+
+
+
 //divStyle.zIndex = 100 - This.prop.TabIndex
 
 
 const zIndex = ref(This.style.zIndex)
 
 const comboStyle = reactive({
-  height: This.style.height,
+  height: This.inputStyle.height,
   zIndex: zIndex.value
 })
 
@@ -345,10 +361,30 @@ const columnContainer = reactive({
   //zIndex: comboStyle.zIndex + 1
 })
 
-if (props.prop.MultiSelect) {
-  columnContainer.height = 'min-content'
-  columnContainer.maxHeight = 'min-content'
-}
+//if (props.prop.MultiSelect) {
+columnContainer.height = 'min-content'
+columnContainer.maxHeight = 'min-content'
+columnContainer.height = 'min-content'
+columnContainer.maxHeight = 'min-content'
+columnContainer.minHeight = 'max-content'
+columnContainer.borderRadius = '3px';
+columnContainer.boxSizing = 'border-box';
+columnContainer.maxHeight = divStyle.maxHeight
+columnContainer.overflowY = 'scroll';
+columnContainer.borderStyle = 'solid';
+columnContainer.borderColor = 'black';
+columnContainer.borderWidth = '1px'
+
+
+/*
+divStyle.minHeight = 'max-content'
+divStyle.borderRadius = '4px';
+divStyle.boxSizing = 'border-box';
+divStyle.maxHeight = '400px';   
+divStyle.overflowY = 'scroll';
+*/
+//
+
 let inputBuffer = ''
 
 
@@ -467,26 +503,26 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     else
       Value.value = ''
   }
- // console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
+  // console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
 
 
-  
+
   if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
     for (let i = 0; i < columnas.length && !found; i++) {
-   //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
+      //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
 
       //if (columnas && columnas[0]) {
-        if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-          Value.value == columnas[i].value) {
+      if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
+        Value.value == columnas[i].value) {
 
 
-            // El objeto columna tiene dos campos value y text
-          displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
-          console.log('Encontro Valor comboBox Name=',This.Parent.prop.Name,props.prop.Name,  'displayText=', displayText.value, 'This.prop.Value=', This.prop.Value )
-          found = true
-          //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
-        }
-    //  } // else break
+        // El objeto columna tiene dos campos value y text
+        displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+        console.log('Encontro Valor comboBox Name=', This.Parent.prop.Name, props.prop.Name, 'displayText=', displayText.value, 'This.prop.Value=', This.prop.Value)
+        found = true
+        //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
+      }
+      //  } // else break
     }
 
 

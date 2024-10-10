@@ -18,7 +18,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Value = "Entrar";
     this.style.width = "30%";
     this.prop.TabIndex = 4;
-    this.prop.Image = "/Iconos/svg/ok-accept.svg";
+    this.prop.Image = "/Iconos/svg/accept.svg";
   }
 
   /////////////////////////////////////////////////////////////////////

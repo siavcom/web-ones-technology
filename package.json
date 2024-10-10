@@ -10,14 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/axios": "^5.13.6",
     "@pinia/nuxt": "^0.5.5",
     "@zip.js/zip.js": "^2.6.40",
     "alasql": "^4.5.2",
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
-    "maska": "^3.0.2",
+    "maska": "^3.0.3",
     "nuxt": "^3.13.0",
+    "pinia": "^2.2.4",
     "socket.io-client": "^4.8.0",
     "vue": "latest",
     "vue-router": "latest",

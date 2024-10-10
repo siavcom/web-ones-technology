@@ -1,5 +1,8 @@
 <template>
-  <div class="divibutton" v-show="prop.Visible" :style="style">
+  <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
+  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="style"
+    v-show="This.prop.Visible">
+
     <!--div class="mensajes"-->
     <!--type="submit"-->
     <button class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex"
@@ -9,11 +12,12 @@
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
         :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
     </button>
-    <span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
+    <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
       prop.ToolTipText
-      }}</span>
+      }}</span-->
+
     <!--/div-->
-  </div>
+  </span>
 </template>
 
 <script setup lang="ts">

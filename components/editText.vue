@@ -1408,7 +1408,12 @@ watch(
   () => This.prop.Type, //props.prop.Value, //Value.value,
   async (new_val: boolean) => {
 
-    console.log('EditText Watch Name=', This.prop.Name, 'new_val Type=', new_val)
+    console.log('1) EditText Watch Name=', This.prop.Name, 'new_val Type=', new_val, Value.value, This.prop.Value)
+    if (Value.value !== This.prop.Value) {
+      Value.value = This.prop.Value
+      console.log('2) EditText Watch Name=', This.prop.Name, 'new_val Type=', new_val, Value.value, This.prop.Value)
+    }
+
     styleAssing()
   },
   { deep: false }
@@ -1428,9 +1433,8 @@ const onMaska = (event: CustomEvent<MaskaDetail>) => {
 
 const styleAssing = async () => {
   console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
-
-
   const Type = propType.value.toLowerCase()
+
 
   if (Type == 'date') {
     inputStyle.width = '120px'
@@ -1449,10 +1453,14 @@ const styleAssing = async () => {
     inputStyle.borderRadius = '2px'
     divStyle.height = 'auto'
   }
-  if ((Type == 'textarea' || Type == 'text') && inputStyle.width == 'auto') {
+  if (Type == 'textarea' || Type == 'text') {
     //  console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
+    if (inputStyle.width == 'auto')
+      inputStyle.width = '100%'
 
-    inputStyle.width = '100%'
+
+    inputStyle.textAlign = 'left'
+
   }
 
   if (Type == 'number')

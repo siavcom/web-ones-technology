@@ -144,7 +144,7 @@ export class gridForm extends FORM {
       // this.prop.Image = "/Iconos/Accept.png";
       this.prop.Image = '/Iconos/svg/bx-check-circle.svg'
       //this.prop.TabIndex= 20
-      this.style.width = '20px'
+      this.style.width = '92px'
     } // Fin constructor
 
     async click () {

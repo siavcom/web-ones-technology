@@ -74,7 +74,7 @@ export class dic_dat extends COMPONENT {
     this.Form.bt_gen_model.prop.Visible = false;
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
-    this.Form.bt_gen_all_models.Visible = true;
+    this.Form.bt_gen_all_models.prop.Visible = false;
     //this.interactiveChange()
 
 

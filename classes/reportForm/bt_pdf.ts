@@ -24,7 +24,7 @@ export class bt_pdf extends COMPONENT {
     this.prop.TabIndex = 3
     this.prop.Visible = true
     this.prop.ToolTipText = 'PDF file'
-    this.style.width = '60px'
+    this.style.width = '64px'
 
   } // Fin constructor
 

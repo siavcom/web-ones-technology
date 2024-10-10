@@ -20,7 +20,7 @@ export class bt_aceptar extends COMPONENT {
       Capture: false,
       BaseClass: "imgButton",
 
-      Image: "/Iconos/svg/ok-accept.svg",
+      Image: "/Iconos/svg/accept.svg",
 
     });
     Object.assign(this.style, { width: "35px" });

@@ -13,11 +13,11 @@ export class bt_gen_all_models extends COMPONENT {
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
     this.prop.ToolTipText='Genera todos sequelize MODEL en Back-End-Server'
-    this.prop.Visible = true
+    this.prop.Visible = false
     this.prop.Value = "All MODELS"
     this.prop.TabIndex=1
     this.prop.Image = "/Iconos/svg/data-modelling.svg"
-    this.style.width = "64px";
+    this.style.width = "92px";
 
   } // Fin constructor
 

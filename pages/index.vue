@@ -10,7 +10,7 @@
     </div>
 
     <div>
-      Web-Ones Technology Framework developed with :
+      Open Source Web-Ones Technology Framework developed with :
     </div>
 
     <div>
@@ -50,6 +50,10 @@
     <div> <a href="https://www.npmjs.com/package/vue-sweetalert2">vue-sweetalert2,</a>
     </div>
     <div> <a href="https://www.npmjs.com/package/vue3-table-lite">vue3-table-lite,</a>
+    </div>
+    <div> <a href="https://beholdr.github.io/maska/v3">maska,</a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/xlsx">xlsx,</a>
     </div>
     <div> <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub, </a>
     </div>

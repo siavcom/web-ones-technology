@@ -41,7 +41,7 @@
 
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '">
-      <nuxt-img :id="Id + '_imagen'" v-if="Type != 'imgButton' && prop.Image > '    '" class="img" :src="prop.Image" />
+      <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img" :src="prop.Image" />
     </div>
   </div>
   <!--/div-->

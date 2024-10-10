@@ -21,7 +21,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Value = "Aceptar";
     this.prop.Capture = false;
     // this.prop.Image = "/Iconos/Accept.png";
-    this.prop.Image = "/Iconos/svg/ok-accept.svg";
+    this.prop.Image = "/Iconos/svg/accept.svg";
     this.style.width = "64px";
   } // Fin constructor
 
@@ -68,6 +68,7 @@ export class bt_aceptar extends COMPONENT {
 
           this.Form.sis_sis.setFocus();
         }
+
 
         //this.Form.dic_dat.valid()
         this.prop.Visible = true;
@@ -226,6 +227,7 @@ export class bt_aceptar extends COMPONENT {
     // Tablas del servidor SQL
     if (this.Form.dic_dat.prop.Value == "T") {
       // Tablas
+
       // Hay datos capturados, grabara informacion
       if (
         this.Form.grid_tablas.prop.Visible &&
@@ -240,6 +242,7 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
+      this.Form.bt_gen_all_models.prop.Visible = true;
       m.sis_sis = this.Form.sis_sis.prop.Value;
       // this.Form.sis_sis.prop.Visible = false;
 
@@ -365,25 +368,25 @@ export class bt_aceptar extends COMPONENT {
     let vis_act = ""; // vista de actualizacion
     let grid_form = ""; // grid de captura
     if (vis_cap == "vi_cap_comedat") {
-      men_txt = "Quieres grabar la definicion de la tabla ";
+      men_txt = "Quieres grabar la definición de la tabla ";
       vis_act = "lla1_dat";
       grid_form = "grid_datos";
     }
 
     if (vis_cap == "vi_cap_comeind") {
-      men_txt = "Quieres grabar la definicion de indices ";
+      men_txt = "Quieres grabar la definición de indices ";
       vis_act = "lla1_ind";
       grid_form = "grid_indices";
     }
 
     if (vis_cap == "vi_cap_cometab") {
-      men_txt = "Quieres grabar la definicion de las tablas SQL";
+      men_txt = "Quieres grabar la definición de las tablas SQL";
       vis_act = "lla1_tab";
       grid_form = "grid_tablas";
     }
 
     if (vis_cap == "vi_cap_comevis") {
-      men_txt = "Quieres grabar la definicion de las vistas remotas SQL";
+      men_txt = "Quieres grabar la definición de las vistas remotas SQL";
       vis_act = "lla1_vis";
       grid_form = "grid_vistas";
     }
@@ -414,6 +417,7 @@ export class bt_aceptar extends COMPONENT {
         return false;
       }
     }
+    return false
   }
 
   async setFocus() { }

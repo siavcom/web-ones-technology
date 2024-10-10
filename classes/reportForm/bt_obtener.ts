@@ -21,7 +21,7 @@ export class bt_obtener extends COMPONENT {
     this.prop.Position = "footer";
     this.prop.Image = "/Iconos/svg/report-document.svg"; //print-color3.svg";
     this.prop.TabIndex = 1;
-    this.style.width = "35px";
+    this.style.width = "64px";
   } // Fin constructor
 
   async click() {
