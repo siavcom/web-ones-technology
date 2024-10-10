@@ -1457,10 +1457,7 @@ const styleAssing = async () => {
     //  console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)
     if (inputStyle.width == 'auto')
       inputStyle.width = '100%'
-
-
     inputStyle.textAlign = 'left'
-
   }
 
   if (Type == 'number')
