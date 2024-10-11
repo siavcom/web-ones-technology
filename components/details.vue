@@ -504,7 +504,8 @@ const init = async () => {
     const detail = document.getElementById(Id + "_details")
   }
   for (const componente in This) {
-    if (This[componente] !== undefined) {
+    console.log('Details.vue Init This==>', componente, This[componente])
+    if (This[componente] != null || This[componente] !== undefined) {
       if (
         This[componente].prop &&       // Si tiene propiedades
         This[componente].prop.Capture &&  // Si es componete de captura

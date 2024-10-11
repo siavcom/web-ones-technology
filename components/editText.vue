@@ -895,8 +895,6 @@ const focusOut = async () => {
   }
 
 
-
-
   focusIn.value = 0 // Perdio el foco
 
   let sw_error = false
@@ -916,6 +914,10 @@ const focusOut = async () => {
       */
 
     typeNumber.value = 'text';
+    const valor = +currentValue.value[0]
+    if (isNaN(valor))
+      currentValue.value[0] = 0
+
     Value.value = +currentValue.value[0]
 
   }
@@ -1408,10 +1410,8 @@ watch(
   () => This.prop.Type, //props.prop.Value, //Value.value,
   async (new_val: boolean) => {
 
-    console.log('1) EditText Watch Name=', This.prop.Name, 'new_val Type=', new_val, Value.value, This.prop.Value)
     if (Value.value !== This.prop.Value) {
       Value.value = This.prop.Value
-      console.log('2) EditText Watch Name=', This.prop.Name, 'new_val Type=', new_val, Value.value, This.prop.Value)
     }
 
     styleAssing()

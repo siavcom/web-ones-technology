@@ -1395,6 +1395,9 @@ export class VFPDB {
       //   console.log("Begin SQLEXEC  ", new Date().toISOString(), "Query=", query);
 
       const respuesta = await this.axiosCall(dat_vis);
+      console.log('Db execute alias query,respuesta', dat_vis.query,respuesta)
+
+      if (respuesta.length==0) return respuesta
 
       if (respuesta == null) return null;
 
@@ -3140,6 +3143,15 @@ return false;
     }
   };
 
+  /**
+   * JasperReport
+   *
+   * Genera un reporte en PDF con JasperReport
+   * @param {string} query - Consulta SQL que se usara para generar el reporte
+   * @param {string} for_rep - Contenido del archivo jrxml
+   * @param {string} [dataView=''] - Nombre de la vista que se usara para generar el reporte
+   * @returns {Promise<Buffer>} - Buffer con el contenido del reporte en PDF
+   */
   public async jasperReport(query: string, for_rep: string, dataView?: string) {
     if (!dataView) dataView = "";
 

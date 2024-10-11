@@ -2,13 +2,13 @@
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="style"
     v-show="This.prop.Visible">
-
     <!--div class="mensajes"-->
     <!--type="submit"-->
-    <button class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex"
-      @focusout="focusOut" @focus="onFocus" :style="inputStyle">
-      <img class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly" />
-      <label v-if="prop.Image.length > 0"
+    <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
+      :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus">
+      <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
+        :style="inputStyle" />
+      <label :id="Id + '_label'" v-if="prop.Image.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
         :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
     </button>
@@ -112,6 +112,10 @@ const props = defineProps<{
 const Component = ref(props.prop.This)
 const This = Component.value
 const inputStyle = reactive(This.inputStyle)
+
+const Id = This.prop.Name + props.Registro.toString().trim()
+
+
 //inputStyle.width = This.style.width
 //inputStyle.height = This.style.height
 

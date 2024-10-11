@@ -17,14 +17,13 @@ export class bt_pdf extends COMPONENT {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
-    this.prop.Value = 'File'
     this.prop.Capture = false;
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/pdf-file.svg"        //print-color3.svg";
     this.prop.TabIndex = 3
     this.prop.Visible = true
     this.prop.ToolTipText = 'PDF file'
-    this.style.width = '64px'
+    this.style.width = '84px'
 
   } // Fin constructor
 
