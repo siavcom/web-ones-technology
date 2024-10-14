@@ -17,6 +17,7 @@ export class has_dat extends COMPONENT {
     this.prop.textLabel = " Y ";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";
+    this.prop.Visible = false;
     this.style.marginLeft = "10px";
     this.prop.ErrorMessage = "Valor menor al valor anterior";
   }

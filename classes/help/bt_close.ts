@@ -24,22 +24,6 @@ export class bt_close extends COMPONENT {
 
   async click() {
     this.Parent.close()
-    /*
-    console.log('bt_close table', this.Parent.browse.prop.Value)
-    this.Parent.click()
-
-
-    // asignamos el valor retornado por el browse
-    if (this.Parent.browse.prop.Value > '   ') {
-      this.Parent.Parent.prop.Value = this.Parent.browse.prop.Value
-      this.Parent.Parent.valid()
-      this.Parent.Parent.prop.Disabled = false
-      this.Parent.Parent.prop.Visible = false
-      
-
-    }
-    this.Parent.prop.Visible = false
-
-  */
+  
   }
 }

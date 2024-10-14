@@ -26,7 +26,7 @@ export class cam_dat extends COMPONENT {
     this.style.width = "256px";
     this.style.marginLeft = "10px";
     this.inputStyle.height = '23px'
-    this.inputStyle.width = '228px'
+    this.inputStyle.width = '256px'
 
 
   }

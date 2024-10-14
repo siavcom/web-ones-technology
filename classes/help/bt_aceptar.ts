@@ -31,10 +31,7 @@ export class bt_aceptar extends COMPONENT {
 
     if (!await this.Parent.des_dat.valid())
       return
-
-    this.Parent.des_dat.prop.Visible = false
-
-
+ 
     this.prop.Visible = false
 
     this.Parent.tip_con.prop.Visible = false
@@ -97,6 +94,7 @@ export class bt_aceptar extends COMPONENT {
     // const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
     //    if (res.length == 0)
 
+    
     if (this.Sql.View.browse.recCount == 0)
       return this.Parent.bt_close.click()
 
@@ -115,22 +113,8 @@ export class bt_aceptar extends COMPONENT {
     }
     */
 
-
     this.Parent.browse.prop.Visible = true;
-
-
-    console.log('bt_aceptar browse=', this.Parent.browse.table)
-
-
-    /*
-    
-        const rows =  await multiFilter(this.Parent.browse.table.oriRows, this.Parent.browse.table.filters) 
-        
-        const workSheet = utils.json_to_sheet(rows);
-    
-    
-    */
-
+    this.Parent.tip_con.when()
 
   }
 

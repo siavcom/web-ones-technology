@@ -153,8 +153,8 @@ export class HELP extends CONTAINER {
       await this.cam_dat.interactiveChange()
       this.tip_con.prop.Visible = true
       this.cam_dat.prop.Visible = true
-      this.des_dat.prop.Visible = true
-      this.has_dat.prop.Visible = true
+     // this.des_dat.prop.Visible = true
+    //  this.has_dat.prop.Visible = true
       this.bt_aceptar.prop.Visible = true
       this.browse.prop.Visible = false
       this.prop.Visible = true
@@ -163,6 +163,8 @@ export class HELP extends CONTAINER {
       this.cam_dat.prop.RowSourceType = 0
     }
     this.Parent.prop.Valid = true
+    this.tip_con.when()
+
   }
 
   async close() {
@@ -179,7 +181,7 @@ export class HELP extends CONTAINER {
 
     }
     this.Parent.prop.ReadOnly = false
-    //this.Parent.prop.Help = true
+    this.tip_con.when()
 
   }
 

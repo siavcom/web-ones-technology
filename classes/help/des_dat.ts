@@ -29,7 +29,7 @@ export class des_dat extends COMPONENT {
         this.prop.Valid = false
         return false
       }
-
+      console.log('des_dat Value=', Value, this.prop.MaxLength,Value.length) 
       if (this.prop.MaxLength - (Value.length) > 0) {
         const ztas = 'z'.repeat(this.prop.MaxLength - (Value.length))
         this.Parent.has_dat.prop.Value = Value + ztas
