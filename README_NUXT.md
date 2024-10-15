@@ -1,10 +1,20 @@
+
+## Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+
 # Nuxt 3 Minimal Starter
 npx nuxi dev
 npx nuxi cleanup
 
-##
+## compiled
+npx nuxi build
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# solamente se debe de copiar el directorio .otput al servidor 
+# para correrlo con bun
+HOST=0 PORT=13000 bun run .output/server/index.mjss
+# para correrlo con node
+NITRO_PORT=13000 node ./server/index.mjs
+
 
 ## Setup
 

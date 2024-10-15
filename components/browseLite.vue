@@ -10,9 +10,9 @@
 
   </div>
 
-  <div class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="This.style">
-    <div class="wraper" style="width:100%;height:100%">
-      <table-lite :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
+  <div :id="Id + '_div_main'" class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="This.style">
+    <div :id="Id + '_wraper'" class="wraper" style="width:100%;height:100%">
+      <table-lite :id="Id + '_table_lite'" :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
         :has-checkbox="table.checkBox" :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey"
         :messages="table.messages" :page-size="10"
@@ -125,6 +125,8 @@ const props = defineProps<{
 // Valores componente padre
 const Component = ref(props.prop.This)
 const This = Component.value
+const Id = This.prop.Name + props.Registro.toString().trim()
+
 This.style.maxWidth = "1200px"
 
 
@@ -251,19 +253,18 @@ watch(
       const field = table.columns[0].field
       await doSearch(0, 10, field, 'asc') // busca los primeros datos
 
-
     }
   },
   { deep: false }
 );
 
 const doSearch = async (offset: number, limit: number, order: string, sort: string) => {
-  // console.log('browseLite llenara los datos')
+  console.log('browseLite doSearch llenara los datos')
+
   table.isLoading = true
   table.rows = []  // limpiamos rows
   table.oriRows = []
   table.totalRecordCount = 0
-
 
   // Start use axios to get data from Server
   //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
@@ -314,13 +315,17 @@ const doSearch = async (offset: number, limit: number, order: string, sort: stri
       table.rows.push(rows[i])
     }
 
+    console.log('browseLite doSearch offset=', offset, 'limit=', limit, 'order=', order, 'Rows=', table.rows)
+
+
 
     //This.rows = ref(table.rows)
     table.totalRecordCount = datos.length
+    table.sortable.order = order;
+    table.sortable.sort = sort;
   }
 
-  table.sortable.order = order;
-  table.sortable.sort = sort;
+
 }
 
 
@@ -402,6 +407,7 @@ const returnChequedRows = (rowData: []) => {
   if (This.prop.oneClick && rowData.length > 0) {
     This.prop.Value = rowData[0]
     This.close()
+
 
   }
 };

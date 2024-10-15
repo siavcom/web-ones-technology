@@ -23,7 +23,11 @@ export class bt_close extends COMPONENT {
   }
 
   async click() {
-    this.Parent.close()
+    this.Parent.browse.prop.RowSource =''
+    this.Parent.prop.Visible = false
+    //this.Parent.browse.super.close()
+    this.Parent.Parent.prop.ReadOnly = false
+    //await this.Parent.close()
   
   }
 }

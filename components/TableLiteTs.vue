@@ -42,17 +42,11 @@
                     {{ col.label }}
                   </div>
                   <!--Begin KilloSoft -->
-                  <input class='filter'
-                  :style="Object.assign({width: col.width ? col.width : 'auto', },
-                    col.headerStyles )"
-                  
-                  v-model="filterColumns[col.label]" @focusout="filter(col)" />
+                  <input class='filter' :style="Object.assign({ width: col.width ? col.width : 'auto', },
+                    col.headerStyles)" v-model="filterColumns[col.label]" @focusout="filter(col)" />
 
                   <!--End KilloSoft -->
                 </th>
-
-
-
 
               </tr>
             </thead>
@@ -81,7 +75,7 @@
                     groupingRowsRefs[groupingIndex][i] = el;
                   }
                     " :name="'vtl-group-' + groupingIndex" class="vtl-tbody-tr" :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
-    " @mouseenter="addHoverClassToTr" @mouseleave="removeHoverClassFromTr" @click="$emit('row-clicked', row)">
+                      " @mouseenter="addHoverClassToTr" @mouseleave="removeHoverClassFromTr" @click="$emit('row-clicked', row)">
                     <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
                         <input type="checkbox" class="vtl-tbody-checkbox" :ref="(el: any) => {
@@ -132,8 +126,8 @@
                     <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
                         <input type="checkbox" class="vtl-tbody-checkbox"
-                          :ref="(el: any) => (rowCheckbox as Array<HTMLElement>).push(el)" :value="row[setting.keyColumn]"
-                          @click="checked(row, $event)" />
+                          :ref="(el: any) => (rowCheckbox as Array<HTMLElement>).push(el)"
+                          :value="row[setting.keyColumn]" @click="checked(row, $event)" />
                       </div>
                     </td>
                     <td v-for="(col, j) in (columns as Array<any>)" :key="j" class="vtl-tbody-td"
@@ -230,8 +224,8 @@
     </div>
   </div>
 </template>
-  
-  <!-- eslint-disable @typescript-eslint/no-explicit-any -->
+
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts">
 
 
@@ -434,7 +428,7 @@ export default defineComponent({
     let tmpPageOptions = props.pageOptions as Array<pageOption>;
     let defaultPageSize =
       props.pageOptions.length > 0 ? ref(tmpPageOptions[0].value) : ref(props.pageSize);
-    console.log('TableLite const defaultPageSize=',defaultPageSize.value)
+    console.log('TableLite const defaultPageSize=', defaultPageSize.value)
 
     if (tmpPageOptions.length > 0) {
       tmpPageOptions.forEach((v: pageOption) => {
@@ -539,7 +533,7 @@ export default defineComponent({
     
     */
     const filter = (columna: string) => {
-      console.log('Entro a TableLite filter') 
+      console.log('Entro a TableLite filter')
       const filters = {}
       let sw_filter = false
 
@@ -550,14 +544,14 @@ export default defineComponent({
           filters[name] = [filterColumns[name].trim()]
         }
       }
-      console.log('TableLite filter ', filters,props.columnFilter)  //, filterColumns[name])
-       
-        //let offset = (setting.page - 1) * setting.pageSize;
-       // let limit = setting.pageSize;
-       
+      console.log('TableLite filter ', filters, props.columnFilter)  //, filterColumns[name])
+
+      //let offset = (setting.page - 1) * setting.pageSize;
+      // let limit = setting.pageSize;
+
       props.columnFilter(filters, setting.pageSize);
       setting.page = 1;
-       // emit("get-now-page", setting.page);
+      // emit("get-now-page", setting.page);
 
 
     };
@@ -807,7 +801,7 @@ export default defineComponent({
       (newPageSize) => {
         console.log('TableLite pageSize')
         setting.pageSize = newPageSize;
-        console.log('TableLite pageSize',setting.pageSize)
+        console.log('TableLite pageSize', setting.pageSize)
       }
     );
 
@@ -1012,7 +1006,7 @@ export default defineComponent({
   },
 });
 </script>
-  
+
 <style scoped>
 .vtl-checkbox-th {
   width: 1%;

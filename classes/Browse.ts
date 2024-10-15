@@ -73,8 +73,26 @@ export class BROWSE extends COMPONENT {
 
   }
 
-
   async close() {
+    console.log("browse close"  )
+
+    //this.table
+    this.table.isLoading= false
+    this.table.filters= {}
+ 
+    this.table.columns=[]
+    this.table.rows= []
+    this.table.oriRows=[]
+    this.table.totalRecordCount= 0
+  
+    this.table.sortable.order= "recno"
+    this.table.sortable.sort= "asc"
+    this.table.groupToggle= false
+    this.table.groupingKey= ''
+
     this.prop.Visible = false
+    this.clickResult = []
+    this.prop.RowSource = ''
+    
   }
 }

@@ -48,13 +48,14 @@
                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
               -->
 
-              <div nuxt-client :id="'div_' + compHeader" v-for="( compHeader ) in  ThisForm.header " :key="compHeader"
+              <div nuxt-client :id="'div_' + compHeader" v-for="( compHeader ) in ThisForm.header " :key="compHeader"
                 :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
-                <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass,'header')"
+                <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass, 'header')"
                   :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                   :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                  :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value"
-                  @click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" />
+                  :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
+                <!--@click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" -->
+
               </div>
 
             </slot>
@@ -71,14 +72,14 @@
   
               -->
               <TransitionGroup name='detailForm'>
-                <div nuxt-client :id="'div_' + compMain" v-for="( compMain ) in  ThisForm.main " :key="compMain" :class="compMain"
-                  v-show='ThisForm[compMain].prop.Visible'>
+                <div nuxt-client :id="'div_' + compMain" v-for="( compMain ) in ThisForm.main " :key="compMain"
+                  :class="compMain" v-show='ThisForm[compMain].prop.Visible'>
                   <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
                     :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                    :position="ThisForm[compMain].position"
-                    @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" />
+                    :position="ThisForm[compMain].position" />
+                  <!-- @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
                 </div>
               </TransitionGroup>
             </slot>
@@ -101,18 +102,18 @@
               
               -->
 
-              <div :id="'div_' + compFooter" v-for="( compFooter ) in  ThisForm.footer " :class="compFooter"
+              <div :id="'div_' + compFooter" v-for="( compFooter ) in ThisForm.footer " :class="compFooter"
                 v-show='ThisForm[compFooter].prop.Visible'>
                 <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
                       @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                 -->
-                <component nuxt-client :id="'component_' + compFooter" :is="impComp(ThisForm[compFooter].prop.BaseClass,'footer')"
+                <component nuxt-client :id="'component_' + compFooter"
+                  :is="impComp(ThisForm[compFooter].prop.BaseClass, 'footer')"
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-                  v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position"
-                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" />
-                <!--@click.stop.prevent-->
+                  v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position" />
+                <!--@click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
               </div>
             </slot>
 
@@ -467,8 +468,6 @@ watch(
   },
   { deep: true }
 );
-
-
 
 const clickSalir = async () => {
   if (await MessageBox("Salimos de la forma", 4, '') == 6) {

@@ -15,8 +15,6 @@ export class cam_dat extends COMPONENT {
   Type: string
   constructor() {
     super();
-
-
     this.prop.BaseClass = "comboBox";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
@@ -27,8 +25,6 @@ export class cam_dat extends COMPONENT {
     this.style.marginLeft = "10px";
     this.inputStyle.height = '23px'
     this.inputStyle.width = '256px'
-
-
   }
   async when() {
     await this.interactiveChange()
@@ -72,12 +68,10 @@ export class cam_dat extends COMPONENT {
     this.Parent.des_dat.prop.MaxLength = lon_dat
     this.Parent.des_dat.prop.Decimals = data[0].dec_dat
     this.Parent.des_dat.prop.Value = des_Value
-
     this.Parent.has_dat.prop.Type = Type
     this.Parent.has_dat.prop.MaxLength = lon_dat
     this.Parent.has_dat.prop.Decimals = data[0].dec_dat
     this.Parent.has_dat.prop.Value = has_Value
     this.Parent.tip_con.when()
-
   }
 }

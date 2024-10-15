@@ -1,21 +1,27 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  debug: false,  // Para encontrar errorres de hidratacion
+  // Para encontrar errorres de hidratacion
+  debug: false,
   devtools: { enabled: false },
 
   devServer: {
+    host: '176.16.200.0',
     port: 3000
   },
+
   ssr: true,
+
   // target: 'static',
 
   alias: {  // Quita el error a instalar Nuxt
     // pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
   },
+
   imports: {
     // Auto-import pinia stores defined in `~/stores`
     dirs: ['stores', 'classes']
   },
+
   // Configuracion para debug 
   /*
     build: {
@@ -35,11 +41,15 @@ export default defineNuxtConfig({
     includeWorkspace: true,
     typecheck: true
   },
+
   css: ['~/assets/css/styles.css'],
+
   // css: ['~/assets/css/styles.css', 'vue-final-modal/style.css'],
 
+/*
   // Para poder hacer los enlaces simbolicos, se aumenta los directorios
   // para que vite los acepte
+ 
   vite: {
     resolve: {
       preserveSymlinks: true,
@@ -51,14 +61,25 @@ export default defineNuxtConfig({
       },
     },
   },
+*/
   modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
-  pinia: {
+
+  pinia: {/* Se quito autoImports:
+
+  //By default @pinia/nuxt exposes a few auto imports:
+
+  //  usePinia(), which is similar to getActivePinia() but works better with Nuxt. You can add auto imports to make your life easier:
+  //  defineStore() to define stores
+  //  storeToRefs() when you need to extract individual refs from a store
+  //  acceptHMRUpdate() for hot module replacement
+
+
     autoImports: [
       // automatically imports `defineStore`
       'defineStore', // import { defineStore } from 'pinia'
       'acceptHMRUpdate',
       // ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
-    ],
+    ], */
   },
 
   /*
@@ -92,4 +113,5 @@ export default defineNuxtConfig({
     },
   },
 
+  compatibilityDate: '2024-10-02',
 })

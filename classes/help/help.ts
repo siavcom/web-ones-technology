@@ -120,6 +120,7 @@ export class HELP extends CONTAINER {
 
   async open() {
     //this.Parent.prop.Help = false
+    this.tip_con.when()
     this.des_dat.prop.Value = ''
     this.has_dat.prop.Value = ''
     this.Parent.prop.ReadOnly = true
@@ -169,6 +170,8 @@ export class HELP extends CONTAINER {
 
   async close() {
     this.prop.Visible = false
+    // regresa el valor al campo principal
+    this.Parent.prop.ReadOnly = false
     if (this.browse.prop.Value > '   ') {
       console.log("help close browse.prop.Value=", this.browse.prop.Value, 'typeof=', typeof this.browse.prop.Value)
       if (typeof this.Parent.prop.Value == "number")
@@ -176,13 +179,12 @@ export class HELP extends CONTAINER {
       else
         this.Parent.prop.Value = this.browse.prop.Value
 
-
       await this.Parent.valid()
 
     }
-    this.Parent.prop.ReadOnly = false
-    this.tip_con.when()
+     this.browse.prop.RowSource =''
 
+    //this.browse.super.close()
   }
 
 

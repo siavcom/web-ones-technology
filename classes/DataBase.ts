@@ -1395,9 +1395,9 @@ export class VFPDB {
       //   console.log("Begin SQLEXEC  ", new Date().toISOString(), "Query=", query);
 
       const respuesta = await this.axiosCall(dat_vis);
-      console.log('Db execute alias query,respuesta', dat_vis.query,respuesta)
+      console.log('Db execute alias query,respuesta', dat_vis.query, respuesta)
 
-      if (respuesta.length==0) return respuesta
+      if (respuesta.length == 0) return respuesta
 
       if (respuesta == null) return null;
 
@@ -1517,12 +1517,14 @@ export class VFPDB {
       return respuesta;
     } catch (error) {
       console.error("SQL Error", error);
-      this.errorAlert(
-        "SQL Error :" +
-        error.response.status.toString() +
-        " " +
-        error.response.statusText
-      );
+      if (error.response) {
+        this.errorAlert(
+          "SQL Error :" +
+          error.response.status.toString() +
+          " " +
+          error.response.statusText
+        );
+      }
       return false;
     }
   };
@@ -2409,41 +2411,27 @@ return false;
         );
         return respuesta;
       } catch (error) {
-        console.log("Axios stop=====>>>>>>> ", error);
+        console.error("Axios error ", error);
+
         const messageError = error.response && error.response.data ? error.response.data : ''
 
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log('Axios error.response.data', error.response.data);
-          //     console.log('Axios error.response.status',error.response.status);
-          //    console.log('Axio error.response.headers',error.response.headers);
-
-        }
-
         if (axios.isCancel(error)) {
-          console.log("Request cancelled", error.message);
+          console.error("Request cancelled", error.message);
           this.errorAlert("User cancel request :");
           //await MessageBox( error.response.statusText, 16, "User cancel request "       );
           numLogin = 3;
         } else {
           //handle the error
-
           // status - The HTTP status code from the response e.g. 200, 400, 404.
           // statusText - The HTTP status message from the server response e.g. OK, Bad Request, Not Found.
-
           //  const error = thrown;
-
-
           //          this.errorAlert("SQL Data Base Error  :" + error.response.data);
           await this.errorAlert("SQL Data Base Error  :" + messageError);
 
-
-          //await MessageBox( error.response.status.toString() + " " + error.response.statusText,16, "SQL Data Base Error "  );
-
           // si es un error de desconexion
-          if (error.response.status.toString() == "401") {
-            if (this.session.nom_emp == "") {
+          const status = error.response.status.toString()
+          if (status == "401" || status == "403" || status == "408") {
+            if (this.session.nom_emp == "" || status == "401" || status == "408") {
               const router = useRouter();
               router.push("/Login");
               return;

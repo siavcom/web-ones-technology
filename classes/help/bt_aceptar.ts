@@ -27,10 +27,20 @@ export class bt_aceptar extends COMPONENT {
     Object.assign(this.style, { float: "left" })
   }
 
+  /**
+   * Hace visible el componente browse y carga los datos de la tabla
+   * que se especifica en el RecordSource del componente help.
+   * El Where se construye en base a los valores de los campos tip_con, des_dat y has_dat
+   * y se aplica al RecordSource.
+   * Si no hay datos en el RecordSource, se oculta el componente browse.
+   * Luego llama al metodo when() del componente tip_con.
+   */
   async click() {
-
-    if (!await this.Parent.des_dat.valid())
-      return
+    console.log("click bt_aceptar RowSource=",  this.Parent.browse.prop.RowSource)
+    this.Parent.browse.prop.RowSource=''
+    
+   // if (!await this.Parent.des_dat.valid())
+   //   return
  
     this.prop.Visible = false
 
@@ -88,33 +98,22 @@ export class bt_aceptar extends COMPONENT {
     }
     console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
 
+    if (this.Sql.View.browse){
+      delete this.Sql.View.browse
+      this.Sql.localAlaSql(`drop table browse`)
+    } 
 
     await this.Sql.execute(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
-
+    console.log("help aceptar browse=", await this.Sql.localAlaSql(`select * from browse `))
     // const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
     //    if (res.length == 0)
 
     
-    if (this.Sql.View.browse.recCount == 0)
+    if (!this.Sql.View.browse || this.Sql.View.browse.recCount == 0)
       return this.Parent.bt_close.click()
 
     this.Parent.browse.prop.RowSource = "browse";
-
-    // this.Parent.browse.table.columns = columns
-    // console.log('3)bt_aceptar browse=', this.Parent.browse.table.columns)
-
-    /*
-    for (let col = 0; col < this.Parent.browse.table.columns.length; col++) {
-
-      console.log('bt_aceptar col=', col, 'Columna=>', this.Parent.browse.table.columns[col])
-      const cam_dat = this.Parent.browse.table.columns[col].field
-      const res = await this.Sql.localAlaSql(`select ref_dat from Now.diccionario where cam_dat='${cam_dat}'`)
-      this.Parent.browse.table.columns[col].label = res[0].ref_dat
-    }
-    */
-
     this.Parent.browse.prop.Visible = true;
-    this.Parent.tip_con.when()
 
   }
 

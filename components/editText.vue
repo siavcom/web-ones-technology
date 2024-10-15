@@ -83,7 +83,7 @@
     <nuxt-img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
       class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
-      @click="clickHelp()" />
+      @click.stop="clickHelp()" />
 
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
@@ -101,11 +101,12 @@
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :position="This[compMain].position"
-      @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">
+      :style="This[compMain].style" :position="This[compMain].position">
+
     </component>
     <!--/Teleport-->
-    <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" -->
+    <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
+           @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
   </span>
 </template>
 
@@ -311,17 +312,7 @@ const This = Component.value  // falta probar reactividad utilizando Component.v
 
 const labelStyle = reactive(This.labelStyle)
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
-/*
-if (propType != "checkbox" &&
-  propType != "radio" &&
-  propType != "json" &&
-  propType != "spinner" &&
-  propType != "date" &&
-  propType != "time" &&
-  propType != "datetime" &&
-  propType != "password") propType = "text"
 
-  */
 const Id = This.prop.Name + props.Registro.toString().trim()
 let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
@@ -331,6 +322,8 @@ const Valor = toRef(This.prop, "Value")
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
+let Help = false
+
 
 const Status = ref(props.prop.Status);
 const ToolTipText = ref(true)
@@ -529,6 +522,7 @@ inherit	Inherits this property from its parent element. Read about inherit
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
+  if (Help) return // no emitir si hay ayuda
   const Type = propType.value
 
   // false,false,Value
@@ -1139,6 +1133,10 @@ const onFocus = async () => {
     let lon_campo = This.prop.Value.length
     if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
 
+      if (!This.Sql.View[tabla].est_tabla[campo]) {
+        console.error('editText onFocus() Error: No se encontro el campo', campo, 'en la vista', tabla)
+        return
+      }
       lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
       if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
 
@@ -1164,17 +1162,20 @@ const onFocus = async () => {
   return
 }
 const clickHelp = async () => {
+
+  console.log('editText clickHelp Name', This.prop.Name)
   This.prop.ShowError = false
   This.prop.Valid = true
-  console.log('1) editText help Name=', This.prop.Name)
+
   if (focusIn.value == 0)
     await onFocus()
 
   if (This.help) {
-    console.log('2) editText help Name=', This.prop.Name, This.help)
+    Help = true
+
     await This.help.open()
   }
-
+  Help = false
 }
 const select = async () => {
   // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
@@ -1476,7 +1477,7 @@ const styleAssing = async () => {
  */
 const handler = (event) => {
   if (event.which === 3) {
-    console.log("==================>>>>>>Right mouse down ", This.prop.Map);
+    console.warn("==================>>>>>>Right mouse down Map=", This.prop.Map);
   }
   event.preventDefault();
 }

@@ -19,10 +19,10 @@ export class browse extends BROWSE {
 
 
   async close() {
-    this.prop.Visible = false
+    //super.close()
+    await this.Parent.close()
 
 
-    if (this.Parent.bt_close) this.Parent.bt_close.click()
   }
 
 
