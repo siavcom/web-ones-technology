@@ -1404,7 +1404,7 @@ export class VFPDB {
       //  console.log('Db execute alias query,respuesta', dat_vis.query,respuesta)
       if (alias.toUpperCase() == "MEMVAR") {
 
-        console.log("Db execute MEMVAR query=", query, "respuesta=", respuesta)
+     //   console.log("Db execute MEMVAR query=", query, "respuesta=", respuesta)
         return respuesta;
       }
 
@@ -2525,8 +2525,7 @@ return false;
       return await alasql(ins_sql, datos);
     } catch (error) {
       console.error("localAlaSql error==>", error, ins_sql);
-      this.errorAlert("local SQL error :" + ins_sql);
-      //      MessageBox(ins_sql + " " + error, 16, "Error Ala SQL ");
+      // this.errorAlert("local SQL error :" + ins_sql);
 
       return false;
     }

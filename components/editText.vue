@@ -83,7 +83,7 @@
     <nuxt-img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
       class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
-      @click.stop="clickHelp()" />
+      @click.prevent="clickHelp()" />
 
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"

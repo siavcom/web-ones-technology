@@ -36,9 +36,11 @@
             <!--TypeError: item is undefined            tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
 
             <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage" v-for="(item, key) in scroll.dataPage"
-              :key="scroll.dataPage ? item.recno : 0">
-              <!-- No utilizar vertical-aling en renNumber-->
-              <td :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{ item.recno
+              :key="item && item.recno ? item.recno : 0">
+              <!--key="scroll.dataPage ? item.recno : 0
+               No utilizar vertical-aling en renNumber-->
+              <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
+                item.recno
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
               <!--
@@ -248,6 +250,7 @@ const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
+const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
 
 
@@ -1010,6 +1013,14 @@ const impComp = ((name: string) => {
 
     case 'modalcontainer': {
       return modalContainer
+      break
+    }
+
+    case 'base64': {
+
+      return base64
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
       break
     }
 

@@ -15,7 +15,7 @@
 
             <div id="modal_body" class="modal-body">
               <slot name="componentes">
-                <div :id="'componentes_divi_' + key" v-for="(block, key) in  This.block" :key="key">
+                <div :id="'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
                   <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                   <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
@@ -58,7 +58,7 @@ const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vu
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
-
+const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
 
 
@@ -233,6 +233,19 @@ for (const ver in Divi.value) {
 const element = ref(ele)
 console.log('Divi ele=>', element.value)
 */
+/*
+const compImport = {}
+const impComp = ((name: string, pos?: string) => {
+
+  const comp = name.toLowerCase().trim()
+  if (!compImport[comp])
+    compImport[comp] = defineAsyncComponent(() => import(`@/components/${name}.vue`))
+    
+
+  return compImport[comp]
+
+})
+*/
 const impComp = ((name: string, pos?: string) => {
 
   //return eval(name)
@@ -286,6 +299,13 @@ const impComp = ((name: string, pos?: string) => {
     case 'embedpdf': {
 
       return embedPdf
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
+      break
+    }
+    case 'base64': {
+
+      return base64
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
 
       break

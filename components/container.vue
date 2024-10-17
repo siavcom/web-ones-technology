@@ -12,9 +12,9 @@
     <div :id="Id + 'body'" class="body">
       <div v-if="!This.block || This.block.length == 0" :id="Id + 'no_block'">
         <slot name="componentes">
-          <div :id="Id + 'componentes' + key" v-if="Divi" v-for="(Ver, key) in  Divi" :key="Ver"
+          <div :id="Id + 'componentes' + key" v-if="Divi" v-for="(Ver, key) in Divi" :key="Ver"
             :style="{ 'display': 'inline-flex' }">
-            <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in  Ver" :key="Ele"
+            <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in Ver" :key="Ele"
               :style="{ 'padding-bottom': '2px', 'width': '100%' }">
               <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
                 v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
@@ -26,7 +26,7 @@
       </div>
       <div v-else :id="Id + 'blocks'">
         <slot name="componentes">
-          <div :id="'componentes_divi_' + key" v-for="(block, key) in  This.block" :key="key">
+          <div :id="'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
             <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
               <label v-if="block.prop.Visible && block.title">{{ block.title }}</label>
               <div v-for=" (component, key) in block.component" :key="key"
@@ -66,8 +66,7 @@ const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vu
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
-
-
+const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
 
 interface Props {
@@ -196,7 +195,15 @@ for (const ver in Divi.value) {
 const element = ref(ele)
 console.log('Divi ele=>', element.value)
 */
+const compImport = {}
 const impComp = ((name: string, pos?: string) => {
+
+  const comp = name.toLowerCase().trim()
+  if (!compImport[comp])
+    compImport[comp] = defineAsyncComponent(() => import(`@/components/${name}.vue`))
+
+  return compImport[comp]
+
 
   //return eval(name)
 
@@ -204,42 +211,42 @@ const impComp = ((name: string, pos?: string) => {
     case 'edittext': {
       // console.log('Importo edittext')
       return editText
-      break;
+
     }
     case 'combobox': {
       return comboBox
-      break;
+
     }
     case 'grid': {
       return grid
-      break;
+
     }
 
     case 'imgbutton': {
       return imgButton
-      break;
+
     }
 
     case 'browse': {
       //console.log('Importo Browse')
       return browseLite
-      break;
+
     }
 
     case 'browselite': {
 
       // console.log('Importo BrowseLite')
       return browseLite
-      break;
+
     }
 
     case 'textlabel': {
       return textLabel
-      break
+
     }
     case 'details': {
       return details
-      break
+
     }
     /*
         case 'container': {
@@ -251,14 +258,17 @@ const impComp = ((name: string, pos?: string) => {
       return embedPdf
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
 
+
+    } case 'base64': {
+
+      return base64
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
       break
     }
-    default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
+
   }
+  return editText
 
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })

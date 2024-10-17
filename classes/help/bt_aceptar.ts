@@ -36,7 +36,7 @@ export class bt_aceptar extends COMPONENT {
    * Luego llama al metodo when() del componente tip_con.
    */
   async click() {
-    console.log("click bt_aceptar RowSource=",  this.Parent.browse.prop.RowSource)
+  
     this.Parent.browse.prop.RowSource=''
     
    // if (!await this.Parent.des_dat.valid())
@@ -104,14 +104,15 @@ export class bt_aceptar extends COMPONENT {
     } 
 
     await this.Sql.execute(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
-    console.log("help aceptar browse=", await this.Sql.localAlaSql(`select * from browse `))
-    // const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
-    //    if (res.length == 0)
-
     
-    if (!this.Sql.View.browse || this.Sql.View.browse.recCount == 0)
-      return this.Parent.bt_close.click()
+    const res = await this.Sql.localAlaSql(`select * from browse limit 1`) 
 
+    if (!res || !this.Sql.View.browse || this.Sql.View.browse.recCount == 0){
+      if (!res)
+         MessageBox("No hay datos")
+      
+      return this.Parent.bt_close.click()
+    }
     this.Parent.browse.prop.RowSource = "browse";
     this.Parent.browse.prop.Visible = true;
 

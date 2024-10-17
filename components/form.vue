@@ -277,6 +277,7 @@ const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
+const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
 
 
@@ -665,6 +666,16 @@ const impComp = ((name: string, pos?: string) => {
 
       break
     }
+
+
+    case 'base64': {
+
+      return base64
+      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+
+      break
+    }
+
     default: {
       return editText
       //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
