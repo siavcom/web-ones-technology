@@ -227,9 +227,6 @@ const readFile = ($event) => {
 }
 
 
-
-
-
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuevo valor asignado

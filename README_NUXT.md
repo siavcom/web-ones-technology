@@ -11,7 +11,7 @@ npx nuxi build
 
 # solamente se debe de copiar el directorio .otput al servidor 
 # para correrlo con bun
-HOST=0 PORT=13000 bun run .output/server/index.mjss
+HOST=0 PORT=13000 bun run ./server/index.mjs
 # para correrlo con node
 NITRO_PORT=13000 node ./server/index.mjs
 

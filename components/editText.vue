@@ -8,11 +8,12 @@
     <!--span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible"-->
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
-      :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="focusOut"
+      :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus"
       @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      v-on:keyup.enter="clickReturn()" @contextmenu="handler($event)">
+      @contextmenu="handler($event)">
 
-    <!--  v-maska="maska" @maska="onMaska" data-maska-reversed
+    <!-- v-on:keyup.enter="clickReturn()" 
+        v-maska="maska" @maska="onMaska" data-maska-reversed
       :data-maska-number-fraction="props.prop.Decimals" data-maska-number-unsigned
       
     -->
@@ -21,15 +22,17 @@
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style="inputStyle" ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
       :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
-      @input="emitValue(false)" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
-      @contextmenu="handler($event)">
+      @input="emitValue(false)" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
+
+    <!--v-on:keyup.enter="clickReturn()" -->
+
 
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style="inputStyle">
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style="inputStyle" v-model="Value"
         :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="inputStyle.rows" :cols='inputStyle.cols'
-        @keypress="keyPress($event)" @focusout="focusOut" @focus="onFocus" @contextmenu="handler($event)"></textarea>
+        @keypress="keyPress($event)" @focusout="lostFocus" @focus="onFocus" @contextmenu="handler($event)"></textarea>
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
@@ -37,8 +40,10 @@
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref" :style="inputStyle"
       :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min" :max="prop.Max" v-model="currentDate"
       :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex"
-      @keypress="keyPress($event)" @focusout="focusOut" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
-      @contextmenu="handler($event)">
+      @keypress="keyPress($event)" @focusout="lostFocus" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
+
+    <!--v-on:keyup.enter="clickReturn()" -->
+
     <!--input v-show="focusIn == 0" class="text" :style="inputStyle" type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
@@ -58,7 +63,7 @@
         </summary>
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
           :readonly="comp.readOnly ? true : false" :style="comp.style ? comp.style : { width: 'auto', height: '13px' }"
-          @focusout="focusOut" @contextmenu="handler($event)">
+          @focusout="lostFocus" @contextmenu="handler($event)">
 
       </details>
       <!--/TransitionGroup-->
@@ -75,9 +80,10 @@
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style="inputStyle" :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="focusOut" @focus="onFocus" v-on:keyup.63="clickHelp()" v-on:keyup.enter="clickReturn()"
-      @contextmenu="handler($event)" v-maska="maska" @maska="onMaska"
-      @click.capture="This.Form.eventos.push(This.prop.Map + '.click()')">
+      @focusout="lostFocus" @focus="onFocus" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)" v-maska="maska"
+      @maska="onMaska" @click.capture="This.Form.eventos.push(This.prop.Map + '.click()')">
+    <!--v-on:keyup.enter="clickReturn()" -->
+
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <nuxt-img :id="Id + '_help'"
@@ -872,47 +878,44 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 }
 
 /////////////////////////////////////////////////////////////////////
-// focusOut
+// lostFocus
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
-const focusOut = async () => {
+const lostFocus = async () => {
   if (This.prop.ReadOnly || This.prop.Disabled) {
-
     return
   }
-
 
   if (displayError.value) {
     displayError.value = false
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
+  await asignaValue()
+  await emitValue(false, false, Value.value) //se puso await
+  if (This.prop.Valid)
+    focusIn.value = 0 // Perdio el foco
+  return
+
+}
 
 
-  focusIn.value = 0 // Perdio el foco
-
-  let sw_error = false
+const asignaValue = async () => {
   const Type = propType.value
 
   if (Type == 'number') {
-    /*
-    if (+currentValue.value[0] < props.prop.Min) {
-      currentValue.value[0] = props.prop.Min
-      sw_error = true
-    }
-   
-    if (+currentValue.value[0] > props.prop.Max) {
-      currentValue.value[0] = props.prop.Max
-      sw_error = true
-    }
-      */
-
     typeNumber.value = 'text';
     const valor = +currentValue.value[0]
     if (isNaN(valor))
       currentValue.value[0] = 0
 
     Value.value = +currentValue.value[0]
+    if (Value.value < +props.prop.Min)
+      This.prop.Valid = false
+
+    if (Value.value > +props.prop.Max)
+
+      This.prop.Valid = false
 
   }
 
@@ -920,19 +923,14 @@ const focusOut = async () => {
     //This.prop.Value = await dateToString(currentDate.value)
     if (currentDate.value < props.prop.Min) {
       currentDate.value = props.prop.Min
-      sw_error = true
+      This.prop.Valid = false
     }
     if (currentDate.value > props.prop.Max) {
       currentDate.value = props.prop.Max
-      sw_error = true
+      This.prop.Valid = false
     }
 
     Value.value = await dateToString(currentDate.value)
-    if (sw_error) {
-      select()
-      // This.prop.Focus = true
-      return
-    }
   }
 
   if (Type == 'datetime') {
@@ -940,11 +938,12 @@ const focusOut = async () => {
 
     if (currentDate.value < props.prop.Min) {
       currentDate.value = props.prop.Min
-      sw_error = true
+      This.prop.Valid = false
+
     }
     if (currentDate.value > props.prop.Max) {
       currentDate.value = props.prop.Max
-      sw_error = true
+      This.prop.Valid = false
     }
 
     Value.value = currentDate.value.slice(0, 16)
@@ -953,14 +952,10 @@ const focusOut = async () => {
 
   if (Type == 'json') {
     Value.value = await JSON.stringify(currentJson.value)
-
   }
 
-  if (sw_error) {
-    select()
-    //This.prop.Focus = true
+  if (!This.prop.Valid)
     return
-  }
 
   if (Type == 'text') {
     if (props.style.textTransform == 'uppercase')
@@ -970,10 +965,7 @@ const focusOut = async () => {
       Value.value = Value.value.toLowerCase()
   }
 
-  //console.log('focusOut editText Name', This.prop.Name, 'Value=', Value.value)
-  //console.log('editText focusout ', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value)
 
-  await emitValue(false, false, Value.value) //se puso await
 
   // emitValue() ///se puso await
   return
@@ -1017,9 +1009,10 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
   }
 
   // new KeyboardEvent('keydown', {
-  if (Type != 'textarea' && $event.charCode == 13) //|| // Return
-    return // clickReturn()
-
+  if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
+    console.log('1) return KeyPres==>', $event.charCode)
+    return nextElement() //clickReturn()
+  }
   // caracteres permitido en input numero
 
   if (This.prop.Status != 'P')
@@ -1032,13 +1025,15 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 }
 
 // $event.charCode == 13 // Down Key  
-const clickReturn = async () => {
-  await emitValue(false) // Emite valores al parent y valida
+const nextElement = async () => {  //clickReturn
 
-  if (!This.prop.Valid)
+  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
+
+  await asignaValue()
+  await emitValue() // 
+  if (!This.prop.Valid) {
     return
-
-  console.log('clickReturn editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
+  }
   const TabIndex = This.prop.TabIndex
   let lastIndex = 999999
   let nextFocus = ''

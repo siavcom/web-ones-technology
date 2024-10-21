@@ -36,8 +36,11 @@
             <!--TypeError: item is undefined            tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
 
             <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage" v-for="(item, key) in scroll.dataPage"
-              :key="item && item.recno ? item.recno : 0">
-              <!--key="scroll.dataPage ? item.recno : 0
+              :key="item && item.recno ? item.recno : 0" :style="item.id == This.Row ? trStyleActive : trStyleInactive">
+              <!-- :style="item.id == This.Row ? { 'borderBlockStyle': 'groove' } : { 'borderBlockStyle': 'hidden' }"
+                           
+              
+              key="scroll.dataPage ? item.recno : 0
                No utilizar vertical-aling en renNumber-->
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
                 item.recno
@@ -348,6 +351,13 @@ const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
 //const Focus = ref(false)
+const trStyleActive =
+  { backgroundColor: 'antiquewhite' }
+
+const trStyleInactive =
+  { backgroundColor: 'white' }
+
+
 
 
 const scroll = reactive({
