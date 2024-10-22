@@ -1447,7 +1447,11 @@ const styleAssing = async () => {
     inputStyle.borderWidth = '1px'
     inputStyle.borderStyle = 'solid'
     inputStyle.borderRadius = '2px'
-    divStyle.height = 'auto'
+    inputStyle.height = 'auto'
+    inputStyle.borderRadius = '8px'
+    inputStyle.color = 'black'
+
+
   }
   if (Type == 'textarea' || Type == 'text') {
     //  console.log('2) EditText Name=', This.prop.Name, 'inputStyle.width =', inputStyle.width)

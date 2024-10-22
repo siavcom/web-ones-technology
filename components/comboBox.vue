@@ -414,7 +414,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    console.log('2) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'Value=', Value.value)
+    //console.log('2) =======>>>>> comboBox emitValue writeCampo Name=', props.prop.Name, 'isValid=', isValid, 'Value=', Value.value)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -442,7 +442,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (This.prop.Valid)
           This.prop.Valid = false
         //Ref.value.select() 
-        thisElement.select();
+        thisElement.select(); // Hace select en este elemento
 
         This.prop.Status = 'A'
         //   Status.value = 'A'
@@ -496,7 +496,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   Status.value = 'A'  // se necesita para que el watch padre funcione
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
-  let found = false
+
   if (Value.value == null) {
     if (columnas[0] && typeof columnas[0].value == 'number')
       Value.value = 0
@@ -506,33 +506,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   // console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
 
 
-
-  if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
-    for (let i = 0; i < columnas.length && !found; i++) {
-      //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
-
-      //if (columnas && columnas[0]) {
-      if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
-        Value.value == columnas[i].value) {
-
-
-        // El objeto columna tiene dos campos value y text
-        displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
-        console.log('Encontro Valor comboBox Name=', This.Parent.prop.Name, props.prop.Name, 'displayText=', displayText.value, 'This.prop.Value=', This.prop.Value)
-        found = true
-        //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
-      }
-      //  } // else break
-    }
-
-
-
-    if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
-      Value.value = columnas[0].value
-      displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
-      //console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
-    }
-  }
+  await asignaValor()
   This.prop.Value = Value.value
 
   // console.log('3 comboBox emitValue() Name', props.prop.Name, 'displayText.value=', displayText.value)
@@ -557,6 +531,39 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   }
   return true
+}
+
+
+const asignaValor = async () => {
+
+  // console.log('1)asignaValor comboBox Name=', This.prop.Name, 'Value.value=', Value.value)
+  let found = false
+  if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
+    for (let i = 0; i < columnas.length && !found; i++) {
+      //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
+
+      //if (columnas && columnas[0]) {
+      if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
+        Value.value == columnas[i].value) {
+
+
+        // El objeto columna tiene dos campos value y text
+        displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+        //    console.log('2) asignaValor  Encontro Valor comboBox Name=', This.Parent.prop.Name, props.prop.Name, 'displayText=', displayText.value, 'This.prop.Value=', This.prop.Value)
+        found = true
+        //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
+      }
+      //  } // else break
+    }
+
+
+
+    if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
+      Value.value = columnas[0].value
+      displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
+      //console.log('comboBox Name=', props.prop.Name, 'No found ', 'Value=', Value.value)
+    }
+  }
 }
 
 const toggleClick = async () => {
@@ -1189,10 +1196,10 @@ watch(
   async (new_val, old_val) => {
 
     console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
-
+    //   if (This.prop.Value != old_val) {
     if (This.prop.Value != Value.value) {
       Value.value = This.prop.Value
-      emitValue(false, This.prop.Valid)
+      emitValue(false)
     }
   },
   { deep: true }

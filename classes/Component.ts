@@ -178,7 +178,7 @@ export class COMPONENT {
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     height: "99%",     // 95%
     maxHeight: "auto",
-    marginLeft: "0px", //5px
+    marginLeft: "2px", //5px
     maxWidth: "auto",
     minHeight: "auto",
     minWidth: "auto",
@@ -203,7 +203,7 @@ export class COMPONENT {
   };
 
   imagen = { src: "" };
-  old_value = null
+  old_value = ""
 
   constructor() {
     this.Name = this.constructor.name;
@@ -481,6 +481,7 @@ export class COMPONENT {
    * @returns boolean
    */
   public async when() {
+    this.old_value = this.prop.Value
     return !this.prop.ReadOnly;
   }
 
