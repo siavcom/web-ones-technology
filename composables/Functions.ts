@@ -5,6 +5,20 @@
 // Ult.Mod  :
 /////////////////////////////////////////////
 
+import imgButton from '@/components/imgButton.vue'
+import comboBox from '@/components/comboBox.vue'
+import editText from '@/components/editText.vue'
+import textLabel from '@/components/textLabel.vue'
+import grid from '@/components/grid.vue'
+import browse from '@/components/browse.vue'
+import details from '@/components/details.vue'
+import embedPdf from '@/components/embedPdf.vue'
+import container from '@/components/container.vue'
+import base64 from '@/components/base64.vue'
+import form from '@/components/form.vue'
+import modalContainer from '@/components/modalContainer.vue'
+import modal from '@/components/modal.vue'
+
 //////////////////////////////////////
 // Funciones String
 //////////////////////////////////////
@@ -447,8 +461,60 @@ export function roundTo(n: number, digits?: number) {
 }
 
 
+/**
+ * Importa un componente de manera asíncrona
+ * @param {string} name nombre del coponente a importar
+ * @returns {object} componente importado.
+ * Nota : No se pude definir defineAsyncComponent(()
+ *   proboca multiples reloads
+ */
+export function impComponent(name: string) {
 
+  name = name.toLowerCase()
+  switch (name) {
+    case 'edittext': {
+      return editText
+    }
+    case 'combobox': {
+      return comboBox
+    }
+    case 'imgbutton': {
+      return imgButton
+    }
+    case 'details': {
+      return details
+    }
+    case 'container': {
+      return container
+    }
+    case 'modalcontainer': {
+      return modalContainer
+    }
+    case 'base64': {
 
+      return base64
+    }
+    case 'textlabel': {
+      return textLabel
+    }
+    case 'embedpdf': {
+      return embedPdf
+    }
+    case 'grid': {
+      return grid
+    }
+    case 'modal': {
+      return modal
+    }
+
+    case 'browse': {
+      return browse
+    }
+    default: {
+      return editText
+    }
+  }
+}
 //////////////////////////////////////////////
 // Clase : consoleLog
 // Author : Fernando Cuadras Angulo

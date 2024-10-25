@@ -5,7 +5,7 @@
       <span class='etiqueta' v-if="prop.Label">{{ prop.Label + " " }}</span>
       <section class="main"><slot></slot></section>
  
-      <span v-if="prop.ToolTipText" class="tooltiptext">{{
+      <span v-if="prop.ToolTipText" class="errortext">{{
         prop.ToolTipText
       }}</span>
     </div>

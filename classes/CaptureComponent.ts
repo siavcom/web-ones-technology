@@ -35,7 +35,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
       // Si es llave de actualizacion
 
       await this.Form.refreshComponent();
-      // console.log("2) when name=", this.prop.Name, "updateKey=", this.prop.updateKey);
+      console.log("2) refresh when name=", this.prop.Name, "updateKey=", this.prop.updateKey);
 
     }
     return true;

@@ -13,10 +13,10 @@
             <div v-for=" (component, key) in block.component" :key="key"
               :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
               <!--v-bind:Component="ref(Ele)"-->
-              <component :id="'modal_componentes_' + key + component.prop.Name" :is="impComp(component.prop.BaseClass)"
-                v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
-                :prop="component.prop" :style="component.style" :position="component.position"
-                @click.capture="component.click()">
+              <component :id="'modal_componentes_' + key + component.prop.Name"
+                :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
+                :style="component.style" :position="component.position" @click.capture="component.click()">
               </component>
 
             </div>
@@ -87,7 +87,7 @@ const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))

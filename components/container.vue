@@ -16,7 +16,7 @@
             :style="{ 'display': 'inline-flex' }">
             <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in Ver" :key="Ele"
               :style="{ 'padding-bottom': '2px', 'width': '100%' }">
-              <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComp(Ele.prop.BaseClass)"
+              <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComponent(Ele.prop.BaseClass)"
                 v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
                 :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()"></component>
             </div>
@@ -33,7 +33,7 @@
                 :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
                 <!--v-bind:Component="ref(Ele)"-->
                 <component :id="'modal_componentes_' + key + component.prop.Name"
-                  :is="impComp(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                  :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                   v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
                   :style="component.style" :position="component.position" @click.capture="component.click()">
                 </component>
@@ -56,18 +56,18 @@
 //////////////////////////////////////////////
 // Componentes
 //////////////////////////////////////////////
-
+/*
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
 const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
 const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
-
+*/
 
 interface Props {
   //Recno: number;
@@ -168,7 +168,6 @@ const props = withDefaults(defineProps<Props>(), {
 const Component = ref(props.prop.This)
 const This = Component.value
 
-
 const Id = This.Name + props.Registro.toString()
 console.log('Container Name=', This.prop.Name, 'blocks=', This.block)
 const Divi = ref(This.Divi)
@@ -195,18 +194,10 @@ for (const ver in Divi.value) {
 const element = ref(ele)
 console.log('Divi ele=>', element.value)
 */
-const compImport = {}
+
+/*
 const impComp = ((name: string, pos?: string) => {
-
-  const comp = name.toLowerCase().trim()
-  if (!compImport[comp])
-    compImport[comp] = defineAsyncComponent(() => import(`@/components/${name}.vue`))
-
-  return compImport[comp]
-
-
-  //return eval(name)
-
+ 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
       // console.log('Importo edittext')
@@ -248,11 +239,7 @@ const impComp = ((name: string, pos?: string) => {
       return details
 
     }
-    /*
-        case 'container': {
-          return container
-          break
-        }*/
+  
     case 'embedpdf': {
 
       return embedPdf
@@ -273,7 +260,7 @@ const impComp = ((name: string, pos?: string) => {
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
 
-
+*/
 
 //init();
 </script>

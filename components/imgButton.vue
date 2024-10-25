@@ -12,33 +12,13 @@
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
         :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
     </button>
-    <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText">{{
-      prop.ToolTipText
-      }}</span-->
 
-    <!--/div-->
   </span>
 </template>
 
 <script setup lang="ts">
-/*
-
-<v-btn
- 
-      color="yellow"
-      icon><v-icon>prop.Image</v-icon>
-           
-
-      </v-btn>
 
 
-
-*/
-/*import { 
-   //toRefs,
-   //defineProps,
-   ref, watch } from "vue";
-*/
 const props = defineProps<{
   //Value: string;
   Registro: 0;

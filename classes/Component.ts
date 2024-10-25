@@ -536,7 +536,7 @@ export class COMPONENT {
    */
   public keyPress() {
     //   public keyPress($event) {  
-    return this.prop.Key;
+    return //this.prop.Key;
     //  console.log('KeyPress===>', key)
   }
 

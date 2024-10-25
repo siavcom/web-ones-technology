@@ -8,11 +8,15 @@
     <!--span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible"-->
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style="inputStyle" ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
-      :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus"
-      @focus="onFocus" @input.self="onInput" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      @contextmenu="handler($event)">
+      :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
+      onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
+      @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
+      @contextmenu="handler($event)" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
+      v-on:keyup.backspace="key = 8" @input.self="onInput">
 
-    <!-- v-on:keyup.enter="clickReturn()" 
+    <!-- @input.self="onInput"
+      key != 45 && key != 46 && key != 43) && (key < 48 || key > 57)
+    v-on:keyup.enter="clickReturn()" 
         v-maska="maska" @maska="onMaska" data-maska-reversed
       :data-maska-number-fraction="props.prop.Decimals" data-maska-number-unsigned
       
@@ -86,9 +90,9 @@
 
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
-    <nuxt-img :id="Id + '_help'"
+    <img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
-      class='help_icon' src="/Iconos/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
+      class='help_icon' src="/Iconos/svg/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
       @click.prevent="clickHelp()" />
 
     <!--div class="mensajes" v-show="This.prop.Visible"-->
@@ -105,7 +109,7 @@
     v-bind:Component="ref(This[compMain])"
     -->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
-      :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
       :style="This[compMain].style" :position="This[compMain].position">
 
@@ -165,18 +169,18 @@ import { vMaska } from "maska/vue"
 ///////////////////////////////////////
 // Componentes
 //////////////////////////////////////
-
+/*
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
 const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
-
+*/
 ///////////////////////////////////////
 // Emits
 //////////////////////////////////////
@@ -189,8 +193,8 @@ const emit = defineEmits(["update", "update:Value",
 
 
 
-console.log('editText Meta Server===>', import.meta.server)
-console.log('editText Meta Client====>', import.meta.client)
+//console.log('editText Meta Server===>', import.meta.server)
+//console.log('editText Meta Client====>', import.meta.client)
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -336,7 +340,7 @@ const ToolTipText = ref(true)
 Status.value = 'I'
 const Key = ref(props.prop.Key)
 
-var oldVal = Value.value
+var oldVal = ''
 const displayError = ref(false) // Se utiliza esta variable para mostrar el error y sea reactiva
 const checkValue = ref(false)
 
@@ -428,85 +432,70 @@ const toNumberStr = async (n: number) => {
 // Formateo de valores
 const onInput = ({ target }) => {
 
-  if (target.value == '0') {
-    Value.value = 0
+  // console.log('1)  ==> EditBox onInput Name=', props.prop.Name, 'key=', Key.value, 'target.value=', target.value, 'currentValue.value[1]', currentValue.value[1])
+  const key = Key.value
+
+  if (key == 8 || key == 127) { // BackSpace or Delete
+    oldVal = currentValue.value[1]
     return
   }
-  let key = Key.value
 
-  console.log('1) EditBox onInput Name=', props.prop.Name, 'key=', key)
-
-
-  if ((key < 48 || key > 57) && // no es un numero 
-    (key != 46 && key != 45)) // no es punto y no es signo menos
-  {
-
-    const char = String.fromCharCode(key)
-    target.value = target.value.replace(char, '')
-
-  }
-
-  if (key == 45) {// si es signo menos pero no permite negativos
-    target.value = target.value.replace('-', '')
-    if (target.value.indexOf('-') >= 0) {
-      target.value = target.value.replace('-', '')
-      key = 0
-    }
-  }
   /*
-  const valor = target.value.replace(/[^0-9.]/g, "").trim()  // solo admite numeros y punto decimal
-    console.log('onInput ', valor)
-    if (valor.length == 0) {
-      target.value = oldVal
+    if (target.value == '0') {
+      Value.value = 0
       return
     }
-    else
-      target.value = valor
-  
   */
 
-  const len = target.value.length
-  //Value.value = parseInt(target.value);
-  let punto = target.value.indexOf('.');
-  /*
-     let count = 0;
-     while (p !== -1) {
-       count++;
-       p = target.value.indexOf('.', p + 1);
-     }
- */
-  // busca si se digito mas de un punto
-  if (punto >= 0) {
-    if (target.value.indexOf('.', punto + 1) > 0)
-      target.value = target.value.substr(0, len - 1) // quitamos el segundo punto
-    else { // checa decimales
-      const decimales = target.value.substr(punto + 1)
-      if (decimales.length > This.prop.Decimals)
-        target.value = target.value.substr(0, len - 1)
+
+  let TargetValue = +target.value
+  // checa caracteres validos
+  //if ((key != 45 && key != 46 && key != 43) && (key < 48 || key > 57)) {
+  //  TargetValue = +oldVal
+  // }
+  //const old_val = currentValue.value[0].toString()
+  // Si es un punto decimal
+  if (key == 46) {// Si es punto decimal
+    if (This.prop.Decimals <= 0 || oldVal.indexOf('.') >= 0) {
+      currentValue.value[1] = oldVal
+      return
     }
+    oldVal = currentValue.value[1]
+    return
   }
 
-  if (key == 45) // si puso un signo negativo
-    target.value = '-' + target.value
+  // console.log('2)==> EditBox onInput Name=', props.prop.Name, 'TargetValue=', TargetValue, 'key=', key, 'oldVal=', oldVal)
 
-  let valorNumerico = parseFloat(target.value) // valor numerico   
+  if (isNaN(TargetValue)) {
+    currentValue.value[1] = oldVal
+    return
+  }
+  //const len = TargetValue.length
+  //Value.value = parseInt(TargetValue);
 
-  console.log('2) EditBox onInput Name=', props.prop.Name, 'valorNumerico=', valorNumerico)
+  if (key == 45 && TargetValue > 0) // si puso un signo negativo y el valor es positivo
+    TargetValue = -TargetValue
 
-  if (+valorNumerico < props.prop.Min)
-    target.value = target.value.substr(0, len - 1)
+  let valorNumerico = parseFloat(TargetValue) // valor numerico   
 
-  if (+valorNumerico > props.prop.Max)
-    target.value = target.value.substr(0, len - 1)
+  if (+valorNumerico < props.prop.Min) {
+    currentValue.value[1] = oldVal
+    return
+  }
+  if (+valorNumerico > props.prop.Max) {
+    currentValue.value[1] = oldVal
+    return
+  }
 
-  currentValue.value[1] = target.value // valor numerico
-  currentValue.value[0] = parseFloat(target.value) // valor numerico
 
-  // console.log('EditBox onInput Name=', props.prop.Name, 'currentValue.value[0]=', currentValue.value[0])
+  if (+currentValue.value[1] != TargetValue) {
+    currentValue.value[1] = TargetValue.toString() // valor numerico
 
-  //Value.value = parseFloat(target.value)
-  //   console.log('onInput number',target.value)
-  oldVal = target.value
+  }
+  currentValue.value[0] = parseFloat(TargetValue) // valor numerico
+  oldVal = TargetValue.toString()
+  //  console.log('Fin)==> EditBox onInput Name=', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'TargetValue=', TargetValue, 'key=', key, 'oldVal=', oldVal)
+
 }
 
 /*  position
@@ -842,6 +831,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   Status.value = 'A'  // se necesita para que el watch padre funcione
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   This.prop.Status = 'A'
+
+  if (typeof This.prop.Value == 'number') {
+    oldVal = This.prop.Value.toString()
+  } else
+    oldVal = This.prop.Value
+
   return
 }
 
@@ -882,6 +877,7 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const lostFocus = async () => {
+
   if (This.prop.ReadOnly || This.prop.Disabled) {
     return
   }
@@ -891,8 +887,12 @@ const lostFocus = async () => {
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
+
   await asignaValue()
   await emitValue(false, false, Value.value) //se puso await
+  //console.log('editText onInput lostFocus() Name', props.prop.Name, 'Type=', propType.value, 'Value=', Value.value, 'currentValue.value=', currentValue.value[0])
+
+
   if (This.prop.Valid)
     focusIn.value = 0 // Perdio el foco
   return
@@ -988,8 +988,15 @@ const clickCheckBox = () => {
 // Descripcion: Cada tecla que se presiona en el input
 /////////////////////////////////////////////////////////////////
 
-const keyPress = ($event: { charCode: number; preventDefault: () => void; keycode: number; charCod: number; }) => {
+const keyPress = ($event: {
+  charCode: number;
+  preventDefault: () => void;
+  keycode: number; charCod: number;
+
+}) => {
   // <input       @keypress="keyPress($event)"
+
+  //console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
   const char = +$event.charCode
   const Type = propType.value
   if (displayError.value) {
@@ -998,7 +1005,8 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
       This.prop.ShowError = false
   }
 
-  // console.log('>>>>>KeyPress===>', char, 'Type=', Type)
+
+  console.log('1)>>>>>KeyPress===>', char, 'Type=', Type)
   // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
     console.log('1) Help KeyPres==>', $event.charCode)
@@ -1010,7 +1018,7 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
-    console.log('1) return KeyPres==>', $event.charCode)
+    console.log('1.1) nextElement KeyPres==>', $event.charCode)
     return nextElement() //clickReturn()
   }
   // caracteres permitido en input numero
@@ -1020,7 +1028,12 @@ const keyPress = ($event: { charCode: number; preventDefault: () => void; keycod
 
   Key.value = $event.charCode
   This.prop.Key = $event.charCode
+  console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
+
   This.keyPress()
+  console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
+
+
 
 }
 
@@ -1149,6 +1162,9 @@ const onFocus = async () => {
 
 
   emit("update:Value", Value.value)
+
+
+
   //nextTick(function () {
 
   // const element = document.getElementById(Id);
@@ -1446,9 +1462,8 @@ const styleAssing = async () => {
   if (Type == 'json') {
     inputStyle.borderWidth = '1px'
     inputStyle.borderStyle = 'solid'
-    inputStyle.borderRadius = '2px'
     inputStyle.height = 'auto'
-    inputStyle.borderRadius = '8px'
+    inputStyle.borderRadius = '4px'
     inputStyle.color = 'black'
 
 
@@ -1489,7 +1504,7 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('1) editText onMounted Name=', This.prop.Name, 'thisElement=', thisElement)
+  console.log('1) editText onMounted Name=', This.prop.Name)
   styleAssing()
 
   if (!This.prop.Visible)
@@ -1501,8 +1516,10 @@ onMounted(async () => {
   const result = await emitValue(true)
   This.Recno = props.Registro
 
-  oldVal = Value.value   // asignamos el valor viejo
-
+  if (typeof Value.value == 'number')
+    oldVal = Value.value.toString()   // asignamos el valor viejo  
+  else
+    oldVal = Value.value   // asignamos el valor viejo
 
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
@@ -1535,11 +1552,11 @@ onMounted(async () => {
 /*
 onUnmounted(() => {
   console.log('EditText Desmontado onUnMounted', This.prop.Name)
- 
+
 });
- 
- 
- 
+
+
+
 onMounted(() => {
   console.log('EditText Montado onMounted', This.prop.Name)
   init() // Ejecuta el init
@@ -1567,7 +1584,7 @@ onMounted(() => {
 //import * from '@/components/imports/components'
 
 
-
+/*
 
 //////////////////////////////////////
 //  Importa componentes dinamicos
@@ -1646,6 +1663,6 @@ const impComp = ((name: string, pos?: string) => {
 
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
-
+*/
 
 </script>

@@ -1,18 +1,17 @@
 <template>
-  <div
-    v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && props.db.value && Db.View[prop.RecordSource]"
-    class="tabla"  ref="Ref">
-            {{ prop.textLabel }}
-        <thead>
-          <tr style="font-size: 13px">
+  <div v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && props.db.value && Db.View[prop.RecordSource]"
+    class="tabla" ref="Ref">
+    {{ prop.textLabel }}
+    <thead>
+      <tr style="font-size: 13px">
 
-  
-            <td v-for="(obj, elemento) in This">
 
+        <td v-for="(obj, elemento) in This">
 
 
 
-              <!--Header:
+
+          <!--Header:
                       Solo imprime si su clase es header 
                    Tambien se pueden utilizar las prop de cada componente
                       ejemplo: elemento.Value ( elemento.prop.Value)
@@ -20,26 +19,21 @@
                        v-if="This[elemento.Name]"   Si existe la elemento
                        && This[elemento.Name].BaseClass== 'Column' 
                        :ref="el => { This.Ref = el }"
-                      :set="nomCom = impComp(This[elemento].prop.BaseClass)"
+                      :set="nomCom = impComponent(This[elemento].prop.BaseClass)"
                   -->
 
 
 
 
-              <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
-                <!--Imprime como etiqueta el header de cada columna-->
-                <input class="titulo" readonly="true" v-model="obj.textLabel"/>
-              </div>
-            </td>
-          </tr>
-        </thead>
+          <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
+            <!--Imprime como etiqueta el header de cada columna-->
+            <input class="titulo" readonly="true" v-model="obj.textLabel" />
+          </div>
+        </td>
+      </tr>
+    </thead>
 
-    <InfiniteScroll 
-       @infinite-scroll="loadData"
-      :message="scroll.message"
-      :noResult="scroll.noResult" 
-      :firstLoad="true"      
-         >
+    <InfiniteScroll @infinite-scroll="loadData" :message="scroll.message" :noResult="scroll.noResult" :firstLoad="true">
 
 
 
@@ -47,34 +41,30 @@
 
 
       <!-- slot que me da los renglones con el identificador item-->
-      <div
-          v-for="item in scroll.dataPage"
-          :key="item.id"
-        >
-       
+      <div v-for="item in scroll.dataPage" :key="item.id">
+
         <!-------------  Cuerpo -->
 
 
 
-          <td>{{item.recno}}</td>
-          <!-- Columnas -->
+        <td>{{ item.recno }}</td>
+        <!-- Columnas -->
 
-          <td v-for="(obj, col) in This" :key=obj.Order style="padding:0; text-align:center">
+        <td v-for="(obj, col) in This" :key=obj.Order style="padding:0; text-align:center">
 
-            <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
+          <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
 
-                  <!--template-->
-              <KeepAlive>
-                <textLabel v-bind:Recno="item.recno"
-                  v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion"
-                  v-bind:db="db">
-                </textLabel>
+            <!--template-->
+            <KeepAlive>
+              <textLabel v-bind:Recno="item.recno" v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo"
+                v-bind:posicion="This[col].posicion" v-bind:db="db">
+              </textLabel>
 
 
-              </KeepAlive>
-              <!--/template-->
-            </div>
-          </td>
+            </KeepAlive>
+            <!--/template-->
+          </div>
+        </td>
       </div>
 
     </infiniteScroll>
@@ -176,11 +166,11 @@ const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 const Db = props.db.value // Vista que utilizara el grid
 //Valores scrollInfinite
 
-const scroll=reactive({
-    dataPage :[],
-    message:'',
-    page :1,
-    noResult:false,
+const scroll = reactive({
+  dataPage: [],
+  message: '',
+  page: 1,
+  noResult: false,
 })
 
 // Valores propios
@@ -327,35 +317,34 @@ watch(
 /////////////////////////////////////////
 
 
-const loadData = async () =>
-        {
-      try {
-        const result = []
-        const Rows =props.prop.Rows ? props.prop.Rows :10 
-        for (let i=0; 9; i++){
-            const elementNo=((scroll.page-1)*Rows)+i
-          if (Db.View[props.prop.RecordSource].recnoVal[elementNo]){
-              result[i]=Db.View[props.prop.RecordSource].recnoVal[elementNo]
-              console.log('ScrollInfinite elementNo ===>',elementNo,result[i])
-          }  
-          else
-            break    
-
-        }
-        
-        if(result.length) {
-          
-          scroll.dataPage.push(...result);
-          scroll.page++;
-        } else {
-          scroll.noResult = true;
-         scroll.message = "No result found";
-        }
-      } catch(err) {
-        scroll.noResult = true;
-        scroll.message = "Error loading data";
+const loadData = async () => {
+  try {
+    const result = []
+    const Rows = props.prop.Rows ? props.prop.Rows : 10
+    for (let i = 0; 9; i++) {
+      const elementNo = ((scroll.page - 1) * Rows) + i
+      if (Db.View[props.prop.RecordSource].recnoVal[elementNo]) {
+        result[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo]
+        console.log('ScrollInfinite elementNo ===>', elementNo, result[i])
       }
+      else
+        break
+
     }
+
+    if (result.length) {
+
+      scroll.dataPage.push(...result);
+      scroll.page++;
+    } else {
+      scroll.noResult = true;
+      scroll.message = "No result found";
+    }
+  } catch (err) {
+    scroll.noResult = true;
+    scroll.message = "Error loading data";
+  }
+}
 
 
 
@@ -537,24 +526,24 @@ div.tabla {
   width: 100%;
 */
 
-   border: 1px solid rgb(0, 5, 2);
+  border: 1px solid rgb(0, 5, 2);
   border-radius: 0%;
   overflow: hidden;
-  height:300px;
+  height: 300px;
   overflow-y: auto;
   overflow-x: auto;
   width: 900px;
 }
 
 input.titulo {
- /* border: 2px solid rgb(0, 5, 2);*/
- border : 0px;
+  /* border: 2px solid rgb(0, 5, 2);*/
+  border: 0px;
   color: #18e94c;
-/*  width: "100px";
+  /*  width: "100px";
   height: "30px";*/
   background: #f7f8f7;
-/*  padding: "5px";*/
-/*  border-radius: 5%;*/
+  /*  padding: "5px";*/
+  /*  border-radius: 5%;*/
 }
 
 
@@ -565,11 +554,6 @@ input.titulo {
 .scroller {
   height: 100%;
 }
-
-
-
-
-
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -11,7 +11,7 @@ import { COMPONENT } from "@/classes/Component";
 export class displayPdf extends COMPONENT {
   constructor() {
     super();
-    this.prop.BaseClass = "embedpdf";
+    this.prop.BaseClass = "embedPdf";
     this.prop.Visible = false;
     this.style.height = "auto";
     this.style.width = "100%"; //1100px

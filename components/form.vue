@@ -50,7 +50,8 @@
 
               <div nuxt-client :id="'div_' + compHeader" v-for="( compHeader ) in ThisForm.header " :key="compHeader"
                 :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
-                <component :id="'component_' + compHeader" :is="impComp(ThisForm[compHeader].prop.BaseClass, 'header')"
+                <component :id="'component_' + compHeader"
+                  :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
                   :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                   :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
                   :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
@@ -74,7 +75,7 @@
               <TransitionGroup name='detailForm'>
                 <div nuxt-client :id="'div_' + compMain" v-for="( compMain ) in ThisForm.main " :key="compMain"
                   :class="compMain" v-show='ThisForm[compMain].prop.Visible'>
-                  <component :id="'component_' + compMain" :is="impComp(ThisForm[compMain].prop.BaseClass)"
+                  <component :id="'component_' + compMain" :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
                     :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
@@ -93,7 +94,7 @@
           <section class="formfooter">
             <!--Transition tag='div' -->
             <nuxt-img class='circle'
-              :src="ThisForm.prop.Status == 'A' ? '/Iconos/circle-green.svg' : '/Iconos/circle-red.svg'"
+              :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
               style="float:left" />
             <!--/Transition-->
             <slot name="footer">
@@ -108,7 +109,7 @@
                       @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                 -->
                 <component nuxt-client :id="'component_' + compFooter"
-                  :is="impComp(ThisForm[compFooter].prop.BaseClass, 'footer')"
+                  :is="impComponent(ThisForm[compFooter].prop.BaseClass, 'footer')"
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
@@ -119,7 +120,7 @@
 
             <div id="salir" class="salir" @click='clickSalir()'>
 
-              <nuxt-img id="icono_salir" class='img' src="/Iconos/exit4-color.svg" style="float:right"
+              <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg" style="float:right"
                 :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
 
             </div>
@@ -145,29 +146,7 @@
 </template>
 
 <script lang="ts" setup>
-/*
 
-            <TransitionGroup tag='div' >
-              <div v-if="ThisForm.prop.Status == 'A'" key='green'>
-                <!--svg width="100" height="100">
-                  <circle cx="50" cy="50" r="8" stroke="green" stroke-width="4" fill="green" />
-                </svg-->
-
-                <nuxt-img class='circle' :src="ThisForm.prop.Status == 'A'? '/Iconos/circle-green.svg' :'/Iconos/circle-red.svg'" style="float:left" />
-              </div>
-              <div v-else key="red">
-                <!--svg width="100" height="100">
-                  <circle cx="50" cy="50" r="8" stroke="red" stroke-width="4" fill="red" />
-                </svg-->
-
-                <nuxt-img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
-              </div>
-            </TransitionGroup>
-
-
-
-
-*/
 /*
 definePageMeta({
   //layout: 'default',
@@ -266,13 +245,13 @@ const modalContainer = computed(() => resolveComponent('LazymodalContainer.vue')
 */
 
 // en html en :is="imgButtonr" pasar directamente el nombre del componente en el que se va a trabajar
-
+/*
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
 const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
@@ -280,7 +259,7 @@ const modalContainer = defineAsyncComponent(() => import('@/components/modalCont
 const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
 
-
+*/
 /////////////////////////////////////////
 // Componentes dinamicos
 // https://vuejs.org/guide/components/async.html#basic-usage

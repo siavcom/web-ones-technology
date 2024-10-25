@@ -16,28 +16,27 @@
               -->
         <virtualList :size="prop.itemHeight" :remain="3">
           <!--div v-for="(item, index) of list" :key="index" class="result-row"-->
-          <div v-for="(item, index) in Db.View[prop.RecordSource]['recnoVal']" :key="index"
-            class="result-row">
+          <div v-for="(item, index) in Db.View[prop.RecordSource]['recnoVal']" :key="index" class="result-row">
             {{ index + 1 }}
           </div>
 
           <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
 
           <div class="left-btn hide-in-print" @click="eventos.push(This.prop.Map + '.deleteRow(' + i + ')')">
-            <img src="/Iconos/delete.jpeg" width="20">
+            <img src="/Iconos/svg/delete.jpeg" width="20">
           </div>
 
-    
-      </virtualList>
-      <div v-if="props.db.value.View[prop.RecordSource]" class="left-btn hide-in-print"
-        @click="eventos.push(This.prop.Map + '.appendRow()')">
-        <img src="/Iconos/plus.jpeg" width="20" />
-        {{ This.prop.Status }}
-      </div>
-  </div>
-  </form>
 
-  <!--span v-if="prop.ToolTipText" class="tooltiptext">
+        </virtualList>
+        <div v-if="props.db.value.View[prop.RecordSource]" class="left-btn hide-in-print"
+          @click="eventos.push(This.prop.Map + '.appendRow()')">
+          <img src="/Iconos/svg/plus.jpeg" width="20" />
+          {{ This.prop.Status }}
+        </div>
+      </div>
+    </form>
+
+    <!--span v-if="prop.ToolTipText" class="errortext">
         {{
             prop.ToolTipText
         }}

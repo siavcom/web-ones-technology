@@ -13,10 +13,10 @@
         <label>{{ items.prop.Caption }}</label>
       </div>
     </div>
-    <span v-if="prop.ToolTipText" class="tooltiptext">
+    <span v-if="prop.ToolTipText" class="errortext">
       {{
-    prop.ToolTipText
-  }}
+        prop.ToolTipText
+      }}
     </span>
     <!--/div-->
   </div>

@@ -32,7 +32,7 @@
               :style:="columnLabelStyle" />
           </div>
 
-          <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/add-color.svg"
+          <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
             width="5%" />
           <!--div v-show='option.check'>+</div-->
           <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
@@ -93,13 +93,13 @@
 
       </div>
     </div>
-    <!--span :id="Id + '_tooltip'" class="tooltiptext" v-if="prop.ToolTipText.length > 0"
+    <!--span :id="Id + '_tooltip'" class="errortext" v-if="prop.ToolTipText.length > 0"
       v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
     <span class="errorText" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     <!-- v-bind:Component="ref(This[compMain])" 
      v-model:Status="This[compMain].prop.Status"-->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
-      :is="impComp(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
       v-bind:position="This[compMain].position" @click.capture="when(true)">
     </component>
@@ -127,7 +127,7 @@ const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
 const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
 const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
+const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
@@ -345,7 +345,7 @@ const labelStyle = reactive(This.labelStyle)
 const columnLabelStyle = {
   width: 'auto', //inputWidth.value,
   border: "1px solid rgb(0, 5, 2)",
-  borderRadius: "5px",
+  borderRadius: "4px",
   background: "white",
   color: "black",
   position: "relative",
@@ -367,7 +367,7 @@ columnContainer.maxHeight = 'min-content'
 columnContainer.height = 'min-content'
 columnContainer.maxHeight = 'min-content'
 columnContainer.minHeight = 'max-content'
-columnContainer.borderRadius = '3px';
+columnContainer.borderRadius = '4px';
 columnContainer.boxSizing = 'border-box';
 columnContainer.maxHeight = divStyle.maxHeight
 columnContainer.overflowY = 'scroll';
@@ -1665,7 +1665,7 @@ div.option {
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
   cursor: pointer;
   display: flex;
-  justifyContent: space-around;
+  justify-content: space-around;
   position: relative;
   /* no borrar se utiliza junto con div.toggle position:absolute*/
   /* border: 1px solid rgb(0, 5, 2);*/
@@ -1708,7 +1708,7 @@ div.multi {
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
   cursor: pointer;
   display: flex;
-  justifyContent: space-around;
+  justify-content: space-around;
   position: relative;
   /* no borrar se utiliza junto con div.toggle position:absolute*/
   /* border: 1px solid rgb(0, 5, 2);*/

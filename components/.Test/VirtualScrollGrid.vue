@@ -19,7 +19,7 @@
                        v-if="This[elemento.Name]"   Si existe la elemento
                        && This[elemento.Name].BaseClass== 'Column' 
                        :ref="el => { This.Ref = el }"
-                      :set="nomCom = impComp(This[elemento].prop.BaseClass)"
+                      :set="nomCom = impComponent(This[elemento].prop.BaseClass)"
                   -->
 
 

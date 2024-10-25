@@ -20,7 +20,7 @@ export class bt_aceptar extends COMPONENT {
 
     this.prop.Value = "Aceptar";
     this.prop.Capture = false;
-    // this.prop.Image = "/Iconos/Accept.png";
+
     this.prop.Image = "/Iconos/svg/accept.svg";
     this.style.width = "64px";
   } // Fin constructor

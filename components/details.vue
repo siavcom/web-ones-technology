@@ -28,7 +28,7 @@
           <div v-for="(compHeader) in This.header">
             <!-- v-bind:Component="ref(This[compHeader])"-->
             <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
-              :is="impComp(This[compHeader].prop.BaseClass)" v-model:Value="This[compHeader].prop.Value"
+              :is="impComponent(This[compHeader].prop.BaseClass)" v-model:Value="This[compHeader].prop.Value"
               v-model:Status="This[compHeader].prop.Status" :ShowError="This[compHeader].prop.ShowError"
               v-model:Key="This[compHeader].prop.Key"
               v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
@@ -45,7 +45,7 @@
           v-bind:Show="true"
           
                v-bind:Component="ref(This[compMain])"    -->
-            <component :is="impComp(This[compMain].prop.BaseClass)"
+            <component :is="impComponent(This[compMain].prop.BaseClass)"
               :class="This.prop.Name + '_' + This[compMain].prop.Name" v-model:Value="This[compMain].prop.Value"
               v-model:Status="This[compMain].prop.Status" :ShowError="This[compMain].prop.ShowError"
               v-model:Key="This[compMain].prop.Key"
@@ -58,15 +58,13 @@
         </div>
         <!--/template-->
         <!--template v-slot:footer
-                   src="/Iconos/BotonRojo.png"
-        This.prop.Status == 'A'
         -->
         <div class="footerDetail">
           <div v-show="This.prop.Status == 'A'">
-            <nuxt-img class='circle' src="/Iconos/circle-green.svg" style="float:left" />
+            <nuxt-img class='circle' src="/Iconos/svg/circle-green.svg" style="float:left" />
           </div>
           <div v-show="This.prop.Status != 'A'">
-            <nuxt-img class='circle' src="/Iconos/circle-red.svg" style="float:left" />
+            <nuxt-img class='circle' src="/Iconos/svg/circle-red.svg" style="float:left" />
           </div>
 
           <div v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -75,7 +73,7 @@
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
            v-bind:Component="ref(This[compFooter])"
           -->
-            <component :is="impComp(This[compFooter].prop.BaseClass)" v-model:Value="This[compFooter].prop.Value"
+            <component :is="impComponent(This[compFooter].prop.BaseClass)" v-model:Value="This[compFooter].prop.Value"
               v-model:Status="This[compFooter].prop.Status" :ShowError="This[compFooter].prop.ShowError"
               v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
@@ -116,7 +114,7 @@ const editText = resolveComponent('editText')
 const textLabel = resolveComponent('textLabel')
 const grid = resolveComponent('grid')
 //const browse = resolveComponent('browse')
-const browseLite = resolveComponent('browseLite')
+const browseLite = resolveComponent('browse')
 //const details = resolveComponent('details')
 const container = resolveComponent('container')
 const embedPdf = resolveComponent('embedPdf')

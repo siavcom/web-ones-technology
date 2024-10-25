@@ -100,7 +100,7 @@
                   v-model:ShowError="This[col.Name].prop.ShowError"
                 -->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
-                  :is="impComp(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
+                  :is="impComponent(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Key="This[col.Name].prop.Key"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
@@ -143,7 +143,7 @@
         </table>
       </div>
 
-      <!--span v-if="prop.ToolTipText" class="tooltiptext">
+      <!--span v-if="prop.ToolTipText" class="errortext">
         {{
             prop.ToolTipText
         }}
@@ -153,38 +153,38 @@
         <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
 
           <span :id="Id + '_botton_controles_add'" v-show="prop.addButton" width="40" @click="appendRow()">
-            <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/add-color.svg" width="35" />
+            <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/svg/add-color.svg" width="35" />
           </span>
 
           <span :id="Id + '_botton_controles_page'" v-show="scroll.page > 0">
 
             <span :id="Id + '_botton_controles_page_first'" v-bind:style="{ 'width': '40px' }"
               @click.capture.stop="first()">
-              <nuxt-img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/first.svg" width="30" />
+              <nuxt-img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/svg/first.svg" width="30" />
             </span>
 
             <span :id="Id + '_botton_controles_page_previus'" @click.capture.stop="previous()">
-              <nuxt-img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/previous.svg" width="30" />
+              <nuxt-img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/svg/previous.svg" width="30" />
             </span>
 
           </span>
           <span :id="Id + '_botton_controles_one__page'" v-show="!scroll.bottom">
             <span :id="Id + '_botton_controles_one__page_next'" @click="next()">
-              <nuxt-img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/next.svg" width="30" />
+              <nuxt-img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/svg/next.svg" width="30" />
             </span>
             <span :id="Id + '_botton_controles_one__page_last'" @click="last()">
-              <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/last.svg" width="30" />
+              <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/svg/last.svg" width="30" />
             </span>
           </span>
 
           <span :id="Id + '_botton_controles_delete_row'" v-show="prop.deleteButton && This.Row >= 0" width="40"
             @click.stop="borraRenglon()">
-            <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/delete-row.svg" width="45" />
+            <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-row.svg" width="45" />
           </span>
 
           <!-- click.capture.stop -->
           <span :id="Id + '_botton_controles_save'" v-show="prop.saveData" @click="saveTable()">
-            <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/save-color1.svg" width="45" />
+            <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="45" />
           </span>
 
           <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -198,7 +198,7 @@
               @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
           
           -->
-            <component :id="Id + '_component_footer_' + compFooter" :is="impComp(This[compFooter].prop.BaseClass)"
+            <component :id="Id + '_component_footer_' + compFooter" :is="impComponent(This[compFooter].prop.BaseClass)"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
@@ -242,7 +242,7 @@ import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
 import details from "@/components/details.vue"
 */
-
+/*
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
 const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
@@ -255,7 +255,7 @@ const container = defineAsyncComponent(() => import('@/components/container.vue'
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
 const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
-
+*/
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
@@ -978,10 +978,10 @@ const init = async () => {
 };
 
 init(); // Ejecuta el init
-
+/*
 //////////////////////////////////////
 //  Importa componentes dinamicos
-////////////////////////////////////// 
+////////////////////////////////////// /
 const impComp = ((name: string) => {
 
   name = name.toLowerCase()
@@ -996,56 +996,48 @@ const impComp = ((name: string) => {
       //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
       break;
     }
-    /*
-    case 'grid': {
-      return grid
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-    */
+    
     case 'imgbutton': {
-      return imgButton
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
+  return imgButton
+  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+  break;
+}
 
     case 'details': {
-      return details
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
+  return details
+  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+  break;
+}
 
     case 'container': {
-      return container
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
+  return container
+  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+  break;
+}
 
     case 'modalcontainer': {
-      return modalContainer
-      break
-    }
+  return modalContainer
+  break
+}
 
     case 'base64': {
 
-      return base64
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
+  return base64
+  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
 
-      break
-    }
+  break
+}
 
     default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
+  return editText
+  //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
+  break;
+}
   }
 
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
-
-
-
+*/
 
 </script>
 
@@ -1076,9 +1068,6 @@ h1 {
   transform: translateX(30px);
 }
 
-
-
-
 div.tabla {
   /*position: absolute; */
   /* no borrar se utiliza junto con div.option position:relative*/
@@ -1103,27 +1092,7 @@ div.controles {
   width: auto;
 }
 
-/*
-input {
-  border: 2px solid rgb(0, 5, 2);
-  color: #18e94c;
-  width: "100px";
-  height: "30px";
-  background: #f7f8f7;
-  padding: "5px";
-  border-radius: 5%;
-}
 
-
-
-
-table {
-  display: block;
-  margin-top: 5px;
-}
-
-
-*/
 
 table {
   /* Not required only for visualizing */
@@ -1177,6 +1146,3 @@ td {
   /* creates padding around scroll thumb */
 }
 </style>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<!--style scoped src="/components/styles.css" /-->

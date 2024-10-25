@@ -4,33 +4,9 @@
       <v-btn variant="flat" color="secondary" :icon="imagen.src" size="large">{{ prop.Value }}
 
       </v-btn>
-      <!--button
-        type="submit"
-        :style="imagen">
-        <nuxt-img
-          class="img"
-          :src="imagen.src"
-          alt="prop.Value"
-        />
-        <label >{{
-          prop.Value
-        }}</label>
-      </button-->
-
-      <!--input
-        type="image"
-        class="imagen"
-        :style="imagen"
-        :src="imagen.src"
-        v-model.trim="prop.Value"
-        :disabled="prop.ReadOnly"
-        :v-show="prop.Visible"
-        :alt="prop.Value"
-      /-->
-
-      <span v-if="prop.ToolTipText" class="tooltiptext">{{
-    prop.ToolTipText
-  }}</span>
+      <!--span v-if="prop.ToolTipText" class="errortext">{{
+        prop.ToolTipText
+        }}</span-->
     </div>
   </div>
 </template>

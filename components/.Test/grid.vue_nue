@@ -70,7 +70,7 @@
                             -->
                   <Transition name="columninput">
                     <div v-if="item.id == ThisGrid.Row" :style='{ "width": ThisGrid[col.Name].style.width }'>
-                      <component :is="impComp(ThisGrid[col.Name].prop.BaseClass)"
+                      <component :is="impComponent(ThisGrid[col.Name].prop.BaseClass)"
                         v-model:Value="ThisGrid[col.Name].prop.Value" v-model:Status="ThisGrid[col.Name].prop.Status"
                         v-model:Key="ThisGrid[col.Name].prop.Key" v-model:Focus="ThisGrid[col.Name].Focus"
                         v-model:Recno="ThisGrid[col.Name].Recno" v-model:Valid="ThisGrid[col.Name].prop.Valid"
@@ -118,7 +118,7 @@
         </table>
       </div>
 
-      <!--span v-if="prop.ToolTipText" class="tooltiptext">
+      <!--span v-if="prop.ToolTipText" class="errortext">
         {{
             prop.ToolTipText
         }}
@@ -166,7 +166,7 @@
                       @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
           
           -->
-            <component :is="impComp(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
+            <component :is="impComponent(This[compFooter].prop.BaseClass)" v-bind:Component="ref(This[compFooter])"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
               v-model:Focus="This[compFooter].Focus" v-model:Recno="This[compFooter].Recno" v-bind:Show="true"

@@ -155,7 +155,7 @@ export class bt_gen_forma extends COMPONENT {
         const nullvalue = component.nullvalue;
         const PlaceHolder = component.placeholder;
         const textLabel = component.ref_dat;
-        //const textLabel=component.textlabel
+
         let Type = "text";
 
         let BaseClass = "editText";
