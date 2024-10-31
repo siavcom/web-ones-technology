@@ -26,11 +26,11 @@ export class sep_fam extends COMPONENT {
       this.Parent.num_fam.prop.Visible = true;
       this.Parent.num_fam.prop.Disabled = false;
 
-      this.Parent.des_fam.prop.Visible = true;
-      this.Parent.des_fam.prop.Disabled = false;
+      this.Parent.op_des_fam.prop.Visible = true;
+      this.Parent.op_des_fam.prop.Disabled = false;
 
-      this.Parent.has_fam.prop.Visible = true;
-      this.Parent.has_fam.prop.Disabled = false;
+      this.Parent.op_has_fam.prop.Visible = true;
+      this.Parent.op_has_fam.prop.Disabled = false;
 
       return true;
     }
@@ -38,10 +38,10 @@ export class sep_fam extends COMPONENT {
     this.Parent.num_fam.prop.Visible = false;
     this.Parent.num_fam.prop.Disabled = true;
 
-    this.Parent.des_fam.prop.Visible = false;
-    this.Parent.des_fam.prop.Disabled = true;
+    this.Parent.op_des_fam.prop.Visible = false;
+    this.Parent.op_des_fam.prop.Disabled = true;
 
-    this.Parent.has_fam.prop.Visible = false;
-    this.Parent.has_fam.prop.Disabled = true;
+    this.Parent.op_has_fam.prop.Visible = false;
+    this.Parent.op_has_fam.prop.Disabled = true;
   } //
 }

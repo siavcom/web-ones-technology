@@ -71,13 +71,12 @@
                   el v-show del texLabel se cambio por v-if
                 
                 -->
-                <!-- @click.stop Transition name="columntext"-->
+                <!--focus.capture.stop= @click.stop Transition name="columntext"-->
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
-                  v-bind:style="This[col.Name].style"
-                  @focus.capture.stop="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
-                  @focusout.stop>
+                  v-bind:style="This[col.Name].style" v-bind:inputStyle="This[col.Name].inputStyle"
+                  @click.once="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" @focusout.stop>
                 </textLabel>
                 <!--/Transition-->
                 <!--/div-->
@@ -104,7 +103,7 @@
                   v-model:Key="This[col.Name].prop.Key"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
-                  v-bind:position="This[col.Name].position"
+                  :inputStyle="This[col.Name].inputStyle" v-bind:position="This[col.Name].position"
                   :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 1 }">
                 </component>
                 <!--/div-->
@@ -203,7 +202,7 @@
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-              v-bind:position="This[compFooter].position"
+              v-bind:inputStyle="This[compFooter].inputStyle" v-bind:position="This[compFooter].position"
               @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
           </div>
 
@@ -235,27 +234,6 @@ import {
 } from "vue";
 */
 // 
-/*
-import imgButton from "@/components/imgButton.vue"
-import comboBox from "@/components/comboBox.vue"
-import editText from "@/components/editText.vue"
-import textLabel from "@/components/textLabel.vue"
-import details from "@/components/details.vue"
-*/
-/*
-const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
-const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
-const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
-const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
-//const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-//const browseLite = defineAsyncComponent(() => import('@/components/browseLite.vue'))
-const details = defineAsyncComponent(() => import('@/components/details.vue'))
-const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
-const container = defineAsyncComponent(() => import('@/components/container.vue'))
-const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
-const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
-
-*/
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key"]);
 //import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
@@ -978,66 +956,6 @@ const init = async () => {
 };
 
 init(); // Ejecuta el init
-/*
-//////////////////////////////////////
-//  Importa componentes dinamicos
-////////////////////////////////////// /
-const impComp = ((name: string) => {
-
-  name = name.toLowerCase()
-  switch (name) {
-    case 'edittext': {
-      //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      return editText
-      break;
-    }
-    case 'combobox': {
-      return comboBox
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-    
-    case 'imgbutton': {
-  return imgButton
-  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-  break;
-}
-
-    case 'details': {
-  return details
-  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-  break;
-}
-
-    case 'container': {
-  return container
-  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-  break;
-}
-
-    case 'modalcontainer': {
-  return modalContainer
-  break
-}
-
-    case 'base64': {
-
-  return base64
-  //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-  break
-}
-
-    default: {
-  return editText
-  //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-  break;
-}
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-*/
 
 </script>
 

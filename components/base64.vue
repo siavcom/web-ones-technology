@@ -6,9 +6,9 @@
     <img v-if="Value.length > 0" :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly"
       :style="inputStyle" />
 
-    <input :id="Id + '_input'" ref="fileInput" type="file" @change="readFile($event)" :disabled="This.prop.Disabled"
-      :tabindex="prop.TabIndex" style="width:64px" :accept="inputStyle.accept" />
-
+    <!--div v-if="!This.prop.Disabled"-->
+    <input v-if="!This.prop.Disabled" :id="Id + '_input'" ref="fileInput" type="file" @change="readFile($event)"
+      :disabled="This.prop.Disabled" :tabindex="prop.TabIndex" style="width:64px" :accept="inputStyle.accept" />
   </span>
 </template>
 

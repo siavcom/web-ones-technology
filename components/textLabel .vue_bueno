@@ -1,39 +1,66 @@
 <template>
   <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style">
-
+    <!--div class="mensajes" v-bind:style="InputStyle"    :style="{ maxHeight: style.maxHeight } -->
     <div :id="Id + '_labelText'" class="etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
       :style="labelStyle">{{ prop.textLabel +
         " " }}</div>
 
+    <!--div v-if="prop.Type == 'checkBox'" v-bind:style="InputStyle"-->
+    <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 
-    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox"
-      :style="Styles.inputStyle" :checked="checkValue" readonly="true" />
+    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox" :style="InputStyle"
+      :checked="checkValue" readonly="true" />
 
-    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
+    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="InputStyle"
       readonly="true" />
-    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="Styles.inputStyle"
+    <!--/div>
+
+      <div v-else-if="prop.Type == 'date'" v-bind:style="InputStyle"-->
+    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="InputStyle"
       readonly="true" v-model="Text" />
+    <!--/div>
+
+      <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="InputStyle"-->
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
-      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
-    <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="Styles.inputStyle">
+      :style="InputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
+
+
+    <!--div :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="InputStyle" -->
+    <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="InputStyle">
       <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
     </button>
-    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
+
+    <!--/div>
+       
+      <div v-else-->
+    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="InputStyle"
       readonly="true" v-model="Text" />
+    <!--/div-->
+
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '">
       <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
         :src="prop.Image" />
     </div>
   </div>
+  <!--/div-->
 </template>
 
 
+<!--textarea v-else-if="prop.Type == 'textArea'" class="text" 
+v-model="Text" 
+type="textArea" 
+readonly="true" >
+</textarea-->
+
 <script setup lang="ts">
+// Ult. Modificacion  
+// 30/Sep/2022.- Fdo Cuadras
 
 const emit = defineEmits(["update", "update:checkValue"]);
+//import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -41,6 +68,7 @@ const emit = defineEmits(["update", "update:checkValue"]);
 const props = defineProps<{
   //Recno: 0;
   Registro: 0;
+  
   //Show: false;
   prop: {
 
@@ -89,7 +117,7 @@ const props = defineProps<{
 
     //compAddress: any;
   };
-  inputStyle: {};
+
   style: {
     background: "white";
     padding: "5px"; // Relleno
@@ -101,6 +129,9 @@ const props = defineProps<{
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
   };
+  inputStyle: {
+
+  };
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -109,59 +140,32 @@ const props = defineProps<{
   //db: any
 }>();
 
-const Component = ref(props.prop.This)
+//const Component = ref(props.prop.This)
+const Component = toRef(() => props.prop.This)
 const This = Component.value
-const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
-const inputStyle = reactive({ ...Este.inputStyle })
-const divStyle = reactive({ ...Este.style })
 
-const Styles =
-{
-  labelStyle: labelStyle,
-  inputStyle: inputStyle,
-  style: divStyle
-}
-
+This.Recno = props.Registro
 
 const Id = This.prop.Name + props.Registro.toString().trim()
 
-
-const Value = ref(props.prop.Value)
+const labelStyle = reactive(This.labelStyle)
+const Value = ref()
 
 const Text = ref(null)
+
+
 const Status = ref(props.prop.Status)
 
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checkValue = ref(false)
-const Type = ref(props.prop.Type.toLowerCase())
+const InpStyle=props.inputStyle
+const InputStyle=reactive({...InpStyle})
 
-/*
-const labelStyle = reactive(This.labelStyle)
-const InputStyle = reactive({ ...props.inputStyle })
+//const inputStyle = reactive(props.style)
 const refInputStyle = toRef(This.inputStyle)
-*/
 
-
-
-// el width y maxWidth de 99% fue lo mejor para los grid de columnas  
-// con 97% se desalinea horizontalmente en el grid de columnas
-
-
-/*
-let medida = ''
-
-if (inputStyle.width.search("px") > 0)
-  medida = 'px'
-if (inputStyle.width.search("%") > 0)
-  medida = '%'
-
-const textWidth = +inputStyle.width.replaceAll(medida, '') - 5
-inputStyle.width = textWidth.toString() + medida
-*/
-
-
+const Type = ref(props.prop.Type.toLowerCase())
 
 //const zIndex = ref(props.style.zIndex)
 //const inputWidth = ref('auto')
@@ -183,7 +187,7 @@ const emitValue = async () => {
 /////////////////////////////////////////////////////
 
 const asignaResultado = (valor?: string) => {
-  //console.log('inputStyle asignaResultado ',props.Name,valor)
+
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
   if (props.prop.RowSourceType == 0) return;
@@ -235,7 +239,7 @@ const renderComboBox = async () => {
 
   console.log('textLabel render comboBox ', props.prop.Map, ' RowSource=', props.prop.RowSource)
 
-  //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
+
   const RowSource: string = props.prop.RowSource
 
 
@@ -386,8 +390,6 @@ const renderComboBox = async () => {
 
     }
   }
-  //Text.value = valor
-  //console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
 
   asignaResultado(valor)
 
@@ -410,17 +412,16 @@ const readCampo = async () => {
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
     const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
     for (const campo in data) {
-      if (campo != 'key_pri')
+      if (campo != 'key_pri') {
         Text.value = data[campo] != null ? data[campo] : ''
-      // console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
+      }
     }
   }
-  This.prop.Value = Text.value
+  Value.value = Text.value
+  This.prop.Value = Value.value
   This.Recno = props.Registro
-
-
   if (This.onChangeValue) {
-    await This.onChangeValue(ref(Styles))
+    await This.onChangeValue()
   }
 
   if (props.prop.Type == 'number') {
@@ -454,10 +455,35 @@ const readCampo = async () => {
   //  Text.value = Text.value.trim()
 
 
-  renderComboBox()
+
+
+  await renderComboBox()
 }
 
-/*
+//////////////////////////
+//Si se cambia de afuera el valor
+///////////////////////////////////////
+watch(
+  () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
+
+  async (new_val: any, old_val: any) => {
+
+    if (This.Recno != props.Registro)
+      return
+
+    if (This.prop.Status == 'P') // se cambio desde el mismo proceso
+      return
+
+    if (new_val != Value.value) {
+      Text.value = new_val
+      Value.value = new_val
+      await renderComboBox()
+   
+    }
+  },
+  { deep: true }
+);
+
 //////////////////////////
 //Si se cambia de afuera el valor del inputStyle
 ///////////////////////////////////////
@@ -466,29 +492,29 @@ watch(
   (new_val: any, old_val: any) => {
     //  if (This.Recno != props.Registro)
     //    return
-    console.log(Id, This.Recno, props.Registro, 'watch inputStyle name est_cpy ', 'Text=', Text.value, 'Old=', InputStyle.color, 'New=', new_val.color)
+   if (This.Recno==props.Registro){
+       console.log(Id, This.Recno, props.Registro, 'watch inputStyle name est_cpy ', 'Text=', Text.value, 'Old=', InputStyle.color, 'New=', new_val.color)
+       for (const prop in new_val) {
+         if(new_val[prop]!=InputStyle[prop]){
+           InputStyle[prop] = new_val[prop]
+         }
 
-    if (This.Recno == props.Registro) {
-      for (const prop in new_val) {
-        if (new_val[prop] != InputStyle[prop]) {
-          InputStyle[prop] = new_val[prop]
-        }
-
+       }
       }
-    }
   },
   { deep: true }
 );
 
-*/
 
 watch(
   () => props.Registro,
   async (new_val, old_val) => {
-    // console.log('inputStyle watch Registro', old_val, new_val)
+    if (This.Recno != props.Registro)
+      return
+
     if (old_val != new_val && new_val > 0) {
       await readCampo()
-      This.recnoChange()
+
     }
     if (new_val == 0)
       Text.value = ''
@@ -504,35 +530,57 @@ watch(
 // Se tiene que emitir para que cambie el Valor en el template
 /////////////////////////////////////////
 
-const init = async () => {
-
-  if (Styles.inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
-    Styles.inputStyle.width = '99%'
-
-  if (props.prop.Type.toLowerCase() == 'checkbox')
-    Styles.inputStyle.width = '20px'
-
-
-  if (Styles.inputStyle.maxWidth == 'auto')
-    Styles.inputStyle.maxWidth = '99%'
-
-  if (Styles.inputStyle.maxHeight == 'auto')
-    Styles.inputStyle.maxHeight = '99%'
+//const init = async () => {
+onMounted(async () => {
 
   if (props.prop.Type == 'number')
-    Styles.inputStyle.textAlign = 'right'
+    InputStyle.textAlign = 'right'
 
-  Text.value = props.prop.Value
+  // el width y maxWidth de 99% fue lo mejor para los grid de columnas  
+  // con 97% se desalinea horizontalmente en el grid de columnas
+  if (props.inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
+     InputStyle.width = '99%'
+
+  if (props.prop.Type.toLowerCase() == 'checkbox')
+     InputStyle.width = '20px'
+
+
+  if (props.inputStyle.maxWidth == 'auto')
+     InputStyle.maxWidth = '99%'
+
+  if (props.inputStyle.maxHeight == 'auto')
+       InputStyle.maxHeight = '99%'
 
   if (This.prop.BaseClass == "imgButton")
     Type.value = 'imgButton'
 
-  await readCampo()
-  This.recnoChange()
+  Text.value = props.prop.Value
+  Value.value = props.prop.Value
 
-}
+  if (This.prop.Name == 'est_cpy') 
+    console.log('1) 11111 est_cpy onCha inputStyle=', Id, InputStyle.color)
+  
+    await readCampo()
+    if ( This.onMounted)
+       await This.onMounted()
+  
+   if (This.prop.Name == 'est_cpy') 
+    console.log('2) 22222 est_cpy onCha inputStyle=', Id, InputStyle.color)
+  
 
-init();
+
+})
+/*
+onBeforeMount(async () => {
+  if (This.prop.Name == 'est_cpy') {
+    console.log('1) 11111 est_cpy onCha inputStyle=', Id, This.inputStyle.color)
+  
+    await This.recnoChange2()
+    console.log('2) 11111 est_cpy onCha inputStyle=', Id, This.inputStyle.color)
+  }
+})
+*/
+//init();
 </script>
 <style scoped>
 .button {

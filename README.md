@@ -55,7 +55,18 @@ and methods
 - init
 - keyPress
 
-To make a reference to especific propierty you can do by using a complete name reference tree
+- onChangeValue 
+    When the value of this component changes, this method is called.
+    It recieves an optional parameter styles, which is the styles of the component (style,inputStyle,labelsStyle).
+    If it is not provided, it uses the component styles of the object.
+    sample :The method changes the color of the input depending on the value selected.
+    A = green, B = red, X = blue.
+    @param {any} styles - The style of the component.
+
+
+
+
+To make a reference to especific propierty you can do by using a complete name reference tree Map (Object)
 example:
 propierties :
 this.Form.style.display="inline-block"
@@ -66,7 +77,8 @@ or
 this.Parent.component2.prop.Value='Customer name 1'
 this.Parent.component1.component2.prop.Value='Customer name 1'
 
-method:  
+Calling a method :
+
  this.Form.component4.click().
  this.Parent.component1.component2.click()
 

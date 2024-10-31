@@ -418,6 +418,13 @@ export class COMPONENT {
   }
 
 
+  /**
+   * Initializes the component.
+   *
+   * This method is called after the component is rendered and the elements are
+   * created. It is the entry point for the component to initialize itself.
+   
+   */
   public async init() {
     return;
   }
@@ -534,10 +541,15 @@ export class COMPONENT {
    * Cada tecla que se presiona en el input
    * @returns El valor de la tecla presionada
    */
+
+  /**
+   * Cada tecla que se presiona en el input
+   * @returns {number} El valor de la tecla presionada
+   */
   public keyPress() {
     //   public keyPress($event) {  
     return //this.prop.Key;
-    //  console.log('KeyPress===>', key)
+
   }
 
   /////////////////////////////////////////////////////////////////////

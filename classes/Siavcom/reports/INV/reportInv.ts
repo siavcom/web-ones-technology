@@ -13,8 +13,8 @@ import { des_fec } from "@/classes/Siavcom/reports/VTAS/des_fec";
 import { has_fec } from "@/classes/Siavcom/reports/VTAS/has_fec";
 import { alm_rep } from "./alm_rep";
 import { tip_imp } from "./tip_imp";
-import { des_fam } from "./des_fam";
-import { has_fam } from "./has_fam";
+import { op_des_fam } from "./op_des_fam";
+import { op_has_fam } from "./op_has_fam";
 import { sep_fam } from "./sep_fam";
 import { num_fam } from "./num_fam";
 import { des_isu } from "./des_isu";
@@ -24,37 +24,37 @@ import { has_isu } from "./has_isu";
 // Generamos la clase en memoria 
 export class reportInv extends reportForm {
 
-  public tdo_tdo = new tdo_tdo()
+  public op_tdo_tdo = new tdo_tdo()
   public des_fec = new des_fec()
   public has_fec = new has_fec()
   public alm_rep = new alm_rep()
   public tip_imp = new tip_imp()
-  public des_isu = new des_isu()
-  public has_isu = new has_isu()
+  public op_des_isu = new des_isu()
+  public op_has_isu = new has_isu()
   public sep_fam = new sep_fam()
   public num_fam = new num_fam()
-  public des_fam = new des_fam()
-  public has_fam = new has_fam()
+  public op_des_fam = new op_des_fam()
+  public op_has_fam = new op_has_fam()
 
 
   constructor() {
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
-    this.tdo_tdo.prop.TabIndex = 1
+    this.op_tdo_tdo.prop.TabIndex = 1
     this.des_fec.prop.TabIndex = 2
     this.has_fec.prop.TabIndex = 3
     this.alm_rep.prop.TabIndex = 4
     this.tip_imp.prop.TabIndex = 5
-    this.des_isu.prop.TabIndex = 6
-    this.has_isu.prop.TabIndex = 7
-    this.has_isu.prop.Value = "ZZZZZZZZZZ"
-    this.des_isu.prop.Value = " "
+    this.op_des_isu.prop.TabIndex = 6
+    this.op_has_isu.prop.TabIndex = 7
+    this.op_has_isu.prop.Value = "ZZZZZZZZZZ"
+    this.op_des_isu.prop.Value = " "
     this.sep_fam.prop.TabIndex = 8
     this.num_fam.prop.TabIndex = 9
     this.num_fam.prop.Value = 1
-    this.des_fam.prop.TabIndex = 10
-    this.has_fam.prop.TabIndex = 11
+    this.op_des_fam.prop.TabIndex = 10
+    this.op_has_fam.prop.TabIndex = 11
     //this.has_fam.prop.Type = "string"
     //this.has_fam.prop.MaxLength=10
     //this.has_fam.prop.Value = " "

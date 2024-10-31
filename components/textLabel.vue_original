@@ -1,39 +1,65 @@
 <template>
   <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style">
-
+    <!--div class="mensajes" v-bind:style="inputStyle"    :style="{ maxHeight: style.maxHeight } -->
     <div :id="Id + '_labelText'" class="etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
       :style="labelStyle">{{ prop.textLabel +
         " " }}</div>
 
+    <!--div v-if="prop.Type == 'checkBox'" v-bind:style="inputStyle"-->
+    <!--div v-if="prop.Type == 'checkBox'" class="prop.Type" v-text="prop.Value==1? '(x)':'( )'" /-->
 
-    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox"
-      :style="Styles.inputStyle" :checked="checkValue" readonly="true" />
+    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox" :style="inputStyle"
+      :checked="checkValue" readonly="true" />
 
-    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
+    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="inputStyle"
       readonly="true" />
-    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="Styles.inputStyle"
+    <!--/div>
+
+      <div v-else-if="prop.Type == 'date'" v-bind:style="inputStyle"-->
+    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="inputStyle"
       readonly="true" v-model="Text" />
+    <!--/div>
+
+      <div v-else-if="prop.Type == 'datetime-local'" v-bind:style="inputStyle"-->
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
-      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
-    <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="Styles.inputStyle">
+      :style="inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
+
+
+    <!--div :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="inputStyle" -->
+    <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="inputStyle">
       <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
     </button>
-    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
+
+    <!--/div>
+       
+      <div v-else-->
+    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="inputStyle"
       readonly="true" v-model="Text" />
+    <!--/div-->
+
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '">
-      <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
-        :src="prop.Image" />
+      <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img" :src="prop.Image" />
     </div>
   </div>
+  <!--/div-->
 </template>
 
 
+<!--textarea v-else-if="prop.Type == 'textArea'" class="text" 
+v-model="Text" 
+type="textArea" 
+readonly="true" >
+</textarea-->
+
 <script setup lang="ts">
+// Ult. Modificacion  
+// 30/Sep/2022.- Fdo Cuadras
 
 const emit = defineEmits(["update", "update:checkValue"]);
+//import { localDb } from "@/classes/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -89,7 +115,7 @@ const props = defineProps<{
 
     //compAddress: any;
   };
-  inputStyle: {};
+
   style: {
     background: "white";
     padding: "5px"; // Relleno
@@ -111,22 +137,10 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
-const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
-const inputStyle = reactive({ ...Este.inputStyle })
-const divStyle = reactive({ ...Este.style })
-
-const Styles =
-{
-  labelStyle: labelStyle,
-  inputStyle: inputStyle,
-  style: divStyle
-}
-
 
 const Id = This.prop.Name + props.Registro.toString().trim()
 
-
+const labelStyle = reactive(This.labelStyle)
 const Value = ref(props.prop.Value)
 
 const Text = ref(null)
@@ -135,18 +149,27 @@ const Status = ref(props.prop.Status)
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checkValue = ref(false)
+
+//const inputStyle = reactive(props.style)
+const inputStyle = reactive(This.inputStyle)
+//inputStyle.color = "#b94295"
 const Type = ref(props.prop.Type.toLowerCase())
-
-/*
-const labelStyle = reactive(This.labelStyle)
-const InputStyle = reactive({ ...props.inputStyle })
-const refInputStyle = toRef(This.inputStyle)
-*/
-
 
 
 // el width y maxWidth de 99% fue lo mejor para los grid de columnas  
 // con 97% se desalinea horizontalmente en el grid de columnas
+if (inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
+  inputStyle.width = '99%'
+
+if (props.prop.Type.toLowerCase() == 'checkbox')
+  inputStyle.width = '20px'
+
+
+if (inputStyle.maxWidth == 'auto')
+  inputStyle.maxWidth = '99%'
+
+if (inputStyle.maxHeight == 'auto')
+  inputStyle.maxHeight = '99%'
 
 
 /*
@@ -415,13 +438,6 @@ const readCampo = async () => {
       // console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
     }
   }
-  This.prop.Value = Text.value
-  This.Recno = props.Registro
-
-
-  if (This.onChangeValue) {
-    await This.onChangeValue(ref(Styles))
-  }
 
   if (props.prop.Type == 'number') {
     //Text.value = toNumberStr(Text.value);
@@ -457,31 +473,6 @@ const readCampo = async () => {
   renderComboBox()
 }
 
-/*
-//////////////////////////
-//Si se cambia de afuera el valor del inputStyle
-///////////////////////////////////////
-watch(
-  () => refInputStyle.value, //This.inputStyle
-  (new_val: any, old_val: any) => {
-    //  if (This.Recno != props.Registro)
-    //    return
-    console.log(Id, This.Recno, props.Registro, 'watch inputStyle name est_cpy ', 'Text=', Text.value, 'Old=', InputStyle.color, 'New=', new_val.color)
-
-    if (This.Recno == props.Registro) {
-      for (const prop in new_val) {
-        if (new_val[prop] != InputStyle[prop]) {
-          InputStyle[prop] = new_val[prop]
-        }
-
-      }
-    }
-  },
-  { deep: true }
-);
-
-*/
-
 watch(
   () => props.Registro,
   async (new_val, old_val) => {
@@ -506,21 +497,8 @@ watch(
 
 const init = async () => {
 
-  if (Styles.inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
-    Styles.inputStyle.width = '99%'
-
-  if (props.prop.Type.toLowerCase() == 'checkbox')
-    Styles.inputStyle.width = '20px'
-
-
-  if (Styles.inputStyle.maxWidth == 'auto')
-    Styles.inputStyle.maxWidth = '99%'
-
-  if (Styles.inputStyle.maxHeight == 'auto')
-    Styles.inputStyle.maxHeight = '99%'
-
   if (props.prop.Type == 'number')
-    Styles.inputStyle.textAlign = 'right'
+    inputStyle.textAlign = 'right'
 
   Text.value = props.prop.Value
 

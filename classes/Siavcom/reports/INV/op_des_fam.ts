@@ -10,11 +10,11 @@
 // base class
 ///////////////////////////////////////
 import { COMPONENT } from "@/classes/Component";
-export class has_fam extends COMPONENT {
+export class op_des_fam extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Hasta que familia";
+    this.prop.textLabel = "Desde que familia";
     this.prop.BaseClass = "comboBox";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.ColumnCount = 3;
@@ -25,4 +25,9 @@ export class has_fam extends COMPONENT {
 
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
+  //////////////////////////////////
+  // event when
+  ///////////////////////////////////
+
+  //   await super.when() no hace falta el super porque en focus.capture lo hace
 }

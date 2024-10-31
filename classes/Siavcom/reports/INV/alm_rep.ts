@@ -23,6 +23,10 @@ export class alm_rep extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px /
     this.prop.Value = "?? ";
+    this.style.maxHeight = "200px";
+    this.inputStyle.width = "240px";
+    this.prop.MultiSelect = false;
+    this.style.width = "auto";
     //this.style.zIndex=5  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
 }

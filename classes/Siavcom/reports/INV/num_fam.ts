@@ -28,10 +28,10 @@ export class num_fam extends COMPONENT {
 
   async valid() {
     console.log("num_fam Interactivechange Value=", this.prop.Value);
-    this.Parent.des_fam.prop.RowSource = "";
-    this.Parent.has_fam.prop.RowSource = "";
-    this.Parent.des_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from man_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
-    this.Parent.has_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from man_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
+    this.Parent.op_des_fam.prop.RowSource = "";
+    this.Parent.op_has_fam.prop.RowSource = "";
+    this.Parent.op_des_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from man_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
+    this.Parent.op_has_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from man_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
     return true;
   } //
 }

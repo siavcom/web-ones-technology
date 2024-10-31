@@ -2,12 +2,13 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <span :id="Id + '_div'" :title="This.prop.ToolTipText" class="divi inputDivi" :style="divStyle"
+  <span :id="Id + '_div_comboBox'" :title="This.prop.ToolTipText" class="divi inputDivi" :style="Styles.style"
     v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
 
-    <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="labelStyle">{{ prop.textLabel
+    <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
+      prop.textLabel
       }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
@@ -39,59 +40,45 @@
 
         </div>
 
-
       </div>
-
       <!--/select-->
     </div>
 
-    <!--ComboBox 
-        <input class="textInput" :readonly="+prop.Style == 2 || prop.ReadOnly" ref="Ref" type="text" :v-model="displayText"
-          @focusout="focusOut" />{{ displayText }}
-          textInputStyle
-:style='comboStyle'
-       inputBufferBuffer = '';
-      -->
-    <div :id="Id + '_comboBox'" v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
-
-
-      <input :id="Id" class="textInput" :style="inputStyle" :disabled="This.prop.Disabled"
-        :readonly="+prop.Style == 2 || prop.ReadOnly || prop.Disabled" :value="displayText" :tabindex="prop.TabIndex"
-        ref="Ref" @keypress="keyPress($event)" @focus.prevent="toggle = false; when()" @focusout="emitValue()"
-        @contextmenu="handler($event)" />
-
-      <!--span> {{ prop.Value }}</span-->
+    <!--ComboBox NOT MultiSelect-->
+    <div :id="Id + '_selectOne'" v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
+      <input :id="Id" class="textInput" :style="Styles.inputStyle" :disabled="prop.Disabled" :readonly="prop.ReadOnly"
+        :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
+        @focus.prevent="toggle = false; when()" @focusout="emitValue()" @contextmenu="handler($event)" />
       <!--Valor seleccionado click-->
 
-      <div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled">
+      <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
+      <div :id="Id + '_toggle'" class="toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled">
+        <!--CheckBox -->
+        <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled" class="columContainer"
+          @focusout="toggle = !toggle" :style="columnContainer">
+          <!--Columnas -->
 
-        <div :id="Id + '_toggle'" class="toggle" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)">
-          <!--CheckBox -->
-          <div :id="Id + '_columncontainer'" v-if="toggle && (!prop.ReadOnly && !prop.Disabled)" class="columContainer"
-            @focusout="toggle = !toggle" :style="columnContainer">
-            <!--Columnas -->
+          <div :id="Id + '_options_' + valueIndex" class="option" v-for="(option, valueIndex) in columnas"
+            @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validClick(valueIndex)"
+            :disabled="prop.ReadOnly">
+            <!--Imprime Columnas -->
 
-            <div :id="Id + '_options_' + valueIndex" class="option" v-for="(option, valueIndex) in columnas"
-              @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false"
-              @click.stop="validClick(valueIndex)" :disabled="prop.ReadOnly">
-              <!--Imprime Columnas -->
-
-              <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
-                v-for="(text, col) in option.text" :key="col"
-                :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
-                <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
-                  :style:="columnLabelStyle" />
-              </div>
-
+            <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
+              v-for="(text, col) in option.text" :key="col"
+              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
+              <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
+                :style:="columnLabelStyle" />
             </div>
+
           </div>
         </div>
-        <!--toggle click.prevent -->
-        <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" v-show="!prop.ReadOnly && !prop.Disabled"
-          :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick"
-          :style='toggleStyle' />
-
       </div>
+      <!--toggle click.prevent -->
+      <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" v-if="!This.prop.ReadOnly && !This.prop.Disabled"
+        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick"
+        :style='toggleStyle' />
+
+      <!--/div-->
     </div>
     <!--span :id="Id + '_tooltip'" class="errortext" v-if="prop.ToolTipText.length > 0"
       v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
@@ -101,11 +88,9 @@
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-      v-bind:position="This[compMain].position" @click.capture="when(true)">
+      v-bind:inputStyle="This[compMain].inputStyle" v-bind:position="This[compMain].position"
+      @click.capture="when(true)">
     </component>
-
-
-
 
   </span>
   <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
@@ -121,7 +106,7 @@
 ///////////////////////////////////////
 // Componentes
 //////////////////////////////////////
-
+/*
 const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
 const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
 const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
@@ -133,7 +118,7 @@ const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
 const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
 
-
+*/
 
 const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
@@ -147,6 +132,7 @@ interface Props {
   prop: {};
   style: {};
   position: {};
+  inputStyle: {};
 }
 
 //const props = defineProps<{
@@ -226,7 +212,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 
   },
-
+  inputStyle: {
+    background: "white",
+    padding: "5px", // Relleno
+    color: "#b94295",
+    width: "auto",
+    height: "30px",
+    fontFamily: "Arial",
+    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left",
+    borderColor: "#000a01",
+    borderWidth: "1px",
+  },
   style: {
     background: "white",
     padding: "5px", // Relleno
@@ -250,14 +247,29 @@ const props = withDefaults(defineProps<Props>(), {
 
 })
 
+
+const Component = ref(props.prop.This)
+const This = Component.value
+
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+
+const Styles =
+{
+  labelStyle: labelStyle,
+  inputStyle: inputStyle,
+  style: divStyle
+}
+
+
 const Value = ref(props.prop.Value)
 const Recno = ref(0)
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const ToolTipText = ref(true)
 
-const Component = ref(props.prop.This)
-const This = Component.value
 
 const Id = This.prop.Name + props.Registro.toString()
 let thisElement: Element | null
@@ -287,7 +299,7 @@ const hover = ref(false)
 const ShowError = ref(false)
 const sw_focus = ref(false)
 // Focus.value = false
-const divStyle = reactive(props.style)
+
 
 
 if (props.prop.MultiSelect) {
@@ -308,39 +320,33 @@ if (divStyle.width == 'auto')
 //if (divStyle.height == 'auto')
 //  divStyle.height = '18px'
 
-
-
-
 //divStyle.zIndex = 100 - This.prop.TabIndex
 
 
 const zIndex = ref(This.style.zIndex)
 
 const comboStyle = reactive({
-  height: This.inputStyle.height,
+  height: Styles.inputStyle.height,
   zIndex: zIndex.value
 })
 
 
-// const inputStyle = reactive(props.inputStyle)
-
-const inputStyle = reactive(This.inputStyle)
 
 const toggleStyle = {
   height: "13px" //This.style.height
 }
 
-if (inputStyle.height == "auto")
+if (Styles.inputStyle.height == "auto")
   toggleStyle.height = "13px"
 else
-  toggleStyle.height = inputStyle.height
+  toggleStyle.height = Styles.inputStyle.height
 
 
-inputStyle.zIndex = zIndex
+Styles.inputStyle.zIndex = zIndex
 const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
-const labelStyle = reactive(This.labelStyle)
+
 
 const columnLabelStyle = {
   width: 'auto', //inputWidth.value,
@@ -508,8 +514,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   await asignaValor()
   This.prop.Value = Value.value
-
-  // console.log('3 comboBox emitValue() Name', props.prop.Name, 'displayText.value=', displayText.value)
+  if (This.onChangeValue) {
+    await This.onChangeValue(ref(Styles))
+  }
 
 
   //nextTick(function () {
@@ -584,7 +591,8 @@ const toggleClick = async () => {
 /////////////////////////////////////////////////////////////////
 
 const keyPress = ($event) => {
-
+  //console.log('1) >>>>>KeyPress===>', This.prop.ReadOnly) //, $event.target, $event.target.value)
+  if (This.prop.ReadOnly || This.prop.Disabled) return
   if (ShowError.value) {
     ShowError.value = false
     This.prop.ShowError = false
@@ -1199,7 +1207,15 @@ watch(
     //   if (This.prop.Value != old_val) {
     if (This.prop.Value != Value.value) {
       Value.value = This.prop.Value
-      emitValue(false)
+      await emitValue(false)
+      if (This.prop.Valid && This.onChangeValue) {
+        console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
+        if (This.onChangeValue) {
+          await This.onChangeValue(ref(Styles))
+        }
+
+
+      }
     }
   },
   { deep: true }
@@ -1372,28 +1388,25 @@ onMounted(async () => {
 
   if (This.prop.Init) {
 
-
-    // inputStyle.height = 'fit-content'
-
     let textWidth = 0
 
-    if (inputStyle.width.search("px") > 0) {
-      textWidth = +inputStyle.width.replaceAll('px', '') - 30
-      inputStyle.width = textWidth.toString() + 'px'
+    if (Styles.inputStyle.width.search("px") > 0) {
+      textWidth = +Styles.inputStyle.width.replaceAll('px', '') - 30
+      Styles.inputStyle.width = textWidth.toString() + 'px'
 
     }
-    if (inputStyle.width.search("%") > 0) {
-      textWidth = +inputStyle.width.replaceAll('%', '') - 5
-      inputStyle.width = textWidth.toString() + '%'
+    if (Styles.inputStyle.width.search("%") > 0) {
+      textWidth = +Styles.inputStyle.width.replaceAll('%', '') - 5
+      Styles.inputStyle.width = textWidth.toString() + '%'
     }
 
     if (props.prop.Type == 'date') {
-      inputStyle.width = '100px'
-      inputStyle.height = '18px'
-      inputStyle.maxHeight = '20px'
+      Styles.inputStyle.width = '100px'
+      Styles.inputStyle.height = '18px'
+      Styles.inputStyle.maxHeight = '20px'
     }
     if (props.prop.Type == 'number')
-      inputStyle.textAlign = 'right'
+      Styles.inputStyle.textAlign = 'right'
 
     if (!This.prop.Visible) {
       comboStyle.height = '0%'
@@ -1401,6 +1414,14 @@ onMounted(async () => {
     }
 
   }
+
+  onBeforeMount(async () => {
+    if (This.init)
+      await This.init()
+  })
+
+
+
   /*
     console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value,
       ' props.prop.RowSourceType=', props.prop.RowSourceType,
@@ -1485,11 +1506,10 @@ const handler = (event) => {
   event.preventDefault();
 }
 
-
+/*
 
 const impComp = ((name: string, pos?: string) => {
 
-  //return eval(name)
 
   switch (name.toLowerCase().trim()) {
     case 'edittext': {
@@ -1559,7 +1579,7 @@ const impComp = ((name: string, pos?: string) => {
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
 
-
+*/
 
 
 

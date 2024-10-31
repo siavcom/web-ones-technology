@@ -35,7 +35,8 @@
                 <component :id="'modal_componentes_' + key + component.prop.Name"
                   :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                   v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                  :style="component.style" :position="component.position" @click.capture="component.click()">
+                  :style="component.style" :inputStyle="component.inputStyle" :position="component.position"
+                  @click.capture="component.click()">
                 </component>
 
               </div>
@@ -53,21 +54,7 @@
 
 <script lang="ts" setup>
 
-//////////////////////////////////////////////
-// Componentes
-//////////////////////////////////////////////
-/*
-const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
-const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
-const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
-const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
-const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
-const details = defineAsyncComponent(() => import('@/components/details.vue'))
-const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
-const container = defineAsyncComponent(() => import('@/components/container.vue'))
-const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
-*/
+
 
 interface Props {
   //Recno: number;
@@ -77,6 +64,7 @@ interface Props {
 
   prop: {};
   style: {};
+  inputStyle: {};
   position: {};
 }
 
@@ -157,6 +145,22 @@ const props = withDefaults(defineProps<Props>(), {
 
     // inputWidth: "inherit"
   },
+  inputStyle: {
+    background: "white",
+    padding: "5px", // Relleno
+    color: "#b94295",
+    width: "auto",
+    height: "30px",
+    fontFamily: "Arial",
+    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left",
+    borderColor: "#000a01",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    zIndex: 1,
+
+    // inputWidth: "inherit"
+  },
   position: {
     position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
     left: 0,
@@ -195,72 +199,6 @@ const element = ref(ele)
 console.log('Divi ele=>', element.value)
 */
 
-/*
-const impComp = ((name: string, pos?: string) => {
- 
-  switch (name.toLowerCase().trim()) {
-    case 'edittext': {
-      // console.log('Importo edittext')
-      return editText
-
-    }
-    case 'combobox': {
-      return comboBox
-
-    }
-    case 'grid': {
-      return grid
-
-    }
-
-    case 'imgbutton': {
-      return imgButton
-
-    }
-
-    case 'browse': {
-      //console.log('Importo Browse')
-      return browseLite
-
-    }
-
-    case 'browselite': {
-
-      // console.log('Importo BrowseLite')
-      return browseLite
-
-    }
-
-    case 'textlabel': {
-      return textLabel
-
-    }
-    case 'details': {
-      return details
-
-    }
-  
-    case 'embedpdf': {
-
-      return embedPdf
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-
-    } case 'base64': {
-
-      return base64
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-
-  }
-  return editText
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-
-*/
 
 //init();
 </script>

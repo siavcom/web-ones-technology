@@ -3,31 +3,28 @@
     <Teleport to="body">
       <Transition>
 
-        <div id="modal_mask" class="modal-mask" v-if="This.prop.Visible">
-          <div id="modal_container" class="modal-container" :style="This.style">
+        <div :id="Id+'_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
+          <div :id="Id+'modal_container'" class="modal-container" :style="This.style">
 
             <!--section class="mainContainer"-->
 
-            <div id="modal_header" class="modal-header">
+            <div :id="Id+'modal_header'" class="modal-header">
               <slot name="header">{{ This.textLabel }}</slot>
             </div>
-
-
-            <div id="modal_body" class="modal-body">
+            <div :id="Id+'modal_body'" class="modal-body">
               <slot name="componentes">
-                <div :id="'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+                <div :id="Id+'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
                   <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-                  <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
+                  <div :id="Id+'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
                     <div v-for=" (component, key) in block.component" :key="key"
-                      :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+                      :id="Id+'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
                       <!--v-bind:Component="ref(Ele)"-->
-                      <component :id="'modal_componentes_' + key + component.prop.Name"
+                      <component :id="Id+'modal_componentes_' + key + component.prop.Name"
                         :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                         v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                        :style="component.style" :position="component.position" @click.capture="component.click()">
+                        :style="component.style" :inputStyle="component.inputStyle" :position="component.position" @click.capture="component.click()">
                       </component>
-
                     </div>
                   </div>
                 </div>
@@ -45,22 +42,6 @@
 
 <script lang="ts" setup>
 
-//////////////////////////////////////////////
-// Componentes
-//////////////////////////////////////////////
-
-const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
-const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
-const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
-const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
-const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
-const details = defineAsyncComponent(() => import('@/components/details.vue'))
-const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
-const container = defineAsyncComponent(() => import('@/components/container.vue'))
-const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
-
-
 
 interface Props {
   //Recno: number;
@@ -70,8 +51,8 @@ interface Props {
 
   prop: {};
   style: {};
+  inputStyle: {};
   position: {};
-
 
 }
 
@@ -137,6 +118,22 @@ const props = withDefaults(defineProps<Props>(), {
   },
 
   style: {
+    background: "white",
+    padding: "5px", // Relleno
+    color: "#b94295",
+    width: "auto",
+    height: "30px",
+    fontFamily: "Arial",
+    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left",
+    borderColor: "#000a01",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    zIndex: 1,
+
+    // inputWidth: "inherit"
+  },
+  inputStyle: {
     background: "white",
     padding: "5px", // Relleno
     color: "#b94295",
@@ -246,80 +243,6 @@ const impComp = ((name: string, pos?: string) => {
 
 })
 */
-const impComp = ((name: string, pos?: string) => {
-
-  //return eval(name)
-
-  switch (name.toLowerCase().trim()) {
-    case 'edittext': {
-      // console.log('Importo edittext')
-      return editText
-      break;
-    }
-    case 'combobox': {
-      return comboBox
-      break;
-    }
-    case 'grid': {
-      return grid
-      break;
-    }
-
-    case 'imgbutton': {
-      return imgButton
-      break;
-    }
-
-    case 'browse': {
-      //console.log('Importo Browse')
-      return browseLite
-      break;
-    }
-
-    case 'browselite': {
-
-      // console.log('Importo BrowseLite')
-      return browseLite
-      break;
-    }
-
-    case 'textlabel': {
-      return textLabel
-      break
-    }
-    case 'details': {
-      return details
-      break
-    }
-    /*
-        case 'container': {
-          return container
-          break
-        }*/
-    case 'embedpdf': {
-
-      return embedPdf
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-    case 'base64': {
-
-      return base64
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-    default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-
 
 
 //init();

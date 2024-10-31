@@ -54,7 +54,8 @@
                   :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
                   :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                   :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                  :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
+                  :inputStyle="ThisForm[compHeader].inputStyle" :position="ThisForm[compHeader].position"
+                  :Value="ThisForm[compHeader].prop.Value" />
                 <!--@click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" -->
 
               </div>
@@ -79,7 +80,7 @@
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
                     :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                    :position="ThisForm[compMain].position" />
+                    :inputStyle="ThisForm[compMain].inputStyle" :position="ThisForm[compMain].position" />
                   <!-- @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
                 </div>
               </TransitionGroup>
@@ -112,8 +113,9 @@
                   :is="impComponent(ThisForm[compFooter].prop.BaseClass, 'footer')"
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-                  v-bind:Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-                  v-bind:style="ThisForm[compFooter].style" v-bind:position="ThisForm[compFooter].position" />
+                  :Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
+                  :style="ThisForm[compFooter].style" :inputStyle="ThisForm[compFooter].inputStyle"
+                  :position="ThisForm[compFooter].position" />
                 <!--@click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
               </div>
             </slot>
@@ -328,12 +330,6 @@ const loading = ref(true)
 //ThisThisForm.refs.fea_nom.Value=ahora;
 //console.log('Fecha ahora ====>',ThisThisForm.refs.fea_nom.Value);
 
-function sleep(sleepDuration: number) {
-  const now = new Date().getTime();
-  while (new Date().getTime() < now + sleepDuration) {
-    /* Do nothing */
-  }
-}
 
 ////////////////////////////////////////////
 // Metodos propios

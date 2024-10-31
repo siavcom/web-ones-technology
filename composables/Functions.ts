@@ -460,6 +460,15 @@ export function roundTo(n: number, digits?: number) {
   return +(test.toFixed(digits));
 }
 
+export function sleep(sleepDuration: number) {
+  const now = new Date().getTime();
+  while (new Date().getTime() < now + sleepDuration) {
+    /* Do nothing */
+  }
+}
+
+
+
 
 /**
  * Importa un componente de manera asíncrona
