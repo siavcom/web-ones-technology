@@ -30,8 +30,10 @@ export class tip_dat extends COLUMN {
         "Time",
         "Text",
         "Logical",
+        "TimeStamp",
+        "Rowsource",
       ],
-      ["C", "V", "N", "D", "I", "T", "M", "L"],
+      ["C", "V", "N", "D", "I", "T", "M", "L", "S", "R"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
     this.prop.ControlSource = "vi_cap_comedat.tip_dat";
 
@@ -40,15 +42,46 @@ export class tip_dat extends COLUMN {
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "80%,10%";
     this.style.width = "100px"; /* width/height  - initial value: auto */
-    // this.style.zIndex = 2;
   }
 
+  async valid() {
+    if (this.prop.ReadOnly) {
+      this.prop.Valid = true
+      return true
+    }
+
+    this.Parent.lon_dat.prop.ReadOnly = false
+    this.Parent.lon_dat.prop.Valid = true
+
+    if (this.prop.Value == 'T' || this.prop.Value == 'D') {
+      this.Parent.lon_dat.prop.Value = '8'
+      this.Parent.lon_dat.prop.ReadOnly = true
+
+    }
+    if (this.prop.Value == 'M') {
+      this.Parent.lon_dat.prop.Value = '10'
+      this.Parent.lon_dat.prop.ReadOnly = true
+    }
+    if (this.prop.Value == 'I') {
+      this.Parent.lon_dat.prop.Valid = true
+      if (this.Parent.lon_dat.prop.Value != 1 && this.Parent.lon_dat.prop.Value == 2 && this.Parent.lon_dat.prop.Value != 4) {
+        this.Parent.lon_dat.prop.Value = 2
+      }
+    }
+
+    await this.Parent.dec_dat.when()
+
+
+  }
   //////////////////////////////////
   // Evento When
   ///////////////////////////////////
   async when() {
-    this.prop.ReadOnly = await !this.Parent.cam_dat.when();
-    return !this.prop.ReadOnly;
+    this.prop.ReadOnly = false
+    if (!await this.Parent.cam_dat.when()) {
+      this.prop.ReadOnly = true
+      return !this.prop.ReadOnly
+    }
     //   await super.when(row)
   }
 }

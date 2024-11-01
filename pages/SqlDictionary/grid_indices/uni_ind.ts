@@ -14,7 +14,7 @@ export class uni_ind extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 1;
-    this.textLabel = "Cluster index";
+    this.textLabel = "Indice unico";
     this.prop.BaseClass = "editText";
     this.prop.Type = "checkBox";
     this.prop.Min = "0";

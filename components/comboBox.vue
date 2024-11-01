@@ -9,7 +9,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -19,13 +19,6 @@
           :disabled="prop.ReadOnly">
           <!--Imprime Columnas -->
 
-          <!--div :id="Id + '_' + option + '_column' + col" class="columna" :disabled="prop.ReadOnly"
-            v-for="(text, col) in option.text" :key="col"
-            :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
-            <label :id="Id + '_' + option + 'label_column' + col" class="optionLabel" v-text="text"
-              :style:="columnLabelStyle" />
-          </div-->
-
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col"
             :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
@@ -34,7 +27,7 @@
           </div>
 
           <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
-            width="5%" />
+            width="15px" />
           <!--div v-show='option.check'>+</div-->
           <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
 
@@ -102,24 +95,6 @@
 // "update:Key", "update:Focus"
 
 
-
-///////////////////////////////////////
-// Componentes
-//////////////////////////////////////
-/*
-const imgButton = defineAsyncComponent(() => import('@/components/imgButton.vue'))
-const comboBox = defineAsyncComponent(() => import('@/components/comboBox.vue'))
-const editText = defineAsyncComponent(() => import('@/components/editText.vue'))
-const textLabel = defineAsyncComponent(() => import('@/components/textLabel.vue'))
-const grid = defineAsyncComponent(() => import('@/components/grid.vue'))
-const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
-const details = defineAsyncComponent(() => import('@/components/details.vue'))
-const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
-const container = defineAsyncComponent(() => import('@/components/container.vue'))
-const modalContainer = defineAsyncComponent(() => import('@/components/modalContainer.vue'))
-
-*/
-
 const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
 // Variables comunes globales al componente
@@ -149,24 +124,6 @@ const props = withDefaults(defineProps<Props>(), {
     ControlSource: "",
     ColumnCount: 0,
     ColumnWidths: "", //"75%,25%"
-
-    /* componentStyle: {
-       background: "white",
-       cols: 100,
-       color: "black",
-       fontFamily: "Arial",
-       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-       fontWeight: "normal",
-       height: "85%",
-       maxHeight: "auto",
-       maxWidth: "100%",
-       rows: 5,
-       textAlign: "left",
-       textTransform: "none",
-       zIndex: 1, // profundidad
-       width: "auto",
-     },
-     */
 
     List: [],
 
@@ -303,24 +260,24 @@ const sw_focus = ref(false)
 
 
 if (props.prop.MultiSelect) {
-  if (!divStyle.borderStyle)
-    divStyle.borderStyle = "solid"
-  if (!divStyle.borderRadius)
-    divStyle.borderRadius = "4px"
+  if (!Styles.style.borderStyle)
+    Styles.style.borderStyle = "solid"
+  if (!Styles.style.borderRadius)
+    Styles.style.borderRadius = "4px"
 
-  if (!divStyle.borderColor)
-    divStyle.borderColor = 'black';
-  if (!divStyle.borderWidth)
-    divStyle.borderWidth = '1px'
+  if (!Styles.style.borderColor)
+    Styles.style.borderColor = 'black';
+  if (!Styles.style.borderWidth)
+    Styles.style.borderWidth = '1px'
 }
 
-if (divStyle.width == 'auto')
-  divStyle.width = 'fit-content'
+if (Styles.style.width == 'auto')
+  Styles.style.width = 'fit-content'
 
-//if (divStyle.height == 'auto')
-//  divStyle.height = '18px'
+//if (Styles.style.height == 'auto')
+//  Styles.style.height = '18px'
 
-//divStyle.zIndex = 100 - This.prop.TabIndex
+//Styles.style.zIndex = 100 - This.prop.TabIndex
 
 
 const zIndex = ref(This.style.zIndex)
@@ -375,24 +332,13 @@ columnContainer.maxHeight = 'min-content'
 columnContainer.minHeight = 'max-content'
 columnContainer.borderRadius = '4px';
 columnContainer.boxSizing = 'border-box';
-columnContainer.maxHeight = divStyle.maxHeight
+columnContainer.maxHeight = Styles.style.maxHeight
 columnContainer.overflowY = 'scroll';
 columnContainer.borderStyle = 'solid';
 columnContainer.borderColor = 'black';
 columnContainer.borderWidth = '1px'
 
-
-/*
-divStyle.minHeight = 'max-content'
-divStyle.borderRadius = '4px';
-divStyle.boxSizing = 'border-box';
-divStyle.maxHeight = '400px';   
-divStyle.overflowY = 'scroll';
-*/
-//
-
 let inputBuffer = ''
-
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -408,9 +354,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   toggle.value = false
   let readValid = false
-
-  // console.log('1) =======>>>>> comboBox emitValue writeCampo !isValid=', isValid, 'readCam=', readCam, 'Value = ', Value.value)
-
 
   if (!readCam) {  // Se cambio el valor del campo.  Graba el valor en Sql localmente.
     This.prop.Status = 'P'
@@ -429,9 +372,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
 
     This.prop.Value = Value.value
-    //console.log('comboBox emitValue Name=', props.prop.Name, 'Value=', This.prop.Value, 'Value=', Value.value)
-
-    // await This.interactiveChange()
 
 
     if (!isValid) {
@@ -777,10 +717,6 @@ const onFocus = async () => {
     //thisElement.next(':input').focus();
     return
   }
-
-
-
-
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     //   Valid.value = true
@@ -1183,9 +1119,9 @@ watch(
   () => toggle.value,
   (new_val, old_val) => {
     if (new_val)
-      divStyle.zIndex = props.style.zIndex + 2  // aumenta el z index cuando despliaga las columnas
+      Styles.style.zIndex = 200  // aumenta el z index cuando despliaga las columnas
     else
-      divStyle.zIndex = props.style.zIndex
+      Styles.style.zIndex = props.style.zIndex
 
 
     //console.log('watch toggle.value', props.Name, old_val, new_val)
@@ -1390,6 +1326,12 @@ onMounted(async () => {
 
     let textWidth = 0
 
+    if (Styles.style.zIndex)
+      Styles.style.zIndex = Styles.style.zIndex + 99
+    else
+      Styles.style.zIndex = 100
+
+    console.log('comboStyle init ', Styles.inputStyle.width)
     if (Styles.inputStyle.width.search("px") > 0) {
       textWidth = +Styles.inputStyle.width.replaceAll('px', '') - 30
       Styles.inputStyle.width = textWidth.toString() + 'px'
@@ -1421,13 +1363,6 @@ onMounted(async () => {
   })
 
 
-
-  /*
-    console.log('init comboBox Name=', props.prop.Name, 'Value=', This.prop.Value,
-      ' props.prop.RowSourceType=', props.prop.RowSourceType,
-      ' props.prop.RowSource=', props.prop.RowSource,
-      ' props.prop.ColumnCount=', props.prop.ColumnCount)
-  */
   const result = await renderComboBox()
   This.Recno = props.Registro
 
@@ -1452,6 +1387,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('mousedown', myClick); // <div>
+
 })
 
 /////////////////////////////////////////////////////////////////////
@@ -1506,86 +1442,7 @@ const handler = (event) => {
   event.preventDefault();
 }
 
-/*
-
-const impComp = ((name: string, pos?: string) => {
-
-
-  switch (name.toLowerCase().trim()) {
-    case 'edittext': {
-      // console.log('Importo edittext')
-      return editText
-      break;
-    }
-    case 'combobox': {
-      return comboBox
-      break;
-    }
-    case 'grid': {
-      return grid
-      break;
-    }
-
-    case 'imgbutton': {
-      return imgButton
-      break;
-    }
-
-    case 'browse': {
-
-      return browseLite
-      break;
-    }
-
-    case 'browselite': {
-
-
-      return browseLite
-      break;
-    }
-
-    case 'textlabel': {
-      return textLabel
-      break
-    }
-    case 'details': {
-      return details
-      break
-    }
-
-    case 'container': {
-      return container
-      break
-    }
-
-    case 'modalcontainer': {
-      return modalContainer
-      break
-    }
-
-    case 'embedpdf': {
-      return embedPdf
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-    default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-
-*/
-
-
-
 </script>
-
-
 
 <style scoped>
 /*  elemento click check*/

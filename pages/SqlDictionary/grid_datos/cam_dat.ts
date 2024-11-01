@@ -31,10 +31,14 @@ export class cam_dat extends COLUMN {
   // Evento When
   ///////////////////////////////////
   async when() {
-    if (this.prop.Value == undefined) this.prop.Value = "";
+
+
+    if (this.prop.Value.trim().length == 0) {
+      this.prop.ReadOnly = false;
+      return true
+    }
 
     const Value = this.prop.Value.trim().toUpperCase();
-    this.prop.When = true;
     if (
       Value == "USU_USU" ||
       Value == "USU_CRE" ||
@@ -43,8 +47,11 @@ export class cam_dat extends COLUMN {
       Value == "TIMESTAMP" ||
       Value == "KEY_PRI"
     )
-      this.prop.When = false;
-    return true;
+      this.prop.ReadOnly = true;
+    else
+      this.prop.ReadOnly = false;
+
+    return !this.prop.ReadOnly
   }
 
   async valid() {

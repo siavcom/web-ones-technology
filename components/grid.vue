@@ -104,7 +104,7 @@
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   :inputStyle="This[col.Name].inputStyle" v-bind:position="This[col.Name].position"
-                  :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 1 }">
+                  :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 3 }">
                 </component>
                 <!--/div-->
                 <!--/Transition-->

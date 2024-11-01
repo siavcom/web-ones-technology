@@ -20,15 +20,11 @@ export class lon_dat extends COLUMN {
         this.textLabel = 'Longitud'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
-        this.prop.Min = '0'
+        this.prop.Min = '1'
         this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_comedat.lon_dat'
         this.prop.ToolTipText = 'Logitud del campo'
         this.prop.Placeholder = "Longitud del campo"
-        this.prop.Value = +0
-
-
-        //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
         this.style.width = '50px'
     }
 
@@ -36,17 +32,25 @@ export class lon_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     async when() {
-        if (this.Parent.tip_dat.Value == 'T' || this.Parent.tip_dat.Value == 'D') {
-            this.prop.Value = '8'
+        if (!await this.Parent.cam_dat.when()) {
             this.prop.ReadOnly = true
-            this.prop.Valid = true
-
             return !this.prop.ReadOnly
         }
 
 
+        this.prop.Valid = true
+        this.prop.ReadOnly = false
+        if (this.Parent.tip_dat.prop.Value == 'T' || this.Parent.tip_dat.prop.Value == 'D') {
+            this.prop.Value = '8'
+            this.prop.ReadOnly = true
 
-        await this.Parent.cam_dat.when()
+        }
+        if (this.Parent.tip_dat.prop.Value == 'M') {
+            this.prop.Value = '10'
+            this.ReadOnly = true
+
+        }
+
         this.prop.ReadOnly = await this.Parent.cam_dat.prop.ReadOnly
         return !this.prop.ReadOnly
     }
@@ -57,7 +61,6 @@ export class lon_dat extends COLUMN {
         if (this.prop.Value == 0) {
             this.prop.ErrorMessage = 'El tamaño debe ser mayor a 0 '
             return false
-
 
             //console.log('ErrorMessage VALID ====>',this.prop.ErrorMessage)
         }
@@ -78,11 +81,11 @@ export class lon_dat extends COLUMN {
         if (this.Parent.tip_dat.prop.Value == 'C') {
             if (this.prop.Value > 8000) {
                 this.prop.ErrorMessage = 'Maximo valor permitido 8000'
-                return  false
+                return false
             }
-            if (this.prop.Value =0) {
+            if (this.prop.Value = 0) {
                 this.prop.ErrorMessage = 'El valor debe ser mayor a 0'
-                return  false
+                return false
             }
 
         }

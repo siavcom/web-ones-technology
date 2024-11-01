@@ -18,9 +18,9 @@ export class sis_sis extends COLUMN {
         this.prop.Order = 1
         this.textLabel = 'Sistema'
         this.prop.BaseClass = 'editText'
-        this.prop.ToolTipText ='Sistema al cual pertenece'
+        this.prop.ToolTipText = 'Sistema al cual pertenece'
         this.prop.ControlSource = 'vi_cap_cometab.sis_sis'
-        this.style.width = '50px' /* width/height  - initial value: auto */
+        this.style.width = '128px' /* width/height  - initial value: auto */
     }
 
-  }
+}

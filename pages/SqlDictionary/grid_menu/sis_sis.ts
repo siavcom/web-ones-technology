@@ -20,15 +20,15 @@ export class sis_sis extends COLUMN {
         this.textLabel = 'Sistema '
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_prg.sis_sis'
-        this.prop.ToolTipText ='Nemonico a utilizar en el submenú'
-        this.style.width='40px'
+        this.prop.ToolTipText = 'Nemonico a utilizar en el submenú'
+        this.style.width = '128px'
     }
-public async when(){
-    if (this.Form.tpr_prg.prop.Value == 'S') { // Si es menu principal del sistema
-       return true
-    }
-    return false
+    public async when() {
+        if (this.Form.tpr_prg.prop.Value == 'S') { // Si es menu principal del sistema
+            return true
+        }
+        return false
 
-}
+    }
 
 }

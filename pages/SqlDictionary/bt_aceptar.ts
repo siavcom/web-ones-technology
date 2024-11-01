@@ -33,12 +33,15 @@ export class bt_aceptar extends COMPONENT {
       return;
     }
 
+    //  ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],
+    //  ["T",                     "D",                   "M"],
+    const dic_dat = this.Form.dic_dat.prop.Value
     this.prop.Visible = false;
 
     // No es un Menu del sistema y tablas
     if (
-      this.Form.dic_dat.prop.Value != "M" &&
-      this.Form.dic_dat.prop.Value != "T"
+      dic_dat != "M" &&
+      dic_dat != "T"
     ) {
       // No hay grid de captura
       if (
@@ -53,11 +56,7 @@ export class bt_aceptar extends COMPONENT {
         this.Form.bt_gen_indices.prop.Visible = false;
         this.Form.bt_gen_vistas.prop.Visible = false;
 
-        const valor = this.Form.dic_dat.prop.Value;
-        // Si es Datos , Vistas o Indices
-        //        if (valor == "D" || valor == "V" || valor == "I") {
-        if (valor == "D") {
-
+        if (dic_dat == "D") { // Definicion de Tabla
           this.Form.nom_tab.prop.RowSourceType = 0;
           this.Form.bt_gen_all_models.Visible = false;
           this.Form.nom_tab.prop.RowSourceType = 3;
@@ -75,7 +74,7 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
-      // Hay datos capturados, grabara informacion
+      // Hay datos capturados em definicion de tablas. Grabara informacion
       let dataUpdate = false;
       let data = false;
       if (
@@ -91,8 +90,6 @@ export class bt_aceptar extends COMPONENT {
         this.Form.bt_gen_vistas.prop.Visible = false;
 
         dataUpdate = await this.grabaDatos("vi_cap_comedat");
-
-
       }
 
       // Indices
@@ -110,9 +107,9 @@ export class bt_aceptar extends COMPONENT {
       // Vistas
       // Hay datos capturados, grabara informacion
       if (
-        data &&
-        this.Form.grid_vistas.prop.Visible &&
-        (await this.Form.db.recCount("vi_cap_comevis")) > 0
+        data && (await this.Form.db.recCount("vi_cap_comevis")) > 0 &&
+        this.Form.grid_vistas.prop.Visible
+
       ) {
         // data = true
         if (!(await this.grabaDatos("vi_cap_comevis"))) dataUpdate = false;
@@ -211,14 +208,10 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_vistas.prop.Visible = true;
           this.Form.bt_gen_vistas.prop.Visible = true;
 
-          // this.Form.btGenVistas.prop.Visible = true
+
         }
 
-        // Tablas del servidor de SQL
-        //       if (this.Form.dic_dat.prop.Value == 'T') { // Tablas
-        //         await this.Form.db.use("vi_cap_cometab", m)
-        //          this.Form.grid_tablas.prop.Visible = true
-        //        }
+
       }
 
       this.prop.Visible = true;
@@ -348,7 +341,7 @@ export class bt_aceptar extends COMPONENT {
         data[i].con_dat = i + 10;
     }
     // borramos la tabla original y la reinsertamos en Cursor temporal
-    await this.Form.db.Sql(
+    await this.Sql.localAlaSql(
       "Use Now ; \
               delete from vi_cap_comedat ;\
               SELECT * INTO vi_cap_comedat  FROM ?",

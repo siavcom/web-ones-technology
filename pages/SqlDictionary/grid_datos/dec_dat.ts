@@ -35,17 +35,19 @@ export class dec_dat extends COLUMN {
   // Evento When
   ///////////////////////////////////
   async when() {
-    if (this.Parent.tip_dat.prop.Value != 'N' &&
-      this.Parent.tip_dat.prop.Value != 'I') {
+
+    this.prop.ReadOnly = false
+    if (!await this.Parent.cam_dat.when()) {
+      this.prop.ReadOnly = true
+      return !this.prop.ReadOnly
+    }
+
+    if (this.Parent.tip_dat.prop.Value != 'N') {
       this.prop.Value = '0'
       this.prop.ReadOnly = true
       this.prop.Valid = true
-      return false
     }
-
-    this.prop.ReadOnly = await !this.Parent.cam_dat.when()
     return !this.prop.ReadOnly
-    //   await super.when(row)
   }
 
   async valid() {
@@ -54,6 +56,7 @@ export class dec_dat extends COLUMN {
       this.prop.ErrorMessage = 'La suma longitud+decimales no debe exeder 38'
       return false
     }
+
 
     return true
 
