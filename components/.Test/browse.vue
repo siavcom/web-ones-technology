@@ -1,15 +1,10 @@
 <template>
   <div v-if="visible" class="divi" :style="props.style">
-    <vue-good-table
-      :columns="table.columns" 
-      :rows="table.rows" 
-      v-on:row-click="onRowClick"
-      v-on:cell-click="onCellClick"
-      :pagination-options="{
-          enabled: true,
-          perPage: 40,
-      }"
-      />
+    <vue-good-table :columns="table.columns" :rows="table.rows" v-on:row-click="onRowClick"
+      v-on:cell-click="onCellClick" :pagination-options="{
+        enabled: true,
+        perPage: 40,
+      }" />
   </div>
 </template>
 
@@ -103,9 +98,9 @@ const props = defineProps<{
 }>()
 
 // Valores componente padre
-const Component = ref(props.Component)
+const Component = toRef(() => props.prop.This)
 const This = Component.value
-console.log('browse This',This)
+console.log('browse This', This)
 
 
 
@@ -133,8 +128,8 @@ const table = reactive({
           tdClass: 'custom-td-class', // class cell header
           tooltip: 'A simple tooltip',
           filterOptions: {
-	            styleClass: 'class1', // class to be added to the parent th element
-  	          enabled: true, // enable filter for this column
+              styleClass: 'class1', // class to be added to the parent th element
+              enabled: true, // enable filter for this column
               placeholder: 'Filter This Thing', // placeholder for filter input
               filterValue: 'Jane', // initial populated value for this filter
               filterDropdownItems: [], // dropdown (with selected values) instead of text input
@@ -145,11 +140,11 @@ const table = reactive({
     }, */
   ],
   rows: []
-  
+
 })
 
-const visible=ref()
-visible.value=false
+const visible = ref()
+visible.value = false
 ////////////////////////////////////////
 // RowSource
 ///////////////////////////////////////
@@ -158,7 +153,7 @@ watch(
   () => props.prop.RowSource,
   (new_val, old_val) => {
     if (new_val == '') {
-      visible.value=false
+      visible.value = false
       table.columns = []
       table.rows = []
     } else doSearch() // Get data first
@@ -171,42 +166,42 @@ watch(
 const doSearch = async () => {
   table.rows = []
   table.columns = []
-  
+
   // Start use axios to get data from Server
   //let url = 'https://www.example.com/api/some_endpoint?offset=' + offset + '&limit=' + limit + '&order=' + order + '&sort=' + sort;
-  console.log('browse comienza leer data',new Date().toISOString())
+  console.log('browse comienza leer data', new Date().toISOString())
   const data = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource)
   const rows = []
   if (data.length > 0) {
- 
+
     // generamos la columna recno 
     const recno = {
       label: 'Recno',
       field: 'recno',
       sortable: true,
-      type : 'number',
-      with : '20px'
+      type: 'number',
+      with: '20px'
     }
     table.columns.push(recno)
     for (let i = 0; i < data.length; i++) {
       const row = {}
       for (const field in data[i]) {
         if (i == 0) { // Genera header
-           let type=typeof data[i][field] // asignamos su tipo
-            /*  number - right aligned
-                decimal - right aligned, 2 decimal places
-                percentage - expects a decimal like 0.03 and formats it as 3.00%
-                boolean - right aligned
-                date - expects a string representation of date eg '20170530'. You should also specify dateInputFormat and dateOutputFormat
-            */
+          let type = typeof data[i][field] // asignamos su tipo
+          /*  number - right aligned
+              decimal - right aligned, 2 decimal places
+              percentage - expects a decimal like 0.03 and formats it as 3.00%
+              boolean - right aligned
+              date - expects a string representation of date eg '20170530'. You should also specify dateInputFormat and dateOutputFormat
+          */
           const column = {
             label: field,
             field: field,
             sortable: true,
-            type :type,
+            type: type,
             filterOptions: {
-	             //styleClass: 'class1', // class to be added to the parent th element
-  	          enabled: true, // enable filter for this column
+              //styleClass: 'class1', // class to be added to the parent th element
+              enabled: true, // enable filter for this column
               //placeholder: 'Filter This Thing', // placeholder for filter input
               //filterValue: 'Jane', // initial populated value for this filter
               //filterDropdownItems: [], // dropdown (with selected values) instead of text input
@@ -227,10 +222,10 @@ const doSearch = async () => {
 
     table.rows = rows
 
-    visible.value=true // lo ponemos visible
- //   table.totalRecordCount = data.length //response.count;
- //   table.sortable.order = order;
-//    table.sortable.sort = sort;
+    visible.value = true // lo ponemos visible
+    //   table.totalRecordCount = data.length //response.count;
+    //   table.sortable.order = order;
+    //    table.sortable.sort = sort;
   }
   // Point: your response is like it on this example.
   //   {
@@ -249,10 +244,10 @@ const doSearch = async () => {
 
   // refresh table rows
   // table.rows =data.length //response.rows;
-  console.log('browse termina leer data',new Date().toISOString())
+  console.log('browse termina leer data', new Date().toISOString())
   console.log('browse final length', data.length)
-  console.log('browse final columns',table.columns)
-  console.log('browse final rows',table.rows)
+  console.log('browse final columns', table.columns)
+  console.log('browse final rows', table.rows)
   // End use axios to get data from Server
 }
 
@@ -271,22 +266,22 @@ const doSearch = async () => {
       @on-selected-rows-change="selectionChanged"
 
 */
- 
-
-  const onRowClick = (param) => {
-    console.log('table onRowClick ', param)
-  };
-
-  const onCellClick = (param) => {
-    console.log('table  Clik in row ', param)
-  };
 
 
-  const onRowMouseover = (param) => {
-    console.log('table  onRowMouseover',param)
-  }
-  const onSearch = (param) => {
-    console.log('table onSearch',param)
-  }
+const onRowClick = (param) => {
+  console.log('table onRowClick ', param)
+};
+
+const onCellClick = (param) => {
+  console.log('table  Clik in row ', param)
+};
+
+
+const onRowMouseover = (param) => {
+  console.log('table  onRowMouseover', param)
+}
+const onSearch = (param) => {
+  console.log('table onSearch', param)
+}
 
 </script>

@@ -89,7 +89,7 @@ const props = defineProps<{
 
     //compAddress: any;
   };
-  inputStyle: {};
+  // inputStyle: {};
   style: {
     background: "white";
     padding: "5px"; // Relleno
@@ -182,7 +182,9 @@ const emitValue = async () => {
 // Asigna Resultado
 /////////////////////////////////////////////////////
 
-const asignaResultado = (valor?: string) => {
+
+
+const asignaResultado = async (valor?: string) => {
   //console.log('inputStyle asignaResultado ',props.Name,valor)
   if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return;
@@ -199,13 +201,23 @@ const asignaResultado = (valor?: string) => {
   let found = false
 
   for (let i = 0; i < columnas.length && !found; i++) {
-    // console.log('Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', Value.value)
+    console.log('1) Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
+
+    //    if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
+    //        Value.value == columnas[i].value) {
+
     if (
-      (typeof columnas[i].value == 'string' && valor.trim() == columnas[i].value.trim()) ||
+      (typeof columnas[i].value == 'string' && typeof valor == 'string' && valor.trim() == columnas[i].value.trim()) ||
       valor == columnas[i].value) {
       // El objeto columna tiene dos campos value y text
+
+
+      //displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+
       Text.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
       found = true
+      console.log('2] Buscando Valor Encontro Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
+
     }
   }
   if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
@@ -215,9 +227,7 @@ const asignaResultado = (valor?: string) => {
   }
   /////////////////////////////////////////////////////////////////////
 
-
-
-  emitValue()
+  await emitValue()
 }
 
 //////////////////////////////////////////////////////
@@ -233,8 +243,8 @@ const renderComboBox = async () => {
     return;
   }
 
-  console.log('textLabel render comboBox ', props.prop.Map, ' RowSource=', props.prop.RowSource)
-
+  //console.log('textLabel render comboBox ', props.prop.Map, ' RowSource=', props.prop.RowSource)
+  console.log('1) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', Text.value, 'ControlSource=', props.prop.ControlSource)
   //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
   const RowSource: string = props.prop.RowSource
 
@@ -350,8 +360,6 @@ const renderComboBox = async () => {
   // toma el tamaño del arreglo solo de la primer columna
   var valor = null
 
-  if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
-    valor = Text.value //Value.value // null
 
   for (
     let ren = 0;
@@ -361,15 +369,15 @@ const renderComboBox = async () => {
     // asignamos el Value del BoundColum 
     if (props.prop.ColumnCount <= 1) { // Si solo es una columna
       valor = val_col[ren] // si no hay valor , asigna el primer valor
-
-      // Si solo tiene una columna
       columnas[ren] = {
         value: val_col[ren],
         text: [val_col[ren]],
       };
       //columnas[ren].text[0]= props.prop.RowSource[ren]
     } else {
-      if (!valor)
+      if (props.prop.ControlSource.trim().length > 3)  // Si Hay controSource asigna el valor leido
+        valor = Text.value //Value.value // null
+      else
         valor = val_col[BoundColumn][ren] // si no hay valor , asigna el primer valor
 
       columnas[ren] = {  // asignamos el valor segun el BoundColumn
@@ -389,6 +397,8 @@ const renderComboBox = async () => {
   //Text.value = valor
   //console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
 
+  //asignaResultado(valor)
+  console.log('2) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', valor, 'ControlSource=', props.prop.ControlSource)
   asignaResultado(valor)
 
   //  ** ojo falta el multi select
@@ -405,7 +415,7 @@ const renderComboBox = async () => {
 }
 
 const readCampo = async () => {
-  //console.log('textLabel readCampo',This.Name,'Registro=',props.Registro,'ControlSource=',props.prop.ControlSource)
+
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
     const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
@@ -415,6 +425,8 @@ const readCampo = async () => {
       // console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
     }
   }
+
+
   This.prop.Value = Text.value
   This.Recno = props.Registro
 
@@ -454,7 +466,8 @@ const readCampo = async () => {
   //  Text.value = Text.value.trim()
 
 
-  renderComboBox()
+
+  await renderComboBox()
 }
 
 /*
@@ -528,7 +541,8 @@ const init = async () => {
     Type.value = 'imgButton'
 
   await readCampo()
-  This.recnoChange()
+  console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
+  //This.recnoChange()
 
 }
 

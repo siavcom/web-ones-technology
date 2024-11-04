@@ -17,7 +17,7 @@ export class vue_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Valor default'
+        this.textLabel = 'Valor default Typescript'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comedat.vue_dat'
         this.prop.ToolTipText = 'Valor dafault en typescript al insertarse el registro nuevo en VUE'
@@ -29,6 +29,7 @@ export class vue_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     async when() {
+
         this.prop.ReadOnly = false
         if (!await this.Parent.cam_dat.when()) {
             this.prop.ReadOnly = true
@@ -38,7 +39,13 @@ export class vue_dat extends COLUMN {
         //   await super.when(row)
     }
 
+    override async valid(): Promise<any> {
+        await this.Parent.cal_dat.when()
+        await this.Parent.def_dat.when()
+        this.prop.Valid = true
+        return true
 
+    }
 
 
 }

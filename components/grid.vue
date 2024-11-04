@@ -69,13 +69,13 @@
                                     -->
                 <!--div v-show="item.id != This.Row"
                   el v-show del texLabel se cambio por v-if
-                
+                 v-bind:inputStyle="This[col.Name].inputStyle"
                 -->
                 <!--focus.capture.stop= @click.stop Transition name="columntext"-->
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
-                  v-bind:style="This[col.Name].style" v-bind:inputStyle="This[col.Name].inputStyle"
+                  v-bind:style="This[col.Name].style"                  
                   @click.once="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" @focusout.stop>
                 </textLabel>
                 <!--/Transition-->
@@ -97,13 +97,14 @@
                 @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
                   v-model:Status="This[col.Name].prop.Status"
                   v-model:ShowError="This[col.Name].prop.ShowError"
-                -->
+                 :inputStyle="This[col.Name].inputStyle" 
+                  -->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComponent(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Key="This[col.Name].prop.Key"
                   v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
-                  :inputStyle="This[col.Name].inputStyle" v-bind:position="This[col.Name].position"
+                 v-bind:position="This[col.Name].position"
                   :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 3 }">
                 </component>
                 <!--/div-->
@@ -195,14 +196,14 @@
 
           
               @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
-          
+          v-bind:inputStyle="This[compFooter].inputStyle" 
           -->
             <component :id="Id + '_component_footer_' + compFooter" :is="impComponent(This[compFooter].prop.BaseClass)"
               v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
               v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-              v-bind:inputStyle="This[compFooter].inputStyle" v-bind:position="This[compFooter].position"
+              v-bind:position="This[compFooter].position"
               @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
           </div>
 

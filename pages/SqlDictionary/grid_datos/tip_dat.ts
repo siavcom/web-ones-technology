@@ -70,7 +70,7 @@ export class tip_dat extends COLUMN {
     }
 
     await this.Parent.dec_dat.when()
-
+    return true
 
   }
   //////////////////////////////////

@@ -54,9 +54,9 @@
                   :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
                   :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                   :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                  :inputStyle="ThisForm[compHeader].inputStyle" :position="ThisForm[compHeader].position"
-                  :Value="ThisForm[compHeader].prop.Value" />
-                <!--@click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" -->
+                  :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
+                <!--:inputStyle="ThisForm[compHeader].inputStyle"
+                  @click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" -->
 
               </div>
 
@@ -80,8 +80,9 @@
                     v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                     :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
                     :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                    :inputStyle="ThisForm[compMain].inputStyle" :position="ThisForm[compMain].position" />
-                  <!-- @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
+                    :position="ThisForm[compMain].position" />
+                  <!--:inputStyle="ThisForm[compMain].inputStyle" 
+                     @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
                 </div>
               </TransitionGroup>
             </slot>
@@ -114,9 +115,9 @@
                   v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
                   :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
                   :Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-                  :style="ThisForm[compFooter].style" :inputStyle="ThisForm[compFooter].inputStyle"
-                  :position="ThisForm[compFooter].position" />
-                <!--@click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
+                  :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
+                <!--:inputStyle="ThisForm[compFooter].inputStyle"
+                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
               </div>
             </slot>
 
@@ -540,15 +541,15 @@ await init()
 //const vi_cap_comedat = computed(() => Views.value.vi_cap_comedat ? Views.value.vi_cap_comedat.recnoVal : [])
 /*
 const sub_total = computed(() => items.reduce((acc, item) => acc += item.qty * item.price, 0))
- 
+
 const total = computed(() => sub_total.value * (1 + tax_percent / 100) + shipping)
- 
+
 const valor_computed = computed((ref_com,recno) => ThisForm.db.readAla(ref_com.value.ControlSource,recno) )
- 
+
 const computed_key= (recno) => {
   console.log('Computed key',recno)
 if (recno>0 ) return recno
-else return 0} 
+else return 0}
 */
 
 ////////////////////////////////////
@@ -567,16 +568,8 @@ else return 0}
 // '@/components/' + name + '.vue')
 
 
+/*
 
-///////////////////////////////////////////////////////////////////////
-// Nuxt 4 :
-//  -. Se debe de cambiar los componentes al directorio components/global 
-//  -. Se debe de aumentar el Lazy al nombre de cada componente
-//  -. En el htnl en :is=":is="ThisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
-//
-// Con el puro nombe y en el directorio /components/global
-// const impComp= computed ((name:string) =>'Lazy'+name)
-///////////////////////////////////////////////////////////////////////
 
 const impComp = ((name: string, pos?: string) => {
 
@@ -660,7 +653,7 @@ const impComp = ((name: string, pos?: string) => {
 
   //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
 })
-
+*/
 
 
 //init();

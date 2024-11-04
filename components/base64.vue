@@ -131,8 +131,12 @@ const props = defineProps<{
 const Component = toRef(() => props.prop.This)
 //console.log('base64 Component=', Component.value)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
 
-const labelStyle = reactive(This.labelStyle)
+
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
 
 const Id = This.prop.Name + props.Registro.toString().trim()
@@ -158,16 +162,12 @@ const checkValue = ref(false)
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
 
-const divStyle = reactive(props.style)
+
 
 if (divStyle.zIndex == 0)
   divStyle.zIndex = 100 - This.prop.TabIndex
 
 const zIndex = divStyle.zIndex
-
-//const inputStyle = reactive(props.inputStyle)
-const inputStyle = reactive(This.inputStyle)
-
 
 inputStyle.zIndex = zIndex
 

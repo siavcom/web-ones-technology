@@ -24,6 +24,9 @@ import { vue_dat } from "./vue_dat";
 import { val_dat } from "./val_dat";
 import { rea_dat } from "./rea_dat";
 import { wri_dat } from "./wri_dat";
+import { def_dat } from "./def_dat";
+import { cal_dat } from "./cal_dat";
+
 
 
 export class grid_datos extends GRID {
@@ -37,9 +40,12 @@ export class grid_datos extends GRID {
   public ref_dat = new ref_dat();
   public sou_dat = new sou_dat();
   public vue_dat = new vue_dat();
-  public val_dat = new val_dat();
+
+  public cal_dat = new cal_dat();
+  public def_dat = new def_dat();
   public rea_dat = new rea_dat();
   public wri_dat = new wri_dat();
+  public val_dat = new val_dat();
 
   //  constructor(parent: Record<string, never>) {
   constructor() {

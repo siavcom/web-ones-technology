@@ -23,7 +23,8 @@
                       <component :id="Id+'modal_componentes_' + key + component.prop.Name"
                         :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                         v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                        :style="component.style" :inputStyle="component.inputStyle" :position="component.position" @click.capture="component.click()">
+                        :style="component.style" :inputStyle="component.inputStyle" :position="component.position" >
+                      <!--@click.capture="component.click()"-->
                       </component>
                     </div>
                   </div>
@@ -51,7 +52,7 @@ interface Props {
 
   prop: {};
   style: {};
-  inputStyle: {};
+  //inputStyle: {};
   position: {};
 
 }
@@ -159,6 +160,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const Component = ref(props.prop.This)
 const This = Component.value // Component.value
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+
 const Id = This.Name + props.Registro.toString()
 
 console.log('10 modalContainer Name=', This.prop.Name, 'This.block=', This.block)

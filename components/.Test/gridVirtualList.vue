@@ -131,7 +131,8 @@ const props = defineProps<{
 
 }>();
 // Valores componente padre
-const Component = ref(props.Component)
+
+const Component = toRef(() => props.prop.This)
 const This = Component.value
 console.log('Gridd This=====>', This)
 This['estatus'] = []

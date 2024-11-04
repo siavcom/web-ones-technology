@@ -18,8 +18,9 @@
               :style="{ 'padding-bottom': '2px', 'width': '100%' }">
               <component :id="Id + 'componentes_' + key + Ele.prop.Name" :is="impComponent(Ele.prop.BaseClass)"
                 v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
-                :style="Ele.style" :position="Ele.position" @click.capture="Ele.click()"></component>
+                :style="Ele.style" :position="Ele.position"></component>
             </div>
+            <!-- @click.capture="Ele.click()"-->
           </div>
 
         </slot>
@@ -35,10 +36,10 @@
                 <component :id="'modal_componentes_' + key + component.prop.Name"
                   :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                   v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                  :style="component.style" :inputStyle="component.inputStyle" :position="component.position"
-                  @click.capture="component.click()">
+                  :position="component.position">
                 </component>
-
+                <!-- @click.capture="component.click()"
+                :inputStyle="component.inputStyle"-->
               </div>
             </div>
           </div>
@@ -58,13 +59,12 @@
 
 interface Props {
   //Recno: number;
-  Component: null;
   // Name,
   Registro: number;
 
   prop: {};
   style: {};
-  inputStyle: {};
+  //inputStyle: {};
   position: {};
 }
 
@@ -169,8 +169,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 })
 
-const Component = ref(props.prop.This)
+//const Component = ref(props.prop.This)
+const Component = toRef(() => props.prop.This)
 const This = Component.value
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+
+
+
 
 const Id = This.Name + props.Registro.toString()
 console.log('Container Name=', This.prop.Name, 'blocks=', This.block)

@@ -162,9 +162,9 @@ const props = defineProps<{
   db: any
 }>();
 // Valores componente padre
-const Component = ref(props.Component)
+
+const Component = toRef(() => props.prop.This)
 const This = Component.value
-console.log('Gridd This=====>', This)
 This['estatus'] = []
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 const Db = props.db.value // Vista que utilizara el grid

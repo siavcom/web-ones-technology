@@ -10,7 +10,7 @@ import { saveAs } from "file-saver";
  *
  *
  * @export
- * @class BT_ACEPTAR
+ * @class bt_json
  * @extends {COMPONENT}
  */
 export class bt_json extends COMPONENT {
@@ -28,6 +28,7 @@ export class bt_json extends COMPONENT {
   }
 
   async click() {
+    console.log('===================bt_json objJson ==================')
     const rows = await multiFilter(
       this.Parent.displayBrowse.table.oriRows,
       this.Parent.displayBrowse.table.filters
@@ -43,6 +44,7 @@ export class bt_json extends COMPONENT {
     //    rows[0]=await this.Form.obtData(rows[0])
     // console.log("bt_json rows[0]", rows[0]);
     const objJson = JSON.stringify(rows);
+
     const blobJson = new Blob([objJson], { type: "text/plain" });
     saveAs(blobJson, `${this.Form.for_imp.prop.Value.trim()}.json`);
   }

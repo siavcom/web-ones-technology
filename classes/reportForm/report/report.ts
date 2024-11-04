@@ -35,10 +35,6 @@ export class report extends CONTAINER {
   public bt_close = new bt_close()
 
 
-  // eventos = [] // eventos a ejecutar en el stack
-  // estatus = []  // estatus de los componentes hijos
-
-
   constructor() {
     super()
     this.prop.Disabled = true

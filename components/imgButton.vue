@@ -5,7 +5,7 @@
     <!--div class="mensajes"-->
     <!--type="submit"-->
     <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
-      :tabindex="prop.TabIndex" @focusout="focusOut" @focus="onFocus">
+      :tabindex="prop.TabIndex" @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
         :style="inputStyle" />
       <label :id="Id + '_label'" v-if="prop.Image.length > 0"
@@ -91,7 +91,10 @@ const props = defineProps<{
 
 const Component = ref(props.prop.This)
 const This = Component.value
-const inputStyle = reactive(This.inputStyle)
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
 
 const Id = This.prop.Name + props.Registro.toString().trim()
 
@@ -146,12 +149,24 @@ const focusOut = async () => {
 
 };
 
-const onFocus = async () => {
+const click = async () => {
+
 
   ToolTipText.value = false  // Activamos el ToolTipText
-  await This.when()
+  // await This.when()
   if (!This.prop.Disabled && !This.prop.ReadOnly) {
     This.Form.eventos.push(This.prop.Map + '.click()')
+
+  }
+}
+
+
+
+
+const onFocus = async () => {
+  ToolTipText.value = false  // Activamos el ToolTipText
+  if (!This.prop.Disabled) {
+    This.Form.eventos.push(This.prop.Map + '.when()')
 
   }
 }

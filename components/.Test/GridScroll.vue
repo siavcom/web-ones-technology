@@ -5,14 +5,8 @@
 
     <!--RecycleScroller-->
 
-    <DynamicScroller 
-      :items="Db.View[prop.RecordSource]['recnoVal']" 
-      :item-size="25"
-      :min-item-size="25" 
-      page-mode 
-      class="scroller"
-      :prerender="10" 
-      key-field="id">
+    <DynamicScroller :items="Db.View[prop.RecordSource]['recnoVal']" :item-size="25" :min-item-size="25" page-mode
+      class="scroller" :prerender="10" key-field="id">
 
 
       <template #before>
@@ -26,18 +20,14 @@
       <!-- slot que me da los renglones con el identificador item-->
       <template v-slot="{ item, index, active }">
 
-        <DynamicScrollerItem
-         :item="item" 
-         :active="active" 
-         :data-index="index"
-         tag='tr'>
-         
+        <DynamicScrollerItem :item="item" :active="active" :data-index="index" tag='tr'>
 
 
 
 
 
-        <!--tr v-if="item == 1">
+
+          <!--tr v-if="item == 1">
           <td>Renglon</td>
           <td v-for="(obj, elemento) in This">
          
@@ -49,25 +39,25 @@
 
         </tr-->
 
-        <tr>{{item}}</tr>
-        <!-- Columnasdiv v-for="cell in item" ><label>{{cell}}{{item}}</label></div-->
+          <tr>{{ item }}</tr>
+          <!-- Columnasdiv v-for="cell in item" ><label>{{cell}}{{item}}</label></div-->
 
-        <td v-for="(obj, col) in This" :key=obj.Order style="padding:0; text-align:center">
+          <td v-for="(obj, col) in This" :key=obj.Order style="padding:0; text-align:center">
 
-          <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
-            <!--template-->
-            <KeepAlive>
+            <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
+              <!--template-->
+              <KeepAlive>
 
-              <textLabel v-bind:Recno="props.db.value.View[prop.RecordSource].recnoVal[index]"
-                v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion"
-                v-bind:db="db">
-              </textLabel>
+                <textLabel v-bind:Recno="props.db.value.View[prop.RecordSource].recnoVal[index]"
+                  v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion"
+                  v-bind:db="db">
+                </textLabel>
 
 
-            </KeepAlive>
-            <!--/template-->
-          </div>
-        </td>
+              </KeepAlive>
+              <!--/template-->
+            </div>
+          </td>
         </DynamicScrollerItem>
       </template>
 
@@ -102,7 +92,7 @@ import {
 } from "vue";
 
 
-import { DynamicScroller,DynamicScrollerItem } from 'vue3-virtual-scroller'
+import { DynamicScroller, DynamicScrollerItem } from 'vue3-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 import imgButton from "/components/imgButton.vue"
@@ -117,7 +107,7 @@ const emit = defineEmits(["update", "update:Value", "update:Status", "update:Err
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-  item:Object,
+  item: Object,
   prop: {
     ToolTipText: string;
     View: "";
@@ -168,7 +158,8 @@ const props = defineProps<{
   db: any
 }>();
 // Valores componente padre
-const Component = ref(props.Component)
+
+const Component = toRef(() => props.prop.This)
 const This = Component.value
 console.log('Gridd This=====>', This)
 This['estatus'] = []

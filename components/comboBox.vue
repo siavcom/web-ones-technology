@@ -81,12 +81,13 @@
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-      v-bind:inputStyle="This[compMain].inputStyle" v-bind:position="This[compMain].position"
+       v-bind:position="This[compMain].position"
       @click.capture="when(true)">
     </component>
 
   </span>
-  <!--span v-if="prop.ShowValue">{{ prop.Value }}</span-->
+  <!--v-bind:inputStyle="This[compMain].inputStyle"
+  span v-if="prop.ShowValue">{{ prop.Value }}</span-->
   <!--/div-->
 
 </template>
@@ -107,7 +108,7 @@ interface Props {
   prop: {};
   style: {};
   position: {};
-  inputStyle: {};
+//  inputStyle: {};
 }
 
 //const props = defineProps<{

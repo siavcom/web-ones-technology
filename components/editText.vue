@@ -108,11 +108,12 @@
     <!--/div-->
     <!--Teleport to="body"
     v-bind:Component="ref(This[compMain])"
+    :inputStyle="This[compMain].inputStyle"
     -->
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :inputStyle="This[compMain].inputStyle" :position="This[compMain].position">
+      :style="This[compMain].style" :position="This[compMain].position">
 
     </component>
     <!--/Teleport-->
@@ -288,18 +289,7 @@ const props = defineProps<{
 
 
   };
-  inputStyle: {
-    background: "white",
-    padding: "5px", // Relleno
-    color: "#b94295",
-    width: "auto",
-    height: "30px",
-    fontFamily: "Arial",
-    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left",
-    borderColor: "#000a01",
-    borderWidth: "1px",
-  };
+
   style: {
     background: "white";
     padding: "5px"; // Relleno
@@ -1571,106 +1561,5 @@ onMounted(() => {
 });
 */
 
-
-
-/////////////////////////////////////////////////
-// Componentes
-/////////////////////////////////////////////////
-
-
-//const imgButton = resolveComponent('imgButton')
-//const comboBox = resolveComponent('comboBox')
-//const editText = resolveComponent('editText')
-//const textLabel = resolveComponent('textLabel')
-//const grid = resolveComponent('grid')
-//const browse = resolveComponent('browse')
-
-//const browseLite = resolveComponent('browseLite')
-//const details = resolveComponent('details')
-//const embedPdf = resolveComponent('embedPdf')
-
-//import * from '@/components/imports/components'
-
-
-/*
-
-//////////////////////////////////////
-//  Importa componentes dinamicos
-////////////////////////////////////// 
-// '@/components/' + name + '.vue')
-
-
-const impComp = ((name: string, pos?: string) => {
-
-  //return eval(name)
-
-  switch (name.toLowerCase().trim()) {
-    case 'edittext': {
-      // console.log('Importo edittext')
-      return editText
-      break;
-    }
-    case 'combobox': {
-      return comboBox
-      break;
-    }
-    case 'grid': {
-      return grid
-      break;
-    }
-
-    case 'imgbutton': {
-      return imgButton
-      break;
-    }
-
-    case 'browse': {
-
-      return browseLite
-      break;
-    }
-
-    case 'browselite': {
-
-
-      return browseLite
-      break;
-    }
-
-    case 'textlabel': {
-      return textLabel
-      break
-    }
-    case 'details': {
-      return details
-      break
-    }
-
-    case 'container': {
-      return container
-      break
-    }
-
-    case 'modalcontainer': {
-      return modalContainer
-      break
-    }
-
-    case 'embedpdf': {
-      return embedPdf
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-    default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-*/
 
 </script>

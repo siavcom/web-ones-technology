@@ -16,13 +16,23 @@ export class wri_dat extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.prop.Order = 3
-        this.textLabel = 'Escritura'
-        this.prop.textLabel = 'Si'
-        this.prop.Type = 'checkBox'
-        this.prop.ControlSource = 'vi_cap_comedat.rea_dat'
-        this.prop.ToolTipText = '1=Permite lectura'
-        this.style.width = '100px'
+        this.prop.Order = 2
+        this.textLabel = 'Insert/Update'
+        this.prop.BaseClass = "comboBox";
+        this.prop.ControlSource = 'vi_cap_comedat.wri_dat'
+        this.prop.RowSource = [
+            ["None",
+                "Insert",
+                "Update",
+                "Insert/Update",
+            ],
+            [0, 1, 2, 3],
+        ]; // vi_cap_doc.tdo_tdo,des_tdo
+        this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
+        this.prop.ColumnCount = 2;
+        this.prop.BoundColumn = 2;
+        this.prop.ColumnWidths = "80%,10%";
+        this.style.width = '124px'
     }
 
     ////////////////////////////////// 

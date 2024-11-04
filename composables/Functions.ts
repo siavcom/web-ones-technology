@@ -4,6 +4,17 @@
 // Creacion : Julio /2022
 // Ult.Mod  :
 /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+// Nuxt 4 :
+//  -. Se debe de cambiar los componentes al directorio components/global
+//  -. Se debe de aumentar el Lazy al nombre de cada componente
+//  -. En el htnl en :is=":is="ThisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
+//
+// Con el puro nombe y en el directorio /components/global
+// const impComp= computed ((name:string) =>'Lazy'+name)
+///////////////////////////////////////////////////////////////////////
+
+
 
 import imgButton from '@/components/imgButton.vue'
 import comboBox from '@/components/comboBox.vue'
@@ -17,7 +28,7 @@ import container from '@/components/container.vue'
 import base64 from '@/components/base64.vue'
 import form from '@/components/form.vue'
 import modalContainer from '@/components/modalContainer.vue'
-import modal from '@/components/modal.vue'
+//import modal from '@/components/modal.vue'
 
 //////////////////////////////////////
 // Funciones String

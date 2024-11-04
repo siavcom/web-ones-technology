@@ -18,12 +18,12 @@ export class num_ind extends COLUMN {
         this.textLabel = 'Número'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
-        this.prop.Min = '0'
-        this.prop.Max = '32'
-        this.prop.Decimals = 1
+        this.prop.Min = '1'
+        this.prop.Max = '64'
+        this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_comeind.num_ind'
         this.prop.Placeholder = "Index number "
-        this.prop.ToolTipText = 'El indice 1 se toma como  indice unico (cluster index) principal de captura'
+        this.prop.ToolTipText = ''//  'El indice 1 se toma como  indice unico (cluster index) principal de captura'
         this.style.width = '35px'
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
         //      this.prop.Autofocus=true
