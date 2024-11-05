@@ -46,6 +46,7 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_model.prop.Visible = false;
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Visible = true;
     return true;
   }
 }

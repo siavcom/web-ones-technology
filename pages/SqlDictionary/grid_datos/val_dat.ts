@@ -19,7 +19,7 @@ export class val_dat extends COLUMN {
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comedat.val_dat";
     this.prop.ToolTipText =
-      "Valor incial en VPF al incertarse el registro nuevo en VUE";
+      "Valor incial en VPF al incertarse el registro nuevo";
     this.prop.Placeholder = "Valor inicial VFP";
     this.style.width = "100px"; /* width/height  - initial value: auto */
   }
@@ -27,11 +27,8 @@ export class val_dat extends COLUMN {
   // Evento When
   ///////////////////////////////////
   async when() {
-    this.prop.ReadOnly = false
-    if (!await this.Parent.cam_dat.when()) {
-      this.prop.ReadOnly = true
-      return !this.prop.ReadOnly
-    }
+    this.prop.ReadOnly = !await this.Parent.cam_dat.when()
 
+    return !this.prop.ReadOnly
   }
 }

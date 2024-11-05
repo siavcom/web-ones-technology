@@ -19,7 +19,7 @@ export class num_vis extends COLUMN {
         this.prop.Type = 'number'
         this.prop.Min = '0'
         this.prop.Max = '32'
-        this.prop.Decimals = 1
+        this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_comevis.num_vis'
         this.prop.Placeholder = "Numero"
         this.style.width = '35px'

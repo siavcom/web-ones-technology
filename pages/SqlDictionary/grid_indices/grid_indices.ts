@@ -20,6 +20,8 @@ import { nom_ind } from './nom_ind'
 import { des_ind } from './des_ind'
 
 import { exp_ind } from './exp_ind'
+import { whe_ind } from './whe_ind'
+import { col_ind } from './col_ind'
 import { uni_ind } from './uni_ind'
 
 
@@ -31,6 +33,8 @@ export class grid_indices extends GRID {
   public nom_ind = new nom_ind()
   public des_ind = new des_ind()
   public exp_ind = new exp_ind()
+  public whe_ind = new whe_ind()
+  public col_ind = new col_ind()
   public uni_ind = new uni_ind()
 
 
@@ -52,7 +56,7 @@ export class grid_indices extends GRID {
   // Inserta renglon
   // m : valiables de memoria
   ///////////////////////////////////////////////////
-  public async appendRow() {
+  public override async appendRow() {
     // Obtiene el consecutivo con_ind del cursor local
 
     const data = await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_comeind ")

@@ -42,6 +42,15 @@ export class sis_sis extends COMPONENT {
 
   async when() {
     this.Form.grid_menu.prop.Visible = false;
+    this.Form.grid_tablas.prop.Visible = false;
+    this.Form.grid_vistas.prop.Visible = false;
+    this.Form.grid_indices.prop.Visible = false;
+    this.Form.grid_datos.prop.Visible = false;
+    this.Form.bt_gen_model.prop.Visible = false;
+    this.Form.bt_gen_indices.prop.Visible = false;
+    this.Form.bt_gen_vistas.prop.Visible = false;
+    this.Form.nom_tab.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Visible = true;
     //  this.Form.dic_dat.when(true)
     return true;
   }

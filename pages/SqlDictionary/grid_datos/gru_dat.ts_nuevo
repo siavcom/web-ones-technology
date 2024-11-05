@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
-// Clase : wri_dat
-// Descripcion : Es de escritura el campo 
+// Clase : gru_dat
+// Descripcion : permisos por usuario de de trabajo
 // Author : Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
@@ -11,7 +11,7 @@
 import { COLUMN } from '@/classes/Column'
 
 
-export class wri_dat extends COLUMN {
+export class gru_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
     constructor() {
@@ -39,8 +39,11 @@ export class wri_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     async when() {
-        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
-        return !this.prop.ReadOnly
+        this.prop.ReadOnly = false
+        if (!await this.Parent.cam_dat.when()) {
+            this.prop.ReadOnly = true
+            return !this.prop.ReadOnly
+        }
 
     }
 

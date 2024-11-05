@@ -17,10 +17,10 @@ export class cal_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Columna calculada SQL Server'
+        this.textLabel = 'Valor columna calculada SQL Server'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comedat.cal_dat'
-        this.prop.ToolTipText = 'Columna calculada al insertarse el registro nuevo en SQL'
+        this.prop.ToolTipText = 'Valor calculado al insertar el registro en SQL Server'
         this.style.width = '200px'
     }
 
@@ -29,12 +29,12 @@ export class cal_dat extends COLUMN {
     ///////////////////////////////////
     async when() {
         this.prop.Valid = true
-        this.prop.ReadOnly = false
-        if (!await this.Parent.cam_dat.when()) {
-            this.prop.ReadOnly = true
-            return !this.prop.ReadOnly
-        }
-        await this.valid()
+        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
+        if (!this.prop.ReadOnly)
+            await this.valid()
+
+        return !this.prop.ReadOnly
+
     }
     override async valid(): Promise<any> {
         if (this.prop.Value.trim() > '   ') {

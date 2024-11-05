@@ -38,14 +38,13 @@ export class grid_datos extends GRID {
   public lon_dat = new lon_dat();
   public dec_dat = new dec_dat();
   public ref_dat = new ref_dat();
-  public sou_dat = new sou_dat();
   public vue_dat = new vue_dat();
-
   public cal_dat = new cal_dat();
   public def_dat = new def_dat();
   public rea_dat = new rea_dat();
   public wri_dat = new wri_dat();
   public val_dat = new val_dat();
+  public sou_dat = new sou_dat();
 
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -177,6 +176,12 @@ export class grid_datos extends GRID {
       "Grid_datos appendBlank ",
       await this.Form.db.localSql("select * from vi_cap_comedat")
     );
+    for (const column of this.elements) {
+      console.log("column=", column);
+      this[column].prop.ReadOnly = false
+      this[column].prop.Valid = true
+    }
+
     return;
   }
 }

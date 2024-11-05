@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : vue_dat
+// Clase : gru_dat
 // Descripcion : Valor incial en typescript insertarse el registro nuevo en VUE 
 // Author : Fernando Cuadras Angulo
 // Creacion : Mayo/2022
@@ -28,18 +28,22 @@ export class vue_dat extends COLUMN {
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when() {
-
-        this.prop.ReadOnly = false
-        if (!await this.Parent.cam_dat.when()) {
+    override async when() {
+        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
+        if (!this.prop.ReadOnly && (this.Parent.def_dat.prop.Value.trim().length > 0 || this.Parent.cal_dat.prop.Value.trim().length > 0))
             this.prop.ReadOnly = true
-            return !this.prop.ReadOnly
-        }
 
-        //   await super.when(row)
+        return !this.prop.ReadOnly
     }
 
     override async valid(): Promise<any> {
+        if (this.prop.Value.trim() > '   ') {
+            this.Parent.vue_dat.prop.Value = ''
+            this.Parent.vue_dat.prop.ReadOnly = true
+            this.Parent.def_dat.prop.Value = ''
+            this.Parent.def_dat.prop.ReadOnly = true
+        }
+
         await this.Parent.cal_dat.when()
         await this.Parent.def_dat.when()
         this.prop.Valid = true

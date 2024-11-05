@@ -29,13 +29,10 @@ export class def_dat extends COLUMN {
     ///////////////////////////////////
     async when() {
         this.prop.Valid = true
-        this.prop.ReadOnly = false
-        if (!await this.Parent.cam_dat.when()) {
-            this.prop.ReadOnly = true
-            return !this.prop.ReadOnly
-        }
-        await this.valid()
-
+        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
+        if (!this.prop.ReadOnly)
+            await this.valid()
+        return !this.prop.ReadOnly
 
     }
     override async valid(): Promise<any> {
