@@ -21,6 +21,7 @@ export class bt_aceptar extends COMPONENT {
       BaseClass: "imgButton",
 
       Image: "/Iconos/svg/accept.svg",
+      width: "64px",
 
     });
     Object.assign(this.style, { width: "35px" });
@@ -36,12 +37,12 @@ export class bt_aceptar extends COMPONENT {
    * Luego llama al metodo when() del componente tip_con.
    */
   async click() {
-  
-    this.Parent.browse.prop.RowSource=''
-    
-   // if (!await this.Parent.des_dat.valid())
-   //   return
- 
+
+    this.Parent.browse.prop.RowSource = ''
+
+    // if (!await this.Parent.des_dat.valid())
+    //   return
+
     this.prop.Visible = false
 
     this.Parent.tip_con.prop.Visible = false
@@ -98,19 +99,19 @@ export class bt_aceptar extends COMPONENT {
     }
     console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
 
-    if (this.Sql.View.browse){
+    if (this.Sql.View.browse) {
       delete this.Sql.View.browse
       this.Sql.localAlaSql(`drop table browse`)
-    } 
+    }
 
     await this.Sql.execute(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
-    
-    const res = await this.Sql.localAlaSql(`select * from browse limit 1`) 
 
-    if (!res || !this.Sql.View.browse || this.Sql.View.browse.recCount == 0){
+    const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
+
+    if (!res || !this.Sql.View.browse || this.Sql.View.browse.recCount == 0) {
       if (!res)
-         MessageBox("No hay datos")
-      
+        MessageBox("No hay datos")
+
       return this.Parent.bt_close.click()
     }
     this.Parent.browse.prop.RowSource = "browse";

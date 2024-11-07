@@ -16,7 +16,7 @@ export class dic_dat extends COMPONENT {
     super();
     //  this.Name = 'dic_dat'
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Tipo de diccionario  de datos";
+    this.prop.textLabel = "Diccionario  de datos";
     this.prop.ToolTipText = this.prop.textLabel;
     this.prop.ReadOnly = false;
     this.prop.Capture = false;
@@ -32,8 +32,15 @@ export class dic_dat extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "300px,10px";
-    this.style.width = "400px";
-    this.inputStyle.width = "200px";
+
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "300px";
+    this.style.width = "500px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
+
 
     //this.style.zIndex=3
   }

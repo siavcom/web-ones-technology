@@ -19,7 +19,7 @@ export class tip_con extends COMPONENT {
     this.prop.RowSource = [
       ["Que los datos esten entre", "El valor que contenga"],
       ["E", "C"]],
-    this.prop.Value = "C"
+      this.prop.Value = "C"
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
@@ -29,14 +29,21 @@ export class tip_con extends COMPONENT {
     this.inputStyle.height = '23px'
     this.inputStyle.width = '256px'
 
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
+
+
   }
 
   async when() {
 
-    if (this.prop.Value == 'E'){
+    if (this.prop.Value == 'E') {
       this.Parent.des_dat.prop.textLabel = 'Desde '
       this.Parent.des_dat.prop.Visible = true
-       this.Parent.has_dat.prop.Visible = true
+      this.Parent.has_dat.prop.Visible = true
     } else {
       this.Parent.des_dat.prop.textLabel = ''
       this.Parent.des_dat.prop.Visible = true

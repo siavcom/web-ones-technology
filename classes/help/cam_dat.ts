@@ -25,6 +25,12 @@ export class cam_dat extends COMPONENT {
     this.style.marginLeft = "10px";
     this.inputStyle.height = '23px'
     this.inputStyle.width = '256px'
+
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
   }
   async when() {
     await this.interactiveChange()

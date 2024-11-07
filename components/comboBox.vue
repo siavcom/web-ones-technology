@@ -2,14 +2,14 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <span :id="Id + '_div_comboBox'" :title="This.prop.ToolTipText" class="divi inputDivi" :style="Styles.style"
+  <span :id="Id + '_div_comboBox'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -38,8 +38,8 @@
     </div>
 
     <!--ComboBox NOT MultiSelect-->
-    <div :id="Id + '_selectOne'" v-else class="comboBox" ref="RefCombo" :style='comboStyle'>
-      <input :id="Id" class="textInput" :style="Styles.inputStyle" :disabled="prop.Disabled" :readonly="prop.ReadOnly"
+    <div :id="Id + '_selectOne'" v-else class="comboBox text" ref="RefCombo" :style='comboStyle'>
+      <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled" :readonly="prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
         @focus.prevent="toggle = false; when()" @focusout="emitValue()" @contextmenu="handler($event)" />
       <!--Valor seleccionado click-->
@@ -81,8 +81,7 @@
     <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-       v-bind:position="This[compMain].position"
-      @click.capture="when(true)">
+      v-bind:position="This[compMain].position" @click.capture="when(true)">
     </component>
 
   </span>
@@ -108,7 +107,7 @@ interface Props {
   prop: {};
   style: {};
   position: {};
-//  inputStyle: {};
+  //  inputStyle: {};
 }
 
 //const props = defineProps<{
@@ -285,6 +284,7 @@ const zIndex = ref(This.style.zIndex)
 
 const comboStyle = reactive({
   height: Styles.inputStyle.height,
+  width: 'fit-content',
   zIndex: zIndex.value
 })
 
@@ -1484,9 +1484,6 @@ div.comboBox {
 
 div.textInput {
   display: flex;
-  order: 1px solid rgb(0, 5, 2);
-  border-radius: 3px;
-  /* z-index: v-bind('comboZIndex'); */
 
 }
 
@@ -1526,15 +1523,15 @@ input.label.ReadOnly {
 div.toggle {
   position: absolute;
   /* no borrar se utiliza junto con div.option position:relative*/
-  border: 1px solid rgb(0, 5, 2);
+  border: rgb(0, 5, 2);
   border-radius: 2%;
   overflow: hidden;
-  height: 700%;
   overflow-y: auto;
-  width: 110%;
+  width: max-content;
   height: auto;
+  max-height: 260px;
   top: 20px;
-  left: -5%;
+  /*left: -5%;*/
   z-index: v-bind('toggleZIndex');
 }
 

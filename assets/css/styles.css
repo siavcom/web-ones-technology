@@ -30,6 +30,13 @@ div.backGround {
   /* opacity: 0.5;*/
 }
 
+.inputDivi {
+margin-top:1px
+}
+
+
+
+
 div.divi {
   /*display: inline-flex; / recomendado por raul*/
   display: inline-flex;
@@ -105,15 +112,28 @@ span.etiqueta {
 }
 
 input.text {
-  border: 1px solid rgb(0, 5, 2);
+  border:  rgb(0, 5, 2); /*1px solid */
   padding: "5px";
   border-radius: 3px;
   text-align: left;
   width: 96%;
-  margin-top: 2;
   z-index: 1;
-  /*min-width: 50%; */
+  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  margin-top :1px;
 }
+
+textarea.textArea {
+  border:  rgb(0, 5, 2); /*1px solid */
+  padding: "5px";
+  border-radius: 3px;
+  text-align: left;
+  width: 96%;
+  z-index: 1;
+  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  margin-top :1px;
+}
+
+
 
 .imgButton {
   border-radius: 10%;
@@ -135,34 +155,40 @@ transform: scale(2) translate(0px, 10px);*/
 }
 
 input.checkBox {
-  border: 1px solid rgb(0, 5, 2);
+  border: rgb(0, 5, 2);  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: left;
   width: 96%;
   accent-color: rgb(163, 193, 168);
   z-index: 1;
+  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  margin-top:1px;
 
   /*min-width: 50%; */
 }
 
 input.date {
-  border: 1px solid rgb(0, 5, 2);
+  border:  rgb(0, 5, 2);  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: left;
   width: 96%;
   min-width: max-content;
   z-index: 1;
+  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  margin-top:1px;
 }
 
 input[class="number"] {
-  border: 1px solid rgb(0, 5, 2);
+  border: rgb(0, 5, 2);  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: right;
   width: 96%;
   z-index: 1;
+  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  margin-top:1px;
 }
 
 /* Tooltip and error container */

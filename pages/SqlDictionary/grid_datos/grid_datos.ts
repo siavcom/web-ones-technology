@@ -177,9 +177,9 @@ export class grid_datos extends GRID {
       await this.Form.db.localSql("select * from vi_cap_comedat")
     );
     for (const column of this.elements) {
-      console.log("column=", column);
-      this[column].prop.ReadOnly = false
-      this[column].prop.Valid = true
+      console.log("column=", column.Name);
+      this[column.Name].prop.ReadOnly = false
+      this[column.Name].prop.Valid = true
     }
 
     return;

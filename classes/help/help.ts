@@ -154,8 +154,8 @@ export class HELP extends CONTAINER {
       await this.cam_dat.interactiveChange()
       this.tip_con.prop.Visible = true
       this.cam_dat.prop.Visible = true
-     // this.des_dat.prop.Visible = true
-    //  this.has_dat.prop.Visible = true
+      // this.des_dat.prop.Visible = true
+      //  this.has_dat.prop.Visible = true
       this.bt_aceptar.prop.Visible = true
       this.browse.prop.Visible = false
       this.prop.Visible = true
@@ -182,7 +182,7 @@ export class HELP extends CONTAINER {
       await this.Parent.valid()
 
     }
-     this.browse.prop.RowSource =''
+    this.browse.prop.RowSource = ''
 
     //this.browse.super.close()
   }

@@ -13,6 +13,7 @@
 ///////////////////////////////////////
 import { HELP } from "@/classes/help/help"
 export class help extends HELP {
+  cop_nom: string = 'C'
   constructor() {
     super()
     this.textLabel = 'Buscador'

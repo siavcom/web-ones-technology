@@ -18,6 +18,11 @@ export class des_dat extends COMPONENT {
     this.prop.Value = " ";
     this.prop.ErrorMessage = "Un caracter minimo";
     this.style.marginLeft = "22px";
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
 
@@ -29,7 +34,7 @@ export class des_dat extends COMPONENT {
         this.prop.Valid = false
         return false
       }
-      console.log('des_dat Value=', Value, this.prop.MaxLength,Value.length) 
+      console.log('des_dat Value=', Value, this.prop.MaxLength, Value.length)
       if (this.prop.MaxLength - (Value.length) > 0) {
         const ztas = 'z'.repeat(this.prop.MaxLength - (Value.length))
         this.Parent.has_dat.prop.Value = Value + ztas

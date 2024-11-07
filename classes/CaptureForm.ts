@@ -337,7 +337,7 @@ export class captureForm extends FORM {
       if (result) {
         MessageBox("Datos actualizados");
       } else {
-        await this.requery()
+        await this.Sql.requery(this.Parent.prop.RecordSource)
       }
 
       this.prop.Valid = true;

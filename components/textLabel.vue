@@ -541,7 +541,7 @@ const init = async () => {
     Type.value = 'imgButton'
 
   await readCampo()
-  console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
+  // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
 }

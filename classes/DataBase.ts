@@ -353,6 +353,7 @@ export class VFPDB {
       this.View[alias].eof = false; // Fin de archivo
       this.View[alias].bof = false; // Principio de archivo
       this.View[alias].row = -1; // Renglon posicionado el registro
+      this.View[alias].m = {}; // Variables m para hacer requery
     }
 
     if ((await this.select(alias)) == 0) {
@@ -489,9 +490,12 @@ export class VFPDB {
 
       console.log("5 Db Use Axios Ok response =====>", dat_vis, data); // .data
 
-      if (data.length)
+      if (data.length) {
         // No hubo error
-        return await this.genera_tabla(data, alias);
+        const response = await this.genera_tabla(data, alias)
+        this.View[alias].m = m; // Variables m para hacer requery
+        return response;
+      }
       else return []; //   { return [] }
     } catch (error) {
       console.error("Axios error :", dat_vis, error);
@@ -506,6 +510,18 @@ export class VFPDB {
       return false;
     }
   };
+
+
+  /////////////  Hace un requery de una vista /////////////////////
+  // nom_vis  : Nombre de la vista a utilizar
+  ////////////////////////////////////////////
+  requery = async (alias?: string) => {
+    if (!alias)       // si no se da el alias
+      alias = this.are_tra[this.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+
+    const m = this.View[alias].m
+    return await this.use(alias, m)
+  }
 
   /// /////////////  Vfp obten un registro  /////////////////////
   // nom_vis  : Nombre de la vista a utilizar
@@ -1792,14 +1808,7 @@ export class VFPDB {
     } else {
       const alias: any = are_sel;
       this.num_are = this.are_tra.indexOf(alias) + 1; // busca el numero de alias
-      // if (this.num_are == -1) this.num_are = 0
-      // console.log('Db Db select num_are ====>>', are_sel, this.num_are)
     }
-    /* revisar
-        this.Form['dic_dat']['prop']['Status'] = 'G'
-        this.Form['dic_dat']['prop']['Status'] = 'H'
-        this.Form['dic_dat']['prop']['Status'] = 'I'
-    */
     return this.num_are;
   };
 
