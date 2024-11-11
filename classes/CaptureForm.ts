@@ -292,7 +292,7 @@ export class captureForm extends FORM {
       this.prop.Visible = false;
       this.prop.Image = "/Iconos/svg/accept.svg";
       //this.prop.TabIndex= 20
-      this.style.width = "20px";
+      this.style.width = "64px";
     } // Fin constructor
 
     async click() {
@@ -372,7 +372,7 @@ export class captureForm extends FORM {
 
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
       // this.prop.TabIndex= 21
-      this.style.width = "92px";
+      this.style.width = "64px";
     } // Fin constructor
 
     async click() {

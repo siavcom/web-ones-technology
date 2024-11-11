@@ -170,6 +170,8 @@ export class HELP extends CONTAINER {
 
   async close() {
     this.prop.Visible = false
+    this.browse.prop.RowSource = ''
+
     // regresa el valor al campo principal
     this.Parent.prop.ReadOnly = false
     if (this.browse.prop.Value > '   ') {
@@ -179,10 +181,9 @@ export class HELP extends CONTAINER {
       else
         this.Parent.prop.Value = this.browse.prop.Value
 
-      await this.Parent.valid()
+      this.Parent.setFocus()
 
     }
-    this.browse.prop.RowSource = ''
 
     //this.browse.super.close()
   }

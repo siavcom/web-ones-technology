@@ -21,10 +21,10 @@ export class bt_aceptar extends COMPONENT {
       BaseClass: "imgButton",
 
       Image: "/Iconos/svg/accept.svg",
-      width: "64px",
+
 
     });
-    Object.assign(this.style, { width: "35px" });
+    Object.assign(this.style, { width: "64px" });
     Object.assign(this.style, { float: "left" })
   }
 

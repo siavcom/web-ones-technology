@@ -58,22 +58,16 @@
 
 
 interface Props {
-  //Recno: number;
-  // Name,
   Registro: number;
-
   prop: {};
   style: {};
-  //inputStyle: {};
   position: {};
 }
 
 //const props = defineProps<{
 const props = withDefaults(defineProps<Props>(), {
-  //Name: '',
+
   Registro: 0,
-  // Component: null,
-  // Value: undefined,
   prop: {
 
     BaseClass: "container",
@@ -145,7 +139,15 @@ const props = withDefaults(defineProps<Props>(), {
 
     // inputWidth: "inherit"
   },
-  inputStyle: {
+  position: {
+    position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
+    left: 0,
+    Top: 0,
+  },
+
+})
+/*
+inputStyle: {
     background: "white",
     padding: "5px", // Relleno
     color: "#b94295",
@@ -161,14 +163,9 @@ const props = withDefaults(defineProps<Props>(), {
 
     // inputWidth: "inherit"
   },
-  position: {
-    position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
-    left: 0,
-    Top: 0,
-  },
 
-})
 
+*/
 //const Component = ref(props.prop.This)
 const Component = toRef(() => props.prop.This)
 const This = Component.value

@@ -1186,7 +1186,6 @@ const onFocus = async () => {
 }
 const clickHelp = async () => {
 
-  console.log('editText clickHelp Name', This.prop.Name)
   This.prop.ShowError = false
   This.prop.Valid = true
 
@@ -1195,8 +1194,7 @@ const clickHelp = async () => {
 
   if (This.help) {
     Help = true
-
-    await This.help.open()
+    This.Form.eventos.push(This.prop.Map + '.help.open()')
   }
   Help = false
 }

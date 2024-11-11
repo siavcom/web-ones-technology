@@ -145,15 +145,15 @@ export class COMPONENT {
     background: "", //transparent
     color: "",
     fontFamily: "Arial",
-    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    fontSize: "inherit", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     fontWeight: "normal",
-    height: "auto", // "auto","fit-content"
+    height: "fit-content", // "auto","fit-content"
     maxHeight: "auto",
     maxWidth: "auto",
     textAlign: "left",
     textTransform: "none",
     zIndex: 1, // profundidad
-    width: "auto",
+    width: "fit-content",
   }
 
   inputStyle = { ...this.labelStyle }

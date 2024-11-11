@@ -36,14 +36,14 @@ export class help extends HELP {
     ["ema_nom", "Email", "64px"]];
   }
 
-  async open() {
+  override async open() {
 
     this.prop.Where = ` cop_nom='${this.cop_nom}'  `
 
     if (this.cop_nom == 'C') {
-      this.browse.prop.textLabel = 'Clientes'
+      this.textLabel = 'Clientes'
     } else {
-      this.browse.prop.textLabel = 'Proveedores'
+      this.textLabel = 'Proveedores'
 
     }
 

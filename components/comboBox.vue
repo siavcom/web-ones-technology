@@ -67,9 +67,9 @@
         </div>
       </div>
       <!--toggle click.prevent -->
-      <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" v-if="!This.prop.ReadOnly && !This.prop.Disabled"
-        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick"
-        :style='toggleStyle' />
+      <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" :style="toggleStyle"
+        v-if="!This.prop.ReadOnly && !This.prop.Disabled"
+        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       <!--/div-->
     </div>
@@ -283,23 +283,25 @@ if (Styles.style.width == 'auto')
 const zIndex = ref(This.style.zIndex)
 
 const comboStyle = reactive({
-  height: Styles.inputStyle.height,
+  height: 'fit-content',
   width: 'fit-content',
   zIndex: zIndex.value
+})
+const toggleStyle = reactive({
+  maxHeight: Styles.style.fontSize
 })
 
 
 
-const toggleStyle = {
-  height: "13px" //This.style.height
-}
 
-if (Styles.inputStyle.height == "auto")
+/*
+
+if (divStyle.height == "auto")
   toggleStyle.height = "13px"
 else
   toggleStyle.height = Styles.inputStyle.height
 
-
+*/
 Styles.inputStyle.zIndex = zIndex
 const toggleZIndex = comboStyle.zIndex + 1
 
@@ -1332,7 +1334,9 @@ onMounted(async () => {
     else
       Styles.style.zIndex = 100
 
-    console.log('comboStyle init ', Styles.inputStyle.width)
+    Styles.inputStyle.maxHeight = Styles.inputStyle.fontSize
+
+
     if (Styles.inputStyle.width.search("px") > 0) {
       textWidth = +Styles.inputStyle.width.replaceAll('px', '') - 30
       Styles.inputStyle.width = textWidth.toString() + 'px'
@@ -1355,6 +1359,15 @@ onMounted(async () => {
       comboStyle.height = '0%'
       //console.log('comboStyle Visible', comboStyle.height)
     }
+
+    // asina tamaño de la imagen toogle
+    if (toggleStyle.maxHeight.search("px") > 0) {
+      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 4
+      toggleStyle.maxHeight = textWidth.toString() + 'px'
+    }
+
+
+
 
   }
 
@@ -1449,7 +1462,6 @@ const handler = (event) => {
 /*  elemento click check*/
 .toggleImagen {
   /* width: 17px;*/
-  min-height: 79%;
   border-radius: 20%;
   border: 2px;
   vertical-align: bottom;
@@ -1457,7 +1469,7 @@ const handler = (event) => {
   border-color: black;
   margin-left: -2px;
   background: #76a184;
-
+  /*height: 93% */
   /* margin-bottom: 5px;
   margin-top: 5px;
   margin-left: 5px;
@@ -1476,6 +1488,7 @@ const handler = (event) => {
 
 div.comboBox {
   display: flex;
+  height: fit-content;
   /* order: 1px solid rgb(0, 5, 2);
   border-radius: 5px; */
 
