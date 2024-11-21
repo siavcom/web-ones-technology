@@ -467,9 +467,9 @@ export const Session = defineStore(
       { deep: false }
     );
 
-    const doneMenu = computed(() =>
-      menu.value.filter((menu) => menu.value.done)
-    );
+    //const doneMenu = computed(() =>
+    //  menu.value.filter((menu) => menu.value.done)
+    //);
 
     const socketDisconnect = (socket, men: string) => {
       MessageBox(men, 16, "-- SQL Error --");
@@ -555,7 +555,7 @@ export const Session = defineStore(
       dialect,
       fpo_pge,
       logoEmp,
-      doneMenu,
+      // doneMenu,
       Var,
       socketIo,
       fileLogoEmp,

@@ -180,7 +180,8 @@ export class captureForm extends FORM {
     }
 
     await this.refreshComponent(this.Recno, key_pri);
-
+    if (!this.bt_graba.prop.Disabled)
+      this.bt_graba.prop.Visible = true;
     return true;
   } // fin metodo valid
 
@@ -319,10 +320,15 @@ export class captureForm extends FORM {
 
         // Checa si todos esta validados
         if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.Valid) {
+          console.log('CaptureForm bt_graba click() comp=', comp)
           if (!(await this.Parent[comp].valid())) {
             if (!this.prop.Disabled)
               this.prop.Visible = true;
+
+            this.Parent[comp].getFocus()
+
             return;
+
           }
         }
       }

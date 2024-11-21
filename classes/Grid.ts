@@ -20,7 +20,7 @@ export class GRID extends COMPONENT {
     this.Name = "Grid";
     this.prop.ColumnCount = 1;
     this.prop.BaseClass = "grid";
-    this.prop.Capture = true;
+    this.prop.Capture = false;
     this.prop.RecordSource = "";
     this.prop.Row = 0;
     this.prop.textLabel = "Grid de datos";

@@ -9,7 +9,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -284,12 +284,11 @@ const zIndex = ref(This.style.zIndex)
 
 const comboStyle = reactive({
   height: 'fit-content',
-  width: Styles.inputStyle.width,    //'fit-content',
+  width: 'fit-content',
   zIndex: zIndex.value
 })
 const toggleStyle = reactive({
-  maxHeight: Styles.style.fontSize,
-  marginTop: 'auto'
+  maxHeight: Styles.style.fontSize
 })
 
 
@@ -1358,7 +1357,7 @@ onMounted(async () => {
 
 
     if (toggleStyle.maxHeight.search("px") > 0) {
-      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 1
+      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 5
       toggleStyle.maxHeight = textWidth.toString() + 'px'
     }
     console.log('comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
@@ -1463,9 +1462,7 @@ const handler = (event) => {
   vertical-align: bottom;
   border-style: solid;
   border-color: black;
-
-  margin-left: 1px;
-  margin-top: .5%;
+  margin-left: -2px;
 
   box-shadow: black 0px 1px 1px 0, 0 1px 1px 0;
   background: #76a184;

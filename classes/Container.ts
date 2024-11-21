@@ -58,6 +58,7 @@ export class CONTAINER extends COMPONENT {
       borderRadius: '10px',
       padding: '20px',   //Margen entre los bordes y el contenido
     }
+    this.prop.Capture = false;
     // Estilo de cada contenedor del modal
 
 

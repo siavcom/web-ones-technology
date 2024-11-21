@@ -20,6 +20,7 @@ export class DETAILS extends COMPONENT {
     this.style.width = 'auto'
     this.style.alignContent = 'flex-start'
     this.browse.style.width = '-moz-available'
+    this.prop.Capture = false;
 
   }
 

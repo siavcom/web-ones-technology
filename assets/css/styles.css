@@ -6,7 +6,7 @@ div.ThisForm {
 
 section.pagina {
   background: white;
-  color: #b94295;
+ /* color: #b94295; /* #b94295;*/
   min-width: 375px;
   min-height: 812px;
 
@@ -22,8 +22,8 @@ div.mainForm {
 div.backGround {
   border: 1px solid green;
   border-radius: 10px;
-  padding: 60px;
-  background-color: #f2f4f5;
+  padding: 10px;
+  background-color: #a6d4b9;
   width: 100%;
   height: 100%;
   /*background-image: url(v-bind("props.backgroundImage"));*/
@@ -118,7 +118,7 @@ input.text {
   text-align: left;
   width: 96%;
   z-index: 1;
-  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
   margin-top :2px;
 }
 
@@ -129,7 +129,7 @@ textarea.textArea {
   text-align: left;
   width: 96%;
   z-index: 1;
-  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
   margin-top :2px;
 }
 
@@ -162,7 +162,7 @@ input.checkBox {
   width: 96%;
   accent-color: rgb(163, 193, 168);
   z-index: 1;
-  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
   margin-top:2px;
 
   /*min-width: 50%; */
@@ -176,7 +176,7 @@ input.date {
   width: 96%;
   min-width: max-content;
   z-index: 1;
-  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
   margin-top:2px;
 }
 
@@ -187,7 +187,7 @@ input[class="number"] {
   text-align: right;
   width: 96%;
   z-index: 1;
-  box-shadow: 0px 1px 1px 0, 0 2px 2px 0;
+  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
   margin-top:2px;
 }
 
@@ -439,7 +439,7 @@ section.formheader {
   height: fit-content;
   background-color: #ebf8ee;
   border: 1px solid rgb(0, 0, 0);
-  border-radius: 1px;
+  border-radius: 6px;
  
 }
 
@@ -457,6 +457,8 @@ section.formmain {
   */
   text-align: left;
   background-color: #f2f4ef;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 6px;
   /*border: 1px solid rgb(0, 0, 0);
   border-radius: 6px; */
   z-index: 1;

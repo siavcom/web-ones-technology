@@ -20,8 +20,7 @@ export class COMPONENT {
   //name = this.Name
   Sql;
   // db: any;
-  // Recno: number;
-  Recno = ref(0)
+  Recno: number;
   Ref: null | undefined;
   Show: true = true;
   //Focus: boolean = false
@@ -221,20 +220,11 @@ export class COMPONENT {
 
   }
 
-
-  /**
-   * Init Component
-   * @param Form Formulario que contiene al componente actual
-   * @param TabIndex Numero de TabIndex para el componente actual
-   * 
-   * Inicializa el componente actual, asigna el Formulario que lo contiene, y el TabIndex
-   * 
-   * Crea el Map donde esta ubicado el componente, y llama a Init en todos los componentes
-   * que esten dentro de este. Genera los arreglos Header, Main y Footer para luego poder
-   * recorrerlos y llamar a Init en cada uno de los componentes.
-   * 
-   * @returns {Promise<number>} TabIndex final despues de inicializar todos los componentes
-   */
+  ///////////////////////////////////////////////////////////
+  // Init
+  ////////////////////////////////////////////////
+  //public Init = async (Form) => {  Las Funciones arrow son funciones no metodos
+  //    async Init(Form) {
   public async Init(Form?: any, TabIndex?: number) {
     //Form est?: any
     if (this.prop.Name.length == 0) this.prop.Name = this.Name;
@@ -477,16 +467,20 @@ export class COMPONENT {
   // Descripcion: Hace el click
   /////////////////////////////////////////////////////////////////
 
-
   /**
-   * @description
-   * Hace el click
-   * @returns {Promise<void>}
+   * Click
+   * Descripcion: Hace el click en el componente
+   * 
+   * @returns void
    */
   public async click() {
     return;
   }
 
+  /////////////////////////////////////////////////////////////////////
+  // When VFP
+  // Descripcion: Cuando recibe el foco
+  /////////////////////////////////////////////////////////////////
 
   /**
    * When VFP

@@ -93,8 +93,8 @@
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
-      class='help_icon' src="/Iconos/svg/help-svgrepo-com.svg" style="position:absolute;right:0px; margin-top: 1%;"
-      width="20px" @click.prevent="clickHelp()" />
+      class='help_icon' src="/Iconos/svg/help-svgrepo-com.svg" style="position:absolute;right:0px" width="20px"
+      @click.prevent="clickHelp()" />
 
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
@@ -123,7 +123,42 @@
 </template>
 
 <script setup lang="ts">
+/*
 
+
+v-on:keyup="function"
+v-on:keyup.enter="clickEnter()"
+Supported Keys: Following keys are supported:
+
+    Enter key: .enter
+    Tab key: .tab
+    Delete key: .delete
+    Esc key: .esc
+    Up key: .up
+    Down key: .down
+    Left key: .left
+    Right key: .righ
+
+*/
+
+
+/*
+import {
+  //  defineEmits,
+  //  defineProps,
+  //  defineExpose,
+  ref,
+  reactive,
+  //  onUnmounted,
+  watch,
+  // toRefs,
+  //toRef,
+  // onMounted,
+  // onBeforeUpdate,
+  // onUpdated,
+  // onUnmounted,
+
+} from "vue" */
 
 
 import { vMaska } from "maska/vue"
@@ -983,10 +1018,10 @@ const keyPress = ($event: {
   }
 
 
-  //  console.log('1)>>>>>KeyPress===>', char, 'Type=', Type)
+  console.log('1)>>>>>KeyPress===>', char, 'Type=', Type)
   // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
-    //console.log('1) Help KeyPres==>', $event.charCode)
+    console.log('1) Help KeyPres==>', $event.charCode)
     //$event.preventDefault()
     clickHelp()
     $event.keycode = 0;
@@ -995,7 +1030,7 @@ const keyPress = ($event: {
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
-    //console.log('1.1) nextElement KeyPres==>', $event.charCode)
+    console.log('1.1) nextElement KeyPres==>', $event.charCode)
     return nextElement() //clickReturn()
   }
   // caracteres permitido en input numero
@@ -1005,10 +1040,10 @@ const keyPress = ($event: {
 
   Key.value = $event.charCode
   This.prop.Key = $event.charCode
-  // console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
+  console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
 
   This.keyPress()
-  //console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
+  console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
 
 
 
@@ -1183,6 +1218,8 @@ const select = async () => {
 
     }, 300);
 
+
+
   }
   //})
   return
@@ -1301,15 +1338,9 @@ watch(
       return
     }
     This.prop.Focus = false
-
-    //thisElement.focus({ focusVisible: true });
-    setTimeout(function () {
-      //thisElement.focus({ focusVisible: true });
-      if (thisElement.select)
-        thisElement.select();
-
-    }, 300);
-    //    select()
+    console.log('Focus editText Watch Name=', This.prop.Name)
+    select()
+    //onFocus()
     return
 
   },
@@ -1343,87 +1374,14 @@ watch(
 
   async (new_val: any, old_val: any) => {
 
-    if (This.prop.Status == 'P') {// No se ha salido del componente
-      Value.value = This.prop.Value
-      switch (This.prop.Type) {
-        case 'number':
 
-          if (Value.value == null)
-            Value.value = 0
 
-          currentValue.value[1] = +Value.value //.toString().trim() // Captura
-          currentValue.value[0] = await numberFormat(Value.value, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
-
-          //          emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
-          break;
-        case 'checkbox':
-          let check = Value.value == 0 ? false : true
-          if (checkValue.value != check) {
-            checkValue.value = check
-            //            emit("update:checkValue", checkValue)
-          }
-          break;
-
-        case 'json':
-          compJson.value = []
-          if (Value.value.trim().length > 5) {
-            try {
-              currentJson.value = JSON.parse(Value.value)
-            } catch (error) {
-              await MessageBox('Error Invalid Json  :' + Value.value, 'Error')
-              currentJson.value = []
-            }
-          }
-
-          for (const comp in currentJson.value)
-            compJson.value.push(currentJson.value[comp])
-
-          break;
-
-        case 'date':
-          if (Value.value == '' || Value.value == null)
-            Value.value = '1900-01-01'
-          if (Value.value.length > 10)
-            Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
-          displayDate.value = new Date(Value.value).toDateString()
-
-          currentDate.value = await stringToDate(Value.value)
-          /*
-                    nextTick(function () {
-                      emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
-                      emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
-          
-                    })
-          */
-          break;
-
-        case 'datetime':
-          if (Value.value == '' || Value.value == null)
-            Value.value = '1900-01-01T00:00:00'
-
-          Value.value = Value.value.slice(0, 16)
-
-          displayDate.value = new Date(Value.value)
-          currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
-
-          /*
-                    nextTick(function () {
-                      emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
-                      emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
-          
-                    })
-          */
-          break;
-        default:
-          if (Value.value == null)
-            Value.value = ''
-      }
-
+    if (This.prop.Status == 'P') // se cambio desde el mismo proceso
       return
-    }
+
     //  if (This.prop.Valid) return
     if (new_val != Value.value) {
-
+      //     console.log(' >>>>>   EditText Watch Name=', This.prop.Name, 'Status=', This.prop.Status, 'Value=', This.prop.Value, 'Value.value=', Value.value)
 
       /*
        if (propType == 'date')
@@ -1446,7 +1404,6 @@ watch(
 
       Value.value = This.prop.Value
       await emitValue(false, This.prop.Valid) //se puso await
-
 
 
     }

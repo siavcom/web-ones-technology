@@ -310,9 +310,10 @@ const renderComboBox = async () => {
 
     case 2: { // Alias
 
-      // aqui me quede (arreglar lectura por alias)
+      const pos = RowSource.indexOf(".") // posicion del punto
+      const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
       const ins_sql = 'select ' + RowSource + ' from ' + alias
-      data = await This.Form.db.localSql(ins_sql)
+      data = await This.Sql.localAlaSql(ins_sql)
 
       break
     }

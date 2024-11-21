@@ -1,3 +1,9 @@
+nuxt capacitator :  Building a native mobile aplication with nuxt
+https://capgo.app/blog/building-a-native-mobile-app-with-nuxt-3-and-capacitor/#about-capacitor
+
+Nuxt content
+
+https://content.nuxt.com/ : Ducumentation of nuxt
 
 ## Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 

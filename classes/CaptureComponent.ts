@@ -29,13 +29,13 @@ export class CAPTURECOMPONENT extends COMPONENT {
   // event when
   ///////////////////////////////////
 
-  async when() {
+  override async when() {
     if (this.prop.ReadOnly) return false;
     if (this.prop.updateKey) {
       // Si es llave de actualizacion
-
+      this.Form.bt_graba.prop.Visible = false;
+      this.Form.bt_borra.prop.Visible = false;
       await this.Form.refreshComponent();
-      console.log("2) refresh when name=", this.prop.Name, "updateKey=", this.prop.updateKey);
 
     }
     return true;
@@ -45,7 +45,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
   // event valid
   ///////////////////////////////////
 
-  async valid() {
+  override async valid() {
 
     if (this.prop.ReadOnly) {
       return true
@@ -55,8 +55,6 @@ export class CAPTURECOMPONENT extends COMPONENT {
       this.prop.Valid = true;
       return this.prop.Valid;
     }
-    //console.log('Valid ',this.prop.Name,'sw_when',this.sw_when)
-    //    if ( !this.sw_when && !await this.Form.validComponent(this.Name) && !this.prop.Valid){
 
     this.prop.Valid = await this.Form.validComponent(this.Name);
 

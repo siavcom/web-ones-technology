@@ -6,7 +6,7 @@
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99.5%' }">
+    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99%' }">
 
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
@@ -28,29 +28,77 @@
             </tr>
           </thead>
           <!---------------------------  Detalle  --------------------------------->
+
           <tbody :id="Id + '_grid_tbody'" v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0"
             style="height: auto">
 
             <!-------------  Renglones  ------------------------>
+            <!--TypeError: item is undefined            tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
+
             <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage" v-for="(item, key) in scroll.dataPage"
               :key="item && item.recno ? item.recno : 0" :style="item.id == This.Row ? trStyleActive : trStyleInactive">
-              <!-- No utilizar vertical-aling en renNumber-->
+              <!-- :style="item.id == This.Row ? { 'borderBlockStyle': 'groove' } : { 'borderBlockStyle': 'hidden' }"
+                           
+              
+              key="scroll.dataPage ? item.recno : 0
+               No utilizar vertical-aling en renNumber-->
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
                 item.recno
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
+              <!--
+                v-if="props.db.value.View[prop.RecordSource].recnoVal" 
+                v-show="i != This.Row"
+                    -->
+
               <td :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name" :style='{ "height": This[col.Name].style.height, padding: 0 }'
                 :headers="col.Name">
 
+                <!--div v-show="true || (This[col.Name].prop.Status != 'I' && This[col.Name].prop.Visible)"-->
+                <!--template style="This[col.Name].style" -->
+                <!--focus.capture.stop para que solo ejecute el evento en el componente actual
+                      al obtener el foco asigna el renglon de captura
+                        @focus.capture.stop="eventos.push(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)"
+
+                    
+                    -->
+                <!--Imprime renglones de solo los textos cuando no es captura 
+                  
+                  v-bind:Show="item.id != This.Row"
+                                    -->
+                <!--div v-show="item.id != This.Row"
+                  el v-show del texLabel se cambio por v-if
+                 v-bind:inputStyle="This[col.Name].inputStyle"
+                -->
+                <!--focus.capture.stop= @click.stop Transition name="columntext"-->
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                   v-bind:style="This[col.Name].style"
-                  @click.capture="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" @focusout.stop>
+                  @click="ejeEvento(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" @focusout.stop>
                 </textLabel>
                 <!--/Transition-->
+                <!--/div-->
+                <!--Componentes de captura
+                      @focus se debe de poner capture para que funcione el focus en el componente Vue
+                              y el when del componente typescript
+                      Se quita el @focusout porque se hace el valid desde el componente
+                      @focusout.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.valid()')"
+                        v-bind:Component="ref(This.Form[col.Name])" 
+                      v-bind:Show="true"
+                    -->
+                <!--Transition name="columninput"-->
+                <!--div v-if="item.id == This.Row" :style='{ "width": This[col.Name].style.width }'
+                v-model:Valid="This[col.Name].prop.Valid"
+                v-bind:Component="ref(This[col.Name])"
 
+
+                @focus.capture="ejeEvento(This.prop.Map + '.' + This[col.Name].Name + '.when()')"
+                  v-model:Status="This[col.Name].prop.Status"
+                  v-model:ShowError="This[col.Name].prop.ShowError"
+                 :inputStyle="This[col.Name].inputStyle" 
+                  -->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComponent(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Key="This[col.Name].prop.Key"
@@ -64,11 +112,29 @@
                 <!--/div-->
               </td>
 
+              <!--td>
+                <div class="left-btn hide-in-print" @click="borraRenglon(item.recno)">
+                  <nuxt-img src="/Iconos/delete.jpeg" width="23">
+
+                </div>
+              </td-->
             </tr>
 
             <tr>
               <td>
+                <!-------------  Si el numero de Columnas es menor que 2 y da un click genera nuevo registro
+                    @click="() => items.push({ key: Math.random(), ref: 'MyRef', desc: 'My description', qty: 1, price: 0 })"
+                    v-if="This.renglon<2 "
 
+
+                 <div  v-if="i==This.db.View.[prop.RecordSource].recno-1"
+                    :ref="Status => { This.prop.Status='A'}" >
+                     Status={{i}} {{This.db.View.[prop.RecordSource].recno}} {{This.prop.Status}}
+                 </div>
+
+                   :ref="Status => { This.prop.Status='A'}"
+
+                  -->
               </td>
             </tr>
 
@@ -77,63 +143,68 @@
         </table>
       </div>
 
-      <!--div :id="Id + '_bottom'" class="break"-->
-      <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
+      <div :id="Id + '_bottom'" class="break">
+        <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
 
-        <!-- click.capture.stop -->
-        <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.saveData" @click="saveTable()"
-          :style="{ 'padding': '5px' }">
-          <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="40" />
-        </span>
-
-        <span :id="Id + '_botton_controles_add'" title="Insert row" v-show="prop.addButton"
-          :style="{ 'padding': '5px' }" @click="appendRow()">
-          <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/svg/add-color.svg" width="35" />
-        </span>
-
-        <span :id="Id + '_botton_controles_page'" v-show="scroll.page > 0">
-
-          <span :id="Id + '_botton_controles_page_first'" title="First row" :style="{ 'padding': '5px' }"
-            @click.capture.stop="first()">
-            <nuxt-img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/svg/first.svg" width="35" />
+          <!-- click.capture.stop -->
+          <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.saveData" @click="saveTable()">
+            <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="45" />
           </span>
 
-          <span :id="Id + '_botton_controles_page_previus'" title="Previus page" :style="{ 'padding': '5px' }"
-            @click.capture.stop="previous()">
-            <nuxt-img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/svg/previous.svg" width="35" />
+          <span :id="Id + '_botton_controles_add'" title="Insert row" v-show="prop.addButton" width="40"
+            @click="appendRow()">
+            <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/svg/add-color.svg" width="35" />
           </span>
 
-        </span>
-        <span :id="Id + '_botton_controles_one__page'" v-show="!scroll.bottom">
-          <span :id="Id + '_botton_controles_one__page_next'" title="Next page" @click="next()"
-            :style="{ 'padding': '5px' }">
-            <nuxt-img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/svg/next.svg" width="35" />
+          <span :id="Id + '_botton_controles_page'" v-show="scroll.page > 0">
+
+            <span :id="Id + '_botton_controles_page_first'" title="First row" v-bind:style="{ 'width': '40px' }"
+              @click.capture.stop="first()">
+              <nuxt-img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/svg/first.svg" width="30" />
+            </span>
+
+            <span :id="Id + '_botton_controles_page_previus'" title="Previus page" @click.capture.stop="previous()">
+              <nuxt-img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/svg/previous.svg" width="30" />
+            </span>
+
           </span>
-          <span :id="Id + '_botton_controles_one__page_last'" title="Last page" @click="last()"
-            :style="{ 'padding': '5px' }">
-            <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/svg/last.svg" width="35" />
+          <span :id="Id + '_botton_controles_one__page'" v-show="!scroll.bottom">
+            <span :id="Id + '_botton_controles_one__page_next'" title="Next page" @click="next()">
+              <nuxt-img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/svg/next.svg" width="30" />
+            </span>
+            <span :id="Id + '_botton_controles_one__page_last'" title="Last page" @click="last()">
+              <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/svg/last.svg" width="30" />
+            </span>
           </span>
-        </span>
 
-        <span :id="Id + '_botton_controles_delete_row'" title="Delete row" v-show="prop.deleteButton && This.Row >= 0"
-          :style="{ 'padding': '5px' }" @click.stop="borraRenglon()">
-          <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-color.svg" width="40" />
-        </span>
+          <span :id="Id + '_botton_controles_delete_row'" title="Delete row" v-show="prop.deleteButton && This.Row >= 0"
+            width="40" @click.stop="borraRenglon()">
+            <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-color.svg" width="45" />
+          </span>
 
 
-        <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
+          <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
+            <!--div v-for="(obj, compFooter,key) in This" :key="obj.Index"
+          
+                      @focusout="This.eventos.push('This.' + compFooter + '.valid()')"
+          v-bind:Show="true"
+          v-bind:Component="ref(This[compFooter])"
 
-          <component :id="Id + '_component_footer_' + compFooter" :is="impComponent(This[compFooter].prop.BaseClass)"
-            v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
-            v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
-            v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
-            v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-            v-bind:position="This[compFooter].position"
-            @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
+          
+              @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
+          v-bind:inputStyle="This[compFooter].inputStyle" 
+          -->
+            <component :id="Id + '_component_footer_' + compFooter" :is="impComponent(This[compFooter].prop.BaseClass)"
+              v-model:Value="This[compFooter].prop.Value" v-model:Status="This[compFooter].prop.Status"
+              v-model:ShowError="This[compFooter].prop.ShowError" v-model:Key="This[compFooter].prop.Key"
+              v-bind:Registro="This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
+              v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
+              v-bind:position="This[compFooter].position"
+              @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
+          </div>
+
         </div>
-
-      </div>
-      <!--/div-->
+      </div> <!-- break to a new row -->
     </div> <!--/form-->
 
   </div>

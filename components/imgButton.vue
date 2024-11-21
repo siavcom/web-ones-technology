@@ -1,23 +1,17 @@
 <template>
-  <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
-  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="style"
+  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible">
-    <!--div class="mensajes"-->
-    <!--type="submit"-->
     <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
       :tabindex="prop.TabIndex" @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
-        :style="inputStyle" />
-      <label :id="Id + '_label'" v-if="prop.Image.length > 0"
-        :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
-        :disabled="prop.ReadOnly" v-show="prop.Visible">{{ prop.Value }}</label>
+        :style="Styles.inputStyle" />
+      <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
+        v-show="prop.Visible">{{ prop.Value }}</label>
     </button>
-
   </span>
 </template>
 
 <script setup lang="ts">
-
 
 const props = defineProps<{
   //Value: string;
@@ -44,17 +38,7 @@ const props = defineProps<{
     Visible: boolean;
     TabIndex: number;
     BaseClass: "imgButton";
-
     Image: "";
-
-    /* componentStyle: {
-      background: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "30px";
-      height: "30px";
-    };*/
-
   };
 
   style: {
@@ -76,35 +60,25 @@ const props = defineProps<{
     left: number;
     Top: number;
   };
-  // imagen: {
-  //   src: ""
-  //backgroundImage: string;
-  //position: "bottoncenter";
-  //width: "20px"; //    width: "100%", "50px"
-  //height: "50px";
-  //opacity: "0.3";
-  //borderRadius: "4px";
-  //   padding: "5px";
-  // };
-}>();
 
+}>();
 
 const Component = ref(props.prop.This)
 const This = Component.value
 const Este = props.prop.This
 const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
-const divStyle = reactive({ ...Este.style })
+const style = reactive({ ...Este.style })
+
+const Styles =
+{
+  labelStyle: labelStyle,
+  inputStyle: inputStyle,
+  style: style
+}
 
 const Id = This.prop.Name + props.Registro.toString().trim()
 
-
-//inputStyle.width = This.style.width
-//inputStyle.height = This.style.height
-
-
-if (inputStyle.width == 'auto')
-  inputStyle.width = '100%'
 This.Recno = props.Registro
 
 const Value = ref(props.prop.Value)
@@ -137,8 +111,6 @@ watch(
   { deep: true }
 );
 
-
-
 /////////////////////////////////////////////////////////////////////
 // focusOut
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
@@ -151,7 +123,6 @@ const focusOut = async () => {
 
 const click = async () => {
 
-
   ToolTipText.value = false  // Activamos el ToolTipText
   // await This.when()
   if (!This.prop.Disabled && !This.prop.ReadOnly) {
@@ -161,27 +132,17 @@ const click = async () => {
 }
 
 
-
-
 const onFocus = async () => {
   ToolTipText.value = false  // Activamos el ToolTipText
   if (!This.prop.Disabled) {
     This.Form.eventos.push(This.prop.Map + '.when()')
-
   }
 }
 
+onMounted(async () => {
+  // Styles.labelStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
-
-
-/////////////////////////////////////////
-// Metodo init Vfp
-// Aqui debemos de asignar todos los Valores inciales del componente
-// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
-// Se tiene que emitir para que cambie el Valor en el template
-/////////////////////////////////////////
-
-const init = async () => {
+  Styles.inputStyle.width = '100%' //  divStyle.width
 
   This.Recno = props.Registro
 
@@ -202,17 +163,18 @@ const init = async () => {
 
   };
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
-}
-
+})
+/*
 onMounted(() => {
   init() // Ejecuta el init
 });
-
+*/
 
 </script>
 
 <style scoped>
 .button {
-  background-color: bind("props.style.backgroundColor")
+  background-color: bind("props.style.backgroundColor");
+
 }
 </style>
