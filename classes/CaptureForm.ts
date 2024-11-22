@@ -56,15 +56,43 @@ export class captureForm extends FORM {
   }
 
   /// /////////////////////////////////////
-  // Metodos : graba y borra
+  // Metodos : afterSave y afterDelete 
   // Descripcion : funciones que se ejectutara despues de ejecutar
   // botton de graba y borra.
   // Obs: estos metodos se heredan y se mofican desde el ThisForm
   ////////////////////////////////////////
 
-  public async graba() { }
+  /**
+   * AfterSave Method
+   * Description: function that is executed after the save button is executed.
+   * Obs: this method is inherited and can be modified from the ThisForm.
+   */
+  public async afterSave() { }
 
-  public async borra() { }
+  /**
+   * AfterDelete Method
+   * Description: function that is executed after the delete button is executed.
+   * Obs: this method is inherited and can be modified from the ThisForm.
+   */
+  public async afterDelete() { }
+
+
+  /**
+   * inDelete Method
+   * Description: function that is executed when you enter the delete method.
+   *              It will continue with the deletion if it returns true.
+   * Obs: this method is inherited and can be modified from the ThisForm.
+   */
+  public async inDelete() { return true }
+
+  /**
+   * inSave Method
+   * Description: function that is executed when you enter the save method.
+   *              It will continue with the save if it returns true.
+   * Obs: this method is inherited and can be modified from the ThisForm.
+   */
+  public async inSave() { return true }
+
 
 
   /// /////////////////////////////////////
@@ -297,15 +325,18 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     async click() {
+      if (!await this.Parent.inSave())
+        return
 
-      console.log(
-        "CaptureForm bt_graba click() Disabled=", this.prop.Disabled, ' ====> alaSql=',
-        await this.Form.db.localAlaSql(
-          "select * from " + this.Parent.prop.RecordSource,
-          this.prop.Disabled
-        )
-      );
-
+      /*
+            console.log(
+              "CaptureForm bt_graba click() Disabled=", this.prop.Disabled, ' ====> alaSql=',
+              await this.Form.db.localAlaSql(
+                "select * from " + this.Parent.prop.RecordSource,
+                this.prop.Disabled
+              )
+            );
+      */
       if (this.prop.Disabled)
         return;
 
@@ -351,7 +382,7 @@ export class captureForm extends FORM {
         this.Parent.bt_borra.prop.Visible = true;
       this.prop.Visible = true;
 
-      await this.Parent.graba();
+      await this.Parent.afterSave();
 
       return;
     }
@@ -369,7 +400,7 @@ export class captureForm extends FORM {
     constructor() {
       super();
       this.prop.Name = "bt_borra";
-      this.prop.Value = "Borra registro";
+      this.prop.Value = "Borra datos";
       this.prop.Capture = false;
       // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";
@@ -384,10 +415,14 @@ export class captureForm extends FORM {
     async click() {
       if (this.prop.Disabled)
         return;
+
+      if (!await this.Parent.inDelete())
+        return
+
       this.prop.Visible = false;
       this.Parent.bt_graba.prop.Visible = false;
 
-      if ((await MessageBox("Quieres borrar el registro", 4, "")) === 6) {
+      if ((await MessageBox("Borramos los datos", 4, "")) === 6) {
         if (this.Recno > 0) {
           console.log(
             "borra registro",
@@ -421,7 +456,7 @@ export class captureForm extends FORM {
         return;
 
       }
-      await this.Parent.borra();
+      await this.Parent.afterDelete();
     }
   })();
 

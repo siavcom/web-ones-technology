@@ -734,17 +734,19 @@ export class VFPDB {
       */
       // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
 
-      console.log('Db tableUpdate View tab_man=', this.View[alias])
+      //  console.log('Db tableUpdate View tab_man=', this.View[alias])
+
 
       for (const campo in this.View[tab_man].val_def) {
         // for (const campo in dat_act[row]) {
-        console.log('Db tableUpdate campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
+        if (campo.trim() == 'json_tap')
+          console.log('1) Db tableUpdate', typeof dat_act[row][campo], 'campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
         if (dat_act[row][campo] == null)
           dat_act[row][campo] = "";
 
         if (typeof dat_act[row][campo] == "string") {
           dat_act[row][campo] = dat_act[row][campo].trim();
-          if (old_dat[campo] == null)
+          if (old_dat[campo] == null || old_dat[campo] === '')
             old_dat[campo] = "";
           else
             old_dat[campo] = old_dat[campo].trim();
@@ -753,7 +755,7 @@ export class VFPDB {
         //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
         // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
-        console.log('tab_man', tab_man, 'Campo=', campo, this.View[tab_man].est_tabla[campo])
+        //    console.log('tab_man', tab_man, 'Campo=', campo, this.View[tab_man].est_tabla[campo])
 
         const nom_campo = campo.toLowerCase();
         if (
@@ -766,20 +768,11 @@ export class VFPDB {
           //          nom_campo != "key_pri" &&
           nom_campo != "timestamp" &&
           (dat_vis.tip_llamada == "INSERT" || old_dat[campo] == null ||
-            old_dat[campo] != dat_act[row][campo])
+            old_dat[campo] !== dat_act[row][campo] || (
+              typeof dat_act[row][campo] == "string" &&
+              dat_act[row][campo].trim().length != old_dat[campo].trim().length
+            ))
         ) {
-          //cambiar segun tipo de campo en View
-          /*
-          if (this.View[tab_man].est_tabla[campo]) {
-            MessageBox(
-              "Field " + campo + " inexistent in table" + tab_man,
-              16,
-              "SQL Error"
-            );
-            return false;
-          }
-          */
-
 
           const tipo =
             this.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
@@ -822,7 +815,7 @@ export class VFPDB {
             default:
               //            m[campo] = "'" + dat_act[row][campo] + "'"
 
-              // se tiene que validar como string y nll ya que asi viene desde alaSQL
+              // se tiene que validar como string y null ya que asi viene desde alaSQL
               try {
                 if (dat_act[row][campo] != null) {
                   m[campo] =
@@ -840,7 +833,7 @@ export class VFPDB {
                 );
                 return;
               }
-            //console.log('Db tableUpdate campo=', campo,'m=',m[campo],'dat_act',dat_act[row][campo] )
+              console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo])
           }
           //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
 
@@ -917,16 +910,6 @@ export class VFPDB {
             response.timestamp,
             response.key_pri,
           ]);
-          //          console.log('2 Db tableUpdate ala Ok INSERT UPDATE =>',await this.localAlaSql(`select timestamp from ${alias} where recno=${dat_act[0].recno} ` ))
-
-          console.log(
-            "Db TableUpdate response.timestamp",
-            response.timestamp,
-            " alasql.timestamp.",
-            await this.localAlaSql(
-              `select timestamp from Now.${alias} where recno=${recno}`
-            )
-          );
 
           if (dat_vis.tip_llamada == "INSERT") {
             sw_insert = true;

@@ -201,7 +201,7 @@ const asignaResultado = async (valor?: string) => {
   let found = false
 
   for (let i = 0; i < columnas.length && !found; i++) {
-    console.log('1) Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
+    //console.log('1) Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
 
     //    if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
     //        Value.value == columnas[i].value) {
@@ -216,7 +216,7 @@ const asignaResultado = async (valor?: string) => {
 
       Text.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
       found = true
-      console.log('2] Buscando Valor Encontro Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
+      // console.log('2] Buscando Valor Encontro Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
 
     }
   }
@@ -244,7 +244,7 @@ const renderComboBox = async () => {
   }
 
   //console.log('textLabel render comboBox ', props.prop.Map, ' RowSource=', props.prop.RowSource)
-  console.log('1) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', Text.value, 'ControlSource=', props.prop.ControlSource)
+  //console.log('1) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', Text.value, 'ControlSource=', props.prop.ControlSource)
   //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
   const RowSource: string = props.prop.RowSource
 
@@ -399,7 +399,7 @@ const renderComboBox = async () => {
   //console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
 
   //asignaResultado(valor)
-  console.log('2) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', valor, 'ControlSource=', props.prop.ControlSource)
+  //console.log('2) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', valor, 'ControlSource=', props.prop.ControlSource)
   asignaResultado(valor)
 
   //  ** ojo falta el multi select

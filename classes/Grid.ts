@@ -222,8 +222,6 @@ export class GRID extends COMPONENT {
       await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`)
     );
 
-
-
   }
 
   //////////////////////////
