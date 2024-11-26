@@ -22,13 +22,15 @@ export class sis_sis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_prg.sis_sis'
         this.prop.ToolTipText = 'Nemonico a utilizar en el submenú'
         this.style.width = '128px'
+
     }
-    public async when() {
+    public override async when() {
         if (this.Form.tpr_prg.prop.Value == 'S') { // Si es menu principal del sistema
             return true
         }
+        this.prop.Valid = true
         return false
-
     }
+
 
 }

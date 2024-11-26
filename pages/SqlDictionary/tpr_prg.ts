@@ -25,9 +25,13 @@ export class tpr_prg extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "150px,10px";
-    this.style.width = "650px";
-    this.inputStyle.width = "200px";
-    //this.style.zIndex=2
+
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "300px";
+    this.style.width = "500px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
     this.prop.Visible = false;
   }
 

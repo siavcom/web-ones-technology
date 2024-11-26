@@ -21,7 +21,13 @@ export class path_prg extends COLUMN {
         this.prop.ControlSource = 'vi_cap_prg.path_prg'
         this.prop.Placeholder = "Path page"
 
-        this.style.width='180px'
+        this.style.width = '180px'
+    }
+    override async valid() {
+        if (this.prop.Value.trim() == '') {
+            return false
+        }
+        return true
     }
 
 }

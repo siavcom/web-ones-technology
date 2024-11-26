@@ -52,8 +52,12 @@ and methods
 - valid
 - setFocus
 - interactiveChange
+
 - init
 - keyPress
+    Handles key press events for the input.
+    The pressed key value is stored in this.prop.Key.
+   
 
 - onChangeValue 
     When the value of this component changes, this method is called.
@@ -62,7 +66,6 @@ and methods
     sample :The method changes the color of the input depending on the value selected.
     A = green, B = red, X = blue.
     @param {any} styles - The style of the component.
-
 
 
 

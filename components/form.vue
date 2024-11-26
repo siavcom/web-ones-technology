@@ -473,10 +473,7 @@ const nextFocus = async ($event) => {
 
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
-const init = async () => {
-  // await ThisForm.init()
-  // try {
-
+onMounted(async () => {
 
   await Init.Init()
     .then(() => {
@@ -522,7 +519,7 @@ const init = async () => {
   loading.value = false
   await ThisForm.afterMounted()
 
-}
+})
 
 
 onUnmounted(() => {
@@ -530,9 +527,6 @@ onUnmounted(() => {
 })
 
 
-
-
-await init()
 
 
 //var result = x === true ? "passed" : "failed";
@@ -656,7 +650,7 @@ const impComp = ((name: string, pos?: string) => {
 */
 
 
-//init();
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

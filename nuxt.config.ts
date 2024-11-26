@@ -46,55 +46,38 @@ export default defineNuxtConfig({
 
   // css: ['~/assets/css/styles.css', 'vue-final-modal/style.css'],
 
-/*
   // Para poder hacer los enlaces simbolicos, se aumenta los directorios
   // para que vite los acepte
- 
   vite: {
     resolve: {
       preserveSymlinks: true,
 
     },
     server: {
-      fs: {
+      fs: { // Pewrmite el acceso a los archivos del servidor
         allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
       },
     },
   },
-*/
-  modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
 
-  pinia: {/* Se quito autoImports:
+  // 26/Nov/2024
+  //modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
 
-  //By default @pinia/nuxt exposes a few auto imports:
+  modules: ['@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    "@nuxt/image"],
 
-  //  usePinia(), which is similar to getActivePinia() but works better with Nuxt. You can add auto imports to make your life easier:
-  //  defineStore() to define stores
-  //  storeToRefs() when you need to extract individual refs from a store
-  //  acceptHMRUpdate() for hot module replacement
-
-
-    autoImports: [
-      // automatically imports `defineStore`
-      'defineStore', // import { defineStore } from 'pinia'
-      'acceptHMRUpdate',
-      // ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
-    ], */
-  },
+  // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
+  //build: {
+  //  transpile: ['pinia-plugin-persistedstate'],
+  // },
 
   /*
     router: {
       middleware: ['checkSession']
     }
   */
-  /*
-  piniaPersistedstate: {
-    cookieOptions: {
-      sameSite: 'strict',
-    },
-    storage: 'localStorage'  //storage: sets the storage used to persist by default ('localStorage', 'sessionStorage' or 'cookies').
-  }
-*/
+
 
   app: {
     head: {

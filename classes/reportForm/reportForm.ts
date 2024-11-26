@@ -135,10 +135,10 @@ export class reportForm extends FORM {
 
   }
 
-  public async init() {
+  public override async init() {
 
-    this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
-    this.var_ord.prop.RowSourceType = 3;
+    // this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
+    // this.var_ord.prop.RowSourceType = 3;
 
     this.queryPri.prop.Disabled = true;
     this.queryUsu.prop.Disabled = true;
@@ -160,10 +160,6 @@ export class reportForm extends FORM {
       "camposView",
       "NULL"
     );
-
-
-
-
 
 
     if (!db.View.camposView || db.View.camposView.recCount == 0) {
@@ -209,8 +205,10 @@ export class reportForm extends FORM {
       this.reportFields.prop.Visible = true;
 
     }
+    console.log("0) report init form sw_init= ", this.sw_init, this.prop.Name)
     await this.open()
-
+    console.log("0.1) report init form sw_init= ", this.sw_init, this.prop.Name)
+    return
 
   }
 
@@ -471,7 +469,6 @@ export class reportForm extends FORM {
     //    this.des_dat.prop.Value = ''
     //    this.has_dat.prop.Value = ''
 
-
     let fields = ''
     let or = ''
     for (let i = 0; i < this.fields.length; i++) {
@@ -482,7 +479,6 @@ export class reportForm extends FORM {
     if (!this.Sql.View[this.prop.RecordSource]) {
 
       fields = ` ( ${fields} )`
-      // console.log("open fields=", fields)
       /*      await this.Sql.execute(
               `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
               from vi_schema_views where nom_tab='${this.prop.RecordSource}' and ${fields} order by con_dat`,
@@ -490,24 +486,27 @@ export class reportForm extends FORM {
             );
       */
 
-      await this.Sql.execute(
+      if (!await this.Sql.execute(
         `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
         from vi_schema_views where nom_tab='${this.tab_ord}' and ${fields} order by con_dat`,
         'diccionario'
-      );
+      ))
+        return
 
 
       for (let i = 0; i < this.fields.length; i++)
-        await this.Sql.localAlaSql(`update diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
+        await this.Sql.localAlaSql(`update Now.diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
 
     }
 
+    console.log("1) open fields=", fields, "tab_ord=", this.tab_ord, await this.Sql.localAlaSql("select * from diccionario"))
+
+    this.var_ord.prop.Value = this.prop.cam_pri // asignamos campo principal
     this.var_ord.prop.RowSource = `diccionario.ref_dat,cam_dat`;
     this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
-    this.var_ord.prop.Value = this.prop.cam_pri // asignamos campo principal
+    console.log("2) open var_ord=", this.var_ord.prop.Value, this.prop.cam_pri)
 
-    await this.var_ord.interactiveChange()
-
+    // await this.var_ord.interactiveChange()
 
   }
 

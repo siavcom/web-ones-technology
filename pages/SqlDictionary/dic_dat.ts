@@ -43,10 +43,15 @@ export class dic_dat extends COMPONENT {
     //this.style.zIndex=3
   }
   async interactiveChange() {
+    this.Form.nom_tab.prop.Visible = false
+    this.Form.bt_gen_all_models.prop.Visible = false
     if (this.prop.Value == "M") {
       this.Form.sis_sis.prop.Visible = false;
+      this.Form.bt_aceptar.prop.Visible = true;
     } else {
+
       this.Form.sis_sis.prop.Visible = true;
+      this.Form.bt_aceptar.prop.Visible = false;
 
     }
   }
@@ -56,7 +61,7 @@ export class dic_dat extends COMPONENT {
   public init = async (form: any) => {
     // await super.Init(form)
     this.prop.Value = "T";
-    this.Form.nom_tab.Visible = true;
+    //this.Form.nom_tab.Visible = true;
   };
 
   public async when(sis_sis?: boolean) {

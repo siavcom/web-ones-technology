@@ -47,26 +47,5 @@ export class grid_vistas extends GRID {
     this.prop.autoLoad = false;
     this.prop.ColumnCount = 8;
   }
-  /*
-///////////////////////////////////////////////////
-  // Incerta renglon
-  // m : valiables de memoria
-  ///////////////////////////////////////////////////
-  public async appendRow(m?:{}) { 
-   // Obtiene el consecutivo con_vis del cursor local
-  
-   const data=await this.Form.db.VfpCursor("select max(num_vis) as num_vis from vi_cap_comevis\
-   where  (trim(cam_vis) <> 'USU_CRE' and \
-   trim(cam_vis) <> 'USU_USU' and \
-   trim(cam_vis) <> 'TIE_UAC' and \
-   trim(cam_vis) <> 'TIE_CRE' and \
-   trim(cam_vis) <> 'TIMESTAMP' and \
-   trim(cam_vis) <> 'KEY_PRI') ")
 
-   //console.log('appendRow',data[0])    
-   const con_vis=data[0].con_vis+.1      
-   const m = {}
-   super.appendRow(m)   // llama a la clase base        
-  }
-*/
 }

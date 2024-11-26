@@ -500,13 +500,12 @@ const ejeEvento = (newEvento: string) => {
 
 const init = async () => {
 
-
   if (This.propDisabled == false) {
     detail.setAttribute("close", "");
     const detail = document.getElementById(Id + "_details")
   }
   for (const componente in This) {
-    console.log('Details.vue Init This==>', componente, This[componente])
+    //console.log('Details.vue Init This==>', componente, This[componente])
     if (This[componente] != null || This[componente] !== undefined) {
       if (
         This[componente].prop &&       // Si tiene propiedades
@@ -517,81 +516,11 @@ const init = async () => {
       }
     }
   }
-  console.log('Fin Details.vue Init This==>', This)
+  //console.log('Fin Details.vue Init This==>', This.prop.Name)
 
 }
 
 init() // Ejecuta el init
-
-//////////////////////////////////////
-//  Importa componentes dinamicos
-////////////////////////////////////// 
-const impComp = ((name: string, pos?: string) => {
-
-  //return eval(name)
-
-  switch (name.toLowerCase().trim()) {
-    case 'edittext': {
-      //console.log('Details Importo edittext')
-      return editText
-      break;
-    }
-    case 'combobox': {
-      return comboBox
-      break;
-    }
-    case 'grid': {
-      return grid
-      break;
-    }
-
-    case 'imgbutton': {
-      return imgButton
-      break;
-    }
-
-    case 'browse': {
-      console.log('Importo Browse')
-      return browseLite
-      break;
-    }
-
-    case 'browselite': {
-
-      console.log('Importo BrowseLite')
-      return browseLite
-      break;
-    }
-
-    case 'textlabel': {
-      return textLabel
-      break
-    }
-    /*
-    case 'details': {
-      return details
-      break
-    }
-   */
-
-    case 'embedpdf': {
-
-      return embedPdf
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-    default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-
-
 
 
 

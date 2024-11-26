@@ -159,7 +159,6 @@ export class VFPDB {
 
       // Inicializamos el alias
       this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-
       this.View[alias].data = {}; // asignamos el valor del ultimo registro
       this.View[alias].recCount = 0; // Total de registros de la vista
       this.View[alias].recno = 0; // Registro en cero
@@ -346,7 +345,6 @@ export class VFPDB {
 
       // Inicializamos el alias
       this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-
       this.View[alias].data = {}; // asignamos el valor del ultimo registro
       this.View[alias].recCount = 0; // Total de registros de la vista
       this.View[alias].recno = 0; // Registro en cero
@@ -1384,6 +1382,15 @@ export class VFPDB {
       }
     }
 
+    if (this.View[alias]) {
+      this.View[alias] = {}; // Generamos el nuevo alias
+      this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+      this.View[alias].data = {}; // asignamos el valor del ultimo registro
+      this.View[alias].recCount = 0; // Total de registros de la vista
+      this.View[alias].eof = false; // Fin de archivo
+      this.View[alias].bof = false; // Principio de archivo
+      this.View[alias].row = -1; // Renglon posicionado el registro
+    }
     const dat_vis = {
       id_con: "",
       tip_llamada: "SQLEXEC",

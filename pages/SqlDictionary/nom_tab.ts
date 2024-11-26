@@ -28,9 +28,13 @@ export class nom_tab extends COMPONENT {
     this.prop.MultiSelect = false;
     this.prop.List = [];
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
-    this.style.width = "650px";
-    this.inputStyle.width = "300px";
-    //this.style.zIndex=2
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "500px";
+
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
   }
 
   ////////////////////////////////

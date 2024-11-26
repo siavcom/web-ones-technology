@@ -1,6 +1,6 @@
 <template>
   <div :id="Id + '_main_divi_grid'" class="divi"
-    v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Db.View[prop.RecordSource]" :style="style"
+    v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Sql.View[prop.RecordSource]" :style="style"
     ref="Ref">
     <label :id="Id + '_lable'" class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
@@ -219,11 +219,11 @@ var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 
-//const Db = props.db.value // Vista que utilizara el grid
-const Db = This.Form.db // Vista que utilizara el grid
+//const Sql = props.db.value // Vista que utilizara el grid
+const Sql = This.Form.db // Vista que utilizara el grid
 
-//console.log('grid  view.value Db ====>',Db)
-//const View=Db.View[props.prop.RecordSource] // Vista de captura de db
+//console.log('grid  view.value Sql ====>',Sql)
+//const View=Sql.View[props.prop.RecordSource] // Vista de captura de db
 //console.log('grid  View ====>',props.prop.RecordSource,View)
 
 // Valores propios
@@ -246,7 +246,7 @@ const trStyleInactive =
 
 const scroll = reactive({
   controls: false,
-  dataPage: [],  // Elementos que compone la pagina Db.View[props.prop.RecordSource].recnoVal[elementNo]
+  dataPage: [],  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
   top: true,     //Pprincipio de la pagina
   bottom: false,  // Final de pagina
   page: 0,        // Numero de pagina desplegada
@@ -280,26 +280,6 @@ const emitValue = async () => {
   return true;
 };
 
-
-/*
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-const focusOut = async () => {
-  const valor = Value.value;
-  if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
-    // actualiza valor en localDb
-    await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
-    //await LocalDb.update(valor).then(() => { 
-    // })
-  }
-  console.log('editBox focusout ', props.Name)
-  return await emitValue()
-}
-*/
-//console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
-//return true;
 
 
 /////////////////////////////////////////////////////////////////////
@@ -349,9 +329,9 @@ watch(
   async (RecordSource, old_val) => {
 
     if (props.prop.Visible && RecordSource.length > 1) {
-      console.log('grid watch RecordSource ', RecordSource, Db.View[RecordSource])
-      if (Db.View[RecordSource]) {
-        if (Db.View[RecordSource].recnoVal.length == 0)  // No hay renglones
+
+      if (Sql.View[RecordSource]) {
+        if (Sql.View[RecordSource].recnoVal.length == 0)  // No hay renglones
           await appendRow()
         else
           loadData()
@@ -368,15 +348,17 @@ watch(
   async (Visible, old_val) => {
 
     // Si no hay renglones , aumenta un renglon
-    if (Visible && props.prop.RecordSource.length > 1 && Db.View[props.prop.RecordSource]) {
+    if (Visible && props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource]) {
 
-      console.log('grid watch Visible ', props.prop.RecordSource, Db.View[props.prop.RecordSource])
+      console.log('grid watch Visible ', props.prop.RecordSource, Sql.View[props.prop.RecordSource])
 
       // si no hay datos, inserta renglon 
-      if (Db.View[props.prop.RecordSource].recnoVal.length == 0)
+      /* 26 Noviembre 2024 
+      if (Sql.View[props.prop.RecordSource].recnoVal.length == 0)
         await appendRow()
       else
-        loadData()
+      */
+      loadData()
 
     }
   },
@@ -481,9 +463,24 @@ watch(
   () => {
 
     //"item.recno > 0 || item.recno != null ? item.recno : 0"
+    if (This.Row == -1) {  // borramos renglon
+
+      restableceStatus()
+
+      load_data = true
+      return
+    }
 
     if (This.Row <= -10) { // hubo insercion de renglon
+      for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
+        if (This[This.main[i]].prop.Capture && !This[This.main[i]].prop.Disabled)  // Solo campos de captura
+          This[This.main[i]].prop.Valid = false
+      }
+
       last(true)
+
+
+
 
     } else {
       const alias = This.prop.RecordSource
@@ -547,7 +544,7 @@ const loadData = async () => {
   // Se inserto un renglon
   if (RowInsert) {
     console.log('loadData() RowInsert')
-    let page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
+    let page = Sql.View[props.prop.RecordSource].recnoVal.length / scroll.rows
     page = Math.trunc(page)
     if (scroll.page != page)
       scroll.page = page
@@ -559,8 +556,8 @@ const loadData = async () => {
 
   try {
 
-    if (!Db || props.prop.RecordSource.length < 2
-      || Db.View[props.prop.RecordSource].recnoVal.length == 0
+    if (!Sql || props.prop.RecordSource.length < 2
+      || Sql.View[props.prop.RecordSource].recnoVal.length == 0
     ) {
       scroll.controls = false
       scroll.page = 0
@@ -585,15 +582,15 @@ const loadData = async () => {
     let RowNumber = 0
     for (let i = 0; i < Rows; i++) {
       const elementNo = ((scroll.page) * Rows) + i
-      if (Db.View[props.prop.RecordSource].recnoVal[elementNo]) {
-        scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo]
+      if (Sql.View[props.prop.RecordSource].recnoVal[elementNo]) {
+        scroll.dataPage[i] = Sql.View[props.prop.RecordSource].recnoVal[elementNo]
         RowNumber = i
       }
 
       else {  // borra los elementos que ya no existen
         //    scroll.dataPage.slice(i, Rows - 1 - i)
         if (i == 0) { // No hay datos, le asigna el ultimo elemento
-          scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo - 1]
+          scroll.dataPage[i] = Sql.View[props.prop.RecordSource].recnoVal[elementNo - 1]
           scroll.dataPage.length = 1 // Solo dejamos  el ultimo elemento
 
         } else {
@@ -669,7 +666,7 @@ const last = async (insert?: boolean) => {
 
   scroll.controls = false
   // if (scroll.bottom && !RowInsert) return
-  scroll.page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
+  scroll.page = Sql.View[props.prop.RecordSource].recnoVal.length / scroll.rows
 
   scroll.page = Math.trunc(scroll.page)
   //if (scroll.page > 0) scroll.page--
@@ -703,9 +700,16 @@ const appendRow = async () => {
     }
   }
   await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
-  //  await last(true) 
+
+  return
 
 }
+
+
+
+//  await last(true) 
+
+
 
 
 const borraRenglon = async (recno?: number) => {
@@ -728,17 +732,21 @@ const borraRenglon = async (recno?: number) => {
     if (!recno) return
 
   }
-  //const { $MessageBox } = useNuxtApp()
+
+  eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
+
+  /*
   if (await MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
     This.prop.Status = 'A'
     await restableceStatus()
     eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
-
     This.Row = -1 // Quitamos la posicion del renglon
-    console.log('grid delete borramos load_data', load_data, This.prop.Status)
     load_data = true
 
   }
+*/
+
+
 }
 
 /*
@@ -791,7 +799,8 @@ const saveTable = async () => {
   scroll.controls = false
   //const { $MessageBox } = useNuxtApp()
   eventos.push(This.prop.Map + '.grabaTabla()')
-  load_data = true
+
+  //load_data = true
 }
 
 
@@ -855,7 +864,7 @@ const init = async () => {
   if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid
     await This.valid()
 
-  if (props.prop.RecordSource.length > 1 && Db.View[props.prop.RecordSource])
+  if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
     loadData()
 
 

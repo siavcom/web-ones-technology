@@ -32,6 +32,7 @@ export class GRID extends COMPONENT {
     this.prop.saveData = true;
     this.prop.updated = false;
     this.prop.messageUpdate = "Grabamos la tabla";
+    this.prop.messageDelete = "Borramos renglon";
     this.prop.headerHeight = "30px";
 
     this.style.width = '-moz-available' //"max-content"
@@ -215,6 +216,8 @@ export class GRID extends COMPONENT {
 
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     this.prop.Disabled = false;
+
+
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
 
     console.log(
@@ -224,21 +227,29 @@ export class GRID extends COMPONENT {
 
   }
 
+
+
+
+
   //////////////////////////
   // Borra renglon
   // row: renglon a borrar
   /////////////////////////
   async deleteRow(recno: number) {
 
-    await this.Form.db.delete(
-      recno,
-      this.prop.RecordSource,
-      this.prop.SqlUpdate
-    );
-    this.Row = -1;
-    //await this.asignaRenglon(recno)
-  }
+    if (await MessageBox(`${this.prop.messageDelete} ${recno}`, 4, '') == 6) {
+      this.prop.Status = 'A'
+      await this.Form.db.delete(
+        recno,
+        this.prop.RecordSource,
+        this.prop.SqlUpdate
+      );
+      // await restableceStatus()
+      this.Row = -1;
+      // load_data = true
 
+    }
+  }
   //////////////////////////////////
   // Graba Tabla
   // vis_cap: Vista de captura
@@ -265,6 +276,7 @@ export class GRID extends COMPONENT {
         "ERROR"
       );
     }
+    this.Row == -1
     return resultado;
   }
 

@@ -30,7 +30,11 @@ export class var_ord extends COMPONENT {
   async when() {
     await this.interactiveChange()
   }
-  async interactiveChange() {
+  override async interactiveChange() {
+
+    if (this.prop.RowSource == '') return
+    if (this.prop.RowSourceType == 0) return
+
 
     const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
 
@@ -43,8 +47,8 @@ export class var_ord extends COMPONENT {
       }
     }
 
-    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from Now.diccionario where cam_dat='${this.prop.Value}'`)
-    console.log('interactiveChange var_ord',data)
+    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from Now.diccionario where trim(cam_dat)='${this.prop.Value.trim()}'`)
+    console.log('interactiveChange var_ord', `select tip_dat,lon_dat,dec_dat from Now.diccionario where cam_dat='${this.prop.Value.trim()}'`, data)
     const tip_dat = data[0].tip_dat
     const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
 
@@ -84,10 +88,10 @@ export class var_ord extends COMPONENT {
     if (tip_dat == 'char' ||
       tip_dat == 'varchar' ||
       tip_dat == 'text' ||
-      tip_dat == 'string' 
+      tip_dat == 'string'
     ) {
       Type = 'text'
-      this.Form.des_dat.prop.Value =des_Value.length > lon_dat ? des_Value.slice(0, lon_dat) : des_Value
+      this.Form.des_dat.prop.Value = des_Value.length > lon_dat ? des_Value.slice(0, lon_dat) : des_Value
       this.Form.has_dat.prop.Value = has_Value.slice(0, lon_dat)
     }
 

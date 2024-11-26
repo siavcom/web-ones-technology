@@ -33,6 +33,7 @@ export class COMPONENT {
   status: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
   error = false
+  sw_init = false
 
 
   prop = {
@@ -236,6 +237,10 @@ export class COMPONENT {
    * @returns {Promise<number>} TabIndex final despues de inicializar todos los componentes
    */
   public async Init(Form?: any, TabIndex?: number) {
+    console.log('Init Component', this.Name)
+    if (this.sw_init) return
+    this.sw_init = true
+
     //Form est?: any
     if (this.prop.Name.length == 0) this.prop.Name = this.Name;
     let sw_component = true;
@@ -437,6 +442,7 @@ export class COMPONENT {
    
    */
   public async init() {
+
     return;
   }
 
@@ -483,6 +489,9 @@ export class COMPONENT {
    * Hace el click
    * @returns {Promise<void>}
    */
+
+
+
   public async click() {
     return;
   }
@@ -496,6 +505,7 @@ export class COMPONENT {
    */
   public async when() {
     this.old_value = this.prop.Value
+    console.log("When", this.Name, this.prop.Value, this.prop.ReadOnly)
     return !this.prop.ReadOnly;
   }
 
@@ -544,19 +554,19 @@ export class COMPONENT {
 
   //public keyPress = async ($event) => {
 
-  /**
+  /*
+   *
    * Cada tecla que se presiona en el input
-   * @returns El valor de la tecla presionada
+   * en this.prop.Key queda el valor presionado
    */
 
-  /**
-   * Cada tecla que se presiona en el input
-   * @returns {number} El valor de la tecla presionada
-   */
-  public keyPress() {
-    //   public keyPress($event) {  
-    return //this.prop.Key;
 
+  /**
+   * Handles key press events for the input.
+   * The pressed key value is stored in this.prop.Key.
+   */
+  public keyPress(): void {
+    // Implementation goes here
   }
 
   /////////////////////////////////////////////////////////////////////

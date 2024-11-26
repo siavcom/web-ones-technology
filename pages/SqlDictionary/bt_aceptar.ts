@@ -20,9 +20,10 @@ export class bt_aceptar extends COMPONENT {
 
     this.prop.Value = "Aceptar";
     this.prop.Capture = false;
-
+    this.prop.Visible = false;
     this.prop.Image = "/Iconos/svg/accept.svg";
     this.style.width = "64px";
+
   } // Fin constructor
 
   async click() {
@@ -56,10 +57,10 @@ export class bt_aceptar extends COMPONENT {
         this.Form.bt_gen_indices.prop.Visible = false;
         this.Form.bt_gen_vistas.prop.Visible = false;
 
-        if (dic_dat == "D") { // Definicion de Tabla
-          this.Form.nom_tab.prop.RowSourceType = 0;
+        if (dic_dat == "D" && this.Sql.View.vi_cap_cometab && this.Sql.View.vi_cap_cometab.recnoVal.length > 0) { // Definicion de Tabla
+          //this.Form.nom_tab.prop.RowSourceType = 0;
           this.Form.bt_gen_all_models.Visible = false;
-          this.Form.nom_tab.prop.RowSourceType = 3;
+          //this.Form.nom_tab.prop.RowSourceType = 4;
           this.Form.sis_sis.prop.Visible = true;
           this.Form.nom_tab.prop.Visible = true;
 
@@ -101,7 +102,7 @@ export class bt_aceptar extends COMPONENT {
           if (!(await this.grabaDatos("vi_cap_comeind"))) dataUpdate = false;
         } else dataUpdate = false;
 
-        // await this.Form.db.useNodata('vi_cap_comeind')
+
       }
 
       // Vistas
@@ -114,7 +115,6 @@ export class bt_aceptar extends COMPONENT {
         // data = true
         if (!(await this.grabaDatos("vi_cap_comevis"))) dataUpdate = false;
 
-        //  await this.Form.db.useNodata('vi_cap_comevis')
       }
 
       if (data) {
@@ -168,16 +168,19 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
-      // Si hay nombre de tabla
+      // Definicion de tablas 
 
       if (this.Form.nom_tab.prop.Visible) {
         // Campos de las Tablas del servidor SQL
         m.sis_sis = this.Form.sis_sis.prop.Value
         if (this.Form.dic_dat.prop.Value == "D") {
           this.Form.grid_datos.prop.Status = "A";
+          this.Form.grid_datos.RecordSource = '';
           await this.Form.db.use("vi_cap_comedat ", m, "vi_cap_comedat", [
             "con_dat",
           ]);
+          this.Form.grid_datos.RecordSource = 'vi_cap_comedat';
+
           if ((await this.Form.db.recCount("vi_cap_comedat")) == 0) {
             await this.Form.grid_datos.appendDatos();
           }
@@ -188,17 +191,27 @@ export class bt_aceptar extends COMPONENT {
           this.Form.bt_gen_model.prop.Visible = true;
 
           // Indices SQL
+          this.Form.grid_indices.RecordSource = ''
           await this.Form.db.use("vi_cap_comeind", m);
+          this.Form.grid_indices.RecordSource = 'vi_cap_comeind';
+          this.Form.grid_indices.prop.textLabel =
+            "Definicion de indices de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comeind")) == 0) {
             await this.Form.grid_indices.appendRow();
           }
+
           this.Form.grid_indices.prop.Visible = true;
           this.Form.bt_gen_indices.prop.Visible = true;
 
           // Vistas remota de captura SQL
-          console.log('bt_aceptar m=', m)
+
+          this.Form.grid_vistas.RecordSource = '';
           await this.Form.db.use("vi_cap_comevis", m);
+          this.Form.grid_vistas.RecordSource = 'vi_cap_comevis';
+          this.Form.grid_vistas.prop.textLabel =
+            "Definicion de vistas de la tabla " + this.Form.nom_tab.prop.Value;
+
           if ((await this.Form.db.recCount("vi_cap_comevis")) == 0) {
             const m = {
               nom_tab: this.Form.nom_tab.prop.Value,
@@ -235,12 +248,16 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
-      this.Form.bt_gen_all_models.prop.Visible = true;
       m.sis_sis = this.Form.sis_sis.prop.Value;
-      // this.Form.sis_sis.prop.Visible = false;
 
+      this.Form.grid_tablas.prop.RecordSource = '';
       await this.Form.db.use("vi_cap_cometab", m);
+      console.log('vi_cap_cometab=', await this.Sql.localAlaSql('select * from vi_cap_cometab'))
+
+      this.Form.grid_tablas.prop.RecordSource = 'vi_cap_cometab';
+
       this.Form.grid_tablas.prop.Visible = true;
+      this.Form.bt_gen_all_models.prop.Visible = true;
       //  this.Form.btGenTablas.prop.Visible = true
     }
 
@@ -301,11 +318,9 @@ export class bt_aceptar extends COMPONENT {
       // Leemos menu de programas
       console.log("grid_menu m=", m);
 
+      this.Form.grid_menu.RecordSource = ''
       await this.Form.db.use("vi_cap_prg", m);
-      console.log(
-        "grid_menu recno=",
-        await this.Form.db.recCount("vi_cap_prg")
-      );
+      this.Form.grid_menu.RecordSource = 'vi_cap_prg'
 
       if ((await this.Form.db.recCount("vi_cap_prg")) == 0) {
         await this.Form.grid_menu.appendRow(m);

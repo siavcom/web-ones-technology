@@ -1472,11 +1472,13 @@ watch(
 
 
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
-  console.log('onMaska=', {
-    masked: event.detail.masked,
-    unmasked: event.detail.unmasked,
-    completed: event.detail.completed
-  })
+  console.log('onMaska='//, 
+    /* {
+      masked: event.detail.masked,
+      unmasked: event.detail.unmasked,
+      completed: event.detail.completed
+    } */
+  )
 }
 
 const styleAssing = async () => {
@@ -1586,8 +1588,8 @@ onMounted(async () => {
 
 onBeforeMount(async () => {
   console.log('2) editText onBeforeMount Name=', This.prop.Name)
-  if (This.init)
-    await This.init()
+  // if (This.init)
+  //   await This.init()
 })
 
 /*

@@ -30,45 +30,74 @@ export class sis_sis extends COMPONENT {
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidth = "200px,50px";
+    this.prop.ColumnWidth = "300px,50px";
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
     this.prop.Visible = true;
 
-    this.style.width = "350px";
-    this.inputStyle.width = "200px";
-
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "350px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
     //this.style.zIndex=2
   }
 
   async when() {
+    this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql, 5-Array
+
     this.Form.grid_menu.prop.Visible = false;
     this.Form.grid_tablas.prop.Visible = false;
     this.Form.grid_vistas.prop.Visible = false;
     this.Form.grid_indices.prop.Visible = false;
     this.Form.grid_datos.prop.Visible = false;
     this.Form.bt_gen_model.prop.Visible = false;
+    this.Form.bt_gen_all_models.prop.Visible = false;
+
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
-    this.Form.nom_tab.prop.Visible = false;
+
     this.Form.bt_aceptar.prop.Visible = true;
+    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
+
+    this.Form.nom_tab.prop.RowSourceType = 0
+    this.Form.nom_tab.prop.RowSource = ''
+    this.Form.nom_tab.prop.Value = ''
+    this.Form.nom_tab.prop.Visible = false;
+
     //  this.Form.dic_dat.when(true)
     return true;
   }
 
 
-  async valid() {
-    if (this.Form.nom_tab.prop.Visible) {
+  override async valid() {
+    // if (this.Form.nom_tab.prop.Visible) {
+
+    // Tablas o diseño de Tablas
+
+    if (this.Form.dic_dat.prop.Value == 'D') {
       this.Form.nom_tab.prop.RowSourceType = 0
+      this.Form.nom_tab.prop.RowSource = ''
+      this.Form.nom_tab.prop.Value = ''
+      this.Form.nom_tab.prop.Visible = false
+      this.Form.bt_aceptar.prop.Visible = false;
+
 
       let where = ''
-
       if (this.prop.Value > '   ')
-        where = ` where sis_sis = '${this.prop.Value}'`
+        where = ` where sis_sis = '${this.prop.Value.trim()}'`
 
-      this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`
-      this.Form.nom_tab.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
+      await this.Sql.execute(`select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`, 'vi_cap_cometab')
 
+      if (this.Sql.View.vi_cap_cometab && this.Sql.View.vi_cap_cometab.recnoVal.length > 0) {
+        this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab `
+        this.Form.nom_tab.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 5-Array
+        this.Form.bt_aceptar.prop.Visible = true;
+        this.Form.nom_tab.prop.Visible = true;
+
+      }
+      return true
     }
+    this.Form.bt_aceptar.prop.Visible = true;
     return true
   }
 

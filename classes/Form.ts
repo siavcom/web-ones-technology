@@ -4,14 +4,7 @@
 // Creacion : Septiembre/2021
 // Ult.Mod  : 18/Noviembre/2022
 /////////////////////////////////////////////
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/*
-import {
-  inject,
-  //getCurrentInstance,
-  ref
-} from "vue";
-*/
+
 import { COMPONENT } from "@/classes/Component";
 import { VFPDB } from "@/classes/DataBase";
 import { storeToRefs } from "pinia";

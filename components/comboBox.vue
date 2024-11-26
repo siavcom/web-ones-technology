@@ -289,6 +289,7 @@ const comboStyle = reactive({
 })
 const toggleStyle = reactive({
   maxHeight: Styles.style.fontSize,
+  height: Styles.style.fontSize,
   marginTop: 'auto'
 })
 
@@ -389,6 +390,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         //   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
       }
+      sw_focus.value = false
+
     }
 
   }
@@ -1412,6 +1415,7 @@ function myClick(e) {
   // console.log(This.prop.Name, '1) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
 
   const clickedEl = e.target;
+
   if (This.prop.Disabled || !This.prop.Visible) {
     if (RefCombo && RefCombo.value != null && !RefCombo.value.contains(clickedEl))
       sw_focus.value = false

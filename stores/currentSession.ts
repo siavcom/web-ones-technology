@@ -567,8 +567,8 @@ export const Session = defineStore(
     };
   },
   {
-    //    persist: { storage: persistedState.localStorage, },
-    persist: { storage: persistedState.sessionStorage },
+    //    persist: { storage: persistedState.sessionStorage },
+    persist: { storage: piniaPluginPersistedstate.sessionStorage(), },
   }
 );
 
