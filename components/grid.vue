@@ -11,7 +11,7 @@
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
       <div :id="Id + '_div_grid_tabla'" class="tabla"
-        :style="{ minHeight: '150px', height: 'fit-content', width: 'inherit' }">
+        :style="{ minHeight: '250px', height: 'fit-content', width: 'inherit' }">
         <table :id="Id + '_grid_tabla'" class="gridTable" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
           <thead>
             <tr style="font-size: 13px">
@@ -350,7 +350,7 @@ watch(
     // Si no hay renglones , aumenta un renglon
     if (Visible && props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource]) {
 
-      console.log('grid watch Visible ', props.prop.RecordSource, Sql.View[props.prop.RecordSource])
+      // console.log('grid watch Visible ', props.prop.RecordSource, Sql.View[props.prop.RecordSource])
 
       // si no hay datos, inserta renglon 
       /* 26 Noviembre 2024 
@@ -781,11 +781,11 @@ const saveRow = async (recno?: number) => {
 const saveTable = async () => {
 
   if (This.Row >= 0) {
-
+    // Checa si estan validadas todas las columnas
     for (let i = 0; i < This.main.length; i++) {
 
       // Si es campo de captura
-      if (This[This.main[i]].prop.Capture == true && !This[This.main[i]].prop.Valid) { // Si no validado
+      if (This[This.main[i]].prop.Capture == true && !This[This.main[i]].prop.Valid) {
 
         console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
         This[This.main[i]].prop.Focus = true

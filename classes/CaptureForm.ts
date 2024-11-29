@@ -155,7 +155,7 @@ export class captureForm extends FORM {
 
         } else {
           // asignamos variables de memoria que se utilizaran en el use
-          if (this[comp].prop.Type == "numeric")
+          if (this[comp].prop.Type == "number")
             m[comp] = +this[comp].prop.Value;
           else m[comp] = this[comp].prop.Value;
 

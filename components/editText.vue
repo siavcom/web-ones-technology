@@ -1324,7 +1324,7 @@ watch(
   () => Valor, //props.prop.Focus,
   (new_val: any, old_val: any) => {
 
-    if (propType.slice(0, 4) == 'date')
+    if (propType.value.slice(0, 4) == 'date')
       console.log('>>>  RefValue EditText Watch Name=', This.prop.Name, 'Value=', This.prop.Value, 'Value.value=', Value.value)
 
     Value.value = This.prop.RefValue.value
@@ -1541,8 +1541,11 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('1) editText onMounted Name=', This.prop.Name)
+  console.log('1) editText onMounted Name=', This.prop.Name, 'propType=', propType)
   styleAssing()
+
+  if (propType.value == 'textarea')
+    Styles.labelStyle.alignContent = 'flex-start'
 
   if (!This.prop.Visible)
     Styles.style.height = '0%'

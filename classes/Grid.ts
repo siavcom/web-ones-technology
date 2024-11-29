@@ -71,7 +71,7 @@ export class GRID extends COMPONENT {
         } // Si es un dato no esta  validado
 
         // asignamos variables de memoria
-        if (this.Form[comp].prop.Type == "numeric")
+        if (this.Form[comp].prop.Type == "number")
           m[comp] = +this.Form[comp].prop.Value;
         else m[comp] = this.Form[comp].prop.Value;
       }
@@ -141,7 +141,7 @@ export class GRID extends COMPONENT {
       if (this[column].prop.updateKey) {
         if (name != column && !this[column].Valid) return true;
 
-        const comillas = this[column].prop.Type == "numeric" ? "" : "'";
+        const comillas = this[column].prop.Type == "number" ? "" : "'";
         where =
           where +
           "trim(" +

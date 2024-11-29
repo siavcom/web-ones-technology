@@ -63,7 +63,7 @@ export class <<cam_dat>> extends COLUMN {
         // this.prop.ErrorMessage=""
         // this.prop.TabIndex=0
         // this.prop.BaseClass= "editText" //"comboBox","checkBox","label"
-        // this.prop.Type: "text"  // "numeric","date","boolean"
+        // this.prop.Type: "text"  // "number","date","boolean"
         // this.prop.Visible=true
         // this.prop.Row=0
         // this.prop.Map=""

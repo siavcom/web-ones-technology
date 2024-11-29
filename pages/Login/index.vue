@@ -1,7 +1,7 @@
 <template>
   <div class="LoginForm">
     <div class="imagen">
-      <div v-if="ThisForm.prop.Status != 'A'">
+      <div v-if="!mounted">
         <div class="splash-screen">
           <div class="spinner-wrapper">
             <div class="spinner">
@@ -30,39 +30,13 @@
 
 <script lang="ts" setup>
 
-/*
-      :component="ref(ThisForm.log_usu)"
-      :component="ref(ThisForm.pas_usu)"  
-      v-model:Status="ThisForm.log_usu.prop.Status"
-      v-model:Status="ThisForm.pas_usu.prop.Status"
-*/
-
-
-
-/*
-import {
-  ref,
-  reactive,
-  watch,
-  } from "vue";
-*/
-
 import { storeToRefs } from 'pinia'
-// ///////////////////////////////////////////////
-// Componentes
-// ///////////////////////////////////////////////
-//import imgButton from '@/components/imgButton.vue'
-//import comboBox from '@/components/comboBox.vue'
-//import editText from '@/components/editText.vue'
-// import textLabel from '@/components/textLabel.vue'
-
 
 // ////////////////////////////////////////////
 // Clases Externas typescript
 // ////////////////////////////////////////////
 
-
-import { INIT } from '@/classes/Init'
+//import { INIT } from '@/classes/Init'
 import { form } from './login'
 
 // ////////////////////////////////////////////////
@@ -96,6 +70,7 @@ const bt_aceptar = () => {
 }
 
 // ////////////   Clase Base de datos ///////////////////////////////
+/*
 const Init = new INIT() // solo se puso para evitar de errores que tenia
 
 const init = async () => {
@@ -110,44 +85,21 @@ const init = async () => {
       console.log('Fin Login Form exitoso', ThisForm)
     })
 }
-
 init()
+*/
 
-/// ///////////////////////////////////
-//  Importa componentes dinamicos
-/// ///////////////////////////////////
-const impComp = (name: string) => {
-  switch (name) {
-    /*
-        case 'editText': {
-          //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-          return editText
-          break
-        }
-
-    case 'comboBox': {
-      return comboBox
-      // return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break
-    }
+/////////////////////////////////////////
+// Metodo init 
+/////////////////////////////////////////
+const mounted = ref(false)
+//const init = async () => {
+onBeforeMount(async () => {
+  await ThisForm.Init()
+  console.log('======Fin Login Form exitoso====', ThisForm)
+  mounted.value = true
+})
 
 
-    case 'imgButton': {
-      return imgButton
-      // return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-      break
-    }
-     */
-    default: {
-      return defineAsyncComponent(() => import(`@/components/${name}.vue`)) //import(`@/components/editText.vue`))
-      //return editText
-      // return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break
-    }
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-}
 
 </script>
 

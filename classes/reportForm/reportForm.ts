@@ -359,7 +359,7 @@ export class reportForm extends FORM {
           has_dat = this.has_dat.prop.Value;
           break;
       }
-
+      console.log('gen_query des_dat=', des_dat, 'has_dat=', has_dat)
 
       where = ` ${this.var_ord.prop.Value} >= ${des_dat} and \
     ${this.var_ord.prop.Value} <= ${has_dat}`

@@ -9,7 +9,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -20,14 +20,17 @@
           <!--Imprime Columnas -->
 
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
-            v-for="(text, col) in option.text" :key="col"
-            :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
+            v-for="(text, col) in option.text" :key="col" :style="{
+              'background': option.check ? 'bisque' : 'white',
+              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
+            }">
             <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
               :style:="columnLabelStyle" />
           </div>
 
-          <nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
-            width="15px" />
+          <!--nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
+            width="15px" /-->
+
           <!--div v-show='option.check'>+</div-->
           <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
 
@@ -220,6 +223,10 @@ const Styles =
   style: divStyle
 }
 
+const styleOption = reactive({
+  backgroundColor: "white"
+  //background-color: aquamarine;
+})
 
 const Value = ref(props.prop.Value)
 const Recno = ref(0)
@@ -315,7 +322,7 @@ const List = ref(This.prop.ListCount)
 const columnContainer = reactive({
   width: 'auto',
   height: 'auto', //height: min-content
-  maxHeight: '250px', //
+  maxHeight: '200px', //
   //zIndex: comboStyle.zIndex + 1
 })
 
@@ -329,6 +336,7 @@ columnContainer.borderRadius = '4px';
 columnContainer.boxSizing = 'border-box';
 columnContainer.maxHeight = Styles.style.maxHeight
 columnContainer.overflowY = 'scroll';
+columnContainer.overflowX = 'scroll';
 columnContainer.borderStyle = 'solid';
 columnContainer.borderColor = 'black';
 columnContainer.borderWidth = '1px'
@@ -358,7 +366,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    //console.log('2) =======>>>>> comboBox emitValue writeCampo Name=', props.prop.Name, 'isValid=', isValid, 'Value=', Value.value)
+    // console.log('2) =======>>>>> comboBox emitValue writeCampo Name=', props.prop.Name, 'isValid=', isValid, 'Value=', Value.value)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -615,8 +623,7 @@ const validClick = async (num_ren: number) => {
   comboStyle.zIndex = zIndex.value
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  //console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
-
+  console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
   //  await This.interactiveChange()
   emitValue()
   return
@@ -626,6 +633,13 @@ const validClick = async (num_ren: number) => {
 const validCheck = async (num_ren: number) => {
 
   columnas[num_ren].check = !columnas[num_ren].check
+
+  if (columnas[num_ren].check)
+    styleOption.backgroundColor = 'aquamarine'
+
+  else
+    styleOption.backgroundColor = 'white' //'#e3e6e4'
+
   // Si es un Multiselect clcula el valor resultante
   //console.log('comboBox validCheck ', 'columnas=', columnas)
   const resultado = []
@@ -1321,6 +1335,9 @@ onMounted(async () => {
 
   if (This.prop.Init) {
 
+    if (props.prop.MultiSelect)
+      Styles.labelStyle.alignContent = 'flex-start';
+
     let textWidth = 0
 
     if (Styles.style.zIndex)
@@ -1361,8 +1378,9 @@ onMounted(async () => {
 
 
     if (toggleStyle.maxHeight.search("px") > 0) {
-      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 1
+      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 3
       toggleStyle.maxHeight = textWidth.toString() + 'px'
+      toggleStyle.height = toggleStyle.maxHeight
     }
     console.log('comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
@@ -1370,9 +1388,11 @@ onMounted(async () => {
   }
 
   onBeforeMount(async () => {
-    if (This.init)
-      await This.init()
+    console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+    //    if (This.init)
+    //      await This.init()
   })
+
 
 
   const result = await renderComboBox()
@@ -1490,8 +1510,10 @@ const handler = (event) => {
 .multiSelect {
 
   /* z-index: 2;*/
+  max-height: inherit;
   border-radius: 5px;
   border: 1px;
+  overflow-x: auto;
 
 }
 
@@ -1571,7 +1593,8 @@ div.option {
   padding: 5px 10px;
   /* espacio top left right booton ,vertical horizontal */
 
-  background: #e3e6e4;
+  background: white;
+  /* #e3e6e4;*/
   color: #292b2a;
   /* #0b0c0c negro;   #7a18e9; morado*/
   /*este es el color que toman los elementos desplegados**/
@@ -1614,7 +1637,8 @@ div.multi {
   padding: 5px 10px;
   /* espacio top left right booton ,vertical horizontal */
 
-  background: #e3e6e4;
+  background: white;
+  /* #e3e6e4;*/
   color: #292b2a;
   /* #0b0c0c negro;   #7a18e9; morado*/
   /*este es el color que toman los elementos desplegados**/

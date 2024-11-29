@@ -1,6 +1,6 @@
-# Framework in Vue 3 with Nuxt for SQL databases (MSSQL and POSTGRES). Using typescript programming with out web programming.
+# This Framework is to make a simple SQL web capture data program in typescript (class based), but with out knowledge of web programming (HTML, CSS, VUE). 
 
-# I'm a old FOX programer with a lot experience in desing and programing in Visual Fox Pro (VFP),MSSQL and Postgres databases.
+# This Framework use Vue 3 with Nuxt and SQL databases (MSSQL and POSTGRES).
 
 # This Framework is based in VFP functions and instruccions .
 
@@ -367,19 +367,22 @@ Value= 'FIELDS',). Return a object with specific field values).
 - Ansi 99 SQL instructions.
 
 ## Notes:
-
+- This framework is based in a SQL database.
+- It's not complete yet. If you require install and use , let me know by mail or skype siavcom@hotmail.com. 
+- If you want a new feature, let me know by mail or skype siavcom@hotmail.com
 - To use this Framework, you have to restore a initial SQL backup .
 - If you are a VFP programer, clipper, dbase III or IV, this is the right option for programing in the web.
 - If you have a question, let me now by mail or skype siavcom@hotmail.com
 - I can help you if you want to use this framwork.
-- I use linux (ubuntu 21.04) to make this project.
+- I use linux (ubuntu 22.04, ubuntu 24.04) and Windows 10 to make this project.
 
 # About
+- I'm a old FOX programer with a lot experience in desing and programing in Visual Fox Pro (VFP),MSSQL and Postgres databases.
 
 - Author :
 
   - Fer Blocks (Principal desing,programinig and project director) .
-    Linkedin https://www.linkedin.com/in/fernando-cuadras-846a20102/ .
+    Linkedin https://www.linkedin.com/in/fernando-cuadras-846a20102/ . 
 
   - Lupita Sotelo (Reports and SQL desing) .
   - Raul Castro (html and css desing) .

@@ -27,10 +27,13 @@ export class var_ord extends COMPONENT {
 
 
   }
-  async when() {
+  /*
+  override async when() {
     await this.interactiveChange()
   }
   override async interactiveChange() {
+*/
+  async onChangeValue(styles?: any) {
 
     if (this.prop.RowSource == '') return
     if (this.prop.RowSourceType == 0) return
@@ -55,6 +58,7 @@ export class var_ord extends COMPONENT {
     let Type = 'text'
     let des_Value = this.Form.fields[num_dat][2] ? eval(this.Form.fields[num_dat][2]) : ''
     let has_Value = this.Form.fields[num_dat][3] ? eval(this.Form.fields[num_dat][3]) : ''
+
 
     if (tip_dat == 'smallint' ||
       tip_dat.slice(0, 3) == 'int' ||
@@ -109,7 +113,7 @@ export class var_ord extends COMPONENT {
 
     this.Form.tip_con.when()
 
-    console.log("fin) interactiveChange var_ord type=", this.Type, "des_dat", this.Form.des_dat.prop.Value, this.Form.has_dat.prop.Value)
 
   }
+
 }

@@ -1382,15 +1382,15 @@ export class VFPDB {
       }
     }
 
-    if (this.View[alias]) {
-      this.View[alias] = {}; // Generamos el nuevo alias
-      this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-      this.View[alias].data = {}; // asignamos el valor del ultimo registro
-      this.View[alias].recCount = 0; // Total de registros de la vista
-      this.View[alias].eof = false; // Fin de archivo
-      this.View[alias].bof = false; // Principio de archivo
-      this.View[alias].row = -1; // Renglon posicionado el registro
-    }
+
+    this.View[alias] = {}; // Generamos el nuevo alias
+    this.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+    this.View[alias].data = {}; // asignamos el valor del ultimo registro
+    this.View[alias].recCount = 0; // Total de registros de la vista
+    this.View[alias].eof = false; // Fin de archivo
+    this.View[alias].bof = false; // Principio de archivo
+    this.View[alias].row = -1; // Renglon posicionado el registro
+
     const dat_vis = {
       id_con: "",
       tip_llamada: "SQLEXEC",
@@ -1427,6 +1427,7 @@ export class VFPDB {
       this.View[alias].eof = false; // Fin de archivo
       this.View[alias].bof = false; // Principio de archivo
       this.View[alias].row = -1; // Renglon posicionado el registro
+
       await this.select(alias);
 
       // console.log('Db SQLExec =====>',respuesta)
@@ -2523,7 +2524,7 @@ return false;
 
       return await alasql(ins_sql, datos);
     } catch (error) {
-      console.error("localAlaSql error==>", error, ins_sql);
+      console.error("localAlaSql error==>", error, ins_sql, datos);
       // this.errorAlert("local SQL error :" + ins_sql);
 
       return false;
@@ -2640,7 +2641,7 @@ return false;
     recno: number,
     DataBase: string
   ) => {
-    //console.log('Db readValue Select=====>', tabla, campos, recno)
+
 
     const data = await this.localAlaSql(
       "USE " +
@@ -2661,8 +2662,10 @@ return false;
       }
       this.View[tabla].Recno = recno // actualizamos el recno de la vista
       return data[1]; // todos los campos
-    }
-    return null;
+    } else
+      console.warn('Sql.readValue no data =====>', tabla, campos, recno, data)
+
+    return [];
   };
 
   /// /////////////////////////////////////////////////
@@ -3071,16 +3074,6 @@ return false;
 
     // borramos los datos
     await this.useNodata(alias);
-    /*
-        this.View[alias].recnoVal = [] // Generamos el arreglo de recnoVal
-        this.View[alias].data = {} // asignamos el valor del ultimo registro
-        this.View[alias].recCount = 0 // Total de registros de la vista
-        this.View[alias].recno = 0 // Registro en cero
-        this.View[alias].eof = false // Fin de archivo
-        this.View[alias].bof = false // Principio de archivo
-        this.View[alias].row = -1 // Renglon posicionado el registro
-    */
-    /////////////////
 
     //console.log('Db Clone Datos  ',baseAlias,alias,await this.localSql(`select * from Now.${baseAlias}  ${where}`))
 

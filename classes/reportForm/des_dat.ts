@@ -42,12 +42,6 @@ export class des_dat extends COMPONENT {
 
 
 
-
-
-
-      //      if (this.prop.MaxLength - (this.prop.Value.length) > 0) {
-      //       const ztas = 'z'.repeat(this.prop.MaxLength - (this.prop.Value.length))
-      //      }
     }
     return true
   }

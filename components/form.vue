@@ -12,7 +12,7 @@
 -->
 <template>
   <!--header :style="{ 'display': 'inlineBlock' }"-->
-  <div id='LoadingData' v-if="ThisForm.prop.Status != 'A'">
+  <div id='LoadingData' v-if="!mounted">
 
     <div class="splash-screen">
       <div class="spinner-wrapper">
@@ -23,145 +23,133 @@
     </div>
 
   </div>
+  <div v-else>
+    <transition name='Mainform'>
 
-  <transition name='Mainform'>
+      <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
+        :style="{ 'width': '-moz-available' }">
+        <section class="pagina" :style="ThisForm.style">
+          <div id='backGround' class='backGround'>
+            <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
+            <section class="formheader">
+              <slot name="header">
 
-    <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'" v-if="ThisForm.prop.Status != 'I'"
-      :style="{ 'width': '-moz-available' }">
-      <section class="pagina" :style="ThisForm.style">
-        <div id='backGround' class='backGround'>
-          <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
-          <section class="formheader">
-            <slot name="header">
+                <!--template v-slot:header-->
+                <h2 class="header2" float="left">
 
-              <!--template v-slot:header-->
-              <h2 class="header2" float="left">
+                  <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
+                    <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
+                    <!--label text-align="right">{{ ThisForm.prop.Name }}</label-->
 
-                <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
-                  <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
-                  <!--label text-align="right">{{ ThisForm.prop.Name }}</label-->
-
-                </div>
-              </h2>
-              <!--transition-group> -->
-              <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
+                  </div>
+                </h2>
+                <!--transition-group> -->
+                <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
               -->
 
-              <div :id="'div_' + compHeader" v-for="( compHeader ) in ThisForm.header " :key="compHeader"
-                :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
-                <component :id="'component_' + compHeader"
-                  :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
-                  :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
-                  :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                  :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
-                <!--:inputStyle="ThisForm[compHeader].inputStyle"
+                <div :id="'div_' + compHeader" v-for="( compHeader ) in ThisForm.header " :key="compHeader"
+                  :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
+                  <component :id="'component_' + compHeader"
+                    :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
+                    :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
+                    :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
+                    :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
+                  <!--:inputStyle="ThisForm[compHeader].inputStyle"
                   @click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" -->
 
-              </div>
+                </div>
 
-            </slot>
-          </section>
-          <!--/template-->
-          <!--template v-slot:main-->
-          <!-- Despliega todo los componentes de la forma  
+              </slot>
+            </section>
+            <!--/template-->
+            <!--template v-slot:main-->
+            <!-- Despliega todo los componentes de la forma  
       && comp!='grid_datos'
       -->
-          <section class="formmain">
-            <slot name="main">
-              <!--  v-bind:Component="ref(ThisForm[compMain])" 
+            <section class="formmain">
+              <slot name="main">
+                <!--  v-bind:Component="ref(ThisForm[compMain])" 
                     @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
   
               -->
-              <TransitionGroup name='detailForm'>
-                <div :id="'div_' + compMain" v-for="( compMain ) in ThisForm.main " :key="compMain" :class="compMain"
-                  v-show='ThisForm[compMain].prop.Visible'>
-                  <component :id="'component_' + compMain" :is="impComponent(ThisForm[compMain].prop.BaseClass)"
-                    v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                    :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
-                    :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                    :position="ThisForm[compMain].position" />
-                  <!--:inputStyle="ThisForm[compMain].inputStyle" 
+                <TransitionGroup name='detailForm'>
+                  <div :id="'div_' + compMain" v-for="( compMain ) in ThisForm.main " :key="compMain" :class="compMain"
+                    v-show='ThisForm[compMain].prop.Visible'>
+                    <component :id="'component_' + compMain" :is="impComponent(ThisForm[compMain].prop.BaseClass)"
+                      v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
+                      :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
+                      :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
+                      :position="ThisForm[compMain].position" />
+                    <!--:inputStyle="ThisForm[compMain].inputStyle" 
                      @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
-                </div>
-              </TransitionGroup>
-            </slot>
-          </section>
+                  </div>
+                </TransitionGroup>
+              </slot>
+            </section>
 
-          <!--/template-->
-          <!--template v-slot:footer
+            <!--/template-->
+            <!--template v-slot:footer
                src="/Iconos/BotonRojo.png"
     ThisForm.prop.Status == 'A'
     -->
-          <section class="formfooter">
-            <!--Transition tag='div' -->
-            <nuxt-img class='circle'
-              :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
-              style="float:left" />
-            <!--/Transition-->
-            <slot name="footer">
-              <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
+            <section class="formfooter">
+              <!--Transition tag='div' -->
+              <nuxt-img class='circle'
+                :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
+                style="float:left" />
+              <!--/Transition-->
+              <slot name="footer">
+                <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
               v-bind:db="ref(ThisForm.db)"
               
               -->
 
-              <div :id="'div_' + compFooter" v-for="( compFooter ) in ThisForm.footer " :class="compFooter"
-                v-show='ThisForm[compFooter].prop.Visible'>
-                <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
+                <div :id="'div_' + compFooter" v-for="( compFooter ) in ThisForm.footer " :class="compFooter"
+                  v-show='ThisForm[compFooter].prop.Visible'>
+                  <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
                       @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
                 -->
-                <component :id="'component_' + compFooter"
-                  :is="impComponent(ThisForm[compFooter].prop.BaseClass, 'footer')"
-                  v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                  :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-                  :Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-                  :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
-                <!--:inputStyle="ThisForm[compFooter].inputStyle"
+                  <component :id="'component_' + compFooter"
+                    :is="impComponent(ThisForm[compFooter].prop.BaseClass, 'footer')"
+                    v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
+                    :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
+                    :Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
+                    :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
+                  <!--:inputStyle="ThisForm[compFooter].inputStyle"
                   @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
+                </div>
+              </slot>
+
+              <div id="salir" class="salir" @click='clickSalir()'>
+
+                <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg" style="float:right"
+                  :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
+
               </div>
-            </slot>
 
-            <div id="salir" class="salir" @click='clickSalir()'>
+              <div class='login' v-if="user != '' && id_con == '' && nom_emp != ''">
+                <!--teleport to="#modal"-->User:{{ user }} Password:
+                <input type="password" v-model.trim="password" @focusout="pass = password">
+                <!--/teleport-->
+              </div>
 
-              <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg" style="float:right"
-                :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
+            </section>
 
-            </div>
-
-            <div class='login' v-if="user != '' && id_con == '' && nom_emp != ''">
-              <!--teleport to="#modal"-->User:{{ user }} Password:
-              <input type="password" v-model.trim="password" @focusout="pass = password">
-              <!--/teleport-->
-            </div>
-
-          </section>
-
-          <!--/template-->
-          <!--/VueForm-->
-        </div>
-      </section>
-    </div>
+            <!--/template-->
+            <!--/VueForm-->
+          </div>
+        </section>
+      </div>
 
 
 
-  </transition>
+    </transition>
+  </div>
   <!--/header-->
 </template>
 
 <script lang="ts" setup>
-
-/*
-definePageMeta({
-  //layout: 'default',
- 
-  keepalive: true,
-
-  //keepalive: {
-  //  exclude: ['modal']
-  //},
-
-})
-*/
 
 /*
 import {
@@ -188,25 +176,13 @@ import {
 
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
-/*
-// Muestra el progreso de carga de la forma
-const {
-  progress,
-  isLoading,
-} = useLoadingIndicator();
-
-console.log(`Loaded ${progress.value}%`); // 34%
-*/
-
 
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
 
-//const This: any = getCurrentInstance();
-//const ThisCtx = This.ctx;
-//const showModal=ref(false)
 /////////////////////////////////////////////////
 // Componentes
+// Nota : Se paso toda la carga de componentes a /conposables
 /////////////////////////////////////////////////
 
 //const MyButton = resolveComponent('MyButton')
@@ -337,7 +313,6 @@ const loading = ref(true)
 ////////////////////////////////////////////
 
 
-
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {
     // Se tiene que pasar por referencia donde esta el ThisForm 
@@ -453,7 +428,6 @@ const clickSalir = async () => {
   }
 }
 
-
 const nextFocus = async ($event) => {
   let nextElement = $event.explicitOriginalTarget.nextSibling
   console.log('Edit nextElement ', nextElement)
@@ -473,7 +447,11 @@ const nextFocus = async ($event) => {
 
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
-onMounted(async () => {
+
+const mounted = ref(false)
+onBeforeMount(async () => {
+
+  //onMounted(async () => {
 
   await Init.Init()
     .then(() => {
@@ -508,6 +486,9 @@ onMounted(async () => {
     
           }
           */
+
+      mounted.value = true // Se incializo todo el arbol de componentes 
+
     });
   emit('updateIsOpen', true)
   /* }
@@ -521,133 +502,9 @@ onMounted(async () => {
 
 })
 
-
 onUnmounted(() => {
   ThisForm.unload(); // <div>
 })
-
-
-
-
-//var result = x === true ? "passed" : "failed";
-
-
-//const vi_cap_comedat = computed(() => Views.value.vi_cap_comedat ? Views.value.vi_cap_comedat.recnoVal : [])
-/*
-const sub_total = computed(() => items.reduce((acc, item) => acc += item.qty * item.price, 0))
-
-const total = computed(() => sub_total.value * (1 + tax_percent / 100) + shipping)
-
-const valor_computed = computed((ref_com,recno) => ThisForm.db.readAla(ref_com.value.ControlSource,recno) )
-
-const computed_key= (recno) => {
-  console.log('Computed key',recno)
-if (recno>0 ) return recno
-else return 0}
-*/
-
-////////////////////////////////////
-
-//const editText =computed(()  => defineAsyncComponent(() => import('@/components/editText.vue')))
-
-//const view = computed(() => defineAsyncComponent(() => import(`/src/components/${state.view}.vue`)))
-//const view = computed(() => defineAsyncComponent(() => import(`/src/components/${state.view}.vue`)))
-//const editText=defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-//const editText=() => import('@/components/editText.vue')  //import('@/components/${name}.vue'))
-
-
-//////////////////////////////////////
-//  Importa componentes dinamicos
-////////////////////////////////////// 
-// '@/components/' + name + '.vue')
-
-
-/*
-
-
-const impComp = ((name: string, pos?: string) => {
-
-  switch (name.toLowerCase().trim()) {
-    case 'edittext': {
-      // console.log('Importo edittext')
-      return editText
-      break;
-    }
-    case 'combobox': {
-      return comboBox
-      break;
-    }
-    case 'grid': {
-      return grid
-      break;
-    }
-
-    case 'imgbutton': {
-      return imgButton
-      break;
-    }
-
-    case 'browse': {
-      //console.log('Importo Browse')
-      return browseLite
-      break;
-    }
-
-    case 'browselite': {
-
-      // console.log('Importo BrowseLite')
-      return browseLite
-      break;
-    }
-
-    case 'textlabel': {
-      return textLabel
-      break
-    }
-    case 'details': {
-      return details
-      break
-    }
-
-    case 'container': {
-      return container
-      break
-    }
-
-    case 'modalcontainer': {
-      return modalContainer
-      break
-    }
-
-
-
-    case 'embedpdf': {
-
-      return embedPdf
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-
-
-    case 'base64': {
-
-      return base64
-      //return defineAsyncComponent(() => import('@/components/comboBox.vue'))  //import('@/components/${name}.vue'))
-
-      break
-    }
-
-    default: {
-      return editText
-      //return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-  }
-
-  //    return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
-})
-*/
 
 
 
