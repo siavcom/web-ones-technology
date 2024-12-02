@@ -86,10 +86,10 @@ export class sis_sis extends COMPONENT {
       if (this.prop.Value > '   ')
         where = ` where sis_sis = '${this.prop.Value.trim()}'`
 
-      await this.Sql.execute(`select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`, 'vi_cap_cometab')
+      await this.Sql.execute(`select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`, 'cap_cometab')
 
-      if (this.Sql.View.vi_cap_cometab && this.Sql.View.vi_cap_cometab.recnoVal.length > 0) {
-        this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab `
+      if (this.Sql.View.cap_cometab && this.Sql.View.cap_cometab.recnoVal.length > 0) {
+        this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from cap_cometab `
         this.Form.nom_tab.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 5-Array
         this.Form.bt_aceptar.prop.Visible = true;
         this.Form.nom_tab.prop.Visible = true;

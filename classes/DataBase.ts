@@ -149,6 +149,11 @@ export class VFPDB {
 
     alias = alias.trim();
     console.log("Db useNodata alias", alias);
+
+
+    if (alias == 'vi_cap_cometab')
+      console.log('vi_cap_cometab', this.View[alias])
+
     if (this.View[alias]) {
       // si exite ya la vista, solo borra los datos locales
       // console.log('Db useNodata View ',alias,this.View)
@@ -305,7 +310,7 @@ export class VFPDB {
     } catch (error) {
       console.error(error);
 
-      return null;
+      return false;
       //  this.errorSql(error)
     }
   };
@@ -335,7 +340,8 @@ export class VFPDB {
       alias = nom_vis; // asignamos el nombre de la vista
     }
     alias = alias.trim();
-    console.log("1 Db USE ", alias);
+    if (alias == 'vi_cap_cometab')
+      console.log("1 Db USE ", alias);
 
     if (this.View[alias]) {
       // si exite ya la vista, Borra los datos locales
@@ -351,11 +357,13 @@ export class VFPDB {
       this.View[alias].eof = false; // Fin de archivo
       this.View[alias].bof = false; // Principio de archivo
       this.View[alias].row = -1; // Renglon posicionado el registro
-      this.View[alias].m = {}; // Variables m para hacer requery
     }
 
-    if ((await this.select(alias)) == 0) {
+    if (!this.View[alias] || (await this.select(alias)) == 0) {
       // si el alias no existe
+      if (alias == 'vi_cap_cometab')
+        console.log("1 Db USE ", alias);
+
       console.log("Db Use UseNodata", nom_vis, alias);
       await this.useNodata(nom_vis, alias);
     }
@@ -373,6 +381,15 @@ export class VFPDB {
 
     let exp_ind = "";
     let exp_whe = "";
+
+    if (!this.View[alias].tip_obj) {
+      console.error("DataBase class .-No existe el tip_obj para el alias " + alias, this.View[alias]);
+
+      await MessageBox('DataBase class .-No existe el tip_obj para el alias ' + alias, 16, 'Front End Error')
+      return false
+
+    }
+
     if (this.View[alias].tip_obj.trim() == "VIEW") {
       // si es una VIEW
       // console.log('Db USE this.View VIEW', this.View[alias], dat_vis)

@@ -156,7 +156,7 @@
             <img src="/Iconos/delete-row.svg" width="45">
           </span>
 
-          <span v-show="prop.saveData" @click.capture.stop="saveTable()">
+          <span v-show="prop.saveButton" @click.capture.stop="saveTable()">
             <img src="/Iconos/save-color1.svg" width="45">
           </span>
 

@@ -29,7 +29,7 @@ export class GRID extends COMPONENT {
 
     this.prop.addButton = true; // Estos componentes estan en grid.vue
     this.prop.deleteButton = true;
-    this.prop.saveData = true;
+    this.prop.saveButton = true;
     this.prop.updated = false;
     this.prop.messageUpdate = "Grabamos la tabla";
     this.prop.messageDelete = "Borramos renglon";
@@ -183,8 +183,13 @@ export class GRID extends COMPONENT {
 
     this.Row = row;
     nextTick(() => {
-      // console.log("asignaRenglon row ", row, " Columna=", colName);
-      this[colName].prop.First = true;
+      console.log("asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
+
+      if (this[colName].prop.BaseClass == 'imgButton')
+        this[colName].click()
+      else
+        this[colName].prop.First = true;
+
     });
   }
 

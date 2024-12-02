@@ -67,8 +67,10 @@
           </label>
         </summary>
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
-          :readonly="comp.readOnly ? true : false" :style="comp.style ? comp.style : { width: 'auto', height: '13px' }"
-          @focusout="lostFocus" @contextmenu="handler($event)">
+          :readonly="comp.readOnly || prop.ReadOnly || prop.Disabled ? true : false"
+          :disabled="comp.disabled || prop.Disabled ? true : false"
+          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus"
+          @contextmenu="handler($event)">
 
       </details>
       <!--/TransitionGroup-->

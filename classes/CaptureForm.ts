@@ -93,8 +93,6 @@ export class captureForm extends FORM {
    */
   public async inSave() { return true }
 
-
-
   /// /////////////////////////////////////
   // Metodo : valid
   // Descripcion : Valida los componentes de la forma. Si es un dato nuevo
@@ -135,7 +133,6 @@ export class captureForm extends FORM {
     }
 
     thisComp.prop.Valid = true;
-
 
     const { ...m } = this.publicVar; // Tomamos las variables publicas de la forma
     // Generamos variables de memoria de componentes locales y solo updateKey
@@ -197,6 +194,9 @@ export class captureForm extends FORM {
 
       key_pri = 0;
       this.bt_borra.prop.Visible = false;
+      //  console.log('valid Component m=', m, 'result=', result, 'Recno=', this.Recno, 'key_pri=', key_pri)
+
+
     } else {
       // 29 Ags 2024
       // Recno = data[0].recno;
@@ -206,7 +206,6 @@ export class captureForm extends FORM {
       if (!this.bt_borra.prop.Disabled)
         this.bt_borra.prop.Visible = true;
     }
-
     await this.refreshComponent(this.Recno, key_pri);
     if (!this.bt_graba.prop.Disabled)
       this.bt_graba.prop.Visible = true;

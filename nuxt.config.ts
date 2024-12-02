@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   devServer: {
-    host: '176.16.200.0',
+    host: 'localhost',
     port: 3000
   },
 
@@ -44,8 +44,6 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/styles.css'],
 
-  // css: ['~/assets/css/styles.css', 'vue-final-modal/style.css'],
-
   // Para poder hacer los enlaces simbolicos, se aumenta los directorios
   // para que vite los acepte
   vite: {
@@ -60,24 +58,12 @@ export default defineNuxtConfig({
     },
   },
 
-  // 26/Nov/2024
-  //modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
-
+  
   modules: ['@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     "@nuxt/image"],
 
-  // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
-  //build: {
-  //  transpile: ['pinia-plugin-persistedstate'],
-  // },
-
-  /*
-    router: {
-      middleware: ['checkSession']
-    }
-  */
-
+ 
 
   app: {
     head: {
@@ -92,7 +78,7 @@ export default defineNuxtConfig({
     basculaServer: 'my-secret-key',
     // Keys within public are also exposed client-side
     public: {
-      bascula: ['19toto.freeddns.org:3010']
+      bascula: ['sample.freddns.org:3010'] //scale IP 
     },
   },
 

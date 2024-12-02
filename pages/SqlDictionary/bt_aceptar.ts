@@ -252,7 +252,7 @@ export class bt_aceptar extends COMPONENT {
 
       this.Form.grid_tablas.prop.RecordSource = '';
       await this.Form.db.use("vi_cap_cometab", m);
-      console.log('vi_cap_cometab=', await this.Sql.localAlaSql('select * from vi_cap_cometab'))
+      // console.log('vi_cap_cometab=', await this.Sql.localAlaSql('select * from vi_cap_cometab'))
 
       this.Form.grid_tablas.prop.RecordSource = 'vi_cap_cometab';
 

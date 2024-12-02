@@ -16,12 +16,15 @@
       <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
         <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
-          :disabled="prop.ReadOnly">
+          :disabled="prop.ReadOnly" :style="{
+            'background': option.check ? 'rgb(163, 193, 168)' : 'white',
+            'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
+          }">
           <!--Imprime Columnas -->
 
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col" :style="{
-              'background': option.check ? 'bisque' : 'white',
+              'background': option.check ? 'rgb(163, 193, 168)' : 'white',
               'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
             }">
             <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"

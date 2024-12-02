@@ -228,8 +228,6 @@ Calling a method :
 
 ### Others
     - Style = 2; //0=DropDown Combo 2=DropDown List
-    - Tag: ""
-
 
 
 ### Style propierties (style) .
@@ -338,33 +336,87 @@ Value= 'FIELDS',). Return a object with specific field values).
 
 [fieldArray] type: array. Array with specific field to obtain values.
 
+## How to use this framework
+
+- Install Node.js  18.x or newer (recommended active LTS release) https://nodejs.org/en/download/  or use nvm https://github.com/nvm-sh/nvm
+
+
 ## Recommended IDE Setup
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar).
+- [VSCode](https://code.visualstudio.com/) 
+
+- useful extensions for vscode  .- Eslint
+- useful extensions for vscode  .- Prettier Eslint
+- useful extensions for vscode  .- Vue Official
+
+- Download back-end framework from https://github.com/siavcom/VFP-NODE and extrac it in a folder.
+- make a company folder in back-end forlder/app/emresas/<your company name>
+- copy a sample faolder company in the company folder
+- rename sample folder to your company name
+- change the db.config.js file and use your SQL Server connection parameters
+- open a terminal in the back-end folder and run node server_socket.js
+
+
+- Download this framework from https://github.com/siavcom/web-ones-technology and extrac it in a folder.
+
+- open a terminal in the framework folder 
+  run npm install
+  
+  you have to make a company folder in yout computer in /sistemas/name>
+  run npx nuxi dev
+   
+## Design SQL Table
+- Create a new SQL table.
+ Go to SQL data diccionary in a menu .
+ - Chose SQL Server table
+ - Chose system menu
+ - Add a new table
+ - fill al data table caracteristics
+ - save table
+
+- Create a new definition SQL table
+Go to SQL data diccionary in a menu .
+  - Chose table definition
+  - Chose system menu
+  - Chose table
+  - Add a new definition
+  - click accept
+  - insert fields
+  - fill up all caracteristics
+  - click accept
+  notes :
+    when a field is a primary key, the default value has to be m.<namefield>
+
+- Create a new SQL view.
+- Create a new SQL index.   
 
 ## this project use
 
 - Vue 3 SFC
 - Nuxt 3
- @nuxtjs/axios
- @pinia/nuxt
- @zip.js/zip.js
- alasql
- buffer
- file-saver
- socket.io-client
- vue-sweetalert2
- xlsx
-
+- @nuxtjs/axios
+- @pinia/nuxt
+- pinia-plugin-persistedstate
+- @zip.js/zip.js
+- alasql
+- buffer
+- file-saver
+- socket.io-client
+- vue-sweetalert2
+- xlsx
+- @nuxt/image
+- maska
+ 
 - Back End https://github.com/siavcom/VFP-NODE
-- SQL Server ( Postgres or MSSQL soon )
+- SQL Server (  MSSQL, Postgres soon )
 
 ## Knowledge Necesary :
 
 - Object class programing.
 - TypeScript.
-- Some basic css styles and propierties.
-- Ansi 99 SQL instructions.
+- Some basic html css styles propierties.
+- Ansi 99 standard SQL instructions.
+- SQL Server skills (  MSSQL or/and Postgres  )
 
 ## Notes:
 - This framework is based in a SQL database.

@@ -8,6 +8,13 @@
       <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
         v-show="prop.Visible">{{ prop.Value }}</label>
     </button>
+
+    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+      :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
+      :style="This[compMain].style" :position="This[compMain].position">
+    </component>
+
   </span>
 </template>
 

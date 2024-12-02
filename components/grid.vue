@@ -81,7 +81,7 @@
       <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
 
         <!-- click.capture.stop -->
-        <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.saveData" @click="saveTable()"
+        <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.saveButton" @click="saveTable()"
           :style="{ 'padding': '5px' }">
           <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="40" />
         </span>
@@ -330,11 +330,12 @@ watch(
 
     if (props.prop.Visible && RecordSource.length > 1) {
 
-      if (Sql.View[RecordSource]) {
+      if (Sql.View[RecordSource] && This.prop.saveButton) {
         if (Sql.View[RecordSource].recnoVal.length == 0)  // No hay renglones
           await appendRow()
-        else
-          loadData()
+        else {
+          first() //loadData()
+        }
       }
     }
   }
