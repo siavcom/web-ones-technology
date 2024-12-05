@@ -141,6 +141,9 @@
 
 
 <script setup lang="ts">
+/*   Cambios en el componente
+   4/Dic/2024   .- Se quito el loadData
+*/
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key"]);
 
@@ -307,7 +310,7 @@ watch(
       // if (old_val == 'I') {
       emitValue()
       // }
-      console.log('Grid.vue watch Status=', new_val, ' load_data=', load_data)
+      // console.log('Grid.vue watch Status=', new_val, ' load_data=', load_data)
       // si hay carga de datos
       if (load_data) {
         loadData()
@@ -329,13 +332,17 @@ watch(
   async (RecordSource, old_val) => {
 
     if (props.prop.Visible && RecordSource.length > 1) {
+      // inicializamos scroll
+      scroll.page = 0
+      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
+      scroll.top = true     //Pprincipio de la pagina
+      scroll.bottom = false // Final de pagina
 
-      if (Sql.View[RecordSource] && This.prop.saveButton) {
-        if (Sql.View[RecordSource].recnoVal.length == 0)  // No hay renglones
+      await loadData()
+      if (Sql.View[RecordSource]) {
+        if (Sql.View[RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
           await appendRow()
-        else {
-          first() //loadData()
-        }
+
       }
     }
   }
@@ -416,7 +423,8 @@ watch(
       if (This.Form.prop.Status != 'A')
         return
       console.log('=====watch thisform.eventos loadData()=======')
-      loadData()
+      //  4/Dic/2024   .- Se quito el loadData
+      // loadData()
 
     }
   },
@@ -532,7 +540,7 @@ const ejeEvento = (newEvento: string) => {
 
 
 const loadData = async () => {
-
+  console.log('1) loadData()')
   if (This.prop.RecordSource.length < 2) return
 
   //This.Row = -1
@@ -554,12 +562,14 @@ const loadData = async () => {
   This.Form.prop.Status = 'P'
   while (scroll.dataPage.length > 0)
     scroll.dataPage.pop() // borramos arreglon
-
+  console.log('2) loadData()')
   try {
 
     if (!Sql || props.prop.RecordSource.length < 2
       || Sql.View[props.prop.RecordSource].recnoVal.length == 0
     ) {
+      console.log('3) loadData()')
+
       scroll.controls = false
       scroll.page = 0
       scroll.top = false
@@ -616,10 +626,11 @@ const loadData = async () => {
         This[comp].prop.Valid = false // Ponemos no validado todos los componentes
       }
       nextTick(() => {
-        console.log("asignaRenglon row ", This.Row, " Columna=", First);
+        console.log("RowInsert asignaRenglon row ", This.Row, " Columna=", First, scroll);
+
         This[First].prop.Focus = true;
       });
-      //  return
+
     }
 
   } catch (err) {

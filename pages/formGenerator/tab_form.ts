@@ -25,15 +25,14 @@ export class tab_form extends COMPONENT {
     this.prop.ErrorMessage = "";
     this.prop.Value = "";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource =
-      "select des_tab,nom_tab from vi_cap_cometab order by nom_tab";
+    this.prop.RowSource = '' //      "select des_tab,nom_tab from vi_cap_cometab order by nom_tab";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.prop.ColumnWidths = "350px,125px";
     this.inputStyle.width = "250px";
-    this.style.width = "400px";
-    this.prop.Visible = true;
+    this.style.width = "450px";
+    this.prop.Visible = false;
     // this.style.zIndex = 4
   }
 
@@ -42,7 +41,6 @@ export class tab_form extends COMPONENT {
     this.Form.bt_gen_forma.prop.Visible = false;
     this.Form.grid_form.prop.Visible = false;
     this.Form.grid_columns.prop.Visible = false;
-    this.Form.bt_aceptar.prop.Visible = true;
     return true;
   }
 

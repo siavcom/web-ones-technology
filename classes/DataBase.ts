@@ -2840,7 +2840,7 @@ return false;
       this.View[alias].data = data[0]
       this.bof(alias)
       this.eof(alias)
-      console.log("2) goto View=", this.View[alias]);
+
       return this.View[alias].data;
     }
 

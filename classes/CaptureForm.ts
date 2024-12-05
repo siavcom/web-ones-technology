@@ -355,7 +355,7 @@ export class captureForm extends FORM {
             if (!this.prop.Disabled)
               this.prop.Visible = true;
 
-            this.Parent[comp].getFocus()
+            this.Parent[comp].setFocus()
 
             return;
 

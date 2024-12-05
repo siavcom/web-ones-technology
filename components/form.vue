@@ -55,9 +55,6 @@
                     :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                     :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
                     :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
-                  <!--:inputStyle="ThisForm[compHeader].inputStyle"
-                  @click.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.click()')" -->
-
                 </div>
 
               </slot>
@@ -69,21 +66,50 @@
       -->
             <section class="formmain">
               <slot name="main">
-                <!--  v-bind:Component="ref(ThisForm[compMain])" 
-                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.when()')"
-  
-              -->
+
                 <TransitionGroup name='detailForm'>
-                  <div :id="'div_' + compMain" v-for="( compMain ) in ThisForm.main " :key="compMain" :class="compMain"
+
+                  <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.block.length == 0"
+                    v-for="( compMain ) in ThisForm.main " :key="compMain" :class="compMain"
                     v-show='ThisForm[compMain].prop.Visible'>
-                    <component :id="'component_' + compMain" :is="impComponent(ThisForm[compMain].prop.BaseClass)"
+                    <component :id="Id + '_mainComponent_' + compMain"
+                      :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                       v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                      :ShowError="ThisForm[compMain].prop.ShowError" :Registro="ThisForm[compMain].Recno"
-                      :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                      :position="ThisForm[compMain].position" />
-                    <!--:inputStyle="ThisForm[compMain].inputStyle" 
+                      :Registro="ThisForm[compMain].Recno" :prop="ThisForm[compMain].prop"
+                      :style="ThisForm[compMain].style" :position="ThisForm[compMain].position" />
+                    <!--
+                      
+                       :ShowError="ThisForm[compMain].prop.ShowError" 
+                    :inputStyle="ThisForm[compMain].inputStyle" 
                      @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
                   </div>
+
+                  <!-----------------------------------------------------------
+                 <-->
+
+                  <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
+                    <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+                    <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
+                      <div v-for=" (component, key) in block.component" :key="key"
+                        :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+                        <!--v-bind:Component="ref(Ele)"-->
+
+                        <component :id="Id + '_blockComponent_' + key + component.prop.Name"
+                          :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                          v-model:Status="component.prop.Status" :Registro="component.Recno" :prop="component.prop"
+                          :style="component.style" :position="component.position">
+                        </component>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-----------------------------------------------------------
+                 <-->
+
+
                 </TransitionGroup>
               </slot>
             </section>
@@ -255,7 +281,7 @@ const props = defineProps<{
   ThisForm: null;
 }>();
 const ThisForm = reactive(new props.ThisForm) // no quitar el new 
-
+const Id = ThisForm.prop.Name
 // Datos forma por forma . En app.vue esta useHead
 useSeoMeta({
   title: ThisForm.prop.Name,

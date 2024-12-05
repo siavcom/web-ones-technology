@@ -183,7 +183,7 @@ export class GRID extends COMPONENT {
 
     this.Row = row;
     nextTick(() => {
-      console.log("asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
+     // console.log("Grid.ts asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
 
       if (this[colName].prop.BaseClass == 'imgButton')
         this[colName].click()

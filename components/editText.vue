@@ -1139,8 +1139,9 @@ const onFocus = async () => {
       This.prop.ShowError = false
   }
 
-  if (propType.value == 'number')
-    select()
+  // if (propType.value == 'number')
+  //   select()
+  thisElement.select()
 
   emit("update:Value", Value.value)
 
@@ -1543,7 +1544,7 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('1) editText onMounted Name=', This.prop.Name, 'propType=', propType)
+  console.log('1) editText onMounted Name=', This.prop.Name)
   styleAssing()
 
   if (propType.value == 'textarea')
@@ -1587,8 +1588,7 @@ onMounted(async () => {
     //    onFocus()
     return
   }
-  if (props.prop.Name == 'est_cpy')
-    console.log('init editText Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
+
 })
 
 onBeforeMount(async () => {

@@ -7,6 +7,7 @@
 /////////////////////////////////////////////
 
 import { nom_for } from "./nom_for";
+import { sis_sis } from "./sis_sis";
 import { nom_ind } from "./nom_ind";
 import { tab_grid } from "./tab_grid";
 import { tab_form } from "./tab_form";
@@ -27,6 +28,8 @@ import { FORM } from "@/classes/Form";
 
 export class ThisForm extends FORM {
   public tip_for = new tip_for();
+
+  public sis_sis = new sis_sis();
 
   public tab_form = new tab_form();
   public vis_form = new vis_form();

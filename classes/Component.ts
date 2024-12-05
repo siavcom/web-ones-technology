@@ -32,6 +32,7 @@ export class COMPONENT {
   elements: [] = []; // elementos que tiene el componente
   status: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
+  block = [] // bloque del componentes
   error = false
   sw_init = false
 
@@ -205,8 +206,44 @@ export class COMPONENT {
     height: "auto",
   };
 
+
+  container =
+    {
+      component: {
+      },
+      prop: {
+        Visible: true
+      },
+      style: {
+        border: '1px solid rgb(0, 0, 0)',
+        background: 'bisque',
+        borderRadius: '10px',
+        boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
+        padding: '10px',
+        // display: 'inline-flex',
+        width: '-moz-available',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'space-around' // 'space-between'  
+      },
+      title: '',
+      titleStyle: {
+        color: 'black',
+        fontSize: '17px',
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        textAlign: 'center'
+      },
+
+    }
+
+
   imagen = { src: "" };
   old_value = ""
+
+
+
+
 
   constructor() {
     this.Name = this.constructor.name;

@@ -72,6 +72,21 @@ export const char = async (ascci: number) => {
   return String.fromCharCode(ascci);
 };
 
+
+/**
+ * Replaces all occurrences of a substring within a string with a new substring.
+ * @param {string} stringSource - The original string to perform replacements on.
+ * @param {string} stringSerach - The substring to search for within the original string.
+ * @param {string} stringReplace - The substring to replace each occurrence of the search string with.
+ * @returns {string} - The modified string with all occurrences of the search string replaced.
+ */
+
+export const strtran = async (stringSource: string, stringSerach: string, stringReplace: string) => {
+  return stringSource.replaceAll(stringSerach, stringReplace);
+
+};
+
+
 /////////////////////////////////////
 // Funciones Fecha
 ////////////////////////////////////

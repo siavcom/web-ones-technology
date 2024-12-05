@@ -32,13 +32,18 @@ export class vis_form extends COMPONENT {
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.prop.ColumnWidths = "350px,125px";
     this.inputStyle.width = "250px";
-    this.style.width = "400px";
+    this.style.width = "450px";
     //this.style.zIndex=2
   }
 
-  public async when() {
+  public override async when() {
     this.Form.grid_form.prop.Visible = false;
     this.Form.grid_columns.prop.Visible = false;
     return true;
+  }
+
+  public async valid() {
+    this.Form.nom_for.prop.Visible = true;
+    return true
   }
 }

@@ -117,31 +117,32 @@ export class <<cam_dat>> extends  CAPTURECOMPONENT {
 
 
     }
-  /* 
-    ////////////////////////////////// 
-    // event when 
-    ///////////////////////////////////
  
- async when() {
+////////////////////////////////// 
+// event when 
+///////////////////////////////////
+ 
+ override async when() {
+  await super.when()
   /////////// put your code here ///////////// 
   return true 
-*/
-/*
+
+
     ////////////////////////////////// 
     // event valid 
     ///////////////////////////////////
     
-    async valid() {
+ override async valid() {
       this.prop.Valid=super.valid()
+     /////////// put your code here ///////////// 
       return this.prop.Valid 
-      }
-*/
+ }
 
     ////////////////////////////////// 
     // event click 
     ///////////////////////////////////
     /*
-    async click() {
+ override async click() {
 
     }
     */
@@ -151,9 +152,19 @@ export class <<cam_dat>> extends  CAPTURECOMPONENT {
   // Descripcion: Cada tecla que se presiona en el input
   //////////////////////////
   /*
-    public keyPress = async ($event) => {
-    const key=super.keyPress($event)
+  override async keyPress() {
+ 
+   }
+  */
+
+  //////////////////////////
+  // onChangeValue
+  // Descripcion: Cada ves que cambia el valor del componente
+  //////////////////////////
+  /*
+  override async onChangeValue() {
 
    }
   */
+
 }
