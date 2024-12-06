@@ -704,9 +704,9 @@ const appendRow = async () => {
 
     for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
 
-      if (!This[This.main[i]].prop.Valid) { // Si alguno no esta Validado
+      if (This[This.main[i]].prop.Capure && !This[This.main[i]].prop.Valid) { // Si alguno no esta Validado
         This[This.main[i]].prop.ShowError = true
-        //This[This.main[i]].prop.Focus = true
+        console.warn('Columna no validada =', This[This.main[i]].prop.Name)
         return
       }
     }

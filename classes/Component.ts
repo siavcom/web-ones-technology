@@ -35,6 +35,7 @@ export class COMPONENT {
   block = [] // bloque del componentes
   error = false
   sw_init = false
+  Help = false
 
 
   prop = {

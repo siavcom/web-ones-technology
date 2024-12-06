@@ -25,8 +25,9 @@ export class bt_close extends COMPONENT {
   async click() {
     this.Parent.browse.prop.RowSource = ''
     this.Parent.prop.Visible = false
-    //this.Parent.browse.super.close()
+
     this.Parent.Parent.prop.ReadOnly = false
+    this.Parent.Parent.Help = false
     //await this.Parent.close()
 
   }

@@ -4,17 +4,28 @@
     v-show="This.prop.Visible">
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel + " "
       }}</span>
-    <!--number   pattern="([0-9]{1,15}).([0-9]{1,5})"-->
-    <!--span :id="Id + '_span'" :title="This.prop.ToolTipText" v-show="This.prop.InputProp.Visible"-->
+
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      @contextmenu="handler($event)" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
-      v-on:keyup.backspace="key = 8" @input.self="onInput">
+      @contextmenu="handler($event)" v-on:keyup.delete="Key = 127" v-on:keyup.13="Key = 13"
+      v-on:keyup.backspace="Key = 8" @input.self="onInput">
 
     <!-- @input.self="onInput"
+        
+onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
+      @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
+      @contextmenu="handler($event)" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
+      v-on:keyup.backspace="key = 8"
+
+
+    
+    
+    v-maska="maska" @maska="onMaska"
+    
+    
       key != 45 && key != 46 && key != 43) && (key < 48 || key > 57)
     v-on:keyup.enter="clickReturn()" 
         v-maska="maska" @maska="onMaska" data-maska-reversed
@@ -24,7 +35,7 @@
     <!--spinner-->
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
-      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value"
+      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
       :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
       @input="emitValue(false)" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
 
@@ -95,8 +106,8 @@
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
-      class='help_icon' src="/Iconos/svg/help-svgrepo-com.svg" style="position:absolute;right:0px; margin-top: 1%;"
-      width="20px" @click.prevent="clickHelp()" />
+      class='help_icon' src="/Iconos/svg/lupa.svg" style="position:absolute;right:0px; margin-top: 1%;" width="20px"
+      @click.prevent="clickHelp()" />
 
     <!--div class="mensajes" v-show="This.prop.Visible"-->
     <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
@@ -129,6 +140,8 @@
 
 
 import { vMaska } from "maska/vue"
+//import { Money } from "v-money3";
+
 
 
 ///////////////////////////////////////
@@ -220,7 +233,7 @@ const props = defineProps<{
 
     InputMask: "";
 
-    Key: string;
+    Key: number;
 
     MaxLength: 0;
     Min: number;
@@ -310,7 +323,7 @@ const Valor = toRef(This.prop, "Value")
 const Valid = ref(props.prop.Valid)
 Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
-let Help = false
+// let Help = false
 
 
 const Status = ref(props.prop.Status);
@@ -380,7 +393,23 @@ if (props.prop.InputMask.trim().length == 0)
 // convierte "!" en "A" en el inpputMask (VFP)
 maska.value.mask = maska.value.mask.replace(/!/gi, 'A')
 
-//console.log('EditBox name=', props.prop.Name, 'maska.value.mask=', maska.value.mask)
+const config = reactive({
+  masked: false,
+  prefix: This.prop.Currency,
+  suffix: '',
+  thousands: ',',
+  decimal: '.',
+  precision: This.prop.Decimals,
+  disableNegative: false,
+  disabled: This.prop.Disabled,
+  min: +This.prop.Min,
+  max: +This.prop.Max,
+  allowBlank: false,
+  minimumNumberOfCharacters: 0,
+  shouldRound: true,
+  focusOnRight: false,
+})
+
 
 
 const toNumberStr = async (n: number) => {
@@ -407,8 +436,8 @@ const toNumberStr = async (n: number) => {
 
 // Formateo de valores
 const onInput = ({ target }) => {
+  // currentValue.value[1] es le vsalor sin formatear
 
-  // console.log('1)  ==> EditBox onInput Name=', props.prop.Name, 'key=', Key.value, 'target.value=', target.value, 'currentValue.value[1]', currentValue.value[1])
   const key = Key.value
 
   if (key == 8 || key == 127) { // BackSpace or Delete
@@ -416,31 +445,30 @@ const onInput = ({ target }) => {
     return
   }
 
-  /*
-    if (target.value == '0') {
-      Value.value = 0
-      return
-    }
-  */
-
-
   let TargetValue = +target.value
-  // checa caracteres validos
-  //if ((key != 45 && key != 46 && key != 43) && (key < 48 || key > 57)) {
-  //  TargetValue = +oldVal
-  // }
-  //const old_val = currentValue.value[0].toString()
-  // Si es un punto decimal
-  if (key == 46) {// Si es punto decimal
-    if (This.prop.Decimals <= 0 || oldVal.indexOf('.') >= 0) {
+
+  if (key == 45) {// si puso un signo negativo y el valor es positivo
+    currentValue.value[1] = '-' + currentValue.value[1].replaceAll('-', '')
+    if (currentValue.value[1] == '-')
+      return
+    TargetValue = +currentValue.value[1]
+  }
+
+
+  // Si ya hay  un punto decimal
+  if (currentValue.value[1].indexOf('.') >= 0) {
+    const Decimales = currentValue.value[1].length - currentValue.value[1].indexOf('.') - 1
+    if (Decimales > props.prop.Decimals) {
       currentValue.value[1] = oldVal
       return
     }
-    oldVal = currentValue.value[1]
-    return
+    if (currentValue.value[1].indexOf('.') == 0 && currentValue.value[1].length == 1) {
+      currentValue.value[1] = '0.'
+      return
+    }
+
   }
 
-  // console.log('2)==> EditBox onInput Name=', props.prop.Name, 'TargetValue=', TargetValue, 'key=', key, 'oldVal=', oldVal)
 
   if (isNaN(TargetValue)) {
     currentValue.value[1] = oldVal
@@ -448,9 +476,6 @@ const onInput = ({ target }) => {
   }
   //const len = TargetValue.length
   //Value.value = parseInt(TargetValue);
-
-  if (key == 45 && TargetValue > 0) // si puso un signo negativo y el valor es positivo
-    TargetValue = -TargetValue
 
   let valorNumerico = parseFloat(TargetValue) // valor numerico   
 
@@ -463,11 +488,16 @@ const onInput = ({ target }) => {
     return
   }
 
+  if (currentValue.value[1].indexOf('.') == -1 && +currentValue.value[1] == 0) {
+    currentValue.value[1] = '0'
+    return
+  }
 
   if (+currentValue.value[1] != TargetValue) {
     currentValue.value[1] = TargetValue.toString() // valor numerico
 
   }
+
   currentValue.value[0] = parseFloat(TargetValue) // valor numerico
   oldVal = TargetValue.toString()
   //  console.log('Fin)==> EditBox onInput Name=', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'TargetValue=', TargetValue, 'key=', key, 'oldVal=', oldVal)
@@ -493,7 +523,7 @@ inherit	Inherits this property from its parent element. Read about inherit
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
-  if (Help) return // no emitir si hay ayuda
+  if (This.Help) return // no emitir si hay ayuda
   const Type = propType.value
 
   // false,false,Value
@@ -548,6 +578,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
       if (!isValid) {
         //  console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+
 
         if (!await This.valid()) {
 
@@ -995,6 +1026,9 @@ const keyPress = ($event: {
     return $event.keycode;
   }
 
+
+
+
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
     //console.log('1.1) nextElement KeyPres==>', $event.charCode)
@@ -1007,9 +1041,26 @@ const keyPress = ($event: {
 
   Key.value = $event.charCode
   This.prop.Key = $event.charCode
-  // console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
 
+
+  /*
+    if (Type == 'number') {
+      const cha = String.fromCharCode(This.prop.Key) // obtiene el caracter
+      console.log('onMaska keyPress char=', cha)
+      const valueText = Value.value.toString()
+  
+      const pos = valueText.indexOf('.')
+      if (cha == '.' && pos > 0)
+        return
+     
+    }
+  
+  */
+
+  console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
   This.keyPress()
+
+
   //console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
 
 
@@ -1081,6 +1132,9 @@ const click = () => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
   // No se permite el focus si es solo lectura
+  if (!This.Help)
+    This.Help = false
+
   if (This.prop.ReadOnly) {
     if (!This.prop.Disabled) {
       This.prop.Disabled = true
@@ -1139,12 +1193,11 @@ const onFocus = async () => {
       This.prop.ShowError = false
   }
 
-  // if (propType.value == 'number')
-  //   select()
-  thisElement.select()
+  select()
+
+
 
   emit("update:Value", Value.value)
-
 
 
   //nextTick(function () {
@@ -1156,37 +1209,44 @@ const onFocus = async () => {
 }
 const clickHelp = async () => {
 
-  This.prop.ShowError = false
-  This.prop.Valid = true
-
   if (focusIn.value == 0)
     await onFocus()
 
-  if (This.help) {
-    Help = true
-    This.Form.eventos.push(This.prop.Map + '.help.open()')
+  if (This.prop.Help) {
+    console.log('1) clickHelp')
+    This.prop.ShowError = false
+    This.prop.Valid = true
+    console.log('2) clickHelp')
+
+    displayError.value = false
+    This.Help = true
+    // This.Form.eventos.push(This.prop.Map + '.help.open()')
+    await This.help.open()
+
+
   }
-  Help = false
 }
 const select = async () => {
   // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
   This.prop.Focus = false
+  /*
+    if (document.activeElement != thisElement) {
+      // Ref.value.focus();
+      // Ref.value.select();
+  
+      thisElement.focus({ focusVisible: true });
+      // thisElement.select();
+  
+      
+    }
+    */
+  setTimeout(function () {
+    //thisElement.focus({ focusVisible: true });
+    if (thisElement.select)
+      thisElement.select();
 
-  if (document.activeElement != thisElement) {
-    // Ref.value.focus();
-    // Ref.value.select();
+  }, 300);
 
-    thisElement.focus({ focusVisible: true });
-    // thisElement.select();
-
-    setTimeout(function () {
-      //thisElement.focus({ focusVisible: true });
-      if (thisElement.select)
-        thisElement.select();
-
-    }, 300);
-
-  }
   //})
   return
 
@@ -1216,12 +1276,7 @@ watch(
   () => {
     if (displayError.value != This.prop.ShowError)
       displayError.value = This.prop.ShowError
-    //if (This.Form.error && new_val) {
-    //  displayError.value = false
-    //}
 
-    // This.Parent.error = new_val
-    console.log('watch displayError editText Name', This.prop.Name, 'displayError.value', displayError.value)
   },
   { deep: false }
 );
@@ -1303,16 +1358,25 @@ watch(
     if (!new_val) {
       return
     }
-    This.prop.Focus = false
+    // Se pidio desde afuera el setFocus
+    if (document.activeElement != thisElement)
+      return thisElement.focus();
 
-    //thisElement.focus({ focusVisible: true });
-    setTimeout(function () {
-      //thisElement.focus({ focusVisible: true });
-      if (thisElement.select)
-        thisElement.select();
+    //  const length = thisElement.value.length;
+    // Set the cursor to the end
+    select()
 
-    }, 300);
-    //    select()
+    /*
+        //thisElement.focus({ focusVisible: true });
+        setTimeout(function () {
+          //thisElement.focus({ focusVisible: true });
+          if (thisElement.select)
+            thisElement.select();
+    
+        }, 300);
+    
+        */
+
     return
 
   },
@@ -1475,12 +1539,12 @@ watch(
 
 
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
-  console.log('onMaska='//, 
-    /* {
+  console.log('onMaska=',
+    {
       masked: event.detail.masked,
       unmasked: event.detail.unmasked,
       completed: event.detail.completed
-    } */
+    }
   )
 }
 
@@ -1531,7 +1595,7 @@ const styleAssing = async () => {
  */
 const handler = (event) => {
   if (event.which === 3) {
-    console.warn("==================>>>>>>Right mouse down Map=", This.prop.Map);
+    console.warn("==================>>>>>>Right click mouse  Map=", This.prop.Map);
   }
   event.preventDefault();
 }
@@ -1584,7 +1648,9 @@ onMounted(async () => {
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
     props.prop.First = false
-    select()
+    props.prop.Focus = false
+    props.prop.Focus = true
+    // select()
     //    onFocus()
     return
   }
