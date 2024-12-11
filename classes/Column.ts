@@ -38,7 +38,7 @@ export class COLUMN extends COMPONENT {
     //    this.componente.Name = 'component'
   }
 
-  async valid() {
-    return this.Parent.validColumn(this.Name);
+  override async valid() {
+    return await this.Parent.validColumn(this.Name);
   }
 }

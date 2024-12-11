@@ -183,7 +183,7 @@ export class GRID extends COMPONENT {
 
     this.Row = row;
     nextTick(() => {
-     // console.log("Grid.ts asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
+      // console.log("Grid.ts asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
 
       if (this[colName].prop.BaseClass == 'imgButton')
         this[colName].click()
@@ -215,13 +215,13 @@ export class GRID extends COMPONENT {
 
     // for (const i in this.Form.main)
     // Forma principal de captura. Los valores de los componentes de captura se pasan a memoria
-    for (const comp of this.Form.main) m[comp] = this.Form[comp].prop.Value;
+    for (const comp of this.Form.main)
+      m[comp] = this.Form[comp].prop.Value;
 
     //this.Form.db.select(this.prop.RecordSource)
 
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     this.prop.Disabled = false;
-
 
     this.Row = -10; // Ponemos en -10 para refrescar la pagina
 
@@ -262,7 +262,18 @@ export class GRID extends COMPONENT {
   async grabaTabla() {
     let resultado = true;
 
-    //resultado =
+    /*
+        for (let i = 0; i < this.main.length; i++) { // Recorre todos los estatus del grid
+    
+          if (this[this.main[i]].prop.Capure && !this[this.main[i]].prop.Valid) { // Si alguno no esta Validado
+            this[this.main[i]].prop.ShowError = true
+    
+            this[This.main[i]].setFocus()
+            return
+          }
+        }
+    */
+
     if ((await MessageBox(this.prop.messageUpdate, 4, "")) != 6) return false;
 
     this.Form.prop.Visible = false;
@@ -290,9 +301,18 @@ export class GRID extends COMPONENT {
   //
   /////////////////////////////////
   async grabaRenglon() {
-    let resultado = 0;
-    resultado = await MessageBox(this.prop.messageUpdate, 4, "");
-    console.log("bt_aceptar Messagebox resultado", resultado);
+
+    for (let i = 0; i < this.main.length; i++) { // Recorre todos los estatus del grid
+
+      if (this[this.main[i]].prop.Capure && !this[this.main[i]].prop.Valid) { // Si alguno no esta Validado
+        this[this.main[i]].prop.ShowError = true
+
+        this[This.main[i]].setFocus()
+        return
+      }
+    }
+
+    //if (await MessageBox(this.prop.messageUpdate, 4, "") != 6) return
 
     this.Form.prop.Visible = false;
 
@@ -300,7 +320,7 @@ export class GRID extends COMPONENT {
       (await this.Form.db.tableUpdate(1, false, this.prop.RecordSource)) == true
     ) {
       // Actualiza todos los registros
-      MessageBox("Renglon actualizado correctamente");
+      // MessageBox("Renglon actualizado correctamente");
       return true;
     } else {
       MessageBox(

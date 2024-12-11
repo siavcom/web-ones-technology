@@ -25,6 +25,6 @@ export class col_ind extends COLUMN {
 
   async valid() {
     this.prop.Value = this.prop.Value.toLowerCase();
-    return super.valid();
+    return await super.valid();
   }
 }

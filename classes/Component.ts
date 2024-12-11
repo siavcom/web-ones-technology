@@ -145,6 +145,17 @@ export class COMPONENT {
     When: true,
   };
 
+  containerStyle = {
+    //  alignContent: "flex-end",
+    //  alignItems: "flex-end",
+    //  display: "flex",
+    //  flexDirection: "row",
+    //  flexWrap: "nowrap",
+    //  justifyContent: "flex-end",
+    //  width: "100%"
+    paddingLeft: "auto"
+  }
+
   labelStyle = {
     background: "", //transparent
     color: "",
@@ -160,6 +171,7 @@ export class COMPONENT {
     width: "fit-content",
     alignContent: "flex-end",
   }
+
 
   inputStyle = { ...this.labelStyle }
 
@@ -260,6 +272,25 @@ export class COMPONENT {
 
   }
 
+  /**
+   * Asigna el número de registro (Recno) a cada componente dentro de la forma.
+   * 
+   * Itera sobre todos los componentes del objeto actual. Para cada componente que
+   * tenga la propiedad `Capture` y cuyo `ControlSource` empiece con el mismo valor
+   * que `RecordSource` del objeto, asigna una referencia al número de registro 
+   * actual (`Recno`) a la propiedad `Recno` del componente.
+   * 
+   * @returns {Promise<void>}
+   */
+  async asignaRecno() {
+    for (const comp in this) {
+      const Comp = this[comp]
+      // ControlSource contiene el RecordSource de la forma
+      if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
+        Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+      }
+    }
+  }
 
   /**
    * Init Component

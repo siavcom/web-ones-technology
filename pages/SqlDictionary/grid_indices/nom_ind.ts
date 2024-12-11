@@ -19,19 +19,19 @@ export class nom_ind extends COLUMN {
         this.prop.Order = 3
         this.textLabel = 'Nombre'
         this.prop.BaseClass = 'editText'
-        this.inputStyle.textTransform='lowercase'
-        
+        this.inputStyle.textTransform = 'lowercase'
+
         this.prop.ControlSource = 'vi_cap_comeind.nom_ind'
-        this.prop.ToolTipText ='Nombre del indice'
+        this.prop.ToolTipText = 'Nombre del indice'
         this.prop.Placeholder = "Nombre del indice"
-        this.style.width='150px'
+        this.style.width = '150px'
 
     }
 
-async valid(){
-   this.prop.Value=this.prop.Value.toLowerCase()
-   return super.valid()
-}    
+    async valid() {
+        this.prop.Value = this.prop.Value.toLowerCase()
+        return await super.valid();
+    }
 
 
 }

@@ -24,15 +24,17 @@ export class captureForm extends FORM {
   }
 
 
-  async asignaRecno() {
-    for (const comp in this) {
-      const Comp = this[comp]
-      // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
-        Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+  /*
+    async asignaRecno() {
+      for (const comp in this) {
+        const Comp = this[comp]
+        // ControlSource contiene el RecordSource de la forma
+        if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
+          Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+        }
       }
     }
-  }
+  */
   /// //////////////////////////////////////////////////
   // Metodo init
   // Aqui se deben de asignar las areas de trabajo de los archivos

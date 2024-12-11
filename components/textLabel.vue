@@ -27,6 +27,16 @@
       <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
         :src="prop.Image" />
     </div>
+
+    <textLabel :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+      :ShowError="This[compMain].prop.ShowError" :Registro="Registro" :prop="This[compMain].prop"
+      :style="This[compMain].style" :position="This[compMain].position">
+
+    </textLabel>
+
+
+
   </div>
 </template>
 
@@ -417,9 +427,10 @@ const renderComboBox = async () => {
 
 const readCampo = async () => {
 
-
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
-    const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
+
+    const data = await This.Sql.readCampo(props.prop.ControlSource, props.Registro)
+    console.log('TextLabel Name=', props.prop.Name, 'data=', data)
     for (const campo in data) {
       if (campo != 'key_pri')
         Text.value = data[campo] != null ? data[campo] : ''

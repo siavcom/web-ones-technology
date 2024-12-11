@@ -138,13 +138,12 @@ export class <<cam_dat>> extends COLUMN {
     ///////////////////////////////////
     
     async valid() {
-        const db = this.Form.db
 
         const View=db[this.Parent.prop.ControlSource]
         const Value=this.Value
         const Recno=View.Recno
       if (this.prop.updateKey) {
-         const data= async db.localSql('select 1 as exists from ${this.Parent.prop.ControlSource} \
+         const data= await this.Sql.localSql('select 1 as exists from ${this.Parent.prop.ControlSource} \
                         where recno<>${recno}')
          if (data.exists && data.exist==1){
             MessageBox('Ya existe el campo '+this.prop.Label+' = ',this.prop.Value)

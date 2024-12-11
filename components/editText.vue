@@ -106,29 +106,21 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <img :id="Id + '_help'"
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
-      class='help_icon' src="/Iconos/svg/lupa.svg" style="position:absolute;right:0px; margin-top: 1%;" width="20px"
-      @click.prevent="clickHelp()" />
+      class='help_icon' src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
 
-    <!--div class="mensajes" v-show="This.prop.Visible"-->
-    <!--span class="tooltiptext" v-if="prop.ToolTipText.length > 0" v-show="ToolTipText && prop.Valid"
-      :style="toolTipTextStyle">{{prop.ToolTipText}}</span-->
     <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ prop.ErrorMessage.length >= 1 ?
       prop.ErrorMessage
       :
       'Invalid Input'
       }}</div>
-    <!--/div--> <!--fin class=component -->
-    <!--/div-->
-    <!--Teleport to="body"
-    v-bind:Component="ref(This[compMain])"
-    :inputStyle="This[compMain].inputStyle"
-    -->
-    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
-      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-      :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :position="This[compMain].position">
 
-    </component>
+    <div class="component_conainer" :style="containerStyle">
+      <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+        :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+        :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
+        :style="This[compMain].style" :position="This[compMain].position">
+      </component>
+    </div>
     <!--/Teleport-->
     <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
@@ -302,6 +294,7 @@ const Este = props.prop.This
 const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+const containerStyle = reactive({ ...Este.containerStyle })
 
 const Styles =
 {
@@ -309,6 +302,18 @@ const Styles =
   inputStyle: inputStyle,
   style: divStyle
 }
+
+const helpStyle = {
+  position: 'absolute',
+  left: inputStyle.width,
+  marginTop: '1%',
+  width: '20px',
+  paddingLeft: '5px'
+}
+
+if (props.prop.Help)
+  containerStyle.paddingLeft = "23px"
+
 
 //const divStyle = reactive(props.style)
 
