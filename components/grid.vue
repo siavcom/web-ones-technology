@@ -1,6 +1,6 @@
 <template>
   <div :id="Id + '_main_divi_grid'" class="divi"
-    v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Sql.View[prop.RecordSource]" :style="style"
+    v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Sql.View[prop.RecordSource]" :style="divStyle"
     ref="Ref">
     <label :id="Id + '_lable'" class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
@@ -32,8 +32,9 @@
             style="height: auto">
 
             <!-------------  Renglones  ------------------------>
-            <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage" v-for="(item, key) in scroll.dataPage"
-              :key="item && item.recno ? item.recno : 0" :style="item.id == This.Row ? trStyleActive : trStyleInactive">
+            <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage && scroll.dataPage.length > 0"
+              v-for="(item, key) in scroll.dataPage" :key="item && item.recno ? item.recno : 0"
+              :style="item.id && item.id == This.Row ? trStyleActive : trStyleInactive">
               <!-- No utilizar vertical-aling en renNumber-->
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
                 item.recno
@@ -186,17 +187,18 @@ const props = defineProps<{
     autoLoad: boolean;
     headerHeight: string;
   };
-
-  style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-  };
+  /*
+    style: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "500px";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+    };
+    */
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -211,8 +213,13 @@ const props = defineProps<{
 //const Component = ref(props.prop.Component)
 const Component = ref(props.prop.This)
 //const ThisGrid = Component.value
-const This: {} = Component.value
 
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
+
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
 const Id = This.prop.Name + props.Registro.toString().trim()
 
 

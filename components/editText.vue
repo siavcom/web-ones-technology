@@ -114,15 +114,39 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       'Invalid Input'
       }}</div>
 
+    <!--Compponentes que no estan en bloque-->
+
     <div class="component_conainer" :style="containerStyle">
       <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-        :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-        :style="This[compMain].style" :position="This[compMain].position">
+        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
+        :position="This[compMain].position">
       </component>
     </div>
+
+    <!--Compponentes en bloque-->
+    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
+        <div v-for=" (component, key) in block.component" :key="key"
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+          <!--v-bind:Component="ref(Ele)"-->
+          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
+            v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
+            :prop="component.prop" :position="component.position">
+            <!--:style="component.style" :inputStyle="component.inputStyle"
+                                               
+                      @click.capture="component.click()"-->
+          </component>
+        </div>
+      </div>
+    </div>
+
     <!--/Teleport-->
-    <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
+    <!--   :ShowError="This[compMain].prop.ShowError" 
+       
+    @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
   </span>
 </template>
@@ -261,19 +285,21 @@ const props = defineProps<{
 
 
   };
-
-  style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "auto";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-    zIndex: 0
-
-  };
+  /*
+    style: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "auto";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      zIndex: 0
+  
+    };
+  
+    */
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -304,15 +330,15 @@ const Styles =
 }
 
 const helpStyle = {
-  position: 'absolute',
-  left: inputStyle.width,
-  marginTop: '1%',
+  // position: 'absolute',
+  // left: inputStyle.width,
+  marginTop: '1px',
   width: '20px',
-  paddingLeft: '5px'
+  paddingLeft: '2px'
 }
 
 if (props.prop.Help)
-  containerStyle.paddingLeft = "23px"
+  containerStyle.paddingLeft = "2px"
 
 
 //const divStyle = reactive(props.style)
@@ -595,7 +621,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
           // 7/Feb/2024       
           This.Form.prop.Status = 'A'
-          select()
+
+          // select() se quito 13/Dic/2024
           //          This.prop.Focus = true
           This.prop.Status = 'A'
           return
@@ -973,10 +1000,10 @@ const asignaValue = async () => {
     return
 
   if (Type == 'text') {
-    if (props.style.textTransform == 'uppercase')
+    if (This.style.textTransform == 'uppercase')
       Value.value = Value.value.toUpperCase()
 
-    if (props.style.textTransform == 'lowercase')
+    if (This.style.textTransform == 'lowercase')
       Value.value = Value.value.toLowerCase()
   }
 
@@ -1546,10 +1573,11 @@ watch(
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
   console.log('onMaska=',
     {
-      masked: event.detail.masked,
-      unmasked: event.detail.unmasked,
-      completed: event.detail.completed
+      //masked: event.detail.masked,
+      // unmasked: event.detail.unmasked,
+      // completed: event.detail.completed
     }
+
   )
 }
 

@@ -47,27 +47,27 @@ const props = defineProps<{
     BaseClass: "imgButton";
     Image: "";
   };
-
-  style: {
-    background: "white";
-    backgroundColor: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-    borderColor: "#000a01";
-    borderWidth: "1px";
-    zIndex: 1;
-  };
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
-    left: number;
-    Top: number;
-  };
-
+  /*
+    style: {
+      background: "white";
+      backgroundColor: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "500px";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      borderColor: "#000a01";
+      borderWidth: "1px";
+      zIndex: 1;
+    };
+    position: {
+      position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
+      left: number;
+      Top: number;
+    };
+  */
 }>();
 
 const Component = ref(props.prop.This)

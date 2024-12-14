@@ -338,7 +338,6 @@ const loading = ref(true)
 // Metodos propios
 ////////////////////////////////////////////
 
-
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {
     // Se tiene que pasar por referencia donde esta el ThisForm 
@@ -351,8 +350,6 @@ const waitEval = async (evento: string) => {
       console.error('Hubo error al ejecutar evento', error)
     })
   })
-
-
 }
 
 

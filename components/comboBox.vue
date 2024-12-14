@@ -18,14 +18,14 @@
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
           :disabled="prop.ReadOnly" :style="{
             'background': option.check ? 'rgb(163, 193, 168)' : 'white',
-            'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
+            'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height
           }">
           <!--Imprime Columnas -->
 
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col" :style="{
               'background': option.check ? 'rgb(163, 193, 168)' : 'white',
-              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
+              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height
             }">
             <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
               :style:="columnLabelStyle" />
@@ -64,7 +64,7 @@
 
             <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
               v-for="(text, col) in option.text" :key="col"
-              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
+              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height }">
               <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
                 :style:="columnLabelStyle" />
             </div>
@@ -115,14 +115,12 @@ interface Props {
   position: {};
   //  inputStyle: {};
 }
-
-//const props = defineProps<{
 const props = withDefaults(defineProps<Props>(), {
+
   Registro: 0,
   // Component: null,
   // Value: undefined,
   prop: {
-
     BaseClass: "ComboBox",
     BoundColumn: 1, // Columna donde se tomara el Value
 
@@ -175,6 +173,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
   },
+  /*
   inputStyle: {
     background: "white",
     padding: "5px", // Relleno
@@ -207,7 +206,7 @@ const props = withDefaults(defineProps<Props>(), {
     left: 0,
     Top: 0,
   },
-
+*/
 })
 
 
@@ -290,7 +289,7 @@ if (Styles.style.width == 'auto')
 //Styles.style.zIndex = 100 - This.prop.TabIndex
 
 
-const zIndex = ref(This.style.zIndex)
+const zIndex = ref(Styles.style.zIndex) //ref(This.style.zIndex)
 
 const comboStyle = reactive({
   height: 'fit-content',
@@ -304,7 +303,7 @@ const toggleStyle = reactive({
 })
 
 
-Styles.inputStyle.zIndex = zIndex
+Styles.inputStyle.zIndex = zIndex.value  //****
 const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
@@ -394,7 +393,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (This.prop.Valid)
           This.prop.Valid = false
         //Ref.value.select() 
-        thisElement.select(); // Hace select en este elemento
+
+        // thisElement.select(); // Hace select en este elemento. Se quito 13/Dic/2024
 
         This.prop.Status = 'A'
         //   Status.value = 'A'
@@ -1041,7 +1041,7 @@ watch(
     if (!new_val)
       comboStyle.height = '0%'
     else
-      comboStyle.height = This.style.height
+      comboStyle.height = Styles.style.height // This.style.height
     //readCampo(props.Registro)
 
   },
@@ -1135,7 +1135,7 @@ watch(
     if (new_val)
       Styles.style.zIndex = 200  // aumenta el z index cuando despliaga las columnas
     else
-      Styles.style.zIndex = props.style.zIndex
+      Styles.style.zIndex = zIndex.value// This.style.zIndex
 
 
     //console.log('watch toggle.value', props.Name, old_val, new_val)
@@ -1304,14 +1304,14 @@ watch(
 ///////////////////////////////////////
 
 watch(
-  () => props.style.width,
+  () => This.style.width,
 
   (new_val, old_val) => {
     // console.log("Cambio tamaÃ±o ", inputWidth.value);
     if (new_val != old_val) {
-      if (props.style.width.substr(-2, 2) == 'px') {
-        const len = props.style.width.length - 2
-        const width: number = +props.style.width.substr(0, len) - 30
+      if (This.style.width.substr(-2, 2) == 'px') {
+        const len = This.style.width.length - 2
+        const width: number = +This.style.width.substr(0, len) - 30
         inputWidth.value = width.toString() + 'px'
         //console.log("Cambio tamaÃ±o 2", inputWidth.value);
       }

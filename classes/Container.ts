@@ -67,14 +67,28 @@ export class CONTAINER extends COMPONENT {
   }
   async init() {
     await super.init()
-    let elementos = []
-    // sumanos todos los componentes en uno solo
-    elementos = elementos.concat(this.header)
-    elementos = elementos.concat(this.main)
-    elementos = elementos.concat(this.footer)
+    /*let elementos = []
+    for (let i = 0; i < this.elements.length; i++) {
+      const Name = this.elements[i].Name
+      elementos.push(Name)
+    }
+    /*
+    console.log('Init Container', this.Name, 'Elements=', elementos)
+    /*
+        let elementos = []
+        // sumanos todos los componentes en uno solo
+        elementos = elementos.concat(this.header)
+        elementos = elementos.concat(this.main)
+        elementos = elementos.concat(this.footer)
+        console.log('Init Container', this.Name, 'Elementos=', elementos)
+    */
     // recorremos todos los componentes
-    for (let i = 0; i < elementos.length; i++) {
-      const componente = elementos[i]
+
+    for (let i = 0; i < this.elements.length; i++) {
+      const componente = this.elements[i].Name
+
+      //    for (let i = 0; i < elementos.length; i++) {
+      //const componente = elementos[i]
 
       if (this[componente].Position && this[componente].Position.length > 0) {  // Si es componete tiene posision en la pantalla
 

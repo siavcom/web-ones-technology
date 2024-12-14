@@ -20,7 +20,7 @@ export class lon_dat extends COLUMN {
         this.textLabel = 'Longitud'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
-        this.prop.Min = '1'
+        this.prop.Min = '0'
         this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_comedat.lon_dat'
         this.prop.ToolTipText = 'Logitud del campo'
@@ -54,7 +54,7 @@ export class lon_dat extends COLUMN {
 
     async valid() {
 
-        if (this.prop.Value == 0) {
+        if (this.prop.Value == 0 && this.Parent.tip_dat.prop.Value != 'V') {
             this.prop.ErrorMessage = 'El tamaño debe ser mayor a 0 '
             return false
 

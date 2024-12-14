@@ -1,21 +1,23 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
-  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="style"
+  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
     v-show="This.prop.Visible">
 
     <img v-if="Value.length > 0" :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly"
       :style="inputStyle" />
 
     <!--div v-if="!This.prop.Disabled"-->
-    <input v-if="!This.prop.Disabled" :id="Id + '_input'" ref="fileInput" type="file" @change="readFile($event)"
-      :disabled="This.prop.Disabled" :tabindex="prop.TabIndex" style="width:64px" :accept="inputStyle.accept" />
+    <input v-if="!This.prop.Disabled" :id="Id + '_bt_input'" ref="fileInput" type="file" @change="readFile($event)"
+      :disabled="This.prop.Disabled" :tabindex="prop.TabIndex" style="width:76px;height:26px ;"
+      :accept="inputStyle.accept" src="/Iconos/svg/delete-color.svg" />
+    <img v-if="Value.length > 0" :id="Id + '_bt_borrar'" class="img" src="/Iconos/svg/delete-color.svg"
+      :alt="prop.Value" :disabled="prop.ReadOnly" style="width:32px;height:32px ;" @click.capture="bt_delete()" />
+
   </span>
 </template>
 
 <script setup lang="ts">
 import { NuxtImg } from '#build/components';
-
-
 
 ///////////////////////////////////////
 // Emits
@@ -104,19 +106,20 @@ const props = defineProps<{
 
 
   };
-
-  style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "auto";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-    zIndex: 0
-
-  };
+  /*
+    style: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "auto";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      zIndex: 0
+  
+    };
+    */
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -204,10 +207,19 @@ const readFile_2 = () => {
 
 }
 
+const bt_delete = async () => {
+
+  // if (await MessageBox('¿Desea eliminar la imagen?', 4, '') != 6)
+  //   return
+
+  Value.value = ''
+  emitValue(false, true, Value.value)
+}
+
 const readFile = ($event) => {
   // Reference to the DOM input element
   const input = $event.target;
-  console.log('readFile', input)
+
   // Ensure that you have a file before attempting to read it
   if (input.files && input.files[0]) {
     // create a new FileReader to read this image and convert to base64 format
@@ -673,11 +685,10 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('1) base64 onMounted Name=', This.prop.Name, 'thisElement=', thisElement)
+  console.log('1) base64 onMounted Name=', This.prop.Name, 'divStyle=', divStyle)
 
-
-  if (!This.prop.Visible)
-    divStyle.height = '0%'
+  //  if (!This.prop.Visible)
+  //    divStyle.height = '0%'
 
   if (!This.prop.RefValue == null)
     Value.value = This.prop.RefValue.value
@@ -686,7 +697,6 @@ onMounted(async () => {
   This.Recno = props.Registro
 
   oldVal = Value.value   // asignamos el valor viejo
-
 
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
