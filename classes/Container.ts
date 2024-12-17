@@ -52,6 +52,7 @@ export class CONTAINER extends COMPONENT {
     this.Text = 'Container'
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
+
     this.style = {
       maxWidth: 'fit-content',
       maxHeight: 'fit-content',
@@ -60,6 +61,7 @@ export class CONTAINER extends COMPONENT {
       borderRadius: '10px',
       padding: '20px',   //Margen entre los bordes y el contenido
     }
+
     this.prop.Capture = false;
     // Estilo de cada contenedor del modal
 
@@ -105,9 +107,11 @@ export class CONTAINER extends COMPONENT {
         if (this[componente].prop.Position = 'footer') {
           pos_ver = 2
         }
-        if (this.Divi[pos_ver])
-          pos_hor = this.Divi[pos_ver].length
 
+        /* 16/dic/2024
+                if (this.Divi[pos_ver])
+                  pos_hor = this.Divi[pos_ver].length
+        */
         this[componente].Position[0] = pos_ver
         this[componente].Position[1] = pos_hor
       }
@@ -115,15 +119,16 @@ export class CONTAINER extends COMPONENT {
       let group = this[componente].Position[0]
       let element = this[componente].Position[1]
 
-
-      if (!this.Divi[group])  // so existe el objeto, lo agrega
-        this.Divi[group] = []
-
-      this.Divi[group][element] = this[componente] // this.Divi[this[componente].Position[0]][this[componente].Position[1]] = this[componente]
+      /* 16/dic/2024
+            if (!this.Divi[group])  // so existe el objeto, lo agrega
+              this.Divi[group] = []
+      
+            this.Divi[group][element] = this[componente] // this.Divi[this[componente].Position[0]][this[componente].Position[1]] = this[componente]
+      */
 
     }
 
-    console.log('Container ', this.prop.Name, 'componentes=', this.Divi)
+    // console.log('Container ', this.prop.Name, 'componentes=', this.Divi)
 
   }
 

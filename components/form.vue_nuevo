@@ -68,8 +68,9 @@
               <slot name="main">
 
                 <TransitionGroup name='detailForm'>
+                  <!------ Componentes del main sin contenedores ------->
 
-                  <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.block.length == 0"
+                  <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.prop.Type == 'simple'"
                     v-for="( compMain ) in ThisForm.main " :key="compMain" :class="compMain"
                     v-show='ThisForm[compMain].prop.Visible'>
                     <component :id="Id + '_mainComponent_' + compMain"
@@ -84,32 +85,29 @@
                      @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
                   </div>
 
-                  <!-----------------------------------------------------------
-                 <-->
+                  <!------ Bloques contenedores de componentes ------->
 
-                  <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
-                    <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+
+                  <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
+                    <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                     <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+                      <div v-for=" (item, key) in block.component" :key="key" :id="Id + 'modal_hor_componentes_' + key"
+                        style="padding-bottom:2px">
 
-                      <div v-for=" (component, key) in block.component" :key="key"
-                        :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-                        <!--v-bind:Component="ref(Ele)"-->
-
-                        <component :id="Id + '_blockComponent_' + key + component.prop.Name"
-                          :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                          v-model:Status="component.prop.Status" :Registro="component.Recno" :prop="component.prop"
-                          :style="component.style" :position="component.position">
+                        <component :id="Id + 'modal_componentes_' + key + item.prop.Name"
+                          :is="impComponent(item.prop.BaseClass)" v-model:Value="item.prop.Value"
+                          v-model:Status="item.prop.Status" :Registro="item.Recno" :prop="item.prop"
+                          :position="item.position">
                         </component>
 
                       </div>
+
                     </div>
                   </div>
 
 
                   <!-----------------------------------------------------------
                  <-->
-
-
                 </TransitionGroup>
               </slot>
             </section>
@@ -338,7 +336,6 @@ const loading = ref(true)
 // Metodos propios
 ////////////////////////////////////////////
 
-
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {
     // Se tiene que pasar por referencia donde esta el ThisForm 
@@ -351,8 +348,6 @@ const waitEval = async (evento: string) => {
       console.error('Hubo error al ejecutar evento', error)
     })
   })
-
-
 }
 
 
@@ -523,6 +518,8 @@ onBeforeMount(async () => {
    }
  */
   console.log('ThisForm Finish Update  ', ThisForm)
+  console.log('ThisForm container=====>>>>>>>>', ThisForm.block)
+
   loading.value = false
   await ThisForm.afterMounted()
 
