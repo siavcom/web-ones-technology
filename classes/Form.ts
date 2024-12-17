@@ -22,15 +22,12 @@ export class FORM extends COMPONENT {
   clickedElement = null;
   Development = false; // desarrollo
   dialect = "MSSQL";
-  Recno = ref(999999999)
+  override Recno = ref(999999999)
 
-
-
-  //messageBox = MessageBox
-  //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
     this.prop.BaseClass = "Form";
+    this.prop.Type = "simple"; // "containers" o "simple"
     this.Sql = this.db;
 
     this.prop.Map = this.constructor.name;

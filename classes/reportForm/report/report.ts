@@ -49,7 +49,6 @@ export class report extends CONTAINER {
 
     this.style.display = 'block'
 
-
     this.displayPdf.Position = [0, 0]
     this.displayBrowse.Position = [0, 1]
 

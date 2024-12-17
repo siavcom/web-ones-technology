@@ -342,26 +342,26 @@ export class COMPONENT {
       if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
     }
 
-
-    // Si el componente esta en algun bloque  le quita su posiscion 
-    if (this.block.length > 0) {
-      // Recorre todos los bloques
-      let sw_block = true
-      for (let i = 0; i < this.block.length && sw_block; i++) {
-        for (let j in this.block[i].component) {
-          //              if (sw_block && this.block[i].component[j].Name == componente) {
-          //this[componente].prop.Position = 'block'
-          sw_block = false
-          const Name = this.block[i].component[j].Name
-          console.log(this.Name, "cod_nom Block Componente", this[Name].prop)
-          //  this[Name].prop.Position = 'block'
-
-          //              }
+    /* 16/Dic/2024
+        // Si el componente esta en algun bloque  le quita su posiscion 
+        if (this.block.length > 0) {
+          // Recorre todos los bloques
+          let sw_block = true
+          for (let i = 0; i < this.block.length && sw_block; i++) {
+            for (let j in this.block[i].component) {
+              //              if (sw_block && this.block[i].component[j].Name == componente) {
+              //this[componente].prop.Position = 'block'
+              sw_block = false
+              const Name = this.block[i].component[j].Name
+              console.log(this.Name, "cod_nom Block Componente", this[Name].prop)
+              //  this[Name].prop.Position = 'block'
+    
+              //              }
+            }
+          }
         }
-      }
-    }
-
-
+    
+        */
 
 
     for (const componente in this) {
