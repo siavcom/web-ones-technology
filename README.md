@@ -112,7 +112,7 @@ Calling a method:
 
 ### Base properties (prop):
 
- - BaseClass:  <webComponent> 
+ - BaseClass:  <<webComponent>>
       type: string  
       Values : 'Form'
                'editText'
