@@ -4,7 +4,7 @@
       <Transition>
 
         <div :id="Id+'_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
-          <div :id="Id+'modal_container'" class="modal-container" :style="This.style">
+          <div :id="Id+'modal_container'" class="modal-container" :style="divStyle">
 
             <!--section class="mainContainer"-->
 
@@ -23,8 +23,10 @@
                       <component :id="Id+'modal_componentes_' + key + component.prop.Name"
                         :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                         v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                        :style="component.style" :inputStyle="component.inputStyle" :position="component.position" >
-                      <!--@click.capture="component.click()"-->
+                         :position="component.position" >
+                      <!--:style="component.style" :inputStyle="component.inputStyle"
+                                               
+                      @click.capture="component.click()"-->
                       </component>
                     </div>
                   </div>
@@ -117,7 +119,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
   },
-
+/*
   style: {
     background: "white",
     padding: "5px", // Relleno
@@ -134,6 +136,7 @@ const props = withDefaults(defineProps<Props>(), {
 
     // inputWidth: "inherit"
   },
+  
   inputStyle: {
     background: "white",
     padding: "5px", // Relleno
@@ -150,12 +153,13 @@ const props = withDefaults(defineProps<Props>(), {
 
     // inputWidth: "inherit"
   },
+  
   position: {
     position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
     left: 0,
     Top: 0,
   },
-
+*/
 })
 
 const Component = ref(props.prop.This)
@@ -167,7 +171,7 @@ const divStyle = reactive({ ...Este.style })
 
 const Id = This.Name + props.Registro.toString()
 
-console.log('10 modalContainer Name=', This.prop.Name, 'This.block=', This.block)
+//console.log('10 modalContainer Name=', This.prop.Name, 'This.block=', This.block)
 /**********************
  
 //const Divi = ref(This.Divi)

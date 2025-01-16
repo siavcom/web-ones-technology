@@ -100,7 +100,7 @@ export class grid_datos extends GRID {
 
   async appendDatos() {
     const m = {
-      nom_tab: this.Form.nom_tab.prop.Value,
+      nom_tab: this.Form.nom_tab.prop.Value.trim(),
       con_dat: 0,
       cam_dat: " ",
       des_dat: " ",

@@ -1,22 +1,22 @@
-# This Framework is to make a simple SQL web capture data program in typescript (class based), but with out knowledge of web programming (HTML, CSS, VUE). 
+# This Framework is to make a simple SQL web data capture program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
-# This Framework use Vue 3 with Nuxt and SQL databases (MSSQL and POSTGRES).
+# This Framework uses Vue 3 with Nuxt and SQL databases (MSSQL and POSTGRES).
 
-# This Framework is based in VFP functions and instruccions .
+# This Framework is based on VFP (Visual Fox Pro) functions and instructions.
 
-# This use:
+# It uses:
 
 - Vue 3 with SFC
 - Nuxt 3
 - Native HTML components
-- Backend with Node express and VFPnode proyect https://github.com/siavcom/VFP-NODE
-- SQL Data Base Postgres ( 12 or newer) or  MSSQL (17 or newer)
+- Backend with Node express and VFPnode project https://github.com/siavcom/VFP-NODE
+- SQL Database Postgres (12 or newer) or MSSQL (17 or newer)
 
-# Objetive:
+# Objective:
 
-- Make a simple program in typescript (class based), but with out knowledge of web programming (HTML, CSS, VUE).
+- Make a simple program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
-It's based in use a main form (like ThisForm in VFP) made in typescript only, where each form has it owns components ( editBox, comboBox, checkBox, grid, modalContainer ,etc) and has it own methods (click(), when, valid() etc())  forming a component tree.
+It's based on using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
 
                     this.Form
                     /   |   \
@@ -29,7 +29,14 @@ It's based in use a main form (like ThisForm in VFP) made in typescript only, wh
                    /    |      \
                click() when()  valid()...etc()
 
-there are some components where each one have it's own components (grid have a several columns components)
+There are some components where each one has its own components (container and grid has several components  and column components).
+                
+                container
+               /    |     \
+              /     |      \
+             /      |       \
+            /       |        \
+        Component1 Component2 Component..n
 
                 grid
                /  | \
@@ -38,10 +45,9 @@ there are some components where each one have it's own components (grid have a s
             /     |    \
         Column1 Column2 Column..n
 
-     
-Each component has it own propierties.
+Each component has its own properties.
 
-- basic props
+- Basic props
 - Style props
 - Position props (outdated)
 
@@ -52,26 +58,21 @@ and methods
 - valid
 - setFocus
 - interactiveChange
-
 - init
 - keyPress
     Handles key press events for the input.
     The pressed key value is stored in this.prop.Key.
-   
-
 - onChangeValue 
     When the value of this component changes, this method is called.
-    It recieves an optional parameter styles, which is the styles of the component (style,inputStyle,labelsStyle).
+    It receives an optional parameter styles, which is the styles of the component (style, inputStyle, labelsStyle).
     If it is not provided, it uses the component styles of the object.
-    sample :The method changes the color of the input depending on the value selected.
+    Sample: The method changes the color of the input depending on the value selected.
     A = green, B = red, X = blue.
     @param {any} styles - The style of the component.
 
-
-
-To make a reference to especific propierty you can do by using a complete name reference tree Map (Object)
-example:
-propierties :
+To make a reference to a specific property you can do so by using a complete name reference tree Map (Object).
+Example:
+Properties:
 this.Form.style.display="inline-block"
 this.Form.style.width='800px'.
 this.Form.component1.prop.Type = 'editText'
@@ -80,12 +81,12 @@ or
 this.Parent.component2.prop.Value='Customer name 1'
 this.Parent.component1.component2.prop.Value='Customer name 1'
 
-Calling a method :
+Calling a method:
 
  this.Form.component4.click().
  this.Parent.component1.component2.click()
 
-## web components
+## Web components
 
 - Form
 - editText
@@ -94,52 +95,106 @@ Calling a method :
 - checkBox
 - optionGroup
 - grid
+- base64
+- container
 
-## typescript components
+## TypeScript classes
+- Component. Basic component
+  
+- Form. Main page container
+- CaptureForm. Main maintenance page form
+- CaptureComponent. Component of CaptureForm
+- Grid. Table maintenance
+- Column. Column component in a grid component
+- Browse. Table display 
 
-- Form (component container)
-- Component
-  Each component have serveral properties where each properties afect visual and database behaviour as values to.
+  Each component has several properties where each property affects visual and database behavior as values too.
 
 ### Base properties (prop):
 
-    - BaseClass: "editText",  // HTML base class (Form, - - editText, comboBox, sppiner, grid, checkBox ...)
-    - Name: "", // Name  of component.
-    - textLabel: "", // text label showing before input.
+ - BaseClass:  <webComponent> 
+      type: string  
+      Values : 'Form'
+               'editText'
+               'textLabel'
+               'comboBox'
+               'checkBox'
+               'optionGroup'
+               'grid'
+               'base64'
+               'container'
+
+ - Name: <Name of the component>
+      Type :string
+
+ - textLabel: <Text label showing before input>
+      Type: string
+
+ - Type: <Data types when BaseClass="editText">
+      Type: string
+      Values : 'number'
+               'text'
+               'date'
+               'dateTime'
+               'spinner'
+               'checkBox'
+               'json'
+               'checkBox'
+
+ - Value: <Value of the component>
+
+### Visual properties
+
+  - First: <true. Component that receives focus when a new record is inserted>
+      Type: boolean
+    
+  - Disabled: <True when disabled>
+      Type: boolean
+
+  - ErrorMessage: <Error message if the component is not valid (after valid()=false or prop.Valid=false)>
+      Type: string
+
+  - Format: ""
+      Type: string
+
+  - InputMask: ""
+      Type: string
+    
+  - MaxLength: <Maximum character length>
+      Type: number
+
+  - Min: <Minimum value for number>
+      Type: number
+
+  - Max: <Maximum value for number>
+      Type: number
+
+  - Placeholder: <label inside input blurred>
+      Type: string 
+
+  - Position: <Postition in a form component>
+      Type: string 
+      Values: 'header'
+               'main'
+               'footer'
+    
+  - ReadOnly: <true when component is only readable>
+      Type: boolean
+    
+  - TabIndex: <Component tab index in a form component>
+      Type: number 
+
+  - Image: <Component background image path>
+      Type : string
+   
+  - ToolTipText: <Component tool tip text>
+      Type: string
+
+  - Visible:  <true when component is visible>
+      Type: string
 
 
-    - Type 'text', //  data types :
-                    - number
-                    - text
-                    - date
-                    - dateTime
-                    - spinner
-                    - checkBox.
-
-    - Value: '', // Value of component .
-
-### Visual properties.
-
-    - First: false // component who receives a focus when new register is inserted .
-    - Disabled: false
-    - ErrorMessage: "" // Error message if component is not valid (after valid()=false or prop.Valid=false).
-    - Format: ""
-    - InputMask: ""
-    - MaxLength: 0
-    - Min:0  // Minimun value for number
-    - Max:99999 // Maximun value for number
-    - Placeholder: ""
-    - Position: 'main', // main, header , footer.
-    - ReadOnly: false
-    - TabIndex: 1 // Tab index of component.
-
-    Image: ''
-    - ReadOnly: false
-    - TabIndex: 0
-    - ToolTipText: 'Principal name ',.
-    - Visible: true
-
-### Input component Style and componentStyle properties.
+### Input component Style and componentStyle properties
 
 - background: "white",
 - color: "#b94295",
@@ -148,89 +203,87 @@ Calling a method :
 - Maxheight: '13px',
 - MaxWidth: 'auto',
 - fontFamily: "Arial",
-- fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+- fontSize: "13px", // Automatically Vue will change it to font-size (for that, camelCase notation is used)
 - textAlign: "left",
-- ...... serveral css style properties : .
+- ...... several CSS style properties: .
 
+### Database components properties
 
-### Data Base components properties.
+    # Each prop.Value component can be gathered from a field of local SQL where:
 
-    # each prop.Value component can be gatter from a field of local SQL where :
-
-    - ControlSource: "tableName.fieldName // Name of sql field.
+    - ControlSource: "tableName.fieldName" // Name of SQL field.
     - RecordSource: 'viewTableName'
-    - SqlUpdate: true   //true, when lost focus component, update field component. When false, update field component since tableUpdate method
+    - SqlUpdate: true   // True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.
 
-### Internal properties.
+### Internal properties
 
-    - Capture: true // When capture is true, can't lost focus until Validate or esc
+    - Capture: true // When capture is true, can't lose focus until Validate or esc
     - First: false
-    - Focus: false // When put 1 , take focus this component
+    - Focus: false // When set to true, this component takes focus
     - Last: false
-    - Map:  // Read only. Main structure map of this component, class, method  example : "this.Form.componentName"
+    - Map:  // Read only. Main structure map of this component, class, method example: "this.Form.componentName"
     - Grid: false
     - id: 0
     - Key: 0
-    - Status: "I" //  P)rocess, A)ctive , I)nitialization.
-    - Valid:true // (Internal use). the value of the component is good
-    - KeyId : true when this component is a field index for a table select , update or delete
+    - Status: "I" //  P)rocess, A)ctive, I)nitialization.
+    - Valid: true // (Internal use). The value of the component is good
+    - KeyId: true when this component is a field index for a table select, update or delete
 
-### Numeric components.
+### Numeric components
 
-    - Currency: '   ' //USD,EUR,MXN
-    - CurrencyDisplay : 'code' //to use the ISO currency code
-    - Decimals : 2
+    - Currency: '   ' // USD, EUR, MXN
+    - CurrencyDisplay: 'code' // To use the ISO currency code
+    - Decimals: 2
     - Max: "999999999"
     - Min: "0"
     - Step: "1"
-    - Style: 'decimal' // decimal, currency,percent,unit
+    - Style: 'decimal' // decimal, currency, percent, unit
 
-### Combo box properties .
+### Combo box properties
 
-    - BoundColumn: 2  // The value is atached to column
+    - BoundColumn: 2  // The value is attached to the column
     - ColumnCount: 2 // Total column numbers in a comboBox
-    - ColumnWidths: '80%','20%' //  width each column
+    - ColumnWidths: '80%', '20%' // Width of each column
     - MultiSelect: true, // Can multiple select
     - List: [], // List array result when MultiSelect=true
     - Row: 0
-    - RowSourceType: 1 // How to fill the comboBox :
+    - RowSourceType: 1 // How to fill the comboBox:
           1-Value.
           2-Alias,
           3-Query SQL Server
-          4-Local Sql
+          4-Local SQL
           5-Array
           
-     when RowSourceType=2 or 3, you have to specify the RowSource     
+     When RowSourceType=2 or 3, you have to specify the RowSource     
 
-#### example value :
+#### Example value:
 
     - RowSourceType= 1
     - ColumnCount = 2
-    - RowSource="House,H,Building,B,Departament,D"
+    - RowSource="House,H,Building,B,Department,D"
 
-#### example local SQL :
-    - RowSourceType : 2
-    - RowSource : 'table.cod_nom,nom_nom'
-    Notes : You already have a local table SQL
+#### Example local SQL:
+    - RowSourceType: 2
+    - RowSource: 'tableNames.cod_nom,nom_nom'
+    Notes: You already have a local table SQL
 
-#### example SQL Server :
-    - RowSourceType : 3
-    - RowSource : 'select cod_nom,nom_nom from lla1_nom order by nom_nom'
+#### Example SQL Server:
+    - RowSourceType: 3
+    - RowSource: 'select cod_nom,nom_nom from tableNames order by nom_nom'
 
-#### example Local SQL :
-    - RowSourceType : 4
-    - RowSource : 'select cod_nom,nom_nom from lla1_nom order by nom_nom'
+#### Example Local SQL query :
+    - RowSourceType: 4
+    - RowSource: 'select cod_nom,nom_nom from tableNames order by nom_nom'
 
-#### example array :
+#### Example array:
     - RowSourceType: 5
     - ColumnCount = 2
-    - RowSource:[["Datos", "Tablas", "Indices", "Vistas", "Menú del sistema","Otros"],["D", "T", "I", "V", "M","O"]]
+    - RowSource: [["Datos", "Tablas", "Indices", "Vistas", "Menú del sistema", "Otros"], ["D", "T", "I", "V", "M", "O"]]
 
 ### Others
-    - Style = 2; //0=DropDown Combo 2=DropDown List
+    - Style = 2; // 0=DropDown Combo 2=DropDown List
 
-
-### Style propierties (style) .
+### Style properties (style)
 
     - display: "inline-block"
     - flexGrow: "0"     /* do not grow   - initial value: 0 */
@@ -250,40 +303,38 @@ Calling a method :
     - alignContent: "center"
     - textAlign: "left"
 
-    - ....... serveral css style properties : .
+    - ....... several CSS style properties: .
 
-## Grid (componet container). This component is for table data base capture
+## Grid (component container). This component is for table database capture
 
-  A grid have a several columns where each column is a input or label component where each component if bind to a SQL table field .
- 
+  A grid has several columns where each column is an input or label component where each component is bound to a SQL table field.
 
+## For a complete example, take a look in the page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access.
 
-## For a complete example, take a look in page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintennce dicctionary, you can add tables with fields, index and SQL views for manipulate data access.
+This has 2 principal files, a view VUE (Main.vue) and TypeScript program (ThisForm.ts).
+ThisForm.ts is the beginning TypeScript program where the component definition is.
 
-This have a 2 principal files, a view VUE (Main.vue) and typescript program (ThisForm.ts)
-ThisForm.tx is the begin typesccript program where is a component definition .
+Each component has a separate TypeScript file.
 
-Each component has a separate typescript file.
-
-## SQL DataBase class
+## SQL Database class
 
 - select (<area>).
 
 - useNodata (<table>, <alias?>).
 
-- use (<table>,<memoryObject>,<alias?> ).
+- use (<table>, <memoryObject>, <alias?>).
 
-- tableUpdate(<updateType>,<force>,<alias>).
+- tableUpdate(<updateType>, <force>, <alias>).
 
-- appendBlank(<alias>,<memoryObject>).
+- appendBlank(<alias>, <memoryObject>).
 
-- deleteRow(<key_pri>,<alias>).
+- deleteRow(<key_pri>, <alias>).
 
-- delete(<recno>,<alias>,<SqlUpdate>).
+- delete(<recno>, <alias>, <SqlUpdate>).
 
-- insert(<alias>,<memoryObject>).
+- insert(<alias>, <memoryObject>).
 
-- execute(<query>,<alias?>,<resultType>).
+- execute(<query>, <alias?>, <resultType>).
 
 - select(<alias>).
 
@@ -295,102 +346,121 @@ Each component has a separate typescript file.
 
 - skip(<rowNumbers>).
 
-- scatter(<type>,<fieldArray>).
+- scatter(<type>, <fieldArray>).
 
-[alias] type : string .Local SQL table alias.
+<area> type: number. VFP Area number
 
-[table] type : string .SQL Server remote view name.
+<alias> type: string. Local SQL table alias.
 
-[memoryObject] type : Object. It have field and value field SQL table
-example : m={ code_id : '000021',
-PurchaseDate : '2022-10-21' }.
+<table> type: string. SQL Server remote view name.
 
-[updateType] : type: number .
-Value = 0 Only row witch posisioned.
-Value = 1 All table rows until update error. if error, return a false else return true.
-Value= 2 All table rows.
+<memoryObject> type: Object. It has field and value field SQL table. (In VFP is named only m )
+Example:
+ const  m={ code_id : '000021',
+            PurchaseDate : '2022-10-21' }
 
-[force]: type : boolean .
-Value =false If a update table fail because other user change data first, return false.
-Value =true If a update table fail because other user change data first.
+<updateType> type: number.
+  Value = 0 Only row which positioned.
+  Value = 1 All table rows until update error. If error, return false else return true.
+  Value= 2 All table rows.
 
-[key_pri]: type: number. Table key_pri(id) number in SQLServer.
+<force> type: boolean.
+  Value = false If an update table fails because another user changed data first, return false.
+  Value = true If an update table fails because another user changed data first.
 
-[recno] : type: number .Local SQL id recno number.
+<key_pri> type: number. Table key_pri(id) number in SQLServer.
 
-[SqlUpdate] type: boolean .
-Value=true. Delete SQLServer.
-Value=false. Only local SQL .
+<recno> type: number. Local SQL id recno number.
 
-[sqlQuery] type: string. Sql Server query to execute.
+<SqlUpdate> type: boolean.
+  Value = true. Delete SQLServer.
+  Value = false. Only local SQL.
 
-[resultType] type : string.
+<sqlQuery> type: string. SQL Server query to execute.
 
-[row] type: number. Recno row id to go.
+<resultType> type: string.
 
-[rowNumbers] type: number Row number. Forward it is Positive and backward it is negative.
+<row> type: number. Recno row id to go.
 
-[type] type: string .
-Value='MEMVAR'. Return a object with all field values).
-Value= 'FIELDS',). Return a object with specific field values).
+<rowNumbers> type: number. Row number. Forward it is positive and backward it is negative.
 
-[fieldArray] type: array. Array with specific field to obtain values.
+<type> type: string.
+  Value = 'MEMVAR'. Return an object with all field values.
+  Value = 'FIELDS'. Return an object with specific field values.
+
+<fieldArray> type: array. Array with specific fields to obtain values.
+
+
 
 ## How to use this framework
 
-- Install Node.js  18.x or newer (recommended active LTS release) https://nodejs.org/en/download/  or use nvm https://github.com/nvm-sh/nvm
-
+- Install Node.js 18.x or newer (recommended active LTS release) https://nodejs.org/en/download/ or use nvm https://github.com/nvm-sh/nvm
 
 ## Recommended IDE Setup
 
-- [VSCode](https://code.visualstudio.com/) 
+- [VSCode](https://code.visualstudio.com/)
 
-- useful extensions for vscode  .- Eslint
-- useful extensions for vscode  .- Prettier Eslint
-- useful extensions for vscode  .- Vue Official
+- Useful extensions for VSCode:
+  - Eslint
+  - Prettier Eslint
+  - Vue Official
 
-- Download back-end framework from https://github.com/siavcom/VFP-NODE and extrac it in a folder.
-- make a company folder in back-end forlder/app/emresas/<your company name>
-- copy a sample faolder company in the company folder
-- rename sample folder to your company name
-- change the db.config.js file and use your SQL Server connection parameters
-- open a terminal in the back-end folder and run node server_socket.js
+- Download the back-end framework from https://github.com/siavcom/VFP-NODE and extract it in a folder.
+- Make a company folder in the back-end folder/app/empresas/<your company name>
+- Copy a sample folder company in the company folder
+- Rename the sample folder to your company name
+- Change the db.config.js file and use your SQL Server connection parameters
+- Open a terminal in the back-end folder and run node server_socket.js
 
+- Download this framework from https://github.com/siavcom/web-ones-technology and extract it in a folder.
 
-- Download this framework from https://github.com/siavcom/web-ones-technology and extrac it in a folder.
-
-- open a terminal in the framework folder 
+- Open a terminal in the framework folder 
   run npm install
   
-  you have to make a company folder in yout computer in /sistemas/name>
+  You have to make a company folder in your computer in /sistemas/name>
   run npx nuxi dev
    
 ## Design SQL Table
 - Create a new SQL table.
- Go to SQL data diccionary in a menu .
- - Chose SQL Server table
- - Chose system menu
+  Go to SQL data dictionary in the menu.
+ - Choose SQL Server table
+ - Choose system menu
  - Add a new table
- - fill al data table caracteristics
- - save table
+ - Fill all data table characteristics
+ - Save table
 
 - Create a new definition SQL table
-Go to SQL data diccionary in a menu .
-  - Chose table definition
-  - Chose system menu
-  - Chose table
+  Go to SQL data dictionary in the menu.
+  - Choose table definition
+  - Choose system menu
+  - Choose table
   - Add a new definition
-  - click accept
-  - insert fields
-  - fill up all caracteristics
-  - click accept
-  notes :
-    when a field is a primary key, the default value has to be m.<namefield>
+  - Click accept
+  - Insert fields
+  - Fill up all characteristics
+  - Click accept
+  Notes:
+    When a field is a primary key, the default value has to be m.<namefield>
 
 - Create a new SQL view.
 - Create a new SQL index.   
 
-## this project use
+## Make a personal menu pages
+In this framework use the file directory structure of NUXT . All pages are in page directory and each page must have 3 directories 
+  1) Mto . Maintenance pages
+  2) Rep.  Reporting pages
+  3) Pro.  Process pages
+ and in this directories has a directory for each page 
+ 
+ To make a menu :
+ Go to SQL data dictionary in the menu.
+  - Choose Menu pages
+  - Chose menu type 
+  - Chose system
+  fill data execpt data of VFP 
+    
+
+## This project uses
 
 - Vue 3 SFC
 - Nuxt 3
@@ -408,47 +478,67 @@ Go to SQL data diccionary in a menu .
 - maska
  
 - Back End https://github.com/siavcom/VFP-NODE
-- SQL Server (  MSSQL, Postgres soon )
+- SQL Server (MSSQL, Postgres soon)
 
-## Knowledge Necesary :
+## Necessary Knowledge:
 
-- Object class programing.
+- Object class programming.
 - TypeScript.
-- Some basic html css styles propierties.
-- Ansi 99 standard SQL instructions.
-- SQL Server skills (  MSSQL or/and Postgres  )
+- Some basic HTML CSS styles properties.
+- ANSI 99 standard SQL instructions.
+- SQL Server skills (MSSQL or/and Postgres).
 
 ## Notes:
-- This framework is based in a SQL database.
-- It's not complete yet. If you require install and use , let me know by mail or skype siavcom@hotmail.com. 
-- If you want a new feature, let me know by mail or skype siavcom@hotmail.com
-- To use this Framework, you have to restore a initial SQL backup .
-- If you are a VFP programer, clipper, dbase III or IV, this is the right option for programing in the web.
-- If you have a question, let me now by mail or skype siavcom@hotmail.com
-- I can help you if you want to use this framwork.
-- I use linux (ubuntu 22.04, ubuntu 24.04) and Windows 10 to make this project.
+- This framework is based on a SQL database.
+- It's not complete yet. If you require installation and use, let me know by mail or Skype siavcom@hotmail.com. 
+- If you want a new feature, let me know by mail or Skype siavcom@hotmail.com.
+- To use this Framework, you have to restore an initial SQL backup.
+- If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
+- If you have a question, let me know by mail or Skype siavcom@hotmail.com.
+- I can help you if you want to use this framework.
+- I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
 
 # About
-- I'm a old FOX programer with a lot experience in desing and programing in Visual Fox Pro (VFP),MSSQL and Postgres databases.
+- I'm an old FOX programmer with a lot of experience in VFP design and programming, MSSQL, and Postgres databases.
 
-- Author :
+- Author:
+  - El Fer Blocks (Principal design, programming, and project director).
+    LinkedIn: https://www.linkedin.com/in/fernando-cuadras-846a20102/.
 
-  - Fer Blocks (Principal desing,programinig and project director) .
-    Linkedin https://www.linkedin.com/in/fernando-cuadras-846a20102/ . 
-
-  - Lupita Sotelo (Reports and SQL desing) .
-  - Raul Castro (html and css desing) .
+  - Lupita Sotelo (Reports and SQL design).
+  - Raul Castro (HTML and CSS design).
 
 - http://siavcom.com.mx
-  skype & e-mail : siavcom@hotmail.com
+  Skype & e-mail: siavcom@hotmail.com
 
 ## Reserved Word
 
 position
+estatus
 
-## Other notes :
-
+## Other notes:
 Development:
 $ npx nuxi dev --port=3000
 $ npm run dev
 
+## Other function:
+// Append data in m
+
+const m = { name: 'John',
+            phone: '(312) 123-1234'
+          }
+
+m = appendM(m, { zipCode: '23455' })
+
+Result:
+console.log(m) =
+  { name: 'John',
+    phone: '(312) 123-1234',
+    zipCode: '23455'
+  }
+
+  ## Other
+  Login to the framework
+  <user>@<busines nickname>
+      <user> : personal login
+      <busines nickname> :  SQL data base name

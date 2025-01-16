@@ -2,8 +2,7 @@
 /* en nuxt.config.ts (dio error al arrancar)
 modules: [
   '@pinia/nuxt'
-  
-,
+  ,
         {
             autoImports: [
               // automatically imports `defineStore`
@@ -16,9 +15,6 @@ modules: [
 //import { defineStore, acceptHMRUpdate } from 'pinia'
 
 import { acceptHMRUpdate } from "pinia";
-
-
-//import axios from "axios";
 
 import { Socket, io } from "socket.io-client";
 //import { DefaultEventsMap } from "@socket.io/component-emitter";
@@ -181,11 +177,14 @@ export const Session = defineStore(
           }
         )
 
+        console.log('current session url=', url.value, 'data', data.value)
         const dat_emp = data.value
         url.value = dat_emp[nom_emp.value].url; // obtenemos el url del servidor node
 
+
         //  logoEmp.value = dat_emp[nom_emp.value].logoEmp;
-        logoEmp.value = await obtLogo(dat_emp[nom_emp.value].logoEmp)
+        if (dat_emp[nom_emp.value].logoEmp && dat_emp[nom_emp.value].logoEmp.length > 0)
+          logoEmp.value = await obtLogo(dat_emp[nom_emp.value].logoEmp)
 
       } catch (error) {
         console.warn("No existe empresa ", nom_emp.value);

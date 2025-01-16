@@ -77,7 +77,11 @@ export class tip_dat extends COLUMN {
   // Evento When
   ///////////////////////////////////
   async when() {
-    this.prop.ReadOnly = !await this.Parent.cam_dat.when()
+    this.prop.Valid = true
+    if (!this.prop.ReadOnly! && !await this.Parent.cam_dat.when()) {
+      this.prop.ReadOnly = true
+      this.prop.Valid = true
+    }
     return !this.prop.ReadOnly
 
   }

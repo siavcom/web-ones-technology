@@ -77,15 +77,9 @@
                       v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                       :Registro="ThisForm[compMain].Recno" :prop="ThisForm[compMain].prop"
                       :style="ThisForm[compMain].style" :position="ThisForm[compMain].position" />
-                    <!--
-                      
-                       :ShowError="ThisForm[compMain].prop.ShowError" 
-                    :inputStyle="ThisForm[compMain].inputStyle" 
-                     @click.capture="ThisForm.eventos.push('ThisForm.' + compMain + '.click()')" -->
                   </div>
 
-                  <!-----------------------------------------------------------
-                 <-->
+                  <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
                   <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
                     <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
@@ -93,7 +87,6 @@
 
                       <div v-for=" (component, key) in block.component" :key="key"
                         :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-                        <!--v-bind:Component="ref(Ele)"-->
 
                         <component :id="Id + '_blockComponent_' + key + component.prop.Name"
                           :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
@@ -106,8 +99,7 @@
                   </div>
 
 
-                  <!-----------------------------------------------------------
-                 <-->
+                  <!------------------------------------------------------------->
 
 
                 </TransitionGroup>
@@ -168,8 +160,6 @@
         </section>
       </div>
 
-
-
     </transition>
   </div>
   <!--/header-->
@@ -177,28 +167,6 @@
 
 <script lang="ts" setup>
 
-/*
-import {
-  nextTick,
-  ref,
-  toRef,
-  reactive,
-  computed,
-  //  onMounted,
-  //  onUpdated,
-  //  onUnmounted,
-  watch,
-  //  isRef,
-  //  isReactive,
-  //  isReadonly,
-  //  isProxy,
-  // inject,
-  // provide,
-  //getCurrentInstance,
-  defineAsyncComponent,
-  //defineProps,
-} from "vue";
-*/
 
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
@@ -292,12 +260,6 @@ useSeoMeta({
   //  twitterCard: 'summary_large_image',
 })
 
-
-//console.warn(router.query.params)
-//console.warn(router.currentRoute[query])
-
-
-
 /*
 let sw_session=true
 let intento=0
@@ -338,7 +300,6 @@ const loading = ref(true)
 // Metodos propios
 ////////////////////////////////////////////
 
-
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {
     // Se tiene que pasar por referencia donde esta el ThisForm 
@@ -351,8 +312,6 @@ const waitEval = async (evento: string) => {
       console.error('Hubo error al ejecutar evento', error)
     })
   })
-
-
 }
 
 
@@ -363,51 +322,19 @@ const waitEval = async (evento: string) => {
 watch(
   () => ThisForm.eventos,
   async (new_val, old_val) => {
-
-    if (ThisForm.eventos.length == 0) {
-      ThisForm.prop.Status = 'A'
+    if (ThisForm.eventos.length == 0) // 27/Dic/2024
       return
-    }
-
+    console.log('1) eventos Entro watch ThisForm.estatus=', ThisForm.eventos)
     for (const comp in ThisForm.estatus) {
 
       if (ThisForm.estatus[comp] != 'A') {
-
-        console.log('watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
+        ThisForm.eventos = []
+        // ThisForm.prop.Status = 'P'
+        // console.log('2) eventos Entro watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
         return
       }
     }
-    if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
-      const evento = ThisForm.eventos[0]
-      ThisForm.eventos[0] = 'XXXXX'
-      if (evento > '') {
-        console.log('Comienza watch ThisForm.eventos===>>> ', evento)
-
-        await waitEval(evento)
-        console.log('Borrara evento watch ThisForm.eventos===>>> ', evento)
-
-        // borramos el evento
-        const new_arr = []
-        let num_eve = 0
-        if (ThisForm.eventos.length > 1) {
-          for (let i = 0; i < ThisForm.eventos.length; i++) {
-            if (ThisForm.eventos[i] != 'XXXXX' && ThisForm.eventos[i].length > 0) {
-              new_arr[num_eve] = ThisForm.eventos[i]
-              num_eve++
-              console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
-
-            }
-          }
-        }
-        ThisForm.eventos = [...new_arr]
-        if (ThisForm.eventos.length == 0)
-          ThisForm.prop.Status = 'A'
-
-        console.log('############Evento terminado ############ ', evento, ThisForm.prop.Status, ThisForm.eventos.length, ThisForm.eventos)
-
-        //await eje_eve(evento)
-      }
-    }
+    ejeEventos()
 
   }, { deep: true }
 );
@@ -418,34 +345,64 @@ watch(
 watch(
   () => ThisForm.estatus,
   async (new_val, old_val) => {
-    console.log('<=======Watch estatus eje_eve=======>')
+    console.log('estatus Entro watch ThisForm.estatus=. ', ThisForm.estatus)
 
-    for (const comp in ThisForm.estatus) {
+    for (const comp in new_val) {
       //  console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
 
       if (ThisForm.estatus[comp] != 'A') {
+        console.log('Proceso watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
         ThisForm.prop.Status = 'P'
+        ThisForm.eventos = []
         return
       }
     }
 
     console.log('Form watch status ', ThisForm.eventos[0])
 
-    if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
-      if (ThisForm.eventos[0] > '') {
-        const evento = ThisForm.eventos[0]
-        ThisForm.eventos[0] = 'XXXXX'
-        if (evento > '') {
-          await waitEval(evento)
-
-        }
-      }
-      // eje_eve(2)
-    }
-
+    ejeEventos()
   },
   { deep: true }
 );
+
+
+const ejeEventos = async () => {
+  console.log('Form ejeEventos ===>>> ', ThisForm.eventos)
+  if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
+    const evento = ThisForm.eventos[0]
+    //  ThisForm.eventos[0] = 'XXXXX'
+    ThisForm.eventos = []
+    console.log('ejeEventos ejecutara===>>> ', evento)
+    await waitEval(evento)  // ejecuta evento de la lista
+    console.log('Borrara evento watch ThisForm.eventos===>>> ', evento)
+
+    // borramos el evento
+    const new_arr = []
+    let num_eve = 0
+    if (ThisForm.eventos.length > 1) {
+      for (let i = 0; i < ThisForm.eventos.length; i++) {
+        console.log('Eventos Restantes===>>> ', evento)
+        if (ThisForm.eventos[i] != 'XXXXX' && ThisForm.eventos[i].length > 0) {
+          new_arr[num_eve] = ThisForm.eventos[i]
+          num_eve++
+          console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
+
+        }
+      }
+    }
+    ThisForm.eventos = [...new_arr]
+
+
+    console.log('############Evento terminado ############ Evento ejecutado==>>> ', evento, 'ThisForm.prop.Status=', ThisForm.prop.Status, 'Eventos restantes=', ThisForm.eventos.length, 'Eventos', ThisForm.eventos)
+
+    //await eje_eve(evento)
+
+  }
+}
+
+
+
+
 
 const clickSalir = async () => {
   if (await MessageBox("Salimos de la forma", 4, '') == 6) {

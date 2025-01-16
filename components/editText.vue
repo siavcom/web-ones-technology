@@ -5,8 +5,8 @@
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel + " "
       }}</span>
 
-    <input :id="Id" v-if="propType == 'number'" class="number" type="text" :style=Styles.inputStyle ref="Ref"
-      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
+    <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
+      ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
@@ -65,25 +65,27 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <!--/div-->
 
 
-    <div :id="Id + '_div_json'" class='json' v-else-if="propType == 'json'" ref="Ref" :style=Styles.inputStyle>
+    <div :id="Id" class='json' v-else-if="propType == 'json'" ref="Ref" :style=Styles.style>
 
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
       <!--TransitionGroup name='detailJson' tag="div"-->
-      <details :id="Id + '_detail_' + key" v-for="(    comp, index, key    ) in compJson    " key:='index'>
-        <summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'>
-          <label>{{ comp.label }}
-          </label>
-        </summary>
+      <!--details-->
+      <div :id="Id + '_detail_' + key" v-for="(    comp, index, key    ) in compJson    " key:='index' open='true'>
+        <!--summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'-->
+        <label>{{ comp.label }}
+        </label>
+        <!--/summary-->
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
-          :readonly="comp.readOnly || prop.ReadOnly || prop.Disabled ? true : false"
-          :disabled="comp.disabled || prop.Disabled ? true : false"
+          :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
+          :disabled="comp.disabled || This.prop.Disabled ? true : false"
           :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus"
           @contextmenu="handler($event)">
 
-      </details>
+      </div>
+      <!--/details-->
       <!--/TransitionGroup-->
     </div>
 
@@ -114,15 +116,39 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       'Invalid Input'
       }}</div>
 
-    <div class="component_conainer" :style="containerStyle">
+    <!--Compponentes que no estan en bloque-->
+
+    <div class="component_container" :style="containerStyle">
       <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-        :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-        :style="This[compMain].style" :position="This[compMain].position">
+        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
+        :position="This[compMain].position">
       </component>
     </div>
+
+    <!--Compponentes en bloque-->
+    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
+        <div v-for=" (component, key) in block.component" :key="key"
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+          <!--v-bind:Component="ref(Ele)"-->
+          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
+            v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
+            :prop="component.prop" :position="component.position">
+            <!--:style="component.style" :inputStyle="component.inputStyle"
+                                               
+                      @click.capture="component.click()"-->
+          </component>
+        </div>
+      </div>
+    </div>
+
     <!--/Teleport-->
-    <!--   @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
+    <!--   :ShowError="This[compMain].prop.ShowError" 
+       
+    @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
   </span>
 </template>
@@ -261,19 +287,21 @@ const props = defineProps<{
 
 
   };
-
-  style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "auto";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-    zIndex: 0
-
-  };
+  /*
+    style: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "auto";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      zIndex: 0
+  
+    };
+  
+    */
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -304,15 +332,17 @@ const Styles =
 }
 
 const helpStyle = {
-  position: 'absolute',
-  left: inputStyle.width,
-  marginTop: '1%',
+  // position: 'absolute',
+  // left: inputStyle.width,
+  marginTop: '1px',
   width: '20px',
-  paddingLeft: '5px'
+  maxHeight: '20px',
+  paddingLeft: '2px',
+  alignContent: 'flex-start'
 }
 
 if (props.prop.Help)
-  containerStyle.paddingLeft = "23px"
+  containerStyle.paddingLeft = "2px"
 
 
 //const divStyle = reactive(props.style)
@@ -461,7 +491,7 @@ const onInput = ({ target }) => {
 
 
   // Si ya hay  un punto decimal
-  if (currentValue.value[1].indexOf('.') >= 0) {
+  if (typeof currentValue.value[1] == 'string' && currentValue.value[1].indexOf('.') >= 0) {
     const Decimales = currentValue.value[1].length - currentValue.value[1].indexOf('.') - 1
     if (Decimales > props.prop.Decimals) {
       currentValue.value[1] = oldVal
@@ -493,7 +523,7 @@ const onInput = ({ target }) => {
     return
   }
 
-  if (currentValue.value[1].indexOf('.') == -1 && +currentValue.value[1] == 0) {
+  if (typeof currentValue.value[1] == 'string' && currentValue.value[1].indexOf('.') == -1 && +currentValue.value[1] == 0) {
     currentValue.value[1] = '0'
     return
   }
@@ -541,8 +571,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   let readValid = false
   if (!readCam) { // En valor viene el valor actual capturado
 
-    if (This.Form.prop)
-      This.Form.prop.Status = 'P'
+    // 24/Dic/2024  if (This.Form.prop)
+    // 24/Dic/2024   This.Form.prop.Status = 'P'
 
     This.prop.Status = 'P'
     Status.value = 'P'
@@ -594,10 +624,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
           This.prop.Valid = false
 
           // 7/Feb/2024       
-          This.Form.prop.Status = 'A'
+          //This.Form.prop.Status = 'A'
           select()
+
           //          This.prop.Focus = true
-          This.prop.Status = 'A'
+          // This.prop.Status = 'A'
           return
         } //else This.prop.Valid = true
 
@@ -718,9 +749,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   if (This.onChangeValue) {
     await This.onChangeValue(ref(Styles))
   }
-  // console.log('4) editText emitValue() Fin Name=', props.prop.Name, 'Type=', Type, 'Value = ', Value.value)
+
   switch (Type) {
     case 'number':
+
 
       if (Value.value == null)
         Value.value = 0
@@ -744,11 +776,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
       compJson.value = []
+
       if (Value.value.trim().length > 5) {
         try {
           currentJson.value = JSON.parse(Value.value)
+          console.log('editText Json Name', props.prop.Name, 'currentJson Value=', currentJson.value)
+
         } catch (error) {
-          await MessageBox('Error Invalid Json  :' + Value.value, 'Error')
+          await MessageBox('Error Invalid Json  :' + Value.value, 16, 'Error')
           currentJson.value = []
         }
       }
@@ -808,8 +843,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   if (This.prop.Valid)
     This.prop.Status = 'A'
 
-  if (This.Form.prop)
-    This.Form.prop.Status = 'A'
+  // 24/Dic/2024 if (This.Form.prop)
+  // 24/Dic/2024   This.Form.prop.Status = 'A'
 
   /////////////////////////////////////////
   // nextTick(function () {
@@ -920,17 +955,23 @@ const asignaValue = async () => {
 
   if (Type == 'number') {
     typeNumber.value = 'text';
-    const valor = +currentValue.value[0]
-    if (isNaN(valor))
-      currentValue.value[0] = 0
 
-    Value.value = +currentValue.value[0]
+    const valor = +currentValue.value[1]  // 13/Ene/2024
+    if (isNaN(valor))
+      currentValue.value[1] = 0
+    // console.log('1) asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
+
+
+    Value.value = +currentValue.value[1]  //13/Ene/2024
     if (Value.value < +props.prop.Min)
       This.prop.Valid = false
 
     if (Value.value > +props.prop.Max)
 
       This.prop.Valid = false
+
+    //  console.log('2) asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
+
 
   }
 
@@ -973,10 +1014,10 @@ const asignaValue = async () => {
     return
 
   if (Type == 'text') {
-    if (props.style.textTransform == 'uppercase')
+    if (This.style.textTransform == 'uppercase')
       Value.value = Value.value.toUpperCase()
 
-    if (props.style.textTransform == 'lowercase')
+    if (This.style.textTransform == 'lowercase')
       Value.value = Value.value.toLowerCase()
   }
 
@@ -1031,9 +1072,6 @@ const keyPress = ($event: {
     return $event.keycode;
   }
 
-
-
-
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
     //console.log('1.1) nextElement KeyPres==>', $event.charCode)
@@ -1076,12 +1114,15 @@ const keyPress = ($event: {
 const nextElement = async () => {  //clickReturn
 
   console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
+  // await lostFocus()
+  /* 26/Dic/2024
+   await asignaValue()
+   await emitValue() // 
+   if (!This.prop.Valid) {
+     return
+   }
+  */
 
-  await asignaValue()
-  await emitValue() // 
-  if (!This.prop.Valid) {
-    return
-  }
   const TabIndex = This.prop.TabIndex
   let lastIndex = 999999
   let nextFocus = ''
@@ -1110,7 +1151,7 @@ const nextElement = async () => {  //clickReturn
   if (nextElement) {
     console.log('clickReturn nextFocus =', nextFocus)
     nextElement.focus()
-    nextElement.focus()
+    //  nextElement.focus()
 
     //$event.keycode = 9;
     return // $event.keycode;
@@ -1129,13 +1170,142 @@ const click = () => {
 
 }
 
+////////////////////////////////////////////////////////////////////
+// onFocus
+// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
+//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
+// Obs: el when() se llama desde el coponente parent 
+/////////////////////////////////////////////////////////////////
+const onFocus = async (click?: boolean) => {
+
+  // Si esta en un grid checa sus estatus de todas las columnas
+  if (This.Parent.BaseClass = "grid") {
+    const grid = This.Parent
+    //console.log('EditText onFocus Grid Name', This.prop.Name)
+    for (const comp in grid.elements) {
+      const compName = grid.elements[comp].Name
+      // 24/Dic/2024 .- Se aumenta que sea componente Capture
+      if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
+        console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+        return
+      }
+    }
+  }
+
+
+  if (!This.Help)
+    This.Help = false
+
+  // Cuando esta en un grid y se hace foco a un renglon que no tiene el foco, se debe de correr en when  
+  // al hacer el appendRow pone los ReadOnly en false en todos los componentes del grid
+  if (This.prop.ReadOnly || This.prop.Disabled) {
+
+    //thisElement.next(':input').focus();
+    This.prop.Status = 'A'
+    return
+  }
+
+  // textValue[0]  perdio foco, textValue[1] obtiene el foco
+  // Si es la primera vez que se hace foco
+  let sw_when = false
+  if (focusIn.value == 0) {
+    await emitValue(true)
+    sw_when = true
+    focusIn.value = 1
+  }
+
+  focusIn.value = 1  // cambia el valor en el input number 
+  This.prop.Focus = false
+  This.prop.First = false
+
+  const Type = propType.value
+  ToolTipText.value = false
+  //  displayError.value = false
+
+  const ControlSource = props.prop.ControlSource
+  const pos = ControlSource.indexOf(".") + 1;
+
+  // Calcula la longitud maxima
+  if (pos > 1 && !sw_MaxLength) {
+    sw_MaxLength = true
+    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
+    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+
+
+    let lon_campo = This.prop.Value.length
+    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
+
+      if (!This.Sql.View[tabla].est_tabla[campo]) {
+        console.error('editText onFocus() Error: No se encontro el campo', campo, 'en la vista', tabla)
+        return
+      }
+      lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
+      if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
+
+        MaxLength.value = lon_campo
+      }
+    }
+  }
+
+  // El displayError se apaga en el keyPress cuando es un input text, number o date 
+  if ((Type == 'json' || Type == 'checkbox') && displayError.value) {
+    displayError.value = false
+    if (This.prop.ShowError)
+      This.prop.ShowError = false
+  }
+
+  // select() 20/Dic/2024 Se quito porque en version compilada no funciona
+
+  emit("update:Value", Value.value)
+
+  if (sw_when) { //!This.prop.First && !This.prop.Focus && 
+
+    console.log('0)====> when cam_dat=', This.prop.Value, 'This.Parent.Row=', This.Parent.Row, ' ReadOnly=', This.prop.ReadOnly)
+    nextTick(function () {
+
+      This.Form.eventos.push(This.prop.Map + '.when()')
+      if (click)
+        This.Form.eventos.push(This.prop.Map + '.click()')
+    })
+
+  }
+
+
+  //nextTick(function () {
+
+  // const element = document.getElementById(Id);
+  // select()   // 4 Julio 2024
+
+  return
+}
+
+
+
 /////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 // Obs: el when() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
-const onFocus = async () => {
+const onFocus_old = async () => {
+
+  // Si esta en un grid checa sus estatus de todas las columnas
+
+  if (This.Parent.BaseClass = "grid") {
+    const grid = This.Parent
+    //console.log('EditText onFocus Grid Name', This.prop.Name)
+    for (const comp in grid.elements) {
+      const compName = grid.elements[comp].Name
+      // 24/Dic/2024
+      if (grid[compName].prop.Status != 'A' || grid[compName].prop.Capture && !grid[compName].prop.Valid) {
+        console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+        return
+      }
+    }
+  }
+
+
+
   // No se permite el focus si es solo lectura
   if (!This.Help)
     This.Help = false
@@ -1198,9 +1368,7 @@ const onFocus = async () => {
       This.prop.ShowError = false
   }
 
-  select()
-
-
+  // select() 20/Dic/2024 Se quito porque en version compilada no funciona
 
   emit("update:Value", Value.value)
 
@@ -1212,6 +1380,11 @@ const onFocus = async () => {
 
   return
 }
+
+
+
+
+
 const clickHelp = async () => {
 
   if (focusIn.value == 0)
@@ -1248,8 +1421,7 @@ const select = async () => {
   setTimeout(function () {
     //thisElement.focus({ focusVisible: true });
     if (thisElement.select)
-      thisElement.select();
-
+      thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   }, 300);
 
   //})
@@ -1364,7 +1536,7 @@ watch(
       return
     }
     // Se pidio desde afuera el setFocus
-    if (document.activeElement != thisElement)
+    if (thisElement != null && document.activeElement != thisElement)
       return thisElement.focus();
 
     //  const length = thisElement.value.length;
@@ -1546,10 +1718,11 @@ watch(
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
   console.log('onMaska=',
     {
-      masked: event.detail.masked,
-      unmasked: event.detail.unmasked,
-      completed: event.detail.completed
+      //masked: event.detail.masked,
+      // unmasked: event.detail.unmasked,
+      // completed: event.detail.completed
     }
+
   )
 }
 
@@ -1615,6 +1788,9 @@ onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
   console.log('1) editText onMounted Name=', This.prop.Name)
   styleAssing()
+
+  if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
+    Styles.inputStyle.maxHeight = Styles.style.fontSize
 
   if (propType.value == 'textarea')
     Styles.labelStyle.alignContent = 'flex-start'

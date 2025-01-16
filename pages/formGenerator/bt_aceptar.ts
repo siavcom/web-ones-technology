@@ -26,13 +26,16 @@ export class bt_aceptar extends COMPONENT {
     this.style.width = "30px";
   } // Fin constructor
 
-  async click() {
+  override async click() {
+
     if (this.prop.Disabled) return;
+
     this.prop.Disabled = true;
 
     if (this.Form.nom_for.prop.Value.trim() == "") {
       this.Form.nom_for.prop.Valid = false;
       this.Form.nom_for.prop.ErrorMessage = "Dato en blanco";
+      this.Form.nom_for.prop.Valid = false;
       this.prop.Disabled = false;
       return;
     }
@@ -48,6 +51,7 @@ export class bt_aceptar extends COMPONENT {
     const vis_grid = this.Form.vis_grid.prop.Value.trim();
     const vis_form = this.Form.vis_form.prop.Value.trim();
     let controlSource = "";
+
     // Es Forma o Compuesta. Asigna la forma de captura
     if (
       this.Form.tip_for.prop.Value == "F" ||
@@ -120,6 +124,8 @@ export class bt_aceptar extends COMPONENT {
     }
 
     //================ Si es captura de Grid o Compuesto =====================
+
+
     if (
       this.Form.tip_for.prop.Value == "C" ||
       this.Form.tip_for.prop.Value == "G"
@@ -142,12 +148,14 @@ export class bt_aceptar extends COMPONENT {
       and upper(cam_dat)<>'KEY_PRI' \
       and nom_vis='${vis_grid}' order by con_dat`;
 
-      if (!(await this.Form.db.execute(ins_sql, "vi_cap_grid"))) {
-        MessageBox("No hay vista de captura para el grid de captura", 16);
+      console.log("1) bt_aceptar execute ins_sql", ins_sql);
+
+      if (!await this.Sql.execute(ins_sql, "vi_cap_grid")) {
+        await MessageBox("No hay vista de captura para el grid de captura", 16);
         return;
       }
-
-      await this.Form.db.localSql(
+      console.log("2) bt_aceptar vi_cap_grid ", await this.Sql.localAlaSql('select * from vi_cap_grid'));
+      await this.Sql.localAlaSql(
         " update vi_cap_grid set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' "
       );
 

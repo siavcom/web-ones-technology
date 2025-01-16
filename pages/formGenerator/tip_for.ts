@@ -31,7 +31,14 @@ export class tip_for extends COMPONENT {
     this.prop.Value = "F";
     this.prop.ColumnWidths = "150px,25px";
     this.inputStyle.width = "250px";
-    this.style.width = "400px";
+    this.style.width = "550px";
+
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "350px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
   }
 
   async when() {
@@ -49,13 +56,5 @@ export class tip_for extends COMPONENT {
 
     return true;
   }
-  async valid() {
-    if (this.prop.Value == "C" || this.prop.Value == "F")
-      this.Form.tab_form.prop.Visible = true;
 
-    if (this.prop.Value == "C" || this.prop.Value == "G")
-      this.Form.tab_grid.prop.Visible = true;
-
-    return true;
-  }
 }

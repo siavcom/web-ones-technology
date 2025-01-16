@@ -61,9 +61,22 @@ export class sis_sis extends COMPONENT {
       where = ` where sis_sis = '${this.prop.Value.trim()}'`
 
 
-    this.Form.tab_form.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`
-    //    this.Form.tab_form.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
-    this.Form.tab_form.prop.Visible = true;
+    this.Form.tab_form.prop.Visible = false;
+    this.Form.tab_grid.prop.Visible = false;
+    if (this.Form.tip_for.prop.Value == "C" || this.Form.tip_for.prop.Value == "F") {
+
+      this.Form.tab_form.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`
+      //    this.Form.tab_form.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
+      this.Form.tab_form.prop.Visible = true;
+    }
+
+    if (this.Form.tip_for.prop.Value == "C" || this.Form.tip_for.prop.Value == "G") {
+      this.Form.tab_grid.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`
+      this.Form.tab_grid.prop.Visible = true;
+
+    }
+
+
 
 
 

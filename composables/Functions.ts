@@ -15,7 +15,6 @@
 ///////////////////////////////////////////////////////////////////////
 
 
-
 import imgButton from '@/components/imgButton.vue'
 import comboBox from '@/components/comboBox.vue'
 import editText from '@/components/editText.vue'
@@ -30,6 +29,23 @@ import form from '@/components/form.vue'
 import modalContainer from '@/components/modalContainer.vue'
 //import modal from '@/components/modal.vue'
 
+//////////////////////////////////////
+// Funciones Varias
+//////////////////////////////////////
+
+export const appendM = (valueA: {}, valueB: {}) => {
+  return { ...valueA, ...valueB }
+}
+
+//////////////////////////////////////
+// Funciones String
+//////////////////////////////////////
+
+export const int = (numero: number) => {
+  return Math.trunc(numero);
+}
+
+Math.trunc
 //////////////////////////////////////
 // Funciones String
 //////////////////////////////////////
@@ -475,7 +491,7 @@ export async function objToLowerCase(data: {}) {
  * @param {number} [digits=0] The number of decimal places to round to.
  * @returns {number} The rounded number.
  */
-export function roundTo(n: number, digits?: number) {
+export function roundTo(n: number, digits?: number): number {
   if (!digits) {
     digits = 0;
   }

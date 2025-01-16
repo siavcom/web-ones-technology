@@ -20,7 +20,7 @@ export class lon_dat extends COLUMN {
         this.textLabel = 'Longitud'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
-        this.prop.Min = '1'
+        this.prop.Min = '0'
         this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_comedat.lon_dat'
         this.prop.ToolTipText = 'Logitud del campo'
@@ -32,20 +32,24 @@ export class lon_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     async when() {
-        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
-        if (!this.prop.ReadOnly) {
+
+        this.prop.Valid = true
+
+        if (this.Parent.tip_dat.prop.Value == 'T' || this.Parent.tip_dat.prop.Value == 'D') {
+            this.prop.Value = '8'
+            this.prop.ReadOnly = true
+
+
+        }
+        if (this.Parent.tip_dat.prop.Value == 'M') {
+            this.prop.Value = '10'
+            this.prop.ReadOnly = true
+            !this.prop.ReadOnly
+        }
+
+        if (!this.prop.ReadOnly! && !await this.Parent.cam_dat.when()) {
+            this.prop.ReadOnly = true
             this.prop.Valid = true
-
-            if (this.Parent.tip_dat.prop.Value == 'T' || this.Parent.tip_dat.prop.Value == 'D') {
-                this.prop.Value = '8'
-                this.prop.ReadOnly = true
-
-            }
-            if (this.Parent.tip_dat.prop.Value == 'M') {
-                this.prop.Value = '10'
-                this.ReadOnly = true
-
-            }
         }
 
         return !this.prop.ReadOnly
@@ -54,7 +58,7 @@ export class lon_dat extends COLUMN {
 
     async valid() {
 
-        if (this.prop.Value == 0) {
+        if (this.prop.Value == 0 && this.Parent.tip_dat.prop.Value != 'V') {
             this.prop.ErrorMessage = 'El tamaño debe ser mayor a 0 '
             return false
 

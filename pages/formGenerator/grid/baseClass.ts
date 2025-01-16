@@ -20,7 +20,7 @@ export class baseClass extends COLUMN {
     this.prop.ToolTipText = "Tipo de componente de captura ";
     this.prop.Placeholder = "Tipo de componente de captura";
     this.prop.RowSource = [
-      ["editBox", "ComboBox", "checkBox", "Label", "I"],
+      ["editText", "ComboBox", "checkBox", "Label", "I"],
       ["E", "C", "B", "L", "I"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
     this.prop.ControlSource = "vi_cap_for.baseclass";

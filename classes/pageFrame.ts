@@ -60,7 +60,7 @@ export class PAGEFRAME extends COMPONENT {
   constructor() {
     super()
     //this.prop.Name = null ? 'Container' : this.prop.Name
-    this.Text = 'Container'
+
     this.prop.BaseClass = 'pageFrame' //'modalContainer'//
     this.prop.Position = 'main'
 

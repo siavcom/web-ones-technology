@@ -15,7 +15,7 @@ export class prg_prg extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "Vfp Path  ";
+    this.textLabel = "VFP Path  ";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_prg.prg_prg";
     this.prop.ToolTipText = "Path y programa VFP";

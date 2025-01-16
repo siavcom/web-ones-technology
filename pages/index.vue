@@ -6,7 +6,7 @@
     </div>
     <div class="imagen" />
     <div>
-      <span>Made with </span>
+      <span>Made with Vue {{ VueVersion }} and Nuxt {{ NuxtVersion }}</span>
     </div>
 
     <div>
@@ -78,11 +78,17 @@
     </div>
 
 
-
-
-
   </div>
 </template>
+
+<script setup lang="ts">
+import { version } from 'vue';
+const VueVersion = ref(version)
+const NuxtVersion = ref(3.14)
+
+console.log('Vue Version', version);
+</script>
+
 
 <style scoped>
 #app {

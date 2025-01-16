@@ -764,7 +764,7 @@ export class VFPDB {
           if (old_dat[campo] == null || old_dat[campo] === '')
             old_dat[campo] = "";
           else
-            old_dat[campo] = old_dat[campo].trim();
+            old_dat[campo] = old_dat[campo]   //.trim();
         }
 
         //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
@@ -1051,10 +1051,13 @@ export class VFPDB {
         campo != "usu_usu" &&
         campo != "key_pri"
       ) {
-        const val_eval = this.View[vis_act].val_def[campo];
+        let val_eval = this.View[vis_act].val_def[campo];
 
         let val_defa = null;
         try {
+          val_eval = val_eval.replaceAll(String.fromCharCode(13), ' ')
+          val_eval = val_eval.replaceAll(String.fromCharCode(10), ' ')
+
           val_defa = eval(val_eval);
         } catch (error) {
           this.errorAlert(
@@ -1237,10 +1240,12 @@ export class VFPDB {
         recno
       );
       const key_pri = data[1][0].key_pri;
+      /* 26/Dic/2024 el deleteRow se encarga de borrar en SQLSERVER y localSql
       await this.localAlaSql(
         " delete from Now." + alias + " where recno=?",
         recno
       );
+      */
 
       // utiliza la tabla de actualizacionde SQL
       // console.log('Db delete alias DeleteRow',key_pri, alias)
@@ -1255,6 +1260,8 @@ export class VFPDB {
     const recnoArray = await this.localAlaSql(
       " select recno from Now." + alias + "  order by recno"
     );
+
+    console.log('Db delete recnoArray', recnoArray)
 
     // por reactividad borramos de uno por uno
     while (this.View[alias].recnoVal.length > 0) {
@@ -1275,7 +1282,7 @@ export class VFPDB {
       recno = recnoArray[row].recno;
     }
 
-    // console.log('Db Despues de borrar recnoval ',this.View[alias].recnoVal)
+    console.log('Db Despues de borrar recnoval ', this.View[alias].recnoVal)
     // console.log('Db delete despues slice recno reg recnoVal===>',recno,this.View[alias].recnoVal)
     // console.log('Db Despues de borrar alaSql',this.localAlaSql('select recno,key_pri from '+ alias ))
     if (recno > 0) {
@@ -2448,7 +2455,10 @@ return false;
           // si es un error de desconexion
           const status = error.response.status.toString()
           if (status == "401" || status == "403" || status == "408") {
+
             if (this.session.nom_emp == "" || status == "401" || status == "408") {
+              await MessageBox('Connection error. Try ' + numIntentos.toString() + ' to reconnect', 16, "ERROR");
+
               const router = useRouter();
               router.push("/Login");
               return;

@@ -138,7 +138,7 @@ export class COMPONENT {
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
     Valid: true,
-    Value: "",
+    Value: '',
     ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
 
@@ -169,11 +169,12 @@ export class COMPONENT {
     textTransform: "none",
     zIndex: 1, // profundidad
     width: "fit-content",
-    alignContent: "flex-end",
+    alignContent: "flex-start" //"flex-end",
   }
 
 
   inputStyle = { ...this.labelStyle }
+
 
   style = {
     //display: "flex", "inline-block"
@@ -306,7 +307,7 @@ export class COMPONENT {
    * @returns {Promise<number>} TabIndex final despues de inicializar todos los componentes
    */
   public async Init(Form?: any, TabIndex?: number) {
-    console.log('Init Component', this.Name)
+    //  console.log('1) Init Component', this.Name)
     if (this.sw_init) return
     this.sw_init = true
 
@@ -342,6 +343,30 @@ export class COMPONENT {
       if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
     }
 
+    /* 26/Dic/2024
+        // Si el componente esta en algun bloque  le quita su posiscion 
+        if (this.block.length > 0) {
+          // Recorre todos los bloques
+          let sw_block = true
+          for (let i = 0; i < this.block.length && sw_block; i++) {
+            for (let j in this.block[i].component) {
+              //              if (sw_block && this.block[i].component[j].Name == componente) {
+              //this[componente].prop.Position = 'block'
+              sw_block = false
+              const Name = this.block[i].component[j].Name
+              console.log('2) Init Component', Name)
+              //console.log(this.Name, "cod_nom Block Componente", this[Name].prop)
+              console.log('2.1) Init Component', Name)
+              //  this[Name].prop.Position = 'block'
+    
+              //              }
+            }
+          }
+        }
+       */
+
+
+
     for (const componente in this) {
       if (
         componente != "Parent" &&
@@ -354,7 +379,8 @@ export class COMPONENT {
         this[componente].prop &&
         this[componente].Init
       ) {
-        //  console.log('Init Component '+componente,'Name==',this[componente].Name)
+
+        //console.log('3) Init Component', componente)
         if (this[componente].Name == undefined) { // Si no es un componente del Form
           console.warn("Component ", componente + " has Name=undefined");
           return;
@@ -383,6 +409,7 @@ export class COMPONENT {
         // name=componente  // Modificar para el compilador
 
         // asigna posicion en el Form Header, Main o Footer 
+        //  console.log('4) Init Component', componente)
         const Position = this[componente].prop.Position.trim().toLowerCase();
 
         const component = {
@@ -396,6 +423,7 @@ export class COMPONENT {
 
         id++;
       }
+      // console.log('Fin) Init Component', this.Name)
     }
     // Recorrido todos los componentes sorteamos los elementos segun su TabIndex
     elements.sort((a, b) => {

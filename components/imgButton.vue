@@ -2,7 +2,7 @@
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible">
     <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
-      :tabindex="prop.TabIndex" @focusout="focusOut" @click.stop="click">
+      :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
         :style="Styles.inputStyle" />
       <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
@@ -47,27 +47,27 @@ const props = defineProps<{
     BaseClass: "imgButton";
     Image: "";
   };
-
-  style: {
-    background: "white";
-    backgroundColor: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-    borderColor: "#000a01";
-    borderWidth: "1px";
-    zIndex: 1;
-  };
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
-    left: number;
-    Top: number;
-  };
-
+  /*
+    style: {
+      background: "white";
+      backgroundColor: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "500px";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      borderColor: "#000a01";
+      borderWidth: "1px";
+      zIndex: 1;
+    };
+    position: {
+      position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
+      left: number;
+      Top: number;
+    };
+  */
 }>();
 
 const Component = ref(props.prop.This)
@@ -118,6 +118,42 @@ watch(
   { deep: true }
 );
 
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+watch(
+  () => This.prop.Focus, //props.prop.Focus,
+  (new_val: any, old_val: any) => {
+    if (!new_val) {
+      return
+    }
+    /*
+    // Se pidio desde afuera el setFocus
+    if (document.activeElement != thisElement) {
+      console.log('editText Watch Focus Name=', This.prop.Name, 'thisElement=', thisElement)
+      return thisElement.focus();
+    }
+     */
+    This.click()
+
+    /*
+        //thisElement.focus({ focusVisible: true });
+        setTimeout(function () {
+          //thisElement.focus({ focusVisible: true });
+          if (thisElement.select)
+            thisElement.select();
+    
+        }, 300);
+    
+        */
+
+    return
+
+  },
+  { deep: false }
+)
+
+
 /////////////////////////////////////////////////////////////////////
 // focusOut
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
@@ -130,6 +166,9 @@ const focusOut = async () => {
 
 const click = async () => {
 
+  if (!await checkGrid())
+    return
+
   ToolTipText.value = false  // Activamos el ToolTipText
   // await This.when()
   if (!This.prop.Disabled && !This.prop.ReadOnly) {
@@ -140,11 +179,36 @@ const click = async () => {
 
 
 const onFocus = async () => {
-  ToolTipText.value = false  // Activamos el ToolTipText
+  // Si esta en un grid checa sus estatus de todas las columnas
+  if (!await checkGrid())
+    return
+
+  ToolTipText.value = false  // Desactivamos el ToolTipText
   if (!This.prop.Disabled) {
     This.Form.eventos.push(This.prop.Map + '.when()')
   }
 }
+
+const checkGrid = async () => {
+  if (This.Parent.BaseClass != "grid")
+    return true
+
+  const grid = This.Parent
+  //console.log('EditText onFocus Grid Name', This.prop.Name)
+  for (const comp in grid.elements) {
+    const compName = grid.elements[comp].Name
+    // 24/Dic/2024 .- Se aumenta que sea componente Capture
+    if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
+      console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+      return false
+    }
+  }
+  return true
+}
+
+
+
+
 
 onMounted(async () => {
   // Styles.labelStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"

@@ -167,30 +167,31 @@ export class GRID extends COMPONENT {
   // asignaRenglon
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
-  public async asignaRenglon(row: number, colName: string) {
+  public async asignaRenglon_old(row: number, colName: string) {
     //    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1)
     //      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
     //let sw_recno = false
-    for (let i = 0; i < this.main.length; i++) {
-      this[this.main[i]].prop.ReadOnly = false;
-
-      /*
-      if (!sw_recno && this[this.main[i]].prop.updateKey) {
-        this.Recno = this.main[i].Recno;  // asigna Recno en el grid
-        sw_recno = true
-      } */
-    }
-
+    /*
+        for (let i = 0; i < this.main.length; i++) {
+          this[this.main[i]].prop.ReadOnly = false;
+          
+        }
+    */
     this.Row = row;
+
     nextTick(() => {
-      // console.log("Grid.ts asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
+      //  console.log("Grid.ts asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
 
-      if (this[colName].prop.BaseClass == 'imgButton')
-        this[colName].click()
-      else
-        this[colName].prop.First = true;
-
+      this[colName].prop.Focus = true;
+      /*
+            if (this[colName].prop.BaseClass == 'imgButton')
+              this[colName].click()
+            else
+              this[colName].prop.First = true;
+      */
     });
+
+
   }
 
   ///////////////////////////////////////////////////
@@ -307,7 +308,7 @@ export class GRID extends COMPONENT {
       if (this[this.main[i]].prop.Capure && !this[this.main[i]].prop.Valid) { // Si alguno no esta Validado
         this[this.main[i]].prop.ShowError = true
 
-        this[This.main[i]].setFocus()
+        this[this.main[i]].setFocus()
         return
       }
     }

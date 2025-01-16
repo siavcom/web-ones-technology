@@ -34,10 +34,22 @@ export class tab_grid extends COMPONENT {
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.prop.ColumnWidths = "350px,125px";
     this.inputStyle.width = "250px";
-    this.style.width = "400px";
+    this.style.width = "550px";
+
+
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "350px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
   }
 
   public async when() {
+
+    this.Form.tab_form.prop.Visible = false;
+    this.Form.tab_grid.prop.Visible = true;
+
     this.Form.nom_ind.prop.RowSourceType = 0;
     this.Form.bt_gen_forma.prop.Visible = false;
     this.Form.grid_form.prop.Visible = false;
@@ -58,6 +70,10 @@ export class tab_grid extends COMPONENT {
     this.Form.vis_grid.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis where nom_tab='${nom_tab}' `;
     this.Form.vis_grid.prop.RowSourceType = 3;
     this.Form.vis_grid.prop.Visible = true;
+
+    this.Form.nom_for.prop.Visible = true;
+
+
 
     //await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `,'vi_cap_comeind')
     // this.Form.nom_ind.prop.RowSource = `select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `

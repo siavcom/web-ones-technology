@@ -12,6 +12,8 @@ https://content.nuxt.com/ : Ducumentation of nuxt
 npx nuxi dev
 npx nuxi cleanup
 
+bun --bun run dev
+
 ## compiled
 npx nuxi build
 

@@ -9,7 +9,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -18,14 +18,14 @@
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
           :disabled="prop.ReadOnly" :style="{
             'background': option.check ? 'rgb(163, 193, 168)' : 'white',
-            'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
+            'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height
           }">
           <!--Imprime Columnas -->
 
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col" :style="{
               'background': option.check ? 'rgb(163, 193, 168)' : 'white',
-              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height
+              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height
             }">
             <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
               :style:="columnLabelStyle" />
@@ -64,7 +64,7 @@
 
             <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
               v-for="(text, col) in option.text" :key="col"
-              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': style.height }">
+              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height }">
               <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
                 :style:="columnLabelStyle" />
             </div>
@@ -115,14 +115,12 @@ interface Props {
   position: {};
   //  inputStyle: {};
 }
-
-//const props = defineProps<{
 const props = withDefaults(defineProps<Props>(), {
+
   Registro: 0,
   // Component: null,
   // Value: undefined,
   prop: {
-
     BaseClass: "ComboBox",
     BoundColumn: 1, // Columna donde se tomara el Value
 
@@ -175,6 +173,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
   },
+  /*
   inputStyle: {
     background: "white",
     padding: "5px", // Relleno
@@ -207,7 +206,7 @@ const props = withDefaults(defineProps<Props>(), {
     left: 0,
     Top: 0,
   },
-
+*/
 })
 
 
@@ -238,7 +237,7 @@ Valid.value = true
 const ToolTipText = ref(true)
 
 
-const Id = This.prop.Name + props.Registro.toString()
+const Id = This.prop.Name + '_' + props.Registro.toString().trim()
 let thisElement: Element | null
 This.prop.htmlId = Id
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
@@ -290,7 +289,7 @@ if (Styles.style.width == 'auto')
 //Styles.style.zIndex = 100 - This.prop.TabIndex
 
 
-const zIndex = ref(This.style.zIndex)
+const zIndex = ref(Styles.style.zIndex) //ref(This.style.zIndex)
 
 const comboStyle = reactive({
   height: 'fit-content',
@@ -304,7 +303,7 @@ const toggleStyle = reactive({
 })
 
 
-Styles.inputStyle.zIndex = zIndex
+Styles.inputStyle.zIndex = zIndex.value  //****
 const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
@@ -394,9 +393,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         if (This.prop.Valid)
           This.prop.Valid = false
         //Ref.value.select() 
-        thisElement.select(); // Hace select en este elemento
 
-        This.prop.Status = 'A'
+        // thisElement.select(); // Hace select en este elemento. Se quito 13/Dic/2024
+
+        // This.prop.Status = 'A'
         //   Status.value = 'A'
         //   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
@@ -548,11 +548,10 @@ const keyPress = ($event) => {
   if (!ToolTipText.value)
     ToolTipText.value = false
   if ($event.charCode == 13) {
-
+    return nextElement() //clickReturn()
     // emit('customChange', $event.target.value + String.fromCharCode(9))
-    return
-
   }
+
   //console.log('comboBox Name=',This.Name,'Key=',$event.charCode)
 
   if ($event.charCode == 32) {
@@ -685,11 +684,37 @@ const validList = async () => {
 
 };
 
+
+////////////////////////////////////////////////////////////////////
+// onFocus
+// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
+//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
+// Obs: el when() se llama desde el coponente parent 
+/////////////////////////////////////////////////////////////////
+
+
+
 const when = async (click: boolean) => {
 
+
+  if (This.Parent.BaseClass = "grid") {
+    const grid = This.Parent
+    //console.log('EditText onFocus Grid Name', This.prop.Name)
+    for (const comp in grid.elements) {
+      const compName = grid.elements[comp].Name
+      // 24/Dic/2024 .- Se aumenta que sea componente Capture
+      if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
+        console.log('comboBox onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+        return
+      }
+    }
+  }
+
+
   // No se permite el focus si es solo lectura
-  if (This.prop.ReadOnly) {
+  if (This.prop.ReadOnly || This.prop.Disabled) {
     // console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
+    /*
     if (!This.prop.Disabled) {
       This.prop.Disabled = true
       setTimeout(function () {
@@ -697,18 +722,18 @@ const when = async (click: boolean) => {
 
       }, 100);
     }
+    */
+    This.prop.Status = 'A'
+    return
   }
-
-
 
   if (!sw_focus.value) {
     sw_focus.value = true
     This.Form.eventos.push(This.prop.Map + '.when()')
-
   }
 
   if (click)
-    This.Form.eventos.push(This[compMain].prop.Map + '.click()')
+    This.Form.eventos.push(This.prop.Map + '.click()')
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -718,17 +743,34 @@ const when = async (click: boolean) => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
 
-  // No se permite el focus si es solo lectura
-  if (This.prop.ReadOnly) {
-    //console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
-    if (!This.prop.Disabled) {
-      This.prop.Disabled = true
-      setTimeout(function () {
-        This.prop.Disabled = false
 
-      }, 100);
+  if (This.Parent.BaseClass = "grid") {
+    const grid = This.Parent
+    //console.log('EditText onFocus Grid Name', This.prop.Name)
+    for (const comp in grid.elements) {
+      const compName = grid.elements[comp].Name
+      // 24/Dic/2024 .- Se aumenta que sea componente Capture
+      if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
+        console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+        return
+      }
     }
+  }
+
+  // No se permite el focus si es solo lectura
+  if (This.prop.ReadOnly || This.prop.Disabled) {
+    //console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
+    /*
+     if (!This.prop.Disabled) {
+       This.prop.Disabled = true
+       setTimeout(function () {
+         This.prop.Disabled = false
+ 
+       }, 100);
+     }
+     */
     //thisElement.next(':input').focus();
+    This.prop.Estatus = 'A'
     return
   }
 
@@ -778,7 +820,7 @@ const onFocus = async () => {
     // Ref.value.focus();
     // Ref.value.select();
 
-    thisElement.focus({ focusVisible: true });
+    // thisElement.focus({ focusVisible: true });
     thisElement.select();
 
   }
@@ -1027,6 +1069,56 @@ const ColumnWidth = (columnas: string) => {
 
 }
 
+
+// $event.charCode == 13 // Down Key  
+const nextElement = async () => {  //clickReturn
+
+  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
+
+  await asignaValue()
+  await emitValue() // 
+  if (!This.prop.Valid) {
+    return
+  }
+  const TabIndex = This.prop.TabIndex
+  let lastIndex = 999999
+  let nextFocus = ''
+
+
+  for (const element of This.Parent.main) {
+
+
+    if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
+      !This.Parent[element].prop.Disabled && !This.Parent[element].prop.ReadOnly) {
+      const Tab = This.Parent[element].prop.TabIndex
+
+      if (Tab > TabIndex && Tab < lastIndex) {
+        lastIndex = Tab
+        nextFocus = This.Parent[element].prop.htmlId
+        break
+      }
+    }
+  }
+
+
+  // $event.preventDefault();
+  // Obtienee elemento a hacer el focus
+  const nextElement = document.getElementById(nextFocus);
+  // console.log('EditText keyPres Name',this.prop.Name=', setElement)
+  if (nextElement) {
+    console.log('clickReturn nextFocus =', nextFocus)
+    nextElement.focus()
+    nextElement.focus()
+
+    //$event.keycode = 9;
+    return // $event.keycode;
+  }
+
+}
+
+
+
+
 ////////////////////////////////////////////////////////////////
 //                          Watchers                          //
 ////////////////////////////////////////////////////////////////
@@ -1041,7 +1133,7 @@ watch(
     if (!new_val)
       comboStyle.height = '0%'
     else
-      comboStyle.height = This.style.height
+      comboStyle.height = Styles.style.height // This.style.height
     //readCampo(props.Registro)
 
   },
@@ -1135,7 +1227,7 @@ watch(
     if (new_val)
       Styles.style.zIndex = 200  // aumenta el z index cuando despliaga las columnas
     else
-      Styles.style.zIndex = props.style.zIndex
+      Styles.style.zIndex = zIndex.value// This.style.zIndex
 
 
     //console.log('watch toggle.value', props.Name, old_val, new_val)
@@ -1304,14 +1396,14 @@ watch(
 ///////////////////////////////////////
 
 watch(
-  () => props.style.width,
+  () => This.style.width,
 
   (new_val, old_val) => {
     // console.log("Cambio tamaÃ±o ", inputWidth.value);
     if (new_val != old_val) {
-      if (props.style.width.substr(-2, 2) == 'px') {
-        const len = props.style.width.length - 2
-        const width: number = +props.style.width.substr(0, len) - 30
+      if (This.style.width.substr(-2, 2) == 'px') {
+        const len = This.style.width.length - 2
+        const width: number = +This.style.width.substr(0, len) - 30
         inputWidth.value = width.toString() + 'px'
         //console.log("Cambio tamaÃ±o 2", inputWidth.value);
       }

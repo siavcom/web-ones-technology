@@ -18,9 +18,16 @@ export default defineEventHandler(async (event) => {
 
   switch (call) {
     case 'leeEmpresas':
-      data = fs.readFileSync(path + '/Empresas.json')
-      body.data = data
 
+
+      // para funcionar con bun y node al mismo tiempo se utiliza leer con formato "utf-8" 
+      // original
+      // data=fs.readFileSync(path + '/Empresas.json')
+
+      const res = fs.readFileSync(path + '/Empresas.json', "utf-8")
+      data = JSON.parse(res)
+
+      body.data = data
       return data
 
     case 'readFile':

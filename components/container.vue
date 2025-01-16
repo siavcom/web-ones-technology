@@ -1,7 +1,7 @@
 <template>
 
   <!--div id="mask" class="mask" v-if="This.prop.Visible"-->
-  <div :id="Id + 'container'" class="container" v-if="This.prop.Visible" :style="This.style">
+  <div :id="Id + 'container'" class="container" v-if="This.prop.Visible" :style="divStyle">
 
     <!--section class="mainContainer"-->
 
@@ -9,7 +9,7 @@
       <slot name="header">{{ This.textLabel }}</slot>
     </div>
 
-    <div :id="Id + 'body'" class="body">
+    <div :id="Id + 'body'" class="body" style="width: 99%">
       <div v-if="!This.block || This.block.length == 0" :id="Id + 'no_block'">
         <slot name="componentes">
           <div :id="Id + 'componentes' + key" v-if="Divi" v-for="(Ver, key) in Divi" :key="Ver"
@@ -60,7 +60,7 @@
 interface Props {
   Registro: number;
   prop: {};
-  style: {};
+  // style: {};
   position: {};
 }
 
@@ -122,23 +122,24 @@ const props = withDefaults(defineProps<Props>(), {
 
 
   },
-
-  style: {
-    background: "white",
-    padding: "5px", // Relleno
-    color: "#b94295",
-    width: "auto",
-    height: "30px",
-    fontFamily: "Arial",
-    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left",
-    borderColor: "#000a01",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    zIndex: 1,
-
-    // inputWidth: "inherit"
-  },
+  /*
+    style: {
+      background: "white",
+      padding: "5px", // Relleno
+      color: "#b94295",
+      width: "auto",
+      height: "30px",
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left",
+      borderColor: "#000a01",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      zIndex: 1,
+  
+      // inputWidth: "inherit"
+    },
+    */
   position: {
     position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
     left: 0,
@@ -173,8 +174,6 @@ const Este = props.prop.This
 const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
-
-
 
 
 const Id = This.Name + props.Registro.toString()

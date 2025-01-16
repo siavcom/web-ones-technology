@@ -8,9 +8,9 @@
       </div>
     </div>
 
-    <div v-else class="pdfWraper" style="width:100%;height:100%">
-      <div class='reportViewer' style="height:100%;height:90%">
-        <iframe :src="BSource" style="width:95%" height="900" />
+    <div v-else :id="Id + '_wraper'" class="pdfWraper" style="width:100%;height:100%">
+      <div :id="Id + '_reportViewer'" class='reportViewer' style="height:100%;height:90%">
+        <iframe :id="Id + '_iframe'" :src="BSource" style="width:95%" height="900" />
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
    ref, watch } from "vue";
 */
 const props = defineProps<{
-  //Value: string;
+  Registro: number;  //Value: string;
   prop: {
     Click: false;
     ToolTipText: string;
@@ -77,21 +77,22 @@ const props = defineProps<{
     };
     */
   };
-
-  style: {
-    background: "white";
-    backgroundColor: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-    borderColor: "#000a01";
-    borderWidth: "1px";
-    zIndex: 1;
-  };
+  /*
+    style: {
+      background: "white";
+      backgroundColor: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "500px";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+      borderColor: "#000a01";
+      borderWidth: "1px";
+      zIndex: 1;
+    };
+    */
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
     left: number;
@@ -102,8 +103,21 @@ const props = defineProps<{
 }>();
 const BSource = ref('')
 const loading = ref(true)
-const divStyle = ref(props.style)
-divStyle.value.width = '95%'
+
+
+const Component = toRef(() => props.prop.This)
+//console.log('editText Component=', Component.value)
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
+
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+const Id = This.prop.Name + props.Registro.toString().trim()
+
+
+
+divStyle.width = '95%'
 
 watch(
   () => props.prop.Source,

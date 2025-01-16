@@ -32,12 +32,7 @@ export class cam_dat extends COLUMN {
   ///////////////////////////////////
   async when() {
 
-
-    if (this.prop.Value.trim().length == 0) {
-      this.prop.ReadOnly = false;
-      return true
-    }
-
+    this.prop.Valid = true
     const Value = this.prop.Value.trim().toUpperCase();
     if (
       Value == "USU_USU" ||
@@ -46,8 +41,10 @@ export class cam_dat extends COLUMN {
       Value == "TIE_CRE" ||
       Value == "TIMESTAMP" ||
       Value == "KEY_PRI"
-    )
+    ) {
       this.prop.ReadOnly = true;
+
+    }
     else
       this.prop.ReadOnly = false;
 

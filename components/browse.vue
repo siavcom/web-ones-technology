@@ -10,7 +10,7 @@
 
   </div>
 
-  <div :id="Id + '_div_main'" class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="This.style">
+  <div :id="Id + '_div_main'" class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="divStyle">
     <div :id="Id + '_wraper'" class="wraper" style="width:100%;height:100%">
       <table-lite :id="Id + '_table_lite'" :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
@@ -102,17 +102,18 @@ const props = defineProps<{
     Visible: boolean;
     Label: string;
   };
-
-  style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-  };
+  /*
+    style: {
+      background: "white";
+      padding: "5px"; // Relleno
+      color: "#b94295";
+      width: "500px";
+      height: "30px";
+      fontFamily: "Arial";
+      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left";
+    };
+  */
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -123,11 +124,18 @@ const props = defineProps<{
 }>()
 
 // Valores componente padre
-const Component = ref(props.prop.This)
-const This = Component.value
+const Component = toRef(() => props.prop.This)
+//console.log('editText Component=', Component.value)
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
+
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+
 const Id = This.prop.Name + props.Registro.toString().trim()
 
-This.style.maxWidth = "1200px"
+divStyle.maxWidth = "1200px"
 
 
 const table = This.table

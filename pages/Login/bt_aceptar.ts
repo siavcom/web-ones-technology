@@ -59,7 +59,7 @@ export class bt_aceptar extends COMPONENT {
     if (pos_arroba > 0) {
       const len = login.length - pos_arroba - 1;
       empresa = login.substr(-len);
-      login = login.substr(0, pos_arroba);
+      // login = login.substr(0, pos_arroba);
     }
 
     if (empresa.length == 0) {

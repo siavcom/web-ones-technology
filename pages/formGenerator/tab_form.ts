@@ -31,8 +31,16 @@ export class tab_form extends COMPONENT {
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.prop.ColumnWidths = "350px,125px";
     this.inputStyle.width = "250px";
-    this.style.width = "450px";
+    this.style.width = "580px";
     this.prop.Visible = false;
+
+
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "350px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+
     // this.style.zIndex = 4
   }
 

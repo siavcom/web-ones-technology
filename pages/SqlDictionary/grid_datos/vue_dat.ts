@@ -26,27 +26,53 @@ export class vue_dat extends COLUMN {
     }
 
     ////////////////////////////////// 
-    // Evento When
+    // Evento When 
     ///////////////////////////////////
     override async when() {
-        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
-        if (!this.prop.ReadOnly && (this.Parent.def_dat.prop.Value.trim().length > 0 || this.Parent.cal_dat.prop.Value.trim().length > 0))
+        this.prop.Valid = true
+
+
+        if (this.Parent.def_dat.prop.Value.trim() + this.Parent.cal_dat.prop.Value.trim() != '') {
             this.prop.ReadOnly = true
+        }
+
+        if (!this.prop.ReadOnly! && !await this.Parent.cam_dat.when()) {
+            this.prop.ReadOnly = true
+            this.prop.Valid = true
+        }
+
+
+
+        /*
+                const Value = this.Parent.cam_dat.prop.Value.trim().toUpperCase();
+                if (
+                    Value == "USU_USU" ||
+                    Value == "USU_CRE" ||
+                    Value == "TIE_UAC" ||
+                    Value == "TIE_CRE" ||
+                    Value == "TIMESTAMP" ||
+                    Value == "KEY_PRI"
+                )
+                    this.prop.ReadOnly = true;
+        */
+        console.log('when vue_dat=', this.Parent.def_dat.prop.Value.trim() + this.Parent.cal_dat.prop.Value.trim(), 'ReadOnly=', this.prop.ReadOnly)
+
+        // else
+
+        //     this.prop.ReadOnly = !await this.Parent.cam_dat.when()
 
         return !this.prop.ReadOnly
     }
 
     override async valid(): Promise<any> {
         if (this.prop.Value.trim() > '   ') {
-            this.Parent.vue_dat.prop.Value = ''
-            this.Parent.vue_dat.prop.ReadOnly = true
+            this.Parent.cal_dat.prop.Value = ''
+
+            this.Parent.cal_dat.prop.ReadOnly = true
             this.Parent.def_dat.prop.Value = ''
             this.Parent.def_dat.prop.ReadOnly = true
         }
 
-        await this.Parent.cal_dat.when()
-        await this.Parent.def_dat.when()
-        this.prop.Valid = true
         return true
 
     }

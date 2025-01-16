@@ -29,9 +29,29 @@ export class cal_dat extends COLUMN {
     ///////////////////////////////////
     async when() {
         this.prop.Valid = true
-        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
-        if (!this.prop.ReadOnly)
-            await this.valid()
+
+        if (this.Parent.def_dat.prop.Value.trim().length > 0 || this.Parent.vue_dat.prop.Value.trim().length > 0)
+            this.prop.ReadOnly = true
+
+        if (!this.prop.ReadOnly! && !await this.Parent.cam_dat.when()) {
+            this.prop.ReadOnly = true
+            this.prop.Valid = true
+        }
+
+
+        /*
+        const Value = this.Parent.cam_dat.prop.Value.trim().toUpperCase();
+        if (
+            Value == "USU_USU" ||
+            Value == "USU_CRE" ||
+            Value == "TIE_UAC" ||
+            Value == "TIE_CRE" ||
+            Value == "TIMESTAMP" ||
+            Value == "KEY_PRI"
+        )
+            this.prop.ReadOnly = true;
+*/
+
 
         return !this.prop.ReadOnly
 
@@ -42,21 +62,6 @@ export class cal_dat extends COLUMN {
             this.Parent.vue_dat.prop.ReadOnly = true
             this.Parent.def_dat.prop.Value = ''
             this.Parent.def_dat.prop.ReadOnly = true
-        } else {
-
-            if (this.Parent.vue_dat.prop.Value.trim() > '   ' || this.Parent.def_dat.prop.Value.trim() > '   ')
-                this.prop.ReadOnly = true
-
-
-            else {
-                this.prop.ReadOnly = false
-            }
-        }
-
-        if (this.prop.Value.trim() == '' && this.Parent.vue_dat.prop.Value.trim() == '' && this.Parent.def_dat.prop.Value.trim() == '') {
-            this.Parent.vue_dat.prop.ReadOnly = false
-            this.Parent.def_dat.prop.ReadOnly = false
-            this.prop.ReadOnly = false
         }
 
         return true

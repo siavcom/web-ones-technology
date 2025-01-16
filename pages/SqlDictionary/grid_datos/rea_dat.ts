@@ -30,9 +30,12 @@ export class rea_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     async when() {
-        this.prop.ReadOnly = !await this.Parent.cam_dat.when()
+        this.prop.Valid = true
+        if (!await this.Parent.cam_dat.when()) {
+            this.prop.ReadOnly = true
+            this.prop.Valid = true
+        }
         return !this.prop.ReadOnly
-
     }
 
 

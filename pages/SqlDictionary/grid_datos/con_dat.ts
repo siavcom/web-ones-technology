@@ -29,17 +29,8 @@ export class con_dat extends COLUMN {
     //      this.prop.Autofocus=true
 
   }
-
-  ////////////////////////////////// 
-  // Evento When
-  ///////////////////////////////////
-  async when_old() {
-    this.prop.ReadOnly = !await this.Parent.cam_dat.when()
-
-    return !this.prop.ReadOnly
+  async when() {
+    this.prop.Valid = true
 
   }
-
-
-
 }

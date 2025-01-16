@@ -58,7 +58,7 @@ export class bt_obtener extends COMPONENT {
 
     if (!result || result.length == 0) {
 
-      this.Form.report.bt_close.click();
+      await this.Form.report.bt_close.click();
       MessageBox("No data to show");
 
       return;

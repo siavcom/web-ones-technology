@@ -49,17 +49,10 @@ export class CONTAINER extends COMPONENT {
   constructor() {
     super()
     //this.prop.Name = null ? 'Container' : this.prop.Name
-    this.Text = 'Container'
+    //this.Name = "Container";
+
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
-    this.style = {
-      maxWidth: 'fit-content',
-      maxHeight: 'fit-content',
-      borderStyle: 'double',
-      background: 'antiquewhite',
-      borderRadius: '10px',
-      padding: '20px',   //Margen entre los bordes y el contenido
-    }
     this.prop.Capture = false;
     // Estilo de cada contenedor del modal
 
@@ -67,14 +60,40 @@ export class CONTAINER extends COMPONENT {
   }
   async init() {
     await super.init()
-    let elementos = []
-    // sumanos todos los componentes en uno solo
-    elementos = elementos.concat(this.header)
-    elementos = elementos.concat(this.main)
-    elementos = elementos.concat(this.footer)
+    if (this.prop.BaseClass == 'modalContainer')
+      this.style = {
+        maxWidth: 'fit-content',
+        maxHeight: 'fit-content',
+        borderStyle: 'double',
+        background: 'antiquewhite',
+        borderRadius: '5px',
+        padding: '3%',   //Margen entre los bordes y el contenido
+      }
+
+    /*let elementos = []
+    for (let i = 0; i < this.elements.length; i++) {
+      const Name = this.elements[i].Name
+      elementos.push(Name)
+    }
+    /*
+    console.log('Init Container', this.Name, 'Elements=', elementos)
+    /*
+        let elementos = []
+        // sumanos todos los componentes en uno solo
+        elementos = elementos.concat(this.header)
+        elementos = elementos.concat(this.main)
+        elementos = elementos.concat(this.footer)
+        console.log('Init Container', this.Name, 'Elementos=', elementos)
+    */
     // recorremos todos los componentes
-    for (let i = 0; i < elementos.length; i++) {
-      const componente = elementos[i]
+
+    for (let i = 0; i < this.elements.length; i++) {
+
+      console.log('1) Container ', this.prop.Name, 'componente=', this.elements[i].Name)
+      const componente = this.elements[i].Name
+
+      //    for (let i = 0; i < elementos.length; i++) {
+      //const componente = elementos[i]
 
       if (this[componente].Position && this[componente].Position.length > 0) {  // Si es componete tiene posision en la pantalla
 

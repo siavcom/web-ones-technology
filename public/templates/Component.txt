@@ -126,7 +126,7 @@ export class <<cam_dat>> extends  CAPTURECOMPONENT {
   await super.when()
   /////////// put your code here ///////////// 
   return true 
-
+ }
 
     ////////////////////////////////// 
     // event valid 
