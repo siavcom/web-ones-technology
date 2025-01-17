@@ -110,9 +110,9 @@ Calling a method:
 
   Each component has several properties where each property affects visual and database behavior as values too.
 
-### Base properties (prop):
+## Base properties (prop):
 
- - BaseClass:  <<webComponent>>
+ - BaseClass: `<`webComponent`>`
       type: string  
       Values : 'Form'
                'editText'
@@ -124,13 +124,13 @@ Calling a method:
                'base64'
                'container'
 
- - Name: <Name of the component>
+ - Name:`<`Name of the component`>`
       Type :string
 
- - textLabel: <Text label showing before input>
+ - textLabel:`<`Text label showing before input`>`
       Type: string
 
- - Type: <Data types when BaseClass="editText">
+ - Type:`<`Data types when BaseClass="editText"`>`
       Type: string
       Values : 'number'
                'text'
@@ -141,17 +141,17 @@ Calling a method:
                'json'
                'checkBox'
 
- - Value: <Value of the component>
+ - Value:`<`Value of the component`>`
 
-### Visual properties
+## Visual properties
 
-  - First: <true. Component that receives focus when a new record is inserted>
+  - First:`<`true. Component that receives focus when a new record is inserted`>`
       Type: boolean
     
-  - Disabled: <True when disabled>
+  - Disabled:`<`True when disabled`>`
       Type: boolean
 
-  - ErrorMessage: <Error message if the component is not valid (after valid()=false or prop.Valid=false)>
+  - ErrorMessage:`<`Error message if the component is not valid (after valid()=false or prop.Valid=false)`>`
       Type: string
 
   - Format: ""
@@ -160,41 +160,41 @@ Calling a method:
   - InputMask: ""
       Type: string
     
-  - MaxLength: <Maximum character length>
+  - MaxLength:`<`Maximum character length`>`
       Type: number
 
-  - Min: <Minimum value for number>
+  - Min:`<`Minimum value for number`>`
       Type: number
 
-  - Max: <Maximum value for number>
+  - Max:`<`Maximum value for number`>`
       Type: number
 
-  - Placeholder: <label inside input blurred>
+  - Placeholder:`<`label inside input blurred`>`
       Type: string 
 
-  - Position: <Postition in a form component>
+  - Position:`<`Position in a form component`>`
       Type: string 
       Values: 'header'
                'main'
                'footer'
     
-  - ReadOnly: <true when component is only readable>
+  - ReadOnly:`<`true when component is only readable`>`
       Type: boolean
     
-  - TabIndex: <Component tab index in a form component>
+  - TabIndex:`<`Component tab index in a form component`>`
       Type: number 
 
-  - Image: <Component background image path>
+  - Image:`<`Component background image path`>`
       Type : string
    
-  - ToolTipText: <Component tool tip text>
+  - ToolTipText:`<`Component tool tip text`>`
       Type: string
 
-  - Visible:  <true when component is visible>
+  - Visible: `<`true when component is visible`>`
       Type: string
 
 
-### Input component Style and componentStyle properties
+## Input component Style and componentStyle properties
 
 - background: "white",
 - color: "#b94295",
@@ -207,7 +207,7 @@ Calling a method:
 - textAlign: "left",
 - ...... several CSS style properties: .
 
-### Database components properties
+## Database components properties
 
     # Each prop.Value component can be gathered from a field of local SQL where:
 
@@ -215,7 +215,7 @@ Calling a method:
     - RecordSource: 'viewTableName'
     - SqlUpdate: true   // True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.
 
-### Internal properties
+## Internal properties
 
     - Capture: true // When capture is true, can't lose focus until Validate or esc
     - First: false
@@ -229,7 +229,7 @@ Calling a method:
     - Valid: true // (Internal use). The value of the component is good
     - KeyId: true when this component is a field index for a table select, update or delete
 
-### Numeric components
+## Numeric components
 
     - Currency: '   ' // USD, EUR, MXN
     - CurrencyDisplay: 'code' // To use the ISO currency code
@@ -239,7 +239,7 @@ Calling a method:
     - Step: "1"
     - Style: 'decimal' // decimal, currency, percent, unit
 
-### Combo box properties
+## Combo box properties
 
     - BoundColumn: 2  // The value is attached to the column
     - ColumnCount: 2 // Total column numbers in a comboBox
@@ -256,34 +256,33 @@ Calling a method:
           
      When RowSourceType=2 or 3, you have to specify the RowSource     
 
-#### Example value:
-
+### Example value:
     - RowSourceType= 1
     - ColumnCount = 2
     - RowSource="House,H,Building,B,Department,D"
 
-#### Example local SQL:
+### Example local SQL:
     - RowSourceType: 2
     - RowSource: 'tableNames.cod_nom,nom_nom'
     Notes: You already have a local table SQL
 
-#### Example SQL Server:
+### Example SQL Server:
     - RowSourceType: 3
     - RowSource: 'select cod_nom,nom_nom from tableNames order by nom_nom'
 
-#### Example Local SQL query :
+### Example Local SQL query :
     - RowSourceType: 4
     - RowSource: 'select cod_nom,nom_nom from tableNames order by nom_nom'
 
-#### Example array:
+### Example array:
     - RowSourceType: 5
     - ColumnCount = 2
     - RowSource: [["Datos", "Tablas", "Indices", "Vistas", "Menú del sistema", "Otros"], ["D", "T", "I", "V", "M", "O"]]
 
-### Others
+## Others
     - Style = 2; // 0=DropDown Combo 2=DropDown List
 
-### Style properties (style)
+## Style properties (style)
 
     - display: "inline-block"
     - flexGrow: "0"     /* do not grow   - initial value: 0 */
@@ -316,85 +315,86 @@ ThisForm.ts is the beginning TypeScript program where the component definition i
 
 Each component has a separate TypeScript file.
 
-## SQL Database class
+## SQL Database class (This method is based in VFP SQL instructions)
 
-- select (<area>).
+- select(&lt;area`>`).
 
-- useNodata (<table>, <alias?>).
+- useNodata(&lt;table`>`,`<`alias?`>`).
 
-- use (<table>, <memoryObject>, <alias?>).
+- use(&lt;table`>`,`<`memoryObject`>`,`<`alias?`>`).
 
-- tableUpdate(<updateType>, <force>, <alias>).
+- tableUpdate(&lt;updateType`>`,`<`force`>`,`<`alias`>`).
 
-- appendBlank(<alias>, <memoryObject>).
+- appendBlank(&lt;alias`>`,`<`memoryObject`>`).
 
-- deleteRow(<key_pri>, <alias>).
+- deleteRow(&lt;key_pri`>`,`<`alias`>`).
 
-- delete(<recno>, <alias>, <SqlUpdate>).
+- delete(&lt;recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
 
-- insert(<alias>, <memoryObject>).
+- insert(&lt;alias`>`,`<`memoryObject`>`).
 
-- execute(<query>, <alias?>, <resultType>).
+- execute(&lt;query`>`,`<`alias?`>`,`<`resultType`>`).
 
-- select(<alias>).
+- select(&lt;alias`>`).
 
-- recCount(<alias>).
+- recCount(&lt;alias`>`).
 
-- recno(<alias>).
+- recno(&lt;alias`>`).
 
-- goto(<row>).
+- goto(&lt;row`>`).
 
-- skip(<rowNumbers>).
+- skip(&lt;rowNumbers`>`).
 
-- scatter(<type>, <fieldArray>).
+- scatter(&lt;type`>`,`<`fieldArray`>`).
 
-<area> type: number. VFP Area number
+### Values
+ `<`area`>` type: number. VFP Area number
 
-<alias> type: string. Local SQL table alias.
+ `<`alias`>` type: string. Local SQL table alias.
 
-<table> type: string. SQL Server remote view name.
+ `<`table`>` type: string. SQL Server remote view name.
 
-<memoryObject> type: Object. It has field and value field SQL table. (In VFP is named only m )
-Example:
+ `<`memoryObject`>` type: Object. It has field and value field SQL table. (In VFP is named only m )
+
+### Example:
  const  m={ code_id : '000021',
             PurchaseDate : '2022-10-21' }
 
-<updateType> type: number.
-  Value = 0 Only row which positioned.
-  Value = 1 All table rows until update error. If error, return false else return true.
-  Value= 2 All table rows.
+ `<`updateType`>` type: number.
+     Value = 0 Only row which positioned.
+      Value = 1 All table rows until update error. If error, return false else return true.
+    Value= 2 All table rows.
 
-<force> type: boolean.
-  Value = false If an update table fails because another user changed data first, return false.
-  Value = true If an update table fails because another user changed data first.
+ `<`force`>` type: boolean.
+    Value = false If an update table fails because another user changed data first, return false.
+    Value = true If an update table fails because another user changed data first.
 
-<key_pri> type: number. Table key_pri(id) number in SQLServer.
+ `<`key_pri`>` type: number. Table key_pri(id) number in SQLServer.
 
-<recno> type: number. Local SQL id recno number.
+ `<`recno`>` type: number. Local SQL id recno number.
 
-<SqlUpdate> type: boolean.
-  Value = true. Delete SQLServer.
-  Value = false. Only local SQL.
+ `<`SqlUpdate`>` type: boolean.
+    Value = true. Delete SQLServer.
+   Value = false. Only local SQL.
 
-<sqlQuery> type: string. SQL Server query to execute.
+ `<`sqlQuery`>` type: string. SQL Server query to execute.
 
-<resultType> type: string.
+ `<`resultType`>` type: string.
 
-<row> type: number. Recno row id to go.
+ `<`row`>` type: number. Recno row id to go.
 
-<rowNumbers> type: number. Row number. Forward it is positive and backward it is negative.
+ `<`rowNumbers`>` type: number. Row number. Forward it is positive and backward it is negative.
 
-<type> type: string.
-  Value = 'MEMVAR'. Return an object with all field values.
-  Value = 'FIELDS'. Return an object with specific field values.
+ `<`type`>` type: string.
+    Value = 'MEMVAR'. Return an object with all field values.
+    Value = 'FIELDS'. Return an object with specific field values.
 
-<fieldArray> type: array. Array with specific fields to obtain values.
+ `<`fieldArray`>` type: array. Array with specific fields to obtain values.
 
-
-
-## How to use this framework
+# How to use this framework
 
 - Install Node.js 18.x or newer (recommended active LTS release) https://nodejs.org/en/download/ or use nvm https://github.com/nvm-sh/nvm
+
 
 ## Recommended IDE Setup
 
@@ -406,7 +406,7 @@ Example:
   - Vue Official
 
 - Download the back-end framework from https://github.com/siavcom/VFP-NODE and extract it in a folder.
-- Make a company folder in the back-end folder/app/empresas/<your company name>
+- Make a company folder in the back-end folder/app/empresas/&lt;your company name`>`
 - Copy a sample folder company in the company folder
 - Rename the sample folder to your company name
 - Change the db.config.js file and use your SQL Server connection parameters
@@ -417,7 +417,7 @@ Example:
 - Open a terminal in the framework folder 
   run npm install
   
-  You have to make a company folder in your computer in /sistemas/name>
+  You have to make a company folder in your computer in /sistemas/name`>`
   run npx nuxi dev
    
 ## Design SQL Table
@@ -440,7 +440,7 @@ Example:
   - Fill up all characteristics
   - Click accept
   Notes:
-    When a field is a primary key, the default value has to be m.<namefield>
+    When a field is a primary key, the default value has to be m.&lt;namefield`>`
 
 - Create a new SQL view.
 - Create a new SQL index.   
@@ -539,6 +539,23 @@ console.log(m) =
 
   ## Other
   Login to the framework
-  <user>@<busines nickname>
-      <user> : personal login
-      <busines nickname> :  SQL data base name
+ `<`user`>`@&lt;busines nickname`>`
+     `<`user`>` : personal login
+     `<`busines nickname`>` :  SQL data base name
+
+
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.

@@ -2436,6 +2436,12 @@ return false;
         return respuesta;
       } catch (error) {
         console.error("Axios error ", error);
+        if (error.message == "Network Error") {
+
+          this.errorAlert("Network Error");
+
+          return false;
+        }
 
         const messageError = error.response && error.response.data ? error.response.data : ''
 
@@ -2458,7 +2464,7 @@ return false;
 
             if (this.session.nom_emp == "" || status == "401" || status == "408") {
               await MessageBox('Connection error. Try ' + numIntentos.toString() + ' to reconnect', 16, "ERROR");
-
+              numIntentos++
               const router = useRouter();
               router.push("/Login");
               return;

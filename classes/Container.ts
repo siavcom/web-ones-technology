@@ -54,6 +54,7 @@ export class CONTAINER extends COMPONENT {
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.prop.Capture = false;
+
     // Estilo de cada contenedor del modal
 
 
@@ -62,8 +63,8 @@ export class CONTAINER extends COMPONENT {
     await super.init()
     if (this.prop.BaseClass == 'modalContainer')
       this.style = {
-        maxWidth: 'fit-content',
-        maxHeight: 'fit-content',
+        maxWidth: '85%',
+        maxHeight: '85%',
         borderStyle: 'double',
         background: 'antiquewhite',
         borderRadius: '5px',

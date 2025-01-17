@@ -524,7 +524,7 @@ export class COMPONENT {
     );
 */
     if (this.init) {
-      console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This=', this)
+      // console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This=', this)
       await this.init(); // Corre el init principal
     }
     return TabIndex;
@@ -539,7 +539,6 @@ export class COMPONENT {
    
    */
   public async init() {
-
     return;
   }
 
