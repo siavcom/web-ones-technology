@@ -1,25 +1,15 @@
 <template>
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible">
-    <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
-      :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
-      <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
-        :style="Styles.inputStyle" />
-      <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
-        v-show="prop.Visible">{{ prop.Value }}</label>
-    </button>
-
-    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
-      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-      :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :position="This[compMain].position">
-    </component>
-
+    <img v-if="prop.Type = 'QR'" :id="Id + '_QR'" class="mt-6 mb-2 rounded border" :src="Image.value"
+      :alt="prop.textLabel" />
+    <img v-else :id="Id + '_img'" class="mt-6 mb-2 rounded border" :src="Value" :alt="prop.textLabel" />
   </span>
 </template>
 
 <script setup lang="ts">
-
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+// <img class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code">
 const props = defineProps<{
   //Value: string;
   Registro: 0;
@@ -47,27 +37,7 @@ const props = defineProps<{
     BaseClass: "imgButton";
     Image: "";
   };
-  /*
-    style: {
-      background: "white";
-      backgroundColor: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "500px";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
-      borderColor: "#000a01";
-      borderWidth: "1px";
-      zIndex: 1;
-    };
-    position: {
-      position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
-      left: number;
-      Top: number;
-    };
-  */
+
 }>();
 
 const Component = ref(props.prop.This)
@@ -76,6 +46,8 @@ const Este = props.prop.This
 const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const style = reactive({ ...Este.style })
+const Image = ref(props.prop.Image)
+
 
 const Styles =
 {
@@ -97,9 +69,15 @@ const ToolTipText = ref(true)
 
 watch(
   () => props.prop.Value,
-
   (new_val, old_val) => {
-    console.log('Button cambio Value', new_val, old_val)
+    if (This.prop.Type = 'QR')
+      console.log('image new_val:', new_val)
+
+    Image.value = useQRCode(new_val, {
+      errorCorrectionLevel: 'H',
+      margin: 3,
+    })
+
   },
   { deep: false }
 );
@@ -156,63 +134,6 @@ watch(
   { deep: false }
 )
 
-
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-const focusOut = async () => {
-
-  ToolTipText.value = true  // Activamos el ToolTipText
-
-};
-
-const click = async () => {
-
-  if (!await checkGrid())
-    return
-
-  ToolTipText.value = false  // Activamos el ToolTipText
-  // await This.when()
-  if (!This.prop.Disabled && !This.prop.ReadOnly) {
-    This.Form.eventos.push(This.prop.Map + '.click()')
-
-  }
-}
-
-
-const onFocus = async () => {
-  // Si esta en un grid checa sus estatus de todas las columnas
-  if (!await checkGrid())
-    return
-
-  ToolTipText.value = false  // Desactivamos el ToolTipText
-  if (!This.prop.Disabled) {
-    This.Form.eventos.push(This.prop.Map + '.when()')
-  }
-}
-
-const checkGrid = async () => {
-  if (This.Parent.BaseClass != "grid")
-    return true
-
-  const grid = This.Parent
-  //console.log('EditText onFocus Grid Name', This.prop.Name)
-  for (const comp in grid.elements) {
-    const compName = grid.elements[comp].Name
-    // 24/Dic/2024 .- Se aumenta que sea componente Capture
-    if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-      console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
-      return false
-    }
-  }
-  return true
-}
-
-
-
-
-
 onMounted(async () => {
   // Styles.labelStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
@@ -245,10 +166,3 @@ onMounted(() => {
 */
 
 </script>
-
-<style scoped>
-.button {
-  background-color: bind("props.style.backgroundColor");
-
-}
-</style>

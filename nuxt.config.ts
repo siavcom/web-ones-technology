@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   devServer: {
-    host: 'localhost',
+    host: '176.16.200.0',
     port: 3000
   },
 
@@ -39,10 +39,12 @@ export default defineNuxtConfig({
     shim: false,
     strict: true,
     includeWorkspace: true,
-    typecheck: true
+    //typecheck: true
   },
 
   css: ['~/assets/css/styles.css'],
+
+  // css: ['~/assets/css/styles.css', 'vue-final-modal/style.css'],
 
   // Para poder hacer los enlaces simbolicos, se aumenta los directorios
   // para que vite los acepte
@@ -58,12 +60,24 @@ export default defineNuxtConfig({
     },
   },
 
-  
+  // 26/Nov/2024
+  //modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
+
   modules: ['@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    "@nuxt/image"],
+    "@nuxt/image", '@vueuse/nuxt',],
 
- 
+  // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
+  //build: {
+  //  transpile: ['pinia-plugin-persistedstate'],
+  // },
+
+  /*
+    router: {
+      middleware: ['checkSession']
+    }
+  */
+
 
   app: {
     head: {
@@ -78,7 +92,8 @@ export default defineNuxtConfig({
     basculaServer: 'my-secret-key',
     // Keys within public are also exposed client-side
     public: {
-      bascula: ['sample.freddns.org:3010'] //scale IP 
+      //  bascula: ['19toto.freeddns.org:3010'],
+      whatsAppServer: ['127.0.0.1:3011']
     },
   },
 

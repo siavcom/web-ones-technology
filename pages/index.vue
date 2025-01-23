@@ -37,9 +37,12 @@
       VUE/NUXT npm Packages:
     </div>
     <div>
-      <a href="https://www.npmjs.com/package/@zip.js/zip.js/v/2.6.3">zip,</a>
+      <a href="https://www.npmjs.com/package/@zip.js/zip.js/v/2.6.3">zip.js,</a>
+      <a>zip.js is an open-source library (BSD-3-Clause license) for zipping and unzipping files in the browser and
+        Deno</a>
     </div>
     <div> <a href="https://www.npmjs.com/package/alasql">alasql, </a>
+      <a href="https://github.com/alasql/alasql/blob/HEAD/LICENSE">MIT licence information, </a>
     </div>
     <div> <a href="https://www.npmjs.com/package/axios">axios,</a>
     </div>
@@ -54,6 +57,10 @@
     <div> <a href="https://beholdr.github.io/maska/v3">maska,</a>
     </div>
     <div> <a href="https://www.npmjs.com/package/xlsx">xlsx,</a>
+    </div>
+    <div> <a href="https://www.npmjs.com/package/whatsapp-web.js?activeTab=readme">whatsapp-web.js </a>
+      <a href="http://www.apache.org/licenses/LICENSE-2.0."> Licensed under the Apache License, Version 2.0, </a>
+
     </div>
     <div> <a href="https://github.com/siavcom/web-ones-technology">front-end git-hub, </a>
     </div>

@@ -7,8 +7,20 @@
       ERP Siavcom Manual!
     </NuxtLink>
   </div>
+  <!--img class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code"-->
 </template>
-<script lang="ts" setup >
+<script lang="ts" setup>
+// para usar esto npm i @vueuse/integrations
+
+/*
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+
+const qrcode = useQRCode('http://siavcom.com.mx', {
+  errorCorrectionLevel: 'H',
+  margin: 3,
+})
+*/
+//console.log('QR :', qrcode)
 
 interface Props {
   user: string

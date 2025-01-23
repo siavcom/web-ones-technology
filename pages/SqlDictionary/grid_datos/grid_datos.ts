@@ -92,10 +92,7 @@ export class grid_datos extends GRID {
       vue_dat: " ",
     };
     await super.appendRow(m); // llama a la clase base
-    console.log(
-      "2)grid_datos append blank ",
-      await this.Form.db.localAlaSql("select *from vi_cap_comedat")
-    );
+
   }
 
   async appendDatos() {
@@ -117,9 +114,9 @@ export class grid_datos extends GRID {
     m.cam_dat = "usu_usu";
 
     m.tip_dat = "I";
-    m.lon_dat = 4;
+    m.lon_dat = 2;
     m.dec_dat = 0;
-    m.des_dat = "USUARIO";
+    m.des_dat = "Usuario que hizo la ultima actualizacion";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
@@ -129,7 +126,7 @@ export class grid_datos extends GRID {
     m.tip_dat = "D";
     m.lon_dat = 8;
     m.dec_dat = 0;
-    m.des_dat = "FECHA ULTIMA ACTUALIZACION";
+    m.des_dat = "Tiempo ultima actualización";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
@@ -139,7 +136,7 @@ export class grid_datos extends GRID {
     m.tip_dat = "I";
     m.lon_dat = 2;
     m.dec_dat = 0;
-    m.des_dat = "USUARIO CREAOOR";
+    m.des_dat = "Usuario creador";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
@@ -149,7 +146,7 @@ export class grid_datos extends GRID {
     m.tip_dat = "D";
     m.lon_dat = 8;
     m.dec_dat = 0;
-    m.des_dat = "TIEMPO DE CREACION";
+    m.des_dat = "Tiempo de creación";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
@@ -169,7 +166,7 @@ export class grid_datos extends GRID {
     m.tip_dat = "I";
     m.lon_dat = 4;
     m.dec_dat = 0;
-    m.des_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    ";
+    m.des_dat = "LLAVE PRIMARIA (ID) ";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
     console.log(

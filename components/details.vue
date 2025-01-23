@@ -213,8 +213,8 @@ var openDetail = ref(false)
 
 
 
-const Id = This.prop.Name
-
+//const Id = This.prop.Name
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 
 const scroll = reactive({
   controls: false,

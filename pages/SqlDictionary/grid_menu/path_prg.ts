@@ -24,9 +24,11 @@ export class path_prg extends COLUMN {
         this.style.width = '180px'
     }
     override async valid() {
-        if (this.prop.Value.trim() == '') {
-            return false
-        }
+
+        /* if (this.prop.Value.trim() == '') {
+             return false
+         }
+         */
         return true
     }
 

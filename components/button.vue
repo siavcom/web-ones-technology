@@ -74,6 +74,19 @@ const props = defineProps<{
 }>();
 
 
+const Component = toRef(() => props.prop.This)
+//console.log('editText Component=', Component.value)
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
+
+const Este = props.prop.This
+const labelStyle = reactive({ ...Este.labelStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+const containerStyle = reactive({ ...Este.containerStyle })
+
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+
+
 watch(
   () => props.prop.Value,
 

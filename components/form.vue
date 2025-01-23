@@ -249,7 +249,9 @@ const props = defineProps<{
   ThisForm: null;
 }>();
 const ThisForm = reactive(new props.ThisForm) // no quitar el new 
-const Id = ThisForm.prop.Name
+//const Id = ThisForm.prop.Name
+
+const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 // Datos forma por forma . En app.vue esta useHead
 useSeoMeta({
   title: ThisForm.prop.Name,

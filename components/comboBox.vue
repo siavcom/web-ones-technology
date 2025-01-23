@@ -9,7 +9,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -237,7 +237,8 @@ Valid.value = true
 const ToolTipText = ref(true)
 
 
-const Id = This.prop.Name + '_' + props.Registro.toString().trim()
+//const Id = This.prop.Name + '_' + props.Registro.toString().trim()
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 let thisElement: Element | null
 This.prop.htmlId = Id
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox

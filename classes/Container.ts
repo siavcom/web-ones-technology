@@ -61,15 +61,16 @@ export class CONTAINER extends COMPONENT {
   }
   async init() {
     await super.init()
-    if (this.prop.BaseClass == 'modalContainer')
-      this.style = {
-        maxWidth: '85%',
-        maxHeight: '85%',
-        borderStyle: 'double',
-        background: 'antiquewhite',
-        borderRadius: '5px',
-        padding: '3%',   //Margen entre los bordes y el contenido
-      }
+    if (this.prop.BaseClass == 'modalContainer') {
+      this.style.maxWidth = '90%'
+      this.style.maxHeight = '90%'
+      this.style.borderStyle = 'double'
+      this.style.background = 'antiquewhite'
+      this.style.backgroundColor = 'antiquewhite'
+      this.style.left = '5%'
+      this.style.borderRadius = '5px'
+      this.style.padding = '1%'   //Margen entre los bordes y el contenido
+    }
 
     /*let elementos = []
     for (let i = 0; i < this.elements.length; i++) {

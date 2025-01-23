@@ -25,8 +25,11 @@ import details from '@/components/details.vue'
 import embedPdf from '@/components/embedPdf.vue'
 import container from '@/components/container.vue'
 import base64 from '@/components/base64.vue'
+import image from '@/components/image.vue'
+
 import form from '@/components/form.vue'
 import modalContainer from '@/components/modalContainer.vue'
+
 //import modal from '@/components/modal.vue'
 
 //////////////////////////////////////
@@ -545,6 +548,12 @@ export function impComponent(name: string) {
 
       return base64
     }
+    case 'image': {
+
+      return image
+    }
+
+
     case 'textlabel': {
       return textLabel
     }

@@ -349,7 +349,9 @@ if (props.prop.Help)
 
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
 
-const Id = This.prop.Name + props.Registro.toString().trim()
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+
+
 let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
 
@@ -1254,7 +1256,7 @@ const onFocus = async (click?: boolean) => {
       This.prop.ShowError = false
   }
 
-  // select() 20/Dic/2024 Se quito porque en version compilada no funciona
+
 
   emit("update:Value", Value.value)
 
@@ -1267,6 +1269,7 @@ const onFocus = async (click?: boolean) => {
       if (click)
         This.Form.eventos.push(This.prop.Map + '.click()')
     })
+    select() // 20/Dic/2024 Se quito porque en version compilada no funciona
 
   }
 

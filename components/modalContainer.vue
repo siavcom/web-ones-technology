@@ -1,15 +1,15 @@
 <template>
-  <ClientOnly>
-    <Teleport to="body">
-      <Transition>
-
+  <!--ClientOnly-->
+    <Teleport to="#teleports">
+      <!--Transition-->
+      <UContainer>
+      
         <div :id="Id+'_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
-          <div :id="Id+'modal_container'" class="modal-container" :style="divStyle">
+          
+          <div :id="Id+'_modal_container'" class="modal-container" :style="divStyle">
 
-            <!--section class="mainContainer"-->
-
-            <div :id="Id+'modal_header'" class="modal-header">
-              <slot name="header">{{ This.textLabel }}</slot>
+            <div :id="Id+'label'" class="modal-header" :style="labelStyle">
+              <label name="header">{{ This.prop.textLabel }}</label>
             </div>
             <div :id="Id+'modal_body'" class="modal-body">
               <slot name="componentes">
@@ -36,11 +36,12 @@
             </div>
             <!--/section-->
           </div>
+       
         </div>
-
-      </Transition>
+      </UContainer>
+      <!--/Transition-->
     </Teleport>
-  </ClientOnly>
+  <!--/ClientOnly-->
 </template>
 
 <script lang="ts" setup>
@@ -169,9 +170,13 @@ const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 
-const Id = This.Name + props.Registro.toString()
+//const Id = This.Name + props.Registro.toString()
 
-//console.log('10 modalContainer Name=', This.prop.Name, 'This.block=', This.block)
+const Id = This.prop.Name+'_' +Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+
+
+console.log('10 modalContainer Name=', This.prop.Name, 'divStyle=', divStyle, 'Id=', Id)
+
 /**********************
  
 //const Divi = ref(This.Divi)

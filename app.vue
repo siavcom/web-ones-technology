@@ -145,42 +145,12 @@
                               </a>
 
 */
-/*
-import {
-  //  defineEmits,
-  // defineProps,
-  //  defineExpose,
-  ref,
-  reactive,
-  computed,
-  //  onUnmounted,
-  watch
-  // toRefs,
-  // toRef,
-  // onMounted,
-  // onBeforeUpdate,
-  // onUpdated,
-  // onUnmounted,
 
-} from 'vue'
-*/
-//import router from '@/router'
 
 // Utilizacion de Pinia 
-
 import { storeToRefs } from 'pinia'
-//import { Session } from '@/stores/currentSession'
-
-
-
-//import consolaGlobalInstance from 'consola';
 
 /*
-definePageMeta({
-  name: 'posts'
-})
-*/
-
 interface Props_interface {
   isOpened: boolean;
   //isMenuOpen: boolean;
@@ -211,6 +181,8 @@ interface Props_interface {
 
   // Style: Object
 }
+
+*/
 /* {
       bgColor: string;
       secondaryColor: string;
@@ -223,7 +195,6 @@ interface Props_interface {
       menuItemsTextColor: string;
       menuFooterTextColor: string;
   };
-
 */
 
 const Props = reactive({ //   withDefaults(defineProps<Props_interface>(), {
