@@ -1,29 +1,27 @@
 <template>
   <ClientOnly>
-    <div client-only id="app-layout-header">
 
-      <div id="header" style="width: 98%;height: 65px; display: flex;">
-        <!--img class="logoVue" :src="logo" style="width:50px;height:50px;" /-->
-        <div id="webOnes" class="Web-ones">
-          <img loading="lazy" class="logoWebOnes" :src="logo" style="width:50px;height:50px" />eb-Ones
-          Technology
+    <div id="header" style="width: 98%;height: 65px; display: flex;">
+      <!--img class="logoVue" :src="logo" style="width:50px;height:50px;" /-->
+      <div id="webOnes" class="Web-ones">
+        <img loading="lazy" class="logoWebOnes" :src="logo" style="width:50px;height:50px" />eb-Ones
+        Technology
+      </div>
+
+      <div id="company" class="Company" style="align-self:flex-end;margin-left: auto;">
+        <div id='empresa' class='title' v-if="nomEmp" style="display:flex; item-align:flex-end:top:5">
+
         </div>
-
-        <div id="company" class="Company" style="align-self:flex-end;margin-left: auto;">
-          <div class='title' v-if="nomEmp" style="display:flex; item-align:flex-end:top:5">
-
+        <div id="dataEmp" class="dataEmp" style="display:flex; flex-wrap:wrap;item-align:flex-end">
+          <div id="nombreEmpresa" style="flex: 1; text-align: left; top:10px">
+            <p>{{ props.nomEmp.trim() }}</p>
+            <p>{{ new Date(props.fpo_pge).toDateString() }}</p>
           </div>
-          <div id="dataEmp" class="dataEmp" style="display:flex; flex-wrap:wrap;item-align:flex-end">
-            <div style="flex: 1; text-align: left; top:10px">
-              <p>{{ props.nomEmp.trim() }}</p>
-              <p>{{ new Date(props.fpo_pge).toDateString() }}</p>
-            </div>
-            <nuxt-img id="logoEmp" v-if="logoEmp && logoEmp.length > 5" class="logoEmp" :src="logoEmp"
-              style="width:auto;height:75px; float: inline-end;margin-top: 4px; margin-right: -8%;" loading="lazy" />
+          <nuxt-img id="logoEmp" v-if="logoEmp && logoEmp.length > 5" class="logoEmp" :src="logoEmp"
+            style="width:auto;height:75px; float: inline-end;margin-top: 4px; margin-right: -8%;" loading="lazy" />
 
-            <!--nuxt-img id="logoEmp" v-if="srcLogo.length > 5" :src="srcLogo" class="logoEmp"
+          <!--nuxt-img id="logoEmp" v-if="srcLogo.length > 5" :src="srcLogo" class="logoEmp"
             style="width:auto;height:75px; float: inline-end" loading="lazy" /-->
-          </div>
         </div>
       </div>
     </div>
@@ -57,7 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   user: ''
 })
 
-console.log('LayOut Header Props', props)
+//console.log('LayOut Header Props', props)
 
 
 /*

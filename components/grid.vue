@@ -470,12 +470,13 @@ watch(
     Status.value = 'A';  // Todos los componentes del grid esta Activo
     emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
     return
-    if (eventos.length == 0) return
-    for (let i = 0; i < eventos.length; i++)
-      This.Form.eventos.push(eventos[i])
-
-    eventos.length = 0 // borramos los eventos
-
+    /*
+      if (eventos.length == 0) return
+      for (let i = 0; i < eventos.length; i++)
+        This.Form.eventos.push(eventos[i])
+  
+      eventos.length = 0 // borramos los eventos
+  */
   },
   { deep: true }
 );

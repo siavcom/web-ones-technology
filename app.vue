@@ -1,137 +1,147 @@
 <template>
-  <div class="Menu">
-    <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
-      <div class="logo-details" style="margin: 6px 14px 0 14px;">
-        <img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon" />
+  <!--Para quitar los errores de hidratacion, se puso que solo haga render del lado del cliente-->
+  <ClientOnly>
+    <div class="Menu">
+      <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
+        <div class="logo-details" style="margin: 6px 14px 0 14px;">
+          <img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon" />
 
-        <!--i  v-else src="/Iconos/svg" class="bx icon" :class="menuIcon"></i-->
-        <div class="logo_name">
-          {{ menuTitle }}
+          <!--i  v-else src="/Iconos/svg" class="bx icon" :class="menuIcon"></i-->
+          <div class="logo_name">
+            {{ menuTitle }}
+          </div>
+          <!--i class="bx" :class="isOpen ? 'bx-menu-alt-right' : 'bx-menu'" id="btn" @click="isOpen = !isOpen" /-->
+          <nuxt-img id="btn" class="bx" :src="isOpen ? '/Iconos/svg/bx-menu-alt-right.svg' : '/Iconos/svg/bx-menu.svg'"
+            @click="isOpen = !isOpen" />
         </div>
-        <!--i class="bx" :class="isOpen ? 'bx-menu-alt-right' : 'bx-menu'" id="btn" @click="isOpen = !isOpen" /-->
-        <nuxt-img id="btn" class="bx" :src="isOpen ? '/Iconos/svg/bx-menu-alt-right.svg' : '/Iconos/svg/bx-menu.svg'"
-          @click="isOpen = !isOpen" />
-      </div>
 
-      <div
-        style="display: flex ; flex-direction:column; justify-content: space-between; flex-grow: 1; max-height: calc(100% - 60px); ">
-        <div id="my-scroll" style="margin: 6px 14px 0 14px;">
-          <ul class="nav-list" style="overflow: visible;">
-            <li v-if="isLoggedIn" @click="isOpen = true">
-              <!--i class="bx bx-search" ></i-->
-              <nuxt-img src="/Iconos/svg/bx-search.svg" class="bx bx-search" />
-              <input type="text" :placeholder="Props.searchPlaceholder"
-                @input="$emit('search-input-emit', $event.target.value)">
-              <span class="tooltip">{{ Props.searchTooltip }}</span>
-            </li>
-
-            <!--span v-for="(menuItem, index) in menuItems" :key="index"-->
-
-            <span v-for="(menuItem, index) in Items" :key="index">
-              <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
-              <li @click="obtSubMenu(menuItem.system)">
-                <NuxtLink :to="menuItem.path" :target="menuItem.target"
-                  @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
-                  <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon" :class="menuItem.icon" />
-                  <span class="links_name">{{ menuItem.name }}</span>
-                </NuxtLink>
-                <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
-              </li>
-              <span v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
-
-                <li @click="isMan = !isMan">
-                  <span class="links_options">{{ Props.maintenance }}</span>
-                  <nuxt-img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg" />
+        <div
+          style="display: flex ; flex-direction:column; justify-content: space-between; flex-grow: 1; max-height: calc(100% - 60px); ">
+          <div id="my-scroll" style="margin: 6px 14px 0 14px;">
+            <ClientOnly>
+              <ul class="nav-list" style="overflow: visible;">
+                <li v-if="isLoggedIn" @click="isOpen = true">
+                  <!--i class="bx bx-search" ></i-->
+                  <nuxt-img src="/Iconos/svg/bx-search.svg" class="bx bx-search" />
+                  <input type="text" :placeholder="Props.searchPlaceholder"
+                    @input="$emit('search-input-emit', $event.target.value)">
+                  <span class="tooltip">{{ Props.searchTooltip }}</span>
                 </li>
-                <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
 
-                  <li>
+                <!--span v-for="(menuItem, index) in menuItems" :key="index"-->
+
+                <span v-for="(menuItem, index) in Items" :key="index">
+                  <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
+                  <li @click="obtSubMenu(menuItem.system)">
                     <NuxtLink :to="menuItem.path" :target="menuItem.target"
-                      @click="titleName = menuItem.name; isOpen = false">
+                      @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
+                      <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
+                        :class="menuItem.icon" />
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
-
-                    <!-- Hiperlink Tag  a :href="menuItem.link"-->
                     <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                   </li>
-                </span>
-              </span>
-              <span v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
-                <li text-align="end" @click="isRep = !isRep">
-                  <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
-                  <nuxt-img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg" />
-                </li>
-                <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
-                  <li>
-                    <NuxtLink :to="menuItem.path" :target="menuItem.target"
-                      @click="titleName = menuItem.name; isOpen = false">
-                      <span class="links_name">{{ menuItem.name }}</span>
-                    </NuxtLink>
+                  <span
+                    v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
 
-                    <!-- Hiperlink Tag  a :href="menuItem.link"-->
-                    <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
-                  </li>
-                </span>
-              </span>
-              <span v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
-                <li text-align="end" @click="isPro = !isPro">
-                  <span class="links_options">{{ Props.process }}</span>
-                  <nuxt-img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg" />
-                </li>
-                <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
-                  <li>
-                    <NuxtLink :to="menuItem.path" :target="menuItem.target"
-                      @click="titleName = menuItem.name; isOpen = false">
-                      <span class="links_name">{{ menuItem.name }}</span>
-                    </NuxtLink>
+                    <li @click="isMan = !isMan">
+                      <span class="links_options">{{ Props.maintenance }}</span>
+                      <nuxt-img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg" />
+                    </li>
+                    <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
 
-                    <!-- Hiperlink Tag  a :href="menuItem.link"-->
-                    <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
-                  </li>
-                </span>
-              </span>
+                      <li>
+                        <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                          @click="titleName = menuItem.name; isOpen = false">
+                          <span class="links_name">{{ menuItem.name }}</span>
+                        </NuxtLink>
 
-              <!--li v-else>
+                        <!-- Hiperlink Tag  a :href="menuItem.link"-->
+                        <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
+                      </li>
+                    </span>
+                  </span>
+                  <span
+                    v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
+                    <li text-align="end" @click="isRep = !isRep">
+                      <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
+                      <nuxt-img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg" />
+                    </li>
+                    <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
+                      <li>
+                        <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                          @click="titleName = menuItem.name; isOpen = false">
+                          <span class="links_name">{{ menuItem.name }}</span>
+                        </NuxtLink>
+
+                        <!-- Hiperlink Tag  a :href="menuItem.link"-->
+                        <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
+                      </li>
+                    </span>
+                  </span>
+                  <span
+                    v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
+                    <li text-align="end" @click="isPro = !isPro">
+                      <span class="links_options">{{ Props.process }}</span>
+                      <nuxt-img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg" />
+                    </li>
+                    <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
+                      <li>
+                        <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                          @click="titleName = menuItem.name; isOpen = false">
+                          <span class="links_name">{{ menuItem.name }}</span>
+                        </NuxtLink>
+
+                        <!-- Hiperlink Tag  a :href="menuItem.link"-->
+                        <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
+                      </li>
+                    </span>
+                  </span>
+
+                  <!--li v-else>
                 <nuxt-img class="bx" :src="'/Iconos/'+menuItem.icon" :class="menuItem.icon" />
                 <span class="links_name">{{ menuItem.name }}</span>
                 <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
               </li-->
 
-            </span>
-          </ul>
-        </div>
+                </span>
+              </ul>
+            </ClientOnly>
+          </div>
 
-        <div v-if="isLoggedIn" class="profile">
-          <div class="profile-details">
-            <nuxt-img v-if="Props.profileImg" :src="Props.profileImg" alt="Props.profileImg" />
-            <nuxt-img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle" />
-            <div class="name_job">
-              <div class="name">
-                {{ Props.profileName }}
-              </div>
-              <div class="job">
-                {{ Props.profileRole }}
+          <div v-if="isLoggedIn" class="profile">
+            <div class="profile-details">
+              <nuxt-img v-if="Props.profileImg" :src="Props.profileImg" alt="Props.profileImg" />
+              <nuxt-img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle" />
+              <div class="name_job">
+                <div class="name">
+                  {{ Props.profileName }}
+                </div>
+                <div class="job">
+                  {{ Props.profileRole }}
+                </div>
               </div>
             </div>
+            <!--i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" /-->
+            <nuxt-img v-if="Props.isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
+              @click.stop="exit()" />
           </div>
-          <!--i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" /-->
-          <nuxt-img v-if="Props.isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
-            @click.stop="exit()" />
         </div>
       </div>
-    </div>
 
-    <div class="mainForm">
-      <NuxtLayout name='header' :logoEmp="logoEmp" :nomEmp="nom_emp" :titleName="titleName" :fpo_pge="fpo_pge"
-        :user="user" />
-      <NuxtLayout name='default'>
-        <NuxtLoadingIndicator />
-        <NuxtPage />
-      </NuxtLayout>
-      <NuxtLayout name='footer' :user="user" :form="Props.form" />
+      <div class="mainForm">
 
+        <NuxtLayout name='header' :logoEmp="logoEmp" :nomEmp="nom_emp" :titleName="titleName" :fpo_pge="fpo_pge"
+          :user="user" />
+        <NuxtLayout name='default'>
+          <NuxtLoadingIndicator />
+          <NuxtPage />
+        </NuxtLayout>
+        <NuxtLayout name='footer' :user="user" :form="Props.form" />
+
+      </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
