@@ -1,13 +1,15 @@
 <template>
-  <div id="app-layout-footer">
+  <ClientOnly>
+    <div id="app-layout-footer">
 
-    <div id="user"> User: {{ props.user }}
+      <div v-if="props && props.user" id="user"> User: {{ props.user }}
+      </div>
+      <NuxtLink id="manual" to="http://siavcom.com.mx/help/Archivos/Menu%20general%20del%20sistema.html" external>
+        ERP Siavcom Manual!
+      </NuxtLink>
     </div>
-    <NuxtLink id="manual" to="http://siavcom.com.mx/help/Archivos/Menu%20general%20del%20sistema.html" external>
-      ERP Siavcom Manual!
-    </NuxtLink>
-  </div>
-  <!--img class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code"-->
+    <!--img class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code"-->
+  </ClientOnly>
 </template>
 <script lang="ts" setup>
 // para usar esto npm i @vueuse/integrations

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   devServer: {
-    host: '176.16.200.0',
+    host: 'localhost',
     port: 3000
   },
 
@@ -61,8 +61,7 @@ export default defineNuxtConfig({
   },
 
   // 26/Nov/2024
-  //modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
-
+ 
   modules: ['@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     "@nuxt/image", '@vueuse/nuxt',],
@@ -92,8 +91,8 @@ export default defineNuxtConfig({
     basculaServer: 'my-secret-key',
     // Keys within public are also exposed client-side
     public: {
-      //  bascula: ['19toto.freeddns.org:3010'],
-      whatsAppServer: ['127.0.0.1:3011']
+      //  bascula: ['127.0.0.1:3010'],  // Bascula de Camiones
+      whatsAppServer: ['127.0.0.1:3011'] // Servidor de Mensajes
     },
   },
 
