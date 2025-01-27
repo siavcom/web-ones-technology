@@ -7,22 +7,22 @@ https://content.nuxt.com/ : Ducumentation of nuxt
 
 ## Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-
 # Nuxt 3 Minimal Starter
-npx nuxi dev
-npx nuxi cleanup
 
+# npm
+npm run dev
+
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
+
+# bun 
 bun --bun run dev
 
-## compiled
-npx nuxi build
-
-# solamente se debe de copiar el directorio .otput al servidor 
-# para correrlo con bun
-HOST=0 PORT=13000 bun run ./server/index.mjs
-# para correrlo con node
-NITRO_PORT=13000 node ./server/index.mjs
-
+## clean proyect
+npx nuxi cleanup  
 
 ## Setup
 
@@ -39,33 +39,21 @@ pnpm install
 yarn install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-```
-
- 
-## Production
-
-Build the application for production:
+## Build the application for production:
 
 https://nuxt.com/docs/api/commands/build
 nuxy analyze ( pre produccion)
 
-nuxi build (The build command creates a .output directory with all your application, server and dependencies ready for product
+nuxi build (The build command creates a .output directory with all your application, server and dependencies ready for product)
+
 nuxi preview (The preview command starts a server to preview your Nuxt application after running the build command.)
 
-```bash
+
+## compile
+
+# npx
+npx nuxi build
+
 # npm
 npm run build
 
@@ -74,11 +62,22 @@ pnpm run build
 
 # yarn
 yarn build
-```
 
-Locally preview production build:
+# compile and Using bun 
 
-```bash
+  add in defineNuxtConfig.ts
+  
+    nitro: {
+       preset: 'bun',
+     },
+
+
+   Note: Solamente se debe de copiar el directorio .otput al servidor 
+
+
+# after compile Locally preview production build:
+npx nuxi preview
+
 # npm
 npm run preview
 
@@ -87,7 +86,12 @@ pnpm run preview
 
 # yarn
 yarn preview
-```
+
+# Start server with node
+NITRO_PORT=3001 node ./server/index.mjs
+
+# Start server with bun
+HOST=0 PORT=3001 bun run ./server/index.mjs
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
@@ -97,12 +101,7 @@ verify npm cache
 
 npm cache verify
 
-// preparar NUXT
+# preparar NUXT
 sh -c nuxt prepare
 
 npx nuxi prepare [--log-level] [rootDir]
-
-Runing con bun
-bun run dev
-Limpia proyecto
-npx nuxi cleanup

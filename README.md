@@ -86,134 +86,140 @@ Calling a method:
  this.Form.component4.click().
  this.Parent.component1.component2.click()
 
-## Web components
-
-- Form
-- editText
-- textLabel
-- comboBox
-- checkBox
-- optionGroup
-- grid
-- base64
-- container
+## Web components (vue/nuxt components)
+- base64. Load and display base64 imgage. 
+- browse. Display table.
+- checkBox. Check Box input.
+- comboBox. Combo Vox Input.
+- container. Component container.
+- editText. Text, number, json and check input.
+- form. Form component container.
+- grid. Grid componet container.
+- image. Display image.
+- imgButton. Button with image.
+- modalComponent. Modal component container.
+- optionGroup. Option group input.
+- textLabel. Text label. 
 
 ## TypeScript classes
-- Component. Basic component
-  
-- Form. Main page container
-- CaptureForm. Main maintenance page form
+- Browse. Table display
 - CaptureComponent. Component of CaptureForm
-- Grid. Table maintenance
+- CaptureForm. Main maintenance page form
 - Column. Column component in a grid component
-- Browse. Table display 
+- Component. Basic component
+- Form. Main page container
+- Grid. Table maintenance
 
   Each component has several properties where each property affects visual and database behavior as values too.
 
 ## Base properties (prop):
 
- - BaseClass: `<`webComponent`>`
-      type: string  
-      Values : 'Form'
-               'editText'
-               'textLabel'
-               'comboBox'
-               'checkBox'
-               'optionGroup'
-               'grid'
-               'base64'
-               'container'
+ - BaseClass: `<`webComponent`>`  
+      Type: string  
+      Values : 'Form','editText',
+                'textLabel',
+                'comboBox',
+                'checkBox',
+                'optionGroup',
+                'grid',
+                'base64',
+                'container'.
 
- - Name:`<`Name of the component`>`
+ - Name:`<`Name of the component`>`  
       Type :string
 
- - textLabel:`<`Text label showing before input`>`
+ - textLabel:`<`Text label showing before input`>`  
       Type: string
 
- - Type:`<`Data types when BaseClass="editText"`>`
-      Type: string
-      Values : 'number'
-               'text'
-               'date'
-               'dateTime'
-               'spinner'
-               'checkBox'
-               'json'
-               'checkBox'
+ - Type:`<`Data types when BaseClass="editText"`>`  
+      Type: string  
+      Values : 'number','text'
+               'date',
+               'dateTime',
+               'spinner',
+               'checkBox',
+               'json',
+               'checkBox'.
 
  - Value:`<`Value of the component`>`
 
 ## Visual properties
 
-  - First:`<`true. Component that receives focus when a new record is inserted`>`
+  - First:`<`true. Component that receives focus when a new record is inserted`>`  
       Type: boolean
     
-  - Disabled:`<`True when disabled`>`
+  - Disabled:`<`True when disabled`>`  
       Type: boolean
 
-  - ErrorMessage:`<`Error message if the component is not valid (after valid()=false or prop.Valid=false)`>`
+  - ErrorMessage:`<`Error message if the component is not valid (after valid()=false or prop.Valid=false)`>`  
       Type: string
 
-  - Format: ""
+  - Format: `<``>`  
       Type: string
 
-  - InputMask: ""
+  - InputMask: `<``>`   
       Type: string
     
-  - MaxLength:`<`Maximum character length`>`
+  - MaxLength:`<`Maximum character length`>`  
+      Type: number  
+
+  - Min:`<`Minimum value for number`>`  
       Type: number
 
-  - Min:`<`Minimum value for number`>`
+  - Max:`<`Maximum value for number`>`  
       Type: number
 
-  - Max:`<`Maximum value for number`>`
-      Type: number
-
-  - Placeholder:`<`label inside input blurred`>`
+  - Placeholder:`<`label inside input blurred`>`  
       Type: string 
 
-  - Position:`<`Position in a form component`>`
-      Type: string 
-      Values: 'header'
-               'main'
-               'footer'
+  - Position:`<`Position in a form component`>`  
+      Type: string   
+      Values: 'header',
+               'main',
+               'footer'.
     
-  - ReadOnly:`<`true when component is only readable`>`
+  - ReadOnly:`<`true when component is only readable`>`  
       Type: boolean
     
-  - TabIndex:`<`Component tab index in a form component`>`
+  - TabIndex:`<`Component tab index in a form component`>`  
       Type: number 
 
-  - Image:`<`Component background image path`>`
+  - Image:`<`Component background image path`>`  
       Type : string
    
-  - ToolTipText:`<`Component tool tip text`>`
+  - ToolTipText:`<`Component tool tip text`>`  
       Type: string
 
-  - Visible: `<`true when component is visible`>`
+  - Visible: `<`true when component is visible`>`  
       Type: string
 
-
-## Input component Style and componentStyle properties
-
-- background: "white",
-- color: "#b94295",
-- width: "64px",
-- height: "auto",
-- Maxheight: '13px',
-- MaxWidth: 'auto',
-- fontFamily: "Arial",
-- fontSize: "13px", // Automatically Vue will change it to font-size (for that, camelCase notation is used)
-- textAlign: "left",
+## style, inputStyle,labelStylenent and componentStyle properties ( all html style)
+### sample:   
+- background: "white",  
+- color: "#b94295",  
+- width: "64px",  
+- height: "auto",  
+- Maxheight: '13px',  
+- MaxWidth: 'auto',  
+- fontFamily: "Arial",  
+- fontSize: "13px",  
+- textAlign: "left",  
 - ...... several CSS style properties: .
 
 ## Database components properties
 
     # Each prop.Value component can be gathered from a field of local SQL where:
 
-    - ControlSource: "tableName.fieldName" // Name of SQL field.
-    - RecordSource: 'viewTableName'
-    - SqlUpdate: true   // True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.
+    - ControlSource:`<`Name of SQL field `>`  
+        Type : string  
+        Sample  value: 'localTable.field'
+
+    - RecordSource: `<` local or remote table name `>`  
+        Type :string 
+        Sample  value:  'viewTableName'
+
+    - SqlUpdate: `<` True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.`>
+        Type : boolean
 
 ## Internal properties
 
@@ -229,7 +235,7 @@ Calling a method:
     - Valid: true // (Internal use). The value of the component is good
     - KeyId: true when this component is a field index for a table select, update or delete
 
-## Numeric components
+## Numeric components propierties
 
     - Currency: '   ' // USD, EUR, MXN
     - CurrencyDisplay: 'code' // To use the ISO currency code
@@ -317,35 +323,35 @@ Each component has a separate TypeScript file.
 
 ## SQL Database class (This method is based in VFP SQL instructions)
 
-- select(&lt;area`>`).
+- select(`<`area`>`).
 
-- useNodata(&lt;table`>`,`<`alias?`>`).
+- useNodata(`<`table`>`,`<`alias?`>`).
 
-- use(&lt;table`>`,`<`memoryObject`>`,`<`alias?`>`).
+- use(`<`table`>`,`<`memoryObject`>`,`<`alias?`>`).
 
-- tableUpdate(&lt;updateType`>`,`<`force`>`,`<`alias`>`).
+- tableUpdate(`<`updateType`>`,`<`force`>`,`<`alias`>`).
 
-- appendBlank(&lt;alias`>`,`<`memoryObject`>`).
+- appendBlank(`<`alias`>`,`<`memoryObject`>`).
 
-- deleteRow(&lt;key_pri`>`,`<`alias`>`).
+- deleteRow(`<`key_pri`>`,`<`alias`>`).
 
-- delete(&lt;recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
+- delete(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
 
-- insert(&lt;alias`>`,`<`memoryObject`>`).
+- insert(`<`alias`>`,`<`memoryObject`>`).
 
-- execute(&lt;query`>`,`<`alias?`>`,`<`resultType`>`).
+- execute(`<`query`>`,`<`alias?`>`,`<`resultType`>`).
 
-- select(&lt;alias`>`).
+- select(`<`alias`>`).
 
-- recCount(&lt;alias`>`).
+- recCount(`<`alias`>`).
 
-- recno(&lt;alias`>`).
+- recno(`<`alias`>`).
 
-- goto(&lt;row`>`).
+- goto(`<`row`>`).
 
-- skip(&lt;rowNumbers`>`).
+- skip(`<`rowNumbers`>`).
 
-- scatter(&lt;type`>`,`<`fieldArray`>`).
+- scatter(`<`type`>`,`<`fieldArray`>`).
 
 ### Values
  `<`area`>` type: number. VFP Area number
@@ -406,7 +412,7 @@ Each component has a separate TypeScript file.
   - Vue Official
 
 - Download the back-end framework from https://github.com/siavcom/VFP-NODE and extract it in a folder.
-- Make a company folder in the back-end folder/app/empresas/&lt;your company name`>`
+- Make a company folder in the back-end folder/app/empresas/`<`your company name`>`
 - Copy a sample folder company in the company folder
 - Rename the sample folder to your company name
 - Change the db.config.js file and use your SQL Server connection parameters
@@ -440,7 +446,7 @@ Each component has a separate TypeScript file.
   - Fill up all characteristics
   - Click accept
   Notes:
-    When a field is a primary key, the default value has to be m.&lt;namefield`>`
+    When a field is a primary key, the default value has to be m.`<`namefield`>`
 
 - Create a new SQL view.
 - Create a new SQL index.   
@@ -539,7 +545,7 @@ console.log(m) =
 
   ## Other
   Login to the framework
- `<`user`>`@&lt;busines nickname`>`
+ `<`user`>`@`<`busines nickname`>`
      `<`user`>` : personal login
      `<`busines nickname`>` :  SQL data base name
 
