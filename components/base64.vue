@@ -6,7 +6,8 @@
     <img v-if="Value.length > 0 && This.inputStyle.accept != 'application/pdf'" :id="Id + '_img'" class="img"
       :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
     <iframe v-if="Value.length > 0 && This.inputStyle.accept == 'application/pdf'" :id="Id + '_pdf'" :src="Value"
-      :width="This.inputStyle.width" :height="This.inputStyle.height"></iframe>
+      :width="This.inputStyle.width" :height="This.inputStyle.height" :title="This.prop.textLabel"
+      :style="inputStyle"></iframe>
 
     <!--div v-if="!This.prop.Disabled"-->
     <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('get_file').click()">{{

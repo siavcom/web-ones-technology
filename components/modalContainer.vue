@@ -1,7 +1,6 @@
 <template>
   <ClientOnly>
   
-
   <Teleport to="#teleports">
     <!--UContainer Dio problemas . Cambio la toda la apariencia-->    <!--Transition-->
       

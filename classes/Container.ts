@@ -69,7 +69,7 @@ export class CONTAINER extends COMPONENT {
       this.style.backgroundColor = 'antiquewhite'
       this.style.left = '15%'
       this.style.borderRadius = '5px'
-      this.style.padding = '1%'   //Margen entre los bordes y el contenido
+      this.style.padding = '3%'   //Margen entre los bordes y el contenido
     }
 
     /*let elementos = []

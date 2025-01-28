@@ -231,7 +231,7 @@ export class COMPONENT {
       style: {
         border: '1px solid rgb(0, 0, 0)',
         background: 'bisque',
-        borderRadius: '10px',
+        borderRadius: '5px',
         boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
         padding: '10px',
         // display: 'inline-flex',
