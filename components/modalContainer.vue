@@ -1,8 +1,9 @@
 <template>
-  <!--ClientOnly-->
-    <Teleport to="#teleports">
-      <!--Transition-->
-      <UContainer>
+  <ClientOnly>
+  
+
+  <Teleport to="#teleports">
+    <!--UContainer Dio problemas . Cambio la toda la apariencia-->    <!--Transition-->
       
         <div :id="Id+'_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
           
@@ -23,6 +24,7 @@
                       <component :id="Id+'modal_componentes_' + key + component.prop.Name"
                         :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                         v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
+                         :style="component.style" 
                          :position="component.position" >
                       <!--:style="component.style" :inputStyle="component.inputStyle"
                                                
@@ -38,24 +40,22 @@
           </div>
        
         </div>
-      </UContainer>
+      
       <!--/Transition-->
+    <!--/UContainer-->
     </Teleport>
-  <!--/ClientOnly-->
+    
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
 
 
 interface Props {
-  //Recno: number;
-  // Component: null;
-  // Name,
   Registro: number;
 
   prop: {};
   style: {};
-  //inputStyle: {};
   position: {};
 
 }
@@ -175,7 +175,7 @@ const divStyle = reactive({ ...Este.style })
 const Id = This.prop.Name+'_' +Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 
 
-console.log('10 modalContainer Name=', This.prop.Name, 'divStyle=', divStyle, 'Id=', Id)
+//console.log('10 modalContainer Name=', This.prop.Name, 'divStyle=', divStyle, 'Id=', Id)
 
 /**********************
  

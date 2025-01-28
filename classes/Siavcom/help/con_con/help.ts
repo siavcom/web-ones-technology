@@ -14,6 +14,8 @@
 ///////////////////////////////////////
 import { HELP } from "@/classes/help/help"
 export class help extends HELP {
+  cop_nom: string
+  cod_nom: string
   constructor() {
     super()
     this.textLabel = 'Buscador de consignatarios'
@@ -22,6 +24,9 @@ export class help extends HELP {
     this.browse.prop.textLabel = 'Consigantarios'
     this.prop.cam_pri = 'noc_con' // campo de buqueda principal
     this.prop.Where = " "
+    this.cop_nom = 'C'
+    this.cod_nom = ''
+
 
     // Campos a mostrar en la tabla 
     this.fields = [["con_con", "Código", "32px"],
@@ -30,16 +35,13 @@ export class help extends HELP {
     ["coc_con", "Dirección", "128px"],
     ["poc_con", "Población", "64px"],
     ["cpc_con", "Población", "32px"],
-
     ["t1c_con", "Telefonos", "64px"]
     ];
   }
 
   async open() {
-    this.prop.Where = ` cop_nom='${this.Form.cop_nom.prop.Value}' and cod_nom='${this.Form.cod_nom.prop.Value}'  `
+    this.prop.Where = ` cop_nom='${this.cop_nom}' and cod_nom='${this.cod_nom}'  `
     super.open()
   }
-
-
 
 }

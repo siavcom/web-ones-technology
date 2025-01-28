@@ -51,6 +51,7 @@ export class HELP extends CONTAINER {
     this.prop.Visible = false
     this.prop.Disabled = true
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
+    this.style.height = 'auto'
 
 
     this.block[0] = {

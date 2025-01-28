@@ -19,30 +19,30 @@
 It's based on using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
 
                     this.Form
-                    /   |   \
-                   /    |    \
-                  /     |     \
-                 /      |      \
-                /       |       \
+                 /     |      \
+                /      |       \
+               /       |        \
+              /        |         \
+             /         |          \
         Component1  Component2  Component..n
-                    /   |    \ 
-                   /    |      \
+                    /     |     \ 
+                   /      |      \
                click() when()  valid()...etc()
 
 There are some components where each one has its own components (container and grid has several components  and column components).
                 
                 container
-               /    |     \
-              /     |      \
-             /      |       \
-            /       |        \
+            /     |      \
+           /      |       \
+          /       |        \
+         /        |         \
         Component1 Component2 Component..n
 
                 grid
-               /  | \
-              /   |  \
-             /    |   \
-            /     |    \
+            /     |       \
+           /      |        \
+          /       |         \
+         /        |          \
         Column1 Column2 Column..n
 
 Each component has its own properties.
@@ -208,107 +208,120 @@ Calling a method:
 
 ## Database components properties
 
-    # Each prop.Value component can be gathered from a field of local SQL where:
+# Each prop.Value component can be gathered from a field of local SQL where:
 
-    - ControlSource:`<`Name of SQL field `>`  
+ - ControlSource: <Name of SQL field>  
         Type : string  
         Sample  value: 'localTable.field'
 
-    - RecordSource: `<` local or remote table name `>`  
+ - RecordSource: <local or remote table name>  
         Type :string 
         Sample  value:  'viewTableName'
 
-    - SqlUpdate: `<` True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.`>
+- SqlUpdate: <True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.>
         Type : boolean
 
 ## Internal properties
 
-    - Capture: true // When capture is true, can't lose focus until Validate or esc
-    - First: false
-    - Focus: false // When set to true, this component takes focus
-    - Last: false
-    - Map:  // Read only. Main structure map of this component, class, method example: "this.Form.componentName"
-    - Grid: false
-    - id: 0
-    - Key: 0
-    - Status: "I" //  P)rocess, A)ctive, I)nitialization.
-    - Valid: true // (Internal use). The value of the component is good
-    - KeyId: true when this component is a field index for a table select, update or delete
+  - Capture: <When capture is true, can't lose focus until Validate or esc>
+      Type : boolean
+
+  - First: <In a Form or grid  component it has to be true the first capture component> false
+      Type : boolean
+
+  - Focus: <When set to true, this component takes focus>
+      Type : boolean
+
+  - Map:  <Show the structure map of this component>
+      Type : string
+      Sample : "this.Form.componentName"
+
+  - Status: <Status of component>
+      Type : string
+      Values :  P=Process, A=Active, I=Initialization.
+
+  - Valid: <True when component value is good>
+      Type : boolean
+  
+  - Recno :  <Record Number for localSql field value>
 
 ## Numeric components propierties
 
-    - Currency: '   ' // USD, EUR, MXN
-    - CurrencyDisplay: 'code' // To use the ISO currency code
-    - Decimals: 2
-    - Max: "999999999"
-    - Min: "0"
-    - Step: "1"
-    - Style: 'decimal' // decimal, currency, percent, unit
+  - Currency: <Currency to display>
+      Type : string
+      Sample : 'USD', 'EUR', 'MXN'
+
+  - CurrencyDisplay: 'code' // To use the ISO currency code
+      Type  
+  - Decimals: <Decimals to show and capture>
+      Type : number
+
+  - Max: <Maximus value in this component>
+      Type : number
+
+  - Min: <Minumus value in this component>
+      Type : number
+
+  - Step: <When a spinner component number step>
+     Type : number
 
 ## Combo box properties
+  - Style : <Type of combo box>
+      Type : number
+      Values : 0=DropDown.  
+               2=DropDown List 
 
-    - BoundColumn: 2  // The value is attached to the column
-    - ColumnCount: 2 // Total column numbers in a comboBox
-    - ColumnWidths: '80%', '20%' // Width of each column
-    - MultiSelect: true, // Can multiple select
-    - List: [], // List array result when MultiSelect=true
-    - Row: 0
-    - RowSourceType: 1 // How to fill the comboBox:
-          1-Value.
-          2-Alias,
-          3-Query SQL Server
-          4-Local SQL
-          5-Array
-          
-     When RowSourceType=2 or 3, you have to specify the RowSource     
+  - BoundColumn <The value is attached to the column>
+     Type : number
 
-### Example value:
-    - RowSourceType= 1
-    - ColumnCount = 2
-    - RowSource="House,H,Building,B,Department,D"
+  - ColumnCount: <Total column numbers in a comboBox>
+     Type : number
 
-### Example local SQL:
-    - RowSourceType: 2
-    - RowSource: 'tableNames.cod_nom,nom_nom'
-    Notes: You already have a local table SQL
+  - ColumnWidths: <Width of each column>
+     Type : number
+     Sample : '80%', '20%' 
 
-### Example SQL Server:
-    - RowSourceType: 3
-    - RowSource: 'select cod_nom,nom_nom from tableNames order by nom_nom'
+  - MultiSelect: <Can multiple select>
+     Type : boolean 
 
-### Example Local SQL query :
-    - RowSourceType: 4
-    - RowSource: 'select cod_nom,nom_nom from tableNames order by nom_nom'
+  - List: <List array result when MultiSelect is true>
+     Type : array
 
-### Example array:
-    - RowSourceType: 5
-    - ColumnCount = 2
-    - RowSource: [["Datos", "Tablas", "Indices", "Vistas", "Menú del sistema", "Otros"], ["D", "T", "I", "V", "M", "O"]]
+  - RowSource : <Sql query or table.field>
+     Type : string
+     Sample :
+         - when RowSourceType=2 : 'tablename.field1,field2' 
+         - When RowSourceType=3 or 4 : ' select column1,column2 from tablefield '
 
-## Others
-    - Style = 2; // 0=DropDown Combo 2=DropDown List
+  - RowSourceType: <How to fill the comboBox>
+     Type : number
+     Values : 
+          1-Value.  
+            Sample RowSourceType=1 
+            ColumnCount =2
+            RowSource="House,H,Building,B,Department,D"
 
-## Style properties (style)
+          2-Alias. 
+            Sample RowSourceType=2 
+            ColumnCount =3
+            RowSource="tablename.House,Building,Department"
 
-    - display: "inline-block"
-    - flexGrow: "0"     /* do not grow   - initial value: 0 */
-    - flexShrink: "0"   /* do not shrink - initial value: 1 */
-    - flexBasis: "auto" /* width/height  - initial value: auto */
-    - flexWrap: "wrap"
+          3-Query SQL Server.  
+            Sample RowSourceType=3
+            ColumnCount =2  
+            RowSource= 'select column1,column2 from servertable '
 
-    - background: "white"
-    - color: "#b94295"
-    - width: "auto"
-    - maxWidth: "auto"
-    - minWidth: "auto"
-    - height: "auto"
-    - fontSize: "13px"
-    - fontFamily: "Arial"
-    - zIndex: 100  // tabIndex
-    - alignContent: "center"
-    - textAlign: "left"
+          4-Local SQL.  
+            Sample RowSourceType=4
+            ColumnCount =2  
+            RowSource= 'select column1,column2 from localable '
+            Notes: You already have a local table SQL
 
-    - ....... several CSS style properties: .
+          5-Array.  
+            Sample RowSourceType=5
+            ColumnCount =2  
+            RowSource= [['column1','column2'],
+                        ['value1','value2']]
 
 ## Grid (component container). This component is for table database capture
 

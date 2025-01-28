@@ -353,7 +353,7 @@ export class bt_aceptar extends COMPONENT {
         cam_dat == "TIMESTAMP" ||
         cam_dat == "KEY_PRI"
       )
-        data[i].con_dat = i + 10;
+        data[i].con_dat = i + 100;
     }
     // borramos la tabla original y la reinsertamos en Cursor temporal
     await this.Sql.localAlaSql(
@@ -428,5 +428,4 @@ export class bt_aceptar extends COMPONENT {
     return false
   }
 
-  async setFocus() { }
 }

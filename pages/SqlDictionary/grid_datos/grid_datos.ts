@@ -117,7 +117,7 @@ export class grid_datos extends GRID {
     m.lon_dat = 2;
     m.dec_dat = 0;
     m.des_dat = "Usuario que hizo la ultima actualizacion";
-
+    m.ref_dat = m.des_dat
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 102;
@@ -137,7 +137,7 @@ export class grid_datos extends GRID {
     m.lon_dat = 2;
     m.dec_dat = 0;
     m.des_dat = "Usuario creador";
-
+    m.ref_dat = m.des_dat
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 104;
@@ -147,7 +147,7 @@ export class grid_datos extends GRID {
     m.lon_dat = 8;
     m.dec_dat = 0;
     m.des_dat = "Tiempo de creación";
-
+    m.ref_dat = m.des_dat
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 105;
@@ -157,7 +157,7 @@ export class grid_datos extends GRID {
     m.lon_dat = 8;
     m.dec_dat = 0;
     m.des_dat = "TIMESTAMP";
-
+    m.ref_dat = m.des_dat
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 106;
@@ -167,6 +167,7 @@ export class grid_datos extends GRID {
     m.lon_dat = 4;
     m.dec_dat = 0;
     m.des_dat = "LLAVE PRIMARIA (ID) ";
+    m.ref_dat = m.des_dat
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
     console.log(
