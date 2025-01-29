@@ -157,7 +157,9 @@ export class COMPONENT {
   }
 
   labelStyle = {
+    accept: "",
     background: "", //transparent
+    borderRadius: "1px",
     color: "",
     fontFamily: "Arial",
     fontSize: "inherit", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
@@ -183,7 +185,7 @@ export class COMPONENT {
     backgroundColor: "transparent", // semi "rgba(170, 187, 97, 0.5)",  //
     backgroundImage: "",
     border: "",  //    backgroundImage: "",
-    bordeRadius: "", //"2px",
+    borderRadius: "", //"2px",
     color: "#b94295", // '#872169', //    
     cols: "60",
     display: "inline-flex",

@@ -101,19 +101,130 @@ Calling a method:
 - optionGroup. Option group input.
 - textLabel. Text label. 
 
-## TypeScript classes
+## TypeScript component 
+
+ TypeScript components has to be in a TypeScrip container component (Form, container or another component ) except Form component.
+
+ Each component commonly is made for a simple file in a page Form 
+  pages/clientForm/index.vue   // Only file 
+  pages/clientForm/ThisForm.ts // Principal form
+  pages/clientForm/component1.ts // component 1
+  pages/clientForm/component2.ts // component 2
+        .
+        .
+        .
+  pages/clientForm/componentn.ts // component n
+
+  Each component arr compund by  3 part
+     
+
+  Sample of component
+
+
+//////////////////////////////////////////////
+// Clase : dic_dat
+// Descripcion : tipo de mantenimiento del diccionario de datos
+// Author : Fernando Cuadras Angulo
+// Creacion : Diciembre/2021
+// Ult.Mod  : 6/Septiembre/2022
+/////////////////////////////////////////////
+
+///////////////////////////////////////
+
+import { COMPONENT } from "@/classes/Component";
+
+export class dic_dat extends COMPONENT {
+  
+  constructor() {
+    super();
+    //****** Propierties ********//
+    this.prop.BaseClass = "comboBox";
+    this.prop.textLabel = "Diccionario  de datos";
+    this.prop.ToolTipText = this.prop.textLabel;
+    this.prop.ReadOnly = false;
+    this.prop.Capture = false;
+    this.prop.RowSource = [
+      ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],
+      ["T", "D", "M"],];
+    this.prop.ControlSource = "vi_cap_comedat.dic_dat";
+    this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
+    this.prop.ColumnCount = 2;
+    this.prop.BoundColumn = 2;
+    this.prop.ColumnWidths = "200px,10px";
+
+    //****** Component Style *******// 
+    this.style.width = "500px";
+    this.style.fontSize = "17px";
+    this.style.fontWeight = "bold";
+    
+    //****** input style component *******//
+    this.inputStyle.fontSize = "17px";
+    this.inputStyle.fontWeight = "bold";
+    this.inputStyle.width = "300px";
+
+   //****** label style component *******//
+    this.labelStyle.fontSize = "17px";
+    this.labelStyle.fontWeight = "bold";
+    
+  }
+
+//*********** Methods *******************// 
+  
+  public init = async (form: any) => {
+    this.prop.Value = "T";
+    //this.Form.nom_tab.Visible = true;
+  };
+  
+  async interactiveChange() {
+    this.Form.nom_tab.prop.Visible = false
+    this.Form.bt_gen_all_models.prop.Visible = false
+    if (this.prop.Value == "M") {
+      this.Form.sis_sis.prop.Visible = false;
+      this.Form.bt_aceptar.prop.Visible = true;
+    } else {
+
+      this.Form.sis_sis.prop.Visible = true;
+      this.Form.bt_aceptar.prop.Visible = false;
+
+    }
+  }
+
+  public async when(sis_sis?: boolean) {
+    await this.interactiveChange()
+
+    this.Form.nom_tab.prop.Visible = false;
+    this.Form.tpr_prg.prop.Visible = false;
+
+    this.Form.grid_datos.prop.Visible = false;
+    this.Form.grid_indices.prop.Visible = false;
+    this.Form.grid_vistas.prop.Visible = false;
+    this.Form.grid_menu.prop.Visible = false;
+    this.Form.grid_tablas.prop.Visible = false;
+
+    this.Form.bt_gen_model.prop.Visible = false;
+    this.Form.bt_gen_indices.prop.Visible = false;
+    this.Form.bt_gen_vistas.prop.Visible = false;
+    this.Form.bt_gen_all_models.prop.Visible = false;
+    return !this.prop.ReadOnly;
+  }
+}
+
+
+## TypeScript components
 - Browse. Table display
 - CaptureComponent. Component of CaptureForm
-- CaptureForm. Main maintenance page form
+- CaptureForm. Main maintenance page form container
 - Column. Column component in a grid component
-- Component. Basic component
+- Component. Basic component 
 - Form. Main page container
-- Grid. Table maintenance
+- Grid. Table maintenance container
 
-  Each component has several properties where each property affects visual and database behavior as values too.
+  Each component is a TypeScipt class  and has several properties where each property affects visual and database behavior as values too.
 
-## Base properties (prop):
+## Base properties 
 
+this.prop.<name of propiertie>.<Value>
+Values :
  - BaseClass: `<`webComponent`>`  
       Type: string  
       Values : 'Form','editText',
@@ -143,8 +254,10 @@ Calling a method:
 
  - Value:`<`Value of the component`>`
 
-## Visual properties
 
+## Visual properties
+this.prop.<name of propiertie>.<Value>
+Values :
   - First:`<`true. Component that receives focus when a new record is inserted`>`  
       Type: boolean
     
@@ -193,22 +306,11 @@ Calling a method:
   - Visible: `<`true when component is visible`>`  
       Type: string
 
-## style, inputStyle,labelStylenent and componentStyle properties ( all html style)
-### sample:   
-- background: "white",  
-- color: "#b94295",  
-- width: "64px",  
-- height: "auto",  
-- Maxheight: '13px',  
-- MaxWidth: 'auto',  
-- fontFamily: "Arial",  
-- fontSize: "13px",  
-- textAlign: "left",  
-- ...... several CSS style properties: .
-
 ## Database components properties
 
 # Each prop.Value component can be gathered from a field of local SQL where:
+this.prop.<name of propiertie>.<Value>
+Values :
 
  - ControlSource: <Name of SQL field>  
         Type : string  
@@ -221,8 +323,10 @@ Calling a method:
 - SqlUpdate: <True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.>
         Type : boolean
 
-## Internal properties
+## Behaivor properties 
+this.prop.<name of propiertie>.<Value>
 
+Values :
   - Capture: <When capture is true, can't lose focus until Validate or esc>
       Type : boolean
 
@@ -246,7 +350,9 @@ Calling a method:
   - Recno :  <Record Number for localSql field value>
 
 ## Numeric components propierties
+this.prop.<name of propiertie>.<Value>
 
+Values :
   - Currency: <Currency to display>
       Type : string
       Sample : 'USD', 'EUR', 'MXN'
@@ -266,6 +372,9 @@ Calling a method:
      Type : number
 
 ## Combo box properties
+this.prop.<name of propiertie>.<Value>
+
+Values :
   - Style : <Type of combo box>
       Type : number
       Values : 0=DropDown.  
@@ -323,7 +432,126 @@ Calling a method:
             RowSource= [['column1','column2'],
                         ['value1','value2']]
 
-## Grid (component container). This component is for table database capture
+
+## style, inputStyle,labelStylenent and componentStyle properties ( all html style)
+this.style.<name of propiertie>.<Value>
+this.inputStyle.<name of propiertie>.<Value>
+this.labelStyle.<name of propiertie>.<Value>
+
+Values :
+### sample:   
+- background: "white",  
+- color: "#b94295",  
+- width: "64px",  
+- height: "auto",  
+- Maxheight: '13px',  
+- MaxWidth: 'auto',  
+- fontFamily: "Arial",  
+- fontSize: "13px",  
+- textAlign: "left",  
+- ...... several CSS style properties: .
+
+
+### Form (Main Form container)
+  This is the principal main form ( SPA ). A complete system is made for serverlas Forms.
+
+  Each one for is folder ubicated in a page directory of NUXT structure.
+
+  Each page folder is minimun composed of two files:
+    index.vue and ThisForm.ts
+
+   index.vue will always have this content
+
+<template>
+  <VueForm v-bind:ThisForm="ThisForm">
+      <template #header />
+      <template #main />
+      <template #footer />
+  </VueForm>
+</template>
+
+<script lang="ts" setup>
+  import VueForm from "@/components/form.vue";
+  import { ThisForm } from './ThisForm'
+</script>
+
+  and ThisForm.ts 
+  It's has severals TypeScrips components and methods 
+
+
+//////////////////////////////////////////////
+// Page: SqlDictionary
+// Clase base : ThisForm
+// Author : Fernando Cuadras Angulo
+// Creacion : Septiembre/2021
+// Ult.Mod  : Enero/2025
+/////////////////////////////////////////////
+
+/////////////////////////////////////////
+// TypeScript base class
+/////////////////////////////////////////
+import { FORM } from "@/classes/Form"
+
+/////////////////////////////////////////
+// TypeScript component
+/////////////////////////////////////////
+
+import { dic_dat } from "./dic_dat"
+import { nom_tab } from "./nom_tab"
+import { sis_sis } from "./sis_sis"
+
+import { tpr_prg } from "./tpr_prg"
+import { bt_aceptar } from "./bt_aceptar"
+import { bt_gen_indices } from "./bt_gen_indices"
+import { bt_gen_model } from "./bt_gen_model"
+import { bt_gen_vistas } from "./bt_gen_vistas"
+import { bt_gen_all_models } from "./bt_gen_all_models"
+
+import { grid_datos } from "./grid_datos/grid_datos"
+import { grid_indices } from "./grid_indices/grid_indices"
+import { grid_vistas } from "./grid_vistas/grid_vistas"
+import { grid_menu } from "./grid_menu/grid_menu"
+import { grid_tablas } from "./grid_tablas/grid_tablas"
+
+
+export class ThisForm extends FORM {
+  public dic_dat = new dic_dat()
+  public tpr_prg = new tpr_prg()
+  public sis_sis = new sis_sis()
+  public nom_tab = new nom_tab()
+
+  public bt_aceptar = new bt_aceptar()
+  public bt_gen_indices = new bt_gen_indices()
+  public bt_gen_model = new bt_gen_model()
+  public bt_gen_vistas = new bt_gen_vistas()
+  public bt_gen_all_models = new bt_gen_all_models()
+
+  public grid_datos = new grid_datos()
+  public grid_indices = new grid_indices()
+  public grid_vistas = new grid_vistas()
+  public grid_tablas = new grid_tablas()
+  public grid_menu = new grid_menu()
+
+  constructor() {
+    super() 
+    // Propierties
+    this.prop.Name = "SqlDictionary"
+    this.prop.tag = ""
+    this.prop.textLabel = "Mantenimiento al diccionario de datos"
+    this.prop.Status = "A"
+
+    // Style
+    this.style.display = "inline-flex"
+    this.style.background = "white"
+    this.style.color = "#b94295"
+    this.style.fontSize = "13px" 
+    this.style.position = "center" 
+   }
+}
+ Note : To see the complete Form of this sample, look in pages/SqlDictionary.
+
+
+### Grid (component container). This component is for table database capture
 
   A grid has several columns where each column is an input or label component where each component is bound to a SQL table field.
 
@@ -334,7 +562,9 @@ ThisForm.ts is the beginning TypeScript program where the component definition i
 
 Each component has a separate TypeScript file.
 
-## SQL Database class (This method is based in VFP SQL instructions)
+### SQL Database class (This method is based in VFP SQL instructions)
+
+
 
 - select(`<`area`>`).
 
