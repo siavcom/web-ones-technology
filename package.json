@@ -2,6 +2,9 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
+  "overrides": {
+    "vue": "latest"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -10,27 +13,31 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/image": "^1.9.0",
-    "@nuxt/kit": "^3.15.2",
-    "@pinia/nuxt": "^0.9.0",
+    "@nuxt/image": "^1.8.1",
+    "@nuxtjs/axios": "^5.13.6",
+    "@pinia/nuxt": "^0.5.5",
     "@point-of-sale/receipt-printer-encoder": "^3.0.2",
-    "@vueuse/core": "^12.5.0",
-    "@vueuse/integrations": "^12.5.0",
-    "@vueuse/nuxt": "^12.5.0",
-    "@zip.js/zip.js": "^2.7.54",
-    "alasql": "^4.6.2",
+    "@vueuse/integrations": "^12.4.0",
+    "@zip.js/zip.js": "^2.6.40",
+    "alasql": "^4.5.2",
     "axios": "^1.7.9",
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
-    "maska": "^3.0.4",
-    "nuxt": "^3.15.2",
-    "nuxt-socket-io": "^3.0.10",
-    "pinia": "^2.3.1",
-    "pinia-plugin-persistedstate": "^4.2.0",
+    "i": "^0.3.7",
+    "maska": "^3.0.2",
+    "npm": "^11.0.0",
+    "nuxt": "^3.15.4",
+    "pinia": "^2.2.4",
+    "pinia-plugin-persistedstate": "^4.1.3",
     "qrcode": "^1.5.4",
+    "socket.io-client": "^4.8.0",
     "vue": "latest",
     "vue-router": "latest",
     "vue-sweetalert2": "^5.0.11",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@vueuse/core": "^12.4.0",
+    "@vueuse/nuxt": "^12.4.0"
   }
 }

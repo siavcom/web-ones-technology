@@ -5,8 +5,12 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   devServer: {
-    host: 'localhost',
+    host: '176.16.200.0',
     port: 3000
+  },
+  // Correr y desarrollar con bun 
+  nitro: {
+    preset: 'bun',
   },
 
   ssr: true,
@@ -39,7 +43,7 @@ export default defineNuxtConfig({
     shim: false,
     strict: true,
     includeWorkspace: true,
-    //typecheck: true
+    typecheck: true
   },
 
   css: ['~/assets/css/styles.css'],
@@ -61,10 +65,12 @@ export default defineNuxtConfig({
   },
 
   // 26/Nov/2024
- 
+  //modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
+
+
   modules: ['@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    "@nuxt/image", '@vueuse/nuxt',],
+    "@nuxt/image", '@vueuse/nuxt'],
 
   // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
   //build: {
@@ -91,8 +97,7 @@ export default defineNuxtConfig({
     basculaServer: 'my-secret-key',
     // Keys within public are also exposed client-side
     public: {
-      //  bascula: ['127.0.0.1:3010'],  // Bascula de Camiones
-      whatsAppServer: ['127.0.0.1:3011'] // Servidor de Mensajes
+      bascula: ['http://19toto.freeddns.org:3010']
     },
   },
 
