@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   devServer: {
-    host: '176.16.200.0',
+    host: '0',
     port: 3000
   },
   // Correr y desarrollar con bun 
