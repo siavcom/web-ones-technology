@@ -66,7 +66,7 @@ and methods
     When the value of this component changes, this method is called.
     It receives an optional parameter styles, which is the styles of the component (style, inputStyle, labelsStyle).
     If it is not provided, it uses the component styles of the object.
-    Sample: The method changes the color of the input depending on the value selected.
+    Example: The method changes the color of the input depending on the value selected.
     A = green, B = red, X = blue.
     @param {any} styles - The style of the component.
 
@@ -118,7 +118,7 @@ Calling a method:
   Each component arr compund by  3 part
      
 
-  Sample of component
+  Example of component
 
 
 //////////////////////////////////////////////
@@ -308,138 +308,138 @@ Values :
 
 ## Database components properties
 
-# Each prop.Value component can be gathered from a field of local SQL where:
-this.prop.<name of propiertie>.<Value>
+### Each prop.Value component can be gathered from a field of local SQL where:
+this.prop.`<`name of propiertie`>`.<Value`>`
 Values :
 
- - ControlSource: <Name of SQL field>  
+ - ControlSource: `<`Name of SQL field`>`  
         Type : string  
-        Sample  value: 'localTable.field'
+        Example  value: 'localTable.field'
 
- - RecordSource: <local or remote table name>  
+ - RecordSource: `<`local or remote table name`>`  
         Type :string 
-        Sample  value:  'viewTableName'
+        Example  value:  'viewTableName'
 
-- SqlUpdate: <True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.>
+- SqlUpdate: `<`True, when the component loses focus, update field component. When false, update field component using the tableUpdate method.`>`
         Type : boolean
 
 ## Behaivor properties 
-this.prop.<name of propiertie>.<Value>
+this.prop.`<`name of propiertie`>`.`<`Value`>`
 
 Values :
-  - Capture: <When capture is true, can't lose focus until Validate or esc>
+  - Capture: `<`When capture is true, can't lose focus until Validate or esc`>`
       Type : boolean
 
-  - First: <In a Form or grid  component it has to be true the first capture component> false
+  - First: `<`In a Form or grid  component it has to be true the first capture component`>` false
       Type : boolean
 
-  - Focus: <When set to true, this component takes focus>
+  - Focus: `<`When set to true, this component takes focus`>`
       Type : boolean
 
-  - Map:  <Show the structure map of this component>
+  - Map:  `<`Show the structure map of this component`>`
       Type : string
-      Sample : "this.Form.componentName"
+      Example : "this.Form.componentName"
 
-  - Status: <Status of component>
+  - Status: `<`Status of component`>`
       Type : string
       Values :  P=Process, A=Active, I=Initialization.
 
-  - Valid: <True when component value is good>
+  - Valid: `<`True when component value is good`>`
       Type : boolean
   
-  - Recno :  <Record Number for localSql field value>
+  - Recno :  `<`Record Number for localSql field value`>`
 
 ## Numeric components propierties
-this.prop.<name of propiertie>.<Value>
+this.prop.`<`name of propiertie`>`.`<`Value`>`
 
 Values :
-  - Currency: <Currency to display>
+  - Currency: `<`Currency to display`>`
       Type : string
-      Sample : 'USD', 'EUR', 'MXN'
+      Example : 'USD', 'EUR', 'MXN'
 
   - CurrencyDisplay: 'code' // To use the ISO currency code
       Type  
-  - Decimals: <Decimals to show and capture>
+  - Decimals: `<`Decimals to show and capture`>`
       Type : number
 
-  - Max: <Maximus value in this component>
+  - Max: `<`Maximus value in this component`>`
       Type : number
 
-  - Min: <Minumus value in this component>
+  - Min: `<`Minumus value in this component`>`
       Type : number
 
-  - Step: <When a spinner component number step>
+  - Step: `<`When a spinner component number step`>`
      Type : number
 
 ## Combo box properties
-this.prop.<name of propiertie>.<Value>
+this.prop.`<`name of propiertie`>`.`<`Value`>`
 
 Values :
-  - Style : <Type of combo box>
+  - Style : `<`Type of combo box`>`
       Type : number
       Values : 0=DropDown.  
                2=DropDown List 
 
-  - BoundColumn <The value is attached to the column>
+  - BoundColumn `<`The value is attached to the column`>`
      Type : number
 
-  - ColumnCount: <Total column numbers in a comboBox>
+  - ColumnCount: `<`Total column numbers in a comboBox`>`
      Type : number
 
-  - ColumnWidths: <Width of each column>
+  - ColumnWidths: `<`Width of each column`>`
      Type : number
-     Sample : '80%', '20%' 
+     Example : '80%', '20%' 
 
-  - MultiSelect: <Can multiple select>
+  - MultiSelect: `<`Can multiple select`>`
      Type : boolean 
 
-  - List: <List array result when MultiSelect is true>
+  - List: `<`List array result when MultiSelect is true`>`
      Type : array
 
-  - RowSource : <Sql query or table.field>
+  - RowSource : `<`Sql query or table.field`>`
      Type : string
-     Sample :
+     Example :
          - when RowSourceType=2 : 'tablename.field1,field2' 
          - When RowSourceType=3 or 4 : ' select column1,column2 from tablefield '
 
-  - RowSourceType: <How to fill the comboBox>
+  - RowSourceType: `<`How to fill the comboBox`>`
      Type : number
      Values : 
           1-Value.  
-            Sample RowSourceType=1 
+            Example RowSourceType=1 
             ColumnCount =2
             RowSource="House,H,Building,B,Department,D"
 
           2-Alias. 
-            Sample RowSourceType=2 
+            Example RowSourceType=2 
             ColumnCount =3
             RowSource="tablename.House,Building,Department"
 
           3-Query SQL Server.  
-            Sample RowSourceType=3
+            Example RowSourceType=3
             ColumnCount =2  
             RowSource= 'select column1,column2 from servertable '
 
           4-Local SQL.  
-            Sample RowSourceType=4
+            Example RowSourceType=4
             ColumnCount =2  
             RowSource= 'select column1,column2 from localable '
             Notes: You already have a local table SQL
 
           5-Array.  
-            Sample RowSourceType=5
+            Example RowSourceType=5
             ColumnCount =2  
             RowSource= [['column1','column2'],
                         ['value1','value2']]
 
 
 ## style, inputStyle,labelStylenent and componentStyle properties ( all html style)
-this.style.<name of propiertie>.<Value>
-this.inputStyle.<name of propiertie>.<Value>
-this.labelStyle.<name of propiertie>.<Value>
+this.style.`<`name of propiertie`>`.`<`Value`>`
+this.inputStyle.`<`name of propiertie`>`.`<`Value`>`
+this.labelStyle.`<`name of propiertie`>`.`<`Value`>`
 
 Values :
-### sample:   
+### example:   
 - background: "white",  
 - color: "#b94295",  
 - width: "64px",  
@@ -462,93 +462,15 @@ Values :
 
    index.vue will always have this content
 
-<template>
-  <VueForm v-bind:ThisForm="ThisForm">
-      <template #header />
-      <template #main />
-      <template #footer />
-  </VueForm>
-</template>
-
-<script lang="ts" setup>
-  import VueForm from "@/components/form.vue";
-  import { ThisForm } from './ThisForm'
-</script>
+![](./Samples/index.svg)
 
   and ThisForm.ts 
-  It's has severals TypeScrips components and methods 
+   NOTE :ThisForm has severals TypeScrips components and methods
+
+![](./Samples/ThisForm.svg)
 
 
-//////////////////////////////////////////////
-// Page: SqlDictionary
-// Clase base : ThisForm
-// Author : Fernando Cuadras Angulo
-// Creacion : Septiembre/2021
-// Ult.Mod  : Enero/2025
-/////////////////////////////////////////////
-
-/////////////////////////////////////////
-// TypeScript base class
-/////////////////////////////////////////
-import { FORM } from "@/classes/Form"
-
-/////////////////////////////////////////
-// TypeScript component
-/////////////////////////////////////////
-
-import { dic_dat } from "./dic_dat"
-import { nom_tab } from "./nom_tab"
-import { sis_sis } from "./sis_sis"
-
-import { tpr_prg } from "./tpr_prg"
-import { bt_aceptar } from "./bt_aceptar"
-import { bt_gen_indices } from "./bt_gen_indices"
-import { bt_gen_model } from "./bt_gen_model"
-import { bt_gen_vistas } from "./bt_gen_vistas"
-import { bt_gen_all_models } from "./bt_gen_all_models"
-
-import { grid_datos } from "./grid_datos/grid_datos"
-import { grid_indices } from "./grid_indices/grid_indices"
-import { grid_vistas } from "./grid_vistas/grid_vistas"
-import { grid_menu } from "./grid_menu/grid_menu"
-import { grid_tablas } from "./grid_tablas/grid_tablas"
-
-
-export class ThisForm extends FORM {
-  public dic_dat = new dic_dat()
-  public tpr_prg = new tpr_prg()
-  public sis_sis = new sis_sis()
-  public nom_tab = new nom_tab()
-
-  public bt_aceptar = new bt_aceptar()
-  public bt_gen_indices = new bt_gen_indices()
-  public bt_gen_model = new bt_gen_model()
-  public bt_gen_vistas = new bt_gen_vistas()
-  public bt_gen_all_models = new bt_gen_all_models()
-
-  public grid_datos = new grid_datos()
-  public grid_indices = new grid_indices()
-  public grid_vistas = new grid_vistas()
-  public grid_tablas = new grid_tablas()
-  public grid_menu = new grid_menu()
-
-  constructor() {
-    super() 
-    // Propierties
-    this.prop.Name = "SqlDictionary"
-    this.prop.tag = ""
-    this.prop.textLabel = "Mantenimiento al diccionario de datos"
-    this.prop.Status = "A"
-
-    // Style
-    this.style.display = "inline-flex"
-    this.style.background = "white"
-    this.style.color = "#b94295"
-    this.style.fontSize = "13px" 
-    this.style.position = "center" 
-   }
-}
- Note : To see the complete Form of this sample, look in pages/SqlDictionary.
+ Note : To see the complete Form of this example, look in pages/SqlDictionary.
 
 
 ### Grid (component container). This component is for table database capture
@@ -563,8 +485,7 @@ ThisForm.ts is the beginning TypeScript program where the component definition i
 Each component has a separate TypeScript file.
 
 ### SQL Database class (This method is based in VFP SQL instructions)
-
-
+<aqui me quede >
 
 - select(`<`area`>`).
 
@@ -656,8 +577,8 @@ Each component has a separate TypeScript file.
 
 - Download the back-end framework from https://github.com/siavcom/VFP-NODE and extract it in a folder.
 - Make a company folder in the back-end folder/app/empresas/`<`your company name`>`
-- Copy a sample folder company in the company folder
-- Rename the sample folder to your company name
+- Copy a example folder company in the company folder
+- Rename the example folder to your company name
 - Change the db.config.js file and use your SQL Server connection parameters
 - Open a terminal in the back-end folder and run node server_socket.js
 

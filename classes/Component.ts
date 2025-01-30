@@ -10,6 +10,7 @@
  * @export
  * @class COMPONENT
  */
+import type { MaybeRefOrGetter } from "vue";
 
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
@@ -138,8 +139,8 @@ export class COMPONENT {
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
     Valid: true,
-    Value: '',
-    ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
+    Value: MaybeRefOrGetter<string | number | boolean | Date | null>("") > // Valor del componente
+      ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
 
     When: true,

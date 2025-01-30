@@ -165,9 +165,9 @@
   <!--/header-->
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup Vapor="true">
 
-
+//<script lang="ts" setup >
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
 
