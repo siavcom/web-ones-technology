@@ -120,95 +120,93 @@ Calling a method:
 
   Example of component
 
+//////////////////////////////////////////////  
+// Clase : dic_dat  
+// Descripcion : tipo de mantenimiento del diccionario de datos  
+// Author : Fernando Cuadras Angulo  
+// Creacion : Diciembre/2021  
+// Ult.Mod  : 6/Septiembre/2022  
+/////////////////////////////////////////////  
 
-//////////////////////////////////////////////
-// Clase : dic_dat
-// Descripcion : tipo de mantenimiento del diccionario de datos
-// Author : Fernando Cuadras Angulo
-// Creacion : Diciembre/2021
-// Ult.Mod  : 6/Septiembre/2022
-/////////////////////////////////////////////
+///////////////////////////////////////  
 
-///////////////////////////////////////
+import { COMPONENT } from "@/classes/Component";  
 
-import { COMPONENT } from "@/classes/Component";
-
-export class dic_dat extends COMPONENT {
-  
-  constructor() {
-    super();
-    //****** Propierties ********//
-    this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Diccionario  de datos";
-    this.prop.ToolTipText = this.prop.textLabel;
-    this.prop.ReadOnly = false;
-    this.prop.Capture = false;
-    this.prop.RowSource = [
-      ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],
-      ["T", "D", "M"],];
-    this.prop.ControlSource = "vi_cap_comedat.dic_dat";
-    this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
-    this.prop.ColumnCount = 2;
-    this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "200px,10px";
-
-    //****** Component Style *******// 
-    this.style.width = "500px";
-    this.style.fontSize = "17px";
-    this.style.fontWeight = "bold";
+export class dic_dat extends COMPONENT {  
     
-    //****** input style component *******//
-    this.inputStyle.fontSize = "17px";
-    this.inputStyle.fontWeight = "bold";
-    this.inputStyle.width = "300px";
+  constructor() {  
+    super();  
+    //****** Propierties ********//  
+    this.prop.BaseClass = "comboBox";  
+    this.prop.textLabel = "Diccionario  de datos";  
+    this.prop.ToolTipText = this.prop.textLabel;  
+    this.prop.ReadOnly = false;  
+    this.prop.Capture = false;  
+    this.prop.RowSource = [  
+      ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],  
+      ["T", "D", "M"],];  
+    this.prop.ControlSource = "vi_cap_comedat.dic_dat";  
+    this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array  
+    this.prop.ColumnCount = 2;  
+    this.prop.BoundColumn = 2;  
+    this.prop.ColumnWidths = "200px,10px";  
 
-   //****** label style component *******//
-    this.labelStyle.fontSize = "17px";
-    this.labelStyle.fontWeight = "bold";
+    //****** Component Style *******//   
+    this.style.width = "500px";  
+    this.style.fontSize = "17px";  
+    this.style.fontWeight = "bold";  
     
-  }
+    //****** input style component *******//  
+    this.inputStyle.fontSize = "17px";  
+    this.inputStyle.fontWeight = "bold";  
+    this.inputStyle.width = "300px";  
 
-//*********** Methods *******************// 
-  
-  public init = async (form: any) => {
-    this.prop.Value = "T";
-    //this.Form.nom_tab.Visible = true;
-  };
-  
-  async interactiveChange() {
-    this.Form.nom_tab.prop.Visible = false
-    this.Form.bt_gen_all_models.prop.Visible = false
-    if (this.prop.Value == "M") {
-      this.Form.sis_sis.prop.Visible = false;
-      this.Form.bt_aceptar.prop.Visible = true;
-    } else {
+   //****** label style component *******//  
+    this.labelStyle.fontSize = "17px";  
+    this.labelStyle.fontWeight = "bold";  
+    
+  }  
 
-      this.Form.sis_sis.prop.Visible = true;
-      this.Form.bt_aceptar.prop.Visible = false;
+//*********** Methods *******************//   
+    
+  public init = async (form: any) => {  
+    this.prop.Value = "T";  
+    //this.Form.nom_tab.Visible = true;  
+  };  
+    
+  async interactiveChange() {  
+    this.Form.nom_tab.prop.Visible = false  
+    this.Form.bt_gen_all_models.prop.Visible = false  
+    if (this.prop.Value == "M") {  
+      this.Form.sis_sis.prop.Visible = false;  
+      this.Form.bt_aceptar.prop.Visible = true;  
+    } else {  
 
-    }
-  }
+      this.Form.sis_sis.prop.Visible = true;  
+      this.Form.bt_aceptar.prop.Visible = false;  
 
-  public async when(sis_sis?: boolean) {
-    await this.interactiveChange()
+    }  
+  }  
 
-    this.Form.nom_tab.prop.Visible = false;
-    this.Form.tpr_prg.prop.Visible = false;
+  public async when(sis_sis?: boolean) {  
+    await this.interactiveChange()  
 
-    this.Form.grid_datos.prop.Visible = false;
-    this.Form.grid_indices.prop.Visible = false;
-    this.Form.grid_vistas.prop.Visible = false;
-    this.Form.grid_menu.prop.Visible = false;
-    this.Form.grid_tablas.prop.Visible = false;
+    this.Form.nom_tab.prop.Visible = false;  
+    this.Form.tpr_prg.prop.Visible = false;  
 
-    this.Form.bt_gen_model.prop.Visible = false;
-    this.Form.bt_gen_indices.prop.Visible = false;
-    this.Form.bt_gen_vistas.prop.Visible = false;
-    this.Form.bt_gen_all_models.prop.Visible = false;
-    return !this.prop.ReadOnly;
-  }
-}
+    this.Form.grid_datos.prop.Visible = false;  
+    this.Form.grid_indices.prop.Visible = false;  
+    this.Form.grid_vistas.prop.Visible = false;  
+    this.Form.grid_menu.prop.Visible = false;  
+    this.Form.grid_tablas.prop.Visible = false;  
 
+    this.Form.bt_gen_model.prop.Visible = false;  
+    this.Form.bt_gen_indices.prop.Visible = false;  
+    this.Form.bt_gen_vistas.prop.Visible = false;  
+    this.Form.bt_gen_all_models.prop.Visible = false;  
+    return !this.prop.ReadOnly;  
+  }  
+}  
 
 ## TypeScript components
 - Browse. Table display
@@ -465,7 +463,7 @@ Values :
 `<template>`  
 ` <VueForm v-bind:ThisForm="ThisForm">`  
 `   <template #header />`  
-`   <template #main />` 
+`   <template #main />`  
 `   <template #footer />`  
 ` </VueForm>`  
 `</template>`  
@@ -475,7 +473,7 @@ Values :
   import { ThisForm } from './ThisForm'  
 `</script>`  
  
- 
+
   and ThisForm.ts  
    NOTE :ThisForm has severals TypeScrips components and methods
 
@@ -560,7 +558,7 @@ export class ThisForm extends FORM {
 
   A grid has several columns where each column is an input or label component where each component is bound to a SQL table field.
 
-## For a complete example, take a look in the page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access.
+### For a complete example, take a look in the page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access.
 
 This has 2 principal files, a view VUE (Main.vue) and TypeScript program (ThisForm.ts).
 ThisForm.ts is the beginning TypeScript program where the component definition is.
@@ -580,19 +578,19 @@ Each component has a separate TypeScript file.
 
 - appendBlank(`<`alias`>`,`<`memoryObject`>`).
 
-- deleteRow(`<`key_pri`>`,`<`alias`>`).
+- deleteRow(`<`key_pri`>`,`<`alias?`>`).
 
 - delete(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
 
 - insert(`<`alias`>`,`<`memoryObject`>`).
 
-- execute(`<`query`>`,`<`alias?`>`,`<`resultType`>`).
+- execute(`<`query`>`,`<`alias`>`,`<`resultType`>`).
 
 - select(`<`alias`>`).
 
-- recCount(`<`alias`>`).
+- recCount(`<`alias?`>`).
 
-- recno(`<`alias`>`).
+- recno(`<`alias?`>`).
 
 - goto(`<`row`>`).
 
@@ -647,6 +645,14 @@ Each component has a separate TypeScript file.
 # How to use this framework
 
 - Install Node.js 18.x or newer (recommended active LTS release) https://nodejs.org/en/download/ or use nvm https://github.com/nvm-sh/nvm
+
+- Clone this repo
+   
+   in Linux open a terminal into this folder
+   in windows open command into this folder
+   
+   and type  
+     npm install
 
 
 ## Recommended IDE Setup
