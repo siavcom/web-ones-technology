@@ -30,4 +30,8 @@ export class log_usu extends COMPONENT {
     this.prop.Value = session.user;
   }
 
+override async when (): Promise<boolean> {
+  
+  return true;
+}
 }

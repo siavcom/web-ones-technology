@@ -160,10 +160,8 @@ Calling a method:
 `      //****** label style component *******//`  
 `      this.labelStyle.fontSize = "17px";`  
 `      this.labelStyle.fontWeight = "bold";`    
-`   }`
-`   //*********** Methods *******************//`   
- 
-    
+`   }`  
+`//*********** Methods *******************//`   
 `   public init = async (form: any) => {`  
 `     this.prop.Value = "T";`  
 `     [](http://_vscodecontentref_/0) = true;`  
@@ -199,7 +197,7 @@ Calling a method:
 `     this.Form.bt_gen_all_models.prop.Visible = false;`  
 `     return !this.prop.ReadOnly;`  
 `   }`
-  `}`  
+`}`  
 
 
 
@@ -417,7 +415,7 @@ Values :
             Example RowSourceType=4
             ColumnCount =2  
             RowSource= 'select column1,column2 from localable '
-            Notes: You already have a local table SQL
+            > [!NOTE] You already have a local table SQL
 
           5-Array.  
             Example RowSourceType=5
@@ -546,7 +544,7 @@ export class ThisForm extends FORM {
 ![](./Samples/ThisForm.svg)
 
 
- Note : To see the complete Form of this example, look in pages/SqlDictionary.
+ > [!NOTE] : To see the complete Form of this example, look in pages/SqlDictionary.
 
 
 ### Grid (component container). This component is for table database capture
@@ -637,18 +635,6 @@ Each component has a separate TypeScript file.
 
  `<`fieldArray`>` type: array. Array with specific fields to obtain values.
 
-# How to use this framework
-
-- Install Node.js 18.x or newer (recommended active LTS release) https://nodejs.org/en/download/ or use nvm https://github.com/nvm-sh/nvm
-
-- Clone this repo
-   
-   in Linux open a terminal into this folder
-   in windows open command into this folder
-   
-   and type  
-     npm install
-
 
 ## Recommended IDE Setup
 
@@ -665,6 +651,9 @@ Each component has a separate TypeScript file.
 - Rename the example folder to your company name
 - Change the db.config.js file and use your SQL Server connection parameters
 - Open a terminal in the back-end folder and run node server_socket.js
+
+
+## How to use this framework
 
 - Download this framework from https://github.com/siavcom/web-ones-technology and extract it in a folder.
 
@@ -693,7 +682,7 @@ Each component has a separate TypeScript file.
   - Insert fields
   - Fill up all characteristics
   - Click accept
-  Notes:
+  > [!NOTE]:
     When a field is a primary key, the default value has to be m.`<`namefield`>`
 
 - Create a new SQL view.
@@ -742,7 +731,7 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 - ANSI 99 standard SQL instructions.
 - SQL Server skills (MSSQL or/and Postgres).
 
-## Notes:
+## > [!NOTE]:
 - This framework is based on a SQL database.
 - It's not complete yet. If you require installation and use, let me know by mail or Skype siavcom@hotmail.com. 
 - If you want a new feature, let me know by mail or Skype siavcom@hotmail.com.
@@ -770,7 +759,7 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 position
 estatus
 
-## Other notes:
+ > [!NOTES]
 Development:
 $ npx nuxi dev --port=3000
 $ npm run dev

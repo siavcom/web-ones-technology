@@ -4,7 +4,7 @@
 // Clase base : ThisForm
 // Author : Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
-// Ult.Mod  : Mayo/2023
+// Ult.Mod  : Enero/2025
 /////////////////////////////////////////////
 
 /////////////////////////////////////////
