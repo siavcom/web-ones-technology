@@ -120,93 +120,93 @@ Calling a method:
 
   Example of component
 
-//////////////////////////////////////////////  
-// Clase : dic_dat  
-// Descripcion : tipo de mantenimiento del diccionario de datos  
-// Author : Fernando Cuadras Angulo  
-// Creacion : Diciembre/2021  
-// Ult.Mod  : 6/Septiembre/2022  
-/////////////////////////////////////////////  
+`// filepath: /home/fernando/Desarrollo/web-ones-FDO/README .md`  
+[web-ones-FDO](http://_vscodecontentref_/0)  
+`// Clase : dic_dat`  
+`// Descripcion : tipo de mantenimiento del diccionario de datos`  
+`// Author : Fernando Cuadras Angulo`  
+`// Creacion : Diciembre/2021`  
+`// Ult.Mod  : 6/Septiembre/2022`  
+[web-ones-FDO](http://_vscodecontentref_/1)  
 
-///////////////////////////////////////  
+[web-ones-FDO](http://_vscodecontentref_/2)  
 
-import { COMPONENT } from "@/classes/Component";  
+`import { COMPONENT } from "@/classes/Component";`  
 
-export class dic_dat extends COMPONENT {  
+`export class dic_dat extends COMPONENT {`  
     
-  constructor() {  
-    super();  
-    //****** Propierties ********//  
-    this.prop.BaseClass = "comboBox";  
-    this.prop.textLabel = "Diccionario  de datos";  
-    this.prop.ToolTipText = this.prop.textLabel;  
-    this.prop.ReadOnly = false;  
-    this.prop.Capture = false;  
-    this.prop.RowSource = [  
-      ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],  
-      ["T", "D", "M"],];  
-    this.prop.ControlSource = "vi_cap_comedat.dic_dat";  
-    this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array  
-    this.prop.ColumnCount = 2;  
-    this.prop.BoundColumn = 2;  
-    this.prop.ColumnWidths = "200px,10px";  
+`   constructor() {`  
+`      super();`  
+`      //****** Propierties ********//`  
+`      this.prop.BaseClass = "comboBox";`  
+`      this.prop.textLabel = "Diccionario  de datos";`  
+`      this.prop.ToolTipText = this.prop.textLabel;`  
+`      this.prop.ReadOnly = false;`  
+`      this.prop.Capture = false;`  
+`      this.prop.RowSource = [`  
+`      ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],`  
+`      ["T", "D", "M"],];`  
+`      this.prop.ControlSource = "vi_cap_comedat.dic_dat";`  
+`      this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array`  
+`      this.prop.ColumnCount = 2;`  
+`      this.prop.BoundColumn = 2;`  
+`      this.prop.ColumnWidths = "200px,10px";`  
 
-    //****** Component Style *******//   
-    this.style.width = "500px";  
-    this.style.fontSize = "17px";  
-    this.style.fontWeight = "bold";  
+`      //****** Component Style *******//`   
+`      this.style.width = "500px";`  
+`      this.style.fontSize = "17px";`  
+`      this.style.fontWeight = "bold";`  
     
-    //****** input style component *******//  
-    this.inputStyle.fontSize = "17px";  
-    this.inputStyle.fontWeight = "bold";  
-    this.inputStyle.width = "300px";  
+`      //****** input style component *******//`  
+`      this.inputStyle.fontSize = "17px";`  
+`      this.inputStyle.fontWeight = "bold";`  
+`      this.inputStyle.width = "300px";`  
 
-   //****** label style component *******//  
-    this.labelStyle.fontSize = "17px";  
-    this.labelStyle.fontWeight = "bold";  
+`      //****** label style component *******//`  
+`      this.labelStyle.fontSize = "17px";`  
+`      this.labelStyle.fontWeight = "bold";`    
+`   }`
+`   //*********** Methods *******************//`   
+ 
     
-  }  
-
-//*********** Methods *******************//   
+`   public init = async (form: any) => {`  
+`     this.prop.Value = "T";`  
+`     [](http://_vscodecontentref_/0) = true;`  
+`   };`  
     
-  public init = async (form: any) => {  
-    this.prop.Value = "T";  
-    //this.Form.nom_tab.Visible = true;  
-  };  
-    
-  async interactiveChange() {  
-    this.Form.nom_tab.prop.Visible = false  
-    this.Form.bt_gen_all_models.prop.Visible = false  
-    if (this.prop.Value == "M") {  
-      this.Form.sis_sis.prop.Visible = false;  
-      this.Form.bt_aceptar.prop.Visible = true;  
-    } else {  
+`   async interactiveChange() {`  
+`     this.Form.nom_tab.prop.Visible = false`  
+`     this.Form.bt_gen_all_models.prop.Visible = false`  
+`     if (this.prop.Value == "M") {`  
+`       this.Form.sis_sis.prop.Visible = false;`  
+`       this.Form.bt_aceptar.prop.Visible = true;`  
+`     } else {`  
+`      this.Form.sis_sis.prop.Visible = true;`  
+`      this.Form.bt_aceptar.prop.Visible = false;`  
+`      }`  
+`   }`  
 
-      this.Form.sis_sis.prop.Visible = true;  
-      this.Form.bt_aceptar.prop.Visible = false;  
+`   public async when(sis_sis?: boolean) {`  
+`     await this.interactiveChange()`  
 
-    }  
-  }  
+`     this.Form.nom_tab.prop.Visible = false;`  
+`     this.Form.tpr_prg.prop.Visible = false;`  
 
-  public async when(sis_sis?: boolean) {  
-    await this.interactiveChange()  
+`     this.Form.grid_datos.prop.Visible = false;`  
+`     this.Form.grid_indices.prop.Visible = false;`  
+`     this.Form.grid_vistas.prop.Visible = false;`  
+`     this.Form.grid_menu.prop.Visible = false;`  
+`     this.Form.grid_tablas.prop.Visible = false;`  
 
-    this.Form.nom_tab.prop.Visible = false;  
-    this.Form.tpr_prg.prop.Visible = false;  
+`     this.Form.bt_gen_model.prop.Visible = false;`  
+`     this.Form.bt_gen_indices.prop.Visible = false;`  
+`     this.Form.bt_gen_vistas.prop.Visible = false;`  
+`     this.Form.bt_gen_all_models.prop.Visible = false;`  
+`     return !this.prop.ReadOnly;`  
+`   }`
+  `}`  
 
-    this.Form.grid_datos.prop.Visible = false;  
-    this.Form.grid_indices.prop.Visible = false;  
-    this.Form.grid_vistas.prop.Visible = false;  
-    this.Form.grid_menu.prop.Visible = false;  
-    this.Form.grid_tablas.prop.Visible = false;  
 
-    this.Form.bt_gen_model.prop.Visible = false;  
-    this.Form.bt_gen_indices.prop.Visible = false;  
-    this.Form.bt_gen_vistas.prop.Visible = false;  
-    this.Form.bt_gen_all_models.prop.Visible = false;  
-    return !this.prop.ReadOnly;  
-  }  
-}  
 
 ## TypeScript components
 - Browse. Table display
