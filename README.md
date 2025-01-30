@@ -120,16 +120,11 @@ Calling a method:
 
   Example of component
 
-`// filepath: /home/fernando/Desarrollo/web-ones-FDO/README .md`  
-[web-ones-FDO](http://_vscodecontentref_/0)  
 `// Clase : dic_dat`  
 `// Descripcion : tipo de mantenimiento del diccionario de datos`  
 `// Author : Fernando Cuadras Angulo`  
 `// Creacion : Diciembre/2021`  
 `// Ult.Mod  : 6/Septiembre/2022`  
-[web-ones-FDO](http://_vscodecontentref_/1)  
-
-[web-ones-FDO](http://_vscodecontentref_/2)  
 
 `import { COMPONENT } from "@/classes/Component";`  
 
