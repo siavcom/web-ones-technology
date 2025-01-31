@@ -670,7 +670,7 @@ Example:
 
     If you use Windows and the project is on drive C: .- Generate the systems directory in C:\systems
 
--Give read permission to this directory. In this directory put the web-ones.7zip file and unzip it.
+-Give read/write permission to this directory. In this directory put the web-ones.zip file and unzip it.
 
 This will generate a web-ones directory and inside web-ones is the public folder and in that folder is the communication definition with the back-end server
   "arcor": {
@@ -681,7 +681,7 @@ This will generate a web-ones directory and inside web-ones is the public folder
     "logoEmp": "/logos/YourLogo.bmp"
   }
 
-  "url": "http://siavcom.com.mx:38080/"       Where the back-end server is
+  "url": "http://192.168.154.1:38080/"       Where the back-end server is
   "nem_emp": "My company "           Company name
   "nom_sis": "menu",             
   "path": { "name": "Menu" },             Path where the system will start
@@ -697,7 +697,10 @@ The logos are in the logos directory in the web-ones directory
 Change to the project directory and now run the command npm run dev
 This will start the project and you can start seeing it in your browser at http://localhost:3000
 
-## Design SQL Table
+### Begining to work
+- Login 
+
+## Design a SQL Table
 - Create a new SQL table.
   Go to SQL data dictionary in the menu.
  - Choose SQL Server table
