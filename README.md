@@ -655,14 +655,48 @@ Each component has a separate TypeScript file.
 
 ## How to use this framework
 
-- Download this framework from https://github.com/siavcom/web-ones-technology and extract it in a folder.
+- Download this framework from https://github.com/siavcom/web-ones-technology and extract it in a folder and chage in.
 
 - Open a terminal in the framework folder 
+use this command :
   run npm install
   
-  You have to make a company folder in your computer in /sistemas/name`>`
-  run npx nuxi dev
-   
+This procedure install all libreries needed for this proyect
+
+-In the project directory, you will find a zip file called web-ones. This file should be in a directory called systems that you need to create at the root of your disk where you have your project
+
+Example:
+    If you use Linux .- Generate the systems directory in /systems
+
+    If you use Windows and the project is on drive C: .- Generate the systems directory in C:\systems
+
+-Give read permission to this directory. In this directory put the web-ones.7zip file and unzip it.
+
+This will generate a web-ones directory and inside web-ones is the public folder and in that folder is the communication definition with the back-end server
+  "arcor": {
+     "url": "http://<ip back-end server>:<ip port>/",
+    "nem_emp": "<Company name>",
+    "nom_sis": "menu",
+    "path": { "name": "Menu" },
+    "logoEmp": "/logos/YourLogo.bmp"
+  }
+
+  "url": "http://siavcom.com.mx:38080/"       Where the back-end server is
+  "nem_emp": "My company "           Company name
+  "nom_sis": "menu",             
+  "path": { "name": "Menu" },             Path where the system will start
+  "logoEmp": "/logos/YourLogo.bmp"         Company logo
+
+The fields you can modify are
+ "nem_emp": "My Name company"           Company name
+  "logoEmp": "/logos/MyLogo.bmp"         Company logo
+
+Edit it and indicate the name of the file where your logo is.
+The logos are in the logos directory in the web-ones directory
+
+Change to the project directory and now run the command npm run dev
+This will start the project and you can start seeing it in your browser at http://localhost:3000
+
 ## Design SQL Table
 - Create a new SQL table.
   Go to SQL data dictionary in the menu.
