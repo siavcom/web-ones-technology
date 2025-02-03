@@ -434,7 +434,7 @@ const readCampo = async () => {
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
 
     const data = await This.Sql.readCampo(props.prop.ControlSource, props.Registro)
-    console.log('TextLabel Name=', props.prop.Name, 'data=', data)
+    // console.log('TextLabel Name=', props.prop.Name, 'data=', data)
     for (const campo in data) {
       if (campo != 'key_pri')
         Text.value = data[campo] != null ? data[campo] : ''

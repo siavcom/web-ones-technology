@@ -35,8 +35,6 @@ margin-top:1px
 }
 
 
-
-
 div.divi {
   /*display: inline-flex; / recomendado por raul*/
   display: inline-flex;
@@ -57,6 +55,7 @@ div.divi {
   border-radius: 3px;
   /* box-shadow: <offset-x> <offset-y> <blur-radius> <spread> <color>; */
 }
+
 div.json {
   border-radius: 3px;
 }
@@ -134,8 +133,6 @@ textarea.textArea {
   box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
   margin-top :2px;
 }
-
-
 
 .imgButton {
   border-radius: 10%;
@@ -424,11 +421,12 @@ input[class="number"] {
   }
 }
 
+/*
 .ruter-link-acrive {
   color: red;
   @apply text-blue-500;
 }
-
+*/
 
 section.formheader {
   display: flex;

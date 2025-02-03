@@ -697,7 +697,7 @@ The logos are in the logos directory in the web-ones directory
 Change to the project directory and now run the command npm run dev
 This will start the project and you can start seeing it in your browser at http://localhost:3000
 
-### Begining to work
+# Begining to work
 - Login 
 
 ## Design a SQL Table
@@ -740,7 +740,7 @@ In this framework use the file directory structure of NUXT . All pages are in pa
   fill data execpt data of VFP 
     
 
-## This project uses
+### This project uses
 
 - Vue 3 SFC
 - Nuxt 3
@@ -760,7 +760,7 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 - Back End https://github.com/siavcom/VFP-NODE
 - SQL Server (MSSQL, Postgres soon)
 
-## Necessary Knowledge:
+### Necessary Knowledge:
 
 - Object class programming.
 - TypeScript.
@@ -778,7 +778,7 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 - I can help you if you want to use this framework.
 - I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
 
-# About
+### About
 - I'm an old FOX programmer with a lot of experience in VFP design and programming, MSSQL, and Postgres databases.
 
 - Author:
@@ -791,8 +791,8 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 - http://siavcom.com.mx
   Skype & e-mail: siavcom@hotmail.com
 
-## Reserved Word
 
+> [!IMPORTANT] Reserved Word
 position
 estatus
 
@@ -823,10 +823,6 @@ console.log(m) =
      `<`user`>` : personal login
      `<`busines nickname`>` :  SQL data base name
 
-
-
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
 
 > [!TIP]
 > Helpful advice for doing things better or more easily.

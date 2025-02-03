@@ -22,7 +22,7 @@ export class COMPONENT {
   Sql;
   // db: any;
   // Recno: number;
-  Recno = ref(0)
+  Recno: number = 0; // ref(0)
   Ref: null | undefined;
   Show: true = true;
   //Focus: boolean = false
@@ -257,10 +257,6 @@ export class COMPONENT {
 
   imagen = { src: "" };
   old_value = ""
-
-
-
-
 
   constructor() {
     this.Name = this.constructor.name;
@@ -606,6 +602,16 @@ export class COMPONENT {
     this.old_value = this.prop.Value
     console.log("When", this.Name, this.prop.Value, this.prop.ReadOnly)
     return !this.prop.ReadOnly;
+  }
+
+  /**
+   * onMounted VFP
+   * Descripcion: Cuando se monta el componente en el DOM
+   * 
+   */
+
+  public async onMounted() {
+
   }
 
   /////////////////////////////////////////////////////////////////////

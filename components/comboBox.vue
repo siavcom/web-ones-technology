@@ -685,22 +685,17 @@ const validList = async () => {
 
 };
 
-
 ////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 // Obs: el when() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
-
-
-
-const when = async (click: boolean) => {
-
+const when = async (click?: boolean) => {
 
   if (This.Parent.BaseClass = "grid") {
     const grid = This.Parent
-    //console.log('EditText onFocus Grid Name', This.prop.Name)
+    console.log('EditText onFocus Grid Name', This.prop.Name)
     for (const comp in grid.elements) {
       const compName = grid.elements[comp].Name
       // 24/Dic/2024 .- Se aumenta que sea componente Capture
@@ -1421,11 +1416,8 @@ watch(
 
 //const init = async () => {
 onMounted(async () => {
-  // console.log('comboBox onMounted name=', This.prop.Name)
-
-
   thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
-
+  //  console.log('1) comboBox onMounted  Name=', This.prop.Name)
 
   // textInputStyle.zIndex = zIndex
 
@@ -1478,22 +1470,21 @@ onMounted(async () => {
       toggleStyle.maxHeight = textWidth.toString() + 'px'
       toggleStyle.height = toggleStyle.maxHeight
     }
-    console.log('comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
+    //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
 
   }
 
-  onBeforeMount(async () => {
-    console.log(' comboBox onBeforeMount Name=', This.prop.Name)
-    //    if (This.init)
-    //      await This.init()
-  })
 
+  //  console.log('2) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
+  //    This.Form.eventos.push(This.prop.Map + '.onMounted()')
+  await This.onMounted()
+
+  await This.recnoChange()
 
   const result = await renderComboBox()
   This.Recno = props.Registro
-
 
 
   //oldVal = Value.value   // asignamos el valor viejo
@@ -1512,6 +1503,16 @@ onMounted(() => {
   init() // Ejecuta el init
 });
 */
+
+
+
+onBeforeMount(async () => {
+  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+  //    if (This.init)
+  //      await This.init()
+})
+
+
 
 onUnmounted(() => {
   window.removeEventListener('mousedown', myClick); // <div>

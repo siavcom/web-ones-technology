@@ -1827,6 +1827,8 @@ onMounted(async () => {
     }
      */
   }
+  await This.onMounted()
+
   await This.recnoChange()
 
   // si es el primer elemento a posicionarse

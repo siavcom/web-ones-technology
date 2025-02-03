@@ -24,6 +24,9 @@ bun --bun run dev
 ## clean proyect
 npx nuxi cleanup  
 
+## compile proyect
+npx nuxi build
+
 ## Setup
 
 Make sure to install the dependencies:
