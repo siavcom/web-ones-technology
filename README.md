@@ -235,13 +235,20 @@ Values :
 
  - Type:`<`Data types when BaseClass="editText"`>`  
       Type: string  
-      Values : 'number','text'
+      Values : 'number',  
+               'text'
                'date',
                'dateTime',
                'spinner',
                'checkBox',
                'json',
                'checkBox'.
+
+ - Position : = `<`position in a form `>`
+      Type : string.
+      Values : 'header',  
+               'main',  
+               'footer'
 
  - Value:`<`Value of the component`>`
 
@@ -442,15 +449,18 @@ Values :
 - textAlign: "left",  
 - ...... several CSS style properties: .
 
-### Form (Main Form container)
+## Form (Main Form container)
   This is the principal main form ( SPA ). A complete system is made for serverlas Forms.
 
   Each one for is folder ubicated in a page directory of NUXT structure.
 
-  Each page folder is minimun composed of two files:
-    index.vue and ThisForm.ts
 
-   index.vue will always have this content
+
+> [!IMPORTANT]
+>  Each page folder is minimun composed of two files:
+>  index.vue and ThisForm.ts
+
+### index.vue will always have this content
 
 
 `<template>`  
@@ -467,8 +477,8 @@ Values :
 `</script>`  
  
 
-  and ThisForm.ts  
-   NOTE :ThisForm has severals TypeScrips components and methods
+
+### ThisForm.ts  
 
 
 //////////////////////////////////////////////  
@@ -541,24 +551,114 @@ export class ThisForm extends FORM {
    }  
 }  
 
-![](./Samples/ThisForm.svg)
+
+ > [!NOTE] :
+ > To see the complete Form of this example, look in pages/SqlDictionary.
 
 
- > [!NOTE] : To see the complete Form of this example, look in pages/SqlDictionary.
+## Grid (component container). This component is for table database capture
+  
+
+  A grid has several columns table where each column is a column component.
+  
+
+### Grid component has it's own propierties
+ - textLabel = `<`Grid title`>`  
+        Type: string
+
+ - ControlSource: `<`Name of localSQL table`>`  
+        Type : string  
+        Example  value: 'capture_view_items'.
+
+ - SqlUpdate: `<` Automatic update`>`
+        Type : boolean
+        Value = true enable automatic update.
+        Value = false disable automati update
+
+ - addButton = `<`Show add button `>`
+        Type : boolean
+        Value = true to show add button.
+        Value = false to hide add button.
+
+ - saveButton = `<`Show save button `>`
+        Type : boolean
+        Value = true to show save button.
+        Value = false to hide save button.
+
+ - deleteButton = `<`Show delete button `>`
+        Type : boolean
+        Value = true to show delete button.
+        Value = false to hide delete button.
+
+- insertButton = `<`Show insert button `>`
+        Type : boolean
+        Value = true to show insert button.
+        Value = false to hide insert button.
+
+### Grid component has it's own methods
+
+- appendRow(`<`memoryVariables`>`: {}) 
+  Append a row where memoryVariables is a object contain values of variables definided in values of field in SqlDictionary table design
+  Example : 
+       m={
+          firstName: this.Form.name,
+          age : this.Form.age,
+          newcustomer : true,
+        }
+
+- deleteRow( `<`recno to delete`>`?: number) 
+  if <recno to delete is omited> , delete the grid row positioned
+
+### Column (Column component)
+
+The column component has a label for the header 
+   this.Label='Header 1'
+
+  and an another type script component (editText, imgButton.. almost all type script component)
+
+And each column component has it's owns propierties
+
+- ControlSource = `<`localSqltable.field`>`
+        Type : string
+        Value = local Sql Table + field
+
+> [!NOTE] :
+> For a complete example, take a look in the page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access.
 
 
-### Grid (component container). This component is for table database capture
+## Container (container component). Is a component contain one or containers blocks
+       
+  by default has this Style   
+    this.containerStyle.display = 'flex'
+    this.containerStyle.flexWrap = 'wrap'
+    this.style.maxWidth = '600px'
+  
+and each block has to be is defined  
+  // =======================<Bloque 0 >===============
+    const container = this.container
+    this.block[0] = structuredClone(container)
 
-  A grid has several columns where each column is an input or label component where each component is bound to a SQL table field.
+    this.block[0].component = {
+      [0]: this.name,
+      [1]: this.age,
 
-### For a complete example, take a look in the page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access.
+    }
+    this.block[0].title = 'Cliente Nuevo'
+    this.block[0].style.width = '95%'
 
-This has 2 principal files, a view VUE (Main.vue) and TypeScript program (ThisForm.ts).
-ThisForm.ts is the beginning TypeScript program where the component definition is.
+  
+  ### container component has it's own methods
 
-Each component has a separate TypeScript file.
+  async open() {
+    this.prop.Visible = true
+  }
 
-### SQL Database class (This method is based in VFP SQL instructions)
+  async close() {
+    this.prop.Visible = false
+  }
+
+
+## SQL Database class (This method is based in VFP SQL instructions)
 <aqui me quede >
 
 - select(`<`area`>`).
@@ -619,7 +719,7 @@ Each component has a separate TypeScript file.
 
  `<`SqlUpdate`>` type: boolean.
     Value = true. Delete SQLServer.
-   Value = false. Only local SQL.
+    Value = false. Only local SQL.
 
  `<`sqlQuery`>` type: string. SQL Server query to execute.
 
@@ -768,17 +868,18 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 - ANSI 99 standard SQL instructions.
 - SQL Server skills (MSSQL or/and Postgres).
 
-## > [!NOTE]:
-- This framework is based on a SQL database.
-- It's not complete yet. If you require installation and use, let me know by mail or Skype siavcom@hotmail.com. 
-- If you want a new feature, let me know by mail or Skype siavcom@hotmail.com.
-- To use this Framework, you have to restore an initial SQL backup.
-- If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
-- If you have a question, let me know by mail or Skype siavcom@hotmail.com.
-- I can help you if you want to use this framework.
-- I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
+> [!NOTES]:
+> This framework is based on a SQL database.
+> It's not complete yet. If you require installation and use, let me know by mail or Skype siavcom@hotmail.com. 
+> If you want a new feature, let me know by mail or Skype siavcom@hotmail.com.
+> To use this Framework, you have to restore an initial SQL backup.
+> If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
+> If you have a question, let me know by mail or Skype siavcom@hotmail.com.
+> I can help you if you want to use this framework.
+> I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
 
-### About
+
+# About
 - I'm an old FOX programmer with a lot of experience in VFP design and programming, MSSQL, and Postgres databases.
 
 - Author:
