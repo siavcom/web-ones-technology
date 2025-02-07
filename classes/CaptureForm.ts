@@ -351,13 +351,15 @@ export class captureForm extends FORM {
         //    const comp: string = this.Parent.main[i];
 
         // Checa si todos esta validados
-        if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.Valid) {
-          console.log('CaptureForm bt_graba click() comp=', comp)
+
+        if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.ReadOnly && this.Parent[comp].prop.Visible && !this.Parent[comp].prop.Valid) {
+
           if (!(await this.Parent[comp].valid())) {
+            console.log('2) CaptureForm bt_graba click() Invalid comp=', comp)
             if (!this.prop.Disabled)
               this.prop.Visible = true;
 
-            this.Parent[comp].setFocus()
+            await this.Parent[comp].setFocus()
 
             return;
 

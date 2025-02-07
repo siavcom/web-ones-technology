@@ -214,8 +214,8 @@ Calling a method:
 
 ## Base properties 
 
-this.prop.<name of propiertie>.<Value>
-Values :
+this.prop.`<`Name of propierty`>'.`<`Value`>`
+ Propierty :
  - BaseClass: `<`webComponent`>`  
       Type: string  
       Values : 'Form','editText',
@@ -252,9 +252,8 @@ Values :
 
  - Value:`<`Value of the component`>`
 
-
 ## Visual properties
-this.prop.<name of propiertie>.<Value>
+this.prop.<name of propierty>.<Value>
 Values :
   - First:`<`true. Component that receives focus when a new record is inserted`>`  
       Type: boolean
@@ -307,7 +306,7 @@ Values :
 ## Database components properties
 
 ### Each prop.Value component can be gathered from a field of local SQL where:
-this.prop.`<`name of propiertie`>`.<Value`>`
+this.prop.`<`name of propierty`>`.<Value`>`
 Values :
 
  - ControlSource: `<`Name of SQL field`>`  
@@ -322,7 +321,7 @@ Values :
         Type : boolean
 
 ## Behaivor properties 
-this.prop.`<`name of propiertie`>`.`<`Value`>`
+this.prop.`<`name of propierty`>`.`<`Value`>`
 
 Values :
   - Capture: `<`When capture is true, can't lose focus until Validate or esc`>`
@@ -348,7 +347,7 @@ Values :
   - Recno :  `<`Record Number for localSql field value`>`
 
 ## Numeric components propierties
-this.prop.`<`name of propiertie`>`.`<`Value`>`
+this.prop.`<`name of propierty`>`.`<`Value`>`
 
 Values :
   - Currency: `<`Currency to display`>`
@@ -370,7 +369,7 @@ Values :
      Type : number
 
 ## Combo box properties
-this.prop.`<`name of propiertie`>`.`<`Value`>`
+this.prop.`<`name of propierty`>`.`<`Value`>`
 
 Values :
   - Style : `<`Type of combo box`>`
@@ -432,9 +431,9 @@ Values :
 
 
 ## style, inputStyle,labelStylenent and componentStyle properties ( all html style)
-this.style.`<`name of propiertie`>`.`<`Value`>`
-this.inputStyle.`<`name of propiertie`>`.`<`Value`>`
-this.labelStyle.`<`name of propiertie`>`.`<`Value`>`
+this.style.`<`name of propierty`>`.`<`Value`>`
+this.inputStyle.`<`name of propierty`>`.`<`Value`>`
+this.labelStyle.`<`name of propierty`>`.`<`Value`>`
 
 Values :
 ### example:   
@@ -556,11 +555,9 @@ export class ThisForm extends FORM {
  > To see the complete Form of this example, look in pages/SqlDictionary.
 
 
-## Grid (component container). This component is for table database capture
-  
+## Grid (component container). This component is for localSql table capture
 
   A grid has several columns table where each column is a column component.
-  
 
 ### Grid component has it's own propierties
  - textLabel = `<`Grid title`>`  
@@ -611,7 +608,7 @@ export class ThisForm extends FORM {
 
 ### Column (Column component)
 
-The column component has a label for the header 
+Eqch column component has a label for the header 
    this.Label='Header 1'
 
   and an another type script component (editText, imgButton.. almost all type script component)

@@ -220,40 +220,39 @@ const Props = reactive({ //   withDefaults(defineProps<Props_interface>(), {
   maintenance: 'Mantenimiento',
   reports: 'Reportes',
   process: 'Procesos',
-  menuItems: [     //() => [
+  menuItems: [] as Array<{ name: string; tooltip: string; icon: string; path: { path: string }; type: string; system: string }>,     //() => [
 
-    /* {  // Estadisticas graficas del negocio
-      link: '#',
-      name: 'Dashboard',
-      tooltip: 'Dashboard',
-      icon: 'svg/bx-grid-alt.svg',
-      path: '',
-      type: 'L',
-      system: ''
-    },
-    */
+  /* {  // Estadisticas graficas del negocio
+    link: '#',
+    name: 'Dashboard',
+    tooltip: 'Dashboard',
+    icon: 'svg/bx-grid-alt.svg',
+    path: '',
+    type: 'L',
+    system: ''
+  },
+  */
 
-    /*    {
-      link: '#',
-      name: 'File Manager',
-      tooltip: 'Files',
-      icon: 'svg/bx-folder.svg',
-      path: '',
-      type: 'L',
-      system: ''
-    },
+  /*    {
+    link: '#',
+    name: 'File Manager',
+    tooltip: 'Files',
+    icon: 'svg/bx-folder.svg',
+    path: '',
+    type: 'L',
+    system: ''
+  },
 
-    {
-      link: '#',
-      name: 'Saved',
-      tooltip: 'Saved',
-      icon: 'svg/bx-heart.svg',
-      path: '',
-      type: 'L',
-      system: ''
-    }
+  {
+    link: '#',
+    name: 'Saved',
+    tooltip: 'Saved',
+    icon: 'svg/bx-heart.svg',
+    path: '',
+    type: 'L',
+    system: ''
+  }
 */
-  ],
 
   searchPlaceholder: 'Search...',
   searchTooltip: 'Search',
@@ -317,12 +316,21 @@ Props.menuItems.push(
 
 const menuTitle = 'KilloSoft'
 
-
-
 const session = Session()
 //const { data } = await useAsyncData('id', () => session.id_con)
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
+/*
+await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
+await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
+await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
+await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
+
+console.log('session logoEmp=', logoEmp)
+*/
+
+
 const usrMenu = menu
 //const Prop = ref(props)
 const Items = reactive(Props.menuItems)  // son los que aparecen en el html

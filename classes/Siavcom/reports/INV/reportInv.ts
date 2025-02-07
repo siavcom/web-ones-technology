@@ -50,10 +50,10 @@ export class reportInv extends reportForm {
     this.op_has_isu.prop.Value = "ZZZZZZZZZZ"
     this.op_des_isu.prop.Value = " "
     this.sep_fam.prop.TabIndex = 7
-    this.num_fam.prop.TabIndex = 8
+    this.num_fam.prop.TabIndex = 90
     this.num_fam.prop.Value  = 1
-    this.op_des_fam.prop.TabIndex = 9
-    this.op_has_fam.prop.TabIndex = 10
+    this.op_des_fam.prop.TabIndex = 91
+    this.op_has_fam.prop.TabIndex = 92
     this.tit_rep.prop.TabIndex=99;
     this.tit_rep.prop.Disabled=false;
     this.tit_rep.prop.Visible=false;

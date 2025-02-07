@@ -166,6 +166,7 @@ export class COMPONENT {
     fontSize: "inherit", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     fontWeight: "normal",
     height: "auto", // "auto","fit-content"
+    left: 'auto',
     maxHeight: "auto",
     maxWidth: "auto",
     textAlign: "left",
@@ -282,14 +283,29 @@ export class COMPONENT {
    * 
    * @returns {Promise<void>}
    */
-  async asignaRecno() {
+  asignaRecno() {
     for (const comp in this) {
       const Comp = this[comp]
+
       // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
+      if (Comp && Comp.prop && Comp.prop.ControlSource && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
+        console.log('Asignado recno por referencia al padre', Comp.prop.Name)
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
       }
     }
+
+
+
+    /*
+    
+        for (const comp in this) {
+          const Comp = this[comp]
+          // ControlSource contiene el RecordSource de la forma
+          if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
+            Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+          }
+        }
+        */
   }
 
   /**

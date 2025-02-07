@@ -47,7 +47,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style=Styles.inputStyle
         v-model="Value" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
-        @keypress="keyPress($event)" @focusout="lostFocus" @focus="onFocus" @contextmenu="handler($event)"></textarea>
+        @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus" @contextmenu="handler($event)"></textarea>
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
@@ -55,8 +55,8 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly"
-      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focusout="lostFocus" v-on:keyup.63="clickHelp()"
-      @contextmenu="handler($event)">
+      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
+      v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
 
     <!--v-on:keyup.enter="clickReturn()" -->
 
@@ -580,12 +580,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     Status.value = 'P'
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
-    // console.log('editText emitValue() 1) !readCam Name=', props.prop.Name, 'isValid=', isValid, 'Valor=', Valor,'Value.value=', Value.value)
     // Si no viene del watch This.prop.Value
     if (!Valor)
       Valor = This.prop.Value  // Si viene del watch This.prop.Value
 
     Valor = Value.value
+
+    console.log('editText emitValue() 1) !readCam Name=', props.prop.Name, 'Valor=', Valor, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
@@ -1102,7 +1103,7 @@ const keyPress = ($event: {
   
   */
 
-  console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
+  // console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
   This.keyPress()
 
 
