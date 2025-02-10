@@ -556,7 +556,7 @@ export const Session = defineStore(
       logoEmp,
       // doneMenu,
       Var,
-      socketIo,
+      socketIo, // true cuando esta inicializado socket
       fileLogoEmp,
       updateSql,
       sendMessage,
