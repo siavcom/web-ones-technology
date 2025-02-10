@@ -91,13 +91,13 @@ export default defineNuxtConfig({
     }
   },
 
-  // Variables de entorno 
+  // ========= <Variables Publicas de entorno > ============
   runtimeConfig: {
     // The private keys which are only available server-side
     basculaServer: 'my-secret-key',
     // Keys within public are also exposed client-side
     public: {
-      bascula: ['http://19toto.freeddns.org:3010']
+      bascula: ['http://localhost:3010']
     },
   },
 
