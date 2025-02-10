@@ -35,8 +35,8 @@ export const Session = defineStore(
     const fileLogoEmp = ref(null);
     const Var = ref(0);
     const menu = ref([]);
-    let socket: any = ref(null);  // faltaba ref(null)
-    const sockets = {};
+    let socket = false; //: any = ref(null);  //  faltaba ref(null). Queda mejor con false
+    const sockets: never[] = [];
     let socketIo = ref(false);
     let socketId: string;
 
@@ -291,7 +291,7 @@ export const Session = defineStore(
         query: "SELECT * from vcomeprg order by NUM_PRG,SIS_SIS,TPR_PRG",
       };
 
-      if (socket.value) {
+      if (socket) {   // 
         // hay socket
         await socket.emit("sql async", dat_vis, (response) => {
           /*
