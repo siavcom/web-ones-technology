@@ -12,6 +12,10 @@ import { COMPONENT } from '@/classes/Component'
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
+
+
+//  revisar utilería https://vue-xlsx.netlify.app/guide/#quick-start
+
 import { read, writeFileXLSX, utils } from "xlsx";
 export class bt_excel extends COMPONENT {
 

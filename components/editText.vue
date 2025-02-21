@@ -3,14 +3,14 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible">
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel + " "
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
-      @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      @contextmenu="handler($event)" v-on:keyup.delete="Key = 127" v-on:keyup.13="Key = 13"
+      @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" @keypress="keyPress($event)"
+      v-on:keyup.63="clickHelp()" @contextmenu="handler($event)" v-on:keyup.delete="Key = 127" v-on:keyup.13="Key = 13"
       v-on:keyup.backspace="Key = 8" @input.self="onInput">
 
     <!-- @input.self="onInput"
@@ -36,8 +36,8 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
-      :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus"
-      @input="emitValue(false)" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
+      :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick"
+      @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
 
     <!--v-on:keyup.enter="clickReturn()" -->
 
@@ -47,7 +47,8 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style=Styles.inputStyle
         v-model="Value" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
-        @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus" @contextmenu="handler($event)"></textarea>
+        @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"
+        @contextmenu="handler($event)"></textarea>
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
@@ -55,8 +56,8 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly"
-      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
-      v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
+      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus"
+      @focusout="lostFocus" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
 
     <!--v-on:keyup.enter="clickReturn()" -->
 
@@ -73,7 +74,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
 
       <!--TransitionGroup name='detailJson' tag="div"-->
       <!--details-->
-      <div :id="Id + '_detail_' + key" v-for="(    comp, index, key    ) in compJson    " key:='index' open='true'>
+      <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true'>
         <!--summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'-->
         <label>{{ comp.label }}
         </label>
@@ -100,8 +101,8 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="lostFocus" @focus="onFocus" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)" v-maska="maska"
-      @maska="onMaska" @click.capture="This.Form.eventos.push(This.prop.Map + '.click()')">
+      @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()"
+      @contextmenu="handler($event)" v-maska="maska" @maska="onMaska">
     <!--v-on:keyup.enter="clickReturn()" -->
 
     <!--/span-->
@@ -114,12 +115,12 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       prop.ErrorMessage
       :
       'Invalid Input'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
     <div class="component_container" :style="containerStyle">
-      <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+      <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
         :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
         :position="This[compMain].position">
@@ -131,7 +132,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
       <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
-        <div v-for=" (component, key) in block.component" :key="key"
+        <div v-for="(component, key) in block.component" :key="key"
           :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
           <!--v-bind:Component="ref(Ele)"-->
           <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
@@ -1077,7 +1078,7 @@ const keyPress = ($event: {
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
-    //console.log('1.1) nextElement KeyPres==>', $event.charCode)
+    console.log('1.1) nextElement KeyPres==>', $event.charCode)
     return nextElement() //clickReturn()
   }
   // caracteres permitido en input numero
@@ -1168,7 +1169,8 @@ const nextElement = async () => {  //clickReturn
  * @return {void}
  */
 
-const click = () => {
+const onClick = () => {
+
   This.Form.eventos.push(This.prop.Map + '.click()')
 
 }
@@ -1179,8 +1181,10 @@ const click = () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 // Obs: el when() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
-const onFocus = async (click?: boolean) => {
+const onFocus = async () => {
 
+
+  // const click = Click == true ? true : false
   // Si esta en un grid checa sus estatus de todas las columnas
   if (This.Parent.BaseClass = "grid") {
     const grid = This.Parent
@@ -1263,12 +1267,13 @@ const onFocus = async (click?: boolean) => {
 
   if (sw_when) { //!This.prop.First && !This.prop.Focus && 
 
-    console.log('0)====> when cam_dat=', This.prop.Value, 'This.Parent.Row=', This.Parent.Row, ' ReadOnly=', This.prop.ReadOnly)
     nextTick(function () {
-
       This.Form.eventos.push(This.prop.Map + '.when()')
-      if (click)
-        This.Form.eventos.push(This.prop.Map + '.click()')
+      /*      if (Clicked) {
+              This.Form.eventos.push(This.prop.Map + '.click()')
+              console.log('1)====> when cam_dat=', This.prop.Name, 'Clicked=', Clicked)
+            }
+        */
     })
     select() // 20/Dic/2024 Se quito porque en version compilada no funciona
 
@@ -1461,6 +1466,22 @@ watch(
   },
   { deep: false }
 );
+
+
+/////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.nextFocus,
+  () => {
+    if (This.prop.nextFocus) {
+      nextElement()
+      This.prop.nextFocus = false
+    }
+  },
+  { deep: false }
+);
+
 
 
 
@@ -1845,7 +1866,7 @@ onMounted(async () => {
 })
 
 onBeforeMount(async () => {
-  console.log('2) editText onBeforeMount Name=', This.prop.Name)
+  // console.log('2) editText onBeforeMount Name=', This.prop.Name)
   // if (This.init)
   //   await This.init()
 })

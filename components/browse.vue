@@ -92,8 +92,88 @@ const pageOptions = [
   }
 ]
 
+///////////////////////////////////////
+// Propiedades del componente reactivas
+////////////////////////////////////
 const props = defineProps<{
+  //Recno: 0;
   Value: any;
+  Registro: 0;
+  id: string;
+  //Show: false;
+  prop: {
+
+    This: null;
+    ToolTipText: string;
+    View: "";
+    Field: "";
+    Value: [String, Number, Date];
+    Caption: string;
+    Placeholder: "";
+    Format: "";
+    Image: "";
+    InputMask: "";
+    MaxLenght: 0;
+    ReadOnly: false;
+    Tag: "";
+    Valid: false;
+    Capture: true;
+    Name: "";
+    textLabel: "";
+    Type: string;
+    Visible: true;
+    ControlSource: "";
+    Key: string;
+    BaseClass: string;
+    Grid: false;
+    MaxLength: 0;
+    RowSource: ""; // vi_cap_doc.tdo_tdo,des_tdo
+    RowSourceType: number; //1-Value, 2-Alias, 3-Local SQL 5-Array
+    ColumnCount: 0;
+    ColumnWidths: string;
+    Sorted: false;
+    BoundColumn: 1; // Columna donde se tomara el Value
+    Multiple: false;
+    Status: string;
+    ErrorMessage: string;
+    ShowValue: false;
+    TabIndex: number;
+    Notation: 'standard'; //standard,scientific,enginniering,compact
+    Style: string; // decimal, currency,percent,unit
+    Currency: '   '; //USD,EUR,MXN
+    CurrencyDisplay: 'code'; //to use the ISO currency code.
+    Decimals: number;
+    Nu: 'arab';//
+
+
+    //compAddress: any;
+  };
+  // inputStyle: {};
+  style: {
+    background: "white";
+    padding: "5px"; // Relleno
+    color: "#b94295";
+    width: "500px";
+    height: "30px";
+    maxHeight: "auto"
+    fontFamily: "Arial";
+    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left";
+  };
+  position: {
+    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
+    left: number;
+    Top: number;
+  };
+  //db: any
+}>();
+
+
+
+/*
+
+const props = defineProps<{
+ // Value: any;
   Registro: number;  // Se pone para el manejo de grid
 
   prop: {
@@ -102,18 +182,7 @@ const props = defineProps<{
     Visible: boolean;
     Label: string;
   };
-  /*
-    style: {
-      background: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "500px";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
-    };
-  */
+  
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
@@ -122,7 +191,7 @@ const props = defineProps<{
 
   //Component: null;
 }>()
-
+*/
 // Valores componente padre
 const Component = toRef(() => props.prop.This)
 //console.log('editText Component=', Component.value)

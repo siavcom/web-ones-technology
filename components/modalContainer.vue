@@ -22,9 +22,10 @@
                       <!--v-bind:Component="ref(Ele)"-->
                       <component :id="Id+'modal_componentes_' + key + component.prop.Name"
                         :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                        v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
+                         :Registro="props.Registro" :prop="component.prop"
                          :style="component.style" 
                          :position="component.position" >
+                         
                       <!--:style="component.style" :inputStyle="component.inputStyle"
                                                
                       @click.capture="component.click()"-->
@@ -115,7 +116,7 @@ const props = withDefaults(defineProps<Props>(), {
 
     Valid: false,
     Visible: true,
-    Value: [String, Number, Date],
+    Value: '',
 
 
   },

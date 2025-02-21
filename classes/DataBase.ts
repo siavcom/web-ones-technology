@@ -2553,7 +2553,8 @@ return false;
 */
     //  await alasql('USE Now ;') // 12/Feb/2024
     try {
-      if (!datos) return await alasql(ins_sql);
+      if (!datos)
+        return await alasql(ins_sql);
 
       return await alasql(ins_sql, datos);
     } catch (error) {

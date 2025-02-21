@@ -182,6 +182,8 @@ export class HELP extends CONTAINER {
       else
         this.Parent.prop.Value = this.browse.prop.Value
 
+      this.Parent.prop.nextFocus = true
+
       this.Parent.Help = false
       this.Parent.setFocus()
 

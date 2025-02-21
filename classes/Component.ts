@@ -106,6 +106,7 @@ export class COMPONENT {
     MultiSelect: false,
 
     Name: "",
+    nextFocus: false,
 
     Last: false,
     ListCount: [],
@@ -294,18 +295,6 @@ export class COMPONENT {
       }
     }
 
-
-
-    /*
-    
-        for (const comp in this) {
-          const Comp = this[comp]
-          // ControlSource contiene el RecordSource de la forma
-          if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
-            Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
-          }
-        }
-        */
   }
 
   /**
@@ -322,7 +311,7 @@ export class COMPONENT {
    * @returns {Promise<number>} TabIndex final despues de inicializar todos los componentes
    */
   public async Init(Form?: any, TabIndex?: number) {
-    //  console.log('1) Init Component', this.Name)
+    // console.log('1) Init Component', this.Name)
     if (this.sw_init) return
     this.sw_init = true
 
@@ -464,30 +453,39 @@ export class COMPONENT {
     // Obtenemos solo los elementos del Main
     const mainElement = await multiFilter(elements, { Position: "main" });
 
+
     for (const i in mainElement) {  // recorremos todos los componentes del main
       const comp = mainElement[i].Name; // Obtenemos el nombre
-
-      this[comp].prop.TabIndex = TabIndex; // asignamos el TabIndex
-      TabIndex++;
+      // console.log('Main Init Component =', comp, 'TabIndex=', this[comp].prop.TabIndex)
 
       // Si un componente contenedor y tiene bloques 
       if (this[comp].block && this[comp].block.length > 0) {
 
-        for (const numero in this[comp].block) { // Recorremos todos los bloques
-          if (this[comp].block[numero].component && this[comp].block[numero].component.length > 0) {
 
+        for (const numero in this[comp].block) { // Recorremos todos los bloques
+
+          // Si el elemento tiene componentes
+          if (this[comp].block[numero].component && this[comp].block[numero].component[0]) {
             for (const comName in this[comp].block[numero].component) { // Recorremos todos los componentes del bloque
               this[comp].block[numero].component[comName].prop.TabIndex = TabIndex;
               TabIndex++;
+              //       console.log('2) Main Init TabIndex Component=', this[comp].block[numero].component[comName].Name, 'TabIndex=', this[comp].block[numero].component[comName].prop.TabIndex)
               //    TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
               //    if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
             }
           }
         }
+      } else {
+        this[comp].prop.TabIndex = TabIndex; // asignamos el TabIndex
+        //       console.log('1) block Main Init Component =', this[comp].prop.Name, 'TabIndex=', TabIndex)
+
+        TabIndex++;
       }
 
+
       TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
-      if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
+      if (maxTabIndex < TabIndex)
+        maxTabIndex = TabIndex;
 
       mainElement[i].Id = TabIndex;
       main.push(comp);
@@ -557,6 +555,11 @@ export class COMPONENT {
     return;
   }
 
+
+  public async onChangeValue() {
+
+  }
+
   public async recnoChange() {
     return;
   }
@@ -616,7 +619,7 @@ export class COMPONENT {
    */
   public async when() {
     this.old_value = this.prop.Value
-    console.log("When", this.Name, this.prop.Value, this.prop.ReadOnly)
+
     return !this.prop.ReadOnly;
   }
 

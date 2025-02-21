@@ -184,6 +184,8 @@ if (divStyle.flexWrap == "wrap")
 if (divStyle.display == "inline-flex")
   divStyle.display = "block"
 
+if (divStyle.display == "99%")
+  divStyle.width = "auto"
 
 const zIndex = divStyle.zIndex
 

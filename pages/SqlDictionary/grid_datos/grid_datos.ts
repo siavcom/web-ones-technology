@@ -112,62 +112,58 @@ export class grid_datos extends GRID {
 
     m.con_dat = 101;
     m.cam_dat = "usu_usu";
-
+    m.des_dat = m.cam_dat;  // En Vfp se utiliza este campo para poner el nombre del campo
     m.tip_dat = "I";
     m.lon_dat = 2;
     m.dec_dat = 0;
-    m.des_dat = "Usuario que hizo la ultima actualizacion";
-    m.ref_dat = m.des_dat
+    m.ref_dat = "Last user update";
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 102;
     m.cam_dat = "tie_uac";
-
+    m.des_dat = m.cam_dat;  // En Vfp se utiliza este campo para poner el nombre del campo
     m.tip_dat = "D";
     m.lon_dat = 8;
     m.dec_dat = 0;
-    m.des_dat = "Tiempo ultima actualización";
+    m.ref_dat = "Last time update";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 103;
     m.cam_dat = "usu_cre";
-    m.des_dat = "usu_cre";
+    m.des_dat = m.cam_dat;  // En Vfp se utiliza este campo para poner el nombre del campo
     m.tip_dat = "I";
     m.lon_dat = 2;
     m.dec_dat = 0;
-    m.des_dat = "Usuario creador";
-    m.ref_dat = m.des_dat
+    m.ref_dat = "User creator";
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 104;
     m.cam_dat = "tie_cre";
-    m.des_dat = "tie_cre";
+    m.des_dat = m.cam_dat;  // En Vfp se utiliza este campo para poner el nombre del campo
     m.tip_dat = "D";
     m.lon_dat = 8;
     m.dec_dat = 0;
-    m.des_dat = "Tiempo de creación";
-    m.ref_dat = m.des_dat
+    m.ref_dat = "Time creation";
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 105;
     m.cam_dat = "timestamp";
-    m.des_dat = "timestamp";
+    m.des_dat = m.cam_dat;  // En Vfp se utiliza este campo para poner el nombre del campo
     m.tip_dat = "T";
     m.lon_dat = 8;
     m.dec_dat = 0;
-    m.des_dat = "TIMESTAMP";
-    m.ref_dat = m.des_dat
+    m.ref_dat = "Timestamp or Row Source Version";
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
 
     m.con_dat = 106;
     m.cam_dat = "key_pri";
-    m.des_dat = "key_pri";
+    m.des_dat = m.cam_dat;  // En Vfp se utiliza este campo para poner el nombre del campo
     m.tip_dat = "I";
     m.lon_dat = 4;
     m.dec_dat = 0;
-    m.des_dat = "LLAVE PRIMARIA (ID) ";
-    m.ref_dat = m.des_dat
+
+    m.ref_dat = "Id Column key_pri";
 
     await this.Form.db.appendBlank("vi_cap_comedat", m); //Incertamos un renglon en blanco
     console.log(

@@ -19,6 +19,7 @@ pnpm run dev
 yarn dev
 
 # bun 
+bun --bun run dev
 
 ## clean proyect
 npx nuxi cleanup  

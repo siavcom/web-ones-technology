@@ -21,7 +21,7 @@ export class help extends HELP {
     this.prop.RecordSource = 'man_comenom' // tabla donde buscar datos
     this.browse.prop.textLabel = 'Clientes'
     this.prop.cam_pri = 'nom_nom' // campo de buqueda principal
-    this.prop.cop_nom = 'C'
+    // this.prop.cop_nom = 'C'
 
     this.prop.Where = ""
 
@@ -39,6 +39,8 @@ export class help extends HELP {
   override async open() {
 
     this.prop.Where = ` cop_nom='${this.cop_nom}'  `
+
+    console.log('help cod_nom where =', this.prop.Where)
 
     if (this.cop_nom == 'C') {
       this.textLabel = 'Clientes'
