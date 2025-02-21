@@ -11,6 +11,7 @@
  * @class COMPONENT
  */
 import type { MaybeRefOrGetter } from "vue";
+import Tab from "~/components/tab.vue";
 
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
@@ -207,11 +208,6 @@ export class COMPONENT {
     minWidth: "auto",
     padding: "",
     position: "relative",
-    // un valor negativo (usualmente tabindex="-1") significa que el elemento debe ser enfocado, pero no debe de ser accesible a través de la navegación secuencial del teclado. Es útil para crear widgets accesibles con JavaScript.
-    // tabindex="0" significa que el elemento debe ser enfocado y ser accesible a través de la navegación secuencial del teclado, pero su orden relativo es definido por convención de la plataforma.
-    // un valor positivo significa que debe poder recoger el foco y alcanzable a través de la navegación secuencial del teclado; su orden relativo es definido por el valor del atributo: la secuencia sigue el aumento del número de tabindex.
-    // Si varios elementos comparten el mismo tabindex, su orden relativo sigue la posición relativa en el documento.
-    tabindex: 0,
     textAlign: "left",
     width: "max-content",      // 95%
     wordWrap: "break-word", // Parte las palabras
@@ -440,6 +436,7 @@ export class COMPONENT {
     for (const i in headerElement) {
       const comp = headerElement[i].Name; // Obtenemos el nombre
       this[comp].prop.TabIndex = TabIndex;
+
       TabIndex++;
       TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
       if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
@@ -463,16 +460,22 @@ export class COMPONENT {
 
 
         for (const numero in this[comp].block) { // Recorremos todos los bloques
-
+          //    console.log('Bloque Principal', this[comp].block[numero].title, numero, 'No Elementos=', this[comp].block[numero].component)
           // Si el elemento tiene componentes
-          if (this[comp].block[numero].component && this[comp].block[numero].component[0]) {
-            for (const comName in this[comp].block[numero].component) { // Recorremos todos los componentes del bloque
-              this[comp].block[numero].component[comName].prop.TabIndex = TabIndex;
-              TabIndex++;
-              //       console.log('2) Main Init TabIndex Component=', this[comp].block[numero].component[comName].Name, 'TabIndex=', this[comp].block[numero].component[comName].prop.TabIndex)
-              //    TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
-              //    if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
-            }
+          let num_Comp = 0
+          while (this[comp].block[numero].component && this[comp].block[numero].component[num_Comp]) {
+
+            // Recorremos todos los componentes del bloque
+            //    console.log('Bloque', this[comp].block[numero].component[num_Comp].prop.Name, 'Num Comp=', num_Comp, 'TabIndex=', TabIndex)
+
+
+            this[comp].block[numero].component[num_Comp].prop.TabIndex = TabIndex;
+
+            TabIndex++;
+            //       console.log('2) Main Init TabIndex Component=', this[comp].block[numero].component[comName].Name, 'TabIndex=', this[comp].block[numero].component[comName].prop.TabIndex)
+            //    TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
+            //    if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
+            num_Comp++;
           }
         }
       } else {
@@ -502,6 +505,7 @@ export class COMPONENT {
 
       //   console.log('Component.ts in main comp=',comp,this[comp])
       this[comp].prop.TabIndex = TabIndex;
+
       TabIndex++;
       TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
       if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;

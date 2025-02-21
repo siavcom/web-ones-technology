@@ -83,7 +83,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
           :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
           :disabled="comp.disabled || This.prop.Disabled ? true : false"
           :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus"
-          @contextmenu="handler($event)">
+          @contextmenu="handler($event)" :tabindex="prop.TabIndex">
 
       </div>
       <!--/details-->
@@ -1117,7 +1117,6 @@ const keyPress = ($event: {
 // $event.charCode == 13 // Down Key  
 const nextElement = async () => {  //clickReturn
 
-  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
   // await lostFocus()
   /* 26/Dic/2024
    await asignaValue()
@@ -1132,7 +1131,7 @@ const nextElement = async () => {  //clickReturn
   let nextFocus = ''
 
 
-  for (const element of This.Parent.main) {
+  for (const element of This.Parent) { //.main
 
 
     if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
@@ -1146,8 +1145,10 @@ const nextElement = async () => {  //clickReturn
       }
     }
   }
+  if (nextFocus == '')
+    return
 
-
+  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
   // $event.preventDefault();
   // Obtienee elemento a hacer el focus
   const nextElement = document.getElementById(nextFocus);
