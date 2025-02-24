@@ -1,22 +1,28 @@
+# Complete framework for web data aplication. 
+
 # This Framework is to make a simple SQL web data capture program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
-# This Framework uses Vue 3 with Nuxt and SQL databases (MSSQL and POSTGRES).
+# This Framework It's has 3 layers :
 
-# This Framework is based on VFP (Visual Fox Pro) functions and instructions.
+- Frontend . Programed in Vue/Nuxt and  web-ones-technology framework.
+   This frontEnd  is based on VFP (Visual Fox Pro) functions and instructions.
+
+- Backend with Node express and VFPnode project https://github.com/siavcom/VFP-NODE
+
+- SQL Database . Programed in Postgres or MSSQL.
 
 # It uses:
 
 - Vue 3 with SFC
 - Nuxt 3
 - Native HTML components
-- Backend with Node express and VFPnode project https://github.com/siavcom/VFP-NODE
 - SQL Database Postgres (12 or newer) or MSSQL (17 or newer)
 
 # Objective:
 
 - Make a simple program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
-It's based on using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
+It's based on using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own visual html components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
 
                     this.Form
                  /     |      \
@@ -45,7 +51,7 @@ There are some components where each one has its own components (container and g
          /        |          \
         Column1 Column2 Column..n
 
-Each component has its own properties.
+It is linked to a web component (input box, combo box, check box, etc.) and is has its own properties.
 
 - Basic props
 - Style props
@@ -54,14 +60,16 @@ Each component has its own properties.
 and methods
 
 - click
-- when
-- valid
-- setFocus
-- interactiveChange
+   When this component is clicked, this method is called.
 - init
+   When the component is initialized, this method is called.
+- interactiveChange
+   When the value of this component changes, this method is called. This method is called before valid method and only is eclusive of a comboBox component.
 - keyPress
     Handles key press events for the input.
     The pressed key value is stored in this.prop.Key.
+- setFocus
+    Get fucus when is called this method.
 - onChangeValue 
     When the value of this component changes, this method is called.
     It receives an optional parameter styles, which is the styles of the component (style, inputStyle, labelsStyle).
@@ -69,17 +77,28 @@ and methods
     Example: The method changes the color of the input depending on the value selected.
     A = green, B = red, X = blue.
     @param {any} styles - The style of the component.
+- onMounted
+    When the component is mounted, this method is called.
+- recnoChange 
+   When the recno of this component changes, this method is called.    
+- valid
+    When the component lost focus, this method is called. If the prop.Value if incorrect, this method returns false otherwise true.
+- when
+    When this component get focus, this method is called.
 
-To make a reference to a specific property you can do so by using a complete name reference tree Map (Object).
+## Set Properties and styles
+
+To make a reference to a specific property and styles you can do so by using a complete name reference tree Map (Object).
 Example:
 Properties:
-this.Form.style.display="inline-block"
-this.Form.style.width='800px'.
 this.Form.component1.prop.Type = 'editText'
 this.Form.component2.prop.Value='Customer name 1'
 or
 this.Parent.component2.prop.Value='Customer name 1'
 this.Parent.component1.component2.prop.Value='Customer name 1'
+or style
+this.Form.style.display="inline-block"
+this.Form.style.width='800px'.
 
 Calling a method:
 
@@ -198,7 +217,6 @@ Calling a method:
 `     return !this.prop.ReadOnly;`  
 `   }`
 `}`  
-
 
 
 ## TypeScript components

@@ -340,6 +340,9 @@ export class COMPONENT {
 
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
+
+      console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.ControlSource)
+
       if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
     }
 
@@ -453,11 +456,9 @@ export class COMPONENT {
 
     for (const i in mainElement) {  // recorremos todos los componentes del main
       const comp = mainElement[i].Name; // Obtenemos el nombre
-      // console.log('Main Init Component =', comp, 'TabIndex=', this[comp].prop.TabIndex)
 
       // Si un componente contenedor y tiene bloques 
       if (this[comp].block && this[comp].block.length > 0) {
-
 
         for (const numero in this[comp].block) { // Recorremos todos los bloques
           //    console.log('Bloque Principal', this[comp].block[numero].title, numero, 'No Elementos=', this[comp].block[numero].component)
@@ -466,15 +467,10 @@ export class COMPONENT {
           while (this[comp].block[numero].component && this[comp].block[numero].component[num_Comp]) {
 
             // Recorremos todos los componentes del bloque
-            //    console.log('Bloque', this[comp].block[numero].component[num_Comp].prop.Name, 'Num Comp=', num_Comp, 'TabIndex=', TabIndex)
-
-
+            console.log('Bloque', this[comp].block[numero].component[num_Comp].prop.Name, 'Num Comp=', num_Comp, 'TabIndex=', TabIndex)
             this[comp].block[numero].component[num_Comp].prop.TabIndex = TabIndex;
 
             TabIndex++;
-            //       console.log('2) Main Init TabIndex Component=', this[comp].block[numero].component[comName].Name, 'TabIndex=', this[comp].block[numero].component[comName].prop.TabIndex)
-            //    TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
-            //    if (maxTabIndex < TabIndex) maxTabIndex = TabIndex;
             num_Comp++;
           }
         }
@@ -568,9 +564,6 @@ export class COMPONENT {
     return;
   }
 
-  public async mounted() {
-    return;
-  }
 
   /////////////////////////////////////////////////////////////////////
   // Valid

@@ -40,7 +40,7 @@ export class captureForm extends FORM {
   // Aqui se deben de asignar las areas de trabajo de los archivos
   /// //////////////////////////////////////////////////
 
-  async init() {
+  override async init() {
     // (Form)
     // super.init() // corre el init de la clase para asignar los valores this a todos los componentes
 
