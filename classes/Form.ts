@@ -8,8 +8,12 @@
 import { COMPONENT } from "@/classes/Component";
 import { VFPDB } from "@/classes/DataBase";
 import { storeToRefs } from "pinia";
+import { compContainer } from "./FormComponents/compContainer";
 
 export class FORM extends COMPONENT {
+
+  public compContainer = new compContainer()
+
   //Dom: any = getCurrentInstance();
   //Parent = {} //this.Dom.ctx; // Contexto
   //Form = {} //this.Parent.ThisForm // Thisform
@@ -22,8 +26,8 @@ export class FORM extends COMPONENT {
   clickedElement = null;
   Development = false; // desarrollo
   dialect = "MSSQL";
+  language = false
   Recno = ref(999999999)
-
 
 
   //messageBox = MessageBox
@@ -64,14 +68,36 @@ export class FORM extends COMPONENT {
     this.publicVar = Var.value;
     this.dialect = dialect.value;
 
+    openForm(ref(this));
     console.log("ThisForm publicVar=", this.publicVar, "Params=", this.Params);
   }
   /////////////////////////////////////////
   // After Mounted
   ////////////////////////////////////
-
-  public async afterMounted() {
+  public override async onMounted() {
     this.prop.Status = "A";
+
+    const m = {
+      for_lan: this.prop.Name,
+      lan_lan: this.publicVar.lan_lan ? this.publicVar.lan_lan : '   '
+    }
+
+    console.log("Form :", this.Name, "m=", m);
+
+    // Si hay lenguaje y existe una traduccion   
+    if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m, 'language')) {
+      if (this.Sql.View.language && this.Sql.View.language.recnoVal.length > 0) {
+        this.language = true
+        super.onMounted();
+
+      }
+
+    }
+    //await this.Sql.execute(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \
+    //  where lan_lan='${m.lan_lan}' and for_lan='${m.for_lan}' `, 'language'))
+
+
+
   }
 
   public unload() {

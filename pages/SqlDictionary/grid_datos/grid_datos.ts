@@ -62,7 +62,7 @@ export class grid_datos extends GRID {
   // Incerta renglon
   // m : valiables de memoria
   ///////////////////////////////////////////////////
-  public async appendRow() {
+  public override async appendRow() {
     // Obtiene el consecutivo con_dat del cursor local
     const data = await this.Form.db.localSql(
       "select max(con_dat) as con_dat from vi_cap_comedat\
@@ -73,8 +73,6 @@ export class grid_datos extends GRID {
    lower(trim(cam_dat)) <> 'timestamp' and \
    lower(trim(cam_dat)) <> 'key_pri' "
     );
-    //console.log('appenRow grid_datos',await this.Form.db.localSql('select * from vi_cap_comedat' ), data[0].con_dat)
-    //console.log('appendRow',data[0])
     const con_dat = +data[0].con_dat > 0 ? data[0].con_dat + 1 : 1;
     const m = {
       nom_tab: this.Form.nom_tab.prop.Value.trim(),
@@ -91,6 +89,11 @@ export class grid_datos extends GRID {
       sou_dat: " ",
       vue_dat: " ",
     };
+
+    //console.log('appendRow comedat grid_datos=', await this.Form.db.localSql('select * from vi_cap_comedat'))
+    // console.log('appendRow comedat data=', data[0])
+    // console.log('appendRow comedat m=', m)
+
     await super.appendRow(m); // llama a la clase base
 
   }

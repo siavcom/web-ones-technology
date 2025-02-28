@@ -30,8 +30,14 @@ import image from '@/components/image.vue'
 import form from '@/components/form.vue'
 import modalContainer from '@/components/modalContainer.vue'
 
-//import modal from '@/components/modal.vue'
+const ThisForm = ref(null)
 
+export const openForm = (This: any) => {
+  ThisForm.value = This
+
+}
+
+//import modal from '@/components/modal.vue'
 //////////////////////////////////////
 // Funciones Varias
 //////////////////////////////////////
@@ -406,6 +412,8 @@ export async function MessageBox(
   title?: string,
   timer?: number
 ) {
+
+  console.log('MessageBox ThisForm=', ThisForm, 'texto=', texto, 'tipo=', tipo, 'title=', title, 'timer=', timer)
   const { $MessageBox } = useNuxtApp();
 
   if (!tipo) return await $MessageBox(texto);

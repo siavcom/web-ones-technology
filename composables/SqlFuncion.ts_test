@@ -1640,11 +1640,11 @@ export const genTabla = async (tabla: string) => {
 
     try {
         const respuesta = await axiosCall(dat_vis);
-        if (respuesta == null) return null;
-        if (respuesta.length == 0) {
-            MessageBox("Se genero la tabla " + tabla);
+       // if (respuesta == null) return null;
+       // if (respuesta.length == 0) {
+              MessageBox(" Table updated successfully " + tabla);
             return true;
-        }
+       //  }
     } catch (error) {
         console.log("SQL Error", error.response);
         errorAlert(

@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
 
-    <div id="header" style="width: 98%;height: 65px; display: flex;">
+    <div id="header" style="width: 98%;height: auto; display: flex;">
       <!--img class="logoVue" :src="logo" style="width:50px;height:50px;" /-->
       <div id="webOnes" class="Web-ones">
         <img loading="lazy" class="logoWebOnes" :src="logo" style="width:50px;height:50px" />eb-Ones

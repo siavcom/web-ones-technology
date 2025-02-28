@@ -1575,11 +1575,11 @@ export class VFPDB {
 
     try {
       const respuesta = await this.axiosCall(dat_vis);
-      if (respuesta == null) return null;
-      if (respuesta.length == 0) {
-        MessageBox("Se genero la tabla " + tabla);
-        return true;
-      }
+      //if (respuesta == null) return null;
+      //if (respuesta.length == 0) {
+      MessageBox(" Table updated successfully " + tabla);
+      return true;
+      // }
     } catch (error) {
       console.log("SQL Error", error.response);
       this.errorAlert(
@@ -1590,6 +1590,7 @@ export class VFPDB {
       );
       return false;
     }
+    return true;
   };
 
   /// ////////////////////////////////////////////
@@ -2034,8 +2035,8 @@ export class VFPDB {
         //    console.log('Db Axios ==>' + nom_vis, exp_where, replacements)
         try {
           const estructura = await this.axiosCall(dat_est);
+          console.log('genera_tabla axios GETDEF estructura ===>>', estructura, 'Llamada axios', dat_est)
           if (estructura == null) return null;
-          // console.log('Db Data vista===>>', respuesta)
 
           respuesta.est_tabla = estructura;
           // console.log('Db Estructura vista===>>', respuesta)
@@ -2429,13 +2430,12 @@ return false;
         console.log(
           "5 Db Axios call response  ======>>>",
           dat_lla,
-          "respuesta",
-          "OK",
+          "respuesta ---OK---  Respuesta=",
           respuesta
         );
         return respuesta;
       } catch (error) {
-        console.error("Axios error ", error);
+        console.error("Axios error datos de llamada =====>>", dat_lla, 'Error= ', error);
         if (error.message == "Network Error") {
 
           this.errorAlert("Network Error");

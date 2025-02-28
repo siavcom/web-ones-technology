@@ -51,7 +51,7 @@ export class cam_dat extends COLUMN {
     return !this.prop.ReadOnly
   }
 
-  async valid() {
+  override async valid() {
     if (!this.prop.When) return true;
 
     this.prop.Value = this.prop.Value.toLowerCase();

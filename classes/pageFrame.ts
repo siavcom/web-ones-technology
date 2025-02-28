@@ -64,7 +64,7 @@ export class PAGEFRAME extends COMPONENT {
     this.prop.BaseClass = 'pageFrame' //'modalContainer'//
     this.prop.Position = 'main'
 
-    this.prop.Style = "light"
+    // this.prop.Style = "light"
     this.style = {
       maxWidth: 'fit-content',
       maxHeight: 'fit-content',

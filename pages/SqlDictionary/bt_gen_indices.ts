@@ -10,9 +10,9 @@ export class bt_gen_indices extends COMPONENT {
 
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
-    this.prop.ToolTipText = "Genera los indices en el SQL Server";
+    this.prop.ToolTipText = "Generates SQL-Server index";
     this.prop.Visible = false;
-    this.prop.Value = "Genera Indices";
+    this.prop.Value = "Generates SQL-Server index";
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/index.svg";
     this.style.width = "64px";
@@ -32,9 +32,9 @@ export class bt_gen_indices extends COMPONENT {
       if (
         (await MessageBox(
           "Geneneramos el indice " +
-            indices[i].nom_ind +
-            " en SQL Server de la tabla :" +
-            this.Form.nom_tab.prop.Value,
+          indices[i].nom_ind +
+          " en SQL Server de la tabla :" +
+          this.Form.nom_tab.prop.Value,
           4,
           ""
         )) == 6
@@ -46,7 +46,7 @@ export class bt_gen_indices extends COMPONENT {
         if (error.length)
           console.error(
             "Error al generar/regenerar indices de la tabla:" +
-              this.Form.nom_tab.prop.Value
+            this.Form.nom_tab.prop.Value
           );
       }
     }

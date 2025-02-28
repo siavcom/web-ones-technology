@@ -18,7 +18,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
 
-    this.prop.Value = "Aceptar";
+    this.prop.Value = "Accept";
     this.prop.Capture = false;
     this.prop.Visible = false;
     this.prop.Image = "/Iconos/svg/accept.svg";
@@ -122,7 +122,7 @@ export class bt_aceptar extends COMPONENT {
         if (
           //dataUpdate &&
           (await MessageBox(
-            "Actualizar en Servidor SQL Server la tabla:" +
+            "Actualizar en Servidor SQL-Server la tabla:" +
             this.Form.nom_tab.prop.Value,
             4,
             ""
@@ -186,8 +186,9 @@ export class bt_aceptar extends COMPONENT {
           }
 
           this.Form.grid_datos.prop.Visible = true;
+          this.prop.Value = "Table update";
           this.Form.grid_datos.prop.textLabel =
-            "Definicion de campos de la tabla " + this.Form.nom_tab.prop.Value;
+            "Definicion de campos SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
           this.Form.bt_gen_model.prop.Visible = true;
 
           // Indices SQL
@@ -195,7 +196,7 @@ export class bt_aceptar extends COMPONENT {
           await this.Form.db.use("vi_cap_comeind", m);
           this.Form.grid_indices.RecordSource = 'vi_cap_comeind';
           this.Form.grid_indices.prop.textLabel =
-            "Definicion de indices de la tabla " + this.Form.nom_tab.prop.Value;
+            "Definicion de indices SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comeind")) == 0) {
             await this.Form.grid_indices.appendRow();
@@ -210,7 +211,7 @@ export class bt_aceptar extends COMPONENT {
           await this.Form.db.use("vi_cap_comevis", m);
           this.Form.grid_vistas.RecordSource = 'vi_cap_comevis';
           this.Form.grid_vistas.prop.textLabel =
-            "Definicion de vistas de la tabla " + this.Form.nom_tab.prop.Value;
+            "Definicion de vistas SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comevis")) == 0) {
             const m = {
@@ -376,25 +377,25 @@ export class bt_aceptar extends COMPONENT {
     let vis_act = ""; // vista de actualizacion
     let grid_form = ""; // grid de captura
     if (vis_cap == "vi_cap_comedat") {
-      men_txt = "Quieres grabar la definición de la tabla ";
+      men_txt = "Quieres grabar la definición de la tabla SQL-Server ";
       vis_act = "lla1_dat";
       grid_form = "grid_datos";
     }
 
     if (vis_cap == "vi_cap_comeind") {
-      men_txt = "Quieres grabar la definición de indices ";
+      men_txt = "Quieres grabar la definición de indices SQL-Server ";
       vis_act = "lla1_ind";
       grid_form = "grid_indices";
     }
 
     if (vis_cap == "vi_cap_cometab") {
-      men_txt = "Quieres grabar la definición de las tablas SQL";
+      men_txt = "Quieres grabar la definición de las tablas SQL-Server";
       vis_act = "lla1_tab";
       grid_form = "grid_tablas";
     }
 
     if (vis_cap == "vi_cap_comevis") {
-      men_txt = "Quieres grabar la definición de las vistas remotas SQL";
+      men_txt = "Quieres grabar la definición de las vistas SQL-Server";
       vis_act = "lla1_vis";
       grid_form = "grid_vistas";
     }
@@ -427,5 +428,6 @@ export class bt_aceptar extends COMPONENT {
     }
     return false
   }
+
 
 }

@@ -873,16 +873,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     // await This.valid()  // 8/Feb/2024.- Se aumenta await
   }
 
-  // Se comento 27 Febrero 2025
-  /*
   if (!This.prop.Valid) {
-   
+    //   console.log('5) editText emitValue() ERRROR en Valid Name=', props.prop.Name)
+
     displayError.value = true
     This.prop.ShowError = true
     select() // Hace select en el componente    thisElement.select()
     return
   }
-*/
 
   Status.value = 'A'  // se necesita para que el watch padre funcione
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
@@ -1132,22 +1130,21 @@ const nextElement = async () => {  //clickReturn
   let lastIndex = 999999
   let nextFocus = ''
 
-  if (This.Parent != null)
-    for (const element of This.Parent) { //.main
+
+  for (const element of This.Parent) { //.main
 
 
-      if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
-        !This.Parent[element].prop.Disabled) {
-        const Tab = This.Parent[element].prop.TabIndex
+    if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
+      !This.Parent[element].prop.Disabled) {
+      const Tab = This.Parent[element].prop.TabIndex
 
-        if (Tab > TabIndex && Tab < lastIndex) {
-          lastIndex = Tab
-          nextFocus = This.Parent[element].prop.htmlId
-          break
-        }
+      if (Tab > TabIndex && Tab < lastIndex) {
+        lastIndex = Tab
+        nextFocus = This.Parent[element].prop.htmlId
+        break
       }
     }
-
+  }
   if (nextFocus == '')
     return
 
@@ -1190,7 +1187,7 @@ const onFocus = async () => {
 
   // const click = Click == true ? true : false
   // Si esta en un grid checa sus estatus de todas las columnas
-  if (This.Parent && This.Parent.BaseClass == "grid") {
+  if (This.Parent.BaseClass = "grid") {
     const grid = This.Parent
     //console.log('EditText onFocus Grid Name', This.prop.Name)
     for (const comp in grid.elements) {
@@ -1304,7 +1301,7 @@ const onFocus_old = async () => {
 
   // Si esta en un grid checa sus estatus de todas las columnas
 
-  if (This.Parent.BaseClass == "grid") {
+  if (This.Parent.BaseClass = "grid") {
     const grid = This.Parent
     //console.log('EditText onFocus Grid Name', This.prop.Name)
     for (const comp in grid.elements) {
@@ -1857,7 +1854,6 @@ onMounted(async () => {
 
   await This.recnoChange()
 
-
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
     props.prop.First = false
@@ -1871,7 +1867,6 @@ onMounted(async () => {
 })
 
 onBeforeMount(async () => {
-
   // console.log('2) editText onBeforeMount Name=', This.prop.Name)
   // if (This.init)
   //   await This.init()
@@ -1883,13 +1878,6 @@ onUnmounted(() => {
 
 });
 
-
-
-onMounted(() => {
-  console.log('EditText Montado onMounted', This.prop.Name)
-  init() // Ejecuta el init
-});
-*/
 
 
 </script>

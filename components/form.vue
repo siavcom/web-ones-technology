@@ -48,7 +48,7 @@
                    @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
               -->
 
-                <div :id="'div_' + compHeader" v-for="( compHeader ) in ThisForm.header " :key="compHeader"
+                <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
                   :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
                   <component :id="'component_' + compHeader"
                     :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
@@ -70,7 +70,7 @@
                 <TransitionGroup name='detailForm'>
 
                   <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.block.length == 0"
-                    v-for="( compMain ) in ThisForm.main " :key="compMain" :class="compMain"
+                    v-for="(compMain) in ThisForm.main" :key="compMain" :class="compMain"
                     v-show='ThisForm[compMain].prop.Visible'>
                     <component :id="Id + '_mainComponent_' + compMain"
                       :is="impComponent(ThisForm[compMain].prop.BaseClass)"
@@ -85,7 +85,7 @@
                     <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                     <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
-                      <div v-for=" (component, key) in block.component" :key="key"
+                      <div v-for="(component, key) in block.component" :key="key"
                         :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
 
                         <component :id="Id + '_blockComponent_' + key + component.prop.Name"
@@ -123,7 +123,7 @@
               
               -->
 
-                <div :id="'div_' + compFooter" v-for="( compFooter ) in ThisForm.footer " :class="compFooter"
+                <div :id="'div_' + compFooter" v-for="(compFooter) in ThisForm.footer" :class="compFooter"
                   v-show='ThisForm[compFooter].prop.Visible'>
                   <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
                       @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
@@ -483,7 +483,7 @@ onBeforeMount(async () => {
  */
   console.log('ThisForm Finish Update  ', ThisForm)
   loading.value = false
-  await ThisForm.afterMounted()
+  await ThisForm.onMounted()
 
 })
 

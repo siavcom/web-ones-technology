@@ -63,6 +63,8 @@ export class sis_sis extends COMPONENT {
     this.Form.nom_tab.prop.RowSource = ''
     this.Form.nom_tab.prop.Value = ''
     this.Form.nom_tab.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Value = 'Accept';
+
 
     //  this.Form.dic_dat.when(true)
     return true;

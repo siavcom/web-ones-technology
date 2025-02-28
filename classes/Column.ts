@@ -19,7 +19,7 @@ export class COLUMN extends COMPONENT {
 
   Order = 1;
   BaseClass = "Column";
-  textLabel = "";
+  // textLabel = "";
   constructor() {
     super();
     this.prop.Capture = true;

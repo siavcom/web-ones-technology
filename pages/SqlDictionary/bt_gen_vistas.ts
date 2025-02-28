@@ -10,9 +10,9 @@ export class bt_gen_vistas extends COMPONENT {
 
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
-    this.prop.ToolTipText = "Genera la vistas para SQL Server";
+    this.prop.ToolTipText = "Generate SQL-Server views";
     this.prop.Visible = false;
-    this.prop.Value = "Genera vistas";
+    this.prop.Value = "Generate SQL views";
     this.prop.TabIndex = 4;
     this.prop.Image = "/Iconos/svg/view-eye.svg";
     this.style.width = "64px";

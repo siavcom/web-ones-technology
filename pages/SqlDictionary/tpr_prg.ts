@@ -40,6 +40,7 @@ export class tpr_prg extends COMPONENT {
     this.Form.sis_sis.prop.Visible = false;
     this.Form.nom_tab.prop.Visible = false;
     this.Form.grid_menu.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Value = 'Accept';
     return true;
   }
 }

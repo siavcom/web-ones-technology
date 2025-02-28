@@ -38,7 +38,7 @@ export class COMPONENT {
   error = false
   sw_init = false
   Help = false
-
+  textLabel = ""
 
   prop = {
     autoLoad: false,
@@ -129,7 +129,7 @@ export class COMPONENT {
     SqlUpdate: false, //Si es verdadero actualiza automaticamente
     Status: "I",
     Step: "1",
-    Style: "decimal", // decimal, currency,percent,unit
+    Style: 1, //commonly in comboBox
 
     TabIndex: 0,
     Tag: "",
@@ -604,7 +604,7 @@ export class COMPONENT {
 
 
   public async click() {
-    return;
+
   }
 
 
@@ -620,15 +620,7 @@ export class COMPONENT {
     return !this.prop.ReadOnly;
   }
 
-  /**
-   * onMounted VFP
-   * Descripcion: Cuando se monta el componente en el DOM
-   * 
-   */
 
-  public async onMounted() {
-
-  }
 
   /////////////////////////////////////////////////////////////////////
   // Focus
@@ -690,6 +682,40 @@ export class COMPONENT {
     // Implementation goes here
   }
 
+  /*
+   *
+   * onMounted VFP
+   * Descripcion: Cuando se monta el componente en el DOM
+   * 
+  */
+
+  public async onMounted() {
+    console.log('afterMounted FormName=', this.Form.prop.Name, 'Map=', this.prop.Map)
+    if (this.Form.language)
+      this.translate()
+  }
+
+  translate() {
+
+    this.getWord(ref(this.prop.textLabel))
+    this.getWord(ref(this.textLabel))
+
+    if (this.prop.BaseClass.toLowerCase() == 'imgbutton')
+      this.getWord(ref(this.prop.Value))
+
+    if (this.prop.BaseClass.toLowerCase() == 'combobox')
+      this.getWord(ref(this.prop.RowSource))
+
+  }
+
+  async getWord(prop: any) {
+
+    const data = await this.Sql.localAlaSq(`select tra_lan where map_lan=${this.prop.Map} and wor_lan=${prop.value} and lan_lan=${this.Form.language}`)
+    if (data[0].tra_lan && data[0].tra_lan.length > 0) {
+      prop.value = data[0].tra_lan
+    }
+
+  }
   /////////////////////////////////////////////////////////////////////
   // Refe
   // Descripcion: asigna la ref html del componente desplegado

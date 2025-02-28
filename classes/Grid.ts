@@ -216,21 +216,18 @@ export class GRID extends COMPONENT {
 
     // for (const i in this.Form.main)
     // Forma principal de captura. Los valores de los componentes de captura se pasan a memoria
-    for (const comp of this.Form.main)
-      m[comp] = this.Form[comp].prop.Value;
+    for (const comp of this.Form.main) {
+      if (!m[comp])
+        m[comp] = this.Form[comp].prop.Value;
 
+    }
     //this.Form.db.select(this.prop.RecordSource)
 
+    console.log('2) appendRow comedat m=', m)
     const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     this.prop.Disabled = false;
 
-    this.Row = -10; // Ponemos en -10 para refrescar la pagina
-
-    console.log(
-      "grid appendRow rows ",
-      await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`)
-    );
-
+    this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
   }
 
 
@@ -293,7 +290,7 @@ export class GRID extends COMPONENT {
         "ERROR"
       );
     }
-    this.Row == -1
+    this.Row = -1
     return resultado;
   }
 

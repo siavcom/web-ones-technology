@@ -20,7 +20,8 @@ export class sis_sis extends COLUMN {
     this.prop.ControlSource = 'vi_cap_cometab.sis_sis'
     this.prop.Capture = true;
     this.prop.ToolTipText = 'Sistema al cual pertenece'
-    this.prop.RowSource = "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S' ";
+    this.prop.RowSource = " select '~SQL dictionary' as des_prg,'CFG' as sis_sis union \
+                   select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S' ";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;

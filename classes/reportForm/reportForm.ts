@@ -59,7 +59,7 @@ export class reportForm extends FORM {
   for_ori: string = ""; // forma JASPER original
 
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
-
+  tit_rep = ' '
   constructor() {
     super();
     this.mon_rep.prop.TabIndex = 101;
