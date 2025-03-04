@@ -17,17 +17,17 @@ export class nullValue extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Permite nulo'
+        this.prop.ColumnTextLabel = 'Permite nulo'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'checkBox'
         this.prop.textLabel = 'Si '
-        
-        this.prop.ControlSource = 'vi_cap_for.nullvalue'
-        this.prop.ToolTipText ='[.]=Permite valores nulos'
-        this.prop.Placeholder = ""
-        this.prop.Value=0
 
-        this.style.width='40px'
+        this.prop.ControlSource = 'vi_cap_for.nullvalue'
+        this.prop.ToolTipText = '[.]=Permite valores nulos'
+        this.prop.Placeholder = ""
+        this.prop.Value = 0
+
+        this.style.width = '40px'
 
     }
 

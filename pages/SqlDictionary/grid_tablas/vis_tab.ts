@@ -15,11 +15,11 @@ export class vis_tab extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Where que tendra la vista de mantenimiento man_<Sql Table>'
+        this.prop.ColumnTextLabel = 'Where que tendra la vista de mantenimiento man_<Sql Table>'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_cometab.vis_tab'
-        this.prop.ToolTipText ='Where en la vista de mantenimiento'
-        this.style.width='600px'
+        this.prop.ToolTipText = 'Where en la vista de mantenimiento'
+        this.style.width = '600px'
     }
 }

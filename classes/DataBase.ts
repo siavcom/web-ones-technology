@@ -832,6 +832,9 @@ export class VFPDB {
 
               // se tiene que validar como string y null ya que asi viene desde alaSQL
               try {
+                if (typeof dat_act[row][campo] == "object")
+                  dat_act[row][campo] = '"' + dat_act[row][campo] + '"';
+
                 if (dat_act[row][campo] != null) {
                   m[campo] =
                     typeof dat_act[row][campo] == "string"
@@ -848,7 +851,7 @@ export class VFPDB {
                 );
                 return;
               }
-              console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo])
+              console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo], 'typeof=', typeof dat_act[row][campo])
           }
           //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
 
@@ -1119,7 +1122,7 @@ export class VFPDB {
     this.View[alias].recnoVal.push({ recno, id }); // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1;
     this.View[alias].row = this.View[alias].recnoVal.length - 1; // asignamos nuevo row
-
+    valores.recno = recno;
     console.log(
       "Db DataBAse Insert Now  alaSql=====>",
       alias,

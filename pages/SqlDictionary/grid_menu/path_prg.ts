@@ -16,7 +16,7 @@ export class path_prg extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Path page  '
+        this.prop.ColumnTextLabel = 'Path page  '
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_prg.path_prg'
         this.prop.Placeholder = "Path page"

@@ -15,7 +15,7 @@ export class exp_ind extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "Campos que contiene el indice";
+    this.prop.ColumnTextLabel = "Campos que contiene el indice";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comeind.exp_ind";
     this.prop.Placeholder = "Campos  que contiene el indice";

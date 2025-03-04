@@ -15,7 +15,7 @@ export class con_dat extends COLUMN {
   constructor() {
     super()
     this.prop.Order = 1
-    this.textLabel = 'Conse- cutivo'
+    this.prop.ColumnTextLabel = 'Conse- cutivo'
     this.prop.BaseClass = 'editText'
     this.prop.Type = 'number'
     this.prop.Min = '0'

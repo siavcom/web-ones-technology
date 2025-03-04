@@ -16,7 +16,7 @@ export class sou_dat extends COLUMN {
   constructor() {
     super()
     this.prop.Order = 3
-    this.textLabel = 'RowSource ComboBox VFP'
+    this.prop.ColumnTextLabel = 'RowSource ComboBox VFP'
     this.prop.Type = 'text'
     this.prop.Type = 'textArea'
     this.prop.ControlSource = 'vi_cap_comedat.sou_dat'

@@ -17,7 +17,7 @@ export class ref_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Descripción'
+        this.prop.ColumnTextLabel = 'Descripción'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_comedat.ref_dat'
         this.prop.ToolTipText = 'Descripción del campo'

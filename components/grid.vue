@@ -1,14 +1,14 @@
 <template>
   <div :id="Id + '_main_divi_grid'" class="divi"
     v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Sql.View[prop.RecordSource]" :style="divStyle"
-    ref="Ref">
+    ref="Ref" @contextmenu.stop="handler($event)">
     <label :id="Id + '_lable'" class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
     <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99.5%' }">
 
-      <!--label text-align="center">{{ prop.textLabel }}</label>  -->
+      <!--label text-align="center">{{ prop.ColumnTextLabel }}</label>  -->
       <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
       <div :id="Id + '_div_grid_tabla'" class="tabla"
         :style="{ minHeight: '250px', height: 'fit-content', width: 'inherit' }">
@@ -22,7 +22,7 @@
                   -->
                 <div :id="Id + '_div_grid_column_header' + column" v-show="This[column.Name].prop.Visible">
                   <!--Imprime como etiqueta el header de cada columna-->
-                  {{ This[column.Name].textLabel }}
+                  {{ This[column.Name].prop.ColumnTextLabel }}
                 </div>
               </th>
             </tr>
@@ -956,6 +956,9 @@ const init = async () => {
   //  for (const comp in This.elements) {
   for (let i = 0; i < This.main.length; i++) {
     const comp = This.main[i]
+    if (This[comp].sw_translate)
+      This[comp].translate()
+
 
     if (This[comp].prop.Capture == true)  // Si es componete de captura
     {
@@ -989,6 +992,15 @@ const init = async () => {
 };
 
 init(); // Ejecuta el init
+
+
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+  }
+  event.preventDefault();
+}
 
 </script>
 

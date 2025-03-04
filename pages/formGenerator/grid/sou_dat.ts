@@ -17,10 +17,10 @@ export class sou_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'RowSource ComboBox'
+        this.prop.ColumnTextLabel = 'RowSource ComboBox'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_for.sou_dat'
-        this.prop.ToolTipText ='RowSource para ComboBox'
+        this.prop.ToolTipText = 'RowSource para ComboBox'
         this.prop.Placeholder = "RowSource ComboBox"
         this.style.flexBasis = '100px' /* width/height  - initial value: auto */
     }
@@ -28,10 +28,10 @@ export class sou_dat extends COLUMN {
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when() { 
-        this.prop.ReadOnly=await !this.Parent.cam_dat.when() 
-      return !this.prop.ReadOnly
-         //   await super.when(row)
+    async when() {
+        this.prop.ReadOnly = await !this.Parent.cam_dat.when()
+        return !this.prop.ReadOnly
+        //   await super.when(row)
     }
 
 

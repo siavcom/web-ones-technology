@@ -15,7 +15,7 @@ export class cam_dat extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 2;
-    this.textLabel = "Campo";
+    this.prop.ColumnTextLabel = "Campo";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comedat.cam_dat";
     this.prop.Placeholder = "Nombre del campo";

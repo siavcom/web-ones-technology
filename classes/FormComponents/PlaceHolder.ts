@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : propTextLabel
+// Class : propPlaceHolder
 // Description :Valor del textLabel
 // Creation : 2023-07-20
 // Update Date  :
@@ -12,12 +12,13 @@
 
 import { COMPONENT } from "@/classes/Component";
 
-export class propTextLabel extends COMPONENT {
+export class PlaceHolder extends COMPONENT {
 
   constructor() {
     super();
-    this.prop.textLabel = "this.prop.textLabel";
-    this.prop.Type = "text";
+    this.prop.textLabel = "Place Holder";
+    this.prop.ControlSource = "vi_cap_db_languages.placeholder";
+    this.prop.Capture = true
     this.prop.BaseClass = "editText";
     this.inputStyle.width = "256px";
   }

@@ -16,7 +16,7 @@ export class help extends HELP {
   cop_nom: string = 'C'
   constructor() {
     super()
-    this.textLabel = 'Buscador'
+    this.prop.ColumnTextLabel = 'Buscador'
     this.where = ''
     this.prop.RecordSource = 'man_comenom' // tabla donde buscar datos
     this.browse.prop.textLabel = 'Clientes'
@@ -43,9 +43,9 @@ export class help extends HELP {
     console.log('help cod_nom where =', this.prop.Where)
 
     if (this.cop_nom == 'C') {
-      this.textLabel = 'Clientes'
+      this.prop.ColumnTextLabel = 'Clientes'
     } else {
-      this.textLabel = 'Proveedores'
+      this.prop.ColumnTextLabel = 'Proveedores'
 
     }
 

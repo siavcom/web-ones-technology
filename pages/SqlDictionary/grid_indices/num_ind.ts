@@ -15,7 +15,7 @@ export class num_ind extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Número'
+        this.prop.ColumnTextLabel = 'Número'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
         this.prop.Min = '1'

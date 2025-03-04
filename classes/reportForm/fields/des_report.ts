@@ -16,9 +16,9 @@ export class des_report extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.textLabel = 'descripcion'
-        this.prop.ControlSource='vi_cap_db_reportfields.des_report'
+        this.prop.ColumnTextLabel = 'descripcion'
+        this.prop.ControlSource = 'vi_cap_db_reportfields.des_report'
         this.style.width = '250px'
-        
+
     }
 }

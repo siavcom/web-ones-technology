@@ -1,5 +1,6 @@
 <template>
-  <div :id="Id + 'pageFrame'" class="wrapper" v-if="This.prop.Visible" :style="This.style">
+  <div :id="Id + 'pageFrame'" class="wrapper" v-if="This.prop.Visible" :style="This.style"
+    @contextmenu.stop="handler($event)">
     <button class='change__style' @click='changeStyle()'>Change Style</button>
     <tabs :mode="This.prop.Style">
 
@@ -10,7 +11,7 @@
           <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
           <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
-            <div v-for=" (component, key) in block.component" :key="key"
+            <div v-for="(component, key) in block.component" :key="key"
               :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
               <!--v-bind:Component="ref(Ele)"-->
               <component :id="'modal_componentes_' + key + component.prop.Name"
@@ -251,6 +252,15 @@ console.log('Divi ele=>', element.value)
 */
 
 //init();
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+
+  }
+  event.preventDefault();
+}
+
 </script>
 
 

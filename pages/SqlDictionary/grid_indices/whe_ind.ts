@@ -15,7 +15,7 @@ export class whe_ind extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "Where del indice";
+    this.prop.ColumnTextLabel = "Where del indice";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comeind.whe_ind";
     this.prop.Placeholder = "Where <field> =,>,<,... <value>";

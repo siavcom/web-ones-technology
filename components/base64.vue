@@ -1,7 +1,7 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
-    v-show="This.prop.Visible">
+    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
 
     <img v-if="Value.length > 0 && This.inputStyle.accept != 'application/pdf'" :id="Id + '_img'" class="img"
       :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
@@ -689,7 +689,8 @@ watch(
 
 const handler = (event) => {
   if (event.which === 3) {
-    console.warn("==================>>>>>>Right mouse down Map=", This.prop.Map);
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
   }
   event.preventDefault();
 }

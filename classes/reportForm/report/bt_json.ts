@@ -40,7 +40,7 @@ export class bt_json extends COMPONENT {
     for (const comp in this.Form.data) {
       rows[0][comp] = this.Form.data[comp];
     }
-
+    rows[0]['tit_rep'] = this.Form.tit_rep
     //    rows[0]=await this.Form.obtData(rows[0])
     // console.log("bt_json rows[0]", rows[0]);
     const objJson = JSON.stringify(rows);

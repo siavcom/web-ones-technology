@@ -17,24 +17,24 @@ export class updateKey extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Indice de actualización'
+        this.prop.ColumnTextLabel = 'Indice de actualización'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'checkBox'
         this.prop.textLabel = 'Si'
-        
-        this.prop.ControlSource = 'vi_cap_for.updatekey'
-        this.prop.Value=1
 
-        this.style.width='40px'
+        this.prop.ControlSource = 'vi_cap_for.updatekey'
+        this.prop.Value = 1
+
+        this.style.width = '40px'
 
     }
 
-async valid(){
-   if (+this.prop.Value==1) // Si es llave de actualizacion es actaulizable
-       this.Parent.cam_act.prop.Value=1
-   return true
+    async valid() {
+        if (+this.prop.Value == 1) // Si es llave de actualizacion es actaulizable
+            this.Parent.cam_act.prop.Value = 1
+        return true
 
-}  
+    }
 
 
 }

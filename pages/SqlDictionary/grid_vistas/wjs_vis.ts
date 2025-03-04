@@ -15,7 +15,7 @@ export class wjs_vis extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "Where al generar la vista en TypeScript";
+    this.prop.ColumnTextLabel = "Where al generar la vista en TypeScript";
     this.prop.BaseClass = "editText";
     this.prop.Type = "textArea";
     this.prop.ControlSource = "vi_cap_comevis.wjs_vis";

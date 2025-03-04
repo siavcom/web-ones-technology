@@ -17,7 +17,7 @@ export class lon_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 4
-        this.textLabel = 'Longitud'
+        this.prop.ColumnTextLabel = 'Longitud'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
         this.prop.Min = '0'

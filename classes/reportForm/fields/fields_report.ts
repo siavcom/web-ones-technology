@@ -15,9 +15,9 @@ export class fields_report extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.textLabel = 'Campos'
+        this.prop.ColumnTextLabel = 'Campos'
         this.prop.Type = 'json'
-        this.prop.ControlSource='vi_cap_db_reportfields.fields_report'
-        this.style.width='450px'
+        this.prop.ControlSource = 'vi_cap_db_reportfields.fields_report'
+        this.style.width = '450px'
     }
 }

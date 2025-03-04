@@ -15,7 +15,7 @@ export class col_ind extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "INCLUDED <COLUMNS>";
+    this.prop.ColumnTextLabel = "INCLUDED <COLUMNS>";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comeind.col_ind";
     this.prop.Placeholder = "INCLUDED (COLUMNS)";

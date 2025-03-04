@@ -15,7 +15,7 @@ export class maxLen extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "Valor max/logitud";
+    this.prop.ColumnTextLabel = "Valor max/logitud";
     this.prop.BaseClass = "editText";
     this.prop.Type = "text";
     this.prop.ControlSource = "vi_cap_for.maxlen";

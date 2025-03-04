@@ -17,7 +17,7 @@ export class gru_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 2
-        this.textLabel = 'Insert/Update'
+        this.prop.ColumnTextLabel = 'Insert/Update'
         this.prop.BaseClass = "comboBox";
         this.prop.ControlSource = 'vi_cap_comedat.wri_dat'
         this.prop.RowSource = [

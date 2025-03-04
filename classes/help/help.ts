@@ -42,7 +42,7 @@ export class HELP extends CONTAINER {
 
   constructor() {
     super()
-    this.textLabel = 'Buscador'
+    this.prop.ColumnTextLabel = 'Buscador'
     this.prop.cam_pri = ''
     this.prop.oneClick = true
     this.prop.BaseClass = 'modalContainer'

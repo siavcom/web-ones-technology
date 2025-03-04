@@ -16,7 +16,7 @@ import { HELP } from "@/classes/help/help"
 export class help extends HELP {
   constructor() {
     super()
-    this.textLabel = 'Buscador de vendedores'
+    this.prop.ColumnTextLabel = 'Buscador de vendedores'
     this.where = ''
     this.prop.RecordSource = 'man_comeven' // tabla donde buscar datos
     this.browse.prop.textLabel = 'Vendedores'

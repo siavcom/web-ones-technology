@@ -20,7 +20,7 @@ export class <<cam_dat>> extends COLUMN {
    
        // const nom_ind=renglon[i]['nom_ind']
          
-        this.textLabel = '<<textLabel>>' // Column Header
+        this.prop.ColumnTextLabel = '<<textLabel>>' // Column Header
         this.prop.Type ='<<Type>>'
         this.prop.BaseClass = '<<BaseClass>>'
         this.prop.ControlSource = '<<ControlSource>>'

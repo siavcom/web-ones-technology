@@ -11,12 +11,10 @@ import { storeToRefs } from "pinia";
 import { compContainer } from "./FormComponents/compContainer";
 
 export class FORM extends COMPONENT {
-
   public compContainer = new compContainer()
 
   //Dom: any = getCurrentInstance();
-  //Parent = {} //this.Dom.ctx; // Contexto
-  //Form = {} //this.Parent.ThisForm // Thisform
+
   loading = true;
   eventos = []; // eventos a ejecutar en el stack
   estatus = []; // estatus de los componentes hijos
@@ -70,11 +68,13 @@ export class FORM extends COMPONENT {
 
     openForm(ref(this));
     console.log("ThisForm publicVar=", this.publicVar, "Params=", this.Params);
+
+
   }
   /////////////////////////////////////////
   // After Mounted
   ////////////////////////////////////
-  public override async onMounted() {
+  public override async onMounted_old() {
     this.prop.Status = "A";
 
     const m = {
@@ -85,12 +85,10 @@ export class FORM extends COMPONENT {
     console.log("Form :", this.Name, "m=", m);
 
     // Si hay lenguaje y existe una traduccion   
-    if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m, 'language')) {
-      if (this.Sql.View.language && this.Sql.View.language.recnoVal.length > 0) {
-        this.language = true
-        super.onMounted();
+    if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m)) {
+      this.language = true
 
-      }
+      super.onMounted();
 
     }
     //await this.Sql.execute(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \

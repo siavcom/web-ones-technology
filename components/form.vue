@@ -23,7 +23,7 @@
     </div>
 
   </div>
-  <div v-else>
+  <div v-else @contextmenu.stop="handler($event)">
     <transition name='Mainform'>
 
       <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
@@ -72,7 +72,7 @@
                   <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.block.length == 0"
                     v-for="(compMain) in ThisForm.main" :key="compMain" :class="compMain"
                     v-show='ThisForm[compMain].prop.Visible'>
-                    <component :id="Id + '_mainComponent_' + compMain"
+                    <component v-if="ThisForm[compMain].prop.Visible" :id="Id + '_mainComponent_' + compMain"
                       :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                       v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                       :Registro="ThisForm[compMain].Recno" :prop="ThisForm[compMain].prop"
@@ -481,9 +481,9 @@ onBeforeMount(async () => {
      console.log('Error al inicializa la forma ', error)
    }
  */
-  console.log('ThisForm Finish Update  ', ThisForm)
+  console.log('ThisForm onMounted  ', ThisForm)
   loading.value = false
-  await ThisForm.onMounted()
+  ThisForm.onMounted()
 
 })
 
@@ -491,6 +491,12 @@ onUnmounted(() => {
   ThisForm.unload(); // <div>
 })
 
+
+const handler = (event) => {
+  if (event.which === 3)
+    ThisForm.compContainer.open(ref(ThisForm))
+  event.preventDefault();
+}
 
 
 </script>

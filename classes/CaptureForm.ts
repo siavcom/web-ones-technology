@@ -355,7 +355,7 @@ export class captureForm extends FORM {
         if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.ReadOnly && this.Parent[comp].prop.Visible && !this.Parent[comp].prop.Valid) {
 
           if (!(await this.Parent[comp].valid())) {
-            console.log('2) CaptureForm bt_graba click() Invalid comp=', comp)
+            //console.log('2) CaptureForm bt_graba click() Invalid comp=', comp)
             if (!this.prop.Disabled)
               this.prop.Visible = true;
 

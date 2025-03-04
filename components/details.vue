@@ -13,7 +13,7 @@
 -->
 <template>
   <!--transition name='Details'-->
-  <div v-show="This.prop.Visible">
+  <div v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
     <div class='details' :style="style">
       <details :id="Id + '_details'" class='detailsOpen' @toggle="toggle" :open='openDetail'>
 
@@ -522,7 +522,14 @@ const init = async () => {
 
 init() // Ejecuta el init
 
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
 
+  }
+  event.preventDefault();
+}
 
 </script>
 <style scoped>

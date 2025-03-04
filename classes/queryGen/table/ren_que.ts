@@ -16,12 +16,12 @@ export class ren_que extends COLUMN {
     //  constructor(parent: Record<string, never>) {
     constructor() {
         super()
-        this.textLabel = 'Ren'
+        this.prop.ColumnTextLabel = 'Ren'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
         this.prop.ReadOnly = true
-        this.prop.Decimals=0
+        this.prop.Decimals = 0
         this.style.width = '25px'
-        
+
     }
 }

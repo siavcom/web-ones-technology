@@ -17,7 +17,7 @@ export class nom_ind extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Nombre'
+        this.prop.ColumnTextLabel = 'Nombre'
         this.prop.BaseClass = 'editText'
         this.inputStyle.textTransform = 'lowercase'
 

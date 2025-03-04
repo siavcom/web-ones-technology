@@ -1,50 +1,50 @@
 <template>
   <ClientOnly>
-  
-  <Teleport to="#teleports">
-    <!--UContainer Dio problemas . Cambio la toda la apariencia-->    <!--Transition-->
-      
-        <div :id="Id+'_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
-          
-          <div :id="Id+'_modal_container'" class="modal-container" :style="divStyle">
 
-            <div :id="Id+'label'" class="modal-header" :style="labelStyle">
-              <label name="header">{{ This.prop.textLabel }}</label>
-            </div>
-            <div :id="Id+'modal_body'" class="modal-body">
-              <slot name="componentes">
-                <div :id="Id+'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
-                  <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-                  <div :id="Id+'block_' + key" v-if="block.prop.Visible" :style="block.style">
+    <Teleport to="#teleports">
+      <!--UContainer Dio problemas . Cambio la toda la apariencia--> <!--Transition-->
 
-                    <div v-for=" (component, key) in block.component" :key="key"
-                      :id="Id+'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-                      <!--v-bind:Component="ref(Ele)"-->
-                      <component :id="Id+'modal_componentes_' + key + component.prop.Name"
-                        :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                         :Registro="props.Registro" :prop="component.prop"
-                         :style="component.style" 
-                         :position="component.position" >
-                         
+      <div :id="Id + '_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
+
+        <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle"
+          @contextmenu.stop="handler($event)">
+
+          <div :id="Id + 'label'" class="modal-header" :style="labelStyle">
+            <label name="header">{{ This.prop.textLabel }}</label>
+          </div>
+          <div :id="Id + 'modal_body'" class="modal-body">
+            <slot name="componentes">
+              <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+                <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+                <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
+                  <div v-for="(component, key) in block.component" :key="key"
+                    :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+                    <!--v-bind:Component="ref(Ele)"-->
+                    <component :id="Id + 'modal_componentes_' + key + component.prop.Name"
+                      :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                      :Registro="props.Registro" :prop="component.prop" :style="component.style"
+                      :position="component.position">
+
                       <!--:style="component.style" :inputStyle="component.inputStyle"
                                                
                       @click.capture="component.click()"-->
-                      </component>
-                    </div>
+                    </component>
                   </div>
                 </div>
+              </div>
 
-              </slot>
-            </div>
-            <!--/section-->
+            </slot>
           </div>
-       
+          <!--/section-->
         </div>
-      
+
+      </div>
+
       <!--/Transition-->
-    <!--/UContainer-->
+      <!--/UContainer-->
     </Teleport>
-    
+
   </ClientOnly>
 </template>
 
@@ -120,47 +120,47 @@ const props = withDefaults(defineProps<Props>(), {
 
 
   },
-/*
-  style: {
-    background: "white",
-    padding: "5px", // Relleno
-    color: "#b94295",
-    width: "auto",
-    height: "30px",
-    fontFamily: "Arial",
-    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left",
-    borderColor: "#000a01",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    zIndex: 1,
-
-    // inputWidth: "inherit"
-  },
+  /*
+    style: {
+      background: "white",
+      padding: "5px", // Relleno
+      color: "#b94295",
+      width: "auto",
+      height: "30px",
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left",
+      borderColor: "#000a01",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      zIndex: 1,
   
-  inputStyle: {
-    background: "white",
-    padding: "5px", // Relleno
-    color: "#b94295",
-    width: "auto",
-    height: "30px",
-    fontFamily: "Arial",
-    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left",
-    borderColor: "#000a01",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    zIndex: 1,
-
-    // inputWidth: "inherit"
-  },
+      // inputWidth: "inherit"
+    },
+    
+    inputStyle: {
+      background: "white",
+      padding: "5px", // Relleno
+      color: "#b94295",
+      width: "auto",
+      height: "30px",
+      fontFamily: "Arial",
+      fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+      textAlign: "left",
+      borderColor: "#000a01",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      zIndex: 1,
   
-  position: {
-    position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
-    left: 0,
-    Top: 0,
-  },
-*/
+      // inputWidth: "inherit"
+    },
+    
+    position: {
+      position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
+      left: 0,
+      Top: 0,
+    },
+  */
 })
 
 const Component = ref(props.prop.This)
@@ -172,7 +172,7 @@ const divStyle = reactive({ ...Este.style })
 
 //const Id = This.Name + props.Registro.toString()
 
-const Id = This.prop.Name+'_' +Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 
 
 //console.log('10 modalContainer Name=', This.prop.Name, 'divStyle=', divStyle, 'Id=', Id)
@@ -261,6 +261,18 @@ const impComp = ((name: string, pos?: string) => {
 
 
 //init();
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+
+  }
+  event.preventDefault();
+}
+
+
+
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 

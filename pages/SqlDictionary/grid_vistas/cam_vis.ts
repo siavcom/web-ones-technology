@@ -16,7 +16,7 @@ export class cam_vis extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'SELECT <fields>'
+        this.prop.ColumnTextLabel = 'SELECT <fields>'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comevis.cam_vis'

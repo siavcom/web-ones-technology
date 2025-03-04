@@ -17,7 +17,7 @@ export class dec_dat extends COLUMN {
   constructor() {
     super()
     this.prop.Order = 3
-    this.textLabel = 'Decimales'
+    this.prop.ColumnTextLabel = 'Decimales'
     this.prop.BaseClass = 'editText'
     this.prop.Type = 'number'
     this.prop.Min = '0'

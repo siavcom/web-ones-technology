@@ -1,6 +1,6 @@
 <template>
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible">
+    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
     <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
       :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
@@ -9,7 +9,7 @@
         v-show="prop.Visible">{{ prop.Value }}</label>
     </button>
 
-    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+    <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
       :style="This[compMain].style" :position="This[compMain].position">
@@ -115,7 +115,7 @@ watch(
   async () => {
 
     // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
-    emitValue(true)
+    //  emitValue(true)
     This.Recno = props.Registro
   },
   { deep: true }
@@ -236,6 +236,7 @@ onMounted(async () => {
     }
 
   };
+  This.onMounted()
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
 })
 /*
@@ -243,6 +244,14 @@ onMounted(() => {
   init() // Ejecuta el init
 });
 */
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+
+  }
+  event.preventDefault();
+}
 
 </script>
 

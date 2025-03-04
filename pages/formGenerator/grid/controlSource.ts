@@ -16,13 +16,13 @@ export class controlSource extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Control Source'
+        this.prop.ColumnTextLabel = 'Control Source'
         this.prop.BaseClass = 'editText'
-        this.prop.Type ='text'
+        this.prop.Type = 'text'
         //this.prop.ControlSource = 'vi_cap_for.controlsource'
-        this.prop.ToolTipText ='Control Source'
+        this.prop.ToolTipText = 'Control Source'
         this.prop.Placeholder = "table.field"
-        this.style.width='250px'
+        this.style.width = '250px'
     }
 
 }

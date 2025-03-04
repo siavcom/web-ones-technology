@@ -14,7 +14,7 @@ export class con_que extends COLUMN {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.textLabel = "Condición";
+    this.prop.ColumnTextLabel = "Condición";
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "";
     this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array

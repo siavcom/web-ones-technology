@@ -15,7 +15,7 @@ export class sis_sis extends COLUMN {
   constructor() {
     super();
 
-    this.textLabel = 'Sistema'
+    this.prop.ColumnTextLabel = 'Sistema'
     this.prop.BaseClass = "comboBox";
     this.prop.ControlSource = 'vi_cap_cometab.sis_sis'
     this.prop.Capture = true;

@@ -10,14 +10,14 @@
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" @keypress="keyPress($event)"
-      v-on:keyup.63="clickHelp()" @contextmenu="handler($event)" v-on:keyup.delete="Key = 127" v-on:keyup.13="Key = 13"
+      v-on:keyup.63="clickHelp()" @contextmenu.stop="handler($event)" v-on:keyup.delete="Key = 127" v-on:keyup.13="Key = 13"
       v-on:keyup.backspace="Key = 8" @input.self="onInput">
 
     <!-- @input.self="onInput"
         
 onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      @contextmenu="handler($event)" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
+      @contextmenu.stop="handler($event)" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
       v-on:keyup.backspace="key = 8"
 
 
@@ -37,7 +37,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
       :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick"
-      @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
+      @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()" @contextmenu.stop="handler($event)">
 
     <!--v-on:keyup.enter="clickReturn()" -->
 
@@ -48,7 +48,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
         v-model="Value" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
         @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"
-        @contextmenu="handler($event)"></textarea>
+        @contextmenu.stop="handler($event)"></textarea>
     </div>
 
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
@@ -57,7 +57,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly"
       :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus"
-      @focusout="lostFocus" v-on:keyup.63="clickHelp()" @contextmenu="handler($event)">
+      @focusout="lostFocus" v-on:keyup.63="clickHelp()" @contextmenu.stop="handler($event)">
 
     <!--v-on:keyup.enter="clickReturn()" -->
 
@@ -83,7 +83,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
           :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
           :disabled="comp.disabled || This.prop.Disabled ? true : false"
           :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus"
-          @contextmenu="handler($event)" :tabindex="prop.TabIndex">
+          @contextmenu.stop="handler($event)" :tabindex="prop.TabIndex">
 
       </div>
       <!--/details-->
@@ -95,14 +95,14 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
     <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style=Styles.inputStyle
       ref="Ref" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled || This.prop.ReadOnly"
       :tabindex="prop.TabIndex" v-model="checkValue" @click="clickCheckBox()" @focus="onFocus"
-      @keypress="keyPress($event)" @contextmenu="handler($event)">
+      @keypress="keyPress($event)" @contextmenu.stop="handler($event)">
 
     <!--text-->
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
       @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()"
-      @contextmenu="handler($event)" v-maska="maska" @maska="onMaska">
+      @contextmenu.stop="handler($event)" v-maska="maska" @maska="onMaska">
     <!--v-on:keyup.enter="clickReturn()" -->
 
     <!--/span-->

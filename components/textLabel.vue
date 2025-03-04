@@ -1,5 +1,5 @@
 <template>
-  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style">
+  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style" @contextmenu.stop="handler($event)">
 
     <div :id="Id + '_labelText'" class="etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
       :style="labelStyle">{{ prop.textLabel +
@@ -28,7 +28,7 @@
         :src="prop.Image" />
     </div>
 
-    <textLabel :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+    <textLabel :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="Registro" :prop="This[compMain].prop"
       :style="This[compMain].style" :position="This[compMain].position">
@@ -368,8 +368,8 @@ const renderComboBox = async () => {
       }
     }
   }
-  else
-    console.warn('TextLabel combobox Name=', This.prop.Name, ' No data in ', This.prop.ControlSource)
+  // else
+  //   console.warn('TextLabel combobox Name=', This.prop.Name, ' No data in ', This.prop.ControlSource)
 
   // recorremos todas los renglones si es solo un columna val_col.length si no 
   // toma el tamaño del arreglo solo de la primer columna
@@ -557,10 +557,22 @@ const init = async () => {
     Type.value = 'imgButton'
 
   await readCampo()
+
+  This.onMounted()
+
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
 }
+
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+  }
+  event.preventDefault();
+}
+
 
 init();
 </script>

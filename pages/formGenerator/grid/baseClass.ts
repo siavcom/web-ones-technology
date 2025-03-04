@@ -15,7 +15,7 @@ export class baseClass extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 2;
-    this.textLabel = "Tipo Componente ";
+    this.prop.ColumnTextLabel = "Tipo Componente ";
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "Tipo de componente de captura ";
     this.prop.Placeholder = "Tipo de componente de captura";

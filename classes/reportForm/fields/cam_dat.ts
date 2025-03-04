@@ -14,7 +14,7 @@ export class cam_dat extends COLUMN {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.textLabel = "Campo";
+    this.prop.ColumnTextLabel = "Campo";
     this.prop.BaseClass = "comboBox";
     this.prop.RowSourceType = 2; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.RowSource = "camposView.ref_dat,cam_dat";

@@ -18,7 +18,7 @@ export class help extends HELP {
   cod_nom: string
   constructor() {
     super()
-    this.textLabel = 'Buscador de consignatarios'
+    this.prop.ColumnTextLabel = 'Buscador de consignatarios'
     this.where = ''
     this.prop.RecordSource = 'man_comecon' // tabla donde buscar datos
     this.browse.prop.textLabel = 'Consigantarios'

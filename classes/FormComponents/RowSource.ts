@@ -12,13 +12,14 @@
 
 import { COMPONENT } from "@/classes/Component";
 
-export class propRowSource extends COMPONENT {
+export class RowSource extends COMPONENT {
 
   constructor() {
     super();
-    this.prop.textLabel = "this.prop.RowSource";
-    this.prop.Type = "text";
-    this.prop.BaseClass = "editText";
+    this.prop.Type = 'textarea'
+    this.prop.textLabel = "Row Source";
+    this.prop.ControlSource = "vi_cap_db_languages.rowsource";
+    this.prop.Capture = true
     this.inputStyle.width = "256px";
 
   }

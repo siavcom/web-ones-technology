@@ -17,19 +17,19 @@ export class lon_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 4
-        this.textLabel = 'Lon- gitud'
+        this.prop.ColumnTextLabel = 'Lon- gitud'
         this.prop.BaseClass = 'editText'
-        this.prop.Type='number'
-        this.prop.Decimals=0
+        this.prop.Type = 'number'
+        this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_for.lon_dat'
-        this.prop.ToolTipText ='Logitud'
+        this.prop.ToolTipText = 'Logitud'
         this.prop.Placeholder = "Longitud"
-        this.prop.ReadOnly=true
+        this.prop.ReadOnly = true
 
-        
+
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width='30px'
+        this.style.width = '30px'
     }
 
-  
+
 }

@@ -10,8 +10,6 @@
  * @export
  * @class COMPONENT
  */
-import type { MaybeRefOrGetter } from "vue";
-import Tab from "~/components/tab.vue";
 
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
@@ -39,6 +37,7 @@ export class COMPONENT {
   sw_init = false
   Help = false
   textLabel = ""
+  sw_translate = true
 
   prop = {
     autoLoad: false,
@@ -50,6 +49,7 @@ export class COMPONENT {
     Capture: false,
     ControlSource: "",
     ColumnCount: 1,
+    ColumnTextLabel: '',
     ColumnWidths: "75%,25%",
     Currency: "", //USD,EUR,MXN
     CurrencyDisplay: "code", //to use the ISO currency code.
@@ -121,7 +121,7 @@ export class COMPONENT {
     RecordSource: "",
     RefValue: null, // Valor por Referencia de otro componente
     Row: 0,
-    RowSource: {},
+    RowSource: '',
     RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
 
     ShowError: false,
@@ -322,6 +322,23 @@ export class COMPONENT {
       this.prop.Map = "ThisForm"; // this.constructor.name
       TabIndex = 1;  // inicializamos el TabIndex
       sw_component = false; // No es un componente del Form
+
+
+      const m = {
+        for_lan: this.Form.prop.Name,
+        lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+      }
+
+      if (Form.publicVar.lan_lan > '   ') {
+        await this.Sql.use('vi_cap_db_languages', m)
+
+
+        await this.Sql.use('vi_cap_db_messages', m)
+        this.Form.language = true
+        // this.Form.language = false
+      }
+      else
+        this.Form.publicVar.lan_lan = ''
     }
 
     //console.log('Init TabIndex', this.Name, TabIndex,this)
@@ -341,11 +358,12 @@ export class COMPONENT {
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
 
-      console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.ControlSource)
+      console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.Map)
 
       if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
-    }
 
+    }
+    this.translate()  // Traduce al lenguaje del usuario
     /* 26/Dic/2024
         // Si el componente esta en algun bloque  le quita su posiscion 
         if (this.block.length > 0) {
@@ -690,30 +708,78 @@ export class COMPONENT {
   */
 
   public async onMounted() {
-    console.log('afterMounted FormName=', this.Form.prop.Name, 'Map=', this.prop.Map)
-    if (this.Form.language)
-      this.translate()
+    this.prop.Status = "A";
+
   }
 
-  translate() {
+  async translate() {
 
-    this.getWord(ref(this.prop.textLabel))
-    this.getWord(ref(this.textLabel))
+    if (!this.Form)
+      return
 
-    if (this.prop.BaseClass.toLowerCase() == 'imgbutton')
-      this.getWord(ref(this.prop.Value))
+    const m = {
+      for_lan: this.Form.prop.Name,
+      lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+      map_lan: this.prop.Map,
+      message: '  ',
+      columntextlabel: this.prop.ColumnTextLabel,
+      textlabel: this.prop.textLabel,
+      rowsource: this.prop.RowSource,
+      placeholder: this.prop.Placeholder,
+      tooltiptext: this.prop.ToolTipText,
+      errormessage: this.prop.ErrorMessage
+    }
 
-    if (this.prop.BaseClass.toLowerCase() == 'combobox')
-      this.getWord(ref(this.prop.RowSource))
+    if (m.lan_lan.trim() == '')
+      return
+    /*
+        // Busca si hay tabla de traduccion
+        if (!this.Form.language && !this.Sql.View.vi_cap_db_languages &&
+          await this.Sql.use('vi_cap_db_languages', m))
+          this.Form.language = true
+        // this.Form.language = false
+        else
+          this.Form.publicVar.lan_lan = ''
+        */
+    if (!this.Form.language || !this.sw_translate || this.Sql.View.vi_cap_db_languages.recCount == 0)
+      return
 
+    const data = await this.Sql.localAlaSql(`select * from vi_cap_db_languages where trim(map_lan)='${this.prop.Map.trim()}' and trim(message)='' `)
+
+    if (data.length > 0 && data[0].recno > 0) {
+
+      const Value = data[0]
+
+
+      if (Value.columntextlabel.length > 0)
+        this.prop.ColumnTextLabel = Value.columntextlabel
+
+      if (Value.textlabel.length > 0)
+        this.prop.textLabel = Value.textlabel
+      if (Value.rowsource.length > 0)
+        this.prop.RowSource = eval(Value.rowsource)
+      if (Value.placeholder.length > 0)
+        this.prop.Placeholder = Value.placeholder.trim()
+      if (Value.tooltiptext.length > 0)
+        this.prop.ToolTipText = Value.tooltiptext
+      if (Value.errormessage.length > 0)
+        this.prop.ErrorMessage = Value.errormessage
+
+    }
+    /*
+     else {
+      console.log('Init vi_cap_db_languages', await this.Sql.localAlaSql(`select * from vi_cap_db_languages `), m)
+      this.Sql.appendBlank('vi_cap_db_languages', m)
+    }
+    */
+    this.sw_translate = false
+    return
   }
 
   async getWord(prop: any) {
+    if (!this.Form.languages || this.Sql.Views.vi_cap_db_languages.recCount == 0)
+      return
 
-    const data = await this.Sql.localAlaSq(`select tra_lan where map_lan=${this.prop.Map} and wor_lan=${prop.value} and lan_lan=${this.Form.language}`)
-    if (data[0].tra_lan && data[0].tra_lan.length > 0) {
-      prop.value = data[0].tra_lan
-    }
 
   }
   /////////////////////////////////////////////////////////////////////

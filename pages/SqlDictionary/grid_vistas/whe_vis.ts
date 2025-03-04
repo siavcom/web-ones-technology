@@ -15,7 +15,7 @@ export class whe_vis extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.textLabel = "SQL Server Where";
+    this.prop.ColumnTextLabel = "SQL Server Where";
     this.prop.BaseClass = "editText";
     this.prop.Type = "textArea";
     this.prop.ControlSource = "vi_cap_comevis.whe_vis";

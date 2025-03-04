@@ -14,7 +14,7 @@ export class num_vis extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Numero'
+        this.prop.ColumnTextLabel = 'Numero'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
         this.prop.Min = '0'

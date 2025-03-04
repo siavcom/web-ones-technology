@@ -17,16 +17,16 @@ export class des_ind extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 4
-        this.textLabel = 'Descripcion'
+        this.prop.ColumnTextLabel = 'Descripcion'
         this.prop.BaseClass = 'editText'
-        this.prop.Type='text'
+        this.prop.Type = 'text'
         this.prop.ControlSource = 'vi_cap_comeind.des_ind'
-        this.prop.ToolTipText ='Descripción del indice'
+        this.prop.ToolTipText = 'Descripción del indice'
         this.prop.Placeholder = "Descripción del indice"
 
-        
+
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width='300px'
+        this.style.width = '300px'
     }
 
 }

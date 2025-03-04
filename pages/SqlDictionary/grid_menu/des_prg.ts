@@ -17,7 +17,7 @@ export class des_prg extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 4
-        this.textLabel = 'Descripcion'
+        this.prop.ColumnTextLabel = 'Descripcion'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'text'
         this.prop.ControlSource = 'vi_cap_prg.des_prg'

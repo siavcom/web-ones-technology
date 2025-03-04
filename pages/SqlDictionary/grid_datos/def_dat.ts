@@ -17,7 +17,7 @@ export class def_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Valor default SQL Server'
+        this.prop.ColumnTextLabel = 'Valor default SQL Server'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comedat.def_dat'
         this.prop.ToolTipText = 'Valor default de la columna calculada SQL Server'

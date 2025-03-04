@@ -15,7 +15,7 @@ export class fil_vis extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 1;
-    this.textLabel = "Variables m={} que filtraran la vista";
+    this.prop.ColumnTextLabel = "Variables m={} que filtraran la vista";
     this.prop.BaseClass = "editText";
 
     this.prop.ControlSource = "vi_cap_comevis.fil_vis";

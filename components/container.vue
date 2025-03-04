@@ -1,12 +1,13 @@
 <template>
 
   <!--div id="mask" class="mask" v-if="This.prop.Visible"-->
-  <div :id="Id + 'container'" class="container" v-if="This.prop.Visible" :style="divStyle">
+  <div :id="Id + 'container'" class="container" v-if="This.prop.Visible" :style="divStyle"
+    @contextmenu.stop="handler($event)">
 
     <!--section class="mainContainer"-->
 
     <div :id="Id + 'header'" class="header">
-      <slot name="header">{{ This.textLabel }}</slot>
+      <slot name="header">{{ this.prop.ColumnTextLabel }}</slot>
     </div>
 
     <div :id="Id + 'body'" class="body" style="width: 99%">
@@ -14,7 +15,7 @@
         <slot name="componentes">
           <div :id="Id + '_componentes'" v-if="Divi" v-for="(Ver, key) in Divi" :key="Ver"
             :style="{ 'display': 'inline-flex' }">
-            <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for=" (Ele) in Ver" :key="Ele"
+            <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for="(Ele) in Ver" :key="Ele"
               :style="{ 'padding-bottom': '2px', 'width': '100%' }">
               <component :id="Id + '_Ver_componentes_' + key + Ele.prop.Name" :is="impComponent(Ele.prop.BaseClass)"
                 v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
@@ -30,7 +31,7 @@
           <div :id="'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
             <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
               <label :style="block.titleStyle" v-if="block.prop.Visible && block.title">{{ block.title }}</label>
-              <div v-for=" (component, key) in block.component" :key="key"
+              <div v-for="(component, key) in block.component" :key="key"
                 :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
                 <!--v-bind:Component="ref(Ele)"-->
                 <component :id="'modal_componentes_' + key + component.prop.Name"
@@ -207,5 +208,13 @@ console.log('Divi ele=>', element.value)
 
 
 //init();
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+
+  }
+  event.preventDefault();
+}
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

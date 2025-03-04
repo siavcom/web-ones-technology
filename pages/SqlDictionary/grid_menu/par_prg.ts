@@ -16,13 +16,13 @@ export class par_prg extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Parametros a pasar'
+        this.prop.ColumnTextLabel = 'Parametros a pasar'
         this.prop.BaseClass = 'editText'
-        
+
         this.prop.ControlSource = 'vi_cap_prg.par_prg'
-        this.prop.ToolTipText ='Parametros a pasar al correr el programa'
+        this.prop.ToolTipText = 'Parametros a pasar al correr el programa'
         this.prop.Placeholder = ""
-        this.style.width='100px'
+        this.style.width = '100px'
     }
 
 }

@@ -17,16 +17,16 @@ export class cam_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 2
-        this.textLabel = 'Campo'
+        this.prop.ColumnTextLabel = 'Campo'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_for.cam_dat'
         this.prop.Placeholder = "Nombre del campo"
-        this.prop.ToolTipText ='Nombre del campo'
-        this.prop.ReadOnly= true
+        this.prop.ToolTipText = 'Nombre del campo'
+        this.prop.ReadOnly = true
         //this.style.flexBasis = '10%' /* width/height  - initial value: auto */
-        this.style.width='150px'
-        
+        this.style.width = '150px'
+
     }
-   
+
 
 }

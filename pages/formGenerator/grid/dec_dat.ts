@@ -17,12 +17,12 @@ export class dec_dat extends COLUMN {
   constructor() {
     super()
     this.prop.Order = 3
-    this.textLabel = 'Deci- males'
+    this.prop.ColumnTextLabel = 'Deci- males'
     this.prop.BaseClass = 'editText'
     this.prop.Type = 'number'
     this.prop.Decimals = 0
     this.prop.ControlSource = 'vi_cap_for.dec_dat'
-    this.prop.ReadOnly=true
+    this.prop.ReadOnly = true
 
     this.prop.Placeholder = "Decimales de precisión"
     this.prop.ToolTipText = "Decimales de precisión"
@@ -30,5 +30,5 @@ export class dec_dat extends COLUMN {
     this.style.width = '20px'
   }
 
- 
+
 }

@@ -15,7 +15,7 @@ export class ord_vis extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 1;
-    this.textLabel = "Select Order ";
+    this.prop.ColumnTextLabel = "Select Order ";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comevis.ord_vis";
     this.prop.ToolTipText = "Variables que dan el orden de la vista";

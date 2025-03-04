@@ -18,7 +18,7 @@ export class vac_vis extends COLUMN {
   constructor() {
     super()
     this.prop.Order = 1
-    this.textLabel = 'Indice de busqueda/actualización'
+    this.prop.ColumnTextLabel = 'Indice de busqueda/actualización'
     this.prop.BaseClass = 'editText'
 
     this.prop.ControlSource = 'vi_cap_comevis.vac_vis'

@@ -10,7 +10,8 @@
 
   </div>
 
-  <div :id="Id + '_div_main'" class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="divStyle">
+  <div :id="Id + '_div_main'" class="diviBrowse" v-if="prop.Visible && This.prop.RowSource > ' '" :style="divStyle"
+    @contextmenu.stop="handler($event)">
     <div :id="Id + '_wraper'" class="wraper" style="width:100%;height:100%">
       <table-lite :id="Id + '_table_lite'" :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
         :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
@@ -606,7 +607,13 @@ const isFinished = () => {
 };
 
 
-
+const handler = (event) => {
+  if (event.which === 3) {
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
+  }
+  event.preventDefault();
+}
 
 ////////// Killo Soft ////////// 
 

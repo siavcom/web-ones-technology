@@ -15,21 +15,21 @@ export class con_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Orden de captura'
+        this.prop.ColumnTextLabel = 'Orden de captura'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'number'
         this.prop.Min = '0'
         this.prop.Max = '256'
-        this.prop.Decimals=1
+        this.prop.Decimals = 1
         this.prop.ControlSource = 'vi_cap_for.con_dat'
         this.prop.Placeholder = "Orden de captura "
         this.prop.ToolTipText = 'Orden de captura'
-        this.prop.ReadOnly=false
-        this.style.width= '35px'
-     //   this.style.flexBasis = '3px' /* width/height  - initial value: auto */
-  //      this.prop.Autofocus=true
-  
+        this.prop.ReadOnly = false
+        this.style.width = '35px'
+        //   this.style.flexBasis = '3px' /* width/height  - initial value: auto */
+        //      this.prop.Autofocus=true
+
     }
 
- 
+
 }

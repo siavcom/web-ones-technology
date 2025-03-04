@@ -15,7 +15,7 @@ export class tip_dat extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 2;
-    this.textLabel = "Tipo de dato";
+    this.prop.ColumnTextLabel = "Tipo de dato";
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "Tipo de dato";
     this.prop.Placeholder = "Tipo de dato";

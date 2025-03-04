@@ -29,6 +29,7 @@ export class COLUMN extends COMPONENT {
     this.style.height = "auto"; //99%";
     this.inputStyle.width = "96%";
     this.inputStyle.height = "auto";  // auto para que en los componentes como json,
+
     // se ajusten a lo  alto
 
     // Segun Vfp

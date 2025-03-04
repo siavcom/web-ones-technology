@@ -18,12 +18,12 @@ export class ico_prg extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Icono '
+        this.prop.ColumnTextLabel = 'Icono '
         this.prop.BaseClass = 'editText'
-        
+
         this.prop.ControlSource = 'vi_cap_prg.ico_prg'
-        this.prop.ToolTipText ='Icono a aparecer en el menú'
-        this.style.width='350px'
+        this.prop.ToolTipText = 'Icono a aparecer en el menú'
+        this.style.width = '350px'
     }
 
 

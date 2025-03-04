@@ -17,15 +17,15 @@ export class des_vis extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 4
-        this.textLabel = 'Descripcion'
+        this.prop.ColumnTextLabel = 'Descripcion'
         this.prop.BaseClass = 'editText'
-        this.prop.Type='text'
+        this.prop.Type = 'text'
         this.prop.ControlSource = 'vi_cap_comevis.des_vis'
-        this.prop.ToolTipText ='Descripción de la vista'
+        this.prop.ToolTipText = 'Descripción de la vista'
         this.prop.Placeholder = "Descripción de la vista"
-       
+
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width='200px'
+        this.style.width = '200px'
     }
 
 }

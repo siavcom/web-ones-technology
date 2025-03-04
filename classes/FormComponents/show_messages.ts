@@ -1,21 +1,19 @@
 //////////////////////////////////////////////
 // BaseClass : component
-// Class : bt_accept
-// Description : Acepta
+// Class : bt_messages
+// Description : Muestra traduccion de mensajes
 // Author : El Fer Blocks
-// Creation : 2024-04-16
-// Update Date  :
+// Update Date  : 2025-03-03
 /////////////////////////////////////////////
-///////////////////////////////////////
-// base class
-///////////////////////////////////////
+
 import { COMPONENT } from "@/classes/Component";
-export class bt_accept extends COMPONENT {
+export class show_messages extends COMPONENT {
   constructor() {
     super();
     // this.prop.Value = "Close";
     this.prop.Capture = false;
     this.prop.BaseClass = "imgButton";
+    this.prop.Value = 'Show Messages'
     this.prop.Image = "/Iconos/svg/accept.svg"; //bx-calendar.svg"
     this.style.width = "35px";
     this.style.float = "right"
@@ -24,6 +22,13 @@ export class bt_accept extends COMPONENT {
 
   async click() {
 
-    this.Parent.close()
+    const m = {
+      for_lan: this.Form.prop.Name,
+      lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+    }
+    this.Sql.use('vi_cap_db_messages', m)
+    this.Parent.gridMessages.prop.RecordSource = 'vi_cap_db_messages'
+    this.Parent.gridMessages.prop.Visible = true
+
   }
 }

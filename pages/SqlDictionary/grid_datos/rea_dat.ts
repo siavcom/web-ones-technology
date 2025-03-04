@@ -17,7 +17,7 @@ export class rea_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'Lectura'
+        this.prop.ColumnTextLabel = 'Lectura'
         this.prop.textLabel = 'Si'
         this.prop.Type = 'checkBox'
         this.prop.ControlSource = 'vi_cap_comedat.rea_dat'

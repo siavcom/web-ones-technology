@@ -17,15 +17,15 @@ export class num_prg extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Orden '
+        this.prop.ColumnTextLabel = 'Orden '
         this.prop.BaseClass = 'editText'
-        this.prop.Type='number'
-        this.prop.Decimals=0
-        
+        this.prop.Type = 'number'
+        this.prop.Decimals = 0
+
         this.prop.ControlSource = 'vi_cap_prg.num_prg'
-        this.prop.ToolTipText ='Orden del programa dentro del menú'
+        this.prop.ToolTipText = 'Orden del programa dentro del menú'
         this.prop.Placeholder = "Orden del programa"
-        this.style.width='30px'
+        this.style.width = '30px'
     }
 
 

@@ -17,7 +17,7 @@ export class sis_sis extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 1
-        this.textLabel = 'Sistema '
+        this.prop.ColumnTextLabel = 'Sistema '
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_prg.sis_sis'
         this.prop.ToolTipText = 'Nemonico a utilizar en el submenú'

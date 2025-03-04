@@ -17,11 +17,11 @@ export class ref_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.textLabel = 'textLabel'
+        this.prop.ColumnTextLabel = 'textLabel'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_for.ref_dat'
-        this.prop.ReadOnly=false
+        this.prop.ReadOnly = false
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-      
+
     }
 }

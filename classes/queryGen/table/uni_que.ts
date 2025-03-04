@@ -14,7 +14,7 @@ export class uni_que extends COLUMN {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.textLabel = "Union Logica";
+    this.prop.ColumnTextLabel = "Union Logica";
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "";
     this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array

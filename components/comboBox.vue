@@ -3,7 +3,7 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
   <span :id="Id + '_div_comboBox'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible">
+    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
     <!--Etiqueta del componente -->
     <!--div class="mensajes" v-show="This.prop.Visible"-->
 
@@ -47,7 +47,7 @@
     <div :id="Id + '_selectOne'" v-else class="comboBox text" ref="RefCombo" :style='comboStyle'>
       <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled" :readonly="prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false; when()" @focusout="emitValue()" @contextmenu="handler($event)" />
+        @focus.prevent="toggle = false; when()" @focusout="emitValue()" />
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
@@ -84,7 +84,7 @@
     <span class="errorText" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
     <!-- v-bind:Component="ref(This[compMain])" 
      v-model:Status="This[compMain].prop.Status"-->
-    <component :id="Id + '_component_' + compMain" v-for="( compMain ) in This.main " :key="compMain"
+    <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
       v-bind:position="This[compMain].position" @click.capture="when(true)">
@@ -1479,7 +1479,7 @@ onMounted(async () => {
   //  console.log('2) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
   //    This.Form.eventos.push(This.prop.Map + '.onMounted()')
-  await This.onMounted()
+  This.onMounted()
 
   await This.recnoChange()
 
@@ -1567,7 +1567,8 @@ window.addEventListener('mousedown', myClick);
  */
 const handler = (event) => {
   if (event.which === 3) {
-    console.log("==================>>>>>>Right mouse down ", This.prop.Map);
+    if (This.Form)
+      This.Form.compContainer.open(ref(This))
   }
   event.preventDefault();
 }
