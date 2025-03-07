@@ -9,10 +9,11 @@ export default defineNuxtConfig({
     port: 3000
   },
   // Correr y desarrollar con bun 
-  nitro: {
-    preset: 'bun',
-  },
-
+  /*
+   nitro: {
+     preset: 'bun',
+   },
+ */
   ssr: true,
 
   // target: 'static',
@@ -57,9 +58,9 @@ export default defineNuxtConfig({
       preserveSymlinks: true,
 
     },
-    server: {
-      fs: { // Pewrmite el acceso a los archivos del servidor
-        allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
+    server: { // Pewrmite el acceso a los archivos del servidor
+      fs: {
+        // allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
       },
     },
   },
