@@ -3,7 +3,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -113,7 +113,7 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1132,20 +1132,19 @@ const nextElement = async () => {  //clickReturn
 
   if (This.Parent != null)
     if (This.Parent)
-      for (const element of This.Parent) { //.main
+      console.log('EditText nextElement Name', This.prop.Name, 'This.Parent=', This.Parent)
+  for (const element of This.Parent) { //.main
+    if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
+      !This.Parent[element].prop.Disabled) {
+      const Tab = This.Parent[element].prop.TabIndex
 
-
-        if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
-          !This.Parent[element].prop.Disabled) {
-          const Tab = This.Parent[element].prop.TabIndex
-
-          if (Tab > TabIndex && Tab < lastIndex) {
-            lastIndex = Tab
-            nextFocus = This.Parent[element].prop.htmlId
-            break
-          }
-        }
+      if (Tab > TabIndex && Tab < lastIndex) {
+        lastIndex = Tab
+        nextFocus = This.Parent[element].prop.htmlId
+        break
       }
+    }
+  }
 
   if (nextFocus == '')
     return
