@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { NuxtImg } from '#build/components';
+//import { NuxtImg } from '#build/components';
 
 ///////////////////////////////////////
 // Emits
