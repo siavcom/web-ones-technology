@@ -10,12 +10,12 @@
 ///////////////////////////////////////
 import { COLUMN } from "@/classes/Column";
 
-export class messageText extends COLUMN {
+export class message extends COLUMN {
 
   constructor() {
     super();
-    this.prop.ColumnTextLabel = "Message Text";
-    this.prop.ControlSource = "vi_cap_db_messages.messagetext";
+    this.prop.ColumnTextLabel = "Message";
+    this.prop.ControlSource = "vi_cap_db_messages.message";
     this.style.width = "512px";
   }
 

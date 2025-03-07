@@ -18,7 +18,7 @@ export class tpr_prg extends COMPONENT {
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "Tipo de programa";
     this.prop.RowSource = [
-      ["Mantenimiento", "Reporte", "Proceso", "Menú principal"],
+      ["Mantenimientos", "Reportes", "Procesos", "Menú principal"],
       ["M", "R", "P", "S"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
@@ -36,11 +36,14 @@ export class tpr_prg extends COMPONENT {
   }
 
 
-  async when() {
+  override async when() {
     this.Form.sis_sis.prop.Visible = false;
     this.Form.nom_tab.prop.Visible = false;
     this.Form.grid_menu.prop.Visible = false;
-    this.Form.bt_aceptar.prop.Value = 'Accept';
+
     return true;
+  }
+  override async afterMounted(): Promise<void> {
+    this.Form.bt_aceptar.prop.Value = 'Accept';
   }
 }

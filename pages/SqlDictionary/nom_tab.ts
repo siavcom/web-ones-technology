@@ -55,5 +55,8 @@ export class nom_tab extends COMPONENT {
 
     return true;
   }
+  override async afterMounted(): Promise<void> {
+    this.Form.bt_aceptar.prop.Value = 'Accept';
+  }
 }
 

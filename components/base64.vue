@@ -1,7 +1,7 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
-    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
+    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
 
     <img v-if="Value.length > 0 && This.inputStyle.accept != 'application/pdf'" :id="Id + '_img'" class="img"
       :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
@@ -687,8 +687,14 @@ watch(
 );
 
 
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
   }

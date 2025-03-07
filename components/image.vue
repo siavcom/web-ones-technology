@@ -1,7 +1,7 @@
 <template>
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
-    <img v-if="prop.Type = 'QR'" :id="Id + '_QR'" class="mt-6 mb-2 rounded border" :src="Image.value"
+    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+    <img v-if="prop.Type = 'QR'" :id="Id + '_QR'" class=" mt-6 mb-2 rounded border" :src="Image.value"
       :alt="prop.textLabel" />
     <img v-else :id="Id + '_img'" class="mt-6 mb-2 rounded border" :src="Value" :alt="prop.textLabel" />
   </span>
@@ -157,7 +157,7 @@ onMounted(async () => {
     }
 
   };
-  This.onMounted()
+  This.afterMounted()
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
 })
 /*
@@ -166,8 +166,14 @@ onMounted(() => {
 });
 */
 
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 

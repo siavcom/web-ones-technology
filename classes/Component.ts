@@ -103,6 +103,7 @@ export class COMPONENT {
     MaxLength: 254,
     // Datos numericos
     Max: "999999999",
+    Messages: [[]],   // Mensaje a emitir en este componente
     Min: "0",
     MultiSelect: false,
 
@@ -280,7 +281,7 @@ export class COMPONENT {
    * 
    * @returns {Promise<void>}
    */
-  asignaRecno() {
+  public asignaRecno() {
     for (const comp in this) {
       const Comp = this[comp]
 
@@ -323,22 +324,21 @@ export class COMPONENT {
       TabIndex = 1;  // inicializamos el TabIndex
       sw_component = false; // No es un componente del Form
 
+      if (this.Form.prop) {
+        const m = {
+          for_lan: this.Form.prop.Name,
+          lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+        }
 
-      const m = {
-        for_lan: this.Form.prop.Name,
-        lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+        if (Form.publicVar.lan_lan > '   ') {
+          await this.Sql.use('vi_cap_db_languages', m)
+          await this.Sql.use('vi_cap_db_messages', m)
+          this.Form.language = true
+          // this.Form.language = false
+        }
+        else
+          this.Form.publicVar.lan_lan = ''
       }
-
-      if (Form.publicVar.lan_lan > '   ') {
-        await this.Sql.use('vi_cap_db_languages', m)
-
-
-        await this.Sql.use('vi_cap_db_messages', m)
-        this.Form.language = true
-        // this.Form.language = false
-      }
-      else
-        this.Form.publicVar.lan_lan = ''
     }
 
     //console.log('Init TabIndex', this.Name, TabIndex,this)
@@ -707,21 +707,24 @@ export class COMPONENT {
    * 
   */
 
-  public async onMounted() {
+  public async afterMounted() {
     this.prop.Status = "A";
 
   }
 
   async translate() {
 
-    if (!this.Form)
+    if (!this.Form || !this.Form.publicVar)
       return
+
+    console.log('2) this.prop.Map=', this.prop.Map)
 
     const m = {
       for_lan: this.Form.prop.Name,
       lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
       map_lan: this.prop.Map,
       message: '  ',
+      messages: this.prop.Messages,
       columntextlabel: this.prop.ColumnTextLabel,
       textlabel: this.prop.textLabel,
       rowsource: this.prop.RowSource,
@@ -741,6 +744,8 @@ export class COMPONENT {
         else
           this.Form.publicVar.lan_lan = ''
         */
+
+
     if (!this.Form.language || !this.sw_translate || this.Sql.View.vi_cap_db_languages.recCount == 0)
       return
 
@@ -756,12 +761,31 @@ export class COMPONENT {
 
       if (Value.textlabel.length > 0)
         this.prop.textLabel = Value.textlabel
-      if (Value.rowsource.length > 0)
-        this.prop.RowSource = eval(Value.rowsource)
+
+      // checar aqui
+      if (Value.rowsource.trim().length > 0) {
+        //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
+        if (this.prop.RowSourceType == 5) {
+
+          this.prop.RowSource = eval(Value.rowsource)
+        } else
+          this.prop.RowSource = Value.rowsource
+      }
+
+      if (Value.messages != null && Value.messages.trim().length > 0) {
+
+        const lineBreak = char(13)
+        Value.messages = Value.messages.replaceAll(lineBreak, '')
+
+
+        this.prop.Messages = eval(Value.messages)
+      }
       if (Value.placeholder.length > 0)
         this.prop.Placeholder = Value.placeholder.trim()
+
       if (Value.tooltiptext.length > 0)
         this.prop.ToolTipText = Value.tooltiptext
+
       if (Value.errormessage.length > 0)
         this.prop.ErrorMessage = Value.errormessage
 

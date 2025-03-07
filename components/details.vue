@@ -13,7 +13,7 @@
 -->
 <template>
   <!--transition name='Details'-->
-  <div v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
+  <div v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <div class='details' :style="style">
       <details :id="Id + '_details'" class='detailsOpen' @toggle="toggle" :open='openDetail'>
 
@@ -522,8 +522,14 @@ const init = async () => {
 
 init() // Ejecuta el init
 
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 

@@ -20,7 +20,7 @@ export class PlaceHolder extends COMPONENT {
     this.prop.ControlSource = "vi_cap_db_languages.placeholder";
     this.prop.Capture = true
     this.prop.BaseClass = "editText";
-    this.inputStyle.width = "256px";
+    this.inputStyle.width = "496px";
   }
 
 

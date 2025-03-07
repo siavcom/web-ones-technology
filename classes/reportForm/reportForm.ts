@@ -59,7 +59,7 @@ export class reportForm extends FORM {
   for_ori: string = ""; // forma JASPER original
 
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
-  tit_rep = ' '   // Titulo del reporte
+
   constructor() {
     super();
     this.mon_rep.prop.TabIndex = 101;
@@ -459,8 +459,11 @@ export class reportForm extends FORM {
       data[component] = Var[component];
       //console.log("bt_json component.value= ", data[component]);
     }
-    data['tit_rep'] = this.tit_rep
     //console.log("bt_json obtData= ", data,this.Form.publicVar);
+    
+    data['tit_rep'] = this.tit_rep // Aumenta la propiedad this.tit_rep
+    this.data = data;
+    data['con_rep'] = this.con_rep // Aumenta la propiedad this.con_rep
     this.data = data;
     return data;
   }

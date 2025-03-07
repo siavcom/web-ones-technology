@@ -93,7 +93,7 @@ export const right = async (texto: string, len: number) => {
  * @param {number} ascci - ASCCI number
  * @returns {string} Character corresponding to the number
  */
-export const char = async (ascci: number) => {
+export const char = (ascci: number) => {
   return String.fromCharCode(ascci);
 };
 

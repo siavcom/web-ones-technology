@@ -18,8 +18,6 @@ import { sep_fam } from "./sep_fam";
 import { num_fam } from "./num_fam";
 import { des_isu } from "./des_isu";
 import { has_isu } from "./has_isu";
-import { tit_rep } from "./tit_rep";
-
 
 // Generamos la clase en memoria 
 export class reportInv extends reportForm {
@@ -34,9 +32,7 @@ export class reportInv extends reportForm {
   public num_fam = new num_fam()
   public op_des_fam = new op_des_fam()
   public op_has_fam = new op_has_fam()
-  public tit_rep = new tit_rep()
-
-
+  
   constructor() {
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
@@ -54,9 +50,6 @@ export class reportInv extends reportForm {
     this.num_fam.prop.Value  = 1
     this.op_des_fam.prop.TabIndex = 91
     this.op_has_fam.prop.TabIndex = 92
-    this.tit_rep.prop.TabIndex=99;
-    this.tit_rep.prop.Disabled=false;
-    this.tit_rep.prop.Visible=false;
     //this.has_fam.prop.Type = "string"
     //this.has_fam.prop.MaxLength=10
     //this.has_fam.prop.Value = " "

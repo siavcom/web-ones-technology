@@ -1,6 +1,6 @@
 <template>
   <div :id="Id + 'pageFrame'" class="wrapper" v-if="This.prop.Visible" :style="This.style"
-    @contextmenu.stop="handler($event)">
+    @click.middle.stop="middleClick()">
     <button class='change__style' @click='changeStyle()'>Change Style</button>
     <tabs :mode="This.prop.Style">
 
@@ -252,8 +252,14 @@ console.log('Divi ele=>', element.value)
 */
 
 //init();
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 

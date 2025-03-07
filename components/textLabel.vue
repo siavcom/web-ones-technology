@@ -1,7 +1,7 @@
 <template>
-  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style" @contextmenu.stop="handler($event)">
+  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
 
-    <div :id="Id + '_labelText'" class="etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
+    <div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
       :style="labelStyle">{{ prop.textLabel +
         " " }}</div>
 
@@ -558,15 +558,21 @@ const init = async () => {
 
   await readCampo()
 
-  This.onMounted()
+  This.afterMounted()
 
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
 }
 
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
   }

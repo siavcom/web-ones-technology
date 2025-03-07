@@ -3,13 +3,13 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
   <span :id="Id + '_div_comboBox'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
+    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!--Etiqueta del componente -->
-    <!--div class="mensajes" v-show="This.prop.Visible"-->
+    <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -1478,8 +1478,8 @@ onMounted(async () => {
 
   //  console.log('2) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
-  //    This.Form.eventos.push(This.prop.Map + '.onMounted()')
-  This.onMounted()
+  //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
+  This.afterMounted()
 
   await This.recnoChange()
 
@@ -1565,8 +1565,14 @@ window.addEventListener('mousedown', myClick);
  *
  * @param {MouseEvent} event - the event
  */
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
   }

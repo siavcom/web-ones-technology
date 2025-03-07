@@ -8,11 +8,13 @@
 
 import { GRID } from '@/classes/Grid'
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
+import { message } from './message'
 import { messageText } from './messageText'
 import { titleBarText } from './titleBarText'
 
 export class gridMessages extends GRID {
 
+  public message = new message()
   public messageText = new messageText()
   public titleBarText = new titleBarText()
 
@@ -22,6 +24,9 @@ export class gridMessages extends GRID {
     super()
     this.Name = 'gridMessages'
     this.prop.textLabel = 'Mensajes de la forma'
+    this.prop.Visible = false
+    this.prop.ReadOnly = false
+    this.prop.autoLoad = false
     this.prop.Visible = true
     //  this.prop.autoLoad = true
   }

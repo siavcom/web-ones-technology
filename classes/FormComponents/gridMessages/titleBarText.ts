@@ -15,10 +15,9 @@ export class titleBarText extends COLUMN {
   constructor() {
     super();
     this.prop.Order = 3;
-    this.prop.ColumnTextLabel = "Message Text";
-    this.prop.BaseClass = "editText";
+    this.prop.ColumnTextLabel = "Title";
     this.prop.ControlSource = "vi_cap_db_messages.titlebartext";
-    this.style.width = "256px";
+    this.style.width = "512px";
   }
 
 }

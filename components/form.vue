@@ -23,7 +23,7 @@
     </div>
 
   </div>
-  <div v-else @contextmenu.stop="handler($event)">
+  <div v-else @click.middle.stop="middleClick()">
     <transition name='Mainform'>
 
       <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
@@ -483,7 +483,7 @@ onBeforeMount(async () => {
  */
   console.log('ThisForm onMounted  ', ThisForm)
   loading.value = false
-  ThisForm.onMounted()
+  ThisForm.afterMounted()
 
 })
 
@@ -492,8 +492,16 @@ onUnmounted(() => {
 })
 
 
+const middleClick = () => {
+  console.log('middleClick')
+
+  ThisForm.compContainer.open(ref(ThisForm))
+}
+
 const handler = (event) => {
-  if (event.which === 3)
+  console.log('2) editText handler event.which=', event.which)
+
+  if (event.which === 1)
     ThisForm.compContainer.open(ref(ThisForm))
   event.preventDefault();
 }

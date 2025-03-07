@@ -32,13 +32,10 @@ export class grid_tablas extends GRID {
     super()
     this.Name = 'grid_tablas'
     this.prop.textLabel = 'Tablas del SQL Server'
-
     this.prop.Visible = false
     this.prop.ReadOnly = false
     this.prop.autoLoad = false
     this.prop.ColumnCount = 3
-    //this.nom_tab.prop.First=true // primer elemento
-    //this.vis_tab.prop.Last= true // ultimo elemento
   }
 
 

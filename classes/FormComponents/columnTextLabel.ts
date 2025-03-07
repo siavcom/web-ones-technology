@@ -19,11 +19,7 @@ export class ColumnTextLabel extends COMPONENT {
     this.prop.textLabel = "Column text label";
     this.prop.ControlSource = "vi_cap_db_languages.columntextlabel";
     this.prop.Capture = true
-
     this.prop.BaseClass = "editText";
-    this.inputStyle.width = "256px";
-
+    this.inputStyle.width = "496px";
   }
-
-
 }

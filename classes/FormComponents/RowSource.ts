@@ -20,8 +20,7 @@ export class RowSource extends COMPONENT {
     this.prop.textLabel = "Row Source";
     this.prop.ControlSource = "vi_cap_db_languages.rowsource";
     this.prop.Capture = true
-    this.inputStyle.width = "256px";
-
+    this.inputStyle.width = "496px";
   }
 
 }

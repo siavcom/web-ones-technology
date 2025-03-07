@@ -16,7 +16,7 @@ export class bt_obtener extends COMPONENT {
     super();
     this.Index = 1;
     this.prop.BaseClass = "imgButton";
-    this.prop.Value = "Obtener datos";
+    this.prop.textLabel = "Obtener datos";
     this.prop.Capture = false;
     this.prop.Position = "footer";
     this.prop.Image = "/Iconos/svg/report-document.svg"; //print-color3.svg";

@@ -1,8 +1,8 @@
 <template>
   <div :id="Id + '_main_divi_grid'" class="divi"
     v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Sql.View[prop.RecordSource]" :style="divStyle"
-    ref="Ref" @contextmenu.stop="handler($event)">
-    <label :id="Id + '_lable'" class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
+    ref="Ref" @click.middle.stop="middleClick()">
+    <label :id="Id + '_lable'" class=" error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
@@ -994,8 +994,14 @@ const init = async () => {
 init(); // Ejecuta el init
 
 
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
   }

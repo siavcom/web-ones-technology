@@ -17,16 +17,37 @@ export class bt_aceptar extends COMPONENT {
 
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
-
-    this.prop.Value = "Accept";
+    this.prop.textLabel = "Accept";
     this.prop.Capture = false;
     this.prop.Visible = false;
     this.prop.Image = "/Iconos/svg/accept.svg";
     this.style.width = "64px";
+    this.prop.Messages = [
+      ["Actualizar en SQL-Server la tabla:", ""], // 0
+      ["Error en SQL-Server al generar la tabla :", "SQL-Server ERROR"], // 1
+      ["Error en SQL-Server al generar la vista :", "SQL-Server ERROR"], // 2
+      ["Quieres grabar la definición de la tabla SQL-Server "], // 3
+      ["Quieres grabar la definición de indices SQL-Server "], // 4
+      ["Quieres grabar la definición de las tablas SQL-Server"], // 5
+      ["Quieres grabar la definición de las vistas SQL-Server"], // 6
+      ["Quieres grabar el MENU del sistema"], // 7
+      ["Diccionario actualizado"], // 8
+      ["No se grabaron los datos"], // 9
+      ["Definicion de campos SQL-Server de la tabla "], // 10
+      ["Definicion de indices SQL-Server de la tabla "], // 11
+      ["Definicion de vistas SQL-Server de la tabla "], // 12
+      ["Menú Principal"], // 13
+      ["Menú de Mantenimiento"], // 14
+      ["Menú de Reportes"], // 15
+      ["Menú de Procesos"] // 16
+    ];
+
+    console.log('bt_aceptar constructor Messages', this.prop.Messages)
+
 
   } // Fin constructor
 
-  async click() {
+  override async click() {
     const m = { nom_tab: this.Form.nom_tab.prop.Value };
 
     if (!this.prop.Visible) {
@@ -122,24 +143,19 @@ export class bt_aceptar extends COMPONENT {
         if (
           //dataUpdate &&
           (await MessageBox(
-            "Actualizar en Servidor SQL-Server la tabla:" +
-            this.Form.nom_tab.prop.Value,
-            4,
-            ""
+            //  "Actualizar en Servidor SQL-Server la tabla:" +this.Form.nom_tab.prop.Value,4,""
+            this.prop.Messages[0][0] + this.Form.nom_tab.prop.Value, 4,
           )) == 6
         ) {
           if (!(await this.Form.db.genTabla(this.Form.nom_tab.prop.Value))) {
             MessageBox(
-              "Error al generar la tabla :" +
-              this.Form.nom_tab.prop.Value +
-              " en el Servidor SQL",
-              16,
-              "SQL ERROR"
+              //"Error al generar la tabla :" + this.Form.nom_tab.prop.Value + " en el Servidor SQL", 16, "SQL ERROR"
+              this.prop.Messages[1][0] + this.Form.nom_tab.prop.Value, 16, this.prop.Messages[1][1]
             );
 
             console.error(
-              "Error al generar/regenerar en Sql Server la tabla:" +
-              this.Form.nom_tab.prop.Value
+              //"Error al generar/regenerar en Sql Server la tabla:" +this.Form.nom_tab.prop.Value
+              this.prop.Messages[2][0] + this.Form.nom_tab.prop.Value
             );
             this.prop.Visible = true;
             return false;
@@ -186,9 +202,10 @@ export class bt_aceptar extends COMPONENT {
           }
 
           this.Form.grid_datos.prop.Visible = true;
-          this.prop.Value = "Table update";
+          this.prop.textLabel = "Table update";
           this.Form.grid_datos.prop.textLabel =
-            "Definicion de campos SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
+            this.prop.Messages[10][0] + this.Form.nom_tab.prop.Value;
+          // "Definicion de campos SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
           this.Form.bt_gen_model.prop.Visible = true;
 
           // Indices SQL
@@ -196,7 +213,8 @@ export class bt_aceptar extends COMPONENT {
           await this.Form.db.use("vi_cap_comeind", m);
           this.Form.grid_indices.RecordSource = 'vi_cap_comeind';
           this.Form.grid_indices.prop.textLabel =
-            "Definicion de indices SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
+            this.prop.Messages[11][0] + this.Form.nom_tab.prop.Value;
+          // "Definicion de indices SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comeind")) == 0) {
             await this.Form.grid_indices.appendRow();
@@ -211,7 +229,8 @@ export class bt_aceptar extends COMPONENT {
           await this.Form.db.use("vi_cap_comevis", m);
           this.Form.grid_vistas.RecordSource = 'vi_cap_comevis';
           this.Form.grid_vistas.prop.textLabel =
-            "Definicion de vistas SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
+            this.prop.Messages[12][0] + this.Form.nom_tab.prop.Value;
+          // "Definicion de vistas SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comevis")) == 0) {
             const m = {
@@ -305,16 +324,16 @@ export class bt_aceptar extends COMPONENT {
 
       m.sis_sis = "    ";
       m.tpr_prg = this.Form.tpr_prg.prop.Value;
-      this.Form.grid_menu.prop.textLabel = "Menú Principal";
+      this.Form.grid_menu.prop.textLabel = this.prop.Messages[13][0]; // "Menú Principal";
       // se escogio programas, debe de leer los sistemas
       if (m.tpr_prg != "S") {
         m.sis_sis = this.Form.sis_sis.prop.Value;
         if (m.tpr_prg == "M")
-          this.Form.grid_menu.prop.textLabel = "Menú de Mantenimiento";
+          this.Form.grid_menu.prop.textLabel = this.prop.Messages[14][0]; // "Menú de Mantenimiento";
         if (m.tpr_prg == "R")
-          this.Form.grid_menu.prop.textLabel = "Menú de Reportes";
+          this.Form.grid_menu.prop.textLabel = this.prop.Messages[15][0]; // "Menú de Reportes";
         if (m.tpr_prg == "P")
-          this.Form.grid_menu.prop.textLabel = "Menú de Procesos";
+          this.Form.grid_menu.prop.textLabel = this.prop.Messages[16][0]; // "Menú de Procesos";
       }
       // Leemos menu de programas
       console.log("grid_menu m=", m);
@@ -377,31 +396,31 @@ export class bt_aceptar extends COMPONENT {
     let vis_act = ""; // vista de actualizacion
     let grid_form = ""; // grid de captura
     if (vis_cap == "vi_cap_comedat") {
-      men_txt = "Quieres grabar la definición de la tabla SQL-Server ";
+      men_txt = this.prop.Messages[3][0] //+ "Quieres grabar la definición de la tabla SQL-Server ";
       vis_act = "lla1_dat";
       grid_form = "grid_datos";
     }
 
     if (vis_cap == "vi_cap_comeind") {
-      men_txt = "Quieres grabar la definición de indices SQL-Server ";
+      men_txt = this.prop.Messages[4][0]//"Quieres grabar la definición de indices SQL-Server ";
       vis_act = "lla1_ind";
       grid_form = "grid_indices";
     }
 
     if (vis_cap == "vi_cap_cometab") {
-      men_txt = "Quieres grabar la definición de las tablas SQL-Server";
+      men_txt = this.prop.Messages[5][0]// "Quieres grabar la definición de las tablas SQL-Server";
       vis_act = "lla1_tab";
       grid_form = "grid_tablas";
     }
 
     if (vis_cap == "vi_cap_comevis") {
-      men_txt = "Quieres grabar la definición de las vistas SQL-Server";
+      men_txt = this.prop.Messages[6][0]// "Quieres grabar la definición de las vistas SQL-Server";
       vis_act = "lla1_vis";
       grid_form = "grid_vistas";
     }
 
     if (vis_cap == "vi_cap_prg") {
-      men_txt = "Quieres grabar el MENU del sistema";
+      men_txt = this.prop.Messages[7][0]//"Quieres grabar el MENU del sistema";
       vis_act = "lla1_prg";
       grid_form = "grid_menu";
     }
@@ -419,15 +438,14 @@ export class bt_aceptar extends COMPONENT {
 
       if ((await this.Form.db.tableUpdate(1, false, vis_cap)) == true) {
         // Actualiza todos los registros
-        MessageBox("Diccionario actualizado");
+        MessageBox(this.Messages[8][0])    //"Diccionario actualizado");
         return true;
       } else {
-        MessageBox("No se grabaron los datos", 16, "ERROR");
+        MessageBox(this.Messages[9][0], 16, "ERROR");  //   "No se grabaron los datos"
         return false;
       }
     }
     return false
   }
-
 
 }

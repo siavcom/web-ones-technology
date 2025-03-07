@@ -2,9 +2,9 @@
 
   <!--div id="mask" class="mask" v-if="This.prop.Visible"-->
   <div :id="Id + 'container'" class="container" v-if="This.prop.Visible" :style="divStyle"
-    @contextmenu.stop="handler($event)">
+    @click.middle.stop="middleClick()">
 
-    <!--section class="mainContainer"-->
+    <!--section class=" mainContainer"-->
 
     <div :id="Id + 'header'" class="header">
       <slot name="header">{{ this.prop.ColumnTextLabel }}</slot>
@@ -208,8 +208,14 @@ console.log('Divi ele=>', element.value)
 
 
 //init();
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 

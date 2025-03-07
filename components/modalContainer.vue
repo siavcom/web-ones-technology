@@ -6,10 +6,9 @@
 
       <div :id="Id + '_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
 
-        <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle"
-          @contextmenu.stop="handler($event)">
+        <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle" @click.middle.stop="middleClick()">
 
-          <div :id="Id + 'label'" class="modal-header" :style="labelStyle">
+          <div :id="Id + 'label'" class=" modal-header" :style="labelStyle">
             <label name="header">{{ This.prop.textLabel }}</label>
           </div>
           <div :id="Id + 'modal_body'" class="modal-body">
@@ -261,8 +260,14 @@ const impComp = ((name: string, pos?: string) => {
 
 
 //init();
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 

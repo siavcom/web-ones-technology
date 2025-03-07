@@ -20,13 +20,13 @@ export class dic_dat extends COMPONENT {
     this.prop.ToolTipText = this.prop.textLabel;
     this.prop.ReadOnly = false;
     this.prop.Capture = false;
+    // ["Definicion de Tabla", "Tablas del SQL Server", "Indices", "Vistas de captura", "Menú de programas"],
+    // ["D", "T", "I", "V", "M"],
+
     this.prop.RowSource = [
       ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],
-      ["T", "D", "M"],
-
-      // ["Definicion de Tabla", "Tablas del SQL Server", "Indices", "Vistas de captura", "Menú de programas"],
-      // ["D", "T", "I", "V", "M"],
-    ]; // vi_cap_doc.tdo_tdo,des_tdo
+      ["T", "D", "M"]
+    ];
     this.prop.ControlSource = "vi_cap_comedat.dic_dat";
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;

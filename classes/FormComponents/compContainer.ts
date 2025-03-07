@@ -21,7 +21,8 @@ import { textlabel } from "./TextLabel";
 import { RowSource } from "./RowSource";
 import { PlaceHolder } from "./PlaceHolder";
 import { ToolTipText } from "./ToolTipText";
-import { gridMessages } from "./gridMessages/gridMessages";
+//import { gridMessages } from "./gridMessages/gridMessages";
+import { messages } from "./Messages";
 
 //import { show_messages } from "./show_messages";
 import { bt_accept } from "./bt_accept";
@@ -34,14 +35,16 @@ export class compContainer extends CONTAINER {
   public RowSource = new RowSource()
   public PlaceHolder = new PlaceHolder()
   public ToolTipText = new ToolTipText()
-  public gridMessages = new gridMessages()
+  public messages = new messages()
+
+  // public gridMessages = new gridMessages()
 
   //  public show_messages = new show_messages()
   public bt_accept = new bt_accept()
 
   constructor() {
     super()
-    this.prop.textLabel = 'Traductor '
+    this.prop.textLabel = 'Language translator'
     this.prop.BaseClass = 'modalContainer'
     this.prop.Visible = false
     this.prop.RecordSource = 'vi_cap_db_languages'
@@ -70,81 +73,109 @@ export class compContainer extends CONTAINER {
       [2]: this.RowSource,
       [3]: this.PlaceHolder,
       [4]: this.ToolTipText,
+      [5]: this.messages
     }
 
     this.block[0].title = 'Components'
     this.block[0].style.width = '95%'
 
+
+
     // =======================<Bloque 1 >===============
 
     this.block[1] = structuredClone(container)
     this.block[1].component = {
-      [0]: this.bt_accept
+      //[0]: this.gridMessages
+      //     [1]: this.show_messages
     }
-    this.block[1].style = {}
+    this.block[1].title = 'Messages'
+    this.block[1].style.width = '95%'
 
-    // =======================<Bloque 1 >===============
+    // =======================<Bloque 2 >===============
 
     this.block[2] = structuredClone(container)
     this.block[2].component = {
-      [0]: this.gridMessages
-      //     [1]: this.show_messages
+      [0]: this.bt_accept
     }
-    this.block[2].title = 'Messages'
-    this.block[2].style.width = '95%'
+    this.block[2].style = {}
 
   }
-
 
   async open(refComp: any) {
 
     if (!this.Form.language)
       return
 
-    this.gridMessages.prop.RecordSource = ' '
+    //  this.gridMessages.prop.RecordSource = ' '
 
     const comp = refComp.value
 
     // this.block[0].title = comp.prop.Name
-    /*  
-      if (comp.prop.Type.toLowerCase() != 'combobox')
-        this.RowSource.prop.Visible = false
-      else
-        this.RowSource.prop.Visible = true
-  
-      if (comp.BaseClass && comp.BaseClass.toLowerCase() == "column")
-        this.ColumnTextLabel.prop.Visible = false
-      else
-        this.ColumnTextLabel.prop.Visible = true
-  */
+
+    // console.log('BasseClass=', comp.prop.BaseClass.toLowerCase())
+
+    if (comp.BaseClass && comp.BaseClass.toLowerCase() == "column")
+      this.ColumnTextLabel.prop.Visible = true
+    else
+      this.ColumnTextLabel.prop.Visible = false
 
 
     let rowsource = ""
-    if (typeof comp.prop.RowSource != 'string') {
-      let arr = comp.prop.RowSource
-      arr = arr.map((item) => JSON.stringify(item))
+    //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
+    if (comp.prop.BaseClass.toLowerCase() == 'combobox' &&
+      (comp.prop.RowSourceType == 1 || comp.prop.RowSourceType == 5)) {
+      this.RowSource.prop.Visible = true
 
-      for (let i = 0; i < arr.length; i++) {
-        console.log('1) comp.prop.RowSource=', i, arr[i])
-        if (rowsource.length > 0)
-          rowsource = rowsource + "," + arr[i]
-        else
-          rowsource = "[" + arr[i]
+      if (typeof comp.prop.RowSource != 'string') {
+        let arr = comp.prop.RowSource
+        arr = arr.map((item) => JSON.stringify(item))
 
-      }
-      rowsource = rowsource + "]"
-      console.log('2) comp.prop.RowSource=', rowsource)
+        for (let i = 0; i < arr.length; i++) {
+          //  console.log('1) comp.prop.RowSource=', i, arr[i])
+          if (rowsource.length > 0)
+            rowsource = rowsource + "," + char(13) + arr[i]
+          else
+            rowsource = "[" + arr[i]
 
-    } else
-      rowsource = comp.prop.RowSource
+        }
+        rowsource = rowsource + "]"
+        //    console.log('2) comp.prop.RowSource=', rowsource)
 
-    console.log('end rowsource=', rowsource)
+      } else
+        rowsource = comp.prop.RowSource
+
+    }
+    else
+      this.RowSource.prop.Visible = false
+
+    // console.log('end rowsource=', rowsource)
+
+    let messages = ""
+    let arr = comp.prop.Messages
+
+    console.log('0) comp.prop.Messages=', arr)
+
+    arr = arr.map((item) => JSON.stringify(item))
+    console.log('0.5) comp.prop.Messages=', arr)
+
+    for (let i = 0; i < arr.length; i++) {
+      console.log('1) comp.prop.Messages=', i, arr[i])
+      if (messages.length > 0)
+        messages = messages + "," + char(13) + arr[i]
+      else
+        messages = "[" + arr[i]
+
+    }
+    messages = messages + "]"
+    console.log('2) comp.prop.Messages=', messages)
+
 
     const m = {
       for_lan: this.Form.prop.Name,
       lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
       map_lan: comp.prop.Map,
       message: '  ',
+      messages: messages,
       columntextlabel: comp.prop.ColumnTextLabel,
       textlabel: comp.prop.textLabel,
       rowsource: rowsource,
@@ -153,32 +184,36 @@ export class compContainer extends CONTAINER {
       errormessage: comp.prop.ErrorMessage
     }
 
-
     const data = await this.Sql.localAlaSql(`select recno from vi_cap_db_languages where trim(map_lan)='${m.map_lan.trim()}'  `)
 
     if (data.length > 0) {
       this.Recno = data[0].recno
+      // Actualizamos el recno en la vista para que actualice este registro al hacer el tableUpdate
+      this.Sql.View.vi_cap_db_languages.recno = this.Recno
+      if (comp.prop.Messages.length == 0)
+        comp.prop.Messages = m.messages
+
+      if (comp.prop.RowSource.length == 0)
+        comp.prop.rowsource = m.rowsource
+
+
     } else {
       const valores = await this.Sql.appendBlank('vi_cap_db_languages', m)
       this.Recno = valores.recno
     }
 
     this.prop.Visible = true
-    this.gridMessages.prop.RecordSource = 'vi_cap_db_messages'
-    this.gridMessages.prop.Visible = true
+    // this.gridMessages.prop.RecordSource = 'vi_cap_db_messages'
+    // this.gridMessages.prop.Visible = true
 
   }
 
   async close() {
     this.prop.Visible = false
-
     // Grabamos las traducciones
-
-
+    console.log('Grabamos las traducciones ', await this.Sql.localAlaSql(`select * from vi_cap_db_languages`))
     await this.Sql.tableUpdate(0, false, 'vi_cap_db_languages')
-    await this.Sql.tableUpdate(0, false, 'vi_cap_db_messages')
-
-
+    //await this.Sql.tableUpdate(0, false, 'vi_cap_db_messages')
 
   }
 }

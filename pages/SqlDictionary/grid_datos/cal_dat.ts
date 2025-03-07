@@ -17,7 +17,7 @@ export class cal_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.prop.ColumnTextLabel = 'Valor columna calculada SQL Server'
+        this.prop.ColumnTextLabel = 'Valor calculado in SQL Server'
         this.prop.Type = 'textArea'
         this.prop.ControlSource = 'vi_cap_comedat.cal_dat'
         this.prop.ToolTipText = 'Valor calculado al insertar el registro en SQL Server'

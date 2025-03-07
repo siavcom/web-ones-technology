@@ -21,7 +21,7 @@ export class ErrorMessages extends COMPONENT {
     this.prop.Capture = true
 
     this.prop.BaseClass = "editText";
-    this.inputStyle.width = "256px";
+    this.inputStyle.width = "496px";
   }
 
 

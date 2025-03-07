@@ -1,12 +1,12 @@
 <template>
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
+    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <button :id="Id + '_button'" class='button' v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled"
       :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
         :style="Styles.inputStyle" />
       <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
-        v-show="prop.Visible">{{ prop.Value }}</label>
+        v-show="prop.Visible">{{ prop.textLabel }}</label>
     </button>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
@@ -41,6 +41,7 @@ const props = defineProps<{
     Capture: false;
     Name: "";
     Label: "";
+    textLabel: string;
     Type: "text";
     Visible: boolean;
     TabIndex: number;
@@ -236,7 +237,7 @@ onMounted(async () => {
     }
 
   };
-  This.onMounted()
+  This.afterMounted()
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
 })
 /*
@@ -244,8 +245,16 @@ onMounted(() => {
   init() // Ejecuta el init
 });
 */
+
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 

@@ -88,7 +88,7 @@ export class FORM extends COMPONENT {
     if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m)) {
       this.language = true
 
-      super.onMounted();
+      super.afterMounted();
 
     }
     //await this.Sql.execute(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \

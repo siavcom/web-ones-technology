@@ -18,7 +18,7 @@ export class bt_json extends COMPONENT {
     super();
     this.Index = 1;
     this.prop.BaseClass = "imgButton";
-    this.prop.Value = "File";
+    this.prop.textLabel = "File";
     this.prop.Capture = false;
     this.prop.Position = "footer";
     this.prop.Image = "/Iconos/svg/json.svg";

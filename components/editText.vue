@@ -1,9 +1,9 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @contextmenu.stop="handler($event)">
-    <span :id="Id + '_label'" class="etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel + " "
-      }}</span>
+    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -17,7 +17,7 @@
         
 onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      @contextmenu.stop="handler($event)" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
+      @click.middle.stop="middleClick()" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
       v-on:keyup.backspace="key = 8"
 
 
@@ -109,11 +109,11 @@ onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode
       v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
       class='help_icon' src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
 
-    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ prop.ErrorMessage.length >= 1 ?
-      prop.ErrorMessage
+    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ This.prop.ErrorMessage.toString().length >= 1 ?
+      This.prop.ErrorMessage
       :
-      'Invalid Input'
-      }}</div>
+      '--- Invalid Input ---'
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1131,20 +1131,21 @@ const nextElement = async () => {  //clickReturn
   let nextFocus = ''
 
   if (This.Parent != null)
-    for (const element of This.Parent) { //.main
+    if (This.Parent)
+      for (const element of This.Parent) { //.main
 
 
-      if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
-        !This.Parent[element].prop.Disabled) {
-        const Tab = This.Parent[element].prop.TabIndex
+        if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
+          !This.Parent[element].prop.Disabled) {
+          const Tab = This.Parent[element].prop.TabIndex
 
-        if (Tab > TabIndex && Tab < lastIndex) {
-          lastIndex = Tab
-          nextFocus = This.Parent[element].prop.htmlId
-          break
+          if (Tab > TabIndex && Tab < lastIndex) {
+            lastIndex = Tab
+            nextFocus = This.Parent[element].prop.htmlId
+            break
+          }
         }
       }
-    }
 
   if (nextFocus == '')
     return
@@ -1822,8 +1823,14 @@ const styleAssing = async () => {
  *
  * @param {MouseEvent} event - the event
  */
+const middleClick = () => {
+  console.log('middleClick')
+  if (This.Form)
+    This.Form.compContainer.open(ref(This))
+}
+
 const handler = (event) => {
-  if (event.which === 3) {
+  if (event.which === 1) {
     if (This.Form)
       This.Form.compContainer.open(ref(This))
 
@@ -1877,7 +1884,7 @@ onMounted(async () => {
     }
      */
   }
-  This.onMounted()
+  This.afterMounted()
 
   await This.recnoChange()
 
