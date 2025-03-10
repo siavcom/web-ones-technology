@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-      <div v-else class="prose w-full max-w-2xl h-9">
+      <div v-else class="form">
         <component id="emp_emp" :is="impComponent(ThisForm.emp_emp.prop.BaseClass)" :Registro="0"
           :Value="ThisForm.emp_emp.prop.Value" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
           :position="ThisForm.emp_emp.position" />
@@ -30,75 +30,53 @@
 
 <script lang="ts" setup>
 
+// the storage for this session
 import { storeToRefs } from 'pinia'
 
-// ////////////////////////////////////////////
-// Clases Externas typescript
-// ////////////////////////////////////////////
-
-//import { INIT } from '@/classes/Init'
+// Import the principal class form
 import { form } from './login'
 
-// ////////////////////////////////////////////////
-// Propiedades de los componentes
-// Arbol de componentes de ThisForm segun Vfp //
-//
-
+// I make reactive the form
 const ThisForm = reactive(new form())
 
+// get the session
 const session = Session()
 
 const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
 /// //////////////////////////////////////////////////////
-// watch id
+// watchers 
 /// ///////////////////////////////////////
 
+
+// If the id_con changes
 watch(
   () => id_con.value,
   (new_val, old_val) => {
     if (new_val == '')
       return
-    if (new_val != old_val)
-      window.history.back() // regresa a la pagina anterior   
+    if (new_val != old_val) {
+      if (window.history.length > 1)
+        window.history.back() // regresa a la pagina anterior   
+    }
   },
   { deep: false }
 )
 
 const bt_aceptar = () => {
-  ThisForm.bt_aceptar.click()
+  ThisForm.bt_aceptar.click()  // call the method in the form
 }
-
-// ////////////   Clase Base de datos ///////////////////////////////
-/*
-const Init = new INIT() // solo se puso para evitar de errores que tenia
-
-const init = async () => {
-
-  await Init.Init()
-    .then(async () => {
-      //        ThisForm.Init(ref(ThisForm))  // Pasamos por referencia  al init de la clase el ThisForm
-      await ThisForm.Init()
-    })
-    .finally(async () => {
-      ThisForm.Status = 'A'
-      console.log('Fin Login Form exitoso', ThisForm)
-    })
-}
-init()
-*/
 
 /////////////////////////////////////////
-// Metodo init 
+// 
 /////////////////////////////////////////
 const mounted = ref(false)
-//const init = async () => {
+
 onBeforeMount(async () => {
-  await ThisForm.Init()
+  await ThisForm.Init() // Calls the Init method of thisform
   console.log('======Fin Login Form exitoso====', ThisForm)
   mounted.value = true
 })
-
 
 
 </script>
@@ -128,9 +106,7 @@ div.imagen {
   border-radius: 10px;
   padding: 60px;
   background-color: #f2f4f5;
-  height: 220x;
-  width: 180px;
-
+  width: 200px;
   background-image: url("/logos/Siavcom.png");
   /* opacity: 0.5;*/
 }

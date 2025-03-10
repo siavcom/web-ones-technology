@@ -14,17 +14,14 @@
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent = {}; //this.Dom.ctx; // Contexto
-  //  Container={}; // Contenedor
+
   Form: any = {}; //this.Parent.ThisForm // Thisform
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
-  Sql;
-  // db: any;
-  // Recno: number;
+  Sql: any = {};
   Recno: number = 0; // ref(0)
   Ref: null | undefined;
   Show: true = true;
-  //Focus: boolean = false
   Index!: number;
   header: [] = []; // elementos que tiene el componente en header
   main: [] = []; // elementos que tiene el componente en main
@@ -32,7 +29,7 @@ export class COMPONENT {
   elements: [] = []; // elementos que tiene el componente
   status: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
-  block = [] // bloque del componentes
+  block: [] = [] // bloque del componentes
   error = false
   sw_init = false
   Help = false
@@ -150,6 +147,9 @@ export class COMPONENT {
   };
 
   containerStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    maxWidth: '600px',
     //  alignContent: "flex-end",
     //  alignItems: "flex-end",
     //  display: "flex",
@@ -157,7 +157,7 @@ export class COMPONENT {
     //  flexWrap: "nowrap",
     //  justifyContent: "flex-end",
     //  width: "100%"
-    paddingLeft: "auto"
+    paddingLeft: "auto",
   }
 
   labelStyle = {
@@ -179,9 +179,7 @@ export class COMPONENT {
     alignContent: "flex-start" //"flex-end",
   }
 
-
   inputStyle = { ...this.labelStyle }
-
 
   style = {
     //display: "flex", "inline-block"
@@ -221,6 +219,13 @@ export class COMPONENT {
     width: "auto",
     height: "auto",
   };
+
+  // Se utiliza para inicializar los block[] container
+  /*
+     const container = this.container
+      // =======================<Bloque 0 >===============
+      this.block[0] = structuredClone(container)
+   */
 
 
   container =
@@ -364,6 +369,8 @@ export class COMPONENT {
 
     }
     this.translate()  // Traduce al lenguaje del usuario
+
+
     /* 26/Dic/2024
         // Si el componente esta en algun bloque  le quita su posiscion 
         if (this.block.length > 0) {
@@ -385,8 +392,6 @@ export class COMPONENT {
           }
         }
        */
-
-
 
     for (const componente in this) {
       if (
@@ -561,7 +566,6 @@ export class COMPONENT {
     return TabIndex;
   }
 
-
   /**
    * Initializes the component.
    *
@@ -619,12 +623,9 @@ export class COMPONENT {
    * @returns {Promise<void>}
    */
 
-
-
   public async click() {
 
   }
-
 
   /**
    * When VFP
@@ -705,12 +706,24 @@ export class COMPONENT {
    * onMounted VFP
    * Descripcion: Cuando se monta el componente en el DOM
    * 
+   * No se puede utilizar como nombre onMounted porque NUXT lo interpreta comom el onMounted de VUE y hace 
+   * la importacion automaticamente de la libreria
   */
 
   public async afterMounted() {
     this.prop.Status = "A";
 
   }
+
+
+  /**
+   * Translates component properties based on the current language settings (pubicVar.lan_lan).
+   * This function checks if the form and publicVar are defined and attempts
+   * to retrieve translations from the 'vi_cap_db_languages' table. If translations
+   * are found, it updates the component's properties such as ColumnTextLabel, textLabel,
+   * RowSource, Messages, Placeholder, ToolTipText, and ErrorMessage. If the translation
+   * table is not available or the record count is zero, the function returns without changes.
+   */
 
   async translate() {
 

@@ -16,7 +16,7 @@ export class emp_emp extends COMPONENT {
 
     this.Form = this.Parent;
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Empresa";
+    this.prop.textLabel = "Company/Empresa";
     this.prop.Capture = true;
     this.prop.RowSourceType = 5; // 1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
@@ -29,29 +29,12 @@ export class emp_emp extends COMPONENT {
     this.style.width = "auto";
     this.inputStyle.width = "200px";
 
-    /*
-     let num_ren = 0;
- 
- 
-     const { dat_emp } = await $fetch('/api/submit', {
-           method: 'leeEmpresas',
-           body: { test: 123 }
-         })
- 
- 
-     if (dat_emp == null) {
-       this.prop.Visible = false;
-       return;
-     }
- 
-     for (const nom_emp in dat_emp) {
-       this.prop.RowSource[0][num_ren] = nom_emp; // columna 1,renglon
-       this.prop.RowSource[1][num_ren] = dat_emp[nom_emp].nem_emp; // columna 2,renglon
-       num_ren++;
-     }
-     */
     const session = Session();
     this.prop.Value = session.nom_emp;
+    this.style.color = "black";
+    this.style.fontWeight = "bold";
+    this.style.fontSize = "15px";
+    this.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
   }
 
   async init() {
@@ -63,16 +46,7 @@ export class emp_emp extends COMPONENT {
       }
     )
 
-    /*
-        const { body } = await $fetch('/api/submit', {
-          method: 'post',    // llama en @/server/api/submit.post.ts
-          body: { call: 'leeEmpresas' }
-    
-        })
-    */
-
     const dat_emp = data.value
-    // console.log(' emp_emp dat_emp=', dat_emp)
 
     if (dat_emp == null) {
       this.prop.Visible = false;

@@ -39,6 +39,20 @@ export class GRID extends COMPONENT {
     this.style.minHeight = "150px";
     this.style.height = "max-content";
     this.Recno = 0;
+
+    this.prop.Messages = [
+      ["Actualizamos la tabla"], // 0
+      ["Actualizamos el registro"], // 1
+      ["Datos actualizados de la tabla"], // ["Data updated of "], // 3
+      ["Datos no actualizados de la tabla "], // No se grabaron los datos de la tabla"], // 4
+      ["Registro no actualizado de la tabla "] //No se grabó el reglon de la tabla ="] //5
+
+      //["Do I update the table"], // 0
+      //["Do I update the record"], // 1
+      //["Data updated of "], // 3
+      //["Data not updated of "], // No se grabaron los datos de la tabla"], // 4
+      //["Row not updated of "], //No se grabó el reglon de la tabla ="] //5
+    ];
   }
 
   ////////////////////////////////////////
@@ -240,7 +254,7 @@ export class GRID extends COMPONENT {
   /////////////////////////
   async deleteRow(recno: number) {
 
-    if (await MessageBox(`${this.prop.messageDelete} ${recno}`, 4, '') == 6) {
+    if (await MessageBox(`${this.prop.Messages[1][0]} ${recno}`, 4, '') == 6) {
       this.prop.Status = 'A'
       await this.Form.db.delete(
         recno,
@@ -272,7 +286,7 @@ export class GRID extends COMPONENT {
         }
     */
 
-    if ((await MessageBox(this.prop.messageUpdate, 4, "")) != 6) return false;
+    if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6) return false;
 
     this.Form.prop.Visible = false;
     resultado = await this.Form.db.tableUpdate(
@@ -282,10 +296,10 @@ export class GRID extends COMPONENT {
     );
     if (resultado) {
       // Actualiza todos los registros
-      MessageBox("Datos actualizados correctamente de " + this.prop.textLabel);
+      MessageBox(this.prop.Messages[2][0] + this.prop.textLabel);
     } else {
       MessageBox(
-        "No se grabaron los datos de la tabla =" + this.prop.RecordSource,
+        this.prop.Messages[3][0] + this.prop.RecordSource,
         16,
         "ERROR"
       );
@@ -322,7 +336,7 @@ export class GRID extends COMPONENT {
       return true;
     } else {
       MessageBox(
-        "No se grabó el reglon de la tabla =" + this.prop.RecordSource,
+        this.prop.Messages[5][0] + this.prop.RecordSource,
         16,
         "ERROR"
       );

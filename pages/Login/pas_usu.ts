@@ -8,22 +8,26 @@
 import { COMPONENT } from "@/classes/Component";
 
 export class pas_usu extends COMPONENT {
-  num_int: number;
+  num_int: number = 0;
   constructor() {
     super();
     this.Form = this.Parent;
     this.prop.BaseClass = "editText";
-    this.prop.textLabel = "Contraseña";
+    this.prop.textLabel = "Password/Contraseña";
     this.prop.Type = "password";
     this.prop.Capture = false;
     this.prop.TabIndex = 3;
-    this.prop.Placeholder = "Password";
+    this.prop.Placeholder = "Password/Contraseña";
     this.style.width = "auto";
     this.inputStyle.width = "130px";
-    this.prop.ErrorMessage = "Invalid password";
+    this.prop.ErrorMessage = "Invalid password/Contraseña invalida";
+    this.style.color = "black";
+    this.style.fontWeight = "bold";
+    this.style.fontSize = "15px";
+    this.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
 
   }
-  public async valid(Valid: boolean) {
+  public override async valid(Valid: boolean) {
     if (this.prop.Value.trim().length == 0) {
       return false
     }

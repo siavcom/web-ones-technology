@@ -995,15 +995,15 @@ init(); // Ejecuta el init
 
 
 const middleClick = () => {
-  console.log('middleClick')
+  console.log('grid middleClick', This)
   if (This.Form)
     This.Form.compContainer.open(ref(This))
 }
 
 const handler = (event) => {
   if (event.which === 1) {
-    if (This.Form)
-      This.Form.compContainer.open(ref(This))
+    //if (This.Form)
+    //  This.Form.compContainer.open(ref(This))
   }
   event.preventDefault();
 }

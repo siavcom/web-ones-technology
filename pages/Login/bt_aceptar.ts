@@ -15,7 +15,7 @@ export class bt_aceptar extends COMPONENT {
     super();
 
     this.prop.BaseClass = "imgButton";
-    this.prop.textLabel = "Entrar";
+    this.prop.textLabel = "Enter/Entrar";
     this.style.width = "30%";
     this.prop.TabIndex = 4;
     this.prop.Image = "/Iconos/svg/accept.svg";
@@ -26,11 +26,11 @@ export class bt_aceptar extends COMPONENT {
   // Descripcion: Hace el click
   /////////////////////////////////////////////////////////////////
 
-  public async click() {
+  public override async click() {
     this.num_int++;
 
     if (this.num_int >= 5) {
-      alert("Exedió el maximo de intentos");
+      alert("Exceeded the maximum number of attempts/ Exedió el maximo numero de intentos");
       window.close();
       return;
     } // numero maximo de intentos = 5
@@ -39,18 +39,9 @@ export class bt_aceptar extends COMPONENT {
     let login = ThisForm.log_usu.prop.Value;
     let empresa = ThisForm.emp_emp.prop.Value;
     const pos_arroba = login.indexOf("@", 0);
-    /* console.log(
-      "bt_entrar log_usu",
-      login,
-      "empresa",
-      empresa,
-      "pas_usu",
-      ThisForm.pas_usu.prop.Value
-    );
 
-    */
     if (login.length == pos_arroba + 1) {
-      ThisForm.log_usu.prop.ErrorMessage = "usuario@empresa";
+      ThisForm.log_usu.prop.ErrorMessage = "Use : username@company/usuario@empresa";
       ThisForm.log_usu.prop.Valid = false;
       ThisForm.log_usu.prop.ShowError = true;
       return;
@@ -63,14 +54,14 @@ export class bt_aceptar extends COMPONENT {
     }
 
     if (empresa.length == 0) {
-      ThisForm.emp_emp.prop.ErrorMessage = "Escoja una empresa";
+      ThisForm.emp_emp.prop.ErrorMessage = "Chose a company/Escoja una empresa";
       ThisForm.emp_emp.prop.Valid = false;
       ThisForm.emp_emp.prop.ShowError = true;
       return;
     }
 
     if (login.length == 0) {
-      ThisForm.log_usu.prop.ErrorMessage = "Digite usuario";
+      ThisForm.log_usu.prop.ErrorMessage = "Enter username/Digite usuario";
       ThisForm.log_usu.prop.Valid = false;
       return;
     }
@@ -101,7 +92,7 @@ export class bt_aceptar extends COMPONENT {
     const password = ThisForm.pas_usu.prop.Value;
     //   ThisForm.pas_usu.prop.Value = ''
 
-    pass.value = password
+    pass.value = password  // We assign the password to the storage
 
     //console.log('Datos login ========>>>>>>>',id_con.value,nom_emp.value,user.value,pass.value)
     return;

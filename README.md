@@ -6,23 +6,27 @@
 
 - Frontend . Programed in Vue/Nuxt and  web-ones-technology framework.
    This frontEnd  is based on VFP (Visual Fox Pro) functions and instructions.
+   It's have :
+   - SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access. See the SqlDictionary page where you can add tables with fields, index, and SQL views for manipulating data access.
+  - Menu maintenance page.
 
-- Backend with Node express and VFPnode project https://github.com/siavcom/VFP-NODE
 
-- SQL Database . Programed in Postgres or MSSQL.
+- Backend with Node express and VFPnode project https://github.com/siavcom/VFP-NODE. This backend is a server that provides a web service to the front-end of the framework.
+
+- SQL Database . Programed in Postgres or MSSQL (12 or newer).
+
 
 # It uses:
-
 - Vue 3 with SFC
 - Nuxt 3
 - Native HTML components
-- SQL Database Postgres (12 or newer) or MSSQL (17 or newer)
+- TypeScript (class-based)
 
 # Objective:
 
 - Make a simple program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
-It's based on using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own visual html components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
+It's based in using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own visual html components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
 
                     this.Form
                  /     |      \
@@ -125,19 +129,17 @@ Calling a method:
  TypeScript components has to be in a TypeScrip container component (Form, container or another component ) except Form component.
 
  Each component commonly is made for a simple file in a page Form 
-  pages/clientForm/index.vue   // Only file 
+  pages/clientForm/index.vue   // This is Only file of the form. Never change this file
   pages/clientForm/ThisForm.ts // Principal form
   pages/clientForm/component1.ts // component 1
   pages/clientForm/component2.ts // component 2
         .
         .
         .
-  pages/clientForm/componentn.ts // component n
+  pages/clientForm/severalComponents.ts // component n
 
-  Each component arr compund by  3 part
-     
-
-  Example of component
+ 
+  Example of a component
 
 `// Clase : dic_dat`  
 `// Descripcion : tipo de mantenimiento del diccionario de datos`  
@@ -885,23 +887,22 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 
 > [!NOTES]:
 > This framework is based on a SQL database.
-> It's not complete yet. If you require installation and use, let me know by mail or Skype siavcom@hotmail.com. 
-> If you want a new feature, let me know by mail or Skype siavcom@hotmail.com.
-> To use this Framework, you have to restore an initial SQL backup.
-> If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
+> If you need suport about installation and use, let me know by mail or Skype siavcom@hotmail.com. 
 > If you have a question, let me know by mail or Skype siavcom@hotmail.com.
-> I can help you if you want to use this framework.
+> If you want a new feature or have a sugestion, let me know by mail or Skype siavcom@hotmail.com.
+> To use this Framework, you have to restore an initial SQL backup an back end server (It is in  https://github.com/siavcom/VFP-NODE)
+> If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
 > I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
 
-
 # About
-- I'm an old FOX programmer with a lot of experience in VFP design and programming, MSSQL, and Postgres databases.
+- I'm an old FOX programmer (since 1981) with a several years of experience in design and programming using VFP, MSSQL, and Postgres databases.
 
 - Author:
   - El Fer Blocks (Principal design, programming, and project director).
     LinkedIn: https://www.linkedin.com/in/fernando-cuadras-846a20102/.
-
+  
   - Lupita Sotelo (Reports and SQL design).
+
   - Raul Castro (HTML and CSS design).
 
 - http://siavcom.com.mx
@@ -909,13 +910,13 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 
 
 > [!IMPORTANT] Reserved Word
-position
-estatus
+> position
+> estatus
 
- > [!NOTES]
-Development:
-$ npx nuxi dev --port=3000
-$ npm run dev
+> [!NOTE]
+> Development:
+> $ npx nuxi dev --port=3000
+> $ npm run dev
 
 ## Other function:
 // Append data in m
@@ -942,6 +943,9 @@ console.log(m) =
 
 > [!TIP]
 > Helpful advice for doing things better or more easily.
+
+> [!NOTE]
+> Key information users need to know to achieve their goal.
 
 > [!IMPORTANT]
 > Key information users need to know to achieve their goal.

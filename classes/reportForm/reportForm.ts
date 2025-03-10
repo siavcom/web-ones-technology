@@ -465,6 +465,8 @@ export class reportForm extends FORM {
     this.data = data;
     data['con_rep'] = this.con_rep // Aumenta la propiedad this.con_rep
     this.data = data;
+    data['ord_rep'] = this.ord_rep // Aumenta la propiedad this.con_rep
+    this.data = data;
     return data;
   }
 

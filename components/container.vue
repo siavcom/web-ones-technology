@@ -216,8 +216,8 @@ const middleClick = () => {
 
 const handler = (event) => {
   if (event.which === 1) {
-    if (This.Form)
-      This.Form.compContainer.open(ref(This))
+    //if (This.Form)
+    //  This.Form.compContainer.open(ref(This))
 
   }
   event.preventDefault();

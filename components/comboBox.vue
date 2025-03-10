@@ -85,9 +85,9 @@
     <!-- v-bind:Component="ref(This[compMain])" 
      v-model:Status="This[compMain].prop.Status"-->
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
-      :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-      :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-      v-bind:position="This[compMain].position" @click.capture="when(true)">
+      :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
+      v-model:Value="This[compMain].prop.Value" :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop"
+      v-bind:style="This[compMain].style" v-bind:position="This[compMain].position" @click.capture="when(true)">
     </component>
 
   </span>
@@ -217,6 +217,7 @@ const Este = props.prop.This
 const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+const containerStyle = reactive({ ...Este.containerStyle })
 
 const Styles =
 {
@@ -1573,8 +1574,8 @@ const middleClick = () => {
 
 const handler = (event) => {
   if (event.which === 1) {
-    if (This.Form)
-      This.Form.compContainer.open(ref(This))
+    //if (This.Form)
+    //  This.Form.compContainer.open(ref(This))
   }
   event.preventDefault();
 }

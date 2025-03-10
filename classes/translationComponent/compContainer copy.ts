@@ -48,17 +48,19 @@ export class compContainer extends CONTAINER {
     this.prop.BaseClass = 'modalContainer'
     this.prop.Visible = false
     this.prop.RecordSource = 'vi_cap_db_languages'
+    this.prop.Disabled = true
 
     //this.style.width = "auto" // "-moz-available";
     //this.style.maxHeight = "200px";
     //this.style.display = 'flex'
     //this.style.flexWrap = 'wrap'
-    this.containerStyle.display = 'flex'
-    this.containerStyle.flexWrap = 'wrap'
+
+    //this.containerStyle.display = 'flex'
+    //this.containerStyle.flexWrap = 'wrap'
+
     this.style.width = '600px'
     this.style.height = 'auto'
     this.labelStyle.fontSize = '20px'
-
 
     this.asignaRecno()  // asigna recno a c/componente de captura de la forma
 
@@ -103,22 +105,17 @@ export class compContainer extends CONTAINER {
 
   async open(refComp: any) {
 
-    if (!this.Form.language)
-      return
-
-    //  this.gridMessages.prop.RecordSource = ' '
-
     const comp = refComp.value
 
-    // this.block[0].title = comp.prop.Name
+    console.log('compContainer open ', this.Form.language, refComp)
 
-    // console.log('BasseClass=', comp.prop.BaseClass.toLowerCase())
+    if (!this.Form.language)
+      return
 
     if (comp.BaseClass && comp.BaseClass.toLowerCase() == "column")
       this.ColumnTextLabel.prop.Visible = true
     else
       this.ColumnTextLabel.prop.Visible = false
-
 
     let rowsource = ""
     //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
@@ -145,18 +142,17 @@ export class compContainer extends CONTAINER {
         rowsource = comp.prop.RowSource
 
     }
-    else
+    else {
       this.RowSource.prop.Visible = false
 
+    }
     // console.log('end rowsource=', rowsource)
 
     let messages = ""
     let arr = comp.prop.Messages
 
-    console.log('0) comp.prop.Messages=', arr)
-
     arr = arr.map((item) => JSON.stringify(item))
-    console.log('0.5) comp.prop.Messages=', arr)
+    console.log('0.5) comp.prop.Messages=', arr,)
 
     for (let i = 0; i < arr.length; i++) {
       console.log('1) comp.prop.Messages=', i, arr[i])
@@ -167,12 +163,12 @@ export class compContainer extends CONTAINER {
 
     }
     messages = messages + "]"
-    console.log('2) comp.prop.Messages=', messages)
+    console.log('2) compContainer comp.prop.Messages=', messages)
 
 
     const m = {
       for_lan: this.Form.prop.Name,
-      lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+      lan_lan: this.Form.publicVar.lan_lan ? comp.Form.publicVar.lan_lan : '   ',
       map_lan: comp.prop.Map,
       message: '  ',
       messages: messages,
@@ -185,11 +181,11 @@ export class compContainer extends CONTAINER {
     }
 
     const data = await this.Sql.localAlaSql(`select recno from vi_cap_db_languages where trim(map_lan)='${m.map_lan.trim()}'  `)
-
-    if (data.length > 0) {
+    console.log('compContainer open data=', await this.Sql.localAlaSql(`select * from vi_cap_db_languages where trim(map_lan)='${m.map_lan.trim()}'  `))
+    if (data[0].length > 0) {
       this.Recno = data[0].recno
       // Actualizamos el recno en la vista para que actualice este registro al hacer el tableUpdate
-      this.Sql.View.vi_cap_db_languages.recno = this.Recno
+      this.Sql.View.vi_cap_db_languages.recno = comp.Recno
       if (comp.prop.Messages.length == 0)
         comp.prop.Messages = m.messages
 
@@ -198,11 +194,14 @@ export class compContainer extends CONTAINER {
 
 
     } else {
-      const valores = await this.Sql.appendBlank('vi_cap_db_languages', m)
-      this.Recno = valores.recno
+      const valores = await comp.Sql.appendBlank('vi_cap_db_languages', m)
+      comp.Recno = valores.recno
     }
 
+    console.log('compContainer open Visible')
+    this.prop.Disabled = false
     this.prop.Visible = true
+
     // this.gridMessages.prop.RecordSource = 'vi_cap_db_messages'
     // this.gridMessages.prop.Visible = true
 
@@ -210,6 +209,8 @@ export class compContainer extends CONTAINER {
 
   async close() {
     this.prop.Visible = false
+    this.prop.Disabled = true
+
     // Grabamos las traducciones
     console.log('Grabamos las traducciones ', await this.Sql.localAlaSql(`select * from vi_cap_db_languages`))
     await this.Sql.tableUpdate(0, false, 'vi_cap_db_languages')
