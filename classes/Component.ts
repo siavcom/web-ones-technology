@@ -620,7 +620,7 @@ export class COMPONENT {
   /**
    * @description
    * Hace el click
-   * @returns {Promise<void>}
+   * @returns {Promise<never>}
    */
 
   public async click() {

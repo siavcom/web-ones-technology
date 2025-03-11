@@ -28,7 +28,8 @@
 
 It's based in using a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own visual html components (editBox, comboBox, checkBox, grid, modalContainer, etc.) and its own methods (click(), when, valid(), etc.), forming a component tree.
 
-                    this.Form
+
+                     Form
                  /     |      \
                 /      |       \
                /       |        \
@@ -41,7 +42,7 @@ It's based in using a main form (like ThisForm in VFP) made only in TypeScript, 
 
 There are some components where each one has its own components (container and grid has several components  and column components).
                 
-                container
+               container
             /     |      \
            /      |       \
           /       |        \
@@ -55,13 +56,13 @@ There are some components where each one has its own components (container and g
          /        |          \
         Column1 Column2 Column..n
 
-It is linked to a web component (input box, combo box, check box, etc.) and is has its own properties.
+and each component is linked to a web component (input box, combo box, check box, etc.) and these have their own properties like :
 
 - Basic props
 - Style props
 - Position props (outdated)
 
-and methods
+ and methods :
 
 - click
    When this component is clicked, this method is called.
@@ -81,8 +82,8 @@ and methods
     Example: The method changes the color of the input depending on the value selected.
     A = green, B = red, X = blue.
     @param {any} styles - The style of the component.
-- onMounted
-    When the component is mounted, this method is called.
+- afterMounted
+    When the component is mounted in the DOM, this method is called.
 - recnoChange 
    When the recno of this component changes, this method is called.    
 - valid
@@ -124,22 +125,14 @@ Calling a method:
 - optionGroup. Option group input.
 - textLabel. Text label. 
 
-## TypeScript component 
+## TypeScript components 
 
- TypeScript components has to be in a TypeScrip container component (Form, container or another component ) except Form component.
+ TypeScript components are components that are written in TypeScript.
 
- Each component commonly is made for a simple file in a page Form 
-  pages/clientForm/index.vue   // This is Only file of the form. Never change this file
-  pages/clientForm/ThisForm.ts // Principal form
-  pages/clientForm/component1.ts // component 1
-  pages/clientForm/component2.ts // component 2
-        .
-        .
-        .
-  pages/clientForm/severalComponents.ts // component n
+ This components has to be in a TypeScript container component (Form, container or another component ) except Form component.
 
  
-  Example of a component
+  Example of a component :
 
 `// Clase : dic_dat`  
 `// Descripcion : tipo de mantenimiento del diccionario de datos`  
@@ -185,9 +178,7 @@ Calling a method:
 `//*********** Methods *******************//`   
 `   public init = async (form: any) => {`  
 `     this.prop.Value = "T";`  
-`     [](http://_vscodecontentref_/0) = true;`  
 `   };`  
-    
 `   async interactiveChange() {`  
 `     this.Form.nom_tab.prop.Visible = false`  
 `     this.Form.bt_gen_all_models.prop.Visible = false`  
@@ -199,7 +190,6 @@ Calling a method:
 `      this.Form.bt_aceptar.prop.Visible = false;`  
 `      }`  
 `   }`  
-
 `   public async when(sis_sis?: boolean) {`  
 `     await this.interactiveChange()`  
 
@@ -219,7 +209,6 @@ Calling a method:
 `     return !this.prop.ReadOnly;`  
 `   }`
 `}`  
-
 
 ## TypeScript components
 - Browse. Table display
@@ -468,19 +457,30 @@ Values :
 - textAlign: "left",  
 - ...... several CSS style properties: .
 
-## Form (Main Form container)
+## Form (Main web Form container)
   This is the principal main form ( SPA ). A complete system is made for serverlas Forms.
 
   Each one for is folder ubicated in a page directory of NUXT structure.
-
-
 
 > [!IMPORTANT]
 >  Each page folder is minimun composed of two files:
 >  index.vue and ThisForm.ts
 
-### index.vue will always have this content
+ Sample : We have a web page called clientForm. In a pages directory we have a directory called clientForm and in the clientForm directory we have:
+ 
+  pages/clientForm/index.vue   // This is Only file of the form. The content of this file never change
+  pages/clientForm/ThisForm.ts // Principal form
 
+  and several components
+  pages/clientForm/component1.ts // component 1
+  pages/clientForm/component2.ts // component 2
+        .
+        .
+        .
+  pages/clientForm/severalComponents.ts // component n
+
+ 
+### index.vue will always have this content
 
 `<template>`  
 ` <VueForm v-bind:ThisForm="ThisForm">`  
@@ -496,9 +496,9 @@ Values :
 `</script>`  
  
 
-
 ### ThisForm.ts  
 
+Is the principal form file. It will have the componets for this form.
 
 //////////////////////////////////////////////  
 // Page: SqlDictionary  
@@ -629,9 +629,9 @@ export class ThisForm extends FORM {
 ### Column (Column component)
 
 Eqch column component has a label for the header 
-   this.Label='Header 1'
+   this.prop.columnLabel='Header 1'
 
-  and an another type script component (editText, imgButton.. almost all type script component)
+  and an another type script component (editText, imgButton.. almost all type script component exept a Form container)
 
 And each column component has it's owns propierties
 
@@ -676,37 +676,53 @@ and each block has to be is defined
 
 
 ## SQL Database class (This method is based in VFP SQL instructions)
-<aqui me quede >
-
-- select(`<`area`>`).
+this class is used to manipulate a SQL database it's have several methods:
 
 - useNodata(`<`table`>`,`<`alias?`>`).
+   Prepare a local SQL table without data and is a clone of the original SQL-Server view 
 
 - use(`<`table`>`,`<`memoryObject`>`,`<`alias?`>`).
+   Prepare a local SQL table with data and is a clone of the original SQL-Server view
 
 - tableUpdate(`<`updateType`>`,`<`force`>`,`<`alias`>`).
+   Update a local SQL table in to SQL-Server table
 
 - appendBlank(`<`alias`>`,`<`memoryObject`>`).
+   Append a row in a local SQL table with default Type Script Value defined in SqlDictionary form
 
 - deleteRow(`<`key_pri`>`,`<`alias?`>`).
+   Delete current row in a local SQL table
 
 - delete(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
+   Delete a row with recno in a local SQL table
 
-- insert(`<`alias`>`,`<`memoryObject`>`).
+- insert(`<`alias`>`,`<`memoryObject`>`). ( not in use)
 
 - execute(`<`query`>`,`<`alias`>`,`<`resultType`>`).
+  Execute a query in a SQL-Server
 
 - select(`<`alias`>`).
 
 - recCount(`<`alias?`>`).
+  Get a reccord count of a local SQL table
 
 - recno(`<`alias?`>`).
+  Get a current reccord number of a local SQL table
 
 - goto(`<`row`>`).
+  Goto a reccord number of a local SQL table
 
 - skip(`<`rowNumbers`>`).
+  Skip a reccord number of a local SQL table
 
 - scatter(`<`type`>`,`<`fieldArray`>`).
+  Scatter values in a object values of a local SQL table 
+
+- gatther (`<`object values`>`).
+  Gatther values in a local SQL table from a object values
+
+- localAlaSql(`<`query`>`). 
+  Execute a query in a local SQL table
 
 ### Values
  `<`area`>` type: number. VFP Area number
@@ -752,7 +768,6 @@ and each block has to be is defined
 
  `<`fieldArray`>` type: array. Array with specific fields to obtain values.
 
-
 ## Recommended IDE Setup
 
 - [VSCode](https://code.visualstudio.com/)
@@ -762,23 +777,39 @@ and each block has to be is defined
   - Prettier Eslint
   - Vue Official
 
-- Download the back-end framework from https://github.com/siavcom/VFP-NODE and extract it in a folder.
-- Make a company folder in the back-end folder/app/empresas/`<`your company name`>`
-- Copy a example folder company in the company folder
-- Rename the example folder to your company name
-- Change the db.config.js file and use your SQL Server connection parameters
-- Open a terminal in the back-end folder and run node server_socket.js
-
+-
 
 ## How to use this framework
+To use this framework, you have first to install the SQL-server data base and the back-end framework.
+
+Installing the SQL-server data base
+- Download the back-end framework from https://github.com/siavcom/VFP-NODE and extract it in a folder.
+- Install the SQL-server data base (MSSQL or Postgres).
+- Look in a web-ones DataBase Postgres ( soon ) or web-ones DataBase MSSQL directory a backup file of the database and extract it
+- Restore the backup file in the SQL-server data base
+This create a database called web-ones.
+
+Installing the back-end framework
+- Change the db.config.js file ( in web-ones folder) and use your SQL Server connection parameters.
+- Open a terminal in the back-end folder and run node server_socket.js
+
+if you want to use the back-end framework with own name company 
+
+- Make a company folder in the back-end folder/app/empresas/`<`your company name`>`
+- Copy a web-ones folder content in the company folder name
+- Change the db.config.js file and use your SQL Server connection parameters
+
+- Open a terminal in the back-end folder 
+  run npm install
+This procedure install all libreries needed for this project
+
+Install the front-end framework
 
 - Download this framework from https://github.com/siavcom/web-ones-technology and extract it in a folder and chage in.
-
-- Open a terminal in the framework folder 
-use this command :
+- Open a terminal in the back-end folder 
   run npm install
   
-This procedure install all libreries needed for this proyect
+This procedure install all libreries needed for this project
 
 -In the project directory, you will find a zip file called web-ones. This file should be in a directory called systems that you need to create at the root of your disk where you have your project
 
@@ -817,7 +848,8 @@ This will start the project and you can start seeing it in your browser at http:
 # Begining to work
 - Login 
 
-## Design a SQL Table
+
+## Design a SQL Table. (The first step to work with the framework)
 - Create a new SQL table.
   Go to SQL data dictionary in the menu.
  - Choose SQL Server table
@@ -854,9 +886,8 @@ In this framework use the file directory structure of NUXT . All pages are in pa
   - Choose Menu pages
   - Chose menu type 
   - Chose system
-  fill data execpt data of VFP 
-    
-
+  fill data exept data of VFP 
+ 
 ### This project uses
 
 - Vue 3 SFC

@@ -23,7 +23,7 @@ export class bt_aceptar extends COMPONENT {
     this.prop.Image = "/Iconos/svg/accept.svg";
     this.style.width = "64px";
     this.prop.Messages = [
-      ["Actualizar en SQL-Server la tabla:", ""], // 0
+      ["Actualizar en SQL-Server la tabla:"], // 0
       ["Error en SQL-Server al generar la tabla :", "SQL-Server ERROR"], // 1
       ["Error en SQL-Server al generar la vista :", "SQL-Server ERROR"], // 2
       ["Quieres grabar la definición de la tabla SQL-Server "], // 3
@@ -158,7 +158,7 @@ export class bt_aceptar extends COMPONENT {
               this.prop.Messages[2][0] + this.Form.nom_tab.prop.Value
             );
             this.prop.Visible = true;
-            return false;
+            return;
           }
         }
 
