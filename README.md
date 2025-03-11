@@ -820,9 +820,10 @@ Example:
 
 -Give read/write permission to this directory. In this directory put the web-ones.zip file and unzip it.
 
-This will generate a web-ones directory and inside web-ones is the public folder and in that folder is the communication 
+This will generate a web-ones directory and inside web-ones is the public folder and in that folder has a Empresas.json file
 
-Definition in the back-end server`
+In this file has the comunications parameters to the back-end server
+
 `  "arcor": {`
 `     "url": "http://<ip back-end server>:<ip port>/",`
 `    "nem_emp": "<Company name>",`
@@ -830,7 +831,6 @@ Definition in the back-end server`
 `    "path": { "name": "Menu" },`
 `    "logoEmp": "/logos/YourLogo.bmp"`
 `  }`
-
 
 
 `  "url": "http://192.168.154.1:38080/"       Where the back-end server is`
