@@ -830,7 +830,7 @@ In this file has the comunications parameters to the back-end server
 
  `   "nem_emp": "<Company name>",`
 
- `'   "nom_sis": "menu",`
+ `   "nom_sis": "menu",`
 
  `   "path": { "name": "Menu" },`
 
@@ -839,19 +839,20 @@ In this file has the comunications parameters to the back-end server
  `}`
 
 
-  `"url": "http://192.168.154.1:38080/"     Where the back-end server is´
+  "url": "http://192.168.154.1:38080/"     Where the back-end server is.
 
-  `"nem_emp": "My company "                 Company name´
+  "nem_emp": "My company "                 Company name.
 
-  `"nom_sis": "menu", `´
+  "nom_sis": "menu"                        Nemonic of the system.
 
-  `"path": { "name": "Menu" },              Path where the system will start´
+  "path": { "name": "Menu" }              Path where the system will start.
 
-  `"logoEmp": "/logos/YourLogo.bmp"         Company logo´
+  "logoEmp": "/logos/YourLogo.bmp"         Company logo.
 
 The fields you can modify are: 
-> ´"nem_emp": "My Name company"           Company name´
-> ´"logoEmp": "/logos/MyLogo.bmp"         Company logo´
+ "nem_emp": "My Name company"           Company name.
+ 
+  "logoEmp": "/logos/MyLogo.bmp"         Company logo.
 
 
 Edit it and indicate the name of the file where your logo is.
