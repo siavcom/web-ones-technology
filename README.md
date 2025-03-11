@@ -824,19 +824,13 @@ This will generate a web-ones directory and inside web-ones is the public folder
 
 In this file has the comunications parameters to the back-end server
 
-`  "arcor": {`
-
-`     "url": "http://<ip back-end server>:<ip port>/",`
-
-`    "nem_emp": "<Company name>",`
-
-`    "nom_sis": "menu",`
-
-`    "path": { "name": "Menu" },`
-
-`    "logoEmp": "/logos/YourLogo.bmp"`
-
-`  }`
+>  "arcor": {`
+>     "url": "http://<ip back-end server>:<ip port>/",`
+>    "nem_emp": "<Company name>",`
+>    "nom_sis": "menu",`
+>    "path": { "name": "Menu" },`
+>    "logoEmp": "/logos/YourLogo.bmp"`
+>  }`
 
 
 `  "url": "http://192.168.154.1:38080/"     Where the back-end server is`
