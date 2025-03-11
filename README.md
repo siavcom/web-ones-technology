@@ -820,24 +820,28 @@ Example:
 
 -Give read/write permission to this directory. In this directory put the web-ones.zip file and unzip it.
 
-This will generate a web-ones directory and inside web-ones is the public folder and in that folder is the communication definition with the back-end server
-  "arcor": {
-     "url": "http://<ip back-end server>:<ip port>/",
-    "nem_emp": "<Company name>",
-    "nom_sis": "menu",
-    "path": { "name": "Menu" },
-    "logoEmp": "/logos/YourLogo.bmp"
-  }
+This will generate a web-ones directory and inside web-ones is the public folder and in that folder is the communication 
 
-  "url": "http://192.168.154.1:38080/"       Where the back-end server is
-  "nem_emp": "My company "           Company name
-  "nom_sis": "menu",             
-  "path": { "name": "Menu" },             Path where the system will start
-  "logoEmp": "/logos/YourLogo.bmp"         Company logo
+Definition in the back-end server`
+`  "arcor": {`
+`     "url": "http://<ip back-end server>:<ip port>/",`
+`    "nem_emp": "<Company name>",`
+`    "nom_sis": "menu",`
+`    "path": { "name": "Menu" },`
+`    "logoEmp": "/logos/YourLogo.bmp"`
+`  }`
 
-The fields you can modify are
- "nem_emp": "My Name company"           Company name
-  "logoEmp": "/logos/MyLogo.bmp"         Company logo
+
+
+`  "url": "http://192.168.154.1:38080/"       Where the back-end server is`
+`  "nem_emp": "My company "           Company name`
+`  "nom_sis": "menu",             `
+`  "path": { "name": "Menu" },             Path where the system will start`
+`  "logoEmp": "/logos/YourLogo.bmp"         Company logo`
+
+The fields you can modify are: 
+` "nem_emp": "My Name company"           Company name`
+` "logoEmp": "/logos/MyLogo.bmp"         Company logo`
 
 Edit it and indicate the name of the file where your logo is.
 The logos are in the logos directory in the web-ones directory
@@ -847,7 +851,6 @@ This will start the project and you can start seeing it in your browser at http:
 
 # Begining to work
 - Login 
-
 
 ## Design a SQL Table. (The first step to work with the framework)
 - Create a new SQL table.
