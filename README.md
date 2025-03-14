@@ -645,21 +645,31 @@ And each column component has it's owns propierties
 
 ## Container (container component). Is a component contain one or containers blocks
        
-  by default has this Style   
-    this.containerStyle.display = 'flex'
-    this.containerStyle.flexWrap = 'wrap'
-    this.style.maxWidth = '600px'
+  by default has this Style:
+
+    this.containerStyle.display = 'flex' 
+
+    this.containerStyle.flexWrap = 'wrap' 
+
+    this.style.maxWidth = '600px' 
+
   
 and each block has to be is defined  
-  // =======================<Bloque 0 >===============
-    const container = this.container
-    this.block[0] = structuredClone(container)
 
-    this.block[0].component = {
-      [0]: this.name,
-      [1]: this.age,
+  // =======================<Bloque 0 >=============== 
 
-    }
+    const container = this.container 
+
+    this.block[0] = structuredClone(container) 
+    
+    this.block[0].component = { 
+
+      [0]: this.name, 
+
+      [1]: this.age, 
+ 
+    } 
+    
     this.block[0].title = 'Cliente Nuevo'
     this.block[0].style.width = '95%'
 
@@ -772,12 +782,10 @@ this class is used to manipulate a SQL database it's have several methods:
 
 - [VSCode](https://code.visualstudio.com/)
 
-- Useful extensions for VSCode:
+- Usefull extensions for VSCode:
   - Eslint
   - Prettier Eslint
   - Vue Official
-
--
 
 ## How to use this framework
 To use this framework, you have first to install the SQL-server data base and the back-end framework.
@@ -839,20 +847,20 @@ In this file has the comunications parameters to the back-end server
  `}`
 
 
-  "url": "http://192.168.154.1:38080/"     Where the back-end server is.
+  "url": "http://192.168.154.1:38080/"      Where the back-end server is.
 
-  "nem_emp": "My company "                 Company name.
+  "nem_emp": "My company "                  Company name.
 
-  "nom_sis": "menu"                        Nemonic of the system.
+  "nom_sis": "menu"                         Mnemonic of the system.
 
-  "path": { "name": "Menu" }              Path where the system will start.
+  "path": { "name": "Menu" }                Path where the system will start.
 
-  "logoEmp": "/logos/YourLogo.bmp"         Company logo.
+  "logoEmp": "/logos/YourLogo.bmp"          Company logo.
 
 The fields you can modify are: 
- "nem_emp": "My Name company"           Company name.
+ "nem_emp": "My Name company"               Company name.
  
-  "logoEmp": "/logos/MyLogo.bmp"         Company logo.
+  "logoEmp": "/logos/MyLogo.bmp"            Company logo.
 
 
 Edit it and indicate the name of the file where your logo is.

@@ -30,7 +30,7 @@ export class sis_sis extends COMPONENT {
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidth = "300px,50px";
+    this.prop.ColumnWidths = "250px,100px";
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
     this.prop.Visible = true;
 
@@ -42,7 +42,7 @@ export class sis_sis extends COMPONENT {
     //this.style.zIndex=2
   }
 
-  async when() {
+  override async when() {
     this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql, 5-Array
 
     this.Form.grid_menu.prop.Visible = false;

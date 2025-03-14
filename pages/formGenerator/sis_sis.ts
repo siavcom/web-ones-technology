@@ -25,7 +25,13 @@ export class sis_sis extends COMPONENT {
     // Si es un comboBox no olvidar todas estas reglas
     this.prop.RowSource =
       "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S'  union \
-       select '~ without classification ~' as des_prg,'   ' as sis_sis ";
+    select '~ SQL Dictionary ~' as des_prg,'CFG' as sis_sis union \
+    select '~ without classification ~' as des_prg,'   ' as sis_sis ";
+    /*
+          "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S'  union \
+           select '~ SQL Dictionary ~' as des_prg,'CFG' as sis_sis union \
+           select '~ without classification ~' as des_prg,'   ' as sis_sis ";
+           */
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;

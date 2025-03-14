@@ -1,3 +1,15 @@
+<!--
+----------------------------------------------------------------------------------------------
+              Killo Soft
+ ----------------------------------------------------------------------------------------------
+ Autor    	: ElFerBlocks
+ Sistema  	: Web-Ones  							Version : 1.0  VUE
+ Programa 	: comboBox    		Mnemo   : comboBox.vue
+ Ult.Mod :   13/Marzo/2025 se agrego el siguiente if
+ Objeto		: VUE
+ Comentarios	: 
+ ----------------------------------------------------------------------------------------------
+-->
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
@@ -9,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
       prop.textLabel
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -51,7 +63,8 @@
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
-      <div :id="Id + '_toggle'" class="toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled">
+      <div :id="Id + '_toggle'" class="toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
+        :style="{ width: 'auto' }">
         <!--CheckBox -->
         <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled" class="columContainer"
           @focusout="toggle = !toggle" :style="columnContainer">
@@ -237,7 +250,6 @@ const Valid = ref(props.prop.Valid)
 Valid.value = true
 const ToolTipText = ref(true)
 
-
 //const Id = This.prop.Name + '_' + props.Registro.toString().trim()
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 let thisElement: Element | null
@@ -321,6 +333,8 @@ const columnLabelStyle = {
   zIndex: comboStyle.zIndex + 1
 }
 
+//const columnStyle={ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height }
+
 
 const List = ref(This.prop.ListCount)
 const columnContainer = reactive({
@@ -333,7 +347,6 @@ const columnContainer = reactive({
 //if (props.prop.MultiSelect) {
 columnContainer.height = 'min-content'
 columnContainer.maxHeight = 'min-content'
-columnContainer.height = 'min-content'
 columnContainer.maxHeight = 'min-content'
 columnContainer.minHeight = 'max-content'
 columnContainer.borderRadius = '4px';
@@ -386,6 +399,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       This.prop.Valid = false
       inputBuffer = ''
       //      This.prop.Valid = false
+      const newValue = This.prop.Value
+
       if (!await This.valid()) {
 
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
@@ -403,6 +418,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         //   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
       }
+
+      if (newValue != This.prop.Value)
+        return
+
+
       sw_focus.value = false
 
     }
@@ -623,6 +643,14 @@ const focusOut = async () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const validClick = async (num_ren: number) => {
+
+  for (const element of This.Parent.elements) {
+    const comp = element.Name
+    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
+      return
+    }
+  }
+
   toggle.value = false
   comboStyle.zIndex = zIndex.value
 
@@ -677,6 +705,16 @@ const validCheck = async (num_ren: number) => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const validList = async () => {
+
+  for (const element of This.Parent.elements) {
+    const comp = element.Name
+    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
+      return
+    }
+  }
+
+
+
   //toggle.value = false
 
   // console.log('ComboBox validList', This.prop.Name, 'Value=', Value.value)
@@ -1429,10 +1467,13 @@ onMounted(async () => {
 
     let textWidth = 0
 
-    if (Styles.style.zIndex)
-      Styles.style.zIndex = Styles.style.zIndex + 99
-    else
-      Styles.style.zIndex = 100
+    // 13/Marzo/2023 se quita el siguiente if
+    /*   
+       if (Styles.style.zIndex)
+         Styles.style.zIndex = Styles.style.zIndex + 99
+       else
+         Styles.style.zIndex = 100
+   */
 
     Styles.inputStyle.maxHeight = Styles.inputStyle.fontSize
 

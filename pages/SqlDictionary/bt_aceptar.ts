@@ -336,7 +336,7 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_menu.prop.textLabel = this.prop.Messages[16][0]; // "Menú de Procesos";
       }
       // Leemos menu de programas
-      console.log("grid_menu m=", m);
+      //  console.log("grid_menu m=", m);
 
       this.Form.grid_menu.RecordSource = ''
       await this.Form.db.use("vi_cap_prg", m);
@@ -346,6 +346,8 @@ export class bt_aceptar extends COMPONENT {
         await this.Form.grid_menu.appendRow(m);
       }
       this.Form.grid_menu.prop.Visible = true;
+      this.prop.Visible = false
+      return
     } // Fin de menu de programas
     this.prop.Visible = true;
     return;
@@ -438,10 +440,10 @@ export class bt_aceptar extends COMPONENT {
 
       if ((await this.Form.db.tableUpdate(1, false, vis_cap)) == true) {
         // Actualiza todos los registros
-        MessageBox(this.Messages[8][0])    //"Diccionario actualizado");
+        MessageBox(this.prop.Messages[8][0])    //"Diccionario actualizado");
         return true;
       } else {
-        MessageBox(this.Messages[9][0], 16, "ERROR");  //   "No se grabaron los datos"
+        MessageBox(this.prop.Messages[9][0], 16, "ERROR");  //   "No se grabaron los datos"
         return false;
       }
     }

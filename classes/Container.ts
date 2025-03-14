@@ -11,41 +11,7 @@ export class CONTAINER extends COMPONENT {
   eventos = [] // eventos a ejecutar en el stack
   estatus = []  // estatus de los componentes hijos
   Divi = []
-  // block = [] //{}
 
-  /*
-    container =
-      {
-        component: {
-        },
-        prop: {
-          Visible: true
-        },
-        style: {
-          border: '1px solid rgb(0, 0, 0)',
-          background: 'bisque',
-          borderRadius: '10px',
-          boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
-          padding: '10px',
-          // display: 'inline-flex',
-          width: '-moz-available',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignContent: 'space-around' // 'space-between'  
-        },
-        title: ''
-      }
-  */
-
-
-
-
-  /* {
-    header: [],
-    main: [],
-    footer: []
-  }
-*/
   constructor() {
     super()
     //this.prop.Name = null ? 'Container' : this.prop.Name
@@ -54,7 +20,9 @@ export class CONTAINER extends COMPONENT {
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.prop.Capture = false;
-
+    this.labelStyle.color = 'black'
+    this.labelStyle.fontWeight = 'bold'
+    this.labelStyle.fontSize = '17px'
     // Estilo de cada contenedor del modal
 
 
@@ -68,7 +36,7 @@ export class CONTAINER extends COMPONENT {
       this.style.background = 'antiquewhite'
       this.style.backgroundColor = 'antiquewhite'
       this.style.left = '3%'
-      this.style.borderRadius = '5px'
+      this.style.borderRadius = '1.5%'
       this.style.padding = '3%'   //Margen entre los bordes y el contenido
       this.labelStyle.color = 'black'
     }

@@ -20,7 +20,7 @@ export class COMPONENT {
   //name = this.Name
   Sql: any = {};
   Recno: number = 0; // ref(0)
-  Ref: null | undefined;
+  //Ref: null | undefined;
   Show: true = true;
   Index!: number;
   header: [] = []; // elementos que tiene el componente en header

@@ -27,5 +27,4 @@ export class form extends COMPONENT {
     this.style.fontSize = "15px";
   }
 
-
 }

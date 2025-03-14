@@ -23,11 +23,11 @@ export class emp_emp extends COMPONENT {
     this.prop.Style = 2;
     this.prop.BoundColumn = 1;
     this.prop.RowSource = [[""], [""]];
-    this.prop.ColumnWidths = "37%,60%";
+    this.prop.ColumnWidths = "200px,300px";
     this.prop.TabIndex = 1;
     // this.style.zIndex = 2;
     this.style.width = "auto";
-    this.inputStyle.width = "200px";
+    this.inputStyle.width = "230px";
 
     const session = Session();
     this.prop.Value = session.nom_emp;

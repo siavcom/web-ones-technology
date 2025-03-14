@@ -19,7 +19,7 @@ export class pas_usu extends COMPONENT {
     this.prop.TabIndex = 3;
     this.prop.Placeholder = "Password/Contraseña";
     this.style.width = "auto";
-    this.inputStyle.width = "130px";
+    this.inputStyle.width = "230px";
     this.prop.ErrorMessage = "Invalid password/Contraseña invalida";
     this.style.color = "black";
     this.style.fontWeight = "bold";

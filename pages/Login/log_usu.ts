@@ -22,8 +22,7 @@ export class log_usu extends COMPONENT {
     this.prop.Type = "text";
     this.prop.Placeholder = "usname@company/usuario@empresa";
     this.style.width = "auto";
-    this.inputStyle.width = "200px";
-
+    this.inputStyle.width = "230px";
 
     this.style.color = "black";
     this.style.fontWeight = "bold";
@@ -36,7 +35,17 @@ export class log_usu extends COMPONENT {
   }
 
   override async when(): Promise<boolean> {
-
+    console.log('log_usu')
     return true;
   }
+
+  override async valid(): Promise<boolean> {
+    if (this.prop.Value.trim().length == 0) {
+      return false
+    }
+
+    const yo = 'AAAAAAAAAAA'
+
+    return true
+  } //await super.valid
 }

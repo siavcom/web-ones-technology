@@ -7,7 +7,7 @@
     <!--section class=" mainContainer"-->
 
     <div :id="Id + 'header'" class="header">
-      <slot name="header">{{ this.prop.ColumnTextLabel }}</slot>
+      <slot name="header">{{ This.prop.ColumnTextLabel }}</slot>
     </div>
 
     <div :id="Id + 'body'" class="body" style="width: 99%">

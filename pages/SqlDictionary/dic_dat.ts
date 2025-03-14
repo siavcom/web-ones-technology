@@ -31,12 +31,12 @@ export class dic_dat extends COMPONENT {
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "200px,10px";
+    this.prop.ColumnWidths = "250px,25px";
 
     this.inputStyle.fontSize = "17px";
     this.inputStyle.fontWeight = "bold";
     this.inputStyle.width = "300px";
-    this.style.width = "500px";
+    //this.style.width = "500px";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
 

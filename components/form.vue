@@ -1,14 +1,13 @@
 <!--   
-&& ----------------------------------------------------------------------------------------------
-&&              Siavcom Software S. de R.L. de C.V.
-&& ----------------------------------------------------------------------------------------------
-&& Autor    	: Ing. Fernando Cuadras Angulo
-&& Sistema  	: Siavcom  							Version : 10.0  VUE
-&& Programa 	: Forma prinncipal   		Mnemo   : form.VUE
-&& Ult. mod.	: Fernando Cuadras  				Fecha   : 13/Dic/2022
-&& Objeto		: VUE
-&& Comentarios	: Genera la forma dinamicamente en base al ThisForm que se pasa del comeponente padre
-&& ----------------------------------------------------------------------------------------------
+ ----------------------------------------------------------------------------------------------
+             Killo Soft
+ ----------------------------------------------------------------------------------------------
+ Autor    	: El Fer Blocks
+ Sistema  	: Web-Ones-Technology 	Forma prinncipal  Ver 1.0 		Mnemo   : form.VUE
+ Ult. mod.	: Fernando Cuadras  		Fecha   : 13/Dic/2022
+ Objeto		: VUE
+ Comentarios	: Genera la forma dinamicamente en base al ThisForm que se pasa del comeponente padre
+ ----------------------------------------------------------------------------------------------
 -->
 <template>
   <!--header :style="{ 'display': 'inlineBlock' }"-->
@@ -59,11 +58,7 @@
 
               </slot>
             </section>
-            <!--/template-->
-            <!--template v-slot:main-->
-            <!-- Despliega todo los componentes de la forma  
-      && comp!='grid_datos'
-      -->
+            <!-- Despliega todo los componentes de la forma  -->
             <section class="formmain">
               <slot name="main">
 
@@ -97,20 +92,13 @@
                       </div>
                     </div>
                   </div>
-
-
                   <!------------------------------------------------------------->
-
-
                 </TransitionGroup>
               </slot>
             </section>
 
             <!--/template-->
-            <!--template v-slot:footer
-               src="/Iconos/BotonRojo.png"
-    ThisForm.prop.Status == 'A'
-    -->
+            <!--template v-slot:footer  -->
             <section class="formfooter">
               <!--Transition tag='div' -->
               <nuxt-img class='circle'
