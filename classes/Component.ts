@@ -292,7 +292,7 @@ export class COMPONENT {
 
       // ControlSource contiene el RecordSource de la forma
       if (Comp && Comp.prop && Comp.prop.ControlSource && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
-        console.log('Asignado recno por referencia al padre', Comp.prop.Name)
+        //console.log('Asignado recno por referencia al padre', Comp.prop.Name)
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
       }
     }
@@ -363,7 +363,7 @@ export class COMPONENT {
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
 
-      console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.Map)
+      // console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.Map)
 
       if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
 
@@ -490,7 +490,7 @@ export class COMPONENT {
           while (this[comp].block[numero].component && this[comp].block[numero].component[num_Comp]) {
 
             // Recorremos todos los componentes del bloque
-            console.log('Bloque', this[comp].block[numero].component[num_Comp].prop.Name, 'Num Comp=', num_Comp, 'TabIndex=', TabIndex)
+            //   console.log('Bloque', this[comp].block[numero].component[num_Comp].prop.Name, 'Num Comp=', num_Comp, 'TabIndex=', TabIndex)
             this[comp].block[numero].component[num_Comp].prop.TabIndex = TabIndex;
 
             TabIndex++;
@@ -730,7 +730,7 @@ export class COMPONENT {
     if (!this.Form || !this.Form.publicVar)
       return
 
-    console.log('2) this.prop.Map=', this.prop.Map)
+    // console.log('2) this.prop.Map=', this.prop.Map)
 
     const m = {
       for_lan: this.Form.prop.Name,

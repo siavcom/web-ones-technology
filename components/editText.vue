@@ -569,7 +569,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
     }
 
-    console.log('1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+    //  console.log('1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
@@ -579,7 +579,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
     // Si no hay error
     This.prop.Valid = true
+
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
+      // console.log('2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+
 
       //  console.log('3.1) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
@@ -942,7 +945,8 @@ const lostFocus = async () => {
 
   for (const element of This.Parent.elements) {
     const comp = element.Name
-    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
+
+    if (This.Parent[comp].prop.Status == 'P' && comp != This.prop.Name) {
       return
     }
   }
@@ -955,8 +959,7 @@ const lostFocus = async () => {
 
   await asignaValue()
 
-  console.log('editText lostFocus() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value=', Value.value)
-  await emitValue(false, false, Value.value) //se puso await
+  // await emitValue(false, false, Value.value) //se puso await
   //console.log('editText onInput lostFocus() Name', props.prop.Name, 'Type=', propType.value, 'Value=', Value.value, 'currentValue.value=', currentValue.value[0])
 
 
@@ -1027,9 +1030,6 @@ const asignaValue = async () => {
     Value.value = await JSON.stringify(currentJson.value)
   }
 
-  if (!This.prop.Valid)
-    return
-
   if (Type == 'text') {
     if (This.style.textTransform == 'uppercase')
       Value.value = Value.value.toUpperCase()
@@ -1038,9 +1038,8 @@ const asignaValue = async () => {
       Value.value = Value.value.toLowerCase()
   }
 
-
-
-  // emitValue() ///se puso await
+  This.prop.Value = Value.value
+  await emitValue() ///se puso await
   return
 
 };
@@ -1208,7 +1207,6 @@ const onFocus = async () => {
       const compName = grid.elements[comp].Name
       // 24/Dic/2024 .- Se aumenta que sea componente Capture
       if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-        console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
         return
       }
     }

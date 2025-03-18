@@ -1,0 +1,59 @@
+********* Instalar PM2
+
+PM2 es un gestor de procesos Node.js que le permite administrar sus aplicaciones Node.js con facilidad.
+
+    Instalar PM2 globalmente:Utilice npm para instalar PM2 globalmente:
+    sudo npm install -g pm2
+  
+    Verifique la instalación de PM2:Compruebe que PM2 se ha instalado correctamente ejecutando:
+    pm2 -v
+
+    Este comando debería mostrar el número de versión de PM2.
+
+********* Uso de PM2 para gestionar aplicaciones Node.js
+
+Una vez instalado PM2, puede usarlo para ejecutar y administrar sus aplicaciones Node.js.
+
+    Iniciar una aplicación Node.js:Navegue hasta el directorio de su aplicación Node.js y utilice PM2 para iniciarla:
+    pm2 start app.js
+ 
+
+    Sustituya app.j s por el punto de entrada de su aplicación.
+    Ver procesos en ejecución:Para ver todos los procesos gestionados por PM2, ejecute:
+    pm2 list
+ 
+
+    Esto mostrará una lista de todas las aplicaciones en ejecución junto con sus estados y otros detalles.
+    Permite reiniciar, detener y eliminar aplicaciones:
+        Reiniciar una aplicación:
+        pm2 restart app
+          
+        Detener una aplicación:
+        pm2 stop app
+          
+        Borrar una Aplicación:
+        pm2 delete app
+          
+
+    Sustituya app por el nombre o ID de su aplicación.
+    Monitorizar Registros:Para ver los registros de todas sus aplicaciones PM2, utilice:
+    pm2 logs
+      
+
+    Para ver los registros de una aplicación específica:
+    pm2 logs app
+      
+
+******** Configurar PM2 para que se inicie al arrancar
+
+Para asegurarse de que PM2 se inicie automáticamente cada vez que se reinicie su servidor, utilice el siguiente comando:
+pm2 startup
+
+
+Este comando mostrará un comando que debe ejecutar con sudo para configurar el script de inicio. Copie y pegue ese comando en su terminal.
+
+Después de ejecutar el comando, guarda la lista de procesos actuales para asegurarte de que tus aplicaciones se inician al reiniciar:
+pm2 save
+  
+
+Esto guarda la lista de aplicaciones actualmente gestionadas por PM2, y las reiniciará automáticamente cuando el servidor se reinicie.

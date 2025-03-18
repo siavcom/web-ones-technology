@@ -27,7 +27,7 @@ export class CONTAINER extends COMPONENT {
 
 
   }
-  async init() {
+  override async init() {
     await super.init()
     if (this.prop.BaseClass == 'modalContainer') {
       this.style.maxWidth = '90%'
@@ -60,7 +60,7 @@ export class CONTAINER extends COMPONENT {
 
     for (let i = 0; i < this.elements.length; i++) {
 
-      console.log('1) Container ', this.prop.Name, 'componente=', this.elements[i].Name)
+      //  console.log('1) Container ', this.prop.Name, 'componente=', this.elements[i].Name)
       const componente = this.elements[i].Name
 
       //    for (let i = 0; i < elementos.length; i++) {

@@ -8,9 +8,9 @@
 
         <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle" @click.middle.stop="middleClick()">
 
-          <div :id="Id + 'label'" class=" modal-header" :style="labelStyle">
+          <span :id="Id + 'label'" class=" modal-header" :style="labelStyle">
             <label name="header">{{ This.prop.textLabel }}</label>
-          </div>
+          </span>
           <div :id="Id + 'modal_body'" class="modal-body">
             <slot name="componentes">
               <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
