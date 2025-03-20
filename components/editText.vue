@@ -15,7 +15,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -119,7 +119,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -939,7 +939,7 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 /////////////////////////////////////////////////////////////////
 const lostFocus = async () => {
 
-  console.log('1 editText LostFocus Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+  //console.log('1 editText LostFocus Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
   if (This.prop.ReadOnly || This.prop.Disabled) {
     return
@@ -953,8 +953,6 @@ const lostFocus = async () => {
       return
     }
   }
-  console.log('3 editText LostFocus Name=', props.prop.Name)
-
 
   if (displayError.value) {
     displayError.value = false
@@ -966,7 +964,6 @@ const lostFocus = async () => {
 
   // await emitValue(false, false, Value.value) //se puso await
   //console.log('editText onInput lostFocus() Name', props.prop.Name, 'Type=', propType.value, 'Value=', Value.value, 'currentValue.value=', currentValue.value[0])
-
 
   if (This.prop.Valid)
     focusIn.value = 0 // Perdio el foco
@@ -1052,7 +1049,7 @@ const asignaValue = async () => {
 const clickCheckBox = () => {
 
   This.prop.Value = checkValue.value ? 0 : 1
-  console.log('clickCheckBox editText Name', This.prop.Name, 'Value=', This.prop.Value)
+  // console.log('clickCheckBox editText Name', This.prop.Name, 'Value=', This.prop.Value)
 
   This.click()
 
@@ -1095,7 +1092,7 @@ const keyPress = ($event: {
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
-    console.log('1.1) nextElement KeyPres==>', $event.charCode)
+    //   console.log('1.1) nextElement KeyPres==>', $event.charCode)
     return nextElement() //clickReturn()
   }
   // caracteres permitido en input numero
@@ -1134,15 +1131,6 @@ const keyPress = ($event: {
 // $event.charCode == 13 // Down Key  
 const nextElement = async () => {  //clickReturn
 
-  // await lostFocus()
-  /* 26/Dic/2024
-   await asignaValue()
-   await emitValue() // 
-   if (!This.prop.Valid) {
-     return
-   }
-  */
-
   const TabIndex = This.prop.TabIndex
   let lastIndex = 999999
   let nextFocus = ''
@@ -1150,8 +1138,10 @@ const nextElement = async () => {  //clickReturn
   if (This.Parent != null)
     if (This.Parent)
       console.log('EditText nextElement Name=', This.prop.Name, 'This.Parent=', This.Parent)
+
+
   for (const element in This.Parent) { //.main
-    console.log('EditText nextElement element=', element)
+    //console.log('EditText nextElement element=', element)
     if (This.Parent[element] != undefined && This.Parent[element].prop && This.Parent[element].prop.Visible &&
       !This.Parent[element].prop.Disabled) {
       const Tab = This.Parent[element].prop.TabIndex
@@ -1167,13 +1157,13 @@ const nextElement = async () => {  //clickReturn
   if (nextFocus == '')
     return
 
-  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
+  //  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
   // $event.preventDefault();
   // Obtienee elemento a hacer el focus
   const nextElement = document.getElementById(nextFocus);
   // console.log('EditText keyPres Name',this.prop.Name=', setElement)
   if (nextElement) {
-    console.log('clickReturn nextFocus =', nextFocus)
+    //  console.log('clickReturn nextFocus =', nextFocus)
     nextElement.focus()
     //  nextElement.focus()
 
@@ -1190,7 +1180,7 @@ const nextElement = async () => {  //clickReturn
  */
 
 const onClick = () => {
-  console.log('EditText onClick Name', This.prop.Name)
+  // console.log('EditText onClick Name', This.prop.Name)
   This.Form.eventos.push(This.prop.Map + '.click()')
 
 }
@@ -1325,7 +1315,7 @@ const onFocus_old = async () => {
       const compName = grid.elements[comp].Name
       // 24/Dic/2024
       if (grid[compName].prop.Status != 'A' || grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-        console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+        // console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
         return
       }
     }
@@ -1418,10 +1408,9 @@ const clickHelp = async () => {
     await onFocus()
 
   if (This.prop.Help) {
-    console.log('1) clickHelp')
+    //   console.log('1) clickHelp')
     This.prop.ShowError = false
     This.prop.Valid = true
-    console.log('2) clickHelp')
 
     displayError.value = false
     This.Help = true
@@ -1859,7 +1848,7 @@ const styleAssing = async () => {
     Styles.inputStyle.textAlign = 'right'
 
   if (Type == 'checkbox') {
-    console.log('2) EditText Name=', This.prop.Name, 'Styles.inputStyle.width =', Styles.inputStyle.width)
+    //  console.log('2) EditText Name=', This.prop.Name, 'Styles.inputStyle.width =', Styles.inputStyle.width)
     Styles.inputStyle.width = '20px'
   }
 
@@ -1871,14 +1860,14 @@ const styleAssing = async () => {
  */
 const middleClick = () => {
   console.log('middleClick')
-  if (This.Form)
-    This.Form.compContainer.open(ref(This))
+  if (This.Form && This.Form.translateContainer)
+    This.Form.translateContainer.open(ref(This))
 }
 
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
-    //  This.Form.compContainer.open(ref(This))
+    //  This.Form.translateContainer.open(ref(This))
 
   }
   event.preventDefault();

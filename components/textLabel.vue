@@ -566,15 +566,16 @@ const init = async () => {
 }
 
 const middleClick = () => {
-  console.log('middleClick')
-  if (This.Form)
-    This.Form.compContainer.open(ref(This))
+  // console.log('middleClick')
+  if (This.Form && This.Form.translateContainer)
+    This.Form.translateContainer.open(ref(This))
 }
+
 
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
-    //  This.Form.compContainer.open(ref(This))
+    //  This.Form.translateContainer.open(ref(This))
   }
   event.preventDefault();
 }

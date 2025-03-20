@@ -483,14 +483,14 @@ onUnmounted(() => {
 const middleClick = () => {
   console.log('middleClick')
 
-  ThisForm.compContainer.open(ref(ThisForm))
+  ThisForm.translateContainer.open(ref(ThisForm))
 }
 
 const handler = (event) => {
   console.log('2) editText handler event.which=', event.which)
 
   if (event.which === 1)
-    ThisForm.compContainer.open(ref(ThisForm))
+    ThisForm.translateContainer.open(ref(ThisForm))
   event.preventDefault();
 }
 
