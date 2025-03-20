@@ -28,7 +28,7 @@ import { messages } from "./Messages";
 import { bt_accept } from "./bt_accept";
 //import { csf_pry } from "./csf_pry";
 
-export class compContainer extends CONTAINER {
+export class translateContainer extends CONTAINER {
 
   public ColumnTextLabel = new ColumnTextLabel()
   public textlabel = new textlabel()

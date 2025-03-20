@@ -60,15 +60,11 @@ export class bt_obtener extends COMPONENT {
 
       await this.Form.report.bt_close.click();
       MessageBox("No data to show");
-
       return;
     }
 
-
     this.Form.report.displayBrowse.prop.RowSource = "Now.sqlresult";
     this.Form.report.displayBrowse.prop.Visible = true;
-
-
 
     // console.log('bt_obtener asigno RowSource',this.Parent.report)
     this.Form.report.bt_excel.prop.Visible = true;

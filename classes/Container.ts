@@ -99,7 +99,7 @@ export class CONTAINER extends COMPONENT {
 
     }
 
-    console.log('Container ', this.prop.Name, 'componentes=', this.Divi)
+    // console.log('Container ', this.prop.Name, 'componentes=', this.Divi)
 
   }
 

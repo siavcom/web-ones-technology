@@ -15,7 +15,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -105,9 +105,9 @@
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska"
+      @focusout="lostFocus" @click="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska"
       @maska="onMaska">
-    <!--v-on:keyup.enter="clickReturn()" -->
+    <!--v-on:keyup.enter="clickReturn()" @click.capture="onClick"-->
 
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
@@ -119,7 +119,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -602,7 +602,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         await This.interactiveChange()
 
       if (!isValid) {
-        //  console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+        console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
         const newValue = This.prop.Value
         if (!await This.valid()) {
@@ -835,7 +835,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     default:
       if (Value.value == null)
         Value.value = ''
-      console.log('2.2.1) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+    //  console.log('2.2.1) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
   }
 
@@ -847,13 +847,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   /////////////////////////////////////////
   // nextTick(function () {
 
-  console.log('2.3)editText emitValue readCampo Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+  //console.log('2.3)editText emitValue readCampo Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
   // 11/Marzo/2025 se agrego el siguiente if
   //if (Value.value != This.prop.Value)
   //  Value.value = This.prop.Value
 
-  console.log('Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
+  //  console.log('Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
 
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update") // emite un update en el componente padre
@@ -939,17 +939,22 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 /////////////////////////////////////////////////////////////////
 const lostFocus = async () => {
 
+  console.log('1 editText LostFocus Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+
   if (This.prop.ReadOnly || This.prop.Disabled) {
     return
   }
 
   for (const element of This.Parent.elements) {
     const comp = element.Name
+    console.log('2 editText LostFocus This=', This, 'comp=', comp, 'Status=', This.Parent[comp].prop.Status)
 
     if (This.Parent[comp].prop.Status == 'P' && comp != This.prop.Name) {
       return
     }
   }
+  console.log('3 editText LostFocus Name=', props.prop.Name)
+
 
   if (displayError.value) {
     displayError.value = false
@@ -1185,7 +1190,7 @@ const nextElement = async () => {  //clickReturn
  */
 
 const onClick = () => {
-
+  console.log('EditText onClick Name', This.prop.Name)
   This.Form.eventos.push(This.prop.Map + '.click()')
 
 }
@@ -1540,7 +1545,7 @@ watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
   (new_val: any, old_val: any) => {
 
-    console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
+    // console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
     if (new_val != old_val)
       emitValue(true)
   },
@@ -1555,7 +1560,7 @@ watch(
 watch(
   () => props.Registro,
   async () => {
-    console.log('EditText Watch prop.Registro Name=', This.prop.Name)
+    // console.log('EditText Watch prop.Registro Name=', This.prop.Name)
     await emitValue(true)
     This.Recno = props.Registro
     This.recnoChange()
@@ -1636,7 +1641,7 @@ watch(
 
     watchPropValue = true
 
-    console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
+    //console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
 
     if (This.prop.Status == 'P') {// No se ha salido del componente
       Value.value = This.prop.Value
@@ -1715,7 +1720,7 @@ watch(
 
       }
 
-      console.log('Fin -1) EditText Watch Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
+      //console.log('Fin -1) EditText Watch Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
 
       //   await emitValue(false, This.prop.Valid) //se puso await
       //   console.log('Fin---- EditText Watch Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
@@ -1754,12 +1759,12 @@ watch(
 
       //   if (Value.value != new_val)
 
-      console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
+      //console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
 
       await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
       watchPropValue = false
 
-      console.log('--------Fin 2) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
+      //console.log('--------Fin 2) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
 
 
     }

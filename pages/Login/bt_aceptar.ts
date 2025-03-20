@@ -27,6 +27,8 @@ export class bt_aceptar extends COMPONENT {
   /////////////////////////////////////////////////////////////////
 
   public override async click() {
+
+    console.log("bt_aceptar click num_int=", this.num_int);
     this.num_int++;
 
     if (this.num_int >= 5) {

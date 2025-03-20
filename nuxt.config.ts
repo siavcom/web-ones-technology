@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // Para encontrar errorres de hidratacion
+  // To find hydration errors set debug to true
   debug: false,
   devtools: { enabled: false },
 
@@ -8,35 +8,17 @@ export default defineNuxtConfig({
     host: 'localhost',
     port: 3000
   },
-  // Correr y desarrollar con bun 
-  /*
-   nitro: {
-     preset: 'bun',
-   },
- */
+
   ssr: true,
 
   // target: 'static',
 
-  alias: {  // Quita el error a instalar Nuxt
-    // pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
-  },
-
-  imports: {
+   imports: {
     // Auto-import pinia stores defined in `~/stores`
     dirs: ['stores', 'classes']
   },
 
-  // Configuracion para debug 
-  /*
-    build: {
-      extend(config, ctx) {
-        if (ctx.isDev) {
-          config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
-        }
-      }
-    },
-    */
+
   plugins: [
   ],
 
@@ -44,46 +26,34 @@ export default defineNuxtConfig({
     shim: false,
     strict: true,
     includeWorkspace: true,
-    typecheck: true
+    //typecheck: true
   },
 
   css: ['~/assets/css/styles.css'],
 
-  // css: ['~/assets/css/styles.css', 'vue-final-modal/style.css'],
+  // Linux development. To create symbolic links, directories are increased so that Vite accepts them.
 
-  // Para poder hacer los enlaces simbolicos, se aumenta los directorios
-  // para que vite los acepte
   vite: {
     resolve: {
       preserveSymlinks: true,
 
     },
-    server: { // Pewrmite el acceso a los archivos del servidor
-      fs: {
-        // allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
+    /*
+    server: {
+      fs: { // Permite el acceso a los archivos del servidor
+        allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'], // absolute path to web-ones directory
       },
     },
+     */
+    esbuild: {
+      keepNames: true   // Keeps the original class and method names (doesn't obfuscate them). Don't remove it. (problem nuxt >=3.15)
+    }
   },
 
-  // 26/Nov/2024
-  //modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', "@nuxt/image"],
-
-
-  modules: ['@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt',
-    "@nuxt/image", '@vueuse/nuxt'],
-
-  // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
-  //build: {
-  //  transpile: ['pinia-plugin-persistedstate'],
-  // },
-
-  /*
-    router: {
-      middleware: ['checkSession']
-    }
-  */
-
+  modules: [
+    "@nuxt/image", '@vueuse/nuxt',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',],
 
   app: {
     head: {
@@ -92,13 +62,14 @@ export default defineNuxtConfig({
     }
   },
 
-  // ========= <Variables Publicas de entorno > ============
+  // Environment variables
   runtimeConfig: {
     // The private keys which are only available server-side
     basculaServer: 'my-secret-key',
     // Keys within public are also exposed client-side
     public: {
-      bascula: ['http://localhost:3010']
+      //  bascula: ['scaleServer.com:3010'],
+      whatsAppServer: ['127.0.0.1:3011']
     },
   },
 

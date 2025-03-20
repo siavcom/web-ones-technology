@@ -22,7 +22,7 @@
           :position="ThisForm.pas_usu.position" />
         <component id="bt_aceptar" :is="impComponent(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :Registro="0"
           :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
-          :imagen="ThisForm.bt_aceptar.imagen" @click.stop="bt_aceptar" />
+          :imagen="ThisForm.bt_aceptar.imagen" />
       </div>
     </div>
   </div>
@@ -62,11 +62,12 @@ watch(
   },
   { deep: false }
 )
-
+/*
 const bt_aceptar = () => {
+  console.log('bt_aceptar click num_int=', ThisForm.num_int)
   ThisForm.bt_aceptar.click()  // call the method in the form
 }
-
+*/
 /////////////////////////////////////////
 // 
 /////////////////////////////////////////

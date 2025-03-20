@@ -212,7 +212,7 @@ const divStyle = reactive({ ...Este.style })
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 
-console.log('Container Name=', This.prop.Name, 'blocks=', This.block)
+console.log('pageFrame Name=', This.prop.Name, 'blocks=', This.block)
 const Divi = ref(This.Divi)
 
 

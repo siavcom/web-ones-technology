@@ -393,7 +393,7 @@ export class COMPONENT {
         }
        */
 
-    for (const componente in this) {
+    for (let componente in this) {
       if (
         componente != "Parent" &&
         componente != "ThisForm" &&

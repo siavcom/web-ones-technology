@@ -1988,7 +1988,7 @@ export class VFPDB {
     await this.localAlaSql("DROP TABLE IF EXISTS Last." + alias + ";");
 
     if (!this.View[alias]) {
-      console.log("Db geneta_tabla ", alias);
+      // console.log("Db geneta_tabla ", alias);
       noData = true;
     } // No hay definicion de vista
 
@@ -2097,7 +2097,8 @@ export class VFPDB {
 
       // console.log('Db ALASQL Estructura ===>',des_tab)
       // Creamos la tablas
-      console.log("Db ins_sql=", des_tab);
+
+      //console.log("Db ins_sql=", des_tab);
 
       try {
         //  await this.localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
@@ -2430,12 +2431,15 @@ return false;
          */
         //  this.axiosActive = false;
         const respuesta = response.data;
+        /*
         console.log(
           "5 Db Axios call response  ======>>>",
           dat_lla,
           "respuesta ---OK---  Respuesta=",
           respuesta
         );
+
+        */
         return respuesta;
       } catch (error) {
         console.error("Axios error datos de llamada =====>>", dat_lla, 'Error= ', error);

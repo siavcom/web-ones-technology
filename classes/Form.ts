@@ -8,10 +8,9 @@
 import { COMPONENT } from "@/classes/Component";
 import { VFPDB } from "@/classes/DataBase";
 import { storeToRefs } from "pinia";
-import { compContainer } from "./translationComponent/compContainer";
-
+import { translateContainer } from "./translateContainer/translateContainer";
 export class FORM extends COMPONENT {
-  public compContainer = new compContainer()
+  public translateContainer = new translateContainer()
 
   //Dom: any = getCurrentInstance();
 

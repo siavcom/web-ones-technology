@@ -28,9 +28,12 @@ export class pas_usu extends COMPONENT {
 
   }
   public override async valid(Valid: boolean) {
+    console.log('pas_usu This.form=')
+    console.log(this.Form)
     if (this.prop.Value.trim().length == 0) {
       return false
     }
+
     await this.Form.bt_aceptar.click();
     return true
 

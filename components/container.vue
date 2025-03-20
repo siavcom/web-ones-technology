@@ -180,7 +180,7 @@ const divStyle = reactive({ ...Este.style })
 //const Id = This.Name + props.Registro.toString()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
-console.log('Container Name=', This.prop.Name, 'blocks=', This.block, 'Style=', divStyle)
+//console.log('Container Name=', This.prop.Name, 'blocks=', This.block, 'Style=', divStyle)
 const Divi = ref(This.Divi)
 
 /*

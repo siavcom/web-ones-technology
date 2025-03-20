@@ -31,9 +31,11 @@ export class bt_close extends COMPONENT {
 
   async click() {
     const main = this.Form.main
+    // console.log('bt_close main=', main)
     const ThisForm = this.Form
     for (let i = 0; i < main.length; i++) {
-      if (!ThisForm[main[i]].prop.Disabled)
+      if (ThisForm[main[i]].prop.Name != "translateContainer" && !ThisForm[main[i]].prop.Disabled)
+
         ThisForm[main[i]].prop.Visible = true
     }
 

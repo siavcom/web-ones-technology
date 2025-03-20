@@ -166,10 +166,11 @@ export const Session = defineStore(
         router.push("/Login");
         return;
       }
+      console.log("open password=", password);
 
       try {
 
-
+        console.log("open useFetch Empresas ");
         const { data } = await useFetch('/api/callServer',
           {
             method: 'post',    // Se necesita para que haga la llamada y retorne los datos
@@ -177,7 +178,7 @@ export const Session = defineStore(
           }
         )
 
-        console.log('current session url=', url.value, 'data', data.value)
+        console.log('After open current session url=', url.value, 'data', data.value)
         const dat_emp = data.value
         url.value = dat_emp[nom_emp.value].url; // obtenemos el url del servidor node
 
@@ -450,6 +451,8 @@ export const Session = defineStore(
     watch(
       () => pass.value,
       (new_pass, old_val) => {
+
+        console.log("watch password=", new_pass, old_val);
         if (new_pass == "") return;
 
         const password = new_pass;
