@@ -978,7 +978,7 @@ const renderComboBox = async (readData?: boolean) => {
       break
     }
     case 3: {   // SQL Server Query
-      data = await This.Form.db.execute(RowSource, 'MEMVAR')
+      data = await SQLExec(RowSource, 'MEMVAR') //This.Form.db.
       //console.log('render comboBox data ===>', data)
 
       break

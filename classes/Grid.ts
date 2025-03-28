@@ -92,7 +92,7 @@ export class GRID extends COMPONENT {
     }
 
     // Leemos datos de la tabla de actualizacion. Envia las variables m
-    const data = await this.Form.db.use(RecordSource, m);
+    const data = await use(RecordSource, m);
 
     if (!data || data == "400") {
       return false;
@@ -182,8 +182,8 @@ export class GRID extends COMPONENT {
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
   public async asignaRenglon_old(row: number, colName: string) {
-    //    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1)
-    //      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
+    //    if (row>this.Sql.db.View[this.prop.RecordSource].recnoVal.length-1)
+    //      row=this.Sql.db.View[this.prop.RecordSource].recnoVal.length-1
     //let sw_recno = false
     /*
         for (let i = 0; i < this.main.length; i++) {
@@ -235,10 +235,10 @@ export class GRID extends COMPONENT {
         m[comp] = this.Form[comp].prop.Value;
 
     }
-    //this.Form.db.select(this.prop.RecordSource)
+    // select(this.prop.RecordSource)
 
     console.log('2) appendRow comedat m=', m)
-    const values = await this.Form.db.appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
+    const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     this.prop.Disabled = false;
 
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
@@ -256,7 +256,7 @@ export class GRID extends COMPONENT {
 
     if (await MessageBox(`${this.prop.Messages[1][0]} ${recno}`, 4, '') == 6) {
       this.prop.Status = 'A'
-      await this.Form.db.delete(
+      await delete (
         recno,
         this.prop.RecordSource,
         this.prop.SqlUpdate
@@ -289,7 +289,7 @@ export class GRID extends COMPONENT {
     if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6) return false;
 
     this.Form.prop.Visible = false;
-    resultado = await this.Form.db.tableUpdate(
+    resultado = await tableUpdate(
       1,
       false,
       this.prop.RecordSource
@@ -329,7 +329,7 @@ export class GRID extends COMPONENT {
     this.Form.prop.Visible = false;
 
     if (
-      (await this.Form.db.tableUpdate(1, false, this.prop.RecordSource)) == true
+      (await tableUpdate(1, false, this.prop.RecordSource)) == true
     ) {
       // Actualiza todos los registros
       // MessageBox("Renglon actualizado correctamente");

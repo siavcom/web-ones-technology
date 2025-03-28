@@ -332,7 +332,7 @@ const renderComboBox = async () => {
       break
     }
     case 3: {
-      data = await This.Form.db.execute(props.prop.RowSource, 'MEMVAR')
+      data = await SQLExec(props.prop.RowSource, 'MEMVAR') //This.Form.db.
       break
     }
     case 4: { // local SQL Query

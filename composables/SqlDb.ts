@@ -1,115 +1,145 @@
+/// ///////////////////////////////////////////
+// Clase : DataBase
+// Descripcion : Conecta con un servidor node que esta sirviendo los servicios de la base de datos
+// Author : Fernando Cuadras Angulo
+// Creacion : Enero/2021
+// Ult.Mod  : 15/Jul/2021.- Se implementa jsStore para el manejo indexedDb donde quedara guardara los datos
+//                           recuperados de la base de datos
+//            23/Ags/2021 cambiamos a guardar en string los date
+//            21/Marzo/2025 Se paso toda la clase de Sql a composables
+/// //////////////////////////////////////////
 
+//import { watch } from 'vue'
+
+//import { io } from 'socket.io-client';
 import axios from "axios";
 import alasql from "alasql";
 import { storeToRefs } from "pinia";
-
-const datos = reactive({
-    session,
-    are_tra: [""], // Las areas de trabajo donde cada vista tendra.
-    // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
-    num_are: number, // numero de area de trabajo que se esta en este momento
-    View: any = {}, // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
-    Form = {}, // any = getCurrentInstance();
-    socket,
-
-})
-
-
-const AlaSql = alasql;
-const name = "VFPDB";
-const Ctx = {}; // Form.ctx; // Contexto
-const event: any;
-
-const newTables = [];
-const oldTables = [];
-const localSQL = localAlaSql; // portea alasql a  sql (no quitar)
-const res: [] = [];
-
-
-const Estatus: boolean;
-
-
+//import { query } from "~/classes/queryGen/query";
 
 const state = reactive({
-    count: 0,  // initial value
-    localSql: {
-        View.value: {},
-    Table: {}
+    This: {
+        session: null,
+        AlaSql: alasql,
+        name: "VFPDB",
+        are_tra: [""], // Las areas de trabajo donde cada vista tendra.
+        // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
+        num_are: 0, // numero de area de trabajo que se esta en este momento
+        View: [{}], // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
+        Form: {}, // any = getCurrentInstance();
+        //     Ctx: {}, // This.value.Form.ctx; // Contexto
+
+        //event: any;
+        newTables: [],
+        oldTables: [],
+        Estatus: false,
+        Sql: alasql, // portea alasql a This.value.sql (no quitar)
+        socket: null,
+        res: [],
     }
 
 })
 
-export const Sql1 = () => {
 
+// Hace publico el valor 
+export const Thisform = computed(() => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitra la clase DataBase
+    return This.value.Form
+})
 
-    const { count, localSql } = toRefs(state) // Hace referencia al valor inicial
+// Inicializa la conexion
+export function initSql(Form: {}) {
+    const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitra la clase DataBase
 
-    function increment() {
-        count.value++
-    }
-    function decrement() {
-        count.value--
-    }
+    This.value.are_tra = [""] // Las areas de trabajo donde cada vista tendra.
+    This.value.num_are = 0// numero de area de trabajo que se esta en este momento
+    This.value.View = [{}] // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
+    This.value.newTables = []
+    This.value.oldTable = []
+    This.value.Estatus = false
+    // This.value.Sql = alasql // portea alasql a This.value.sql (no quitar)
+    This.value.res = []
 
-    // 
+    This.value.Form = Form.value; // Forma principal de la aplicacion
+    This.value.Estatus = true;
+    This.value.session = Session(); // obtenemos la session
 
-    return { increment, decrement }
-}
+    console.log("Session=", This.value.session);
+    const { socketIo } = storeToRefs(This.value.session); //pasa los elementos por referencia al Global
 
+    This.value.num_are = 0;
 
+    /// //////////////////////////////////////
+    // Revisa si ya se firmo el usuario
+    /// //////////////////////////////////////
 
-/**
- * Descripción: Funcion para inicializar la conecion a la base de datos
- * form: Forma principal de la aplicacion pasada por referencia
- */
-export const initSqlConnection = (form: {}) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+    // recupera datos de conexion
 
-    Form.value = form;
-    Estatus = true;
-    session.value = Session(); // obtenemos la session
-
-    console.log("Session=", session);
-    const { socketIo } = storeToRefs(session); //pasa los elementos por referencia al Global
-    num_are.value.value = 0;
+    //console.log('Db DataBase session.id ===>>>>', '', 'dilect=', dialect.value)
 
     localAlaSql("DROP DATABASE IF EXISTS Now ;");
     localAlaSql("CREATE DATABASE Now ;");
     localAlaSql("DROP DATABASE IF EXISTS Last ;");
     localAlaSql("CREATE DATABASE Last ;");
 
-    // Incilizamos socketIo
-    console.log("socketIo ==", socketIo.value);
-    if (!socketIo.value) session.openSocket();
-    socket.value = socketIo;
+    This.value.Estatus = true;
+    /*
+    This.value.socketIo = io(This.value.session.url, {
+      auth: { 
+        id_con: This.value.session.id_con,
+        tip_llamada: 'CHECK',
+        broadcast: 'loginFail'
+       },
+    });
+  */
 
+    console.log("socketIo ==", socketIo.value);
+    if (!socketIo.value)
+        This.value.session.openSocket();
+
+    This.value.socket = socketIo;
+
+    This.value.Form.Sql = This.value  // portea alasql a This.value.sql
+    // Porteamos todas las funciones de base datos a This.value.sql
+    This.value.Form.Sql.useNodata = useNodata;
+    This.value.Form.Sql.use = use;
+    This.value.Form.Sql.requery = requery
+    This.value.Form.obtRegistro = obtRegistro
+    This.value.Form.Sql.tableUpdate = tableUpdate
+    This.value.Form.Sql.appendBlank = appendBlank
+    This.value.Form.Sql.deleteRow = deleteRow
+    This.value.Form.Sql.deleteSql = deleteSql
+    This.value.Form.Sql.insert = insert
+    This.value.Form.Sql.SQLExec = SQLExec
+    This.value.Form.Sql.select = select
+    This.value.Form.Sql.recCount = recCount
+    This.value.Form.Sql.recno = recno
+    This.value.Form.Sql.axiosCall = axiosCall
+    This.value.Form.Sql.localSql = localSql
+    This.value.Form.Sql.localAlaSql = localAlaSql
+    This.value.Form.Sql.readCampo = readCampo
+    This.value.Form.Sql.updateCampo = updateCampo
+    This.value.Form.Sql.goto = goto
+    This.value.Form.Sql.bof = bof
+    This.value.Form.Sql.eof = eof
+    This.value.Form.Sql.skip = skip
+    This.value.Form.Sql.scatter = scatter
+    This.value.Form.Sql.localClone = localClone
+    This.value.Form.Sql.jasperReport = jasperReport
+
+    This.value.Form.db = This.value.Form.Sql  // Porteo viejo a db
+    return
 } // Fin constructor
 
-
 /// /////////////  Vfp Use nodata ///////////////////
-// Descripcion: Inicializa la la tabla localSQL de  vista remota SQL asociada
 // nom_vis : Nombre de la vista a utilizar
-// alias : Alias de la vista
 /// /////////////////////////////////////////////////
 
 export const useNodata = async (nom_vis: string, alias?: string) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     nom_vis = nom_vis.trim();
-    while (!Estatus) {
+    while (!This.value.Estatus) {
         console.log("Db esperando cambio de estatus");
     }
 
@@ -123,29 +153,31 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     }
 
     alias = alias.trim();
-    console.log("Db useNodata alias", alias);
+    console.log("Db useNodata alias", alias, This.value.View[alias]);
 
 
-    if (alias == 'vi_cap_cometab')
-        console.log('vi_cap_cometab', View.value[alias])
-
-    if (View.value[alias]) {
+    if (This.value.View[alias]) {
         // si exite ya la vista, solo borra los datos locales
-        // console.log('Db useNodata View.value ',alias,View.value)
+        // console.log('Db useNodata View ',alias,This.value.View)
         // localAlaSql('USE Now ; ')
         await localAlaSql("delete from Now." + alias);
         // localAlaSql('USE Last ; ')
         await localAlaSql("delete from  Last." + alias);
 
         // Inicializamos el alias
-        View.value[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-        View.value[alias].data = {}; // asignamos el valor del ultimo registro
-        View.value[alias].recCount = 0; // Total de registros de la vista
-        View.value[alias].recno = 0; // Registro en cero
-        View.value[alias].eof = false; // Fin de archivo
-        View.value[alias].bof = false; // Principio de archivo
-        View.value[alias].row = -1; // Renglon posicionado el registro
+        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+        This.value.View[alias].recCount = 0; // Total de registros de la vista
+        This.value.View[alias].recno = 0; // Registro en cero
+        This.value.View[alias].eof = false; // Fin de archivo
+        This.value.View[alias].bof = false; // Principio de archivo
+        This.value.View[alias].row = -1; // Renglon posicionado el registro
 
+        /*
+        
+        export const [alias] = This.value.View[alias]
+        console.log("Db useNodata View ", [alais])
+        */
         return true;
     }
 
@@ -157,7 +189,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     const dat_vis = {
         id_con: "",
         tip_llamada: "USENODATA",
-        // tok_aut:  tok_aut,
+        // tok_aut: This.value.tok_aut,
         nom_vis: "",
     };
 
@@ -180,18 +212,18 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             "response=",
             response
         );
-        if (View.value[alias] && View.value[alias].tip_obj.trim() == "VIEW") {
-            alias = View.value[alias].tablaSql.trim();
+        if (This.value.View[alias] && This.value.View[alias].tip_obj.trim() == "VIEW") {
+            alias = This.value.View[alias].tablaSql.trim();
             await useNodata(alias);
             console.log("Db useNodata VIEW salir useNodata==> ", alias);
         }
-        //  View.value[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
+        //  This.value.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
         return true;
         /*
-          //View.value[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
+          //This.value.View[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
   
-          newTables[alias] =
+          This.value.newTables[alias] =
           {
             name: alias,
             columns: {
@@ -202,9 +234,9 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             },
           };
   
-          //  oldData.tables[0]={
+          // This.value.oldData.tables[0]={
           //const oldTabla = {
-           oldTables[alias] = {
+          This.value.oldTables[alias] = {
             name: alias,
             columns: {
               recno: {
@@ -219,8 +251,8 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
   
           // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
           let des_tab = ' CREATE TABLE ' + alias + ' (recno INT PRIMARY KEY'
-          for (const nom_ele in View.value[alias].est_tabla) {
-            const campo = View.value[alias].est_tabla[nom_ele];
+          for (const nom_ele in This.value.View[alias].est_tabla) {
+            const campo = This.value.View[alias].est_tabla[nom_ele];
   
             //    valores[campo]=null;
             let dataType: string; // :any asignamos el tipo de datos a newLocalDb
@@ -228,41 +260,41 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
               case "C":
                 // dataType = DATA_TYPE.String;  // localDb
                 dataType = 'STRING'
-                //  View.value[alias].valores[nom_ele] = ''
+                //  This.value.View[alias].valores[nom_ele] = ''
                 break;
               case "I":
                 //            dataType = DATA_TYPE.Number;
                 dataType = 'INT';
-                //  View.value[alias].valores[nom_ele] = 0
+                //  This.value.View[alias].valores[nom_ele] = 0
                 break;
               case "N":
                 //            dataType = DATA_TYPE.Number;
                 dataType = 'NUMBER';
-                //  View.value[alias].valores[nom_ele] = 0
+                //  This.value.View[alias].valores[nom_ele] = 0
                 break;
               case "D":
                 // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
                 //            dataType = DATA_TYPE.String;
                 dataType = 'DATE';
-              //  View.value[alias].valores[nom_ele] = '1900-01-01'
+              //  This.value.View[alias].valores[nom_ele] = '1900-01-01'
   
               case "T":
                 // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
                 //            dataType = DATA_TYPE.String;
                 dataType = 'TIME';
-                //View.value[alias].valores[nom_ele] = '1900-01-01'
+                //This.value.View[alias].valores[nom_ele] = '1900-01-01'
   
                 break;
               case "L":
                 //            dataType = DATA_TYPE.Boolean;
                 dataType = 'INT';
-                //View.value[alias].valores[nom_ele] = 0
+                //This.value.View[alias].valores[nom_ele] = 0
   
                 break;
               default:
                 //            dataType = DATA_TYPE.String;
                 dataType = 'STRING';
-              //View.value[alias].valores[nom_ele] = ''
+              //This.value.View[alias].valores[nom_ele] = ''
   
             }
   
@@ -280,19 +312,19 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
           //   console.log('Db Vista creada ===', des_tab, localAlaSql('SELECT * from Last.' + alias))
   
           return true;
-          // return View.value[alias].new[0]
+          // return This.value.View[alias].new[0]
           */
     } catch (error) {
         console.error(error);
 
         return false;
-        //   errorSql(error)
+        //  This.value.errorSql(error)
     }
 };
 
 /// /////////////  Vfp USE /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
-// m        :  Varibles de memoria a pasar para acer la consulta
+// m        :  Varibles de memoria a pasar
 // alias    : Alias
 /// ////////////////////////////////////////////
 //  use = async (obj_vis:any, nom_vis:any , m: {}, alias?:any) => {
@@ -300,20 +332,11 @@ export const use = async (
     nom_vis: string,
     m?: Record<string, never>,
     alias?: string,
-    order?: string
-) => {
+    order?: string) => {
 
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
-
-    while (!Estatus) {
+    while (!This.value.Estatus) {
         console.log("Db esperando cambio de estatus");
     }
 
@@ -329,23 +352,24 @@ export const use = async (
     if (alias == 'vi_cap_cometab')
         console.log("1 Db USE ", alias);
 
-    if (View.value[alias]) {
+    if (This.value.View[alias]) {
+        console.log("Db Use==>>>>", alias, This.value.View[alias]);
         // si exite ya la vista, Borra los datos locales
 
         await localAlaSql("delete from Now." + alias);
         await localAlaSql("delete from  Last." + alias);
 
         // Inicializamos el alias
-        View.value[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-        View.value[alias].data = {}; // asignamos el valor del ultimo registro
-        View.value[alias].recCount = 0; // Total de registros de la vista
-        View.value[alias].recno = 0; // Registro en cero
-        View.value[alias].eof = false; // Fin de archivo
-        View.value[alias].bof = false; // Principio de archivo
-        View.value[alias].row = -1; // Renglon posicionado el registro
+        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+        This.value.View[alias].recCount = 0; // Total de registros de la vista
+        This.value.View[alias].recno = 0; // Registro en cero
+        This.value.View[alias].eof = false; // Fin de archivo
+        This.value.View[alias].bof = false; // Principio de archivo
+        This.value.View[alias].row = -1; // Renglon posicionado el registro
     }
 
-    if (!View.value[alias] || (await select(alias)) == 0) {
+    if (!This.value.View[alias] || (await select(alias)) == 0) {
         // si el alias no existe
         if (alias == 'vi_cap_cometab')
             console.log("1 Db USE ", alias);
@@ -357,9 +381,10 @@ export const use = async (
     const dat_vis = {
         id_con: "",
         tip_llamada: "USE",
-        // tok_aut:  tok_aut,
+        // tok_aut: This.value.tok_aut,
         nom_vis,
         where: "",
+        query: "",
     };
 
     // la expresion del indice es generada desde el servidor de node y es formada
@@ -368,50 +393,50 @@ export const use = async (
     let exp_ind = "";
     let exp_whe = "";
 
-    if (!View.value[alias].tip_obj) {
-        console.error("DataBase class .-No existe el tip_obj para el alias " + alias, View.value[alias]);
+    if (!This.value.View[alias].tip_obj) {
+        console.error("DataBase class .-No existe el tip_obj para el alias " + alias, This.value.View[alias]);
 
         await MessageBox('DataBase class .-No existe el tip_obj para el alias ' + alias, 16, 'Front End Error')
         return false
 
     }
 
-    if (View.value[alias].tip_obj.trim() == "VIEW") {
+    if (This.value.View[alias].tip_obj.trim() == "VIEW") {
         // si es una VIEW
-        // console.log('Db USE View.value VIEW', View.value[alias], dat_vis)
-        // cambiar el * por los campos de la View.value en minusculas
+        // console.log('Db USE This.value.View VIEW', This.value.View[alias], dat_vis)
+        // cambiar el * por los campos de la View en minusculas
 
         dat_vis.query = "select * from " + nom_vis;
         dat_vis.tip_llamada = "SQLEXEC";
         // Aqui voy
 
-        if (View.value[alias].exp_indice.trim().length > 0) {
+        if (This.value.View[alias].exp_indice.trim().length > 0) {
             try {
-                exp_ind = eval(View.value[alias].exp_indice.trim());
+                exp_ind = eval(This.value.View[alias].exp_indice.trim());
             } catch (error) {
                 console.error(
                     error,
                     "USE " + alias + " exp_ind=",
-                    View.value[alias].exp_indice.trim()
+                    This.value.View[alias].exp_indice.trim()
                 );
 
                 return false;
             }
-            console.log("2 Db USE " + alias + "m=", m, " View.value =", View.value[alias]);
+            console.log("2 Db USE " + alias + "m=", m, " View =", This.value.View[alias]);
             if (exp_ind == undefined) {
                 errorAlert(
                     "No se pudo evaluar el indice de la tabla=" +
                     alias +
                     " indice=" +
-                    View.value[alias].exp_indice
+                    This.value.View[alias].exp_indice
                 );
                 return false;
             }
         }
-        if (View.value[alias].exp_where != 'null' && View.value[alias].exp_where.trim().length > 0) {
-            // console.log("Db dataBase exp_where", View.value[alias].exp_where);
+        if (This.value.View[alias].exp_where != 'null' && This.value.View[alias].exp_where.trim().length > 0) {
+            // console.log("Db dataBase exp_where", This.value.View[alias].exp_where);
 
-            const val_eval = "`" + View.value[alias].exp_where.trim() + "`";
+            const val_eval = "`" + This.value.View[alias].exp_where.trim() + "`";
 
 
             try {
@@ -428,12 +453,12 @@ export const use = async (
                     "No se pudo evaluar el la expresion where de la tabla=" +
                     alias +
                     " indice=" +
-                    View.value[alias].exp_where
+                    This.value.View[alias].exp_where
                 );
                 return false;
             }
 
-            // exp_whe = eval(View.value[alias].exp_where.trim())     //  `${a}`
+            // exp_whe = eval(This.value.View[alias].exp_where.trim())     //  `${a}`
         }
         if (exp_ind.length + exp_whe.length > 0) {
             dat_vis.query = dat_vis.query + " where ";
@@ -451,19 +476,19 @@ export const use = async (
             }
         }
         // Si hay orden de la vista
-        if (View.value[alias].order.trim().length > 0) {
-            dat_vis.query = dat_vis.query + " order by " + View.value[alias].order;
+        if (This.value.View[alias].order.trim().length > 0) {
+            dat_vis.query = dat_vis.query + " order by " + This.value.View[alias].order;
         }
     } else {
         // es un MODEL{
-        //      const val_eval = "`"+View.value[alias].exp_indice+"`"
+        //      const val_eval = "`"+This.value.View[alias].exp_indice+"`"
         console.log(
-            "3 Db USE View.value MODEL eval exp_indice",
-            View.value[alias],
+            "3 Db USE This.value.View MODEL eval exp_indice",
+            This.value.View[alias],
             dat_vis
         );
 
-        const val_eval = View.value[alias].exp_indice;
+        const val_eval = This.value.View[alias].exp_indice;
 
         try {
             eval("dat_vis.where=" + val_eval);
@@ -480,7 +505,7 @@ export const use = async (
             dat_vis.where
         );
 
-        // eval("dat_vis.where=`" + View.value[alias].exp_indice+"`") // obtenemos la expresion del indice
+        // eval("dat_vis.where=`" + This.value.View[alias].exp_indice+"`") // obtenemos la expresion del indice
     }
 
     //console.log('Db  use dat_vis========>', dat_vis)
@@ -494,7 +519,7 @@ export const use = async (
         if (data.length) {
             // No hubo error
             const response = await genera_tabla(data, alias)
-            View.value[alias].m = m; // Variables m para hacer requery
+            This.value.View[alias].m = m; // Variables m para hacer requery
             return response;
         }
         else return []; //   { return [] }
@@ -514,22 +539,15 @@ export const use = async (
 
 
 /////////////  Hace un requery de una vista /////////////////////
-// alias  : lias de la vista a utilizar
+// nom_vis  : Nombre de la vista a utilizar
 ////////////////////////////////////////////
 export const requery = async (alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias)       // si no se da el alias
-        alias = are_tra.value[num_are.value - 1]; // asigna el nombre de la vista segun el area de trabajo
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 
-    const m = View.value[alias].m
+    const m = This.value.View[alias].m
     return await use(alias, m)
 }
 
@@ -539,25 +557,16 @@ export const requery = async (alias?: string) => {
 /// ////////////////////////////////////////////
 // aqui me quede . revisar todo esto, puede que la tabla tenga varios alias
 
-export const obtRegistro = async (nom_tab: string, key_pri: number) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
-
+export const obtRegistro = async (nom_tab: "", key_pri: number) => {
     const dat_vis = {
         id_con: "",
         tip_llamada: "USE",
-        // tok_aut:  tok_aut,
+        // tok_aut: This.value.tok_aut,
         nom_vis: nom_tab,
         where: { key_pri },
     };
 
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     const response = await axiosCall(dat_vis);
     if (response == null) return;
 
@@ -584,16 +593,9 @@ export const tableUpdate = async (
     updateType?: number,
     force?: boolean,
     alias?: string,
-    tab_man?: string
-) => {
+    tab_man?: string) => {
 
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!updateType) {
         updateType = 0;
@@ -601,22 +603,22 @@ export const tableUpdate = async (
 
     if (!alias) {
         // si no se da el alias
-        alias = are_tra.value[num_are.value - 1]; // asigna el nombre de la vista segun el area de trabajo
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
     }
     if (alias == "") {
         return true;
     } // no hay alias a actualizar
-    //console.log('Db tableUpdate View.value',alias, View.value[alias])
+    //console.log('Db tableUpdate View',alias, This.value.View[alias])
 
     if (!tab_man) {
         // asigna vista de mantenimiento de la vistas
-        if (View.value[alias].tip_obj.trim() == "VIEW")
-            tab_man = View.value[alias].tablaSql.trim();
+        if (This.value.View[alias].tip_obj.trim() == "VIEW")
+            tab_man = This.value.View[alias].tablaSql.trim();
         else tab_man = alias;
     }
 
     var sw_val = true;
-    const nom_tab: string = View.value[alias].tablaSql.trim(); // obtenemos el nombre model (sequelize) de la vista de mantenimento
+    const nom_tab: string = This.value.View[alias].tablaSql.trim(); // obtenemos el nombre model (sequelize) de la vista de mantenimento
 
     if (nom_tab.length < 2) {
         console.warn(
@@ -629,8 +631,8 @@ export const tableUpdate = async (
         return false;
     }
 
-    var recno = View.value[alias].recno; // obtenemos el recno a actualizar
-    const recCount = View.value[alias].recCount; // obtenemos el recCount de la vista
+    var recno = This.value.View[alias].recno; // obtenemos el recno a actualizar
+    const recCount = This.value.View[alias].recCount; // obtenemos el recCount de la vista
 
     if (recCount == 0) {
         // la vista no tiene registros a actualizar
@@ -644,6 +646,7 @@ export const tableUpdate = async (
             by: "recno",
             type: "asc",
         },
+        where: {}
     };
     let where = ""; // where alasql
     let where_del = " where Viejo.key_pri>0 ";
@@ -689,8 +692,8 @@ export const tableUpdate = async (
     );
 
     //const dat_act = datos
-    //console.log('Db DataBase definicion '+tab_man,View.value[tab_man].val_def)
-    const val_def = View.value[tab_man].val_def; // estructura de campos
+    //console.log('Db DataBase definicion '+tab_man,This.value.View[tab_man].val_def)
+    const val_def = This.value.View[tab_man].val_def; // estructura de campos
 
     // llamado AXIOS
     const dat_vis: any = {
@@ -754,7 +757,7 @@ export const tableUpdate = async (
               console.log(
                 "1 DataBase tableUpdate() vista de mantenimiento=",
                 tab_man,
-                View.value[tab_man],
+                This.value.View[tab_man],
                 "Row=",
                 row,
                 "dat_act=",
@@ -763,13 +766,16 @@ export const tableUpdate = async (
         */
         // Recorremos todos los campos para ver cual cambio para mandarlo actualizar campo.old != campo.new
 
-        //  console.log('Db tableUpdate View.value tab_man=', View.value[alias])
+        //  console.log('Db tableUpdate View tab_man=', This.value.View[alias])
 
 
-        for (const campo in View.value[tab_man].val_def) {
+        for (const campo in This.value.View[tab_man].val_def) {
             // for (const campo in dat_act[row]) {
-            if (campo.trim() == 'json_tap')
-                console.log('1) Db tableUpdate', typeof dat_act[row][campo], 'campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
+            /*
+               if (campo.trim() == 'json_tap')
+                   console.log('1) Db tableUpdate', typeof dat_act[row][campo], 'campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
+                */
+
             if (dat_act[row][campo] == null)
                 dat_act[row][campo] = "";
 
@@ -784,11 +790,11 @@ export const tableUpdate = async (
             //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
             // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
-            //    console.log('tab_man', tab_man, 'Campo=', campo, View.value[tab_man].est_tabla[campo])
+            //    console.log('tab_man', tab_man, 'Campo=', campo, This.value.View[tab_man].est_tabla[campo])
 
             const nom_campo = campo.toLowerCase();
             if (
-                View.value[tab_man].est_tabla[campo] &&
+                This.value.View[tab_man].est_tabla[campo] &&
                 nom_campo != "recno" &&
                 nom_campo != "tie_cre" &&
                 nom_campo != "tie_uac" &&
@@ -804,9 +810,9 @@ export const tableUpdate = async (
             ) {
 
                 const tipo =
-                    View.value[tab_man].est_tabla[campo].tip_cam.toLowerCase();
+                    This.value.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
 
-                console.log("UPDATE fecha campo=", campo, ' tipo=', tipo, ' valor=', dat_act[row][campo]);
+                // console.log("UPDATE fecha campo=", campo, ' tipo=', tipo, ' valor=', dat_act[row][campo]);
 
                 switch (true) {
                     // switch (typeof dat_act[row][campo]) {
@@ -836,7 +842,7 @@ export const tableUpdate = async (
                         //              valor = valor.slice(0, 24);
 
                         m[campo] = valor;
-                        console.log("UPDATE fecha=", m[campo]);
+                        //   console.log("UPDATE fecha=", m[campo]);
 
                         break;
                     //   2024-01-15T10:22:7
@@ -846,6 +852,9 @@ export const tableUpdate = async (
 
                         // se tiene que validar como string y null ya que asi viene desde alaSQL
                         try {
+                            if (typeof dat_act[row][campo] == "object")
+                                dat_act[row][campo] = '"' + dat_act[row][campo] + '"';
+
                             if (dat_act[row][campo] != null) {
                                 m[campo] =
                                     typeof dat_act[row][campo] == "string"
@@ -862,7 +871,7 @@ export const tableUpdate = async (
                             );
                             return;
                         }
-                        console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo])
+                    //console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo], 'typeof=', typeof dat_act[row][campo])
                 }
                 //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
 
@@ -888,9 +897,9 @@ export const tableUpdate = async (
         // generamos el where para obtener los datos despues de insertar
         dat_vis.where = "";
         if (sw_update && dat_vis.tip_llamada == "INSERT") {
-            // const where = eval(View.value[nom_tab].exp_indice)
+            // const where = eval(This.value.View[nom_tab].exp_indice)
             // Aqui me quede  Ojo Junio 2023
-            const where = View.value[nom_tab].exp_indice.toLowerCase();
+            const where = This.value.View[nom_tab].exp_indice.toLowerCase();
             // console.log("Db tableUpdate exp_indice m", m, "where", where, "dat_vis.where", dat_vis.where );
             try {
                 eval(`dat_vis.where=${where}`);
@@ -901,16 +910,16 @@ export const tableUpdate = async (
             }
             //console.log("Db tableUpdate dat_vis.where", dat_vis.where);
 
-            // dat_vis.where =exp_ind    //eval(View.value[nom_tab].exp_indice)
+            // dat_vis.where =exp_ind    //eval(This.value.View[nom_tab].exp_indice)
         }
 
-        // View.value[alias].recCount = +row; // actualiza el recCount de la vista
+        // This.value.View[alias].recCount = +row; // actualiza el recCount de la vista
         // const recno = dat_act[row].recno;
 
         // Tratara 2 veces en caso de que haya un force
         for (let num_int = 0; num_int < 2 && sw_update; num_int++) {
             // tratara 3 veces de actualiar el dato
-            console.log("Db TableUpdate dat_vis", dat_vis);
+            console.log("Db TableUpdate dat_vis", dat_vis, 'Intentos =', num_int);
             // llama el backEnd a grabar los datos
             const response = await axiosCall(dat_vis);
 
@@ -959,7 +968,7 @@ export const tableUpdate = async (
                 sw_val = false;
                 if (dat_act[row].key_pri > 0) {
                     // si es un dato existennte
-                    const respuesta = await obtRegistro(
+                    const respuesta = await This.value.obtRegistro(
                         nom_tab,
                         dat_act[row].key_pri
                     ); // se trae de nuevo los datos
@@ -1005,7 +1014,7 @@ export const tableUpdate = async (
     /*
     if (sw_update && updateType > 0) {
       //console.log('Db tableUpdate genera_tabla', dat_act)
-      await  genera_tabla(dat_act, alias)
+      await genera_tabla(dat_act, alias)
       //console.log('Db tableUpdate genera_tabla Now,Last', await localAlaSql('select * from Now.' + alias)
       //  , await localAlaSql('select * from Now.' + alias))
 
@@ -1020,18 +1029,11 @@ export const tableUpdate = async (
 // nom_vis  : Nombre de la vista a utilizar
 /// ////////////////////////////////////////////
 export const appendBlank = async (alias: any, m?: {}) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
-    const ThisForm = Form;
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    const ThisForm = This.value.Form;
     if (!alias) {
         // si no se da el alias
-        alias = are_tra.value[num_are.value - 1]; // asigna el nombre de la vista segun el area de trabajo
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
     }
 
     if (!alias) {
@@ -1061,10 +1063,10 @@ export const appendBlank = async (alias: any, m?: {}) => {
         usu_usu: "",
         key_pri: 0,
     };
-    const vis_act = View.value[alias].tablaSql.trim();
+    const vis_act = This.value.View[alias].tablaSql.trim();
 
-    for (const campo in View.value[vis_act].val_def) {
-        // const val_eval="`"+View.value[alias].val_def[valor]+"`"
+    for (const campo in This.value.View[vis_act].val_def) {
+        // const val_eval="`"+This.value.View[alias].val_def[valor]+"`"
         if (
             campo != "timestamp" &&
             campo != "tie_cre" &&
@@ -1073,7 +1075,7 @@ export const appendBlank = async (alias: any, m?: {}) => {
             campo != "usu_usu" &&
             campo != "key_pri"
         ) {
-            let val_eval = View.value[vis_act].val_def[campo];
+            let val_eval = This.value.View[vis_act].val_def[campo];
 
             let val_defa = null;
             try {
@@ -1104,14 +1106,14 @@ export const appendBlank = async (alias: any, m?: {}) => {
     }
     /*
     if (!valores.timestamp) {
-      if ( dialect == 'postgres')
+      if (This.value.dialect == 'postgres')
         valores.timestamp = 0
       else
         valores.timestamp = null
     }
     */
 
-    // const val_defa = eval(View.value[alias].val_def)
+    // const val_defa = eval(This.value.View[alias].val_def)
     console.log("Db DataBAse appendBlank alias ", alias, valores);
     try {
         await localAlaSql(
@@ -1130,18 +1132,18 @@ export const appendBlank = async (alias: any, m?: {}) => {
         console.warn("alasql error", error);
     }
 
-    const ult_ele = View.value[alias].recnoVal.length - 1;
+    const ult_ele = This.value.View[alias].recnoVal.length - 1;
 
     let id = 0;
     if (ult_ele >= 0) {
-        id = View.value[alias].recnoVal[ult_ele].id + 1;
+        id = This.value.View[alias].recnoVal[ult_ele].id + 1;
     }
 
-    View.value[alias].recno = recno;
-    View.value[alias].recnoVal.push({ recno, id }); // insertamos en el arreglo para llenar el grid
-    View.value[alias].recCount = View.value[alias].recCount + 1;
-    View.value[alias].row = View.value[alias].recnoVal.length - 1; // asignamos nuevo row
-
+    This.value.View[alias].recno = recno;
+    This.value.View[alias].recnoVal.push({ recno, id }); // insertamos en el arreglo para llenar el grid
+    This.value.View[alias].recCount = This.value.View[alias].recCount + 1;
+    This.value.View[alias].row = This.value.View[alias].recnoVal.length - 1; // asignamos nuevo row
+    valores.recno = recno;
     console.log(
         "Db DataBAse Insert Now  alaSql=====>",
         alias,
@@ -1150,7 +1152,7 @@ export const appendBlank = async (alias: any, m?: {}) => {
     return valores;
 
     /* locaDb
-    await  insertLocalDb(alias, valores); // Insertamos los valores blancos en LocalDb
+    await This.value.insertLocalDb(alias, valores); // Insertamos los valores blancos en LocalDb
     */
 };
 
@@ -1159,14 +1161,7 @@ export const appendBlank = async (alias: any, m?: {}) => {
 // row : Renglon donde se encuentra el registro a borrar
 /// ////////////////////////////////////////////
 export const deleteRow = async (key_pri: number, alias: any) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     console.log("Db deleteRow ", key_pri, alias);
     if (key_pri <= 0) {
@@ -1174,7 +1169,7 @@ export const deleteRow = async (key_pri: number, alias: any) => {
     }
     if (!alias) {
         // si no se da el alias
-        alias = are_tra.value[num_are.value - 1]; // asigna el nombre de la vista segun el area de trabajo
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
     }
 
     if (!alias) {
@@ -1186,8 +1181,8 @@ export const deleteRow = async (key_pri: number, alias: any) => {
     const dat_vis = {
         id_con: "",
         tip_llamada: "DELETE",
-        // tok_aut:  tok_aut,
-        nom_vis: View.value[alias].tablaSql.trim(), // tabla en servidor SQL
+        // tok_aut: This.value.tok_aut,
+        nom_vis: This.value.View[alias].tablaSql.trim(), // tabla en servidor SQL
         where: {},
     };
 
@@ -1221,7 +1216,7 @@ export const deleteRow = async (key_pri: number, alias: any) => {
     // select key_pri,recno from '+ alias) )
 
     //  borra en el arreglo de recno
-    // delete View.value[alias].recnoVal[row];
+    // delete This.value.View[alias].recnoVal[row];
     return true;
 };
 
@@ -1229,17 +1224,8 @@ export const deleteRow = async (key_pri: number, alias: any) => {
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
 /// ////////////////////////////////////////////
-// antes sole era delete
-export const deleteRecno = async (recno: number, alias: string, SqlUpdate: boolean) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+export const deleteSql = async (recno: number, alias: string, SqlUpdate: boolean) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!SqlUpdate) {
         SqlUpdate = false;
@@ -1247,7 +1233,7 @@ export const deleteRecno = async (recno: number, alias: string, SqlUpdate: boole
 
     if (!alias) {
         // si no se da el alias
-        alias = are_tra.value[num_are.value - 1]; // asigna el nombre de la vista segun el area de trabajo
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
     }
 
     if (!alias) {
@@ -1257,7 +1243,7 @@ export const deleteRecno = async (recno: number, alias: string, SqlUpdate: boole
     }
 
     if (!recno) {
-        recno = View.value[alias].recnoVal[View.value[alias].row].recno;
+        recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
     }
 
     if (recno <= 0) {
@@ -1304,8 +1290,8 @@ export const deleteRecno = async (recno: number, alias: string, SqlUpdate: boole
     console.log('Db delete recnoArray', recnoArray)
 
     // por reactividad borramos de uno por uno
-    while (View.value[alias].recnoVal.length > 0) {
-        View.value[alias].recnoVal.pop();
+    while (This.value.View[alias].recnoVal.length > 0) {
+        This.value.View[alias].recnoVal.pop();
     }
 
     const recnoVal = [];
@@ -1316,14 +1302,14 @@ export const deleteRecno = async (recno: number, alias: string, SqlUpdate: boole
         }
         recnoVal[i] = { recno: recnoArray[i].recno, id: i };
     }
-    View.value[alias].recnoVal = recnoVal;
+    This.value.View[alias].recnoVal = recnoVal;
     recno = 0;
     if (row >= 0) {
         recno = recnoArray[row].recno;
     }
 
-    console.log('Db Despues de borrar recnoval ', View.value[alias].recnoVal)
-    // console.log('Db delete despues slice recno reg recnoVal===>',recno,View.value[alias].recnoVal)
+    console.log('Db Despues de borrar recnoval ', This.value.View[alias].recnoVal)
+    // console.log('Db delete despues slice recno reg recnoVal===>',recno,This.value.View[alias].recnoVal)
     // console.log('Db Despues de borrar alaSql',localAlaSql('select recno,key_pri from '+ alias ))
     if (recno > 0) {
         return await goto(recno);
@@ -1336,17 +1322,10 @@ export const deleteRecno = async (recno: number, alias: string, SqlUpdate: boole
 /// ////////////////////////////////////////////
 // Aqui me quede
 export const insert = async (alias: string, m: Record<string, never>) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias) {
         // si no se da el alias
-        alias = are_tra.value[num_are.value - 1]; // asigna el nombre de la vista segun el area de trabajo
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
     }
 
     if (!alias) {
@@ -1354,14 +1333,14 @@ export const insert = async (alias: string, m: Record<string, never>) => {
         return;
     }
     // Leemos los datos a actualizar
-    const recno = View.value[alias].recno;
-    const nom_vis = View.value[alias].tabla;
+    const recno = This.value.View[alias].recno;
+    const nom_vis = This.value.View[alias].tabla;
 
     /*
     const valores = await newLocalDb.select({
       from: alias,
       where: {
-        recno: View.value[alias].recno
+        recno: This.value.View[alias].recno
       }
     });
    */
@@ -1377,7 +1356,7 @@ export const insert = async (alias: string, m: Record<string, never>) => {
     const dat_vis = {
         id_con: "",
         tip_llamada: "INSERT",
-        // tok_aut:  tok_aut,
+        // tok_aut: This.value.tok_aut,
         nom_vis,
         where: "",
         dat_act: valores,
@@ -1388,38 +1367,27 @@ export const insert = async (alias: string, m: Record<string, never>) => {
         if (response == null) return;
 
         /*
-              const response = await axios.post( url + "sql", dat_vis, {
+              const response = await axios.post(This.value.url + "sql", dat_vis, {
                 headers: { "Content-type": "application/json" },
               });
         */
         const respuesta = response.data;
 
         /*
-         insertLocalDb(alias, respuesta);
+        This.value.insertLocalDb(alias, respuesta);
         */
         await localAlaSql(
             "USE Now;\
-              UPDATE " +
-            alias +
-            "\
-              set  key_pri=?,set timestamp=? where recno=? ",
-            respuesta.key_pri,
-            respuesta.timestamp,
-            recno
+              UPDATE " + alias +
+            ` set  key_pri=${respuesta.key_pri},set timestamp=${respuesta.timestamp} where recno=${recno} `
         );
 
         await localAlaSql(
             "USE Last;\
-              DELETE Last." +
-            alias +
-            " where recno=?;\
-              INSERT INTO Last." +
-            alias +
-            " SELECT * from Now." +
-            alias +
-            " where recno=?",
-            recno,
-            recno
+              DELETE Last."+ alias +
+            ` where recno=${recno}; INSERT INTO Last.${alias} ` +
+            " SELECT * from Now." + alias +
+            ` where recno=${recno}`
         );
 
         return;
@@ -1439,15 +1407,8 @@ export const insert = async (alias: string, m: Record<string, never>) => {
 // tip_res: D=Data T=Text J=JSON NULL=no data returned
 /// ///////////////////////////////////////////
 
-export const execute = async (query: string, alias?: string, tip_res?: string) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+export const SQLExec = async (query: string, alias?: string, tip_res?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
         alias = "sqlresult";
@@ -1464,13 +1425,13 @@ export const execute = async (query: string, alias?: string, tip_res?: string) =
     }
 
 
-    View.value[alias] = {}; // Generamos el nuevo alias
-    View.value[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-    View.value[alias].data = {}; // asignamos el valor del ultimo registro
-    View.value[alias].recCount = 0; // Total de registros de la vista
-    View.value[alias].eof = false; // Fin de archivo
-    View.value[alias].bof = false; // Principio de archivo
-    View.value[alias].row = -1; // Renglon posicionado el registro
+    This.value.View[alias] = {}; // Generamos el nuevo alias
+    This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+    This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+    This.value.View[alias].recCount = 0; // Total de registros de la vista
+    This.value.View[alias].eof = false; // Fin de archivo
+    This.value.View[alias].bof = false; // Principio de archivo
+    This.value.View[alias].row = -1; // Renglon posicionado el registro
 
     const dat_vis = {
         id_con: "",
@@ -1501,13 +1462,13 @@ export const execute = async (query: string, alias?: string, tip_res?: string) =
         }
         // Borramos localmente la tabla si existe
 
-        View.value[alias] = {}; // Generamos el nuevo alias
-        View.value[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-        View.value[alias].data = {}; // asignamos el valor del ultimo registro
-        View.value[alias].recCount = 0; // Total de registros de la vista
-        View.value[alias].eof = false; // Fin de archivo
-        View.value[alias].bof = false; // Principio de archivo
-        View.value[alias].row = -1; // Renglon posicionado el registro
+        This.value.View[alias] = {}; // Generamos el nuevo alias
+        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+        This.value.View[alias].recCount = 0; // Total de registros de la vista
+        This.value.View[alias].eof = false; // Fin de archivo
+        This.value.View[alias].bof = false; // Principio de archivo
+        This.value.View[alias].row = -1; // Renglon posicionado el registro
 
         await select(alias);
 
@@ -1587,13 +1548,13 @@ export const execute = async (query: string, alias?: string, tip_res?: string) =
         if (respuesta.length > 0) {
             // si hay datos
             // Asignamos los valores a la vista
-            //      View.value[alias] = response; // asignamos su estructura  y filtros de condiciones
-            View.value[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
-            View.value[alias].recCount = respuesta.length; // registros totales
-            //    View.value[alias]["tablaSql"] = alias // tabla en servidor SQL
-            View.value[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
-            View.value[alias].recnoVal = [...recnoVal];
-            // console.log('Db exec ',View.value[alias])
+            //      This.value.View[alias] = response; // asignamos su estructura  y filtros de condiciones
+            This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
+            This.value.View[alias].recCount = respuesta.length; // registros totales
+            //    This.value.View[alias]["tablaSql"] = alias // tabla en servidor SQL
+            This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
+            This.value.View[alias].recnoVal = [...recnoVal];
+            // console.log('Db exec ',This.value.View[alias])
         }
 
 
@@ -1621,14 +1582,7 @@ export const execute = async (query: string, alias?: string, tip_res?: string) =
 /// ///////////////////////////////////////////
 
 export const genTabla = async (tabla: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!tabla) {
         return;
     }
@@ -1640,11 +1594,11 @@ export const genTabla = async (tabla: string) => {
 
     try {
         const respuesta = await axiosCall(dat_vis);
-       // if (respuesta == null) return null;
-       // if (respuesta.length == 0) {
-              MessageBox(" Table updated successfully " + tabla);
-            return true;
-       //  }
+        //if (respuesta == null) return null;
+        //if (respuesta.length == 0) {
+        MessageBox(" Table updated successfully " + tabla);
+        return true;
+        // }
     } catch (error) {
         console.log("SQL Error", error.response);
         errorAlert(
@@ -1655,6 +1609,7 @@ export const genTabla = async (tabla: string) => {
         );
         return false;
     }
+    return true;
 };
 
 /// ////////////////////////////////////////////
@@ -1662,14 +1617,7 @@ export const genTabla = async (tabla: string) => {
 /// ///////////////////////////////////////////
 
 export const genIndices = async (tabla: string, nom_ind: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!nom_ind) nom_ind = "";
     if (!tabla) {
         return;
@@ -1707,14 +1655,7 @@ export const genIndices = async (tabla: string, nom_ind: string) => {
 /// ///////////////////////////////////////////
 
 export const genVistasSql = async (tabla: string, nom_vis?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!tabla) {
         return;
     }
@@ -1752,14 +1693,7 @@ export const genVistasSql = async (tabla: string, nom_vis?: string) => {
 /// ///////////////////////////////////////////
 
 export const genModel = async (tabla: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!tabla) {
         return;
     }
@@ -1803,15 +1737,8 @@ export const genModel = async (tabla: string) => {
 // Vista de captura de datos
 //
 /// //////////////////////////////////////////////
-export const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     console.log("Db vista de captura alias ", nom_vis, alias);
     if (!alias) {
         // Si no hay alias asigna el mismo nombre de la vista
@@ -1908,28 +1835,21 @@ export const vista_captura = async (m: any, nom_vis: string, alias?: string) => 
 // are_sel : area seleccionada
 /// //////////////////////////////////////////////
 export const select = async (are_sel: unknown) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    // This.value.Form['dic_dat']['prop']['Status'] = 'F'
 
-    // Form['dic_dat']['prop']['Status'] = 'F'
-
-    // console.log('Db Select 0',Form)
+    // console.log('Db Select 0',This.value.Form)
     if (are_sel == null) {
-        return num_are.value;
+        return This.value.num_are;
     }
 
     if (typeof are_sel === "number") {
-        num_are.value = are_sel;
+        This.value.num_are = are_sel;
     } else {
         const alias: any = are_sel;
-        num_are.value = are_tra.value.indexOf(alias) + 1; // busca el numero de alias
+        This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // busca el numero de alias
     }
-    return num_are.value;
+    return This.value.num_are;
 };
 
 /// //////////////////////////////////////////////////
@@ -1939,22 +1859,14 @@ export const select = async (are_sel: unknown) => {
 // noData : si es useNodata
 // obs : Borrar si no se utiliza
 /// //////////////////////////////////////////////////
-export const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     alias = alias.trim();
-    num_are.value = are_tra.value.indexOf(alias) + 1; // regresa un -1 si no hay elemento
+    This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
-    if (num_are.value == 0) {
+    if (This.value.num_are == 0) {
         // si es una area de trabajo nueva busca si ya existe el alias
-        are_tra.value.push(alias); // Se incremente en uno y se asigna que alias tiene
+        This.value.are_tra.push(alias); // Se incremente en uno y se asigna que alias tiene
     } else {
         // Si existe la tabla borra los regisros
         // localAlaSql('USE Now ; ')
@@ -1964,7 +1876,7 @@ export const genera_vista = async (data: {}, alias: string, noData?: boolean) =>
         return;
     }
     // Si es una vista nueva
-    num_are.value = are_tra.value.indexOf(alias) + 1; // asigna el numero de area de trabajo
+    This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // asigna el numero de area de trabajo
     // Obtenemos la estructura de la vista desde la base de datos
 
     /// ///   Estructura
@@ -1992,26 +1904,26 @@ export const genera_vista = async (data: {}, alias: string, noData?: boolean) =>
     }
 
     // Inicializamos la vista
-    if (!View.value[alias]) {
-        View.value[alias] = {}; // Generamos el nuevo alias
-        View.value[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+    if (!This.value.View[alias]) {
+        This.value.View[alias] = {}; // Generamos el nuevo alias
+        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
 
         if (noData) {
             // agregamos todos los componente de uno por uno para no romper la reactividad
             for (const comp in data) {
-                View.value[alias][comp] = data[comp]; // asignamos su estructura si es de una vista actualizable
+                This.value.View[alias][comp] = data[comp]; // asignamos su estructura si es de una vista actualizable
             }
         }
     }
     // por reactividad borramos de uno por uno
-    while (View.value[alias].recnoVal.length > 0) {
-        View.value[alias].recnoVal.pop();
+    while (This.value.View[alias].recnoVal.length > 0) {
+        This.value.View[alias].recnoVal.pop();
     }
 
-    //    delete View.value[alias]['valores']  // borramos el registro de valores
-    View.value[alias].recno = 0; // asignamos el ultimo numero registro de trabajo
-    View.value[alias].recCount = 0; // registros totales
-    View.value[alias].tablaSql = alias; // tabla en servidor SQL
+    //    delete This.value.View[alias]['valores']  // borramos el registro de valores
+    This.value.View[alias].recno = 0; // asignamos el ultimo numero registro de trabajo
+    This.value.View[alias].recCount = 0; // registros totales
+    This.value.View[alias].tablaSql = alias; // tabla en servidor SQL
 
     if (!noData || data.length > 0) {
         // si hay datos
@@ -2025,13 +1937,13 @@ export const genera_vista = async (data: {}, alias: string, noData?: boolean) =>
 
         // Asignamos los valores a la vista
 
-        //      View.value[alias] = response; // asignamos su estructura  y filtros de condiciones
-        View.value[alias].recno = data.length; // asignamos el ultimo numero registro de trabajo
-        View.value[alias].recCount = data.length; // registros totales
-        View.value[alias].tablaSql = alias; // tabla en servidor SQL
-        View.value[alias].data = data[data.length - 1]; // asignamos el valor del ultimo registro
+        //      This.value.View[alias] = response; // asignamos su estructura  y filtros de condiciones
+        This.value.View[alias].recno = data.length; // asignamos el ultimo numero registro de trabajo
+        This.value.View[alias].recCount = data.length; // registros totales
+        This.value.View[alias].tablaSql = alias; // tabla en servidor SQL
+        This.value.View[alias].data = data[data.length - 1]; // asignamos el valor del ultimo registro
 
-        // View.value[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
+        // This.value.View[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
 
         // Bora las tablas
         await localAlaSql(
@@ -2075,10 +1987,10 @@ export const genera_vista = async (data: {}, alias: string, noData?: boolean) =>
         // o seleccionar los recno para llenar el recnoval
         // recnoVal=localAlaSql(SELECT recno FROM Now.' + alias)
 
-        View.value[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
-        // console.log('Db RecnoVal===>', View.value[alias].recnoVa)
+        This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
+        // console.log('Db RecnoVal===>', This.value.View[alias].recnoVa)
     } else {
-        View.value[alias].data = {};
+        This.value.View[alias].data = {};
     } // no hay datos
 }
 
@@ -2089,30 +2001,23 @@ export const genera_vista = async (data: {}, alias: string, noData?: boolean) =>
 // noData : si es useNodata
 /// //////////////////////////////////////////////////
 
-export const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     alias = alias.trim();
-    num_are.value = are_tra.value.indexOf(alias) + 1; // regresa un -1 si no hay elemento
+    This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
     // borra las tablas en ALA
     await localAlaSql("DROP TABLE IF EXISTS Now." + alias + ";");
     await localAlaSql("DROP TABLE IF EXISTS Last." + alias + ";");
 
-    if (!View.value[alias]) {
-        console.log("Db geneta_tabla ", alias);
+    if (!This.value.View[alias]) {
+        // console.log("Db geneta_tabla ", alias);
         noData = true;
     } // No hay definicion de vista
 
-    if (num_are.value == 0) {
+    if (This.value.num_are == 0) {
         // si es una area de trabajo nueva
-        are_tra.value.push(alias);
+        This.value.are_tra.push(alias);
         noData = true;
     } /*
     else { // Si existe la tabla borra los registros
@@ -2122,26 +2027,26 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
       await localAlaSql('delete from  Last.' + alias)
     }
     */
-    num_are.value = are_tra.value.indexOf(alias) + 1; // asigna el numero de area de trabajo
+    This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // asigna el numero de area de trabajo
 
     // Inicializamos la vista
 
     if (noData) {
-        View.value[alias] = {}; // Generamos el nuevo alias
-        View.value[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-        View.value[alias].tip_obj = respuesta.tip_obj; // MODEL O VIEW
-        View.value[alias].tablaSql = respuesta.nom_tab; // nombre de tabla en servidor SQL
-        View.value[alias].exp_indice = respuesta.exp_indice;
-        View.value[alias].exp_where =
+        This.value.View[alias] = {}; // Generamos el nuevo alias
+        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+        This.value.View[alias].tip_obj = respuesta.tip_obj; // MODEL O VIEW
+        This.value.View[alias].tablaSql = respuesta.nom_tab; // nombre de tabla en servidor SQL
+        This.value.View[alias].exp_indice = respuesta.exp_indice;
+        This.value.View[alias].exp_where =
             respuesta.exp_where == null ? " " : respuesta.exp_where;
-        View.value[alias].order = respuesta.ord_vis; // orden de la vista
+        This.value.View[alias].order = respuesta.ord_vis; // orden de la vista
 
-        View.value[alias].data = {}; // asignamos el valor del ultimo registro
-        View.value[alias].val_def = { recno: "recno" }; // valores default
-        View.value[alias].recCount = 0; // Total de registros de la vista
-        View.value[alias].eof = false; // Fin de archivo
-        View.value[alias].bof = false; // Principio de archivo
-        View.value[alias].row = -1; // Renglon posicionado el registro
+        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+        This.value.View[alias].val_def = { recno: "recno" }; // valores default
+        This.value.View[alias].recCount = 0; // Total de registros de la vista
+        This.value.View[alias].eof = false; // Fin de archivo
+        This.value.View[alias].bof = false; // Principio de archivo
+        This.value.View[alias].row = -1; // Renglon posicionado el registro
 
         // agregamos toda la definicion de la tabla
 
@@ -2156,8 +2061,8 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
             //    console.log('Db Axios ==>' + nom_vis, exp_where, replacements)
             try {
                 const estructura = await axiosCall(dat_est);
+                console.log('genera_tabla axios GETDEF estructura ===>>', estructura, 'Llamada axios', dat_est)
                 if (estructura == null) return null;
-                // console.log('Db Data vista===>>', respuesta)
 
                 respuesta.est_tabla = estructura;
                 // console.log('Db Estructura vista===>>', respuesta)
@@ -2180,7 +2085,7 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
         //  await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
         //  await localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
 
-        View.value[alias].est_tabla = respuesta.est_tabla; // estructura de la tabla
+        This.value.View[alias].est_tabla = respuesta.est_tabla; // estructura de la tabla
 
         // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
         let des_tab = " CREATE TABLE " + alias + " (recno INT PRIMARY KEY";
@@ -2196,26 +2101,27 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
             const val_def = respuesta.est_tabla[nom_ele].val_def;
             // const val_def=respuesta.est_tabla[nom_ele].replace('undefined','null')
 
-            View.value[alias].val_def[nom_ele] = val_def;
+            This.value.View[alias].val_def[nom_ele] = val_def;
 
-            //  View.value[alias]["val_def"] = val_def.replace('undefined','null')    ; // valores default
+            //  This.value.View[alias]["val_def"] = val_def.replace('undefined','null')    ; // valores default
 
             //        val_def = val_def + nom_ele + ':' + respuesta.est_tabla[nom_ele].val_def + ','
 
             /*  Indexed Local Data base
-            newTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
-             oldTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
+            This.value.newTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
+            This.value.oldTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
             */
         }
-        // console.log('Db Estructura View.value respuesta===>', alias, respuesta)
-        // console.log('Db Estructura View.value ===>', alias, View.value[alias].val_def)
+        // console.log('Db Estructura View respuesta===>', alias, respuesta)
+        // console.log('Db Estructura View ===>', alias, This.value.View[alias].val_def)
 
         des_tab = des_tab + ")";
-        // console.log('Db Valores default=====>',alias,View.value[alias].val_def)
+        // console.log('Db Valores default=====>',alias,This.value.View[alias].val_def)
 
         // console.log('Db ALASQL Estructura ===>',des_tab)
         // Creamos la tablas
-        console.log("Db ins_sql=", des_tab);
+
+        //console.log("Db ins_sql=", des_tab);
 
         try {
             //  await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
@@ -2229,22 +2135,22 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
     }
 
     // por reactividad borramos de uno por uno
-    while (View.value[alias].recnoVal.length > 0) {
-        View.value[alias].recnoVal.pop();
+    while (This.value.View[alias].recnoVal.length > 0) {
+        This.value.View[alias].recnoVal.pop();
     }
 
-    //    delete View.value[alias]['valores']  // borramos el registro de valores
-    View.value[alias].recno = 0; // asignamos el ultimo numero registro de trabajo
-    View.value[alias].recCount = 0; // registros totales
+    //    delete This.value.View[alias]['valores']  // borramos el registro de valores
+    This.value.View[alias].recno = 0; // asignamos el ultimo numero registro de trabajo
+    This.value.View[alias].recCount = 0; // registros totales
 
-    /*    View.value[alias]["tablaSql"] = respuesta.nom_tab; // nombre de tabla en servidor SQL
-        View.value[alias]["exp_indice"] =respuesta.exp_indice
-        View.value[alias]["exp_where"] =respuesta.exp_where
-        View.value[alias]["tip_obj"] = respuesta.tip_obj
+    /*    This.value.View[alias]["tablaSql"] = respuesta.nom_tab; // nombre de tabla en servidor SQL
+        This.value.View[alias]["exp_indice"] =respuesta.exp_indice
+        This.value.View[alias]["exp_where"] =respuesta.exp_where
+        This.value.View[alias]["tip_obj"] = respuesta.tip_obj
     */
-    // console.log('Db Genera_tabla final==>',View.value[alias],alias)
+    // console.log('Db Genera_tabla final==>',This.value.View[alias],alias)
     if (noData) {
-        console.log("Db genera_tabla View.value creada", alias, View.value[alias]);
+        console.log("Db genera_tabla View creada", alias, This.value.View[alias]);
         return await localAlaSql(`select * from ${alias} limit 0`);
     }
 
@@ -2262,13 +2168,13 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
 
         // Asignamos los valores a la vista
 
-        //      View.value[alias] = response; // asignamos su estructura  y filtros de condiciones
-        // console.log("1) Db genera_tabla View.value creada", alias, 'recno=', View.value[alias].recno);
-        View.value[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
-        // console.log("2) Db genera_tabla View.value creada", alias, 'recno=', View.value[alias].recno);
-        View.value[alias].recCount = respuesta.length; // registros totales
-        //    View.value[alias]["tablaSql"] = alias // tabla en servidor SQL
-        View.value[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
+        //      This.value.View[alias] = response; // asignamos su estructura  y filtros de condiciones
+        // console.log("1) Db genera_tabla View creada", alias, 'recno=', This.value.View[alias].recno);
+        This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
+        // console.log("2) Db genera_tabla View creada", alias, 'recno=', This.value.View[alias].recno);
+        This.value.View[alias].recCount = respuesta.length; // registros totales
+        //    This.value.View[alias]["tablaSql"] = alias // tabla en servidor SQL
+        This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
 
         // Borra las tablas
         //      await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
@@ -2300,17 +2206,17 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
             return null;
         }
 
-        View.value[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
+        This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
 
-        //console.log('Db View.value leida respuesta ===>', alias, respuesta)
+        //console.log('Db View leida respuesta ===>', alias, respuesta)
 
         // si  no hay asignacion a valores de componentes
 
-        if (!View.value[alias].componente) {
+        if (!This.value.View[alias].componente) {
             return respuesta;
         }
 
-        const componente = View.value[alias].componente;
+        const componente = This.value.View[alias].componente;
         // revisar no entiendo
         for (const comp in componente) {
             // recorre componente por componente
@@ -2321,7 +2227,7 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
 
         return respuesta;
     } else {
-        View.value[alias].data = {};
+        This.value.View[alias].data = {};
     } // no hay datos
 };
 
@@ -2329,23 +2235,16 @@ export const genera_tabla = async (respuesta: any, alias: string, noData?: boole
 // alias    : Alias
 /// ////////////////////////////////////////////
 export const recCount = async (alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     // const vis_act = obj_vis.value;
     //console.log('Db Reccount alias ===', alias)
 
     if (!alias) {
-        // alias = are_tra.value[-1]; // buscamos a cual alias pertenece
-        alias = are_tra.value[num_are.value - 1];
+        // alias = This.value.are_tra[-1]; // buscamos a cual alias pertenece
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
 
-    if (!View.value[alias]) {
+    if (!This.value.View[alias]) {
         console.warn("recCount() No existe el alias", alias);
         return 0;
     }
@@ -2353,43 +2252,32 @@ export const recCount = async (alias?: string) => {
     //    if (!alias) MessageBox('No existe el alias',alias)
     //         return 0
 
-    return View.value[alias].recCount;
+    return This.value.View[alias].recCount;
 }
 
-/// /////////////  Vfp reccno() /////////////////////
+////////////////  Vfp reccno() /////////////////////
 // alias    : Alias
-/// ////////////////////////////////////////////
-export const recno = async (alias: string) => {
+///////////////////////////////////////////////
+export const recno = async (alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    if (!alias) {
+        // alias = This.value.are_tra[-1]; // buscamos a cual alias pertenece
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
 
     // const vis_act = obj_vis.value;
 
     if (alias == null) {
-        alias = are_tra.value[num_are.value - 1]; // buscamos a cual alias pertenece
+        alias = This.value.are_tra[This.value.num_are - 1]; // buscamos a cual alias pertenece
     }
-    return View.value[alias].recno;
+    return This.value.View[alias].recno;
 }
 
 /// /////////////////////////////  local Db ///////////////////////////////////
-
 // Borra  LocalDb
-export const borraLocalDb = async (db_name: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+const borraLocalDb = async (db_name: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     const req = await indexedDB.deleteDatabase(db_name);
     req.onsuccess = function () {
         console.log("Db Deleted database successfully ", db_name);
@@ -2482,27 +2370,22 @@ return false;
 */
 };
 
-// Crea tablas en  LocalDb
-
+///////////////////////////////////////////////
+// LLamada axios al back-end 
+// dat_lla: datos de la llamada axios
+///////////////////////////////////////
 export const axiosCall = async (dat_lla: Record<string, unknown>) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (
-        !(session.id_con > " ") ||
-        session.user == "" ||
-        session.nom_emp == ""
+        !(This.value.session.id_con > " ") ||
+        This.value.session.user == "" ||
+        This.value.session.nom_emp == ""
     ) {
         console.log(
             "Data bases session =======>",
-            session.id_con,
-            session.user,
-            session.nom_emp
+            This.value.session.id_con,
+            This.value.session.user,
+            This.value.session.nom_emp
         );
         errorAlert("Back End error : Session not active");
         //MessageBox("Back End error", 16, "SQL Error Open");
@@ -2513,26 +2396,26 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
         return;
     }
 
-    dat_lla.id_con = session.id_con; // asignamos el id de connexion
+    dat_lla.id_con = This.value.session.id_con; // asignamos el id de connexion
 
     /*   Creo que ya quedo fuera de uso
-   const broadcast=socketIo?session.socketId+new Date().getTime().toString():''
+   const broadcast=This.value.socketIo?This.value.session.socketId+new Date().getTime().toString():''
 
     if (broadcast>''){
        dat_lla.broadcast=broadcast
-        socketIo.on(broadcast), async (res: {}) => {
+        This.value.socketIo.on(broadcast), async (res: {}) => {
           const respuesta = res.data
           console.log('Sockect response  ======>>>', dat_lla, 'respuesta', 'OK')
           return respuesta        
 
         }
-          socketIo.emit('sql async',dat_lla)
+          This.value.socketIo.emit('sql async',dat_lla)
     }
 
    */
     // hay socket de conexion // Tenemos que poner en verdadero para utilizar sockets
 
-    if (socket.value && false) {
+    if (This.value.socket.value && false) {
         try {
             if (dat_lla.tip_llamada == "UPDATE") {
                 console.log(" DataBase Socket UPDATE data =", dat_lla.dat_act);
@@ -2550,7 +2433,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
                */
             }
 
-            const data = await session.updateSql(dat_lla); // llama sockets
+            const data = await This.value.session.updateSql(dat_lla); // llama sockets
             console.log(" DataBase Socket UPDATE ok data=", data);
             return data;
         } catch {
@@ -2558,7 +2441,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
         }
     }
 
-    const ThisForm: any = Form;
+    const ThisForm: any = This.value.Form;
     let numIntentos = 0;
     let numLogin = 0;
 
@@ -2566,13 +2449,13 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     const signal = controller.signal;
     // cancel the request,  controller.abort()
     // el signal en la llamada no llevara nada  signal
-    // console.log('Db Axios call llamada  ======>>>', dat_lla,  url)
-    //  axiosActive = true;
+    // console.log('Db Axios call llamada  ======>>>', dat_lla, This.value.url)
+    // This.value.axiosActive = true;
     setTimeout(() => controller.abort(), 60000); // 60 segundos
 
     do {
         try {
-            const response = await axios.post(session.url + "sql", dat_lla, {
+            const response = await axios.post(This.value.session.url + "sql", dat_lla, {
                 signal, //: AbortSignal.timeout(300000),  // milisegundos 5 minutos
                 //    headers: { 'Content-type': 'application/json' },
             });
@@ -2580,18 +2463,20 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
             data - The response body provided by the server. If the response from the server is a JSON, Axios will automatically parse data into a JavaScript object.
             status - The HTTP status code from the response e.g. 200, 400, 404.
              */
-            //   axiosActive = false;
+            //  This.value.axiosActive = false;
             const respuesta = response.data;
+            /*
             console.log(
-                "5 Db Axios call response  ======>>>",
-                dat_lla,
-                "respuesta",
-                "OK",
-                respuesta
+              "5 Db Axios call response  ======>>>",
+              dat_lla,
+              "respuesta ---OK---  Respuesta=",
+              respuesta
             );
+    
+            */
             return respuesta;
         } catch (error) {
-            console.error("Axios error ", error);
+            console.error("Axios error datos de llamada =====>>", dat_lla, 'Error= ', error);
             if (error.message == "Network Error") {
 
                 errorAlert("Network Error");
@@ -2618,7 +2503,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
                 const status = error.response.status.toString()
                 if (status == "401" || status == "403" || status == "408") {
 
-                    if (session.nom_emp == "" || status == "401" || status == "408") {
+                    if (This.value.session.nom_emp == "" || status == "401" || status == "408") {
                         await MessageBox('Connection error. Try ' + numIntentos.toString() + ' to reconnect', 16, "ERROR");
                         numIntentos++
                         const router = useRouter();
@@ -2626,8 +2511,8 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
                         return;
                     }
 
-                    //  axiosActive = false;
-                    const { id_con } = storeToRefs(session); //pasa los elementos por referencia al Global
+                    // This.value.axiosActive = false;
+                    const { id_con } = storeToRefs(This.value.session); //pasa los elementos por referencia al Global
                     id_con.value = "";
                 }
                 numIntentos++;
@@ -2649,22 +2534,28 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
                     numLogin++;
                     //const session=storeToRefs(Session)
                     // const session = Session()
-                    const { id_con } = storeToRefs(session); //pasa los elementos por referencia al Global
+                    const { id_con } = storeToRefs(This.value.session); //pasa los elementos por referencia al Global
 
                     //          ThisForm.prop.login = false
                     id_con.value = ""; // borra session
-                    await delay(10000); // espera 10 segundos
+                    await This.value.delay(10000); // espera 10 segundos
                     if (id_con.value == "") numLogin = 3;
-                } else await delay(2000); // espera 2 segundos para tratar de reconectar
+                } else await This.value.delay(2000); // espera 2 segundos para tratar de reconectar
             }
         } // Fin catch error
     } while (numLogin < 3);
-    //  axiosActive = false;
+    // This.value.axiosActive = false;
     MessageBox('Connection error. Try ' + numIntentos.toString() + ' to reconnect', 16, "ERROR");
     window.close();
 }
 
-export const delay = (ms: number) => {
+//////////////////////////////////
+// Funcion de delay
+// ms : milisegundos
+////////////////////////////////
+
+
+const delay = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 /// /////////////////////////////////////////////////
@@ -2673,15 +2564,7 @@ export const delay = (ms: number) => {
 // ins_sql : Instruccion SQL
 /// //////////////////////////////////////
 export const localSql = async (ins_sql: string, DataBase?: string) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!DataBase) {
         DataBase = "Now";
@@ -2714,30 +2597,28 @@ export const localSql = async (ins_sql: string, DataBase?: string) => {
 // ins_sql : Instruccion SQL
 /// //////////////////////////////////////
 export const localAlaSql = async (ins_sql: string, datos?: any) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     /*    if (ins_sql.slice(0,9)!='DROP DATA' || ins_sql.slice(0,11)!='CREATE DATA')
        await alasql('USE Now ;')
 */
     //  await alasql('USE Now ;') // 12/Feb/2024
     try {
-        if (!datos) return await alasql(ins_sql);
+        if (!datos)
+            return await alasql(ins_sql);
 
         return await alasql(ins_sql, datos);
     } catch (error) {
         console.error("localAlaSql error==>", error, ins_sql, datos);
-        // errorAlert("local SQL error :" + ins_sql);
+        errorAlert("local SQL error :" + ins_sql);
 
         return false;
     }
 }
 
+
 export const selectInto = async (ins_sql: string, alias?: string, filename?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
+
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     // alias  : TXT(filename)
     //          CSV(filename,options)
@@ -2807,15 +2688,7 @@ export const readCampo = async (
     recno: number,
     DataBase?: string
 ) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (ControlSource == "") {
         return;
     } // No  hay ControlSource
@@ -2857,16 +2730,7 @@ export const readValue = async (
     recno: number,
     DataBase: string
 ) => {
-
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     const data = await localAlaSql(
         "USE " +
@@ -2885,7 +2749,7 @@ export const readValue = async (
                 data[1][0][campo] = data[1][0][campo].trim();
             }
         }
-        View.value[tabla].Recno = recno // actualizamos el recno de la vista
+        This.value.View[tabla].Recno = recno // actualizamos el recno de la vista
         return data[1]; // todos los campos
     } else
         console.warn('Sql.readValue no data =====>', tabla, campos, recno, data)
@@ -2897,17 +2761,9 @@ export const readValue = async (
 // Graba Value de la tabla local
 /// //////////////////////////////////////
 export const updateCampo = async (Value: any, ControlSource: string, recno: number) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     // async update(Value: any) {
-    //  const ControlSource =  ControlSource;
+    //  const ControlSource = This.value.ControlSource;
     // console.log('Db updateCampo===', Value, ControlSource)
 
     if (ControlSource == "" || recno == 0) {
@@ -2955,14 +2811,7 @@ export const updateCampo = async (Value: any, ControlSource: string, recno: numb
 // Graba Value de la tabla local
 /// //////////////////////////////////////
 export const asignaComponente_xx = async (ControlSource: string, refValue: any) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     const pos = ControlSource.indexOf(".") + 1;
     if (pos == 1) {
         return;
@@ -2972,21 +2821,21 @@ export const asignaComponente_xx = async (ControlSource: string, refValue: any) 
     const alias = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
 
     // Si no esta dado de alta la vista, componente
-    if (!View.value[alias]) {
-        View.value[alias] = {
+    if (!This.value.View[alias]) {
+        This.value.View[alias] = {
             recnoval: [],
         };
     } // objeto vacio
 
-    if (!View.value[alias].componente) {
-        View.value[alias].componente = {};
+    if (!This.value.View[alias].componente) {
+        This.value.View[alias].componente = {};
     } // arreglo vacio
 
-    if (!View.value[alias].componente[campo]) {
-        View.value[alias].componente[campo] = [];
+    if (!This.value.View[alias].componente[campo]) {
+        This.value.View[alias].componente[campo] = [];
     }
 
-    View.value[alias].componente[campo].push(refValue); // aumenta el arreglo con las referencias componentes
+    This.value.View[alias].componente[campo].push(refValue); // aumenta el arreglo con las referencias componentes
 };
 
 /// /////////////////////////////////////////////////
@@ -2994,25 +2843,18 @@ export const asignaComponente_xx = async (ControlSource: string, refValue: any) 
 // despla : Si es numerico brinca al recno con ese numero,
 //          Si es string top=brinca la primer registro del alias, botton=brinca la ultimo registro del alias
 /// //////////////////////////////////////
-export const goto = async (despla: undefined, alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+export const goto = async (despla: number, alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
-        if (!are_tra.value[num_are.value - 1]) {
+        if (!This.value.are_tra[This.value.num_are - 1]) {
             return false;
         }
-        alias = are_tra.value[num_are.value - 1];
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
 
-    View.value[alias].eof = false;
-    View.value[alias].bof = false;
+    This.value.View[alias].eof = false;
+    This.value.View[alias].bof = false;
 
     let data = [];
     let recno = 0;
@@ -3035,52 +2877,52 @@ export const goto = async (despla: undefined, alias?: string) => {
         }
 
         if (data.length == 0) { // No hay datos
-            View.value[alias].row = -1;
-            View.value[alias].eof = true;
-            View.value[alias].bof = true;
+            This.value.View[alias].row = -1;
+            This.value.View[alias].eof = true;
+            This.value.View[alias].bof = true;
             return null;
         }
 
         recno = data[0][recno];
-        View.value[alias].row = -1;
-        for (let row = 0; View.value[alias].recnoVal.lenght; row++) {
-            if (View.value[alias].recnoVal[row].recno == recno) {
-                View.value[alias].row = row;
+        This.value.View[alias].row = -1;
+        for (let row = 0; This.value.View[alias].recnoVal.lenght; row++) {
+            if (This.value.View[alias].recnoVal[row].recno == recno) {
+                This.value.View[alias].row = row;
                 break;
             }
-            //          View.value[alias].row   = View.value[alias].recnoVal
-            //          View.value[alias].recno =  nowValue(alias, 'recno', recno) // asignamos valores del alias posicionado
+            //          This.value.View[alias].row   = This.value.View[alias].recnoVal
+            //          This.value.View[alias].recno = This.value.nowValue(alias, 'recno', recno) // asignamos valores del alias posicionado
         }
     }
 
     // leedatos
     if (recno == 0)  // se posiciona en el registro actual
-        recno = View.value[alias].recno
+        recno = This.value.View[alias].recno
 
     if (recno == 0) { // no has datos
-        View.value[alias].row = -1;
-        View.value[alias].eof = true;
-        View.value[alias].bof = true;
+        This.value.View[alias].row = -1;
+        This.value.View[alias].eof = true;
+        This.value.View[alias].bof = true;
         return null;
     }
 
     data = await localAlaSql(" SELECT *   FROM " + alias + "  where recno=?", recno);
 
     if (data.length > 0) {
-        View.value[alias].recno = recno;
-        const row = View.value[alias].recnoVal.find((ele) => ele.recno == recno);
-        View.value[alias].row = row.id;
-        View.value[alias].data = data[0]
-        bof(alias)
-        eof(alias)
+        This.value.View[alias].recno = recno;
+        const row = This.value.View[alias].recnoVal.find((ele) => ele.recno == recno);
+        This.value.View[alias].row = row.id;
+        This.value.View[alias].data = data[0]
+        This.value.bof(alias)
+        This.value.eof(alias)
 
-        return View.value[alias].data;
+        return This.value.View[alias].data;
     }
 
-    View.value[alias].eof = true;
-    View.value[alias].recno = 0;
-    View.value[alias].row = -1;
-    View.value[alias].data = [];
+    This.value.View[alias].eof = true;
+    This.value.View[alias].recno = 0;
+    This.value.View[alias].row = -1;
+    This.value.View[alias].data = [];
 
     return null;
 };
@@ -3090,27 +2932,20 @@ export const goto = async (despla: undefined, alias?: string) => {
 //////////////////////////////////////////////
 
 export const bof = async (alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias) {
-        alias = are_tra.value[num_are.value - 1];
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
 
     await localAlaSql("USE Now")
     const data = await localAlaSql(" SELECT MIN(recno) as recno   FROM " + alias);
     if (data.length > 0)
-        if (data[0].recno == View.value[alias].recno) {
-            View.value[alias].bof == true
+        if (data[0].recno == This.value.View[alias].recno) {
+            This.value.View[alias].bof == true
             return true
         }
 
-    View.value[alias].bof == true
+    This.value.View[alias].bof == true
     return true
 }
 //////////////////////////////////////////////
@@ -3118,26 +2953,19 @@ export const bof = async (alias?: string) => {
 //////////////////////////////////////////////
 
 export const eof = async (alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias) {
-        alias = are_tra.value[num_are.value - 1];
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
     await localAlaSql("USE Now")
     const data = await localAlaSql(" SELECT MAX(recno) as recno   FROM " + alias);
     if (data.length > 0)
-        if (data[0].recno == View.value[alias].recno) {
-            View.value[alias].eof == true
+        if (data[0].recno == This.value.View[alias].recno) {
+            This.value.View[alias].eof == true
             return true
         }
 
-    View.value[alias].eof == true
+    This.value.View[alias].eof == true
     return true
 }
 
@@ -3146,30 +2974,22 @@ export const eof = async (alias?: string) => {
 // despla : Si es positivo hacia adelante y negativo hacia atras
 /// //////////////////////////////////////
 export const skip = async (despla?: number) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!despla) {
         despla = 1;
     }
 
-    if (!are_tra.value[num_are.value - 1]) {
+    if (!This.value.are_tra[This.value.num_are - 1]) {
         return false;
     }
-    const alias = are_tra.value[num_are.value - 1];
-    View.value[alias].eof = false;
-    View.value[alias].bof = false;
+    const alias = This.value.are_tra[This.value.num_are - 1];
+    This.value.View[alias].eof = false;
+    This.value.View[alias].bof = false;
 
     let data = [];
-    const row = View.value[alias].row;
-    //    let recno = View.value[alias].recnoVal(row)
-    let recno = View.value[alias].recnoVal[row].recno;
+    const row = This.value.View[alias].row;
+    //    let recno = This.value.View[alias].recnoVal(row)
+    let recno = This.value.View[alias].recnoVal[row].recno;
 
     if (despla > 0) {
         data = await localAlaSql(
@@ -3198,19 +3018,19 @@ export const skip = async (despla?: number) => {
         const ult_ele = data[1].length;
         if (despla > 0 && ult_ele < despla) {
             // si el desplazamiento es positivo
-            View.value[alias].eof = true;
+            This.value.View[alias].eof = true;
         }
 
         if (despla < 0 && ult_ele < despla * -1) {
             // si el desplazamiento es negativo
-            View.value[alias].bof = true;
+            This.value.View[alias].bof = true;
         }
 
         recno = data[1][ult_ele - 1][recno]; // asigna el ultimo elemento
     } else if (despla > 0) {
-        View.value[alias].eof = true;
+        This.value.View[alias].eof = true;
     } else {
-        View.value[alias].bof = true;
+        This.value.View[alias].bof = true;
     }
     return await goto(recno); // se va a leer registro
 };
@@ -3219,15 +3039,8 @@ export const skip = async (despla?: number) => {
 // scatter Lee los datos del registro actual
 // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
 /// //////////////////////////////////////
-export const scatter = async (tipo: String, aliasFields?: undefined, alias?: string) => {
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+export const scatter = async (tipo: string, aliasFields?: undefined, alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     let resultado = [];
     let fields = []
 
@@ -3238,10 +3051,10 @@ export const scatter = async (tipo: String, aliasFields?: undefined, alias?: str
     }
 
     if (!aliasFields) {
-        if (!are_tra.value[num_are.value - 1]) {
+        if (!This.value.are_tra[This.value.num_are - 1]) {
             return false;
         }
-        alias = are_tra.value[num_are.value - 1];
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
     else
         if (tipo.toLowerCase() == "memvar")
@@ -3249,14 +3062,14 @@ export const scatter = async (tipo: String, aliasFields?: undefined, alias?: str
 
 
     if (!alias) {
-        if (!are_tra.value[num_are.value - 1]) {
+        if (!This.value.are_tra[This.value.num_are - 1]) {
             return false;
         }
-        alias = are_tra.value[num_are.value - 1];
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
 
     // checar diferencia entre recnoVal y recno
-    // const recno = View.value[alias].recnoVal[View.value[alias].row].recno;
+    // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
 
     const data = await goto(0, alias); // lee los datos actuales
 
@@ -3292,15 +3105,7 @@ export const localClone = async (
     filters: any,
     force?: boolean
 ) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     alias = alias.trim();
     let where = "";
     console.log("Db DataBAse LocalCLone filters", filters);
@@ -3339,13 +3144,13 @@ export const localClone = async (
 
     console.log("Db DataBase Clone where ", where);
 
-    if (!View.value[alias] || force) {
+    if (!This.value.View[alias] || force) {
         // si no existe el alias
-        View.value[alias] = View.value[baseAlias]; // Copiamos su definicion
+        This.value.View[alias] = This.value.View[baseAlias]; // Copiamos su definicion
 
         // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
         let des_tab = " CREATE TABLE " + alias + " (recno INT PRIMARY KEY";
-        const est_tabla = View.value[alias].est_tabla;
+        const est_tabla = This.value.View[alias].est_tabla;
         for (const nom_ele in est_tabla) {
             // genera la descripcion de la tabla para generarla en alasql
             des_tab = des_tab + "," + nom_ele + " " + est_tabla[nom_ele].tip_cam;
@@ -3367,15 +3172,15 @@ export const localClone = async (
     // borramos los datos
     await useNodata(alias);
 
-    //console.log('Db Clone Datos  ',baseAlias,alias,await localSql(`select * from Now.${baseAlias}  ${where}`))
+    //console.log('Db Clone Datos  ',baseAlias,alias,await This.value.localSql(`select * from Now.${baseAlias}  ${where}`))
 
     // var query = `select * INTO ${alias} from Now.${baseAlias}  ${where}`
     var query = `select *  from Now.${baseAlias}  ${where}`;
 
-    const respuesta = await localSql(query);
+    const respuesta = await This.value.localSql(query);
     console.log("Db Clone respuesta ", query, respuesta);
     //query = `select *  from Now.${alias} `
-    //const respuesta = await localSql(query)
+    //const respuesta = await This.value.localSql(query)
 
     // Generamos el campo recno
     if (respuesta.length > 0) {
@@ -3385,7 +3190,7 @@ export const localClone = async (
             respuesta[i].recno = i + 1;
             /*  if (respuesta[i].recno!=recno){
                query = `update Now.${alias} set recno=${respuesta[i].recno} where recno=${recno} `
-               await localSql(query)
+               await This.value.localSql(query)
              }
             */
 
@@ -3400,17 +3205,17 @@ export const localClone = async (
 
         console.log(
             "Db Clone Last ",
-            await localSql("select * from Last." + alias)
+            await This.value.localSql("select * from Last." + alias)
         );
 
         //Generamos el Last
         //query = `select * INTO Last.${alias} from New.${alias}`
 
-        View.value[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
-        View.value[alias].recCount = respuesta.length; // registros totales
-        //    View.value[alias]["tablaSql"] = alias // tabla en servidor SQL
-        View.value[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
-        View.value[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
+        This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
+        This.value.View[alias].recCount = respuesta.length; // registros totales
+        //    This.value.View[alias]["tablaSql"] = alias // tabla en servidor SQL
+        This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
+        This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
     }
 };
 
@@ -3420,34 +3225,25 @@ export const localClone = async (
  * Genera un reporte en PDF con JasperReport
  * @param {string} query - Consulta SQL que se usara para generar el reporte
  * @param {string} for_rep - Contenido del archivo jrxml
- * @param {string} [dataView.value=''] - Nombre de la vista que se usara para generar el reporte
+ * @param {string} [dataView=''] - Nombre de la vista que se usara para generar el reporte
  * @returns {Promise<Buffer>} - Buffer con el contenido del reporte en PDF
  */
-export const jasperReport = async (query: string, for_rep: string, dataView.value?: string) => {
-
-    const { session,
-        are_tra,
-        num_are,
-        View,
-        Form,
-        socket,
-    } = toRefs(datos)
-
-
-    if (!dataView.value) dataView.value = "";
+export const jasperReport = async (query: string, for_rep: string, dataView?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    if (!dataView) dataView = "";
 
     const dat_rep = {
-        id_con: session.id_con,
+        id_con: This.value.session.id_con,
         tip_llamada: "JASPERREPORT",
         jrxml: for_rep,
-        dataView.value,
+        dataView,
         query,
     };
     console.log("Db JasperReport Llamada", dat_rep);
     // display contruyendo reporte
 
     try {
-        const response = await axios.post(session.url + "sql", dat_rep, {
+        const response = await axios.post(This.value.session.url + "sql", dat_rep, {
             responseType: "arraybuffer",
         });
         console.log;
@@ -3458,22 +3254,38 @@ export const jasperReport = async (query: string, for_rep: string, dataView.valu
         return null;
     }
 
-    //   const buffer=await  axiosCall(dat_rep)
+    //   const buffer=await axiosCall(dat_rep)
     //   return buffer
 }
 
+
+export function dropView(alias: string) {
+    localAlaSql(
+        "USE Now ; DROP TABLE IF EXISTS Now." + alias + ";"
+    );
+    localAlaSql(
+        "USE Last ; DROP TABLE IF EXISTS Last." + alias + ";"
+    );
+
+    delete This.value.View[alias]
+
+}
 /// //////////////////////////////
 // portea la funcion alasql a VfpCursor
 /// //////////////////////////////
-export const VfpCursor = async (query: String) => {
+export const VfpCursor = async (query: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     const data = await localAlaSql(query);
     // console.log('Db VfpCursor ==>', data)
     return data;
 };
 
 
-export const errorAlert = async (message: string) => {
+const errorAlert = async (message: string) => {
 
     await MessageBox(message, 16, "SQL Server Error  ");
     //alert(message);
 }
+
+// Fin de la clase================================
+

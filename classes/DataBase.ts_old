@@ -52,7 +52,7 @@ export class VFPDB {
   Form = {}; // any = getCurrentInstance();
   Ctx = {}; // this.Form.ctx; // Contexto
 
-  event: any;
+  //event: any;
   newTables = [];
   oldTables = [];
   Estatus: boolean;
@@ -1201,7 +1201,7 @@ export class VFPDB {
   // alias  : Nombre de la vista a utilizar
   // row : Renglon donde se encuentra el registro a borrar
   /// ////////////////////////////////////////////
-  delete = async (recno: number, alias: string, SqlUpdate: boolean) => {
+  deleteSql = async (recno: number, alias: string, SqlUpdate: boolean) => {
 
 
     if (!SqlUpdate) {
@@ -1297,7 +1297,7 @@ export class VFPDB {
   /// /////////////  Vfp table insert /////////////////////
   // nom_vis  : Nombre de la vista a utilizar
   /// ////////////////////////////////////////////
-  // Aqui me quede
+  //    Aqui me quede
   insert = async (alias: string, m: Record<string, never>) => {
     if (!alias) {
       // si no se da el alias
@@ -1342,39 +1342,24 @@ export class VFPDB {
       const response = await this.axiosCall(dat_vis);
       if (response == null) return;
 
-      /*
-            const response = await axios.post(this.url + "sql", dat_vis, {
-              headers: { "Content-type": "application/json" },
-            });
-      */
+
       const respuesta = response.data;
 
       /*
-      this.insertLocalDb(alias, respuesta);
+      This.value.insertLocalDb(alias, respuesta);
       */
       await this.localAlaSql(
         "USE Now;\
-              UPDATE " +
-        alias +
-        "\
-              set  key_pri=?,set timestamp=? where recno=? ",
-        respuesta.key_pri,
-        respuesta.timestamp,
-        recno
+                  UPDATE " + alias +
+        ` set  key_pri=${respuesta.key_pri},set timestamp=${respuesta.timestamp} where recno=${recno} `
       );
 
       await this.localAlaSql(
         "USE Last;\
-              DELETE Last." +
-        alias +
-        " where recno=?;\
-              INSERT INTO Last." +
-        alias +
-        " SELECT * from Now." +
-        alias +
-        " where recno=?",
-        recno,
-        recno
+                  DELETE Last."+ alias +
+        ` where recno=${recno}; INSERT INTO Last.${alias} ` +
+        " SELECT * from Now." + alias +
+        ` where recno=${recno}`
       );
 
       return;
@@ -2985,7 +2970,7 @@ return false;
   // scatter Lee los datos del registro actual
   // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
   /// //////////////////////////////////////
-  scatter = async (tipo: String, aliasFields?: undefined, alias?: string) => {
+  scatter = async (tipo: string, aliasFields?: undefined, alias?: string) => {
     let resultado = [];
     let fields = []
 
@@ -3204,7 +3189,7 @@ return false;
   /// //////////////////////////////
   // portea la funcion alasql a VfpCursor
   /// //////////////////////////////
-  public VfpCursor = async (query: String) => {
+  public VfpCursor = async (query: string) => {
     const data = await this.localAlaSql(query);
     // console.log('Db VfpCursor ==>', data)
     return data;

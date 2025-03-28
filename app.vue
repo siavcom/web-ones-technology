@@ -406,6 +406,13 @@ const exit = () => {
   Items.splice(itemLength, tam_act - itemLength)
   isLoggedIn.value = false
   usrMenu.value = []
+  const router = useRouter();
+  router.push("/");
+  router.go(-99999);
+  //window.location.reload();
+  //router.clearRoutes();
+  //window.close();
+
 }
 const back = () => window.history.back()
 /*

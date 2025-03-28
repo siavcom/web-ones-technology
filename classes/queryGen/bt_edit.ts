@@ -39,7 +39,7 @@ export class bt_edit extends COMPONENT {
     const RecordSource = this.Parent.Grid.prop.RecordSource
     this.Parent.Grid.prop.RecordSource = ''
 
-    // || this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount==0
+    // || this.Sql.db.View[this.Parent.Grid.prop.RecordSource].recCount==0
 
     const m = {
       prg_prg: this.Form.prop.Name,
@@ -52,7 +52,7 @@ export class bt_edit extends COMPONENT {
     if (add) {
       this.Parent.nco_que.prop.sw_add = true
 
-      const data = await this.Form.db.execute(`select max(nco_que)+1 as max_que from man_db_query \
+      const data = await SQLExec(`select max(nco_que)+1 as max_que from man_db_query \
       where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
          and usu_que='${m.usu_que}' `)
       m.nco_que = 1
@@ -67,18 +67,18 @@ export class bt_edit extends COMPONENT {
       nco_que: this.Parent.nco_que.prop.Value
     }
 
-    // if (this.Form.db.View[this.Parent.Grid.prop.RecordSource])
-    //     await this.Form.db.useNodata(this.Parent.Grid.prop.RecordSource)
+    // if (this.Sql.db.View[this.Parent.Grid.prop.RecordSource])
+    //     await  useNodata(this.Parent.Grid.prop.RecordSource)
     // else    
-    await this.Form.db.localClone('vi_cap_db_query', RecordSource, filter)
+    await localClone('vi_cap_db_query', RecordSource, filter)
     this.Parent.Grid.prop.RecordSource = RecordSource
 
-    if (this.Form.db.View[this.Parent.Grid.prop.RecordSource].recCount == 0) {
+    if (this.Sql.db.View[this.Parent.Grid.prop.RecordSource].recCount == 0) {
       await this.Parent.Grid.appendRow(m)
     }
 
     console.log('bt_add alaSql recordSource=', this.Parent.Grid.prop.RecordSource,
-      await this.Form.db.localAlaSql(`select * from ${this.Parent.Grid.prop.RecordSource}`))
+      await localAlaSql(`select * from ${this.Parent.Grid.prop.RecordSource}`))
     //this.Parent.activa.prop.Value=1
     this.Parent.query.prop.Visible = false
     this.Parent.Grid.prop.Visible = true

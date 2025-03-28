@@ -104,7 +104,7 @@ export class bt_aceptar extends COMPONENT {
       this.Sql.localAlaSql(`drop table browse`)
     }
 
-    await this.Sql.execute(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
+    await SQLExec(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
 
     const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
 

@@ -144,12 +144,12 @@ export class reportForm extends FORM {
     this.queryUsu.prop.Disabled = true;
     this.queryGen.prop.Disabled = true;
 
-    const db = this.db;
+    const db = this.Sql;
 
     // vi_schema_views nos trae los campos que podemos utilizar en las condiciones
     const vis_rep = this.vis_rep;
 
-    await db.execute(
+    await SQLExec(
       `select ref_dat,cam_dat,tip_dat, CASE \
                         WHEN lower(cam_dat)='key_pri' or lower(cam_dat)='timestamp' or \ 
                          lower(cam_dat)='usu_usu' or lower(cam_dat)='tie_uac'  or \
@@ -162,7 +162,7 @@ export class reportForm extends FORM {
     );
 
 
-    if (!db.View.camposView || db.View.camposView.recCount == 0) {
+    if (!this.Sql.View.camposView || this.Sql.View.camposView.recCount == 0) {
       MessageBox("No existe la vista Sql :" + vis_rep, 16, "Error  ");
 
       return;
@@ -175,7 +175,7 @@ export class reportForm extends FORM {
       par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
       nom_tab: vis_rep,
     };
-    await db.use("vi_cap_db_query", m); // todos los querys del reporte
+    await this.Sql.use("vi_cap_db_query", m); // todos los querys del reporte
 
     // Query Principal
     await this.asignaRecordSource("queryPri", "query_main");
@@ -188,7 +188,7 @@ export class reportForm extends FORM {
     // Query Usuario
 
     await this.asignaRecordSource("queryUsu", "query_user");
-    this.queryUsu.usu_que = db.session.user;
+    this.queryUsu.usu_que = this.Sql.session.user;
     this.queryUsu.prop.textLabel =
       "Condiciones por usuario :" + this.queryUsu.usu_que;
 
@@ -201,7 +201,7 @@ export class reportForm extends FORM {
     await this.queryPri.nco_que.interactiveChange();
 
 
-    if (db.session.user == "sa") {
+    if (this.Sql.session.user == "sa") {
       this.reportFields.prop.Visible = true;
 
     }
@@ -245,17 +245,17 @@ export class reportForm extends FORM {
     if (tip_con == "queryGen") tabla = "query_all";
 
     //  console.log("reportForm alias");
-    if (!this.db.View[tabla]) {
+    if (!this.Sql.View[tabla]) {
       // Si no existe el alias
       const filter = {
         usu_que: this[tip_con].usu_que,
         nco_que: this[tip_con].nco_que.prop.Value,
       };
-      await this.db.localClone("vi_cap_db_query", tabla, filter);
+      await this.Sql.localClone("vi_cap_db_query", tabla, filter);
     }
 
     const ins_sql = `select * from ${tabla} where nco_que=${nco_que} order by ren_que`;
-    const data = await this.db.localAlaSql(ins_sql);
+    const data = await this.Sql.localAlaSql(ins_sql);
 
     if (data.length == 0) return where; // No hay condición
 
@@ -268,7 +268,7 @@ export class reportForm extends FORM {
       m.con_que = m.con_que.trim();
       m.val_que = m.val_que.trim();
 
-      const data1 = await this.db.localAlaSql(
+      const data1 = await this.Sql.localAlaSql(
         `select trim(tip_dat) as tip_dat from Now.camposView where trim(cam_dat)='${m.cam_dat}' ; `
       );
 
@@ -460,7 +460,7 @@ export class reportForm extends FORM {
       //console.log("bt_json component.value= ", data[component]);
     }
     //console.log("bt_json obtData= ", data,this.Form.publicVar);
-    
+
     data['tit_rep'] = this.tit_rep // Aumenta la propiedad this.tit_rep
     this.data = data;
     data['con_rep'] = this.con_rep // Aumenta la propiedad this.con_rep
@@ -485,14 +485,14 @@ export class reportForm extends FORM {
     if (!this.Sql.View[this.prop.RecordSource]) {
 
       fields = ` ( ${fields} )`
-      /*      await this.Sql.execute(
+      /*      await SQLExec(
               `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
               from vi_schema_views where nom_tab='${this.prop.RecordSource}' and ${fields} order by con_dat`,
               'diccionario'
             );
       */
 
-      if (!await this.Sql.execute(
+      if (!await SQLExec(
         `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
         from vi_schema_views where nom_tab='${this.tab_ord}' and ${fields} order by con_dat`,
         'diccionario'

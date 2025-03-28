@@ -29,16 +29,13 @@ import image from '@/components/image.vue'
 import form from '@/components/form.vue'
 import modalContainer from '@/components/modalContainer.vue'
 
-
 // Sweetalert 2
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from "sweetalert2";
 
-
 const ThisForm = ref(null)
 export const openForm = (This: any) => {
   ThisForm.value = This
-
 }
 
 //import modal from '@/components/modal.vue'
@@ -88,7 +85,7 @@ export const left = async (texto: string, lon: number) => {
  * @param {number} len - Longitud de la cadena a extraer
  * @returns {string} Cadena extraida a la derecha
  */
-export const right = async (texto: string, len: number) => {
+export const right = (texto: string, len: number) => {
   return texto.slice(-len);
 };
 

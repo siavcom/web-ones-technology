@@ -38,7 +38,7 @@ export class gridMessages extends GRID {
   public async appendRow_old() {
     // Obtiene el consecutivo con_ind del cursor local
 
-    const data = await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_comeind ")
+    const data = await VfpCursor("select max(num_ind) as num_ind from vi_cap_comeind ")
 
     console.log('appendRow', data[0])
 

@@ -6,7 +6,7 @@
 /////////////////////////////////////////////
 
 import { COMPONENT } from "@/classes/Component";
-import { VFPDB } from "@/classes/DataBase";
+//import { VFPDB } from "@/classes/DataBase";
 import { storeToRefs } from "pinia";
 import { translateContainer } from "./translateContainer/translateContainer";
 export class FORM extends COMPONENT {
@@ -18,7 +18,7 @@ export class FORM extends COMPONENT {
   eventos = []; // eventos a ejecutar en el stack
   estatus = []; // estatus de los componentes hijos
   Params = [];
-  db = new VFPDB(); // conexion a la base de datos
+  //db = new VFPDB(); // conexion a la base de datos
   publicVar = {};
   clickedElement = null;
   Development = false; // desarrollo
@@ -59,14 +59,17 @@ export class FORM extends COMPONENT {
     }
 
     // asignamos en la clase db esta forma
-    this.db.Form = this;
+    // this.Sql.Form = this;
 
-    const { Var, dialect } = storeToRefs(this.db.session); // variables publicas
+    initSql(ref(this))  // Inicializa la conexion al SQLServer
+
+
+    // const { Var, dialect } = storeToRefs(this.db.session); // variables publicas
+    const { Var, dialect } = storeToRefs(this.Sql.session); // variables publicas
     this.publicVar = Var.value;
     this.dialect = dialect.value;
 
-    openForm(ref(this));
-    console.log("ThisForm publicVar=", this.publicVar, "Params=", this.Params);
+    //openForm(ref(this));
 
 
   }
@@ -90,7 +93,7 @@ export class FORM extends COMPONENT {
       super.afterMounted();
 
     }
-    //await this.Sql.execute(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \
+    //await SQLExec(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \
     //  where lan_lan='${m.lan_lan}' and for_lan='${m.for_lan}' `, 'language'))
 
 

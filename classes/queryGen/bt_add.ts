@@ -68,7 +68,7 @@ export class bt_add extends COMPONENT {
       usu_que: this.Parent.usu_que,
       nco_que: this.Parent.nco_que.prop.Value
     }
-    await this.Form.db.localClone('vi_cap_db_query', this.Parent.prop.RecordSource, filter)
+    await  localClone('vi_cap_db_query', this.Parent.prop.RecordSource, filter)
 
     await this.Parent.table.appendRow(m)
     this.Parent.table.prop.Visible = true

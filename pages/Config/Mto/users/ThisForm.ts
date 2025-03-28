@@ -25,6 +25,7 @@ import { tzo_usr } from "./tzo_usr"
 ///////////////////////////////////////
 
 import { captureForm } from '@/classes/CaptureForm'
+import { localAlaSql } from "~/composables/SqlDb"
 
 
 export class ThisForm extends captureForm {
@@ -51,6 +52,13 @@ export class ThisForm extends captureForm {
     this.prop.RecordSource = 'vi_cap_db_users'
     this.prop.Status = 'A'
     this.asignaRecno()  // asigna recno a c/componente de captura de la forma
+    initSql(ref(this))
+
+  }
+
+  override async init() {
+    console.log('init ThisForm', await execute("select getdate() ")) //localAlaSql
+    return
   }
 
 } // End ThisForm

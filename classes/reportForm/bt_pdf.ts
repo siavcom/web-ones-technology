@@ -66,7 +66,7 @@ export class bt_pdf extends COMPONENT {
     // const dataView=await this.Form.obtData()  
     this.Parent.report.prop.Disabled = false
 
-    const buffer = await this.Form.db.jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
+    const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
 
     if (buffer == null) {
       this.Form.report.bt_close.click()

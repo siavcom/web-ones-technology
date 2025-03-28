@@ -15,7 +15,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -119,7 +119,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -569,7 +569,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
     }
 
-    //  console.log('1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+    // console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
@@ -583,12 +583,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       // console.log('2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
+      Value.value = newValor
 
-      //  console.log('3.1) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
-
-      if (Value.value != newValor)
-        Value.value = newValor
-
+      // console.log('----------------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'newValor=', newValor, 'This.prop.Value = ', This.prop.Value)
       // if (Value.value != This.prop.Value)  // 14/Mar/2025
       //   This.prop.Value = Value.value // 14/Mar/2025
 
@@ -602,7 +599,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         await This.interactiveChange()
 
       if (!isValid) {
-        console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+        //  console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
         const newValue = This.prop.Value
         if (!await This.valid()) {
@@ -633,6 +630,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       This.prop.Status = 'A'
       Status.value = 'A'
       emit("update:Status", 'A')
+      //     console.log('--------------------------------------3) editText emitValue() Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
     }
 
@@ -644,7 +642,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         This.prop.Status = 'A'
     */
-
 
   }
   else {  // Si hay lectura de campo
@@ -939,7 +936,7 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 /////////////////////////////////////////////////////////////////
 const lostFocus = async () => {
 
-  //console.log('1 editText LostFocus Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+
 
   if (This.prop.ReadOnly || This.prop.Disabled) {
     return
@@ -947,10 +944,12 @@ const lostFocus = async () => {
 
   for (const element of This.Parent.elements) {
     const comp = element.Name
-    console.log('2 editText LostFocus This=', This, 'comp=', comp, 'Status=', This.Parent[comp].prop.Status)
 
-    if (This.Parent[comp].prop.Status == 'P' && comp != This.prop.Name) {
-      return
+    if (comp.trim() != This.prop.Name.trim()) {
+      if (This.Parent[comp].prop.Status == 'P') {
+        console.warn('No esta validado el componente', comp)
+        return
+      }
     }
   }
 
@@ -1055,8 +1054,6 @@ const clickCheckBox = () => {
 
 }
 
-
-
 /////////////////////////////////////////////////////////////////////
 // KeyPress
 // Descripcion: Cada tecla que se presiona en el input
@@ -1078,9 +1075,8 @@ const keyPress = ($event: {
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
-
-
   //  console.log('1)>>>>>KeyPress===>', char, 'Type=', Type)
+
   // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
     //console.log('1) Help KeyPres==>', $event.charCode)
@@ -1118,13 +1114,9 @@ const keyPress = ($event: {
   
   */
 
-  // console.log('2)>>>>>KeyPress===>', char, 'Type=', Type)
   This.keyPress()
 
-
   //console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
-
-
 
 }
 
@@ -1614,8 +1606,8 @@ watch(
 )
 */
 
-//////////////////////////
-//Si se cambia de afuera el valor
+////////////////////////////////////////
+// Si se cambia This.prop.Value desde afuera del componente 
 ///////////////////////////////////////
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
@@ -1625,28 +1617,48 @@ watch(
     if (new_val == Value.value)
       return
 
-    if (watchPropValue)
+    console.log('-------1) EditText Watch Value Name=', This.prop.Name, 'new_val=', new_val, 'watchPropValue=', watchPropValue, This.prop.Status)
+
+    if (watchPropValue) // Si secambio desde el emitValue se ignora
       return
+
+    if (new_val === undefined || new_val === null) {
+      switch (Type) {
+        case 'number':
+          new_val = 0
+          break;
+        case 'checkbox':
+          new_val = 0
+          break;
+        case 'date':
+          new_val = '1900-01-01' //T00:00:00'
+          break;
+        case 'datetime':
+          new_val = '1900-01-01T00:00:00'
+          break;
+        default:
+          new_val = ''
+      }
+
+    }
 
     watchPropValue = true
 
-    //console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
+    console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
 
     if (This.prop.Status == 'P') {// No se ha salido del componente
-      Value.value = This.prop.Value
+
+      ///////////  24/Marzo2025     Se cambia compara Value.value por new_val
       switch (This.prop.Type) {
         case 'number':
 
-          if (Value.value == null)
-            Value.value = 0
-
-          currentValue.value[1] = +Value.value //.toString().trim() // Captura
-          currentValue.value[0] = await numberFormat(Value.value, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
+          currentValue.value[1] = +new_val //.toString().trim() // Captura
+          currentValue.value[0] = await numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
 
           //          emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
           break;
         case 'checkbox':
-          let check = Value.value == 0 ? false : true
+          let check = new_val == 0 ? false : true
           if (checkValue.value != check) {
             checkValue.value = check
             //            emit("update:checkValue", checkValue)
@@ -1655,11 +1667,11 @@ watch(
 
         case 'json':
           compJson.value = []
-          if (Value.value.trim().length > 5) {
+          if (new_val.trim().length > 5) {
             try {
-              currentJson.value = JSON.parse(Value.value)
+              currentJson.value = JSON.parse(new_val)
             } catch (error) {
-              await MessageBox('Error Invalid Json  :' + Value.value, 'Error')
+              await MessageBox('Error Invalid Json  :' + new_val, 'Error')
               currentJson.value = []
             }
           }
@@ -1670,13 +1682,13 @@ watch(
           break;
 
         case 'date':
-          if (Value.value == '' || Value.value == null)
-            Value.value = '1900-01-01'
-          if (Value.value.length > 10)
-            Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
-          displayDate.value = new Date(Value.value).toDateString()
+          if (new_val == '')
+            new_val = '1900-01-01'
+          if (new_val.length > 10)
+            new_val = new_val.slice(0, 10) //+ 'T00:00:00'
+          displayDate.value = new Date(new_val).toDateString()
 
-          currentDate.value = await stringToDate(Value.value)
+          currentDate.value = await stringToDate(new_val)
           /*
                     nextTick(function () {
                       emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
@@ -1687,76 +1699,96 @@ watch(
           break;
 
         case 'datetime':
-          if (Value.value == '' || Value.value == null)
-            Value.value = '1900-01-01T00:00:00'
+          if (new_val == '')
+            new_val = '1900-01-01T00:00:00'
 
-          Value.value = Value.value.slice(0, 16)
+          new_val = new_val.slice(0, 16)
 
-          displayDate.value = new Date(Value.value)
-          currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
-
-          /*
-                    nextTick(function () {
-                      emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
-                      emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
-          
-                    })
-          */
+          displayDate.value = new Date(new_val)
+          currentDate.value = await stringToTime(new_val)
           break;
-        default:
-          if (Value.value == null)
-            Value.value = ''
+
 
       }
 
-      //console.log('Fin -1) EditText Watch Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
 
-      //   await emitValue(false, This.prop.Valid) //se puso await
-      //   console.log('Fin---- EditText Watch Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
+      /*  Modificado 24/Marzo/2025  
+          Value.value = This.prop.Value
+          switch (This.prop.Type) {
+            case 'number':
+    
+              if (Value.value == null)
+                Value.value = 0
+    
+              currentValue.value[1] = +Value.value //.toString().trim() // Captura
+              currentValue.value[0] = await numberFormat(Value.value, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
+    
+              //          emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
+              break;
+            case 'checkbox':
+              let check = Value.value == 0 ? false : true
+              if (checkValue.value != check) {
+                checkValue.value = check
+                //            emit("update:checkValue", checkValue)
+              }
+              break;
+    
+            case 'json':
+              compJson.value = []
+              if (Value.value.trim().length > 5) {
+                try {
+                  currentJson.value = JSON.parse(Value.value)
+                } catch (error) {
+                  await MessageBox('Error Invalid Json  :' + Value.value, 'Error')
+                  currentJson.value = []
+                }
+              }
+    
+              for (const comp in currentJson.value)
+                compJson.value.push(currentJson.value[comp])
+    
+              break;
+    
+            case 'date':
+              if (Value.value == '' || Value.value == null)
+                Value.value = '1900-01-01'
+              if (Value.value.length > 10)
+                Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
+              displayDate.value = new Date(Value.value).toDateString()
+    
+              currentDate.value = await stringToDate(Value.value)
+            
+              break;
+    
+            case 'datetime':
+              if (Value.value == '' || Value.value == null)
+                Value.value = '1900-01-01T00:00:00'
+    
+              Value.value = Value.value.slice(0, 16)
+    
+              displayDate.value = new Date(Value.value)
+              currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
+    
+              break;
+            default:
+              if (Value.value == null)
+                Value.value = ''
+    
+          }
+    
+    */
 
-      //   return
     }
 
     //  if (This.prop.Valid) return
 
-
-
-    if (new_val != Value.value) {
-
-
-      /*
-       if (propType == 'date')
-         if (new_val == Value.value)
-           return
-         */
-      //if (new_val.slice(0, 10) == Value.value.slice(0, 10))
-      //  return
-
-
-      // Value.value = This.prop.Value
-      /*
-      console.log('EditText Watch Name=', This.prop.Name,
-        'prop.Valid =', This.prop.Valid,
-        'Status=', This.prop.Status,
-        'Value=', This.prop.Value, Value.value,
-        'Valid=', This.prop.Valid,
-        'checkValue=', checkValue.value)
-        */
-
-      // Value.value = This.prop.Value 13/Marzo/2025
-
-
-      //   if (Value.value != new_val)
-
-      //console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
-
-      await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
-      watchPropValue = false
-
-      //console.log('--------Fin 2) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
-
-
-    }
+    // Si el valor nuevo es diferente al anterior
+    // if (new_val != Value.value) {
+    console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, 'new_val', new_val, 'Status=', This.prop.Status)
+    await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
+    watchPropValue = false
+    //console.log('--------Fin 2) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
+    // }
   },
   { deep: true }
 );
@@ -1881,7 +1913,7 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('1) editText onMounted Name=', This.prop.Name)
+  //console.log('1) editText onMounted Name=', This.prop.Name, 'ThisForm=', Thisform)
   styleAssing()
 
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')

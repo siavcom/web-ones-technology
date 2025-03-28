@@ -703,7 +703,7 @@ this class is used to manipulate a SQL database it's have several methods:
 - deleteRow(`<`key_pri`>`,`<`alias?`>`).
    Delete current row in a local SQL table
 
-- delete(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
+- deleteSql(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
    Delete a row with recno in a local SQL table
 
 - insert(`<`alias`>`,`<`memoryObject`>`). ( not in use)

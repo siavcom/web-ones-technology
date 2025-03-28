@@ -365,7 +365,11 @@ export class COMPONENT {
 
       // console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.Map)
 
-      if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
+      // if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
+      if (this.Form.Sql) {
+        this.Sql = this.Form.Sql;  // Asugnamos la clase manejo SQL
+
+      }
 
     }
     this.translate()  // Traduce al lenguaje del usuario

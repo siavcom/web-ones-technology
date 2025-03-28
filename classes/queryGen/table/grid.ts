@@ -10,19 +10,19 @@
 // base class
 ///////////////////////////////////////
 
-import {GRID} from  '@/classes/Grid'
+import { GRID } from '@/classes/Grid'
 
 ////////////////////////////////
 // Columns 
 ////////////////////////////////
-import {ren_que} from './ren_que'
-import {pai_que} from './pai_que'
-import {cam_dat} from './cam_dat'
+import { ren_que } from './ren_que'
+import { pai_que } from './pai_que'
+import { cam_dat } from './cam_dat'
 
-import {con_que} from './con_que'
-import {val_que} from './val_que'
-import {pad_que} from './pad_que'
-import {uni_que} from './uni_que'
+import { con_que } from './con_que'
+import { val_que } from './val_que'
+import { pad_que } from './pad_que'
+import { uni_que } from './uni_que'
 
 
 export class Grid extends GRID {
@@ -36,14 +36,14 @@ export class Grid extends GRID {
 
   constructor() {
     super()
-   
+
     this.prop.Capture = false;
     this.prop.Valid = false;
     this.prop.Position = 'main'
-    this.prop.RecordSource=''
-    this.prop.Visible=true
-    this.prop.textLabel=''
-    this.prop.autoLoad=false  // se pone en falso para que no inicialice la tabla
+    this.prop.RecordSource = ''
+    this.prop.Visible = true
+    this.prop.textLabel = ''
+    this.prop.autoLoad = false  // se pone en falso para que no inicialice la tabla
 
     this.style.fontSize = '16px'
     this.style.color = 'green'
@@ -51,55 +51,55 @@ export class Grid extends GRID {
 
   }
 
-  public async appendRow(m?: {}) { 
+  public async appendRow(m?: {}) {
     if (!m) m = {}
 
-    m.nco_que= this.Parent.nco_que.prop.Value 
-    m.prg_prg= this.Form.prop.Name
-    m.par_prg= this.Form.Params.par_prg ? this.Form.Params.par_prg:'' 
-    m.usu_que= this.Parent.usu_que
-    m.ren_que= 1
-    m.con_que='='
-    m.cam_dat=this.Form.var_ord.prop.Value
+    m.nco_que = this.Parent.nco_que.prop.Value
+    m.prg_prg = this.Form.prop.Name
+    m.par_prg = this.Form.Params.par_prg ? this.Form.Params.par_prg : ''
+    m.usu_que = this.Parent.usu_que
+    m.ren_que = 1
+    m.con_que = '='
+    m.cam_dat = this.Form.var_ord.prop.Value
 
 
     const db = this.Form.db
-    const data=await db.localAlaSql(`select max(ren_que)+1 as max_ren from ${this.prop.RecordSource} `)
-        
-    if( data[0] && data[0].max_ren && data[0].max_ren!=null)
-       m.ren_que=data[0].max_ren
-  
-    await super.appendRow(m) 
-   // console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+    const data = await db.localAlaSql(`select max(ren_que)+1 as max_ren from ${this.prop.RecordSource} `)
+
+    if (data[0] && data[0].max_ren && data[0].max_ren != null)
+      m.ren_que = data[0].max_ren
+
+    await super.appendRow(m)
+    // console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
     /*   
     if (!m) m = {}
     this.Row=-1 // Quitamos donde esta el renglon
-    const values= await this.Form.db.appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
+    const values= await  appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
     this.prop.Valid=false
     console.log('======grid Incertamos renglon========>',this.Name,values)
    */
   }
 
-//////////////////////////////////
-// Graba Tabla
-/////////////////////////////////
+  //////////////////////////////////
+  // Graba Tabla
+  /////////////////////////////////
   async grabaTabla_ant() {
-    let resultado=false
+    let resultado = false
 
-    console.log('grabaTabla ala ===>',await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
-    
+    console.log('grabaTabla ala ===>', await localAlaSql(`select * from ${this.prop.RecordSource}`))
 
-    if (await super.grabaTabla()){
-    /*  const m = {
-        prg_prg: this.Form.prop.Name,
-        par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
-      }
-   */
-    //  await this.Form.db.use('vi_cap_db_query', m) // todos los querys del reporte
-    
-      resultado=true
-    } 
+
+    if (await super.grabaTabla()) {
+      /*  const m = {
+          prg_prg: this.Form.prop.Name,
+          par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
+        }
+     */
+      //  await  use('vi_cap_db_query', m) // todos los querys del reporte
+
+      resultado = true
+    }
     return resultado
 
   }

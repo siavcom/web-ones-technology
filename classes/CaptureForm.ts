@@ -169,7 +169,7 @@ export class captureForm extends FORM {
       return
     }
 
-    const data = await this.Form.db.use(this.prop.RecordSource, m);
+    const data = await use(this.prop.RecordSource, m);
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
@@ -182,8 +182,8 @@ export class captureForm extends FORM {
 
     if (data.length == 0) {
       // No hay datos
-      const result = await this.Form.db.appendBlank(this.prop.RecordSource, m);
-      //      console.log('CaptureForm appendBlank alaSql=',await this.Form.db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+      const result = await appendBlank(this.prop.RecordSource, m);
+      //      console.log('CaptureForm appendBlank alaSql=',await  localAlaSql(`select * from ${this.prop.RecordSource}`))
 
       if (result == false) {
         // hubo error al leer datos
@@ -249,7 +249,7 @@ export class captureForm extends FORM {
 
       if (this.prop.RecordSource.length > 2) { // Si hay vista
         if (!this.Sql.View[this.prop.RecordSource] || this.Sql.View[this.prop.RecordSource].recno > 0) {
-          await this.Form.db.useNodata(this.prop.RecordSource);
+          await useNodata(this.prop.RecordSource);
         }
       } else
         return;
@@ -332,7 +332,7 @@ export class captureForm extends FORM {
       /*
             console.log(
               "CaptureForm bt_graba click() Disabled=", this.prop.Disabled, ' ====> alaSql=',
-              await this.Form.db.localAlaSql(
+              await  localAlaSql(
                 "select * from " + this.Parent.prop.RecordSource,
                 this.prop.Disabled
               )
@@ -368,7 +368,7 @@ export class captureForm extends FORM {
       }
 
       //console.log("CaptureForm bt_graba");
-      const result = await this.Form.db.tableUpdate(
+      const result = await tableUpdate(
         0,
         false,
         this.Parent.prop.RecordSource
@@ -393,7 +393,7 @@ export class captureForm extends FORM {
     public async lee_grid() {
       for (let i = 0; i < this.Grid.length; i++) {
         if (this.Form[this.Grid[i]].prop.RecordSource.trim() > "  ")
-          await this.Form.db.use(this.Form[this.Grid[i]].prop.RecordSource, m);
+          await use(this.Form[this.Grid[i]].prop.RecordSource, m);
         this.Form[this.Grid[i]].prop.Visible = true;
       }
     }
@@ -432,7 +432,7 @@ export class captureForm extends FORM {
             this.Form.prop.RecordSource,
             this.Recno
           );
-          const result = await this.Form.db.delete(
+          const result = await deleteSql(
             this.Recno,
             this.prop.RecordSource,
             true
@@ -469,7 +469,7 @@ export class captureForm extends FORM {
     this.Recno = 0
     MessageBox("Error al actualizar/borrar Datos", 16);
 
-    const data = await this.Form.db.requery(this.Form.prop.RecordSource);
+    const data = await requery(this.Form.prop.RecordSource);
     if (data.length > 0)
       this.Recno = data[0].Recno
     else {

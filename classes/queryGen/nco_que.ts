@@ -64,7 +64,7 @@ export class nco_que extends COMPONENT {
           "1 InteractiveChange Value=",
           this.prop.Value,
           this.Parent.Name,
-          await this.Form.db.localAlaSql("select * From vi_cap_db_query")
+          await  localAlaSql("select * From vi_cap_db_query")
         );
     */
     const q = {
@@ -77,7 +77,7 @@ export class nco_que extends COMPONENT {
     const ins_sql = `select * From vi_cap_db_query \
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`;
 
-    const data = await this.Form.db.localAlaSql(ins_sql);
+    const data = await localAlaSql(ins_sql);
 
     if (data.length == 0) {
       console.log("2 No hay datos interactiveChange ", ins_sql, "Data=", data);

@@ -14,13 +14,9 @@
 
 <<imp_com>>
 
-
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
-
-import { captureForm } from '@/classes/CaptureForm'
-
 
 export class ThisForm extends captureForm {
 

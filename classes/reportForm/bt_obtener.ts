@@ -54,7 +54,7 @@ export class bt_obtener extends COMPONENT {
     this.Form.report.displayBrowse.table.isLoading = true;
 
     const query = await this.Form.gen_query();
-    const result = await this.Form.db.execute(query, "sqlresult");
+    const result = await SQLExec(query, "sqlresult");
 
     if (!result || result.length == 0) {
 
