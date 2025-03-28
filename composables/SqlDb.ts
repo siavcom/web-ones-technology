@@ -113,7 +113,7 @@ export function initSql(Form: {}) {
     This.value.Form.Sql.SQLExec = SQLExec
     This.value.Form.Sql.select = select
     This.value.Form.Sql.recCount = recCount
-    This.value.Form.Sql.recno = recno
+    This.value.Form.Sql.recNo = recNo
     This.value.Form.Sql.axiosCall = axiosCall
     This.value.Form.Sql.localSql = localSql
     This.value.Form.Sql.localAlaSql = localAlaSql
@@ -2256,9 +2256,10 @@ export const recCount = async (alias?: string) => {
 }
 
 ////////////////  Vfp reccno() /////////////////////
+// record Number
 // alias    : Alias
 ///////////////////////////////////////////////
-export const recno = async (alias?: string) => {
+export const recNo = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
