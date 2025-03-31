@@ -41,11 +41,13 @@
                     </NuxtLink>
                     <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                   </li>
-                  <span
-                    v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system">
+                  <span class="sub-menu-Mantenance"
+                    v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system"
+                    :style="{ 'color': 'chartreuse' }">
 
                     <li @click="isMan = !isMan">
-                      <span class="links_options">{{ Props.maintenance }}</span>
+                      <span class="links_options">{{ Props.maintenance
+                      }}</span>
                       <nuxt-img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
@@ -53,7 +55,7 @@
                       <li>
                         <NuxtLink :to="menuItem.path" :target="menuItem.target"
                           @click="titleName = menuItem.name; isOpen = false">
-                          <span class="links_name">{{ menuItem.name }}</span>
+                          <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                         </NuxtLink>
 
                         <!-- Hiperlink Tag  a :href="menuItem.link"-->
@@ -61,8 +63,9 @@
                       </li>
                     </span>
                   </span>
-                  <span
-                    v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system">
+                  <span class="sub-menu-Reports"
+                    v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system"
+                    :style="{ 'color': 'chartreuse' }">
                     <li text-align="end" @click="isRep = !isRep">
                       <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
                       <nuxt-img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg" />
@@ -71,7 +74,7 @@
                       <li>
                         <NuxtLink :to="menuItem.path" :target="menuItem.target"
                           @click="titleName = menuItem.name; isOpen = false">
-                          <span class="links_name">{{ menuItem.name }}</span>
+                          <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                         </NuxtLink>
 
                         <!-- Hiperlink Tag  a :href="menuItem.link"-->
@@ -79,8 +82,9 @@
                       </li>
                     </span>
                   </span>
-                  <span
-                    v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system">
+                  <span class="sub-menu-Process"
+                    v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system"
+                    :style="{ 'color': 'chartreuse' }">
                     <li text-align="end" @click="isPro = !isPro">
                       <span class="links_options">{{ Props.process }}</span>
                       <nuxt-img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg" />
@@ -89,7 +93,7 @@
                       <li>
                         <NuxtLink :to="menuItem.path" :target="menuItem.target"
                           @click="titleName = menuItem.name; isOpen = false">
-                          <span class="links_name">{{ menuItem.name }}</span>
+                          <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                         </NuxtLink>
 
                         <!-- Hiperlink Tag  a :href="menuItem.link"-->

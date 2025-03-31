@@ -308,7 +308,7 @@ export const addDate = async (date: Date, data: any, tipo?: string) => {
  * @param {Object} filters - Objeto con las claves y valores a filtrar, ejemplo. { Position: "header" }
  * @returns {Array} - Un nuevo array con los elementos filtrados.
  */
-export const multiFilter = (array: [], filters: {}) => {
+export const multiFilter = (array: [], filters: {}): Array<any> => {
   return array.filter((o) =>
     Object.keys(filters).every((k) =>
       [].concat(filters[k]).some((v) => o[k].includes(v))

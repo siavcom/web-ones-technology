@@ -6,7 +6,7 @@
  Sistema  	: Web-Ones-Technology 	Forma prinncipal  Ver 1.0 		Mnemo   : form.VUE
  Ult. mod.	: Fernando Cuadras  		Fecha   : 13/Dic/2022
  Objeto		: VUE
- Comentarios	: Genera la forma dinamicamente en base al ThisForm que se pasa del comeponente padre
+ Comentarios	: Genera la forma dinamicamente en base al thisForm que se pasa del comeponente padre
  ----------------------------------------------------------------------------------------------
 -->
 <template>
@@ -22,14 +22,16 @@
     </div>
 
   </div>
+
+
   <div v-else @click.middle.stop="middleClick()">
     <transition name='Mainform'>
 
-      <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
+      <div id='thisForm' :class="thisForm.prop.Status != 'A' ? 'disabled' : 'thisForm'"
         :style="{ 'width': '-moz-available' }">
-        <section class="pagina" :style="ThisForm.style">
+        <section class="pagina" :style="thisForm.style">
           <div id='backGround' class='backGround'>
-            <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
+            <!--VueForm class="cuerpo" v-bind:style="thisForm.style" v-bind:position="thisForm.position"-->
             <section class="formheader">
               <slot name="header">
 
@@ -37,23 +39,23 @@
                 <h2 class="header2" float="left">
 
                   <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
-                    <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
-                    <!--label text-align="right">{{ ThisForm.prop.Name }}</label-->
+                    <label text-align="center">{{ thisForm.prop.textLabel }}</label>
+                    <!--label text-align="right">{{ thisForm.prop.Name }}</label-->
 
                   </div>
                 </h2>
                 <!--transition-group> -->
-                <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
-                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
+                <!-- @focusout="thisForm.eventos.push('thisForm.' + compHeader + '.valid()')"
+                   @focus.capture="thisForm.eventos.push('thisForm.' + compHeader + '.when()')"
               -->
 
-                <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
-                  :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
+                <div :id="'div_' + compHeader" v-for="(compHeader) in thisForm.header" :key="compHeader"
+                  :class="compHeader" v-show='thisForm[compHeader].prop.Visible'>
                   <component :id="'component_' + compHeader"
-                    :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
-                    :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
-                    :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                    :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
+                    :is="impComponent(thisForm[compHeader].prop.BaseClass, 'header')"
+                    :ShowError="thisForm[compHeader].prop.ShowError" :Registro="thisForm[compHeader].Recno"
+                    :prop="thisForm[compHeader].prop" :style="thisForm[compHeader].style"
+                    :position="thisForm[compHeader].position" :Value="thisForm[compHeader].prop.Value" />
                 </div>
 
               </slot>
@@ -64,19 +66,19 @@
 
                 <TransitionGroup name='detailForm'>
 
-                  <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.block.length == 0"
-                    v-for="(compMain) in ThisForm.main" :key="compMain" :class="compMain"
-                    v-show='ThisForm[compMain].prop.Visible'>
-                    <component v-if="ThisForm[compMain].prop.Visible" :id="Id + '_mainComponent_' + compMain"
-                      :is="impComponent(ThisForm[compMain].prop.BaseClass)"
-                      v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                      :Registro="ThisForm[compMain].Recno" :prop="ThisForm[compMain].prop"
-                      :style="ThisForm[compMain].style" :position="ThisForm[compMain].position" />
+                  <div :id="Id + 'main_div_' + compMain" v-if="thisForm.block.length == 0"
+                    v-for="(compMain) in thisForm.main" :key="compMain" :class="compMain"
+                    v-show='thisForm[compMain].prop.Visible'>
+                    <component v-if="thisForm[compMain].prop.Visible" :id="Id + '_mainComponent_' + compMain"
+                      :is="impComponent(thisForm[compMain].prop.BaseClass)"
+                      v-model:Value="thisForm[compMain].prop.Value" v-model:Status="thisForm[compMain].prop.Status"
+                      :Registro="thisForm[compMain].Recno" :prop="thisForm[compMain].prop"
+                      :style="thisForm[compMain].style" :position="thisForm[compMain].position" />
                   </div>
 
                   <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
-                  <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
+                  <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in thisForm.block" :key="key">
                     <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                     <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
@@ -102,28 +104,28 @@
             <section class="formfooter">
               <!--Transition tag='div' -->
               <nuxt-img class='circle'
-                :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
+                :src="thisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
                 style="float:left" />
               <!--/Transition-->
               <slot name="footer">
-                <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
-              v-bind:db="ref(ThisForm.db)"
+                <!--                 @focusout="thisForm.eventos.push('thisForm.' + compFooter + '.valid()')" 
+              v-bind:db="ref(thisForm.db)"
               
               -->
 
-                <div :id="'div_' + compFooter" v-for="(compFooter) in ThisForm.footer" :class="compFooter"
-                  v-show='ThisForm[compFooter].prop.Visible'>
-                  <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
-                      @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
+                <div :id="'div_' + compFooter" v-for="(compFooter) in thisForm.footer" :class="compFooter"
+                  v-show='thisForm[compFooter].prop.Visible'>
+                  <!--div v-for="(obj, compFooter,key) in thisForm" :key="obj.Index"
+                      @focus.capture="thisForm.eventos.push('thisForm.' + compFooter + '.when()')"
                 -->
                   <component :id="'component_' + compFooter"
-                    :is="impComponent(ThisForm[compFooter].prop.BaseClass, 'footer')"
-                    v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                    :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-                    :Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-                    :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
-                  <!--:inputStyle="ThisForm[compFooter].inputStyle"
-                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
+                    :is="impComponent(thisForm[compFooter].prop.BaseClass, 'footer')"
+                    v-model:Value="thisForm[compFooter].prop.Value" v-model:Status="thisForm[compFooter].prop.Status"
+                    :ShowError="thisForm[compFooter].prop.ShowError" v-model:Key="thisForm[compFooter].prop.Key"
+                    :Registro="thisForm[compFooter].Recno" v-bind:prop="thisForm[compFooter].prop"
+                    :style="thisForm[compFooter].style" :position="thisForm[compFooter].position" />
+                  <!--:inputStyle="thisForm[compFooter].inputStyle"
+                  @click="thisForm.eventos.push('thisForm.' + compFooter + '.click()')" -->
                 </div>
               </slot>
 
@@ -188,7 +190,7 @@ const modalContainer = resolveComponent('modalContainer.vue')
 // Nuxt 4 :
 //  -. Se debe de cambiar los componentes al directorio components/global 
 //  -. Se debe de aumentar el Lazy al nombre de cada componente
-//  -. En el htnl en :is=":is="ThisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
+//  -. En el htnl en :is=":is="thisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -230,20 +232,19 @@ const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 
 ///////////////////////////////////////
 // Propiedades del componente .
-//  Obtiene ThisForm  base desde Main.vue en cada directorio de cada pagina 
-// Se tiene que mantener el nombre del ThisForm ya que cuando se hace un eval de todos los metodos se utiliza simepre ThisForm.<componente>.<method>
+//  Obtiene thisForm  base desde Main.vue en cada directorio de cada pagina 
 ////////////////////////////////////
 const emit = defineEmits(["updateIsOpen"])
 const props = defineProps<{
   ThisForm: null;
 }>();
-const ThisForm = reactive(new props.ThisForm) // no quitar el new 
-//const Id = ThisForm.prop.Name
+const thisForm = reactive(new props.ThisForm) // no quitar el new 
+//const Id = thisForm.prop.Name
 
-const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+const Id = thisForm.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 // Datos forma por forma . En app.vue esta useHead
 useSeoMeta({
-  title: ThisForm.prop.Name,
+  title: thisForm.prop.Name,
   ogTitle: 'Dessing and programing with web-ones-technology',
   //  description: 'This is my amazing site, let me tell you all about it.',
   //  ogDescription: 'This is my amazing site, let me tell you all about it.',
@@ -270,21 +271,21 @@ do {
 //pasa los elementos por referencia al Global
 
 const password = ref('')
-ThisForm.user = user.value
-ThisForm.nom_emp = nom_emp.value
-ThisForm.fpo_pge = fpo_pge.value
+thisForm.user = user.value
+thisForm.nom_emp = nom_emp.value
+thisForm.fpo_pge = fpo_pge.value
 
 const router = useRouter();
 
-ThisForm.params = router.currentRoute.value.query  // Obtiene los Parametros de la URL
+thisForm.params = router.currentRoute.value.query  // Obtiene los Parametros de la URL
 
 const loading = ref(true)
 
 // asigna por referencia un Value de un objeto reactivo. Con toRefs hace todas las variables reactivas a referencia
 //export const nom_nom_value = toRef(vi_lla1_nom[0], 'nom_nom')
 
-//ThisThisForm.refs.fea_nom.Value=ahora;
-//console.log('Fecha ahora ====>',ThisThisForm.refs.fea_nom.Value);
+//ThisthisForm.refs.fea_nom.Value=ahora;
+//console.log('Fecha ahora ====>',ThisthisForm.refs.fea_nom.Value);
 
 
 ////////////////////////////////////////////
@@ -293,10 +294,10 @@ const loading = ref(true)
 
 const waitEval = async (evento: string) => {
   return new Promise((resolve, reject) => {
-    // Se tiene que pasar por referencia donde esta el ThisForm 
+    // Se tiene que pasar por referencia donde esta el thisForm 
 
-    //const ThisForm = form.value //ya que se trabajo solo en ambiente local
-    console.log('<<<============Iniciamos evento=========>>> ', evento, ThisForm.eventos)
+    //const thisForm = form.value //ya que se trabajo solo en ambiente local
+    console.log('<<<============Iniciamos evento=========>>> ', evento, thisForm.eventos)
 
     resolve(eval(evento))
     reject((error) => {
@@ -311,17 +312,17 @@ const waitEval = async (evento: string) => {
 // no ejecuta el evento
 /////////////////////////////////
 watch(
-  () => ThisForm.eventos,
+  () => thisForm.eventos,
   async (new_val, old_val) => {
-    if (ThisForm.eventos.length == 0) // 27/Dic/2024
+    if (thisForm.eventos.length == 0) // 27/Dic/2024
       return
-    console.log('1) eventos Entro watch ThisForm.estatus=', ThisForm.eventos)
-    for (const comp in ThisForm.estatus) {
+    console.log('1) eventos Entro watch thisForm.estatus=', thisForm.eventos)
+    for (const comp in thisForm.estatus) {
 
-      if (ThisForm.estatus[comp] != 'A') {
-        ThisForm.eventos = []
-        // ThisForm.prop.Status = 'P'
-        // console.log('2) eventos Entro watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
+      if (thisForm.estatus[comp] != 'A') {
+        thisForm.eventos = []
+        // thisForm.prop.Status = 'P'
+        // console.log('2) eventos Entro watch thisForm.eventos comp. ', comp, 'estatus=', thisForm.estatus[comp])
         return
       }
     }
@@ -334,22 +335,22 @@ watch(
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
 watch(
-  () => ThisForm.estatus,
+  () => thisForm.estatus,
   async (new_val, old_val) => {
-    console.log('estatus Entro watch ThisForm.estatus=. ', ThisForm.estatus)
+    console.log('estatus Entro watch thisForm.estatus=. ', thisForm.estatus)
 
     for (const comp in new_val) {
-      //  console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
+      //  console.log('Watch estatus ===>', comp, thisForm.estatus[comp])
 
-      if (ThisForm.estatus[comp] != 'A') {
-        console.log('Proceso watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
-        ThisForm.prop.Status = 'P'
-        ThisForm.eventos = []
+      if (thisForm.estatus[comp] != 'A') {
+        console.log('Proceso watch thisForm.eventos comp. ', comp, 'estatus=', thisForm.estatus[comp])
+        thisForm.prop.Status = 'P'
+        thisForm.eventos = []
         return
       }
     }
 
-    console.log('Form watch status ', ThisForm.eventos[0])
+    console.log('Form watch status ', thisForm.eventos[0])
 
     ejeEventos()
   },
@@ -358,33 +359,33 @@ watch(
 
 
 const ejeEventos = async () => {
-  console.log('Form ejeEventos ===>>> ', ThisForm.eventos)
-  if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
-    const evento = ThisForm.eventos[0]
-    //  ThisForm.eventos[0] = 'XXXXX'
-    ThisForm.eventos = []
+  console.log('Form ejeEventos ===>>> ', thisForm.eventos)
+  if (thisForm.eventos[0] != 'XXXXX' && thisForm.eventos[0] > '') {
+    const evento = thisForm.eventos[0]
+    //  thisForm.eventos[0] = 'XXXXX'
+    thisForm.eventos = []
     console.log('ejeEventos ejecutara===>>> ', evento)
     await waitEval(evento)  // ejecuta evento de la lista
-    console.log('Borrara evento watch ThisForm.eventos===>>> ', evento)
+    console.log('Borrara evento watch thisForm.eventos===>>> ', evento)
 
     // borramos el evento
     const new_arr = []
     let num_eve = 0
-    if (ThisForm.eventos.length > 1) {
-      for (let i = 0; i < ThisForm.eventos.length; i++) {
+    if (thisForm.eventos.length > 1) {
+      for (let i = 0; i < thisForm.eventos.length; i++) {
         console.log('Eventos Restantes===>>> ', evento)
-        if (ThisForm.eventos[i] != 'XXXXX' && ThisForm.eventos[i].length > 0) {
-          new_arr[num_eve] = ThisForm.eventos[i]
+        if (thisForm.eventos[i] != 'XXXXX' && thisForm.eventos[i].length > 0) {
+          new_arr[num_eve] = thisForm.eventos[i]
           num_eve++
-          console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
+          console.log('borramos eventos. Anexamos Evento ', thisForm.eventos[i], thisForm.eventos[i].length)
 
         }
       }
     }
-    ThisForm.eventos = [...new_arr]
+    thisForm.eventos = [...new_arr]
 
 
-    console.log('############Evento terminado ############ Evento ejecutado==>>> ', evento, 'ThisForm.prop.Status=', ThisForm.prop.Status, 'Eventos restantes=', ThisForm.eventos.length, 'Eventos', ThisForm.eventos)
+    console.log('############Evento terminado ############ Evento ejecutado==>>> ', evento, 'thisForm.prop.Status=', thisForm.prop.Status, 'Eventos restantes=', thisForm.eventos.length, 'Eventos', thisForm.eventos)
 
     //await eje_eve(evento)
 
@@ -432,18 +433,18 @@ onBeforeMount(async () => {
     })
     .finally(async () => {
 
-      for (const componente in ThisForm) {
-        if (ThisForm[componente] !== undefined && ThisForm[componente] !== null) {
+      for (const componente in thisForm) {
+        if (thisForm[componente] !== undefined && thisForm[componente] !== null) {
 
           if (
-            ThisForm[componente].prop &&       // Si tiene propiedades
-            ThisForm[componente].prop.Capture &&  // Si es componente de captura
-            ThisForm[componente].prop.Capture == true
+            thisForm[componente].prop &&       // Si tiene propiedades
+            thisForm[componente].prop.Capture &&  // Si es componente de captura
+            thisForm[componente].prop.Capture == true
           ) {
             //console.log('Form asigna ref a componente=',componente)
-            // if (ThisForm[componente].Ref)
-            // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
-            ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
+            // if (thisForm[componente].Ref)
+            // console.log('RefHtml===>', componente, thisForm[componente].Ref.$el)
+            thisForm.estatus[componente] = toRef(thisForm[componente].prop, "Status"); // stack de estatus de componentes
 
           }
         }
@@ -451,12 +452,12 @@ onBeforeMount(async () => {
       }
 
 
-      await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
+      await thisForm.Init()  // Se enlaza al Init Principal de la Forma base
       /*
-          for (const i in ThisForm.elements) {
-            const comp = ThisForm.elements[i].Name
-            console.log('Vue Form',ThisForm.Name,' Component',comp)
-            ThisForm.estatus[comp] = toRef(ThisForm[comp].prop, "Status"); // stack de estatus de componentes
+          for (const i in thisForm.elements) {
+            const comp = thisForm.elements[i].Name
+            console.log('Vue Form',thisForm.Name,' Component',comp)
+            thisForm.estatus[comp] = toRef(thisForm[comp].prop, "Status"); // stack de estatus de componentes
     
           }
           */
@@ -470,28 +471,28 @@ onBeforeMount(async () => {
      console.log('Error al inicializa la forma ', error)
    }
  */
-  console.log('ThisForm onMounted  ', ThisForm)
+  console.log('thisForm onMounted  ', thisForm)
   loading.value = false
-  ThisForm.afterMounted()
+  thisForm.afterMounted()
 
 })
 
 onUnmounted(() => {
-  ThisForm.unload(); // <div>
+  thisForm.unload(); // <div>
 })
 
 
 const middleClick = () => {
   console.log('middleClick')
 
-  ThisForm.translateContainer.open(ref(ThisForm))
+  thisForm.translateContainer.open(ref(thisForm))
 }
 
 const handler = (event) => {
   console.log('2) editText handler event.which=', event.which)
 
   if (event.which === 1)
-    ThisForm.translateContainer.open(ref(ThisForm))
+    thisForm.translateContainer.open(ref(thisForm))
   event.preventDefault();
 }
 

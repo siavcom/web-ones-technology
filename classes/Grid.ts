@@ -43,15 +43,10 @@ export class GRID extends COMPONENT {
     this.prop.Messages = [
       ["Actualizamos la tabla"], // 0
       ["Actualizamos el registro"], // 1
-      ["Datos actualizados de la tabla"], // ["Data updated of "], // 3
-      ["Datos no actualizados de la tabla "], // No se grabaron los datos de la tabla"], // 4
-      ["Registro no actualizado de la tabla "] //No se grabó el reglon de la tabla ="] //5
-
-      //["Do I update the table"], // 0
-      //["Do I update the record"], // 1
-      //["Data updated of "], // 3
-      //["Data not updated of "], // No se grabaron los datos de la tabla"], // 4
-      //["Row not updated of "], //No se grabó el reglon de la tabla ="] //5
+      ["Datos actualizados de la tabla"], //2 ["Data updated of "], // 3
+      ["Datos no actualizados de la tabla "], //3 No se grabaron los datos de la tabla"], // 4
+      ["Registro no actualizado de la tabla "], // 4
+      ['Borramos el reglon '], //5
     ];
   }
 
@@ -63,6 +58,13 @@ export class GRID extends COMPONENT {
   //              modificacion
   /// /////////////////////////////////////
 
+  /**
+   * Verifica si el Formulario esta validado.
+   * Si el AutoLoad es verdadero, Valida los datos de la forma.
+   * Si es un dato nuevo, manda refrescar la forma para permitir su captura.
+   * Si no es un dato nuevo: Muestra los datos para permitir su modificacion
+   * @returns {Promise<boolean>} Verdadero si el formulario esta validado
+   */
   public async valid(): Promise<boolean> {
     console.log("Grid Valid autoload", this.prop);
     if (this.prop.RecordSource.length < 2) {
@@ -204,8 +206,6 @@ export class GRID extends COMPONENT {
               this[colName].prop.First = true;
       */
     });
-
-
   }
 
   ///////////////////////////////////////////////////
@@ -244,23 +244,15 @@ export class GRID extends COMPONENT {
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
   }
 
-
-
-
-
   //////////////////////////
   // Borra renglon
   // row: renglon a borrar
   /////////////////////////
   async deleteRow(recno: number) {
+    if (await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
 
-    if (await MessageBox(`${this.prop.Messages[1][0]} ${recno}`, 4, '') == 6) {
       this.prop.Status = 'A'
-      await delete (
-        recno,
-        this.prop.RecordSource,
-        this.prop.SqlUpdate
-      );
+      await deleteRow(recno, this.prop.RecordSource);
       // await restableceStatus()
       this.Row = -1;
       // load_data = true
@@ -323,9 +315,7 @@ export class GRID extends COMPONENT {
         return
       }
     }
-
     //if (await MessageBox(this.prop.messageUpdate, 4, "") != 6) return
-
     this.Form.prop.Visible = false;
 
     if (

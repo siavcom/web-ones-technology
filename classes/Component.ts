@@ -10,7 +10,6 @@
  * @export
  * @class COMPONENT
  */
-
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent = {}; //this.Dom.ctx; // Contexto
@@ -335,7 +334,7 @@ export class COMPONENT {
           lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
         }
 
-        if (Form.publicVar.lan_lan > '   ') {
+        if (m.lan_lan != '   ') {
           await this.Sql.use('vi_cap_db_languages', m)
           await this.Sql.use('vi_cap_db_messages', m)
           this.Form.language = true
@@ -791,9 +790,12 @@ export class COMPONENT {
 
       if (Value.messages != null && Value.messages.trim().length > 0) {
 
+        console.log('Translate VAlue.messages=', Value.messages)
         const lineBreak = char(13)
         Value.messages = Value.messages.replaceAll(lineBreak, '')
 
+        const lf = char(10)
+        Value.messages = Value.messages.replaceAll(lf, '')
 
         this.prop.Messages = eval(Value.messages)
       }

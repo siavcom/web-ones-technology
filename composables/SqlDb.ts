@@ -40,12 +40,12 @@ const state = reactive({
 
 })
 
-
 // Hace publico el valor 
-export const Thisform = computed(() => {
+export const thisForm = computed(() => {
     const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitra la clase DataBase
     return This.value.Form
 })
+
 
 // Inicializa la conexion
 export function initSql(Form: {}) {

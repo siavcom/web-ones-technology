@@ -231,7 +231,6 @@ const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 ///////////////////////////////////////
 // Propiedades del componente .
 //  Obtiene ThisForm  base desde Main.vue en cada directorio de cada pagina 
-// Se tiene que mantener el nombre del ThisForm ya que cuando se hace un eval de todos los metodos se utiliza simepre ThisForm.<componente>.<method>
 ////////////////////////////////////
 const emit = defineEmits(["updateIsOpen"])
 const props = defineProps<{
