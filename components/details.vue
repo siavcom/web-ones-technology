@@ -419,7 +419,7 @@ watch(
     if (This.Form.eventos.length == 0) {
       if (This.Form.prop.Status != 'A')
         return
-      console.log('=====watch thisform.eventos loadData()=======')
+      //  console.log('=====watch thisform.eventos loadData()=======')
       loadData()
 
     }

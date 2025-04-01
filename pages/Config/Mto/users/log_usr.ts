@@ -12,6 +12,7 @@
 ///////////////////////////////////////
 
 import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
+
 export class log_usr extends CAPTURECOMPONENT {
 
    constructor() {
@@ -28,10 +29,23 @@ export class log_usr extends CAPTURECOMPONENT {
       this.prop.updateKey = true
       this.prop.ReadOnly = true
       this.inputStyle.width = "192px";
-      this.prop.ErrorMessage = 'Longitud inválida';
+      this.prop.ErrorMessage = 'Usuario inválido';
    }
 
+   override async when() {
+
+      //    console.log('1) log_usr when Public', Public.value.Company)
+      //      Public.value.Company = Public.value.Company + ' Company'
+
+      this.Form.bt_newSesion.prop.Visible = false
+      this.Form.bt_changePassword.prop.Visible = false
+      this.Form.bt_borra.prop.Visible = false
+
+      return true
+
+   }
    override async valid() {
+
       if (this.prop.Value.length == 0) {
          return false
       }
@@ -45,7 +59,6 @@ export class log_usr extends CAPTURECOMPONENT {
          return false
       }
 
-      //  console.log('------- log_usr valid----------', this.prop.Value, this.prop.Name);
       return await super.valid();
 
    }

@@ -47,8 +47,8 @@
 
                     <li @click="isMan = !isMan">
                       <span class="links_options">{{ Props.maintenance
-                      }}</span>
-                      <nuxt-img v-show="!isMan" class="ico" src="/Iconos/svg/plus.svg" />
+                        }}</span>
+                      <nuxt-img class="ico" :src="isMan ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
 
@@ -68,7 +68,7 @@
                     :style="{ 'color': 'chartreuse' }">
                     <li text-align="end" @click="isRep = !isRep">
                       <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
-                      <nuxt-img v-show="!isRep" class="ico" src="/Iconos/svg/plus.svg" />
+                      <nuxt-img class="ico" :src="isRep ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                       <li>
@@ -87,7 +87,8 @@
                     :style="{ 'color': 'chartreuse' }">
                     <li text-align="end" @click="isPro = !isPro">
                       <span class="links_options">{{ Props.process }}</span>
-                      <nuxt-img v-show="!isPro" class="ico" src="/Iconos/svg/plus.svg" />
+
+                      <nuxt-img class="ico" :src="isPro ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
                       <li>

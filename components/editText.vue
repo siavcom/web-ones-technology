@@ -15,7 +15,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -119,7 +119,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1617,7 +1617,7 @@ watch(
     if (new_val == Value.value)
       return
 
-    console.log('-------1) EditText Watch Value Name=', This.prop.Name, 'new_val=', new_val, 'watchPropValue=', watchPropValue, This.prop.Status)
+    // console.log('-------1) EditText Watch Value Name=', This.prop.Name, 'new_val=', new_val, 'watchPropValue=', watchPropValue, This.prop.Status)
 
     if (watchPropValue) // Si secambio desde el emitValue se ignora
       return
@@ -1644,7 +1644,7 @@ watch(
 
     watchPropValue = true
 
-    console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
+    //console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
 
     if (This.prop.Status == 'P') {// No se ha salido del componente
 
@@ -1784,7 +1784,7 @@ watch(
 
     // Si el valor nuevo es diferente al anterior
     // if (new_val != Value.value) {
-    console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, 'new_val', new_val, 'Status=', This.prop.Status)
+    // console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, 'new_val', new_val, 'Status=', This.prop.Status)
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
     watchPropValue = false
     //console.log('--------Fin 2) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)

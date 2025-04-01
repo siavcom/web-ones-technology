@@ -329,7 +329,7 @@ watch(
       // console.log('Grid.vue watch Status=', new_val, ' load_data=', load_data)
       // si hay carga de datos
       if (load_data) {
-        console.log('props.prop.Status loadData()')
+        // console.log('props.prop.Status loadData()')
         loadData()
       }
 
@@ -631,7 +631,7 @@ const loadData = async (Pos?: number) => {
     scroll.dataPage.pop() // borramos arreglon
 
 
-  console.log('2) loadData()')
+  // console.log('2) loadData()')
   try {
 
     if (!Sql || props.prop.RecordSource.length < 2
@@ -692,7 +692,7 @@ const loadData = async (Pos?: number) => {
       This[comp].prop.Valid = true
     }
     This.prop.Valid = true
-    console.log('4) loadData() compValid This.prop.Valid=', This.prop.Valid, ' This.Row=', This.Row)
+    //console.log('4) loadData() compValid This.prop.Valid=', This.prop.Valid, ' This.Row=', This.Row)
 
     // This.Row = -1
     /*

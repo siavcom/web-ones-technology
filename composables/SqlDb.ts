@@ -153,7 +153,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     }
 
     alias = alias.trim();
-    console.log("Db useNodata alias", alias, This.value.View[alias]);
+    //console.log("Db useNodata alias", alias, This.value.View[alias]);
 
 
     if (This.value.View[alias]) {
@@ -206,16 +206,11 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             // generamos la tabla segun la estructura regresada
             return false;
         // abre  la tabla de mantenimiento
-        console.log(
-            "Db useNodata VIEW despues de generar_tabla==> ",
-            alias,
-            "response=",
-            response
-        );
+        //console.log( "Db useNodata VIEW despues de generar_tabla==> ", alias,"response=", response        );
         if (This.value.View[alias] && This.value.View[alias].tip_obj.trim() == "VIEW") {
             alias = This.value.View[alias].tablaSql.trim();
             await useNodata(alias);
-            console.log("Db useNodata VIEW salir useNodata==> ", alias);
+            //  console.log("Db useNodata VIEW salir useNodata==> ", alias);
         }
         //  This.value.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
@@ -511,10 +506,10 @@ export const use = async (
     //console.log('Db  use dat_vis========>', dat_vis)
 
     try {
-        console.log("4 Db Use Axios =====>", dat_vis); // .data
+        //console.log("4 Db Use Axios =====>", dat_vis); // .data
         const data = await axiosCall(dat_vis);
 
-        console.log("5 Db Use Axios Ok response =====>", dat_vis, data); // .data
+        //console.log("5 Db Use Axios Ok response =====>", dat_vis, data); // .data
 
         if (data.length) {
             // No hubo error
@@ -1443,7 +1438,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         //   console.log("Begin SQLEXEC  ", new Date().toISOString(), "Query=", query);
 
         const respuesta = await axiosCall(dat_vis);
-        console.log('Db execute alias query,respuesta', dat_vis.query, respuesta)
+        // console.log('Db execute alias query,respuesta', dat_vis.query, respuesta)
 
         if (respuesta.length == 0) return respuesta
 
@@ -2150,7 +2145,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
     */
     // console.log('Db Genera_tabla final==>',This.value.View[alias],alias)
     if (noData) {
-        console.log("Db genera_tabla View creada", alias, This.value.View[alias]);
+        //  console.log("Db genera_tabla View creada", alias, This.value.View[alias]);
         return await localAlaSql(`select * from ${alias} limit 0`);
     }
 

@@ -809,7 +809,7 @@ if you want to use the back-end framework with own name company
 
 - Open a terminal in the back-end folder 
   run npm install
-This procedure install all libreries needed for this project
+This procedure install all libraries needed for this project
 
 Install the front-end framework
 
@@ -819,9 +819,9 @@ Install the front-end framework
   
 > [!TIP]
 > If you are a Windows User and after npm install you have errors, delete package-lock.json and mode_modules folders 
-> and rerun the command npm install  
+> and run again the command npm install  
   
-This procedure install all libreries needed for this project
+This procedure install all libraries needed for this project
 
 -In the project directory, you will find a zip file called web-ones. This file should be in a directory called systems that you need to create at the root of your disk where you have your project
 

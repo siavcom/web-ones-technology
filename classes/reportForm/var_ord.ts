@@ -33,7 +33,7 @@ export class var_ord extends COMPONENT {
   }
   override async interactiveChange() {
 */
-  async onChangeValue(styles?: any) {
+  override async onChangeValue(styles?: any) {
 
     if (this.prop.RowSource == '') return
     if (this.prop.RowSourceType == 0) return

@@ -12,17 +12,18 @@
 ///////////////////////////////////////
 
 import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
-// import { RowSource } from "~/classes/translationComponent/RowSource";
+import { RowSource } from "~/classes/translationComponent/RowSource";
 export class tzo_usr extends CAPTURECOMPONENT {
 
    constructor() {
       super()
 
-      this.prop.textLabel = 'Zona horaria'
+      this.prop.textLabel = 'Time Zone'
       this.prop.BaseClass = 'comboBox'
+      this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
       this.prop.RowSource = [[], [], []];
       this.prop.ColumnCount = 3;
-
+      this.prop.BoundColumn = 2;
       this.prop.ControlSource = 'vi_cap_db_users.tzo_usr'
       this.prop.Placeholder = 'Time Zone'
       this.prop.ToolTipText = 'Time Zone'
@@ -30,10 +31,7 @@ export class tzo_usr extends CAPTURECOMPONENT {
       this.prop.updateKey = false
       this.prop.ReadOnly = true
 
-
-   }
-   override init() {
-      const items = [
+      const tzo = [
          {
             "TimeZone": "Pacific/Midway",
             "UtcOffset": "-11:00",
@@ -545,49 +543,19 @@ export class tzo_usr extends CAPTURECOMPONENT {
             "name": "Samoa"
          }
       ]
-
-      // Ordenaos por UctOffset . Cambiaos a numero para ordenarlo bien
-      items.sort((a, b) => {
-         const nameA = Number(a.UtcOffset)     //.toUpperCase(); // ignore upper and lowercase
-         const nameB = Number(b.UtcOffset)     //.toUpperCase(); // ignore upper and lowercase
-         if (nameA < nameB) {
-            return -1;
-         }
-         if (nameA > nameB) {
-            return 1;
-         }
-
-         // names must be equal
-         return 0;
-      });
-
-
       let i = 0
-      for (const item of items) {
-         this.prop.RowSource[0][i] = item.name
+      for (const item of tzo) {
+         this.prop.RowSource[0][i] = item.TimeZone
          this.prop.RowSource[1][i] = item.UtcOffset
-         this.prop.RowSource[2][i] = item.TimeZone
+         this.prop.RowSource[2][i] = item.name
          i++
       }
-
-      //this.prop.RowSource = tzo_usr
-
-      this.prop.BoundColumn = 2;
-      this.prop.ColumnWidths = "128px,45px,200px";
-      this.prop.RowSourceType = 5; // 5-Array
-
    }
 
    override async when_old() {
-
-      const data = await scatter('FIELDS', ['key_pri'], 'vi_cap_db_users')
+      const data = await this.Sql.scatter('FIELDS', ['key_pri'], 'vi_cap_db_users')
       if (data.key_pri == 0) {
-         //let Valor = (new Date().getTimezoneOffset() / 60).toString()
-         let Valor = (new Date().toString().match(/([-\+][0-9]+)\s/)[1]).slice(0, 3) + ':' + (new Date().toString().match(/([-\+][0-9]+)\s/)[1]).slice(-2)
-         //Valor = Valor.slice(0, 3) + ':' + Valor.slice(-2)
-         this.prop.Value = Valor
-
-         /*
+         let Valor = (new Date().getTimezoneOffset() / 60).toString()
          Valor = Valor.replaceAll('.', ':')
          if (Valor.indexOf(':') == -1) {
             Valor = Valor + ':0'
@@ -603,10 +571,8 @@ export class tzo_usr extends CAPTURECOMPONENT {
             Valor = Valor.slice(0, 5)  //aumentamos ceros finales
 
             this.prop.Value = Valor
-            console.log('2)>>>>>>tzo_usr when Valor', Valor)
-
          }
-*/
+
       }
       return true
    }

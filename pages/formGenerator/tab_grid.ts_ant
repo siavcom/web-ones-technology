@@ -40,7 +40,7 @@ export class tab_grid extends COMPONENT {
 
   /*
   public async init() {
-    await this.Sql.execute('select nom_tab,des_vis,key_pri from vi_cap_comevis order by nom_tab', 'vi_cap_comevis')
+    await SQLExecute('select nom_tab,des_vis,key_pri from vi_cap_comevis order by nom_tab', 'vi_cap_comevis')
     this.prop.RowSource = "select des_vis,nom_tab,key_pri from vi_cap_comevis order by nom_tab";
 
   }

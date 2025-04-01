@@ -315,7 +315,7 @@ watch(
   async (new_val, old_val) => {
     if (ThisForm.eventos.length == 0) // 27/Dic/2024
       return
-    console.log('1) eventos Entro watch ThisForm.estatus=', ThisForm.eventos)
+    // console.log('1) eventos Entro watch ThisForm.estatus=', ThisForm.eventos)
     for (const comp in ThisForm.estatus) {
 
       if (ThisForm.estatus[comp] != 'A') {

@@ -23,7 +23,7 @@ export class tip_rep extends COMPONENT {
 
   }
 
-  async init() {
+  override async init() {
     if (this.prop.Visible == false) return;
     if (this.Form.for_ori.length == 0)
       this.Form.for_ori = this.Form.for_imp.prop.Value.trim();
@@ -32,7 +32,7 @@ export class tip_rep extends COMPONENT {
     this.interactiveChange()
   }
 
-  async interactiveChange() {
+  override async interactiveChange() {
 
     if (this.prop.Value == 1) {
       // Detallado
