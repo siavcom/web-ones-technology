@@ -546,6 +546,31 @@ export const requery = async (alias?: string) => {
     return await use(alias, m)
 }
 
+/////////////  Hace un requery de una vista /////////////////////
+// nom_vis  : Nombre de la vista a utilizar
+////////////////////////////////////////////
+export const tablerevert = async (alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    if (!alias)       // si no se da el alias
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+
+    const recno = This.value.View[alias].recno
+
+    await localAlaSql('delete from Now.' + alias + ' where recno=' + recno + ' ;insert into Now.' + alias + ' select * from Last.' + alias + ' where recno=' + recno + ' ;')
+
+    return
+}
+
+
+
+/////////////  Hace un requery de una vista /////////////////////
+// alias  : Encuantra el alias de la vista actual
+////////////////////////////////////////////
+export const alias = async () => {
+    return This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+}
+
 /// /////////////  Vfp obten un registro  /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
 // key_pri  :  Key_pri
@@ -1827,22 +1852,21 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
 };
 
 /// /////////////  Vfp select() /////////////////////
-// are_sel : area seleccionada
+// alias : area seleccionada
 /// //////////////////////////////////////////////
-export const select = async (are_sel: unknown) => {
+export const select = async (alias: unknown) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-    // This.value.Form['dic_dat']['prop']['Status'] = 'F'
 
     // console.log('Db Select 0',This.value.Form)
-    if (are_sel == null) {
+    if (alias == null) {
         return This.value.num_are;
     }
 
-    if (typeof are_sel === "number") {
-        This.value.num_are = are_sel;
+    if (typeof alias === "number") {
+        This.value.num_are = alias;
     } else {
-        const alias: any = are_sel;
-        This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // busca el numero de alias
+        const alias_sel: any = alias;
+        This.value.num_are = This.value.are_tra.indexOf(alias_sel) + 1; // busca el numero de alias
     }
     return This.value.num_are;
 };
@@ -2229,7 +2253,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 /// /////////////  Vfp recCount() /////////////////////
 // alias    : Alias
 /// ////////////////////////////////////////////
-export const recCount = async (alias?: string) => {
+export const recCount = (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     // const vis_act = obj_vis.value;
     //console.log('Db Reccount alias ===', alias)

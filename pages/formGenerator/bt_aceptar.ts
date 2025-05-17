@@ -150,7 +150,7 @@ export class bt_aceptar extends COMPONENT {
 
       console.log("1) bt_aceptar execute ins_sql", ins_sql);
 
-      if (!await SQLExecute(ins_sql, "vi_cap_grid")) {
+      if (!await SQLExec(ins_sql, "vi_cap_grid")) {
         await MessageBox("No hay vista de captura para el grid de captura", 16);
         return;
       }

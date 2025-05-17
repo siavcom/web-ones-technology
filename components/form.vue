@@ -16,7 +16,7 @@
     <div class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
-          <p>..Loading Data..</p>
+          <p>...`Loaded ${progress.value}%`... </p>
         </div>
       </div>
     </div>
@@ -287,6 +287,20 @@ const loading = ref(true)
 //console.log('Fecha ahora ====>',ThisThisForm.refs.fea_nom.Value);
 
 
+const {
+  progress,
+  isLoading,
+  start,      // Start from 0
+  set,        // Overwrite progress
+  finish,     // Finish and cleanup
+  clear       // Clean up all timers and reset
+} = useLoadingIndicator({
+  duration: 1000,  // Defaults to 2000
+  throttle: 300,   // Defaults to 200
+});
+
+
+
 ////////////////////////////////////////////
 // Metodos propios
 ////////////////////////////////////////////
@@ -391,15 +405,16 @@ const ejeEventos = async () => {
   }
 }
 
-
-
-
-
 const clickSalir = async () => {
-  if (await MessageBox("Salimos de la forma", 4, '') == 6) {
-    window.history.back()
-    // window.close() // cierra la forma history.back(); // regresa forma anterior
-  }
+
+  if (ThisForm.salir.click())
+    await ThisForm.salir.click()
+  else
+    if (await MessageBox("Salimos de la forma", 4, '') == 6) {
+
+      window.history.back()
+      // window.close() // cierra la forma history.back(); // regresa forma anterior
+    }
 }
 
 const nextFocus = async ($event) => {

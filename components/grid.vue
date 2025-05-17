@@ -823,9 +823,10 @@ const appendRow = async () => {
   }
   await last()
   await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
-
-  const Row = scroll.dataPage[scroll.dataPage.length - 1].id
-  await asignaRenglon(Row, First)
+  if (scroll.dataPage[scroll.dataPage.length - 1]) {
+    const Row = scroll.dataPage[scroll.dataPage.length - 1].id
+    await asignaRenglon(Row, First)
+  }
 
 }
 

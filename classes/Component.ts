@@ -42,6 +42,7 @@ export class COMPONENT {
     BaseClass: "editText",
     BoundColumn: 1,
 
+    Caption: '',
     Capture: false,
     ControlSource: "",
     ColumnCount: 1,
@@ -61,6 +62,7 @@ export class COMPONENT {
     Format: "", //"ke" tipo fecha seleccionada al input
 
     Help: false,
+    Help_url: "",
     Grid: false,
 
     htmlId: "",

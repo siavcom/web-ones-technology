@@ -61,8 +61,10 @@ export class reportInv extends reportForm {
     this.prop.cam_pri = 'cla_isu' // campo de buqueda principal
     // Campos de orden de la vista
     this.fields = [
-      ["cla_isu", "Clave"],
-      ["des_isu", "Descripción"]
+      ["cla_isu", "Clave","''","'ZZZZZZZZZZ'"],
+      ["des_isu", "Descripción",,"''","'ZZZZZZZZZZ'"],
+      ["sku_isu", "SKU",,"''","'ZZZZZZZZZZ'"]
+      
     ]
 
 

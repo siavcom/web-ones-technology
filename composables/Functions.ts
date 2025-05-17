@@ -55,10 +55,14 @@ export const int = (numero: number) => {
   return Math.trunc(numero);
 }
 
-Math.trunc
-//////////////////////////////////////
-// Funciones String
-//////////////////////////////////////
+/**
+ * Devuelve el código ASCII de un caracter
+ * @param {string} char - Char.
+ * @returns {number} - Código ASCII.
+ */
+export const len = (variable: string) => {
+  return variable
+}
 
 /**
  * Devuelve el código ASCII de un caracter
@@ -75,9 +79,28 @@ export const asc = (letra: string) => {
  * @param {number} lon - Longitud de la cadena a extraer
  * @returns {string} Cadena extraida a la izquierda
  */
-export const left = async (texto: string, lon: number) => {
+export const left = (texto: string, lon: number) => {
   return texto.substring(0, lon);
 };
+
+
+/**
+ * Extracts a substring from a given string starting at a specified position.
+ * 
+ * @param {string} texto - The source string from which to extract the substring.
+ * @param {number} first - The starting position (1-based index) from which to begin extraction.
+ * @param {number} [lon] - The number of characters to extract. Defaults to the remainder of the string if not provided.
+ * @returns {string} - The extracted substring.
+ */
+
+export const substr = (texto: string, first: number, lon?: number) => {
+  first = first - 1;
+  if (!lon)
+    lon = texto.length - first;
+
+  return texto.substring(first, lon);
+};
+
 
 /**
  * Right function

@@ -17,9 +17,7 @@ export class op_tdo_tdo extends COMPONENT {
     super();
     this.prop.textLabel = "Documento"; // Etiqueta que tendra este componente
     this.prop.BaseClass = "comboBox"; // Tipo de componente
-    this.prop.RowSourceType = 3; //Tipo de combo Box (Similar a VFP) 1-Value, 2-Alias local SQL ,3-Serv SQL 5-Array
-    this.prop.RowSource =
-      "select des_tdo,tdo_tdo,inv_tdo from man_cometdo where cop_nom='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo";
+    this.prop.RowSourceType = 4; //Tipo de combo Box (Similar a VFP)1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
     this.prop.ColumnCount = 3; // = VFP
     this.prop.BoundColumn = 2; // = VFP
     this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px
@@ -27,10 +25,20 @@ export class op_tdo_tdo extends COMPONENT {
    
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
+  override async  init() {
+    const data=await SQLExec(`select des_tdo,tdo_tdo,inv_tdo from man_cometdo where cop_nom='C' `,'loc_cometdo' ) 
+    this.prop.RowSource = "select des_tdo,tdo_tdo,inv_tdo from loc_cometdo union select '  Todos ' as des_tdo,'??' as tdo_tdo,'N' inv_tdo order by des_tdo "
+    //  RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
+  
+ }
   async interactiveChange() {
-      
+//    ins_loc= ` select des_tdo from loc_cometdo where tdo_tdo='${tdo_tdo}' ` 
+    const data=await this.Sql.localAlaSql( `select count(*) as key_pri from loc_cometcd where tdo_tdo='${this.prop.Value}'` )
+    console.log('dato=',data[0].key_pri)
+    if (data[0].key_pri>0 )
+    {
       this.Parent.op_tcd_tcd.prop.RowSource =
-       ` select des_tcd,tcd_tcd from man_cometcd where tdo_tdo='${this.prop.Value}' union select '  Todos ' as des_tcd,'??' as tcd_tcd order by des_tcd  `;
+       ` select des_tcd,tcd_tcd from loc_cometcd where tdo_tdo='${this.prop.Value}' union select '  Todos ' as des_tcd,'??' as tcd_tcd order by des_tcd  `;
        //for (let i = 0; i < columnas.length && !found; i++) {
        //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
   
@@ -46,13 +54,17 @@ export class op_tdo_tdo extends COMPONENT {
           //     console.log('Found comboBox Name=', props.prop.Name, 'found ', 'Value=', Value.value, 'displayText.value=', displayText.value)
         
         //  } // else break
-      
-  
        this.Parent.op_tcd_tcd.prop.Visible=true;
       this.Parent.op_tcd_tcd.prop.Disabled=false;
-      return true;
+      this.Parent.op_tcd_tcd.prop.Value="??"
       }
-
+      else 
+      {
+      this.Parent.op_tcd_tcd.prop.Visible=false;
+      this.Parent.op_tcd_tcd.prop.Disabled=true;
+      this.Parent.op_tcd_tcd.prop.Value="??"
+      }
+    return true;
   } //
-
+}
 

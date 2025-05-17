@@ -116,6 +116,7 @@ export class captureForm extends FORM {
           thisComp.prop.Value.trim().length == 0) ||
         (typeof thisComp.prop.Value == "number" && thisComp.prop.Value == 0)
       ) {
+
         thisComp.prop.ErrorMessage = "No permite datos en blanco";
         thisComp.prop.ShowError = true;
         thisComp.prop.Valid = false;

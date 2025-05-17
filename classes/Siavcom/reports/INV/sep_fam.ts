@@ -43,5 +43,6 @@ export class sep_fam extends COMPONENT {
 
     this.Parent.op_has_fam.prop.Visible = false;
     this.Parent.op_has_fam.prop.Disabled = true;
+    return true
   } //
 }

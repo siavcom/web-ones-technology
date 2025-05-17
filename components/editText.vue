@@ -42,8 +42,8 @@
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
-      :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick"
-      @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()">
+      :step="This.prop.Step" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
+      @click.capture="onClick" @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()">
 
     <!--v-on:keyup.enter="clickReturn()" -->
 

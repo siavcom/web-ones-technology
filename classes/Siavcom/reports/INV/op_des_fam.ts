@@ -16,7 +16,7 @@ export class op_des_fam extends COMPONENT {
 
     this.prop.textLabel = "Desde que familia";
     this.prop.BaseClass = "comboBox";
-    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
+    this.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "50%,30%,20%"; // Puede ser en puntos 60px,30px /
@@ -30,4 +30,11 @@ export class op_des_fam extends COMPONENT {
   ///////////////////////////////////
 
   //   await super.when() no hace falta el super porque en focus.capture lo hace
-}
+
+  async interactiveChange() {
+
+      this.Parent.op_has_fam.prop.Value = this.prop.Value;
+      return true;
+    }
+
+  }

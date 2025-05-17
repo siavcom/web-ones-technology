@@ -88,7 +88,7 @@ export class sis_sis extends COMPONENT {
       if (this.prop.Value > '   ')
         where = ` where sis_sis = '${this.prop.Value.trim()}'`
 
-      await SQLExecute(`select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`, 'cap_cometab')
+      await SQLExec(`select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`, 'cap_cometab')
 
       if (this.Sql.View.cap_cometab && this.Sql.View.cap_cometab.recnoVal.length > 0) {
         this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from cap_cometab `

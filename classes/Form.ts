@@ -73,6 +73,24 @@ export class FORM extends COMPONENT {
 
 
   }
+
+
+
+  public salir = new class {
+    constructor() {
+
+    }
+
+    public async click() {
+      if (await MessageBox("Salimos de la forma", 4, '') == 6) {
+
+        window.history.back()
+        // window.close() // cierra la forma history.back(); // regresa forma anterior
+      }
+
+    }
+  }
+
   /////////////////////////////////////////
   // After Mounted
   ////////////////////////////////////
@@ -103,4 +121,11 @@ export class FORM extends COMPONENT {
   public unload() {
     console.log("Form :", this.Name, " unload");
   }
+
+
+
+
 }
+
+
+

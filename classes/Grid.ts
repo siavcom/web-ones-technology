@@ -66,7 +66,7 @@ export class GRID extends COMPONENT {
    * @returns {Promise<boolean>} Verdadero si el formulario esta validado
    */
   public async valid(): Promise<boolean> {
-    console.log("Grid Valid autoload", this.prop);
+
     if (this.prop.RecordSource.length < 2) {
       // No hay recordSource
       this.prop.Valid = false;
@@ -94,6 +94,8 @@ export class GRID extends COMPONENT {
     }
 
     // Leemos datos de la tabla de actualizacion. Envia las variables m
+
+    // console.log("Grid Valid autoload", RecordSource);
     const data = await use(RecordSource, m);
 
     if (!data || data == "400") {
