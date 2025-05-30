@@ -24,7 +24,7 @@ export class show_messages extends COMPONENT {
 
     const m = {
       for_lan: this.Form.prop.Name,
-      lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+      lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
     }
     this.Sql.use('vi_cap_db_messages', m)
     this.Parent.gridMessages.prop.RecordSource = 'vi_cap_db_messages'

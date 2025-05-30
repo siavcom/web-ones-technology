@@ -372,7 +372,7 @@ export const Session = defineStore(
                 }
                 /*
                 console.log(
-                  "Store publicVar Var.value=",
+                  "Store mPublic Var.value=",
                   Var.value,
                   id_con.value
                 );

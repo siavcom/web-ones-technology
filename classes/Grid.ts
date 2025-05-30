@@ -225,8 +225,8 @@ export class GRID extends COMPONENT {
     const { ...m } = mem;
 
     // Leemos variables publicas
-    for (const variable in this.Form.publicVar)
-      m[variable] = this.Form.publicVar[variable];
+    for (const variable in this.Form.mPublic)
+      m[variable] = this.Form.mPublic[variable];
 
     // leemos valores de los componentes de la forma
 

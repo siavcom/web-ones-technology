@@ -1157,6 +1157,19 @@ const nextElement = async () => {  //clickReturn
 ////////////////////////////////////////////////////////////////
 //                          Watchers                          //
 ////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+// change This.prop.Enabled
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.Enabled,
+  () => {
+    if (This.prop.Disabled != !This.prop.Enabled)
+      This.prop.Disabled = !This.prop.Enabled
+
+  },
+  { deep: false }
+);
+
 
 ////////////////////////////////////////
 // This.prop.Visible 
@@ -1290,8 +1303,6 @@ watch(
         if (This.onChangeValue) {
           await This.onChangeValue(ref(Styles))
         }
-
-
       }
     }
   },

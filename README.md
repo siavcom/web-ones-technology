@@ -371,7 +371,7 @@ Values :
   - Max: `<`Maximus value in this component`>`
       Type : number
 
-  - Min: `<`Minumus value in this component`>`
+  - Min: `<`Minimus value in this component`>`
       Type : number
 
   - Step: `<`When a spinner component number step`>`
@@ -560,7 +560,6 @@ export class ThisForm extends FORM {
     this.prop.tag = ""  
     this.prop.textLabel = "Mantenimiento al diccionario de datos"  
     this.prop.Status = "A"  
-
     // Style  
     this.style.display = "inline-flex"  
     this.style.background = "white"  

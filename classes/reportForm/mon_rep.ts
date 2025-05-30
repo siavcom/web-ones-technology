@@ -33,7 +33,7 @@ export class mon_rep extends COMPONENT {
   }
 
   public async init() {
-    const m = this.Form.publicVar;
+    const m = this.Form.mPublic;
     const des_mon = [
       "Todas",
       m.pr1_pge,

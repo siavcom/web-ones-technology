@@ -55,8 +55,8 @@ export class COMPONENT {
     Disabled: false,
     Decimals: 2,
 
+    Enabled: true,
     ErrorMessage: "",
-
     First: false,
     Focus: false,
     Format: "", //"ke" tipo fecha seleccionada al input
@@ -176,6 +176,7 @@ export class COMPONENT {
     textAlign: "left",
     textTransform: "none",
     zIndex: 1, // profundidad
+    visibility: 'visible',
     width: "fit-content",
     alignContent: "flex-start" //"flex-end",
   }
@@ -333,7 +334,7 @@ export class COMPONENT {
       if (this.Form.prop) {
         const m = {
           for_lan: this.Form.prop.Name,
-          lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+          lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
         }
 
         if (m.lan_lan != '   ') {
@@ -343,7 +344,7 @@ export class COMPONENT {
           // this.Form.language = false
         }
         else
-          this.Form.publicVar.lan_lan = ''
+          this.Form.mPublic.lan_lan = ''
       }
     }
 
@@ -584,7 +585,7 @@ export class COMPONENT {
 
 
   public async onChangeValue() {
-
+    return
   }
 
   public async recnoChange() {
@@ -723,7 +724,7 @@ export class COMPONENT {
 
   /**
    * Translates component properties based on the current language settings (pubicVar.lan_lan).
-   * This function checks if the form and publicVar are defined and attempts
+   * This function checks if the form and mPublic are defined and attempts
    * to retrieve translations from the 'vi_cap_db_languages' table. If translations
    * are found, it updates the component's properties such as ColumnTextLabel, textLabel,
    * RowSource, Messages, Placeholder, ToolTipText, and ErrorMessage. If the translation
@@ -732,14 +733,14 @@ export class COMPONENT {
 
   async translate() {
 
-    if (!this.Form || !this.Form.publicVar)
+    if (!this.Form || !this.Form.mPublic)
       return
 
     // console.log('2) this.prop.Map=', this.prop.Map)
 
     const m = {
       for_lan: this.Form.prop.Name,
-      lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+      lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
       map_lan: this.prop.Map,
       message: '  ',
       messages: this.prop.Messages,
@@ -760,7 +761,7 @@ export class COMPONENT {
           this.Form.language = true
         // this.Form.language = false
         else
-          this.Form.publicVar.lan_lan = ''
+          this.Form.mPublic.lan_lan = ''
         */
 
 

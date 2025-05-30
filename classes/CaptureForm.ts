@@ -137,7 +137,7 @@ export class captureForm extends FORM {
 
     thisComp.prop.Valid = true;
 
-    const { ...m } = this.publicVar; // Tomamos las variables publicas de la forma
+    const { ...m } = this.mPublic; // Tomamos las variables publicas de la forma
     // Generamos variables de memoria de componentes locales y solo updateKey
     // for (const main in this.main) {
     //  const comp = this.main[main];

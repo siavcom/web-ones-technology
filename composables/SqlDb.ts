@@ -131,6 +131,24 @@ export function initSql(Form: {}) {
     return
 } // Fin constructor
 
+
+export const releaseUse = async (alias?: string) => {
+
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    if (!alias)       // si no se da el alias
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+
+    if (This.value.View[alias]) {
+        await localAlaSql("delete from Now." + alias);
+        // localAlaSql('USE Last ; ')
+        await localAlaSql("delete from  Last." + alias);
+        delete This.value.View[alias]
+        return true;
+    }
+
+}
+
 /// /////////////  Vfp Use nodata ///////////////////
 // nom_vis : Nombre de la vista a utilizar
 /// /////////////////////////////////////////////////
@@ -1048,7 +1066,7 @@ export const tableUpdate = async (
 /// /////////////  Vfp append blank /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
 /// ////////////////////////////////////////////
-export const appendBlank = async (alias: any, m?: {}) => {
+export const appendBlank = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     const ThisForm = This.value.Form;
     if (!alias) {
@@ -1176,7 +1194,7 @@ export const appendBlank = async (alias: any, m?: {}) => {
     */
 };
 
-/// ///////////// delete Sql /////////////////////
+/// ///////////// delete Sql Sever /////////////////////
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
 /// ////////////////////////////////////////////
@@ -1240,11 +1258,15 @@ export const deleteRow = async (key_pri: number, alias: any) => {
     return true;
 };
 
-/// /////////////  Vfp delete /////////////////////
+
+
+
+/// /////////////  deleteRow local SQL /////////////////////
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
 /// ////////////////////////////////////////////
-export const deleteSql = async (recno: number, alias: string, SqlUpdate: boolean) => {
+export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: boolean) => {
+
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!SqlUpdate) {
@@ -1336,6 +1358,58 @@ export const deleteSql = async (recno: number, alias: string, SqlUpdate: boolean
     } // se va a leer registro
     return [];
 };
+
+export const deleted = async (alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    if (!alias)   // si no se da el alias
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+
+    const recno = This.value.View[alias].recno
+    const data = await localAlaSql('select Now.' + alias + '.key_pri from Now.' + alias + '  \
+        LEFT JOIN Last.' + alias + ' on Now.' + alias + '.key_pri=Last.' + alias + 'key_pri' + ' where recno=? ', recno)
+    if (data[0] && data[0].key_pri > 0)
+        return true
+    else
+        return false
+
+}
+
+/**
+ * Borra el registro actual de la vista local y su correspondiente en SQLSERVER si esta configurado.
+ * @param query query que se va a ejecutar en la base de datos local, si no se da se borrara el registro actual.
+ *              Si se da una query que inicia con WHILE, se reemplazara por WHERE y se agregara la condicion de recno mayor o igual que el actual.
+ *              Si se da una query que inicia con FOR, se reemplazara por WHERE y se agregara la condicion de recno mayor o igual que el actual.
+ *              Si se da una query que inicia con NEXT, se reemplazara por WHERE y se agregara la condicion de recno mayor o igual que el actual y menor que el actual mas el valor que se pase en NEXT.
+ * @param alias nombre de la vista que se va a borrar, si no se da el alias se tomara el nombre de la vista actual segun el area de trabajo.
+ * @returns Promesa que se resuelve cuando se termina de ejecutar la query.
+ */
+export const deleteLocalSql = async (query?: string, alias?: string) => {
+
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    if (!alias) {
+        // si no se da el alias
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+    }
+    const recno = This.value.View[alias].recno
+
+    if (!query)
+        query = 'DELETE FROM NOw.' + alias + ' WHERE recno=' + recno
+    else {
+
+        if (query.indexOf('WHILE') >= 0)
+            query = 'DELETE FROM NOw.' + alias + ' WHERE recno>=' + recno + ' AND ' + query.replace('WHILE', '');
+        if (query.indexOf('FOR') >= 0)
+            query = 'DELETE FROM NOw.' + alias + query.replace('WHILE', 'WHERE');
+        if (query.indexOf('NEXT') >= 0)
+            query = 'DELETE FROM NOw.' + alias + ' WHERE recno>=' + recno + ' AND recno<recno+' + query.replace('NEXT', '');
+    }
+
+    return await localAlaSql(query);
+}
+
+
+
 
 /// /////////////  Vfp table insert /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
@@ -2278,7 +2352,7 @@ export const recCount = (alias?: string) => {
 // record Number
 // alias    : Alias
 ///////////////////////////////////////////////
-export const recNo = async (alias?: string) => {
+export const recNo = (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
@@ -2863,7 +2937,7 @@ export const asignaComponente_xx = async (ControlSource: string, refValue: any) 
 // despla : Si es numerico brinca al recno con ese numero,
 //          Si es string top=brinca la primer registro del alias, botton=brinca la ultimo registro del alias
 /// //////////////////////////////////////
-export const goto = async (despla: number, alias?: string) => {
+export const goto = async (despla: undefined, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
@@ -2968,6 +3042,53 @@ export const bof = async (alias?: string) => {
     This.value.View[alias].bof == true
     return true
 }
+
+/**
+ * Retrieves the old value of a of a remote view for the current record number.
+ *
+ * @param field - The name of the field to retrieve the value for.
+ * @param alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
+ * @returns The value of the specified field if it exists, otherwise returns false.
+ */
+
+export const oldValue = async (field: string, alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    if (!alias) {
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
+
+    const recno = This.value.View[alias].recno
+    const data = await localAlaSql(`select Last.${field} from ${alias} where recno=${recno}`)
+
+    if (data.length > 0)
+        return
+    return false
+}
+
+/**
+ * Retrieves the current value of a remote view for the current record number.
+ *
+ * @param field - The name of the field to retrieve the value for.
+ * @param alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
+ * @returns The value of the specified field if it exists, otherwise returns false.
+ */
+
+
+export const currentValue = async (field: string, alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    if (!alias) {
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
+
+    const recno = This.value.View[alias].recno
+    const data = await localAlaSql(`select Now.${field} from ${alias} where recno=${recno}`)
+
+    if (data.length > 0)
+        return
+    return false
+}
+
+
 //////////////////////////////////////////////
 // eof : Indica si esta a fin del archivo
 //////////////////////////////////////////////
@@ -2987,6 +3108,14 @@ export const eof = async (alias?: string) => {
 
     This.value.View[alias].eof == true
     return true
+}
+
+export const afields = (alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    if (!alias) {
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
+    return This.value.View[alias].est_tabla
 }
 
 /// /////////////////////////////////////////////////
@@ -3059,26 +3188,10 @@ export const skip = async (despla?: number) => {
 // scatter Lee los datos del registro actual
 // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
 /// //////////////////////////////////////
-export const scatter = async (tipo: string, aliasFields?: undefined, alias?: string) => {
+export const scatter = async (aliasFields?: undefined, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     let resultado = [];
     let fields = []
-
-    if (tipo.toLowerCase() == "fields") {
-        if (!aliasFields)
-            return false
-        fields = aliasFields
-    }
-
-    if (!aliasFields) {
-        if (!This.value.are_tra[This.value.num_are - 1]) {
-            return false;
-        }
-        alias = This.value.are_tra[This.value.num_are - 1];
-    }
-    else
-        if (tipo.toLowerCase() == "memvar")
-            alias = aliasFields
 
 
     if (!alias) {
@@ -3091,27 +3204,143 @@ export const scatter = async (tipo: string, aliasFields?: undefined, alias?: str
     // checar diferencia entre recnoVal y recno
     // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
 
-    const data = await goto(0, alias); // lee los datos actuales
+    const recno = await goto(0, alias); // lee los datos actuales
 
-    if (data == null) {
 
-        return data;
+    let select = 'SELECT '
+    let sep = ''
+    for (const field in aliasFields) {
+        select = select + sep + field
+
+        sep = ','
     }
 
-    if (tipo.toLowerCase() == "memvar") {
 
-        return data;
+    const ins_sql = select + 'FROM Now.' + alias + ' WHERE recno=' + recno
+    console.log('Db gatherFrom update=', ins_sql)
+
+    const data = await localAlaSql(ins_sql);
+
+    if (data.length == 0) {
+        return null; // No hay datos
+    }
+    return data[0]; // Retorna el primer registro
+
+};
+
+
+/// /////////////////////////////////////////////////
+// scatter Lee los registros y pone sus campos en blanco del registro actual
+// tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
+/// //////////////////////////////////////
+export const scatterBlank = async (aliasFields?: undefined, alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    let resultado = [];
+    let fields = []
+
+
+    if (!alias) {
+        if (!This.value.are_tra[This.value.num_are - 1]) {
+            return false;
+        }
+        alias = This.value.are_tra[This.value.num_are - 1];
     }
 
-    if (tipo.toLowerCase() == "fields") {
-        for (let i = 0; i < fields.length; i++) {
-            const field = fields[i];
-            resultado[field] = data[field];
+    // checar diferencia entre recnoVal y recno
+    // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
+
+    const recno = await goto(0, alias); // lee los datos actuales
+
+
+    let select = 'SELECT '
+    let sep = ''
+    for (const field in aliasFields) {
+        select = select + sep + field
+
+        sep = ','
+    }
+
+
+    const ins_sql = select + 'FROM Now.' + alias + ' WHERE recno=-1'
+    console.log('Db gatherFrom update=', ins_sql)
+
+    const data = await localAlaSql(ins_sql);
+
+    if (data.length == 0) {
+        return null; // No hay datos
+    }
+    return data[0]; // Retorna el primer registro
+
+};
+
+
+/**
+ * Gathers data from the provided array and updates the current record in the specified alias.
+ * 
+ * @param {[]} from - An array containing data to be gathered and updated in the database.
+ * @param {[]?} aliasFields - An optional array of field names that are to be updated.
+ *                            If not provided, all fields in the current view's default values will be used.
+ * @param {string?} alias - An optional string representing the alias of the view to update.
+ *                          If not provided, the current alias in the area of work will be used.
+ * 
+ * @returns {Promise<null|boolean>} - Returns null if the current record number could not be determined,
+ *                                    otherwise performs the update operation.
+ */
+
+export const gatherFrom = async (from: [], aliasFields?: [], alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    let resultado = [];
+    let fields = []
+
+    if (!alias) {
+        if (!This.value.are_tra[This.value.num_are - 1]) {
+            return false;
+        }
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
+
+    if (!aliasFields) {
+        aliasFields = []
+
+        for (const field in This.value.View[alias].val_def) {
+            aliasFields.push(field)
         }
     }
 
-    return resultado
+
+    // checar diferencia entre recnoVal y recno
+    // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
+
+    const recno = await goto(0, alias); // lee los datos actuales
+
+    if (recno == null) {
+        return null;
+    }
+
+    let update = 'UOPDATE Now.' + alias + ' SET '
+    let sep = ''
+
+    for (const field in aliasFields) {
+        if (from[field]) {
+            const valor = from[field]
+            if (typeof valor == 'string') {
+
+                update = update + sep + field + "='" + valor + "'"
+            } else
+                update = update + sep + field + '=' + valor.toString()
+
+            sep = ','
+        }
+
+    }
+
+    update = update + ' WHERE recno=' + recno
+    console.log('Db gatherFrom update=', update)
+    return await localAlaSql(update);
 };
+
+
 
 /// //////////////////////////////
 // Clona una vista local

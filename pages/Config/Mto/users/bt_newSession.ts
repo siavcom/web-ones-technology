@@ -35,7 +35,7 @@ export class bt_newSession extends COMPONENT {
     let newSession = true
     let newUser = true
     if (this.Form.dialect == 'mssql') { // MSSQL
-      await SQLExec(`USE [${this.Form.publicVar.dbname}]`)
+      await SQLExec(`USE [${this.Form.mPublic.dbname}]`)
       const data = await SQLExec(`select 1 as existe from master.dbo.syslogins where name ='${this.Form.log_usr.prop.Value.trim()}'`)
 
       if (data.length > 0 && data[0].existe == 1) {  // Ya existe la sesión
@@ -51,20 +51,20 @@ export class bt_newSession extends COMPONENT {
       }
 
       if (newSession)
-        //await SQLExec(`execute sp_addlogin '${this.Form.log_usr.prop.Value}', '${this.Form.pw1_usr.prop.Value}','${this.Form.publicVar.dbname}' `)
-        await SQLExec(`CREATE LOGIN[${this.Form.log_usr.prop.Value}] WITH PASSWORD = N'${this.Form.pw1_usr.prop.Value}', DEFAULT_DATABASE = [${this.Form.publicVar.dbname}], CHECK_EXPIRATION = OFF, CHECK_POLICY = OFF`)
+        //await SQLExec(`execute sp_addlogin '${this.Form.log_usr.prop.Value}', '${this.Form.pw1_usr.prop.Value}','${this.Form.mPublic.dbname}' `)
+        await SQLExec(`CREATE LOGIN[${this.Form.log_usr.prop.Value}] WITH PASSWORD = N'${this.Form.pw1_usr.prop.Value}', DEFAULT_DATABASE = [${this.Form.mPublic.dbname}], CHECK_EXPIRATION = OFF, CHECK_POLICY = OFF`)
       if (newUser)
         await SQLExec(`CREATE USER[${this.Form.log_usr.prop.Value}] FOR LOGIN[${this.Form.log_usr.prop.Value.trim()}]; `)
 
 
       // Dueño de la base de datos
-      if (this.Form.log_usr.prop.Value.trim() === 'sa@' + this.Form.publicVar.dbname) {
-        const user = 'sa@' + this.Form.publicVar.dbname
+      if (this.Form.log_usr.prop.Value.trim() === 'sa@' + this.Form.mPublic.dbname) {
+        const user = 'sa@' + this.Form.mPublic.dbname
         await SQLExec(`ALTER ROLE [db_owner] ADD MEMBER [${user}]`)
         //await SQLExec(`ALTER SERVER ROLE [##MS_DatabaseManager##] ADD MEMBER [${user}]`)
         //await SQLExec(`ALTER SERVER ROLE [##MS_LognManager##] ADD MEMBER [${user}]`)
       } else // Solo el role default de la base de datos
-        await SQLExec(`ALTER ROLE [${this.Form.publicVar.defaultrole}] ADD MEMBER [${this.Form.log_usr.prop.Value}]`)
+        await SQLExec(`ALTER ROLE [${this.Form.mPublic.defaultrole}] ADD MEMBER [${this.Form.log_usr.prop.Value}]`)
 
     }
     else {  // Postgres 
@@ -78,10 +78,10 @@ export class bt_newSession extends COMPONENT {
         await SQLExec(`CREATE USER ${this.Form.log_usr.prop.Value} WITH PASSWORD '${this.Form.pw1_usr.prop.Value}'; `)
 
       // Dueño de la base de datos
-      if (this.Form.nam_usr.prop.Value.trim() == 'sa@' + this.Form.publicVar.dbname) {
+      if (this.Form.nam_usr.prop.Value.trim() == 'sa@' + this.Form.mPublic.dbname) {
         console.log('bt_newsession', this.Form.nam_usr.prop.Value)
-        const user = 'sa@' + this.Form.publicVar.dbname
-        await SQLExec(`ALTER DATABASE "${this.Form.publicVar.dbname}" OWNER TO [{user}]`)
+        const user = 'sa@' + this.Form.mPublic.dbname
+        await SQLExec(`ALTER DATABASE "${this.Form.mPublic.dbname}" OWNER TO [{user}]`)
       } else
         await SQLExec(`GRANT 'web-ones' TO ${this.Form.log_usr.prop.Value};`)
 

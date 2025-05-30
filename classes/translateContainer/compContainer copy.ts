@@ -168,7 +168,7 @@ export class compContainer extends CONTAINER {
 
     const m = {
       for_lan: this.Form.prop.Name,
-      lan_lan: this.Form.publicVar.lan_lan ? comp.Form.publicVar.lan_lan : '   ',
+      lan_lan: this.Form.mPublic.lan_lan ? comp.Form.mPublic.lan_lan : '   ',
       map_lan: comp.prop.Map,
       message: '  ',
       messages: messages,

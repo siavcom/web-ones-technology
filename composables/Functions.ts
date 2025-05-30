@@ -43,6 +43,12 @@ export const openForm = (This: any) => {
 // Funciones Varias
 //////////////////////////////////////
 
+/**
+ * Appends two objects
+ * @param {Object} valueA - The first object to merge
+ * @param {Object} valueB - The second object to merge
+ * @returns {Object} A new object with all properties of both objects
+ */
 export const appendM = (valueA: {}, valueB: {}) => {
   return { ...valueA, ...valueB }
 }
@@ -51,18 +57,154 @@ export const appendM = (valueA: {}, valueB: {}) => {
 // Funciones String
 //////////////////////////////////////
 
+
+export const space = (numero: number) => {
+  return ' '.repeat(numero);
+}
+
+
 export const int = (numero: number) => {
   return Math.trunc(numero);
 }
 
+
 /**
- * Devuelve el código ASCII de un caracter
- * @param {string} char - Char.
- * @returns {number} - Código ASCII.
+ * Removes trailing carriage return and newline characters from the end of a string.
+ * 
+ * @param {string} input - The input string to be trimmed.
+ * @returns {string} - The trimmed string with trailing \r\n removed.
  */
-export const len = (variable: string) => {
-  return variable
+
+export const rTrim = (input: string): string => {
+  const rTrimRegex = new RegExp('\r\n$');
+  return input.replace(rTrimRegex, '');
 }
+
+
+/**
+ * Removes leading carriage return and newline characters from the start of a string.
+ * 
+ * @param {string} input - The input string to be trimmed.
+ * @returns {string} - The trimmed string with leading \r\n removed.
+ */
+export const lTrim = (input: string): string => {
+  const lTrimRegex = new RegExp('^\r\n');
+  return input.replace(lTrimRegex, '');
+}
+
+/**
+ * Removes leading and trailing whitespace from the input string.
+ * 
+ * @param {string} input - The input string to be trimmed.
+ * @returns {string} - The trimmed string with leading and trailing whitespace removed.
+ */
+export const allTrim = (input: string): string => {
+  return input.trim();
+}
+
+
+/**
+ * Returns the length of a string.
+ * 
+ * @param {string} strVariable - The string whose length is to be determined.
+ * @returns {number} - The length of the string.
+ */
+export const len = (strVariable: string): string => {
+  return strVariable.length()
+}
+
+
+
+
+
+
+/**
+ * Searches for a value in an array, similar to the VFP ASscan() function.
+ *
+ * @param {T[]} array - The array to search.
+ * @param {T} searchValue - The value to search for.
+ * @param {number} [startElement=1] - The starting element to search from.
+ * @param {number} [numElements=array.length] - The number of elements to search.
+ * @param {number} [searchColumn] - The column to search in if the array contains arrays.
+ * @returns {number} - The position of the found element, or 0 if not found.
+ */
+export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, numElements: number = array.length, searchColumn?: number): number {
+  if (startElement < 1 || startElement > array.length) {
+    return 0;
+  }
+
+  let startIndex = startElement - 1;
+  let endIndex = Math.min(startIndex + numElements, array.length);
+
+  if (searchColumn !== undefined) {
+    for (let i = startIndex; i < endIndex; i++) {
+      if (Array.isArray(array[i]) && searchColumn > 0 && searchColumn <= (array[i] as any[]).length) {
+        if ((array[i] as any[])[searchColumn - 1] === searchValue) {
+          return i + 1;
+        }
+      }
+    }
+  } else {
+    for (let i = startIndex; i < endIndex; i++) {
+      if (array[i] === searchValue) {
+        return i + 1;
+      }
+    }
+  }
+  return 0;
+}
+
+
+
+/**
+ * Replicates a given string the specified number of times.
+ *
+ * @param {string} str - The string to replicate.
+ * @param {number} lon - The number of times to replicate the string.
+ * @returns {string} - The replicated string.
+ */
+export const replicateString = (str: string, lon: number) => {
+  const replicatedString: string = str.repeat(lon);
+  return replicatedString
+
+}
+
+/**
+ * Finds the position of a given substring in a string.
+ *
+ * @param {string} subStr - The substring to search for. Case sensitive
+ * @param {string} str - The string to search in.
+ * @returns {number} - The position of the found substring, or -1 if not found.
+ */
+export const at = (subStr: string, str: string) => {
+  return str.indexOf(subStr);
+}
+
+
+/**
+ * Finds the position of a given substring in a string. 
+ *
+ * @param {string} subStr - The substring to search for.
+ * @param {string} str - The string to search in.
+ * @returns {number} - The position of the found substring, or -1 if not found.
+ */
+export const atc = (subStr: string, str: string) => {
+  subStr = subStr.toUpperCase()
+  str = str.toUpperCase()
+  return str.indexOf(subStr);
+}
+
+/**
+ * Finds the last position of a given substring in a string.
+ *
+ * @param {string} searchString - The substring to search for. Case sensitive.
+ * @param {string} text - The string to search in.
+ * @returns {number} - The position of the found substring, or -1 if not found.
+ */
+export function rat(searchString: string, text: string): number {
+  return text.lastIndexOf(searchString);
+}
+
 
 /**
  * Devuelve el código ASCII de un caracter

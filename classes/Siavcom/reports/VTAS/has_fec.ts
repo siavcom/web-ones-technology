@@ -22,6 +22,6 @@ export class has_fec extends COMPONENT {
     }
     override async init() {
 
-        this.prop.Value = this.Form.publicVar.fpo_pge;
+        this.prop.Value = this.Form.mPublic.fpo_pge;
     }
 }

@@ -54,7 +54,7 @@ export class log_usr extends CAPTURECOMPONENT {
       if (pos > 0)
          this.prop.Value = this.prop.Value.slice(0, pos);
 
-      this.prop.Value = this.prop.Value.toLowerCase().trim() + '@' + this.Form.publicVar.dbname;
+      this.prop.Value = this.prop.Value.toLowerCase().trim() + '@' + this.Form.mPublic.dbname;
       if (this.prop.Value.length > 64) {
          return false
       }

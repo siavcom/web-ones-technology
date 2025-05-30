@@ -32,7 +32,7 @@ export class reportInv extends reportForm {
   public num_fam = new num_fam()
   public op_des_fam = new op_des_fam()
   public op_has_fam = new op_has_fam()
-  
+
   constructor() {
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
@@ -47,7 +47,7 @@ export class reportInv extends reportForm {
     this.op_des_isu.prop.Value = " "
     this.sep_fam.prop.TabIndex = 7
     this.num_fam.prop.TabIndex = 90
-    this.num_fam.prop.Value  = 1
+    this.num_fam.prop.Value = 1
     this.op_des_fam.prop.TabIndex = 91
     this.op_has_fam.prop.TabIndex = 92
     //this.has_fam.prop.Type = "string"
@@ -61,10 +61,10 @@ export class reportInv extends reportForm {
     this.prop.cam_pri = 'cla_isu' // campo de buqueda principal
     // Campos de orden de la vista
     this.fields = [
-      ["cla_isu", "Clave","''","'ZZZZZZZZZZ'"],
-      ["des_isu", "Descripción",,"''","'ZZZZZZZZZZ'"],
-      ["sku_isu", "SKU",,"''","'ZZZZZZZZZZ'"]
-      
+      ["cla_isu", "Clave", "''", "'ZZZZZZZZZZ'"],
+      ["des_isu", "Descripción", , "''", "'ZZZZZZZZZZ'"],
+      ["sku_isu", "SKU", , "''", "'ZZZZZZZZZZ'"]
+
     ]
 
 
@@ -73,11 +73,11 @@ export class reportInv extends reportForm {
   async init() {
     await super.init()
 
-    // this.des_fec.prop.Value =new Date() // await stringToDate(this.Form.publicVar.fpo_pge);
-    // this.has_fec.prop.Value =new Date() // await stringToDate(this.Form.publicVar.fpo_pge);
-    this.has_fec.prop.Value = this.Form.publicVar.fpo_pge;
-    this.des_fec.prop.Value = await addDate(this.Form.publicVar.fpo_pge, -1, 'M'); // resta un mes
-    
+    // this.des_fec.prop.Value =new Date() // await stringToDate(this.Form.mPublic.fpo_pge);
+    // this.has_fec.prop.Value =new Date() // await stringToDate(this.Form.mPublic.fpo_pge);
+    this.has_fec.prop.Value = this.Form.mPublic.fpo_pge;
+    this.des_fec.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'M'); // resta un mes
+
     //  console.log("ThisForm des_fec=",this.des_fec.prop.Value,' has_fec', this.has_fec.prop.Value);
   }
 

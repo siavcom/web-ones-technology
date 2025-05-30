@@ -1,17 +1,17 @@
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
-export const PublicVar = defineStore('publicVar', () => {
+export const PublicVar = defineStore('mPublic', () => {
 
   const Var = ref({
   })
   const session = Session()
-  const {id_con}=storeToRefs(session)
+  const { id_con } = storeToRefs(session)
   /// /////////////  open  ///////////////////
   // Hace la conexion al servidor NODEJS que
   // comunica con el servidor de SQL y se trae los valores de comepge
   /// ////////////////////////////////////////
-  async function leePublicVar() {
-    
+  async function leePublicM() {
+
     const dat_vis = {
       id_con: id_con.value,
       tip_llamada: 'SQLEXEC',
@@ -20,9 +20,9 @@ export const PublicVar = defineStore('publicVar', () => {
 
     try {
       const result = await axios.post(session.url + 'sql', dat_vis)
-      if (result.data){
+      if (result.data) {
         Var.value = result.data[0]
-        console.log('Store publicVar Var.value=',Var.value)
+        console.log('Store mPublic Var.value=', Var.value)
 
       }
 
@@ -36,15 +36,15 @@ export const PublicVar = defineStore('publicVar', () => {
 
   watch(() => id_con.value,
     (new_id, old_val) => {
-      console.log('Entre PublicVar Watch Pinia id_con', new_id,old_val)
-      if (new_id=='' ){
-       Var.value=0
-       return
-      }     
-      if (new_id > '0' && new_id!=old_val) {
+      console.log('Entre PublicVar Watch Pinia id_con', new_id, old_val)
+      if (new_id == '') {
+        Var.value = 0
+        return
+      }
+      if (new_id > '0' && new_id != old_val) {
 
         console.log('PublicVar Watch Pinia id_con', new_id)  // doest not do anything
-        leePublicVar()
+        leePublicM()
       }
     },
     { deep: false }
@@ -66,6 +66,6 @@ export const PublicVar = defineStore('publicVar', () => {
 
 
 //if (import.meta.hot) {
- // import.meta.hot.accept(acceptHMRUpdate(PublicVar, import.meta.hot))
+// import.meta.hot.accept(acceptHMRUpdate(PublicVar, import.meta.hot))
 //}
 

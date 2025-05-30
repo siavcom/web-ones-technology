@@ -171,7 +171,7 @@ export class translateContainer extends CONTAINER {
 
     const m = {
       for_lan: this.Form.prop.Name,
-      lan_lan: this.Form.publicVar.lan_lan ? this.Form.publicVar.lan_lan : '   ',
+      lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
       map_lan: comp.prop.Map,
       message: '  ',
       messages: messages,

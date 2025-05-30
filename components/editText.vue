@@ -1,15 +1,3 @@
-<!--
-----------------------------------------------------------------------------------------------
-              Killo Soft
- ----------------------------------------------------------------------------------------------
- Autor    	: ElFerBlocks
- Sistema  	: Web-Ones  							Version : 1.0  VUE
- Programa 	: EditBox    		Mnemo   : editText.vue
- Ult.Mod :   11/Marzo/2025 se agrego el siguiente if
- Objeto		: VUE
- Comentarios	: Componente de edicion de texto
- ----------------------------------------------------------------------------------------------
--->
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
@@ -159,9 +147,21 @@
 </template>
 
 <script setup lang="ts">
+
 /*
+----------------------------------------------------------------------------------------------
+              Killo Soft
+ ----------------------------------------------------------------------------------------------
+ Autor    	: ElFerBlocks
+ Sistema  	: Web-Ones  							Version : 1.0  VUE
+ Programa 	: EditBox    		Mnemo   : editText.vue
+ Ult.Mod :   11/Marzo/2025 se agrego el siguiente if
+ Objeto		: VUE
+ Comentarios	: Componente de edicion de texto
+ ----------------------------------------------------------------------------------------------
 
 */
+
 
 import { vMaska } from "maska/vue"
 //import { Money } from "v-money3";
@@ -742,7 +742,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   // console.log('2.2) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
   if (This.onChangeValue) {
-    //await This.onChangeValue(ref(Styles))
+    await This.onChangeValue(ref(Styles))
   }
 
   //  console.log('2.2.0) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
@@ -1468,6 +1468,20 @@ watch(
 
 
 /////////////////////////////////////////////////////////////////////
+// change This.prop.Enabled
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.Enabled,
+  () => {
+    if (This.prop.Disabled != !This.prop.Enabled)
+      This.prop.Disabled = !This.prop.Enabled
+
+  },
+  { deep: false }
+);
+
+
+/////////////////////////////////////////////////////////////////////
 // change This.prop.ShowError
 /////////////////////////////////////////////////////////////////
 watch(
@@ -1787,6 +1801,14 @@ watch(
     // console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, 'new_val', new_val, 'Status=', This.prop.Status)
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
     watchPropValue = false
+    if (This.prop.Valid && This.onChangeValue) {
+      //console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
+      if (This.onChangeValue) {
+        await This.onChangeValue(ref(Styles))
+      }
+
+
+    }
     //console.log('--------Fin 2) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Status=', This.prop.Status)
     // }
   },

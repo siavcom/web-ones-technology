@@ -454,12 +454,12 @@ export class reportForm extends FORM {
     }
 
     // Obtenemos variables Publicas
-    const Var = this.publicVar;
+    const Var = this.mPublic;
     for (let component in Var) {
       data[component] = Var[component];
       //console.log("bt_json component.value= ", data[component]);
     }
-    //console.log("bt_json obtData= ", data,this.Form.publicVar);
+    //console.log("bt_json obtData= ", data,this.Form.mPublic);
 
     data['tit_rep'] = this.tit_rep // Aumenta la propiedad this.tit_rep
     this.data = data;

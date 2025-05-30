@@ -19,7 +19,7 @@ export class FORM extends COMPONENT {
   estatus = []; // estatus de los componentes hijos
   Params = [];
   //db = new VFPDB(); // conexion a la base de datos
-  publicVar = {};
+  mPublic = {};
   clickedElement = null;
   Development = false; // desarrollo
   dialect = "MSSQL";
@@ -66,7 +66,7 @@ export class FORM extends COMPONENT {
 
     // const { Var, dialect } = storeToRefs(this.db.session); // variables publicas
     const { Var, dialect } = storeToRefs(this.Sql.session); // variables publicas
-    this.publicVar = Var.value;
+    this.mPublic = Var.value;
     this.dialect = dialect.value;
 
     //openForm(ref(this));
@@ -99,7 +99,7 @@ export class FORM extends COMPONENT {
 
     const m = {
       for_lan: this.prop.Name,
-      lan_lan: this.publicVar.lan_lan ? this.publicVar.lan_lan : '   '
+      lan_lan: this.mPublic.lan_lan ? this.mPublic.lan_lan : '   '
     }
 
     console.log("Form :", this.Name, "m=", m);
