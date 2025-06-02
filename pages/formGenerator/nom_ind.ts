@@ -18,7 +18,7 @@ export class nom_ind extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = false;
-    this.prop.textLabel = "Indices de la Tabla";
+    this.prop.Caption = "Indices de la Tabla";
     this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Valid = false;
     this.prop.ErrorMessage = "";

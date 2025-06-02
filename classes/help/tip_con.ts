@@ -41,11 +41,11 @@ export class tip_con extends COMPONENT {
   async when() {
 
     if (this.prop.Value == 'E') {
-      this.Parent.des_dat.prop.textLabel = 'Desde '
+      this.Parent.des_dat.prop.Caption = 'Desde '
       this.Parent.des_dat.prop.Visible = true
       this.Parent.has_dat.prop.Visible = true
     } else {
-      this.Parent.des_dat.prop.textLabel = ''
+      this.Parent.des_dat.prop.Caption = ''
       this.Parent.des_dat.prop.Visible = true
       this.Parent.has_dat.prop.Visible = false
     }
@@ -62,12 +62,12 @@ export class tip_con extends COMPONENT {
   async interactiveChange() {
     if (this.Parent.cam_dat.Type == 'string')
       if (this.prop.Value == 'C') {
-        this.Parent.des_dat.prop.textLabel = ''
+        this.Parent.des_dat.prop.Caption = ''
         this.Parent.has_dat.prop.Visible = false
         return
       }
     this.prop.Value = 'E'
-    this.Parent.des_dat.prop.textLabel = '' //'Desde '
+    this.Parent.des_dat.prop.Caption = '' //'Desde '
     this.Parent.has_dat.prop.Visible = true
 
   }

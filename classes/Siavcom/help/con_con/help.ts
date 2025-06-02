@@ -21,7 +21,7 @@ export class help extends HELP {
     this.prop.ColumnTextLabel = 'Buscador de consignatarios'
     this.where = ''
     this.prop.RecordSource = 'man_comecon' // tabla donde buscar datos
-    this.browse.prop.textLabel = 'Consigantarios'
+    this.browse.prop.Caption = 'Consigantarios'
     this.prop.cam_pri = 'noc_con' // campo de buqueda principal
     this.prop.Where = " "
     this.cop_nom = 'C'

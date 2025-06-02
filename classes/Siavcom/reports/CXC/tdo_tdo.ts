@@ -15,7 +15,7 @@ import { COMPONENT } from "@/classes/Component";
 export class tdo_tdo extends COMPONENT {
   constructor() {
     super();
-    this.prop.textLabel = "Documento"; // Etiqueta que tendra este componente
+    this.prop.Caption = "Documento"; // Etiqueta que tendra este componente
     this.prop.BaseClass = "comboBox"; // Tipo de componente
     this.prop.RowSourceType = 3; //Tipo de combo Box (Similar a VFP) 1-Value, 2-Alias local SQL ,3-Serv SQL 5-Array
     this.prop.RowSource =

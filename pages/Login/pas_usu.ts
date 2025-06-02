@@ -13,7 +13,7 @@ export class pas_usu extends COMPONENT {
     super();
     this.Form = this.Parent;
     this.prop.BaseClass = "editText";
-    this.prop.textLabel = "Password/Contraseña";
+    this.prop.Caption = "Password/Contraseña";
     this.prop.Type = "password";
     this.prop.Capture = false;
     this.prop.TabIndex = 3;

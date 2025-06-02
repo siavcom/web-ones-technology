@@ -16,8 +16,8 @@ export class dic_dat extends COMPONENT {
     super();
     //  this.Name = 'dic_dat'
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Diccionario  de datos";
-    this.prop.ToolTipText = this.prop.textLabel;
+    this.prop.Caption = "Diccionario  de datos";
+    this.prop.ToolTipText = this.prop.Caption;
     this.prop.ReadOnly = false;
     this.prop.Capture = false;
     // ["Definicion de Tabla", "Tablas del SQL Server", "Indices", "Vistas de captura", "Menú de programas"],

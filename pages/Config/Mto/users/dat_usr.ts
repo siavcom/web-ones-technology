@@ -17,7 +17,7 @@ export class dat_usr extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Datos de usuario'
+      this.prop.Caption = 'Datos de usuario'
       this.prop.Type = 'json'
       this.prop.BaseClass = 'editText'
       this.prop.ControlSource = 'vi_cap_db_users.dat_usr'

@@ -17,7 +17,7 @@ export class lan_lan extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Lenguaje'
+      this.prop.Caption = 'Lenguaje'
       this.prop.Type = 'text'
       this.prop.BaseClass = 'editText'
       this.prop.ControlSource = 'vi_cap_db_users.lan_lan'
@@ -43,7 +43,7 @@ export class lan_lan extends CAPTURECOMPONENT {
       // this.prop.ControlSource=""
       // this.prop.Status= "I" // I)nitial, P)rocess , A)ctive
 
-      // this.prop.textLabel=""
+      // this.prop.Caption=""
       // this.prop.ToolTipText=""
       // this.prop.Value=""
       // this.prop.Placeholder=""

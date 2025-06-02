@@ -315,7 +315,7 @@ export class captureForm extends FORM {
     constructor() {
       super();
       this.prop.Name = "bt_graba";
-      this.prop.textLabel = "Graba datos";
+      this.prop.Caption = "Graba datos";
       this.prop.Capture = false;
       // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";
@@ -404,7 +404,7 @@ export class captureForm extends FORM {
     constructor() {
       super();
       this.prop.Name = "bt_borra";
-      this.prop.textLabel = "Borra datos";
+      this.prop.Caption = "Borra datos";
       this.prop.Capture = false;
       // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";

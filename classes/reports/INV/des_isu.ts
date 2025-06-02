@@ -14,7 +14,7 @@ export class des_isu extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Desde que insumo";
+    this.prop.Caption = "Desde que insumo";
     this.prop.Type = "text";
     this.prop.BaseClass = "editText";
     this.prop.MaxLength = 30;

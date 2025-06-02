@@ -16,7 +16,7 @@ export class ToolTipText extends COMPONENT {
 
   constructor() {
     super();
-    this.prop.textLabel = "Tool Tip Text ";
+    this.prop.Caption = "Tool Tip Text ";
     this.prop.ControlSource = "vi_cap_db_languages.tooltiptext";
     this.prop.Capture = true
     this.inputStyle.width = "496px";

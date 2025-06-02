@@ -40,7 +40,7 @@ export class report extends CONTAINER {
     this.prop.Disabled = true
     this.prop.Visible = false
     this.prop.BaseClass = 'container' //'details'
-    this.prop.textLabel = 'Reporte'
+    this.prop.Caption = 'Reporte'
 
     this.style.width = '100%'
     this.style.maxWidth = '1200px'

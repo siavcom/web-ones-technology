@@ -59,7 +59,7 @@ export class grid extends GRID {
   constructor() {
     super();
     this.Name = "grid_columns";
-    this.prop.textLabel = "Campos de la forma";
+    this.prop.Caption = "Campos de la forma";
     this.prop.RecordSource = "vi_cap_form";
     this.prop.Visible = false;
     this.prop.ReadOnly = false;

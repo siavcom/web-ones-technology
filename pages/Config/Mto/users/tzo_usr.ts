@@ -18,7 +18,7 @@ export class tzo_usr extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Zona horaria'
+      this.prop.Caption = 'Zona horaria'
       this.prop.BaseClass = 'comboBox'
       this.prop.RowSource = [[], [], []];
       this.prop.ColumnCount = 3;

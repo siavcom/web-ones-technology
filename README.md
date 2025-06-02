@@ -148,8 +148,8 @@ Calling a method:
 `      super();`  
 `      //****** Propierties ********//`  
 `      this.prop.BaseClass = "comboBox";`  
-`      this.prop.textLabel = "Diccionario  de datos";`  
-`      this.prop.ToolTipText = this.prop.textLabel;`  
+`      this.prop.Caption = "Diccionario  de datos";`  
+`      this.prop.ToolTipText = this.prop.Caption;`  
 `      this.prop.ReadOnly = false;`  
 `      this.prop.Capture = false;`  
 `      this.prop.RowSource = [`  
@@ -235,7 +235,7 @@ this.prop.`<`Name of propierty`>'.`<`Value`>`
                 'grid',
                 'base64',
                 'container'.
-
+ - Caption:`<`Title of the component`>`
  - Name:`<`Name of the component`>`  
       Type :string
 
@@ -558,7 +558,7 @@ export class ThisForm extends FORM {
     // Propierties  
     this.prop.Name = "SqlDictionary"  
     this.prop.tag = ""  
-    this.prop.textLabel = "Mantenimiento al diccionario de datos"  
+    this.prop.Caption = "Mantenimiento al diccionario de datos"  
     this.prop.Status = "A"  
     // Style  
     this.style.display = "inline-flex"  

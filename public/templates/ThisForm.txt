@@ -31,7 +31,7 @@ export class ThisForm extends captureForm {
 
     this.Development = false
     this.Name = '<<nom_for>>'
-    this.prop.textLabel = "Mantenimiento a la tabla <<nom_tab>>"
+    this.prop.Caption = "Mantenimiento a la tabla <<nom_tab>>"
     this.prop.RecordSource='<<vis_cap>>'
     this.prop.Status = 'A'
     //this.style.display = "flex"

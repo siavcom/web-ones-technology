@@ -16,7 +16,7 @@ export class PlaceHolder extends COMPONENT {
 
   constructor() {
     super();
-    this.prop.textLabel = "Place Holder";
+    this.prop.Caption = "Place Holder";
     this.prop.ControlSource = "vi_cap_db_languages.placeholder";
     this.prop.Capture = true
     this.prop.BaseClass = "editText";

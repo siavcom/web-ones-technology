@@ -15,7 +15,7 @@ export class bt_aceptar extends COMPONENT {
     super();
 
     this.prop.BaseClass = "imgButton";
-    // this.prop.textLabel = "Enter/Entrar";
+    // this.prop.Caption = "Enter/Entrar";
     this.style.width = "30%";
     this.prop.TabIndex = 4;
     this.prop.Image = "/Iconos/svg/accept.svg";

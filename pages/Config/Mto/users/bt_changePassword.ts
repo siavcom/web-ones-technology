@@ -14,7 +14,7 @@ export class bt_changePassword extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Cambia SQL password";
+    this.prop.Caption = "Cambia SQL password";
     this.prop.Capture = false;
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";

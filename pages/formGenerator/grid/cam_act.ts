@@ -18,7 +18,7 @@ export class cam_act extends COLUMN {
         super()
         this.prop.Order = 3
         this.prop.ColumnTextLabel = 'Actua- lizable'
-        this.prop.textLabel = 'Si'
+        this.prop.Caption = 'Si'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'checkBox'
 

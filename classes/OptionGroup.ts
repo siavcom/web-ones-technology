@@ -16,7 +16,6 @@ export class optionGroup extends COMPONENT {
   constructor() {
     super();
     this.prop.Type = "number";
-    this.prop.textLabel = "Tipo";
     this.Option1.prop.Caption = "Option 1";
     this.Option1.prop.Name = "Option1";
     this.Option2.prop.Caption = "Option 2";
@@ -28,9 +27,8 @@ export class optionGroup extends COMPONENT {
     this.style.width = 'min-content'
     this.style.border = '1px solid black';
     this.style.padding = '.1px';
-    this.style.borderRadius = '2px';
+    this.style.borderRadius = '3px';
     this.prop.Value = 1
-
   }
 
   addOption() {
@@ -50,26 +48,39 @@ export class optionGroup extends COMPONENT {
 
   override async onChangeValue() {
 
-    // console.log('OptionGropup', this.options)
     for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
       const item = this.options[i]
 
-      console.log(this.prop.Name, 'OptionGroup item', item, i, item.prop.OptionNumber)
+      if (item.prop.OptionNumber == this.prop.Value) {
 
-      if (item.prop.OptionNumber == this.prop.Value)
         if (item.prop.Value = 0) {
           item.prop.Value = 1
-          console.log(this.prop.Name, 'OptionGroup item default', i, item.prop.Value)
+
         }
-        else
-          if (item.prop.Value == 1)
-            item.prop.Value = 0;  // marca el seleccionado     
-
-      console.log(this.prop.Name, 'OptionGroup item default', i, item.prop.Value)
-
+      }
+      else
+        if (item.prop.Value == 1)
+          item.prop.Value = 0;  // marca el seleccionado     
     }
+
     return;
   }
 
+  public override async afterMounted() {
+
+
+    for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
+      const item = this.options[i]
+
+      if (item.prop.OptionNumber == this.prop.Value) {
+        if (item.prop.Value == 0) {
+          item.prop.Value = 1
+        }
+      }
+      else
+        if (item.prop.Value == 1)
+          item.prop.Value = 0;  // marca el seleccionado     
+    }
+  }
 
 }

@@ -16,7 +16,7 @@ export class ColumnTextLabel extends COMPONENT {
 
   constructor() {
     super();
-    this.prop.textLabel = "Column text label";
+    this.prop.Caption = "Column text label";
     this.prop.ControlSource = "vi_cap_db_languages.columntextlabel";
     this.prop.Capture = true
     this.prop.BaseClass = "editText";

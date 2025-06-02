@@ -19,7 +19,7 @@ export class nco_que extends COMPONENT {
     // const nom_ind=renglon[i]['nom_ind']
 
     this.prop.Type = "spinner";
-    this.prop.textLabel = "Número";
+    this.prop.Caption = "Número";
     this.prop.Value = 1;
     this.prop.Position = "main";
     this.prop.Min = "1";

@@ -15,7 +15,7 @@ export class tip_rep extends COMPONENT {
   constructor() {
     super();
     this.prop.Type = "checkBox";
-    this.prop.textLabel = "Reporte detallado";
+    this.prop.Caption = "Reporte detallado";
     this.prop.Value = 0;
     //this.prop.TabIndex = 102;
     this.prop.Visible = false    // No muestra general o detallado

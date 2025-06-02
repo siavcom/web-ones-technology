@@ -40,7 +40,7 @@ export class ThisForm extends FORM {
 
     this.Development = false
     this.Name = 'SqlQuery'
-    this.prop.textLabel = "SQL Query"
+    this.prop.Caption = "SQL Query"
     this.prop.Status = 'A'
     this.style.display = "flex"
     this.style.background = "white"

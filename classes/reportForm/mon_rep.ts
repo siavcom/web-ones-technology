@@ -17,7 +17,7 @@ export class mon_rep extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Moneda";
+    this.prop.Caption = "Moneda";
     this.prop.BaseClass = "comboBox";
     //        this.prop.ControlSource = 'vi_cap_comepry.mco_pry'
     this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array

@@ -19,9 +19,9 @@
     <!--Etiqueta del componente -->
     <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
-    <span :id="Id + '_span'" class="etiqueta" v-if="prop.textLabel.length > 0" :style="Styles.labelStyle">{{
-      prop.textLabel
-      }}</span>
+    <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
+      prop.Caption
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->

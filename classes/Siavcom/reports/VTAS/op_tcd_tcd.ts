@@ -15,7 +15,7 @@ import { COMPONENT } from "@/classes/Component";
 export class op_tcd_tcd extends COMPONENT {
   constructor() {
     super();
-    this.prop.textLabel = "Clasificación de documento"; // Etiqueta que tendra este componente
+    this.prop.Caption = "Clasificación de documento"; // Etiqueta que tendra este componente
     this.prop.BaseClass = "comboBox"; // Tipo de componente
     this.prop.RowSourceType = 4; //Tipo de combo Box (Similar a VFP)1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
     this.prop.ColumnCount = 2; // = VFP
@@ -24,10 +24,10 @@ export class op_tcd_tcd extends COMPONENT {
     this.prop.Value = "??";
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
-  override async  init() {
-    const data=await SQLExec(`select des_tcd,tcd_tcd,man_cometcd.tdo_tdo tdo_tdo,man_cometcd.key_pri from man_cometcd join man_cometdo on man_cometdo.tdo_tdo=man_cometcd.tdo_tdo where cop_nom='C' `,'loc_cometcd' ) 
+  override async init() {
+    const data = await SQLExec(`select des_tcd,tcd_tcd,man_cometcd.tdo_tdo tdo_tdo,man_cometcd.key_pri from man_cometcd join man_cometdo on man_cometdo.tdo_tdo=man_cometcd.tdo_tdo where cop_nom='C' `, 'loc_cometcd')
     this.prop.RowSource = "select '  Todos ' as des_tcd,'??' as tcd_tcd  "
     //  RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
-  
- }
+
+  }
 }

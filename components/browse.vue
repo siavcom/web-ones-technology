@@ -14,7 +14,7 @@
     @click.middle.stop="middleClick()">
     <div :id="Id + '_wraper'" class=" wraper" style="width:100%;height:100%">
       <table-lite :id="Id + '_table_lite'" :is-loading="table.isLoading" :columns="table.columns" :rows="table.rows"
-        :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.textLabel"
+        :total="table.totalRecordCount" :sortable="table.sortable" :title="This.Form.prop.Caption"
         :has-checkbox="table.checkBox" :has-group-toggle="table.groupToggle" :grouping-key="table.groupingKey"
         :messages="table.messages" :page-size="10"
         :page-options="[{ value: 10, text: 10 }, { value: 25, text: 25 }, { value: 50, text: 50 }]"
@@ -36,7 +36,7 @@
         :rows="table.rows" 
         :total="table.totalRecordCount"
         :sortable="table.sortable" 
-        :title="This.Form.prop.textLabel" 
+        :title="This.Form.prop.Caption" 
         :has-checkbox="table.checkBox"
         :has-group-toggle="table.groupToggle" 
         :grouping-key="table.groupingKey" 

@@ -19,7 +19,7 @@ export class help extends HELP {
     this.prop.ColumnTextLabel = 'Buscador'
     this.where = ''
     this.prop.RecordSource = 'man_comenom' // tabla donde buscar datos
-    this.browse.prop.textLabel = 'Clientes'
+    this.browse.prop.Caption = 'Clientes'
     this.prop.cam_pri = 'nom_nom' // campo de buqueda principal
     // this.prop.cop_nom = 'C'
 

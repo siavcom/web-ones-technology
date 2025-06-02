@@ -18,7 +18,7 @@ export class tzo_usr extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Time Zone'
+      this.prop.Caption = 'Time Zone'
       this.prop.BaseClass = 'comboBox'
       this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
       this.prop.RowSource = [[], [], []];

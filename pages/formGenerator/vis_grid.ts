@@ -18,7 +18,7 @@ export class vis_grid extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = false;
-    this.prop.textLabel = "Vista de captura del grid";
+    this.prop.Caption = "Vista de captura del grid";
     this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Valid = false;
     this.prop.ErrorMessage = "";

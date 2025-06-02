@@ -19,7 +19,7 @@ export class query extends COMPONENT {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.textLabel = "Query SQL a ejecutar";
+    this.prop.Caption = "Query SQL a ejecutar";
     this.prop.Type = "textArea";
     this.prop.BaseClass = "editText";
     this.prop.ControlSource = "";

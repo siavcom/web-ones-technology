@@ -17,7 +17,7 @@ export class mai_usr extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Mail'
+      this.prop.Caption = 'Mail'
       this.prop.Type = 'text'
       this.prop.BaseClass = 'editText'
       this.prop.ControlSource = 'vi_cap_db_users.mai_usr'

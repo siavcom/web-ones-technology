@@ -17,7 +17,7 @@ export class sis_sis extends COMPONENT {
     super();
 
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Menú de sistemas";
+    this.prop.Caption = "Menú de sistemas";
     this.prop.Capture = false;
     //this.prop.Sw_val = false;
     this.prop.ErrorMessage = "";

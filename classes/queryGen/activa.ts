@@ -20,10 +20,10 @@ export class activa extends COMPONENT {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    // this.prop.textLabel = 'Filtro'
+    // this.prop.Caption = 'Filtro'
     this.prop.Type = 'checkBox'
     this.prop.BaseClass = 'editText'
-    this.prop.textLabel = 'Se incluye en el reporte'
+    this.prop.Caption = 'Se incluye en el reporte'
     this.prop.Position = 'main'
     this.prop.Capture = false
     this.prop.Value = 0

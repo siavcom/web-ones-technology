@@ -15,23 +15,30 @@ export class option extends COMPONENT {
     super();
     this.prop.Type = "checkBox";
     this.prop.OptionNumber = OptionNumber; // Posicion dentro del optionGroup
-    if (OptionNumber == 1)
-      this.prop.Value = 1
-    else
-      this.prop.Value = 0
+    this.prop.Value = 0
 
-
-    console.log('constructor OptionGroup option=', this.prop.OptionNumber, this.prop.Value)
   }
 
-  override init() {
+  override async init() {
     this.Parent.options[this.prop.OptionNumber] = this
-
   }
 
-  override async interactiveChange() {
-    if (this.prop.Value == 1 && this.Parent.prop.OptionNumber != this.prop.OptionNumber)
+
+  /*
+    override async interactiveChange() {
+      if (this.prop.Value == 1 && this.Parent.prop.OptionNumber != this.prop.OptionNumber)
+        this.Parent.prop.Value = this.prop.OptionNumber
+      return true
+    }
+  */
+  override async click() {
+    if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
       this.Parent.prop.Value = this.prop.OptionNumber
-    return true
+
+    const Name = this.prop.Name + 'Click'
+    const opcion = this.Parent[Name]
+
+    if (opcion)
+      await opcion(this)
   }
 }

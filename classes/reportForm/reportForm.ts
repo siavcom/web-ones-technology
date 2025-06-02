@@ -189,7 +189,7 @@ export class reportForm extends FORM {
 
     await this.asignaRecordSource("queryUsu", "query_user");
     this.queryUsu.usu_que = this.Sql.session.user;
-    this.queryUsu.prop.textLabel =
+    this.queryUsu.prop.Caption =
       "Condiciones por usuario :" + this.queryUsu.usu_que;
 
     // Query Todos

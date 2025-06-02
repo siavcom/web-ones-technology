@@ -28,7 +28,7 @@ export class Grid extends GRID {
   public des_report = new des_report();
   public act_report = new act_report();
   public fields_report = new fields_report();
- 
+
 
   constructor() {
     super();
@@ -38,13 +38,13 @@ export class Grid extends GRID {
     this.prop.Position = "main";
     //this.prop.RecordSource=this.Form.reportFields.prop.RecordSource
     this.prop.Visible = true;
-    this.prop.textLabel = "Campos de la vista del reporte";
+    this.prop.Caption = "Campos de la vista del reporte";
     this.prop.autoLoad = false; // se pone en falso para que no inicialice la tabla
 
     this.style.fontSize = "16px";
     this.style.color = "green";
     this.style.backgroundColor = "white";
-    
+
   }
 
   public async appendRow(m?: {}) {
@@ -52,27 +52,27 @@ export class Grid extends GRID {
 
     const db = this.Form.db;
     const campos = await db.localAlaSql("select * from Now.camposView");
-    
-    let fields ={} 
-    
+
+    let fields = {}
+
     for (let g = 0; g < campos.length; g++) {
       const d = campos[g];
-      fields[d.cam_dat] ={ 
-     
-  //      component: { type: "label", label: "Field", value: d.ref_dat ,readOnly:true},
-        header:  { type: "edit", label: "Header", value: d.ref_dat,readOnly:false , style:{width:'100px'}},
-        enabled:  { type: "checkbox", label: "Enabled", value: 1,readOnly:false, style:{width:'64px'} },
-        position:{ type: "number", label: "Position", value: g,readOnly:false, style:{width:'64px'} }
-    
-    }
+      fields[d.cam_dat] = {
 
-   
+        //      component: { type: "label", label: "Field", value: d.ref_dat ,readOnly:true},
+        header: { type: "edit", label: "Header", value: d.ref_dat, readOnly: false, style: { width: '100px' } },
+        enabled: { type: "checkbox", label: "Enabled", value: 1, readOnly: false, style: { width: '64px' } },
+        position: { type: "number", label: "Position", value: g, readOnly: false, style: { width: '64px' } }
+
+      }
+
+
       // m.yes_report=1
       // m.header_report=m.des_cam
     }
-    
-    m = { };
-    m.fields_report=JSON.stringify(fields)
+
+    m = {};
+    m.fields_report = JSON.stringify(fields)
 
     const data = await db.localAlaSql(
       `select max(con_report)+1 as con_report from ${this.prop.RecordSource} `
@@ -86,7 +86,7 @@ export class Grid extends GRID {
     m.view_report = this.Form.vis_rep;
 
     await super.appendRow(m);
-   // console.log('TIP_REP appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
+    // console.log('TIP_REP appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
   }
 }

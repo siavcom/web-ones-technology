@@ -11,7 +11,7 @@ export class bt_gen_indices extends COMPONENT {
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
     this.prop.Visible = false;
-    this.prop.textLabel = "SQL-Server index";
+    this.prop.Caption = "SQL-Server index";
     this.prop.ToolTipText = "Generates SQL-Server index";
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/index.svg";

@@ -6,7 +6,7 @@
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
         :style="Styles.inputStyle" />
       <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
-        v-show="prop.Visible">{{ prop.textLabel }}</label>
+        v-show="prop.Visible">{{ prop.Caption }}</label>
     </button>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"

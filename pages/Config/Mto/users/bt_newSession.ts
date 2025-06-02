@@ -14,7 +14,7 @@ export class bt_newSession extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Genera Sesion SQL";
+    this.prop.Caption = "Genera Sesion SQL";
     this.prop.Capture = false;
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";

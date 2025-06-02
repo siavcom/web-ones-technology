@@ -18,7 +18,7 @@ export class vis_form extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = false;
-    this.prop.textLabel = "Vista de captura forma principal";
+    this.prop.Caption = "Vista de captura forma principal";
     this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Valid = false;
     this.prop.ErrorMessage = "";

@@ -20,7 +20,7 @@ export class updateKey extends COLUMN {
         this.prop.ColumnTextLabel = 'Indice de actualización'
         this.prop.BaseClass = 'editText'
         this.prop.Type = 'checkBox'
-        this.prop.textLabel = 'Si'
+        this.prop.Caption = 'Si'
 
         this.prop.ControlSource = 'vi_cap_for.updatekey'
         this.prop.Value = 1

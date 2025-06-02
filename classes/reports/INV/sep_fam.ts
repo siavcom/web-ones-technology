@@ -14,7 +14,7 @@ export class sep_fam extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Por familia";
+    this.prop.Caption = "Por familia";
     this.prop.Type = "checkBox";
     this.prop.Value = 0;
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente

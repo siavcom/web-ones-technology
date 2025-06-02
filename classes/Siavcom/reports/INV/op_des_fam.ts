@@ -14,7 +14,7 @@ export class op_des_fam extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Desde que familia";
+    this.prop.Caption = "Desde que familia";
     this.prop.BaseClass = "comboBox";
     this.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.ColumnCount = 3;
@@ -33,8 +33,8 @@ export class op_des_fam extends COMPONENT {
 
   async interactiveChange() {
 
-      this.Parent.op_has_fam.prop.Value = this.prop.Value;
-      return true;
-    }
-
+    this.Parent.op_has_fam.prop.Value = this.prop.Value;
+    return true;
   }
+
+}

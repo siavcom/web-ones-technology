@@ -745,7 +745,7 @@ export class COMPONENT {
       message: '  ',
       messages: this.prop.Messages,
       columntextlabel: this.prop.ColumnTextLabel,
-      textlabel: this.prop.textLabel,
+      textlabel: this.prop.Caption,
       rowsource: this.prop.RowSource,
       placeholder: this.prop.Placeholder,
       tooltiptext: this.prop.ToolTipText,
@@ -779,7 +779,7 @@ export class COMPONENT {
         this.prop.ColumnTextLabel = Value.columntextlabel
 
       if (Value.textlabel.length > 0)
-        this.prop.textLabel = Value.textlabel
+        this.prop.Caption = Value.textlabel
 
       // checar aqui
       if (Value.rowsource.trim().length > 0) {

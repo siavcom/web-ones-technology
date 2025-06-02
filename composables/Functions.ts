@@ -951,7 +951,6 @@ export function impComponent(name: string) {
       return image
     }
 
-
     case 'textlabel': {
       return textLabel
     }

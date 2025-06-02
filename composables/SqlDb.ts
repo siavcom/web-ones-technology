@@ -126,11 +126,15 @@ export function initSql(Form: {}) {
     This.value.Form.Sql.scatter = scatter
     This.value.Form.Sql.localClone = localClone
     This.value.Form.Sql.jasperReport = jasperReport
-
+    This.value.Form.Sql.View = View
     This.value.Form.db = This.value.Form.Sql  // Porteo viejo a db
     return
 } // Fin constructor
 
+export const View = async () => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    return This.value.View
+}
 
 export const releaseUse = async (alias?: string) => {
 

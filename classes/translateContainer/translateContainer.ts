@@ -44,7 +44,7 @@ export class translateContainer extends CONTAINER {
 
   constructor() {
     super()
-    this.prop.textLabel = 'Language translator'
+    this.prop.Caption = 'Language translator'
     this.prop.BaseClass = 'modalContainer'
     this.prop.Visible = false
     this.prop.RecordSource = 'vi_cap_db_languages'
@@ -176,7 +176,7 @@ export class translateContainer extends CONTAINER {
       message: '  ',
       messages: messages,
       columntextlabel: comp.prop.ColumnTextLabel,
-      textlabel: comp.prop.textLabel,
+      textlabel: comp.prop.Caption,
       rowsource: rowsource,
       placeholder: comp.prop.Placeholder,
       tooltiptext: comp.prop.ToolTipText,

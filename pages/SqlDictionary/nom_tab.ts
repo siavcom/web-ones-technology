@@ -16,7 +16,7 @@ export class nom_tab extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = false;
-    this.prop.textLabel = "Tablas del SQL Server";
+    this.prop.Caption = "Tablas del SQL Server";
     this.prop.Capture = true;
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 0; // 3   1-Value, 2-Alias,3-sql 5-Array

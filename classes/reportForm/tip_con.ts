@@ -45,11 +45,11 @@ export class tip_con extends COMPONENT {
   async interactiveChange() {
     if (this.Parent.var_ord.Type == 'text')
       if (this.prop.Value == 'C') {
-        this.Parent.des_dat.prop.textLabel = ''
+        this.Parent.des_dat.prop.Caption = ''
         this.Parent.has_dat.prop.Visible = false
         return
       }
-    this.Parent.des_dat.prop.textLabel = 'Desde'
+    this.Parent.des_dat.prop.Caption = 'Desde'
     this.prop.Value = 'E'
     this.Parent.has_dat.prop.Visible = true
 

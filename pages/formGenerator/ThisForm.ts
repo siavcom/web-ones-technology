@@ -51,16 +51,16 @@ export class ThisForm extends FORM {
 
     this.Development = false;
     this.Name = "GenForma";
-    this.prop.textLabel = "Generador de Formas de mantenimiento ";
+    this.prop.Caption = "Generador de Formas de mantenimiento ";
     this.prop.Status = "A";
 
     this.grid_form.Name = "grid_form";
     this.grid_form.Name = "grid_form";
-    this.grid_form.prop.textLabel = "Componentes del form";
+    this.grid_form.prop.Caption = "Componentes del form";
 
     this.grid_columns.Name = "grid_columns";
     this.grid_columns.Name = "grid_columns";
-    this.grid_columns.prop.textLabel = "Componentes del grid";
+    this.grid_columns.prop.Caption = "Componentes del grid";
   }
 
   async init() {

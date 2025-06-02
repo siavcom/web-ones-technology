@@ -15,7 +15,7 @@ export class num_fam extends COMPONENT {
     super();
 
     this.prop.Type = "spinner";
-    this.prop.textLabel = "Numero de familia";
+    this.prop.Caption = "Numero de familia";
     this.prop.Value = 1;
     this.prop.Min = 1;
     this.prop.Max = 4;

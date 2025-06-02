@@ -9,7 +9,7 @@
         <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle" @click.middle.stop="middleClick()">
 
           <span :id="Id + 'label'" class=" modal-header" :style="labelStyle">
-            <label name="header">{{ This.prop.textLabel }}</label>
+            <label name="header">{{ This.prop.Caption }}</label>
           </span>
           <div :id="Id + 'modal_body'" class="modal-body">
             <slot name="componentes">

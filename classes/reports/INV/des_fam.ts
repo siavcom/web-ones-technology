@@ -14,7 +14,7 @@ export class des_fam extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Desde que familia";
+    this.prop.Caption = "Desde que familia";
     this.prop.BaseClass = "comboBox";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.ColumnCount = 3;

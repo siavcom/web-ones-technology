@@ -32,7 +32,7 @@ export class bt_gen_forma extends COMPONENT {
     this.Index = 2;
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
-    this.prop.textLabel = "Genera Forma";
+    this.prop.Caption = "Genera Forma";
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/accept.svg";
     this.prop.Visible = false;
@@ -100,7 +100,7 @@ export class bt_gen_forma extends COMPONENT {
       );
     else ThisForm = ThisForm.replaceAll("<<vis_cap>>", "");
 
-    // this.prop.textLabel = "Mantenimiento a la tabla <<nom_tab>>"
+    // this.prop.Caption = "Mantenimiento a la tabla <<nom_tab>>"
     ThisForm = ThisForm.replaceAll(
       "<<nom_tab>>",
       this.Form.tab_form.prop.Value.trim()

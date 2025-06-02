@@ -17,7 +17,7 @@ export class nam_usr extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Nombre de usuario'
+      this.prop.Caption = 'Nombre de usuario'
       this.prop.Type = 'text'
       this.prop.BaseClass = 'editText'
       this.prop.ControlSource = 'vi_cap_db_users.nam_usr'
@@ -41,7 +41,7 @@ export class nam_usr extends CAPTURECOMPONENT {
       // this.prop.ControlSource=""
       // this.prop.Status= "I" // I)nitial, P)rocess , A)ctive
 
-      // this.prop.textLabel=""
+      // this.prop.Caption=""
       // this.prop.ToolTipText=""
       // this.prop.Value=""
       // this.prop.Placeholder=""

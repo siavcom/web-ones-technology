@@ -42,7 +42,7 @@ export class Grid extends GRID {
     this.prop.Position = 'main'
     this.prop.RecordSource = ''
     this.prop.Visible = true
-    this.prop.textLabel = ''
+    this.prop.Caption = ''
     this.prop.autoLoad = false  // se pone en falso para que no inicialice la tabla
 
     this.style.fontSize = '16px'

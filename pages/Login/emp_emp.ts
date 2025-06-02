@@ -16,7 +16,7 @@ export class emp_emp extends COMPONENT {
 
     this.Form = this.Parent;
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Company/Empresa";
+    this.prop.Caption = "Company/Empresa";
     this.prop.Capture = true;
     this.prop.RowSourceType = 5; // 1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;

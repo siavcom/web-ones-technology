@@ -17,7 +17,7 @@ export class messages extends COMPONENT {
   constructor() {
     super();
     this.prop.Type = 'textarea'
-    this.prop.textLabel = "Messages";
+    this.prop.Caption = "Messages";
     this.prop.ControlSource = "vi_cap_db_languages.messages";
     this.prop.Capture = true
     this.inputStyle.width = "496px";

@@ -17,7 +17,7 @@ export class tip_for extends COMPONENT {
     super();
 
     this.prop.BaseClass = "comboBox";
-    this.prop.textLabel = "Forma de captura";
+    this.prop.Caption = "Forma de captura";
     this.prop.ReadOnly = false;
     this.prop.Capture = false;
     this.prop.Valid = false;

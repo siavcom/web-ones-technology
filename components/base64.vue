@@ -6,12 +6,12 @@
     <img v-if="Value.length > 0 && This.inputStyle.accept != 'application/pdf'" :id="Id + '_img'" class="img"
       :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
     <iframe v-if="Value.length > 0 && This.inputStyle.accept == 'application/pdf'" :id="Id + '_pdf'" :src="Value"
-      :width="This.inputStyle.width" :height="This.inputStyle.height" :title="This.prop.textLabel"
+      :width="This.inputStyle.width" :height="This.inputStyle.height" :title="This.prop.Caption"
       :style="inputStyle"></iframe>
 
     <!--div v-if="!This.prop.Disabled"-->
     <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('get_file').click()">{{
-      prop.textLabel }}</button>
+      prop.Caption }}</button>
     <input v-if="!This.prop.Disabled" id="get_file" ref="fileInput" type="file" @change="readFile($event)"
       :disabled="This.prop.Disabled" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept"
       src="/Iconos/svg/delete-color.svg" />

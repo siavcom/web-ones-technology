@@ -15,11 +15,11 @@ export class des_cod extends COMPONENT {
     constructor() {
         super()
 
-        this.prop.textLabel = 'Desde que codigo de cliente'
+        this.prop.Caption = 'Desde que codigo de cliente'
         this.prop.Type = "text"
         this.prop.BaseClass = 'editText'
-        this.prop.MaxLength=12
-        this.prop.Value=" "
-        
+        this.prop.MaxLength = 12
+        this.prop.Value = " "
+
     }
 }

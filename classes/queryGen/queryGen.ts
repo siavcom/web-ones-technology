@@ -44,7 +44,7 @@ export class queryGen extends COMPONENT {
     this.prop.Visible = true
     this.prop.Disabled = true
     this.prop.BaseClass = 'details'
-    this.prop.textLabel = 'Condiciones generales'
+    this.prop.Caption = 'Condiciones generales'
     //this.style.maxWidth='400px'
     this.style.display = 'block'
     this.query.prop.Visible = false

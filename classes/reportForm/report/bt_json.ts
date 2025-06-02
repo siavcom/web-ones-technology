@@ -18,7 +18,7 @@ export class bt_json extends COMPONENT {
     super();
     this.Index = 1;
     this.prop.BaseClass = "imgButton";
-    this.prop.textLabel = "File";
+    this.prop.Caption = "File";
     this.prop.Capture = false;
     this.prop.Position = "footer";
     this.prop.Image = "/Iconos/svg/json.svg";
@@ -43,7 +43,7 @@ export class bt_json extends COMPONENT {
     rows[0]['tit_rep'] = this.Form.tit_rep
     rows[0]['con_rep'] = this.Form.con_rep
     rows[0]['ord_rep'] = this.Form.ord_rep
- 
+
     //    rows[0]=await this.Form.obtData(rows[0])
     // console.log("bt_json rows[0]", rows[0]);
     const objJson = JSON.stringify(rows);

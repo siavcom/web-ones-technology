@@ -29,7 +29,7 @@ export class Grid extends GRID {
   constructor() {
     super()
     // this.Name = '<<nom_for>>'
-    this.prop.textLabel= 'Mantenimiento a la vista de captura <<nom_vis>>'
+    this.prop.Caption= 'Mantenimiento a la vista de captura <<nom_vis>>'
     this.prop.RecordSource='<<nom_vis>>'
     this.prop.Visible= true
     this.prop.ReadOnly = false

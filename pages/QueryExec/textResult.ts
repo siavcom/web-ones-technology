@@ -17,16 +17,16 @@ export class result extends COMPONENT {
 
     constructor() {
         super()
-   
-         
-        this.prop.textLabel = 'Resultado'
-        this.prop.Type ='textArea'
+
+
+        this.prop.Caption = 'Resultado'
+        this.prop.Type = 'textArea'
         this.prop.BaseClass = 'editText'
-      
+
         this.prop.Placeholder = ''
-        this.prop.ToolTipText =''
+        this.prop.ToolTipText = ''
 
 
     }
 
-   }
+}

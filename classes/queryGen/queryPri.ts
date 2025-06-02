@@ -10,20 +10,20 @@
 // base class
 ///////////////////////////////////////
 
-import { queryGen} from './queryGen'
+import { queryGen } from './queryGen'
 
 export class queryPri extends queryGen {
 
-    constructor(){
-     super()
-    this.usu_que = 'MAIN'
-    this.prop.textLabel='Condiciones principales'
-    this.prop.Disabled = false
-    this.query.prop.Visible=true
-    this.prop.TabIndex=12
+    constructor() {
+        super()
+        this.usu_que = 'MAIN'
+        this.prop.Caption = 'Condiciones principales'
+        this.prop.Disabled = false
+        this.query.prop.Visible = true
+        this.prop.TabIndex = 12
     }
 
-  
+
 
 }
 

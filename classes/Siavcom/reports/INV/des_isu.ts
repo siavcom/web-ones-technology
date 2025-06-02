@@ -13,7 +13,7 @@ import { COMPONENT } from "@/classes/Component";
 export class des_isu extends COMPONENT {
   constructor() {
     super();
-    this.prop.textLabel = "Desde que insumo";
+    this.prop.Caption = "Desde que insumo";
     this.prop.Type = "string";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";

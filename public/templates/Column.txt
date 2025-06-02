@@ -49,7 +49,7 @@ export class <<cam_dat>> extends COLUMN {
         // this.prop.ControlSource=""
         // this.prop.Status= "I" // I)nitial, P)rocess , A)ctive
 
-        // this.prop.textLabel=""
+        // this.prop.Caption=""
         // this.prop.ToolTipText=""
         // this.prop.Value=""
         // this.prop.Placeholder=""

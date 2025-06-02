@@ -38,7 +38,7 @@ export class grid_menu extends GRID {
   constructor() {
     super();
     this.Name = "grid_menu"; // se necesita poner su nombre
-    this.prop.textLabel = "Menu de programas";
+    this.prop.Caption = "Menu de programas";
     this.prop.RecordSource = "vi_cap_prg";
     this.prop.Visible = false;
     this.prop.ReadOnly = false;

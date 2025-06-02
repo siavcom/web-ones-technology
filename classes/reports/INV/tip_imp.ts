@@ -14,7 +14,7 @@ export class tip_imp extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Tipo de impresión";
+    this.prop.Caption = "Tipo de impresión";
     this.prop.BaseClass = "comboBox";
     this.prop.RowSourceType = 5; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.RowSource = [

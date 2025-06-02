@@ -15,7 +15,7 @@ export class var_ord extends COMPONENT {
   Type: string = 'text'
   constructor() {
     super();
-    this.prop.textLabel = "Orden ";
+    this.prop.Caption = "Orden ";
     this.prop.BaseClass = "comboBox";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;

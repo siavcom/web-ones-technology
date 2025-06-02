@@ -16,7 +16,7 @@ export class ErrorMessages extends COMPONENT {
 
   constructor() {
     super();
-    this.prop.textLabel = "Error Message";
+    this.prop.Caption = "Error Message";
     this.prop.ControlSource = "vi_cap_db_languages.errormessage";
     this.prop.Capture = true
 

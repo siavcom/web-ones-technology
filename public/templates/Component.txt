@@ -17,7 +17,7 @@ export class <<cam_dat>> extends  CAPTURECOMPONENT {
     constructor() {
         super()
          
-        this.prop.textLabel = '<<textLabel>>'
+        this.prop.Caption = '<<textLabel>>'
         this.prop.Type ='<<Type>>'
         this.prop.BaseClass = '<<BaseClass>>'
         this.prop.ControlSource = '<<ControlSource>>'
@@ -43,7 +43,7 @@ export class <<cam_dat>> extends  CAPTURECOMPONENT {
         // this.prop.ControlSource=""
         // this.prop.Status= "I" // I)nitial, P)rocess , A)ctive
 
-        // this.prop.textLabel=""
+        // this.prop.Caption=""
         // this.prop.ToolTipText=""
         // this.prop.Value=""
         // this.prop.Placeholder=""

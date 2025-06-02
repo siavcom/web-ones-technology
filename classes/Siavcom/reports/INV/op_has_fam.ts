@@ -14,7 +14,7 @@ export class op_has_fam extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.textLabel = "Hasta que familia";
+    this.prop.Caption = "Hasta que familia";
     this.prop.BaseClass = "comboBox";
     this.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.ColumnCount = 3;

@@ -58,7 +58,7 @@ export class reportInv extends reportForm {
     //this.has_fam.prop.Type = "string"
     //this.has_fam.prop.MaxLength=10
     //this.has_fam.prop.Value = " "
-    //this.has_fam.prop.textLabel = "Hasta "
+    //this.has_fam.prop.Caption = "Hasta "
     // this.has_fam.style.width='100px'
     // this.has_fam.inputStyle.width='50px'
 

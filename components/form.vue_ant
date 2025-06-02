@@ -37,7 +37,7 @@
                 <h2 class="header2" float="left">
 
                   <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
-                    <label text-align="center">{{ ThisForm.prop.textLabel }}</label>
+                    <label text-align="center">{{ ThisForm.prop.Caption }}</label>
                     <!--label text-align="right">{{ ThisForm.prop.Name }}</label-->
 
                   </div>

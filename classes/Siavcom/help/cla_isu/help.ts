@@ -18,7 +18,7 @@ export class help extends HELP {
     super()
     this.prop.ColumnTextLabel = 'Buscador de insumos'
     this.prop.RecordSource = 'man_comeisu' // tabla donde buscar datos
-    this.browse.prop.textLabel = 'insumos'
+    this.browse.prop.Caption = 'insumos'
     this.prop.cam_pri = 'des_isu' // campo de buqueda principal
 
     // Campos a mostrar en la tabla

@@ -23,7 +23,7 @@ export class gridMessages extends GRID {
   constructor() {
     super()
     this.Name = 'gridMessages'
-    this.prop.textLabel = 'Mensajes de la forma'
+    this.prop.Caption = 'Mensajes de la forma'
     this.prop.Visible = false
     this.prop.ReadOnly = false
     this.prop.autoLoad = false

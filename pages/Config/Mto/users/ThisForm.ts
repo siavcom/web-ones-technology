@@ -55,7 +55,7 @@ export class ThisForm extends captureForm {
 
     this.Development = false
     this.Name = 'users'
-    this.prop.textLabel = "Mantenimiento a usuarios"
+    this.prop.Caption = "Mantenimiento a usuarios"
     this.prop.RecordSource = 'vi_cap_db_users'
     this.prop.Status = 'A'
     this.asignaRecno()  // asigna recno a c/componente de captura de la forma

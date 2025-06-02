@@ -17,7 +17,7 @@ export class pw1_usr extends COMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Password'
+      this.prop.Caption = 'Password'
       this.prop.Type = 'Password'
       this.prop.Placeholder = 'password'
 

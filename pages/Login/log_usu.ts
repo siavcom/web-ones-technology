@@ -18,7 +18,7 @@ export class log_usu extends COMPONENT {
     this.prop.BaseClass = "editText";
     //this.prop.Value = ''
     this.prop.ToolTipText = "user@company";
-    this.prop.textLabel = "Username/Usuario";
+    this.prop.Caption = "Username/Usuario";
     this.prop.Type = "text";
     this.prop.Placeholder = "usname@company/usuario@empresa";
     this.style.width = "auto";

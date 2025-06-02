@@ -36,7 +36,7 @@ export class reportFields extends COMPONENT {
     this.prop.Visible = true
     this.prop.Disabled = true
     this.prop.BaseClass = 'details'
-    this.prop.textLabel = 'Campos del reporte por pantalla'
+    this.prop.Caption = 'Campos del reporte por pantalla'
     this.style.display = 'block'
     this.prop.TabIndex = 14
     this.prop.Visible = false

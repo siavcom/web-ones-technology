@@ -20,7 +20,7 @@ export class tab_grid extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = true;
-    this.prop.textLabel = "Vista de captura del grid ";
+    this.prop.Caption = "Vista de captura del grid ";
     this.prop.Capture = true;
     this.prop.Valid = false;
     this.prop.ErrorMessage = "";

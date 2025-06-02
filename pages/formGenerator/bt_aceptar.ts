@@ -18,7 +18,7 @@ export class bt_aceptar extends COMPONENT {
     this.Index = 1;
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
-    this.prop.textLabel = "Aceptar";
+    this.prop.Caption = "Aceptar";
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/accept.svg";
     this.prop.TabIndex = 1;

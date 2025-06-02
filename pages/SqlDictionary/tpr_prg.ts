@@ -14,7 +14,7 @@ export class tpr_prg extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.prop.textLabel = "Tipo de menú";
+    this.prop.Caption = "Tipo de menú";
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "Tipo de programa";
     this.prop.RowSource = [

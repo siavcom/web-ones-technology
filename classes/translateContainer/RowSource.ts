@@ -17,7 +17,7 @@ export class RowSource extends COMPONENT {
   constructor() {
     super();
     this.prop.Type = 'textarea'
-    this.prop.textLabel = "Row Source";
+    this.prop.Caption = "Row Source";
     this.prop.ControlSource = "vi_cap_db_languages.rowsource";
     this.prop.Capture = true
     this.inputStyle.width = "496px";

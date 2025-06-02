@@ -14,7 +14,7 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
+    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.labelStyle">{{ prop.Caption
     }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle

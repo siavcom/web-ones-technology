@@ -16,7 +16,7 @@ export class pw2_usr extends COMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Confirmación Password'
+      this.prop.Caption = 'Confirmación Password'
       this.prop.Type = 'password'
 
       this.prop.Placeholder = 'Confirm password'

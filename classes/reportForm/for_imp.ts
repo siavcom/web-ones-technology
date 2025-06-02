@@ -16,12 +16,12 @@ export class for_imp extends COMPONENT {
 
     constructor() {
         super()
-        this.prop.textLabel = 'Forma de impresión'
-        this.prop.Type ='text'
+        this.prop.Caption = 'Forma de impresión'
+        this.prop.Type = 'text'
         this.prop.BaseClass = 'editText'
-        this.prop.MaxLength=64
-        this.prop.TabIndex=15
+        this.prop.MaxLength = 64
+        this.prop.TabIndex = 15
     }
 
- 
+
 }

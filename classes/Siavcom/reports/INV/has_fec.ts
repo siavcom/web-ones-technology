@@ -16,9 +16,9 @@ export class has_fec extends COMPONENT {
 
     constructor() {
         super()
-        this.prop.textLabel = 'Hasta la fecha'
-        this.prop.Type='date'
-        this.prop.Value='1900-01-01'
+        this.prop.Caption = 'Hasta la fecha'
+        this.prop.Type = 'date'
+        this.prop.Value = '1900-01-01'
     }
 
 }

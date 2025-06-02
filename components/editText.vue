@@ -2,7 +2,7 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.textLabel" :style="Styles.labelStyle">{{ prop.textLabel
+    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.labelStyle">{{ prop.Caption
     }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
@@ -1628,10 +1628,11 @@ watch(
 
   async (new_val: any, old_val: any) => {
 
+
     if (new_val == Value.value)
       return
 
-    // console.log('-------1) EditText Watch Value Name=', This.prop.Name, 'new_val=', new_val, 'watchPropValue=', watchPropValue, This.prop.Status)
+
 
     if (watchPropValue) // Si secambio desde el emitValue se ignora
       return
@@ -1935,7 +1936,7 @@ const handler = (event) => {
 
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  //console.log('1) editText onMounted Name=', This.prop.Name, 'ThisForm=', Thisform)
+
   styleAssing()
 
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
@@ -1973,6 +1974,9 @@ onMounted(async () => {
     }
      */
   }
+
+  // console.log('1) editText onMounted Name=', This.prop.Name, 'Value=', Value.value)
+
   This.afterMounted()
 
   await This.recnoChange()

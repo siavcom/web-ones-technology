@@ -23,7 +23,7 @@ export class GRID extends COMPONENT {
     this.prop.Capture = false;
     this.prop.RecordSource = "";
     this.prop.Row = 0;
-    this.prop.textLabel = "Grid de datos";
+    this.prop.Caption = "Grid de datos";
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
     this.prop.Visible = false;
 
@@ -290,7 +290,7 @@ export class GRID extends COMPONENT {
     );
     if (resultado) {
       // Actualiza todos los registros
-      MessageBox(this.prop.Messages[2][0] + this.prop.textLabel);
+      MessageBox(this.prop.Messages[2][0] + this.prop.Caption);
     } else {
       MessageBox(
         this.prop.Messages[3][0] + this.prop.RecordSource,

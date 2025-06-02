@@ -17,7 +17,7 @@ export class rol_usr extends CAPTURECOMPONENT {
    constructor() {
       super()
 
-      this.prop.textLabel = 'Rol en la base de datos'
+      this.prop.Caption = 'Rol en la base de datos'
       this.prop.ControlSource = 'vi_cap_db_users.rol_usr'
       this.prop.MaxLength = 64
       this.prop.Capture = true

@@ -9,7 +9,7 @@
     <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99.5%' }">
 
       <!--label text-align="center">{{ prop.ColumnTextLabel }}</label>  -->
-      <h2 v-if="prop.textLabel.length > 0">{{ prop.textLabel }}</h2>
+      <h2 v-if="prop.Caption.length > 0">{{ prop.Caption }}</h2>
       <div :id="Id + '_div_grid_tabla'" class="tabla"
         :style="{ minHeight: '250px', height: 'fit-content', width: 'inherit' }">
         <table :id="Id + '_grid_tabla'" class="gridTable" :style="{ height: 'auto' }"> <!--lineHeight:11px-->

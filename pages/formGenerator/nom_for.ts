@@ -18,7 +18,7 @@ export class nom_for extends COMPONENT {
     super()
 
     this.prop.BaseClass = 'editText'
-    this.prop.textLabel = "Nombre de la pagina (Vue View) ";
+    this.prop.Caption = "Nombre de la pagina (Vue View) ";
     this.prop.ToolTipText = "Nombre de la pagina ";
     this.prop.ErrorMessage = 'Nombre de la pagina invalido';
     this.prop.Value = ""

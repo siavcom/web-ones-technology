@@ -1,8 +1,8 @@
 <template>
   <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
 
-    <div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.textLabel > ' '"
-      :style="labelStyle">{{ prop.textLabel +
+    <div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
+      :style="labelStyle">{{ prop.Caption +
         " " }}</div>
 
 
@@ -125,7 +125,7 @@ const Este = props.prop.This
 const labelStyle = reactive({ ...Este.labelStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
-
+let noRegistro = ref(0)
 const Styles =
 {
   labelStyle: labelStyle,
@@ -514,7 +514,7 @@ watch(
 watch(
   () => props.Registro,
   async (new_val, old_val) => {
-    // console.log('inputStyle watch Registro', old_val, new_val)
+    console.log(' TextLabel=', This.prop.Name, 'watch Registro', old_val, new_val)
     if (old_val != new_val && new_val > 0) {
       await readCampo()
       This.recnoChange()
@@ -525,6 +525,47 @@ watch(
   },
   { deep: false }
 )
+
+watch(
+  () => This.prop.ControlSource,
+  async (new_val, old_val) => {
+
+    console.log('watch controlSource', new_val, old_val)
+    if (new_val != old_val && new_val.length > 2) {
+      const pos = new_val.indexOf(".") + 1;
+      if (pos == 1)
+        return;
+
+      const tabla = new_val.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+
+      // noRegistro = toRefs(View[tabla].recno)
+      noRegistro = toRef(View[tabla], 'recno')
+    }
+
+
+  },
+  { deep: false }
+)
+
+watch(
+  () => noRegistro,
+  async (new_val, old_val) => {
+    console.log('watch noRegistro', new_val, old_val)
+    if (new_val != old_val)
+      This.Recno = new_val
+    await readCampo()
+
+  },
+  { deep: true }
+)
+
+
+
+
+
+
+
+
 
 /////////////////////////////////////////
 // Metodo init Vfp
@@ -558,7 +599,21 @@ const init = async () => {
 
   await readCampo()
 
-  This.afterMounted()
+  if (This.prop.ControlSource.length > 2) {
+    const pos = This.prop.ControlSource.indexOf(".") + 1;
+    if (pos > 1) {
+
+      const tabla = This.prop.ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+
+      // noRegistro = toRefs(View[tabla].recno)
+      noRegistro = ref(View[tabla].recno)
+      console.log('noRegistro', tabla, noRegistro)
+
+    }
+  }
+
+
+  await This.afterMounted()
 
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()

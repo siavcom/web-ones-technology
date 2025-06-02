@@ -17,7 +17,7 @@
     <div class='details' :style="style">
       <details :id="Id + '_details'" class='detailsOpen' @toggle="toggle" :open='openDetail'>
 
-        <summary>{{ This.prop.textLabel }}</summary>
+        <summary>{{ This.prop.Caption }}</summary>
         <!--VueForm class="cuerpo" v-bind:style="This.style" v-bind:position="This.position"-->
 
         <!--template v-slot:header-->

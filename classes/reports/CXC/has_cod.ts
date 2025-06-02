@@ -15,10 +15,10 @@ export class has_cod extends COMPONENT {
     constructor() {
         super()
 
-        this.prop.textLabel = 'Hasta que codigo de cliente'
+        this.prop.Caption = 'Hasta que codigo de cliente'
         this.prop.Type = "string"
-        this.prop.MaxLength=12
-        this.prop.Value=" "
-        
+        this.prop.MaxLength = 12
+        this.prop.Value = " "
+
     }
 }

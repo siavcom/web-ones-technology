@@ -10,10 +10,10 @@ import { COMPONENT } from "@/classes/Component";
 export class show_messages extends COMPONENT {
   constructor() {
     super();
-    // this.prop.textLabel = "Close";
+    // this.prop.Caption = "Close";
     this.prop.Capture = false;
     this.prop.BaseClass = "imgButton";
-    this.prop.textLabel = 'Show Messages'
+    this.prop.Caption = 'Show Messages'
     this.prop.Image = "/Iconos/svg/accept.svg"; //bx-calendar.svg"
     this.style.width = "35px";
     this.style.float = "right"
