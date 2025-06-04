@@ -14,7 +14,7 @@ export class con_con extends COMPONENT {
   constructor() {
     super();
 
-    this.prop.Caption = "Con consignatario";
+    this.prop.textLabel = "Con consignatario";
     this.prop.Type = "checkBox";
     this.prop.Value = 0;
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente

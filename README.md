@@ -2,6 +2,10 @@
 
 # This Framework is to make a simple SQL web data capture program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
+### MORE INFORMATION IN
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/siavcom/web-ones-technology)
+
+
 # This Framework It's has 3 layers :
 
 - Frontend . Programed in Vue/Nuxt and  web-ones-technology framework.
@@ -992,10 +996,16 @@ console.log(m) =
   }
 
   ## Other
+
+
+
+
   Login to the framework
  `<`user`>`@`<`busines nickname`>`
-     `<`user`>` : personal login
-     `<`busines nickname`>` :  SQL data base name
+
+ `<`user`>` : personal login
+
+ `<`busines nickname`>` :  SQL data base name
 
 
 > [!TIP]
