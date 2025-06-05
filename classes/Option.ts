@@ -17,28 +17,38 @@ export class option extends COMPONENT {
     this.prop.OptionNumber = OptionNumber; // Posicion dentro del optionGroup
     this.prop.Value = 0
 
+    if (OptionNumber == 1)
+      this.prop.Value = 1
+    else
+      this.prop.Value = 0
   }
 
-  override async init() {
+  override init = async () => {
+    // asigna el componente al optionGroup con su numero de opcion
     this.Parent.options[this.prop.OptionNumber] = this
-  }
 
+    // actualioza el valor del optionGroup Padre en caso que este sea el seleccionado
+    if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
+      this.Parent.prop.Value = this.prop.OptionNumber
+  }
 
   /*
-    override async interactiveChange() {
-      if (this.prop.Value == 1 && this.Parent.prop.OptionNumber != this.prop.OptionNumber)
-        this.Parent.prop.Value = this.prop.OptionNumber
-      return true
-    }
-  */
+  override async onChangeValue(): Promise<void> {
+
+    if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
+      this.Parent.prop.Value = this.prop.OptionNumber
+  }
+*/
   override async click() {
     if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
       this.Parent.prop.Value = this.prop.OptionNumber
 
-    const Name = this.prop.Name + 'Click'
-    const opcion = this.Parent[Name]
+    //  const Name = this.prop.Name + 'Click'
+    //  const opcion = this.Parent[Name]
+    //  if (opcion)
+    //    await opcion(this)
 
-    if (opcion)
-      await opcion(this)
+
   }
+
 }

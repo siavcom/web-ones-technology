@@ -17,19 +17,19 @@ export class has_fec extends COMPONENT {
     constructor() {
         super()
         this.prop.textLabel = 'Hasta la fecha'
-        this.prop.Type='date'
-        this.prop.Value='1900-01-01'
+        this.prop.Type = 'date'
+        this.prop.Value = '1900-01-01'
     }
-override async init() {
+    override async init() {
 
-        this.prop.Value = this.Form.publicVar.fpo_pge;
+        this.prop.Value = this.Form.mPublic.fpo_pge;
     }
     override async valid() {
 
-        if (this.prop.Value< this.Parent.des_fec.prop.Valid)
-           return false
+        if (this.prop.Value < this.Parent.des_fec.prop.Valid)
+            return false
         else
-        return true
-       
+            return true
+
     }
 }

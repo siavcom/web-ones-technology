@@ -62,6 +62,7 @@ const state = reactive({
 
         // Otros
         help_url: "", servidor_url: "", sw_imp: false, //,sw_impuesto
+        lan_lan: "", // Lenguaje del frontend
     },
 })
 

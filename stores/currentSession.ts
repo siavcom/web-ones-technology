@@ -109,7 +109,7 @@ export const Session = defineStore(
         id_con.value = res.id;
         fpo_pge.value = await stringToDate(res.fpo_pge);
         dialect.value = res.dialect;
-        leeMenu();
+        ////////  leeMenu();
 
         console.log("Socket Connection sucefully id=", id_con.value);
       });
@@ -338,6 +338,7 @@ export const Session = defineStore(
             response
           );
           */
+          // Lectura de variables publicas
           dat_vis.query = " select * from publicvar";
 
           try {
@@ -347,11 +348,13 @@ export const Session = defineStore(
               /*  console.log("Pinia Var=", Var.value); */
               if (data && data.length > 0) {
                 Var.value = data[0];
+
+                console.log("Pinia Var=", Var.value);
                 for (const comp in Var.value) {
                   if (typeof Var.value[comp] == "string") {
                     const Variable = Var.value[comp];
-                    // Checa si es una fecha
 
+                    // Checa si es una fecha
                     if (
                       typeof Variable == "string" &&
                       +Variable.slice(0, 4) >= 1900 &&
@@ -365,21 +368,29 @@ export const Session = defineStore(
                       Variable.slice(10, 11) == "T"
                     ) {
                       Var.value[comp] = Variable.substring(0, 10); //   replace('T',' ') // Quitamos la T
-
-                      //        Var.value[comp]=await stringToDate(Variable)
                     }
                   }
+                  // Guardamos variables publicas
+
+
+                  if (Public.value[comp]) {
+                    Public.value[comp] = Var.value[comp];
+
+                  }
                 }
-                /*
-                console.log(
-                  "Store mPublic Var.value=",
-                  Var.value,
-                  id_con.value
-                );
-                console.log("Pinia Var=", Var.value);
-                */
+
+                for (const comp in Public.value)
+                  if (Var.value[comp])
+                    Public.value[comp] = Var.value[comp];
+
               }
-            });
+
+              console.log("Pinia Public.value=", Public.value);
+              console.log("Pinia Var.value=", Var.value);
+            }
+
+
+            );
           } catch (error) {
             console.warn("Can't read view publicvar", error);
           }

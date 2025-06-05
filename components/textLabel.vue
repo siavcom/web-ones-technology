@@ -432,7 +432,7 @@ const renderComboBox = async () => {
 const readCampo = async () => {
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
-    console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
+    // console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
     const data = await This.Sql.readCampo(props.prop.ControlSource, props.Registro)
 
     for (const campo in data) {
@@ -559,12 +559,66 @@ watch(
   { deep: true }
 )
 
+////////////////////////////////////////
+// Si se cambia This.prop.Value desde afuera del componente 
+///////////////////////////////////////
+watch(
+  () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
+
+  async (new_val: any, old_val: any) => {
+
+    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
 
 
 
+    if (new_val == Value.value)
+      return
 
+    if (new_val === undefined || new_val === null) {
+      switch (props.prop.Type) {
+        case 'number':
+          new_val = 0
+          break;
+        case 'checkbox':
+          new_val = 0
+          break;
+        case 'date':
+          new_val = '1900-01-01' //T00:00:00'
+          break;
+        case 'datetime':
+          new_val = '1900-01-01T00:00:00'
+          break;
+        default:
+          new_val = ''
+      }
 
+    }
 
+    switch (props.prop.Type) {
+      case 'number':
+        Text.value = await numberFormat(+new_val, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+        break;
+      case 'date':
+        Text.value = new_val.slice(0, 10)
+        break;
+      case 'datetime':
+        //Text.value = toNumberStr(Text.value);
+        Text.value = new_val.slice(0, 16)
+        break;
+      case 'checkbox':
+        let check = new_val == 0 ? false : true
+        if (checkValue.value != check) {
+          checkValue.value = check
+        }
+        emit("update:checkValue", checkValue)
+        break;
+      default:
+        Text.value = new_val
+    }
+
+  },
+  { deep: true }
+);
 
 
 /////////////////////////////////////////
@@ -607,7 +661,7 @@ const init = async () => {
 
       // noRegistro = toRefs(View[tabla].recno)
       noRegistro = ref(View[tabla].recno)
-      console.log('noRegistro', tabla, noRegistro)
+      // console.log('noRegistro', tabla, noRegistro)
 
     }
   }

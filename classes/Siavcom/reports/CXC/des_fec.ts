@@ -15,16 +15,16 @@ export class des_fec extends COMPONENT {
     super();
     this.prop.textLabel = "Desde la fecha";
     this.prop.Type = "date";
-    this.prop.Value='1900-01-01'
+    this.prop.Value = '1900-01-01'
 
   }
-    override async init() {
-    this.prop.Value =await addDate(this.Form.publicVar.fpo_pge,-1,'D'); // resta un mes
+  override async init() {
+    this.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'D'); // resta un mes
   }
   override async interactiveChange() {
 
-      this.Parent.has_fec.prop.Value = this.prop.Value;
-    
-      return true;
-    }
+    this.Parent.has_fec.prop.Value = this.prop.Value;
+
+    return true;
+  }
 }

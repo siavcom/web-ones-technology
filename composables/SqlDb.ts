@@ -92,7 +92,6 @@ export function initSql(Form: {}) {
        },
     });
   */
-
     console.log("socketIo ==", socketIo.value);
     if (!socketIo.value)
         This.value.session.openSocket();
@@ -2348,7 +2347,7 @@ export const recCount = (alias?: string) => {
 
     //    if (!alias) MessageBox('No existe el alias',alias)
     //         return 0
-
+    console.log("Db Reccount alias ===>", alias, This.value.View[alias].recCount);
     return This.value.View[alias].recCount;
 }
 

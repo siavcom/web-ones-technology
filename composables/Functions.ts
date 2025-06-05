@@ -49,7 +49,7 @@ export const openForm = (This: any) => {
  * @param {Object} valueB - The second object to merge
  * @returns {Object} A new object with all properties of both objects
  */
-export const appendM = (valueA: {}, valueB: {}) => {
+export const appendM = (valueA: {}, valueB: {}): object => {
   return { ...valueA, ...valueB }
 }
 
@@ -113,11 +113,6 @@ export const len = (strVariable: string): string => {
   return strVariable.length()
 }
 
-
-
-
-
-
 /**
  * Searches for a value in an array, similar to the VFP ASscan() function.
  *
@@ -163,7 +158,7 @@ export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, n
  * @param {number} lon - The number of times to replicate the string.
  * @returns {string} - The replicated string.
  */
-export const replicateString = (str: string, lon: number) => {
+export const replicateString = (str: string, lon: number): string => {
   const replicatedString: string = str.repeat(lon);
   return replicatedString
 
@@ -176,7 +171,7 @@ export const replicateString = (str: string, lon: number) => {
  * @param {string} str - The string to search in.
  * @returns {number} - The position of the found substring, or -1 if not found.
  */
-export const at = (subStr: string, str: string) => {
+export const at = (subStr: string, str: string): number => {
   return str.indexOf(subStr);
 }
 
@@ -188,7 +183,7 @@ export const at = (subStr: string, str: string) => {
  * @param {string} str - The string to search in.
  * @returns {number} - The position of the found substring, or -1 if not found.
  */
-export const atc = (subStr: string, str: string) => {
+export const atc = (subStr: string, str: string): number => {
   subStr = subStr.toUpperCase()
   str = str.toUpperCase()
   return str.indexOf(subStr);
@@ -205,13 +200,12 @@ export function rat(searchString: string, text: string): number {
   return text.lastIndexOf(searchString);
 }
 
-
 /**
  * Devuelve el código ASCII de un caracter
  * @param {string} char - Char.
  * @returns {number} - Código ASCII.
  */
-export const asc = (letra: string) => {
+export const asc = (letra: string): number => {
   return letra.charCodeAt(0)
 }
 
@@ -221,7 +215,7 @@ export const asc = (letra: string) => {
  * @param {number} lon - Longitud de la cadena a extraer
  * @returns {string} Cadena extraida a la izquierda
  */
-export const left = (texto: string, lon: number) => {
+export const left = (texto: string, lon: number): string => {
   return texto.substring(0, lon);
 };
 
@@ -235,7 +229,7 @@ export const left = (texto: string, lon: number) => {
  * @returns {string} - The extracted substring.
  */
 
-export const substr = (texto: string, first: number, lon?: number) => {
+export const substr = (texto: string, first: number, lon?: number): string => {
   first = first - 1;
   if (!lon)
     lon = texto.length - first;
@@ -250,7 +244,7 @@ export const substr = (texto: string, first: number, lon?: number) => {
  * @param {number} len - Longitud de la cadena a extraer
  * @returns {string} Cadena extraida a la derecha
  */
-export const right = (texto: string, len: number) => {
+export const right = (texto: string, len: number): string => {
   return texto.slice(-len);
 };
 
@@ -259,7 +253,7 @@ export const right = (texto: string, len: number) => {
  * @param {number} ascci - ASCCI number
  * @returns {string} Character corresponding to the number
  */
-export const char = (ascci: number) => {
+export const char = (ascci: number): string => {
   return String.fromCharCode(ascci);
 };
 
@@ -267,13 +261,13 @@ export const char = (ascci: number) => {
 /**
  * Replaces all occurrences of a substring within a string with a new substring.
  * @param {string} stringSource - The original string to perform replacements on.
- * @param {string} stringSerach - The substring to search for within the original string.
+ * @param {string} stringSearch - The substring to search for within the original string.
  * @param {string} stringReplace - The substring to replace each occurrence of the search string with.
  * @returns {string} - The modified string with all occurrences of the search string replaced.
  */
 
-export const strtran = async (stringSource: string, stringSerach: string, stringReplace: string) => {
-  return stringSource.replaceAll(stringSerach, stringReplace);
+export const strtran = (stringSource: string, stringSearch: string, stringReplace: string): string => {
+  return stringSource.replaceAll(stringSearch, stringReplace);
 
 };
 
@@ -287,7 +281,7 @@ export const strtran = async (stringSource: string, stringSerach: string, string
  * @param {string} fecha - Texto a convertir. Si no se pasa parametro, se devuelve la fecha actual.
  * @returns {string} - La fecha convertida a AAAAMMDD.
  */
-export const dateToSql = async (fecha: string) => {
+export const dateToSql = (fecha: string): string => {
   return fecha.replaceAll("-", "").slice(0, 8);
 };
 
@@ -315,7 +309,7 @@ export const dateTimeToSql = async (time: string) => {
  * @param {Date} texto - Fecha a convertir. Si no se pasa parametro, se devuelve la fecha "1900-01-01".
  * @returns {string} - La fecha convertida en una cadena tipo string.
  */
-export const dateToString = async (texto: Date) => {
+export const dateToString = (texto: Date): string => {
   let date =
     texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
 
@@ -329,8 +323,8 @@ export const dateToString = async (texto: Date) => {
  * Returns the current time as a string in format 'AAAA-MM-DD HH24:MI:SS'
  * @returns {string} - The current time as a string in format 'AAAA-MM-DD HH24:MI:SS'
  */
-export const currentTime = async () => {
-  return await dateTimeToSql();
+export const currentTime = (): string => {
+  return dateTimeToSql();
 };
 
 /**
@@ -338,7 +332,7 @@ export const currentTime = async () => {
  * @param {string} stringDate - The date string to convert. If not passed, the current date is used.
  * @returns {string} - The date string in the ISO format 'AAAA-MM-DDTHH24:MI:SS'
  */
-export const dateTimeToSql = async (stringDate?: string) => {
+export const dateTimeToSql = (stringDate?: string): string => {
   let current: Date;
   if (!stringDate)
     current = new Date() //.toISOString();
@@ -378,7 +372,7 @@ export const dateTimeToSql = async (stringDate?: string) => {
  * will return the date '1900-01-01'.
  * @returns {string} The date in the format 'AAAA-MM-DD'
  */
-export const stringToDate = async (texto?: string) => {
+export const stringToDate = (texto?: string): string => {
   if (!texto || texto == null || texto == "" || texto == null)
     texto = "1900-01-01";
   let date = texto
@@ -396,7 +390,7 @@ export const stringToDate = async (texto?: string) => {
  * @param {string} texto - Texto a convertir. Si no se pasa parametro, se devuelve la fecha actual.
  * @returns {Promise<string>} - La fecha convertida a ISOString.
  */
-export const stringToTime = async (texto?: string) => {
+export const stringToTime = (texto?: string): string => {
   if (!texto || texto == null || texto == "" || texto == undefined) texto = "1900-01-01T00:00";
 
   let date = texto.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
@@ -412,7 +406,7 @@ export const stringToTime = async (texto?: string) => {
  * @param {string} [Type] - Tipo de conversion. 'D' para dias, 'W' para semanas, 'S' para semanas.
  * @returns {Promise<number>} - El numero de milisegundos correspondiente.
  */
-export const dayToMilliseconds = async (day: number, Type?: string) => {
+export const dayToMilliseconds = (day: number, Type?: string): number => {
   if (!Type || Type.slice(0, 0).toUpperCase() == "D")
     // Dias
     return day * 1000 * 60 * 60 * 24; //Como se puede ver, multiplicamos 1000 milisegundos por sesenta segundos, por sesenta minutos, por 24 horas
@@ -433,7 +427,7 @@ export const dayToMilliseconds = async (day: number, Type?: string) => {
  * @param {string} [tipo] - Tipo de suma. 'D' para dias, 'W' para semanas, 'M' para meses, 'Y' para a os.
  * @returns {Promise<string>} - La fecha resultante en formato 'AAAA-MM-DD'.
  */
-export const addDate = async (date: Date, data: any, tipo?: string) => {
+export const addDate = (date: Date, data: any, tipo?: string): string => {
   const thisDate = new Date(date);
   if (!tipo)
     tipo = 'D'
@@ -481,8 +475,6 @@ export const multiFilter = (array: [], filters: {}): Array<any> => {
   );
 };
 
-
-
 ///////////////////////////////////////////////
 // Funciones de números
 ///////////////////////////////////////////////
@@ -495,12 +487,12 @@ export const multiFilter = (array: [], filters: {}): Array<any> => {
  * @param {number} [decimals] - Número de decimales a mostrar. Default: 0
  * @returns {string} - Cadena formateada.
  */
-export const numberFormat = async (
+export const numberFormat = (
   val: number,
   currency?: string,
   integers?: number,
   decimals?: number
-) => {
+): string => {
   if (!currency) currency = "";
   if (!integers) integers = 0;
   if (!decimals) decimals = 0;
@@ -539,7 +531,7 @@ export const numberFormat = async (
   let type = "";
   if (point > 0) {
     intNumber = num.slice(0, point);
-    if (integers > 0) intNumber = await right(intNumber, integers);
+    if (integers > 0) intNumber = right(intNumber, integers);
 
     decNumber = num.slice(point, num.length);
     if (decimals > 0)
@@ -828,7 +820,7 @@ export async function MessageBox(
  */
 export async function Delay(
   ms: number
-) {
+): Promise<void> {
   await new Promise(f => setTimeout(f, ms));
 
 
@@ -848,7 +840,7 @@ export async function Delay(
  * @param {number} rows - La cantidad de filas que se desean en el array
  * @returns {array} - Un array de dos dimensiones con la cantidad de filas especificadas
  */
-export async function Dime2D(rows) {
+export async function Dime2D(rows: number): Array<any> {
   var arr = [];
 
   for (var i = 0; i < rows; i++) {
@@ -874,7 +866,7 @@ export async function Dime2D(rows) {
  * @param {object} data - objeto a recorrer
  * @returns {object} objeto con nombres de propiedades en lowercase
  */
-export async function objToLowerCase(data: {}) {
+export async function objToLowerCase(data: {}): object {
 
   const objeto = {}
   for (const ele in data) {
@@ -920,7 +912,7 @@ export function sleep(sleepDuration: number) {
  * Nota : No se pude definir defineAsyncComponent(()
  *   proboca multiples reloads
  */
-export function impComponent(name: string) {
+export function impComponent(name: string): object {
 
   name = name.toLowerCase()
   switch (name) {

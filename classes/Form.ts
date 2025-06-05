@@ -63,14 +63,17 @@ export class FORM extends COMPONENT {
 
     initSql(ref(this))  // Inicializa la conexion al SQLServer
 
-
     // const { Var, dialect } = storeToRefs(this.db.session); // variables publicas
     const { Var, dialect } = storeToRefs(this.Sql.session); // variables publicas
+
+    for (const comp in Public.value)
+      if (Var.value[comp])
+        Public.value[comp] = Var.value[comp];
+
+
     this.mPublic = Var.value;
     this.dialect = dialect.value;
-
-    //openForm(ref(this));
-
+    console.log("Form :", this.prop.Name, "dialect=", this.dialect, 'Puiblic=', Public.value, 'this.mPublic=', this.mPublic);
 
   }
 
@@ -91,33 +94,33 @@ export class FORM extends COMPONENT {
     }
   }
 
-  /////////////////////////////////////////
-  // After Mounted
-  ////////////////////////////////////
-  public override async onMounted_old() {
-    this.prop.Status = "A";
-
-    const m = {
-      for_lan: this.prop.Name,
-      lan_lan: this.mPublic.lan_lan ? this.mPublic.lan_lan : '   '
+  /*   /////////////////////////////////////////
+    // After Mounted
+    ////////////////////////////////////
+    public override async onMounted_old() {
+      this.prop.Status = "A";
+  
+      const m = {
+        for_lan: this.prop.Name,
+        lan_lan: this.mPublic.lan_lan ? this.mPublic.lan_lan : '   '
+      }
+  
+      console.log("Form :", this.Name, "m=", m);
+  
+      // Si hay lenguaje y existe una traduccion   
+      if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m)) {
+        this.language = true
+  
+        super.afterMounted();
+  
+      }
+      //await SQLExec(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \
+      //  where lan_lan='${m.lan_lan}' and for_lan='${m.for_lan}' `, 'language'))
+  
+  
+  
     }
-
-    console.log("Form :", this.Name, "m=", m);
-
-    // Si hay lenguaje y existe una traduccion   
-    if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m)) {
-      this.language = true
-
-      super.afterMounted();
-
-    }
-    //await SQLExec(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \
-    //  where lan_lan='${m.lan_lan}' and for_lan='${m.for_lan}' `, 'language'))
-
-
-
-  }
-
+   */
   public unload() {
     console.log("Form :", this.Name, " unload");
   }

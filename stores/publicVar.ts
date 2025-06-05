@@ -22,7 +22,11 @@ export const PublicVar = defineStore('mPublic', () => {
       const result = await axios.post(session.url + 'sql', dat_vis)
       if (result.data) {
         Var.value = result.data[0]
-        console.log('Store mPublic Var.value=', Var.value)
+
+
+
+
+        console.log('Store mPublic Var.value=', result.data[0], Var.value)
 
       }
 

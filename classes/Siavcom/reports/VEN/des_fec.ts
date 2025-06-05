@@ -19,12 +19,12 @@ export class des_fec extends COMPONENT {
 
   }
   override async init() {
-    this.prop.Value =await addDate(this.Form.publicVar.fpo_pge,-1,'M'); // resta un mes
+    this.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'M'); // resta un mes
   }
-async interactiveChange() {
+  async interactiveChange() {
 
-      this.Parent.has_fec.prop.Value = this.prop.Value;
-      return true;
-    }
+    this.Parent.has_fec.prop.Value = this.prop.Value;
+    return true;
+  }
 
 }

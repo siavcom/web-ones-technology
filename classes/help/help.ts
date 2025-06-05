@@ -120,7 +120,11 @@ export class HELP extends CONTAINER {
   }
 
   async open() {
-    //this.Parent.prop.Help = false
+
+    this.Parent.prop.ShowError = false
+    this.Parent.prop.Valid = true
+    this.Parent.Help = true
+
     this.tip_con.when()
     this.des_dat.prop.Value = ''
     this.has_dat.prop.Value = ''

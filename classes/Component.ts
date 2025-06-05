@@ -337,14 +337,18 @@ export class COMPONENT {
           lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
         }
 
-        if (m.lan_lan != '   ') {
+
+        if (m.lan_lan > '   ') {
           await this.Sql.use('vi_cap_db_languages', m)
           await this.Sql.use('vi_cap_db_messages', m)
           this.Form.language = true
           // this.Form.language = false
         }
-        else
-          this.Form.mPublic.lan_lan = ''
+        else {
+          console.log('No hay lenguaje', this.Form)
+
+          // this.Form.mPublic['lan_lan'] = ''
+        }
       }
     }
 
