@@ -161,7 +161,7 @@ export class COMPONENT {
     paddingLeft: "auto",
   }
 
-  labelStyle = {
+  captionStyle = {
     accept: "",
     background: "", //transparent
     borderRadius: "1px",
@@ -181,7 +181,7 @@ export class COMPONENT {
     alignContent: "flex-start" //"flex-end",
   }
 
-  inputStyle = { ...this.labelStyle }
+  inputStyle = { ...this.captionStyle }
 
   style = {
     //display: "flex", "inline-block"

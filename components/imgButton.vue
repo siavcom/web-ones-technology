@@ -5,7 +5,7 @@
       :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img'" class="img" :src="prop.Image" :alt="prop.Value" :disabled="prop.ReadOnly"
         :style="Styles.inputStyle" />
-      <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.labelStyle" :disabled="prop.ReadOnly"
+      <label :id="Id + '_label'" v-if="prop.Image.length > 0" :style="Styles.captionStyle" :disabled="prop.ReadOnly"
         v-show="prop.Visible">{{ prop.Caption }}</label>
     </button>
 
@@ -74,13 +74,13 @@ const props = defineProps<{
 const Component = ref(props.prop.This)
 const This = Component.value
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const style = reactive({ ...Este.style })
 
 const Styles =
 {
-  labelStyle: labelStyle,
+  captionStyle: captionStyle,
   inputStyle: inputStyle,
   style: style
 }
@@ -218,7 +218,7 @@ const checkGrid = async () => {
 
 
 onMounted(async () => {
-  // Styles.labelStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
+  // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
   Styles.inputStyle.width = '100%' //  divStyle.width
 

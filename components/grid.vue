@@ -219,7 +219,7 @@ const Component = ref(props.prop.This)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 //const Id = This.prop.Name + props.Registro.toString().trim()

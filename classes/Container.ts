@@ -20,9 +20,9 @@ export class CONTAINER extends COMPONENT {
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.prop.Capture = false;
-    this.labelStyle.color = 'black'
-    this.labelStyle.fontWeight = 'bold'
-    this.labelStyle.fontSize = '17px'
+    this.captionStyle.color = 'black'
+    this.captionStyle.fontWeight = 'bold'
+    this.captionStyle.fontSize = '17px'
     // Estilo de cada contenedor del modal
 
 
@@ -38,7 +38,7 @@ export class CONTAINER extends COMPONENT {
       this.style.left = '3%'
       this.style.borderRadius = '1.5%'
       this.style.padding = '3%'   //Margen entre los bordes y el contenido
-      this.labelStyle.color = 'black'
+      this.captionStyle.color = 'black'
     }
 
     /*let elementos = []

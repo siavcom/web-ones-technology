@@ -2,7 +2,7 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.labelStyle">{{ prop.Caption
+    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
       }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
@@ -304,14 +304,14 @@ const Component = toRef(() => props.prop.This)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
 
 const Styles =
 {
-  labelStyle: labelStyle,
+  captionStyle: captionStyle,
   inputStyle: inputStyle,
   style: divStyle
 }
@@ -1938,7 +1938,7 @@ onMounted(async () => {
     Styles.inputStyle.maxHeight = Styles.style.fontSize
 
   if (propType.value == 'textarea')
-    Styles.labelStyle.alignContent = 'flex-start'
+    Styles.captionStyle.alignContent = 'flex-start'
 
   if (!This.prop.Visible)
     Styles.style.height = '0%'

@@ -19,7 +19,7 @@
     <!--Etiqueta del componente -->
     <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
-    <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
+    <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
     }}</span>
     <!--List Box -->
@@ -227,14 +227,14 @@ const Component = ref(props.prop.This)
 const This = Component.value
 
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
 
 const Styles =
 {
-  labelStyle: labelStyle,
+  captionStyle: captionStyle,
   inputStyle: inputStyle,
   style: divStyle
 }
@@ -1474,7 +1474,7 @@ onMounted(async () => {
   if (This.prop.Init) {
 
     if (props.prop.MultiSelect)
-      Styles.labelStyle.alignContent = 'flex-start';
+      Styles.captionStyle.alignContent = 'flex-start';
 
     let textWidth = 0
 

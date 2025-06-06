@@ -43,7 +43,7 @@ const props = defineProps<{
 const Component = ref(props.prop.This)
 const This = Component.value
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const style = reactive({ ...Este.style })
 const Image = ref(props.prop.Image)
@@ -51,7 +51,7 @@ const Image = ref(props.prop.Image)
 
 const Styles =
 {
-  labelStyle: labelStyle,
+  captionStyle: captionStyle,
   inputStyle: inputStyle,
   style: style
 }
@@ -135,7 +135,7 @@ watch(
 )
 
 onMounted(async () => {
-  // Styles.labelStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
+  // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
   Styles.inputStyle.width = '100%' //  divStyle.width
 

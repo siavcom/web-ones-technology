@@ -176,8 +176,8 @@ Calling a method:
 `      this.inputStyle.width = "300px";`  
 
 `      //****** label style component *******//`  
-`      this.labelStyle.fontSize = "17px";`  
-`      this.labelStyle.fontWeight = "bold";`    
+`      this.captionStyle.fontSize = "17px";`  
+`      this.captionStyle.fontWeight = "bold";`    
 `   }`  
 `//*********** Methods *******************//`   
 `   public init = async (form: any) => {`  
@@ -216,12 +216,15 @@ Calling a method:
 
 ## TypeScript components
 - Browse. Table display
-- CaptureComponent. Component of CaptureForm
-- CaptureForm. Main maintenance page form container
-- Column. Column component in a grid component
-- Component. Basic component 
-- Form. Main page container
-- Grid. Table maintenance container
+- CaptureComponent. Component of CaptureForm.
+- CaptureForm. Main maintenance page form container.
+- Column. Column component in a grid component.
+- Component. Basic component. 
+- Container. Container component.
+- Form. Main page container.
+- Grid. Table maintenance container.
+- OptionGroup. A collection of checkBox components.
+- Oprion. checkBox component of OptionGroup.
 
   Each component is a TypeScipt class  and has several properties where each property affects visual and database behavior as values too.
 
@@ -231,90 +234,70 @@ this.prop.`<`Name of propierty`>'.`<`Value`>`
  Propierty :
  - BaseClass: `<`webComponent`>`  
       Type: string  
-      Values : 'Form','editText',
-                'textLabel',
-                'comboBox',
-                'checkBox',
-                'optionGroup',
-                'grid',
-                'base64',
-                'container'.
- - Caption:`<`Title of the component`>`
+      Values : 'Form','editText','textLabel','comboBox','checkBox','optionGroup','grid','base64','container'.
+
+ - Caption:`<`Title of the component`>` || `<`Text label showing before input`>`
+      Type: string
+
+ - Disabled:`<`true when the component is disabled`>`
+      Type: boolean
+
+ - ErrorMessage:`<`Error message if the component is not valid (after valid()=false or prop.Valid=false)`>`
+      Type: string
+
+ - First:`<`true. Component that receives focus when a new record is inserted`>`  
+      Type: boolean
+
+ - Format: `<``>`  (future version)
+      Type: string
+
+ - Image:`<`Component background image path`>`  
+      Type : string
+
+ - InputMask: `<``>`  (future version) 
+      Type: string
+ 
+ - Max:`<`Maximum value for number`>`  
+      Type: number
+
+ - MaxLength:`<`Maximum character length`>`
+      Type: number
+
+ - Min:`<`Minimum value for number`>`  
+      Type: number
+
  - Name:`<`Name of the component`>`  
       Type :string
 
- - textLabel:`<`Text label showing before input`>`  
+ - Placeholder:`<`label inside input blurred`>`
+      Type: string
+
+ - Position : = `<`position in a form `>`
+      Type : string.
+      Values : 'header','main','footer'
+
+ - ReadOnly:`<`true when the component is read only`>`
+      Type: boolean
+
+ - TabIndex:`<`Component tab index in a form component`>`  
+      Type: number 
+
+ - ToolTipText:`<`Component tool tip text`>`  
       Type: string
 
  - Type:`<`Data types when BaseClass="editText"`>`  
       Type: string  
-      Values : 'number',  
-               'text'
-               'date',
-               'dateTime',
-               'spinner',
-               'checkBox',
-               'json',
-               'checkBox'.
+      Values : 'number','text','date','dateTime','spinner','checkBox','json'.
 
- - Position : = `<`position in a form `>`
-      Type : string.
-      Values : 'header',  
-               'main',  
-               'footer'
+ - Valid:`<`true when the component is valid`>`
+      Type: boolean
 
  - Value:`<`Value of the component`>`
+      Type: string, date, number, boolean, json
 
-## Visual properties
-this.prop.<name of propierty>.<Value>
-Values :
-  - First:`<`true. Component that receives focus when a new record is inserted`>`  
-      Type: boolean
-    
-  - Disabled:`<`True when disabled`>`  
+ - Visible:`<`true when the component is visible`>`
       Type: boolean
 
-  - ErrorMessage:`<`Error message if the component is not valid (after valid()=false or prop.Valid=false)`>`  
-      Type: string
-
-  - Format: `<``>`  
-      Type: string
-
-  - InputMask: `<``>`   
-      Type: string
-    
-  - MaxLength:`<`Maximum character length`>`  
-      Type: number  
-
-  - Min:`<`Minimum value for number`>`  
-      Type: number
-
-  - Max:`<`Maximum value for number`>`  
-      Type: number
-
-  - Placeholder:`<`label inside input blurred`>`  
-      Type: string 
-
-  - Position:`<`Position in a form component`>`  
-      Type: string   
-      Values: 'header',
-               'main',
-               'footer'.
-    
-  - ReadOnly:`<`true when component is only readable`>`  
-      Type: boolean
-    
-  - TabIndex:`<`Component tab index in a form component`>`  
-      Type: number 
-
-  - Image:`<`Component background image path`>`  
-      Type : string
-   
-  - ToolTipText:`<`Component tool tip text`>`  
-      Type: string
-
-  - Visible: `<`true when component is visible`>`  
-      Type: string
 
 ## Database components properties
 
@@ -443,10 +426,15 @@ Values :
                         ['value1','value2']]
 
 
-## style, inputStyle,labelStylenent and componentStyle properties ( all html style)
+## style, inputStyle and captionStyle ( all html style)
+All Component:
 this.style.`<`name of propierty`>`.`<`Value`>`
+
+Input component:
 this.inputStyle.`<`name of propierty`>`.`<`Value`>`
-this.labelStyle.`<`name of propierty`>`.`<`Value`>`
+
+Casption component:
+this.captionStyle.`<`name of propierty`>`.`<`Value`>`
 
 Values :
 ### example:   
@@ -691,15 +679,6 @@ and each block has to be is defined
 ## SQL Database class (This method is based in VFP SQL instructions)
 this class is used to manipulate a SQL database it's have several methods:
 
-- useNodata(`<`table`>`,`<`alias?`>`).
-   Prepare a local SQL table without data and is a clone of the original SQL-Server view 
-
-- use(`<`table`>`,`<`memoryObject`>`,`<`alias?`>`).
-   Prepare a local SQL table with data and is a clone of the original SQL-Server view
-
-- tableUpdate(`<`updateType`>`,`<`force`>`,`<`alias`>`).
-   Update a local SQL table in to SQL-Server table
-
 - appendBlank(`<`alias`>`,`<`memoryObject`>`).
    Append a row in a local SQL table with default Type Script Value defined in SqlDictionary form
 
@@ -709,12 +688,19 @@ this class is used to manipulate a SQL database it's have several methods:
 - deleteSql(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
    Delete a row with recno in a local SQL table
 
+- gatther (`<`object values`>`).
+  Gatther values in a local SQL table from a object values
+
+- goto(`<`row`>`).
+  Goto a reccord number of a local SQL table
+
 - insert(`<`alias`>`,`<`memoryObject`>`). ( not in use)
 
-- execute(`<`query`>`,`<`alias`>`,`<`resultType`>`).
-  Execute a query in a SQL-Server
+- localAlaSql(`<`query`>`). 
+  Execute a query in a local SQL table
 
-- select(`<`alias`>`).
+- readCampo(`<`alias`>`,`<`field`>`).
+  Read a field in a local SQL table
 
 - recCount(`<`alias?`>`).
   Get a reccord count of a local SQL table
@@ -722,8 +708,8 @@ this class is used to manipulate a SQL database it's have several methods:
 - recno(`<`alias?`>`).
   Get a current reccord number of a local SQL table
 
-- goto(`<`row`>`).
-  Goto a reccord number of a local SQL table
+- select(`<`alias?`>`).
+  Select default values in a local SQL table
 
 - skip(`<`rowNumbers`>`).
   Skip a reccord number of a local SQL table
@@ -731,55 +717,65 @@ this class is used to manipulate a SQL database it's have several methods:
 - scatter(`<`type`>`,`<`fieldArray`>`).
   Scatter values in a object values of a local SQL table 
 
-- gatther (`<`object values`>`).
-  Gatther values in a local SQL table from a object values
+- scatterBlank(`<`fieldArray`>`,`<`alias?`>`).
+  Scatter values with blank values of a local SQL table
 
-- localAlaSql(`<`query`>`). 
-  Execute a query in a local SQL table
+- SQLExecute(`<`query`>`).
+  Execute a query in a SQL-Server
+
+- tableUpdate (`<`updateType`>`,`<`force`>`,`<`alias`>`).
+  Update a local SQL table in to SQL-Server table
+
+- use(`<`table`>`,`<`memoryObject`>`,`<`alias?`>`).
+   Prepare a local SQL table with data and is a clone of the original SQL-Server view
+
+- useNodata(`<`table`>`,`<`alias?`>`).
+   Prepare a local SQL table without data and is a clone of the original SQL-Server view 
 
 ### Values
  `<`area`>` type: number. VFP Area number
 
  `<`alias`>` type: string. Local SQL table alias.
 
- `<`table`>` type: string. SQL Server remote view name.
+ `<`fieldArray`>` type: Array. It has field and value field SQL table.
+
+ `<`force`>` type: boolean.
+    Value : false If an update table fails because another user changed data first, return false.
+            true If an update table fails because another user changed data first.
+
+ `<`key_pri`>` type: number. Table key_pri(id) number in SQLServer
 
  `<`memoryObject`>` type: Object. It has field and value field SQL table. (In VFP is named only m )
 
-### Example:
- const  m={ code_id : '000021',
-            PurchaseDate : '2022-10-21' }
+ `<`query`>` type: string. SQL Server query to execute.
 
- `<`updateType`>` type: number.
-     Value = 0 Only row which positioned.
-      Value = 1 All table rows until update error. If error, return false else return true.
-    Value= 2 All table rows.
-
- `<`force`>` type: boolean.
-    Value = false If an update table fails because another user changed data first, return false.
-    Value = true If an update table fails because another user changed data first.
-
- `<`key_pri`>` type: number. Table key_pri(id) number in SQLServer.
-
- `<`recno`>` type: number. Local SQL id recno number.
-
- `<`SqlUpdate`>` type: boolean.
-    Value = true. Delete SQLServer.
-    Value = false. Only local SQL.
-
- `<`sqlQuery`>` type: string. SQL Server query to execute.
-
- `<`resultType`>` type: string.
+ `<`recno`>` type: number. Local SQL recno number
 
  `<`row`>` type: number. Recno row id to go.
 
- `<`rowNumbers`>` type: number. Row number. Forward it is positive and backward it is negative.
+ `<`resultType`>` type: string.
 
+ `<`rowNumbers`>` type: number. Row numbers to skip.
+
+
+ `<`SqlUpdate`>` type: boolean.
+    Values : true. Delete SQLServer.
+             false. Only local SQL.
+
+ `<`sqlQuery`>` type: string. SQL Server query to execute.
+
+ `<`table`>` type: string. SQL Server remote view name.
+ 
  `<`type`>` type: string.
-    Value = 'MEMVAR'. Return an object with all field values.
-    Value = 'FIELDS'. Return an object with specific field values.
+    Values : 'MEMVAR'. Return an object with all field values.
+             'FIELDS'. Return an object with specific field values.
 
- `<`fieldArray`>` type: array. Array with specific fields to obtain values.
+ 
+ `<`updateType`>` type: number.
+     Values: 0 will only update the current record
+             1 will update all records. If TableUpdate encounters a record that cannot be updated, it will fail at that point and return a value of false 
+             2 will update all records. If a record cannot be updated, it will continue with the remaining records and update as many as it can. TableUpdate will return a value of false.
+
 
 ## Recommended IDE Setup
 
@@ -946,28 +942,39 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 - ANSI 99 standard SQL instructions.
 - SQL Server skills (MSSQL or/and Postgres).
 
-> [!NOTES]:
+> [!NOTE]
 > This framework is based on a SQL database.
-> If you need suport about installation and use, let me know by mail or Skype siavcom@hotmail.com. 
+> If you need suport about installation and use, let me know by mail or Microsoft Teams  siavcom@hotmail.com. 
 > If you have a question, let me know by mail or Skype siavcom@hotmail.com.
-> If you want a new feature or have a sugestion, let me know by mail or Skype siavcom@hotmail.com.
+> If you want a new feature or have a sugestion, let me know by mail or SMirosoft Teams siavcom@hotmail.com.
 > To use this Framework, you have to restore an initial SQL backup an back end server (It is in  https://github.com/siavcom/VFP-NODE)
 > If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
 > I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
+> node requeriments. See Nuxt documentation https://nuxt.com/docs/getting-started/installation
+
 
 # About
 - I'm an old FOX programmer (since 1981) with a several years of experience in design and programming using VFP, MSSQL, and Postgres databases.
 
 - Author:
   - El Fer Blocks (Principal design, programming, and project director).
-    LinkedIn: https://www.linkedin.com/in/fernando-cuadras-846a20102/.
   
+  - LinkedIn: https://www.linkedin.com/in/fernando-cuadras-846a20102/.
+
+  - Microsoft Teams & e-mail: siavcom@hotmail.com
+
   - Lupita Sotelo (Reports and SQL design).
 
   - Raul Castro (HTML and CSS design).
 
-- http://siavcom.com.mx
-  Skype & e-mail: siavcom@hotmail.com
+  - http://wwww.web-ones.technology.xyz (soon) and https://deepwiki.com/siavcom/web-ones-technology
+  
+  - My ERP http://siavcom.com.mx
+
+  - My new ERP usin web-ones-technology http://killo-technology.xyz (soon)
+  
+
+Fell free to contact me if you have any questions or suggestions.
 
 
 > [!IMPORTANT] Reserved Word

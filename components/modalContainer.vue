@@ -8,7 +8,7 @@
 
         <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle" @click.middle.stop="middleClick()">
 
-          <span :id="Id + 'label'" class=" modal-header" :style="labelStyle">
+          <span :id="Id + 'label'" class=" modal-header" :style="captionStyle">
             <label name="header">{{ This.prop.Caption }}</label>
           </span>
           <div :id="Id + 'modal_body'" class="modal-body">
@@ -165,7 +165,7 @@ const props = withDefaults(defineProps<Props>(), {
 const Component = ref(props.prop.This)
 const This = Component.value // Component.value
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 

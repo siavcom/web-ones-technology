@@ -59,7 +59,7 @@ export class translateContainer extends CONTAINER {
 
     this.style.width = '600px'
     this.style.height = 'auto'
-    this.labelStyle.fontSize = '20px'
+    this.captionStyle.fontSize = '20px'
 
 
     this.asignaRecno()  // asigna recno a c/componente de captura de la forma

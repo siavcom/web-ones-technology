@@ -2,7 +2,7 @@
   <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
 
     <div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
-      :style="labelStyle">{{ prop.Caption +
+      :style="captionStyle">{{ prop.Caption +
         " " }}</div>
 
 
@@ -122,13 +122,13 @@ const props = defineProps<{
 const Component = ref(props.prop.This)
 const This = Component.value
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 let noRegistro = ref(0)
 const Styles =
 {
-  labelStyle: labelStyle,
+  captionStyle: captionStyle,
   inputStyle: inputStyle,
   style: divStyle
 }
@@ -152,7 +152,7 @@ const checkValue = ref(false)
 const Type = ref(props.prop.Type.toLowerCase())
 
 /*
-const labelStyle = reactive(This.labelStyle)
+const captionStyle = reactive(This.captionStyle)
 const InputStyle = reactive({ ...props.inputStyle })
 const refInputStyle = toRef(This.inputStyle)
 */
