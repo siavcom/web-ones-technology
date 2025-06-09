@@ -35,7 +35,7 @@ export class grid_tablas extends GRID {
     this.prop.Visible = false
     this.prop.ReadOnly = false
     this.prop.autoLoad = false
-    this.prop.ColumnCount = 3
+    this.prop.MaxLength = 3
   }
 
 

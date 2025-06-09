@@ -21,8 +21,7 @@ export class tip_dat extends COLUMN {
     this.prop.Placeholder = "Tipo de dato";
 
     this.prop.RowSource = [
-      [
-        "Character",
+      ["Character",
         "Varchar",
         "Numeric",
         "Date",

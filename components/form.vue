@@ -310,7 +310,7 @@ const waitEval = async (evento: string) => {
     // Se tiene que pasar por referencia donde esta el ThisForm 
 
     //const ThisForm = form.value //ya que se trabajo solo en ambiente local
-    console.log('<<<============Iniciamos evento=========>>> ', evento, ThisForm.eventos)
+    console.log('<<<============Iniciamos evento=========>>> ', evento, ThisForm)
 
     resolve(eval(evento))
     reject((error) => {

@@ -17,7 +17,7 @@ export class GRID extends COMPONENT {
   //elements = [{}]
   constructor() {
     super();
-    this.Name = "Grid";
+    //this.Name = "Grid";
     this.prop.ColumnCount = 1;
     this.prop.BaseClass = "grid";
     this.prop.Capture = false;
@@ -248,7 +248,7 @@ export class GRID extends COMPONENT {
 
   //////////////////////////
   // Borra renglon
-  // row: renglon a borrar
+  // recno: renglon a borrar
   /////////////////////////
   async deleteRow(recno: number) {
     if (await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {

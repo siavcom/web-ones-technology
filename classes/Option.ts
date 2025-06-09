@@ -32,21 +32,10 @@ export class option extends COMPONENT {
       this.Parent.prop.Value = this.prop.OptionNumber
   }
 
-  /*
-  override async onChangeValue(): Promise<void> {
 
-    if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
-      this.Parent.prop.Value = this.prop.OptionNumber
-  }
-*/
   override async click() {
     if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
       this.Parent.prop.Value = this.prop.OptionNumber
-
-    //  const Name = this.prop.Name + 'Click'
-    //  const opcion = this.Parent[Name]
-    //  if (opcion)
-    //    await opcion(this)
 
 
   }

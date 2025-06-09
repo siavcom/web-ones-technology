@@ -44,3 +44,11 @@ Actualizar procedimientos
 Falta :
 
 - P_gen_doc_pry
+
+
+*********************************************************************
+En la diccionaro de datos
+
+-Actualizar la tabla comealm, en el campo num_fam , en el valor default poner ThisForm.num_fam.prop.Value
+
+-Actualizar la tabla comealm, en el campo cla_isu , en el valor default poner ThisForm.cla_isu.prop.Value

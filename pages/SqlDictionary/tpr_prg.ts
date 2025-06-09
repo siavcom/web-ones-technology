@@ -22,7 +22,7 @@ export class tpr_prg extends COMPONENT {
       ["M", "R", "P", "S"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
-    this.prop.ColumnCount = 2;
+
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "150px,10px";
 

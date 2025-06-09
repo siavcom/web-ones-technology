@@ -10,16 +10,11 @@ import { COMPONENT } from "@/classes/Component";
 import { option } from './Option'
 
 export class optionGroup extends COMPONENT {
-  // public Option1 = new option(1)
-  // public Option2 = new option(2)
+
   options: [] = []
   constructor() {
     super();
     this.prop.Type = "number";
-    // this.Option1.prop.Caption = "Option 1";
-    //  this.Option1.prop.Name = "Option1";
-    // this.Option2.prop.Caption = "Option 2";
-    // this.Option2.prop.Name = "Option2";
     this.style.alignContent = "flex-start" //"flex-end",
     this.inputStyle.visibility = 'collapse';
     this.style.borderRadius = '1.5%'
@@ -41,14 +36,10 @@ export class optionGroup extends COMPONENT {
       if (index == 1) {
         this[element].prop.Value = this.prop.Value
       }
-
     }
-
   }
 
   override async onChangeValue() {
-
-
     console.log('onChangeValue', this.prop.Value, this.options)
     for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
       const item = this.options[i]

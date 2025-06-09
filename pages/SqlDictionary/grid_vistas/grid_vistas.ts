@@ -45,7 +45,7 @@ export class grid_vistas extends GRID {
     this.prop.Visible = false;
     this.prop.ReadOnly = false;
     this.prop.autoLoad = false;
-    this.prop.ColumnCount = 8;
+    this.prop.MaxLength = 8;
   }
 
 }

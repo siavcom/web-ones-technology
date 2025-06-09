@@ -47,7 +47,7 @@ export class grid_indices extends GRID {
     this.prop.Visible = false
     this.prop.ReadOnly = false
     this.prop.autoLoad = false
-    this.prop.ColumnCount = 8
+    this.prop.MaxLength = 8
     // this.num_ind.prop.First = true // primer elemento
     this.nom_ind.prop.Last = true // ultimo elemento
   }

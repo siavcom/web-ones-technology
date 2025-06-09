@@ -918,6 +918,8 @@ const saveTable = async () => {
   //if (This.Row < 0) return
   scroll.controls = false
   //const { $MessageBox } = useNuxtApp()
+  console.log('Grid SaveTable', This.prop.Name, 'Map=', This.prop.Map)
+
   eventos.push(This.prop.Map + '.grabaTabla()')
 
   //load_data = true

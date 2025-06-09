@@ -80,7 +80,7 @@ export class lan_lan extends CAPTURECOMPONENT {
 
       //// ComboBox ////
       // this.prop.RowSourceType=0 //1-Value, 2-Alias, 5-Array
-      // this.prop.prop.RowSource = [] //[["Apple", "Banana"], ["A", "B"]]        // this.prop.ColumnCount= 1
+      // this.prop.prop.RowSource = [] //[["Apple", "Banana"], ["A", "B"]]        // this.prop.MaxLength= 1
       // this.prop.BoundColumn= 2
       // this.prop.ColumnWidths= "50%,50%"
 

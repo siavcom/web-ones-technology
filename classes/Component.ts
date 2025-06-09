@@ -369,7 +369,7 @@ export class COMPONENT {
       // original sin compilar      this.prop.Map = this.Parent.prop.Map + '.' + this.Name
       this.prop.Map = this.Parent.prop.Map + "." + this.Name;
 
-      // console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.Map)
+      //console.log(this.Form.prop.Name, 'Init Component', this.Name, this.prop.BaseClass, this.prop.Map)
 
       // if (this.Form.db) this.Sql = this.Form.db;  // Asugnamos la clase manejo SQL
       if (this.Form.Sql) {

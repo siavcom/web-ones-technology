@@ -43,7 +43,7 @@ export class grid_menu extends GRID {
     this.prop.Visible = false;
     this.prop.ReadOnly = false;
     this.prop.autoLoad = false;
-    this.prop.ColumnCount = 8;
+    this.prop.MaxLength = 8;
   }
 
   //////////////////////////////////////////////////

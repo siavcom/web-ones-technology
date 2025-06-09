@@ -17,7 +17,7 @@ import alasql from "alasql";
 import { storeToRefs } from "pinia";
 //import { query } from "~/classes/queryGen/query";
 
-const state = reactive({
+const state2 = reactive({
     This: {
         session: null,
         AlaSql: alasql,
@@ -25,7 +25,7 @@ const state = reactive({
         are_tra: [""], // Las areas de trabajo donde cada vista tendra.
         // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
         num_are: 0, // numero de area de trabajo que se esta en este momento
-        View: null, // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
+        View: [{}], // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
         Form: {}, // any = getCurrentInstance();
         //     Ctx: {}, // This.value.Form.ctx; // Contexto
 
@@ -40,42 +40,64 @@ const state = reactive({
 
 })
 
+
+const state = {
+    This: {
+        session: null,
+        AlaSql: alasql,
+        name: "VFPDB",
+        are_tra: [""], // Las areas de trabajo donde cada vista tendra.
+        // Inicilizamos el elemento 0 ya que el select 0 indica nueva area a utilzar
+        num_are: 0, // numero de area de trabajo que se esta en este momento
+        View: [{}], // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
+        Form: {}, // any = getCurrentInstance();
+        //     Ctx: {}, // This.value.Form.ctx; // Contexto
+
+        //event: any;
+        newTables: [],
+        oldTables: [],
+        Estatus: false,
+        Sql: alasql, // portea alasql a This.value.sql (no quitar)
+        socket: null,
+        res: [],
+    }
+
+}
+
+
 // Hace publico el valor 
 export const thisForm = computed(() => {
-    const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitra la clase DataBase
+    const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitar la clase DataBase
     return This.value.Form
 })
 
 
 // Inicializa la conexion
-export function initSql(Form: {}) {
-    const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitra la clase DataBase
-    // console.log("1) initSql Views ", This.value.View);
-    if (This.value.View != null) {
-        for (const objeto in This.value.View) {
-            // console.log("Borrando initSql Views Objeto=", objeto);
-            delete This.value.View[objeto]
-        }
-    }
-    // console.log("2) initSql Views ", This.value);
+export async function initSql(Form: {}) {
+    const { This } = toRefs(state) // Hace referencia al valor inicial de la clase. Esto nos permitio quitar la clase DataBase
 
     This.value.are_tra = [""] // Las areas de trabajo donde cada vista tendra.
     This.value.num_are = 0// numero de area de trabajo que se esta en este momento
     This.value.View = [{}] // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
     This.value.newTables = []
-    This.value.oldTables = []
+    This.value.oldTable = []
     This.value.Estatus = false
     // This.value.Sql = alasql // portea alasql a This.value.sql (no quitar)
     This.value.res = []
+
 
     This.value.Form = Form.value; // Forma principal de la aplicacion
     This.value.Estatus = true;
     This.value.session = Session(); // obtenemos la session
 
-    // console.log("Session=", This.value.session);
+    console.log("Session=", This.value.session);
     const { socketIo } = storeToRefs(This.value.session); //pasa los elementos por referencia al Global
 
     This.value.num_are = 0;
+
+    This.value.Form.Sql = This.value
+
+
 
     /// //////////////////////////////////////
     // Revisa si ya se firmo el usuario
@@ -99,15 +121,19 @@ export function initSql(Form: {}) {
         broadcast: 'loginFail'
        },
     });
-    */
-    console.log("socketIo ==", socketIo.value);
+  */
     if (!socketIo.value)
         This.value.session.openSocket();
 
     This.value.socket = socketIo;
 
-    This.value.Form.Sql = This.value  // portea alasql a This.value.sql
+    // This.value.Form.Sql = This.value  // portea alasql a This.value.sql
     // Porteamos todas las funciones de base datos a This.value.sql
+
+
+
+    console.log("1) Init SQL views=", View, "This.value.Form.Sql =", This.value.Form.Sql.View);
+    console.log("2) Init SQL This.value.Form.Sql ==", This.value.Form.Sql);
     This.value.Form.Sql.useNodata = useNodata;
     This.value.Form.Sql.use = use;
     This.value.Form.Sql.requery = requery
@@ -135,7 +161,7 @@ export function initSql(Form: {}) {
     This.value.Form.Sql.jasperReport = jasperReport
     This.value.Form.Sql.View = View
     This.value.Form.db = This.value.Form.Sql  // Porteo viejo a db
-    return
+
 } // Fin constructor
 
 export const View = async () => {
@@ -182,12 +208,23 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     }
 
     alias = alias.trim();
+    //console.log("Db useNodata alias", alias, This.value.View[alias]);
 
-
+    console.log("1)   Db useNodata resNow", alias, This.value.View);
     if (This.value.View[alias]) {
         // si exite ya la vista, solo borra los datos locales
-        // console.log('Db useNodata View ',alias,This.value.View)
-        // localAlaSql('USE Now ; ')
+        const resNow = await localAlaSql('select exists(select key_pri from Now.' + alias + ') as exist')
+        console.log("Db useNodata resNow", alias, resNow);
+
+        const resLast = await localAlaSql('select exists(select key_pri from Last.' + alias + ') as exist')
+        console.log("Db useNodata resLast", alias, resNow);
+
+
+        if (resNow)
+            await localAlaSql("delete from Now." + alias);
+
+        if (resLast)
+            await localAlaSql("delete from  Last." + alias);
 
         // Inicializamos el alias
         This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
@@ -198,29 +235,13 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         This.value.View[alias].bof = false; // Principio de archivo
         This.value.View[alias].row = -1; // Renglon posicionado el registro
 
-
-        try {
-            await localAlaSql("delete from Now." + alias);
-            // localAlaSql('USE Last ; ')
-            await localAlaSql("delete from  Last." + alias);
-        } catch (error) {
-            // console.log("Db useNodata error", error);
-        }
-
-
-
-
-
-
         /*
         
         export const [alias] = This.value.View[alias]
         console.log("Db useNodata View ", [alais])
         */
-
-        console.log("Db useNodata alias", alias, This.value.View);
-
-        return true;
+        if (resNow && resLast)
+            return true;
     }
 
     // La vista esta definida en forma reactiva desde la forma principal y es donde estan los
@@ -1087,16 +1108,12 @@ export const tableUpdate = async (
     return sw_val;
 }; //
 
-
 /// /////////////  Vfp append blank /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
 /// ////////////////////////////////////////////
-export const appendBlank = async (alias?: string, m?: {}) => {
+export const appendBlank = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-
     const ThisForm = This.value.Form;
-    console.log("Db appendBlank this", ThisForm);
-
     if (!alias) {
         // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
@@ -1226,11 +1243,11 @@ export const appendBlank = async (alias?: string, m?: {}) => {
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
 /// ////////////////////////////////////////////
-export const deleteRow = async (recno: number, alias: any) => {
+export const deleteRow = async (key_pri: number, alias: any) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    console.log("Db deleteRow ", recNo, alias);
-    if (recno <= 0) {
+    console.log("Db deleteRow ", key_pri, alias);
+    if (key_pri <= 0) {
         return;
     }
     if (!alias) {
@@ -1244,43 +1261,39 @@ export const deleteRow = async (recno: number, alias: any) => {
         //      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
         return false;
     }
+    const dat_vis = {
+        id_con: "",
+        tip_llamada: "DELETE",
+        // tok_aut: This.value.tok_aut,
+        nom_vis: This.value.View[alias].tablaSql.trim(), // tabla en servidor SQL
+        where: {},
+    };
 
-    const res = await localAlaSql("select key_pri from Now." + alias + " where recno=" + recno)
-    if (res && res[0].key_pri > 0) {
+    const condicion = {}; // Generamos la condicion
+    dat_vis.where = { key_pri }; // obtenemos el key_pri a borrar
+    try {
+        console.log('Db deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
+        const response = await axiosCall(dat_vis);
+        if (response == null) return null;
 
-        const key_pri = res[0].key_pri;
-
-
-        const dat_vis = {
-            id_con: "",
-            tip_llamada: "DELETE",
-            // tok_aut: This.value.tok_aut,
-            nom_vis: This.value.View[alias].tablaSql.trim(), // tabla en servidor SQL
-            where: {},
-        };
-
-        const condicion = {}; // Generamos la condicion
-        dat_vis.where = { key_pri }; // obtenemos el key_pri a borrar
-        try {
-            console.log('Db deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
-            const response = await axiosCall(dat_vis);
-            if (response == null) {
-                MessageBox("Error al borrar en la base de datos", 16, "SQL Error");
-                return null;
-
-            }
-
-            const respuesta = response.data;
-        } catch (error) {
-            console.error("Error en delete", error);
-            return null;
-        }
-
+        const respuesta = response.data;
+    } catch (error) {
+        console.error("Error en delete", error);
+        return null;
     }
+    const recno = await localAlaSql(
+        "USE Last;\
+    select recno  from Last." +
+        alias +
+        " where key_pri=?",
+        key_pri
+    );
 
     //  borra el LolcaDb
-    await localAlaSql(` delete from Last.${alias} where recno=${recno}`);
-    await localAlaSql(` delete from Now.${alias} where recno=${recno}`);
+    await localAlaSql(`USE Last;\
+        delete from Last.${alias} where key_pri=${key_pri}`);
+    await localAlaSql(`USE Now;\
+        delete from Now.${alias} where key_pri=${key_pri}`);
 
     // console.log('Db deleteRow Last ===>', key_pri, recno, await localAlaSql('USE Last;\
     // select key_pri,recno from '+ alias) )

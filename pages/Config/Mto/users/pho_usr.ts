@@ -23,7 +23,7 @@ export class pho_usr extends CAPTURECOMPONENT {
       this.prop.ControlSource = 'vi_cap_db_users.pho_usr'
       this.prop.Placeholder = 'Phone'
       this.prop.ToolTipText = 'Phone'
-      this.prop.MaxLength = 20
+      this.prop.ColumnCount = 20
       this.prop.Min = "0"
       this.prop.Max = "2147483647"
       this.prop.Decimals = null
@@ -80,7 +80,7 @@ export class pho_usr extends CAPTURECOMPONENT {
 
       //// ComboBox ////
       // this.prop.RowSourceType=0 //1-Value, 2-Alias, 5-Array
-      // this.prop.prop.RowSource = [] //[["Apple", "Banana"], ["A", "B"]]        // this.prop.ColumnCount= 1
+      // this.prop.prop.RowSource = [] //[["Apple", "Banana"], ["A", "B"]]        // this.prop.MaxLength= 1
       // this.prop.BoundColumn= 2
       // this.prop.ColumnWidths= "50%,50%"
 
