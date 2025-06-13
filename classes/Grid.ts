@@ -123,11 +123,11 @@ export class GRID extends COMPONENT {
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
   /////////////////////////////////////////////////////
 
-  public async validColumn(name: string) {
-    const column = this[name];
+  public async validColumn(column: string) {
+    //const column = this[name];
 
     if (column.prop.updateKey) {
-      console.log("Column valid updateKey ", column);
+      console.log("Column valid updateKey ", column.prop.Name);
       if (
         typeof column.prop.Value == "string" &&
         column.prop.Value.trim().length == 0
@@ -137,13 +137,15 @@ export class GRID extends COMPONENT {
         column.prop.Valid = false;
         return false;
       }
-      if (!(await this.validKey(name, column.Recno))) {
+      if (!(await this.validKey(column.prop.name, column.Recno))) {
         column.prop.ErrorMessage = "Dato duplicado";
         column.prop.ShowError = true;
         column.prop.Valid = false;
         return false;
       }
     }
+    console.log("Column valid ", column.prop.Name);
+    column.prop.Valid = true;
     return true;
   }
 
@@ -252,7 +254,6 @@ export class GRID extends COMPONENT {
   /////////////////////////
   async deleteRow(recno: number) {
     if (await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
-
       this.prop.Status = 'A'
       await deleteRow(recno, this.prop.RecordSource);
       // await restableceStatus()

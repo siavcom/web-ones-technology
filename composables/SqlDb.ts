@@ -1229,7 +1229,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
 export const deleteRow = async (recno: number, alias: any) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    console.log("Db deleteRow ", recNo, alias);
+    console.log("Db deleteRow ", recno, alias);
     if (recno <= 0) {
         return;
     }
@@ -1262,13 +1262,14 @@ export const deleteRow = async (recno: number, alias: any) => {
         const condicion = {}; // Generamos la condicion
         dat_vis.where = { key_pri }; // obtenemos el key_pri a borrar
         try {
-            console.log('Db deleteRow borra en la base de datos row data recno,data ===>', dat_vis)
+
             const response = await axiosCall(dat_vis);
             if (response == null) {
                 MessageBox("Error al borrar en la base de datos", 16, "SQL Error");
                 return null;
 
             }
+            console.log('Db deleteRow SQLServer Rgistro borrado dat_vis=', dat_vis, 'Respuesta=', response)
 
             const respuesta = response.data;
         } catch (error) {
@@ -1281,6 +1282,14 @@ export const deleteRow = async (recno: number, alias: any) => {
     //  borra el LolcaDb
     await localAlaSql(` delete from Last.${alias} where recno=${recno}`);
     await localAlaSql(` delete from Now.${alias} where recno=${recno}`);
+
+    //  borra en el arreglo
+    for (let i = 0; i < This.value.View[alias].recnoVal.length; i++) {
+        if (This.value.View[alias].recnoVal[i].recno == recno) {
+            This.value.View[alias].recnoVal.splice(i, 1);
+        }
+    }
+
 
     // console.log('Db deleteRow Last ===>', key_pri, recno, await localAlaSql('USE Last;\
     // select key_pri,recno from '+ alias) )

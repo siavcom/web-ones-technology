@@ -514,7 +514,7 @@ watch(
 watch(
   () => props.Registro,
   async (new_val, old_val) => {
-    console.log(' TextLabel=', This.prop.Name, 'watch Registro', old_val, new_val)
+    // console.log(' TextLabel=', This.prop.Name, 'watch Registro', old_val, new_val)
     if (old_val != new_val && new_val > 0) {
       await readCampo()
       This.recnoChange()
@@ -530,7 +530,7 @@ watch(
   () => This.prop.ControlSource,
   async (new_val, old_val) => {
 
-    console.log('watch controlSource', new_val, old_val)
+    //  console.log('watch controlSource', new_val, old_val)
     if (new_val != old_val && new_val.length > 2) {
       const pos = new_val.indexOf(".") + 1;
       if (pos == 1)
@@ -539,7 +539,7 @@ watch(
       const tabla = new_val.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
 
       // noRegistro = toRefs(View[tabla].recno)
-      noRegistro = toRef(View[tabla], 'recno')
+      noRegistro = toRef(This.Sql.View[tabla], 'recno')
     }
 
 
@@ -550,7 +550,7 @@ watch(
 watch(
   () => noRegistro,
   async (new_val, old_val) => {
-    console.log('watch noRegistro', new_val, old_val)
+    // console.log('watch noRegistro', new_val, old_val)
     if (new_val != old_val)
       This.Recno = new_val
     await readCampo()
@@ -660,7 +660,11 @@ const init = async () => {
       const tabla = This.prop.ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
 
       // noRegistro = toRefs(View[tabla].recno)
-      noRegistro = ref(View[tabla].recno)
+      //    console.log('init  textLabel tabla', tabla, 'View', This.Sql.View[tabla])
+
+
+      // noRegistro = ref(View[tabla].recno)
+      noRegistro = toRef(This.Sql.View[tabla], 'recno')
       // console.log('noRegistro', tabla, noRegistro)
 
     }

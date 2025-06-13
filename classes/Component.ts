@@ -645,11 +645,29 @@ export class COMPONENT {
    */
   public async when() {
     this.old_value = this.prop.Value
-
     return !this.prop.ReadOnly;
   }
 
+  /**
+   * @description
+   * Es llamado despues de que el componente es montado.
+   * Se utiliza para inicializar el componente.
+   * @returns {Promise<void>}
+   */
+  public async onMounted() {
+    this.old_value = this.prop.Value
+    return
+  }
 
+  /**
+   * @description
+   * Es llamado despues de que el componente es desmontado.
+   * Se utiliza para liberar recursos.
+   * @returns {Promise<void>}
+   */
+  public async onUnmounted() {
+    return
+  }
 
   /////////////////////////////////////////////////////////////////////
   // Focus

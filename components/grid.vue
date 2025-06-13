@@ -323,13 +323,10 @@ watch(
   (new_val, old_val) => {
 
     if (new_val == 'A' && old_val != 'A') {
-      // if (old_val == 'I') {
       emitValue()
-      // }
-      // console.log('Grid.vue watch Status=', new_val, ' load_data=', load_data)
       // si hay carga de datos
       if (load_data) {
-        // console.log('props.prop.Status loadData()')
+
         loadData()
       }
 
@@ -374,8 +371,6 @@ watch(
 
     // Si no hay renglones , aumenta un renglon
     if (Visible && props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource]) {
-
-      // console.log('grid watch Visible ', props.prop.RecordSource, Sql.View[props.prop.RecordSource])
 
       // si no hay datos, inserta renglon 
       /* 26 Noviembre 2024 
@@ -459,7 +454,7 @@ watch(
 
     for (const comp in compStatus) { // Recorre todos los estatus del grid
 
-      if (compStatus[comp] != 'A' && Status.value == 'A') { // Si alguno no esta activo
+      if (compStatus[comp] != 'A' && Status.value == 'A' && !This[comp].prop.Disabled && This[comp].prop.Visible) { // Si alguno no esta activo
         //Status.value = 'P';  // Cambia el estatus del grid a Proceso
         console.log('-- Grid watch estatus Name=', This.Name, ' comp = ', comp, 'Status=', compStatus[comp], 'This.Row = ', This.Row)
 
@@ -491,13 +486,15 @@ watch(
   (new_val, old_val) => {
     // console.log('1)  Grid watch compValid Row=', This.Row, RowInsert)
     for (const comp in compValid) { // Recorre todos los estatus del grid
-      if (!compValid[comp]) { // Si alguno no esta validado
-        //   console.log('-- Grid watch compValid  comp = ', comp)
+      if (!compValid[comp] && !This[comp].prop.Disabled && This[comp].prop.Visible) { // Si alguno no esta validado
+        console.log('-- Grid watch compValid NO validado comp = ', This[comp].prop.Name, 'Disabled', This[comp].prop.Disabled)
 
         if (This.prop.Valid)
           This.prop.Valid = false
         return
       }
+      if (!compValid[comp])
+        compValid[comp] = true
     }
     This.prop.Valid = true
     //console.log('------>>>>>>  Grid watch compValid Vaid=', This.prop.Valid, 'Row=', This.Row,)
@@ -511,13 +508,15 @@ watch(
 /////////////////////////////////////////////////
 watch(
   () => This.Row,
-  async () => {
+  async (new_data, old_data) => {
 
     //"item.recno > 0 || item.recno != null ? item.recno : 0"
 
     if (This.Row == -100) return
 
+
     if (This.Row == -1) {  // Recarga datos
+
       restableceStatus()
       load_data = true
       loadData()
@@ -578,9 +577,17 @@ watch(
 /////////////////////////////////
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
+
+  if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
+    console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
+    for (const columna of This.elements) {
+
+      if (!This[columna.Name].prop.Valid)
+        return This[columna.Name].setFocus() // Se posiciona el cursor en el componente no validado
+    }
+  }
   This.Row = Row;
   Column.value = ColumnName
-
 }
 
 const asignaStyle = (style: {}, itemId: string) => {
@@ -602,7 +609,7 @@ const asignaStyle = (style: {}, itemId: string) => {
 /////////////////////////////////////////
 
 const loadData = async (Pos?: number) => {
-  //console.log('1) loadData()')
+
   if (This.prop.RecordSource.length < 2) return
 
   for (let i = 0; i < This.main.length && First == ''; i++) { // Recorre todos los estatus del grid
@@ -628,7 +635,7 @@ const loadData = async (Pos?: number) => {
 
   This.Form.prop.Status = 'P'
   while (scroll.dataPage.length > 0)
-    scroll.dataPage.pop() // borramos arreglon
+    scroll.dataPage.pop() // borramos todos los renglones
 
 
   // console.log('2) loadData()')
@@ -650,7 +657,7 @@ const loadData = async (Pos?: number) => {
       return false
 
     }
-    const result = []
+    // const result = []
 
     scroll.bottom = false
 
@@ -663,7 +670,7 @@ const loadData = async (Pos?: number) => {
       const elementNo = ((scroll.page) * Rows) + i
       if (Sql.View[props.prop.RecordSource].recnoVal[elementNo]) {
         scroll.dataPage[i] = Sql.View[props.prop.RecordSource].recnoVal[elementNo]
-        //  console.log('loadData() elementNo=', elementNo, ' scroll.dataPage[i]=', scroll.dataPage[i])
+        // console.log('loadData() elementNo=', elementNo, ' scroll.dataPage[i]=', scroll.dataPage[i])
         RowNumber = i
       }
 
@@ -683,6 +690,7 @@ const loadData = async (Pos?: number) => {
       }
 
     }
+    // console.log('3) loadData() RowNumber=', RowNumber, 'scroll.dataPage=', scroll.dataPage, 'SQL', Sql.View[props.prop.RecordSource].recnoVal)
 
     if (RowInsert)
       return
@@ -950,8 +958,8 @@ const autoLoad = async (RecordSource: string) => {
 // Se tiene que emitir para que cambie el Valor en el template
 /////////////////////////////////////////
 
-const init = async () => {
 
+onMounted(async () => {
   console.log('Init Grid==>', props.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
   // await This.init()
@@ -965,6 +973,7 @@ const init = async () => {
 
     if (This[comp].prop.Capture == true)  // Si es componete de captura
     {
+
       if (This[comp].prop.First)
         firstElement = comp
 
@@ -990,9 +999,10 @@ const init = async () => {
   if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
     loadData()
 
-};
+})
 
-init(); // Ejecuta el init
+
+//init(); // Ejecuta el init
 
 
 const middleClick = () => {
