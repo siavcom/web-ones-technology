@@ -126,16 +126,17 @@ Calling a method:
 - image. Display image.
 - imgButton. Button with image.
 - modalComponent. Modal component container.
-- optionGroup. Option group input.
 - textLabel. Text label. 
 
 ## TypeScript components 
 
- TypeScript components are components that are written in TypeScript.
-
- This components has to be in a TypeScript container component (Form, container or another component ) except Form component.
-
+ TypeScript components are components that are written in TypeScript. 
  
+ These components are in a container component(Form, container or another component ) except Form component can't bge in a Form component.
+ 
+ Each of these uses a belongs to a web component that will display in the web browser
+ 
+  
   Example of a component :
 
 `// Clase : dic_dat`  
@@ -151,7 +152,7 @@ Calling a method:
 `   constructor() {`  
 `      super();`  
 `      //****** Propierties ********//`  
-`      this.prop.BaseClass = "comboBox";`  
+`      this.prop.BaseClass = "comboBox";// Web component  `  
 `      this.prop.Caption = "Diccionario  de datos";`  
 `      this.prop.ToolTipText = this.prop.Caption;`  
 `      this.prop.ReadOnly = false;`  
@@ -213,6 +214,7 @@ Calling a method:
 `     return !this.prop.ReadOnly;`  
 `   }`
 `}`  
+
 
 ## TypeScript components
 - Browse. Table display

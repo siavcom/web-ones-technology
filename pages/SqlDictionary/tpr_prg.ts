@@ -16,13 +16,13 @@ export class tpr_prg extends COMPONENT {
     super();
     this.prop.Caption = "Tipo de menú";
     this.prop.BaseClass = "comboBox";
-    this.prop.ToolTipText = "Tipo de programa";
+    this.prop.ToolTipText = "Tipo de menú";
     this.prop.RowSource = [
       ["Mantenimientos", "Reportes", "Procesos", "Menú principal"],
       ["M", "R", "P", "S"],
-    ]; // vi_cap_doc.tdo_tdo,des_tdo
+    ];
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
-
+    this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "150px,10px";
 
@@ -33,6 +33,19 @@ export class tpr_prg extends COMPONENT {
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
     this.prop.Visible = false;
+
+
+    /*
+        this.prop.RowSource = [
+          ['Activo', 'Bloqueado', 'Promoción', 'Mantenimiento', 'Desactivo'],
+          ['A', 'B', 'P', 'M', 'D']];
+        this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
+        this.prop.ColumnCount = 2;
+        this.prop.BoundColumn = 2;
+    */
+
+
+
   }
 
 

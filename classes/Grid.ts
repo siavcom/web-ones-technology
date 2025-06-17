@@ -251,15 +251,16 @@ export class GRID extends COMPONENT {
   //////////////////////////
   // Borra renglon
   // recno: renglon a borrar
+  // force: si es verdadero borra sin preguntar
   /////////////////////////
-  async deleteRow(recno: number) {
-    if (await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
+  async deleteRow(recno: number, force?: boolean) {
+
+    if (force || await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
       this.prop.Status = 'A'
       await deleteRow(recno, this.prop.RecordSource);
       // await restableceStatus()
       this.Row = -1;
       // load_data = true
-
     }
   }
   //////////////////////////////////

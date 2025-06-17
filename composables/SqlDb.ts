@@ -190,14 +190,9 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         // localAlaSql('USE Now ; ')
 
         // Inicializamos el alias
-        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
-        This.value.View[alias].recCount = 0; // Total de registros de la vista
-        This.value.View[alias].recno = 0; // Registro en cero
-        This.value.View[alias].eof = false; // Fin de archivo
-        This.value.View[alias].bof = false; // Principio de archivo
-        This.value.View[alias].row = -1; // Renglon posicionado el registro
-
+        while (This.value.View[alias].recnoVal.length > 0) {
+            This.value.View[alias].recnoVal.pop();
+        }
 
         try {
             await localAlaSql("delete from Now." + alias);
@@ -207,20 +202,28 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             // console.log("Db useNodata error", error);
         }
 
+        if (nom_vis == alias) {
+
+            This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+            This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+            This.value.View[alias].recCount = 0; // Total de registros de la vista
+            This.value.View[alias].recno = 0; // Registro en cero
+            This.value.View[alias].eof = false; // Fin de archivo
+            This.value.View[alias].bof = false; // Principio de archivo
+            This.value.View[alias].row = -1; // Renglon posicionado el registro
 
 
+            console.log("Db useNodata alias", alias, This.value.View);
 
-
-
-        /*
-        
-        export const [alias] = This.value.View[alias]
-        console.log("Db useNodata View ", [alais])
-        */
-
-        console.log("Db useNodata alias", alias, This.value.View);
-
-        return true;
+            return true;
+        }
+        delete This.value.View[alias] // borramos la vista
+        try {
+            await localAlaSql("drop table IF EXISTS Now." + alias + " ;");
+            await localAlaSql("drop table IF EXISTS Last." + alias + " ;");
+        } catch (error) {
+            // console.log("Db useNodata error", error);
+        }
     }
 
     // La vista esta definida en forma reactiva desde la forma principal y es donde estan los
@@ -236,6 +239,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     };
 
     dat_vis.nom_vis = nom_vis; // Nombre de la vista
+    console.log("Db useNodata VIEW==> ", nom_vis, alias, dat_vis);
     try {
         const response: any = await axiosCall(dat_vis);
 
@@ -393,17 +397,33 @@ export const use = async (
         console.log("Db Use==>>>>", alias, This.value.View[alias]);
         // si exite ya la vista, Borra los datos locales
 
-        await localAlaSql("delete from Now." + alias);
-        await localAlaSql("delete from  Last." + alias);
 
-        // Inicializamos el alias
-        This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
-        This.value.View[alias].recCount = 0; // Total de registros de la vista
-        This.value.View[alias].recno = 0; // Registro en cero
-        This.value.View[alias].eof = false; // Fin de archivo
-        This.value.View[alias].bof = false; // Principio de archivo
-        This.value.View[alias].row = -1; // Renglon posicionado el registro
+        if (alias == nom_vis) {
+            await localAlaSql("delete from Now." + alias);
+            await localAlaSql("delete from  Last." + alias);
+
+            // Inicializamos el alias
+            while (This.value.View[alias].recnoVal.length > 0)
+                This.value.View[alias].recnoVal.pop();
+
+            while (This.value.View[alias].data.length > 0)
+                This.value.View[alias].data.pop();
+
+
+
+            // This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+            This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+            This.value.View[alias].recCount = 0; // Total de registros de la vista
+            This.value.View[alias].recno = 0; // Registro en cero
+            This.value.View[alias].eof = false; // Fin de archivo
+            This.value.View[alias].bof = false; // Principio de archivo
+            This.value.View[alias].row = -1; // Renglon posicionado el registro
+        } else {
+            delete This.value.View[alias]
+            await localAlaSql("drop table if exists Now." + alias);
+            await localAlaSql("drop table if exists Last." + alias);
+
+        }
     }
 
     if (!This.value.View[alias] || (await select(alias)) == 0) {
