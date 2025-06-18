@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : tdo_tdo
+// Class : in_tdo_tdo
 // Description : Tip de documento
 // Author : El Fer Blocks
 // Creation : 2023-09-20

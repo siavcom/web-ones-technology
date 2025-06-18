@@ -50,6 +50,9 @@ export class reportInv extends reportForm {
     this.num_fam.prop.Value = 1
     this.op_des_fam.prop.TabIndex = 91
     this.op_has_fam.prop.TabIndex = 92
+    this.des_dat.prop.InputMask = Public.value.ima_pge.trim()
+    this.has_dat.prop.InputMask = Public.value.ima_pge.trim()
+
     //this.has_fam.prop.Type = "string"
     //this.has_fam.prop.MaxLength=10
     //this.has_fam.prop.Value = " "
@@ -69,17 +72,14 @@ export class reportInv extends reportForm {
 
 
   }
-
-  async init() {
+  async init_ant(sw_detallado?: boolean) {
     await super.init()
-
-    // this.des_fec.prop.Value =new Date() // await stringToDate(this.Form.mPublic.fpo_pge);
-    // this.has_fec.prop.Value =new Date() // await stringToDate(this.Form.mPublic.fpo_pge);
-    this.has_fec.prop.Value = this.Form.mPublic.fpo_pge;
-    this.des_fec.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'M'); // resta un mes
-
-    //  console.log("ThisForm des_fec=",this.des_fec.prop.Value,' has_fec', this.has_fec.prop.Value);
+    if (!sw_detallado) {
+      this.has_fec.prop.Value = this.Form.mPublic.fpo_pge;
+      this.des_fec.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'M'); // resta un mes
+    }
   }
 
+  //  console.log("ThisForm des_fec=",this.des_fec.prop.Value,' has_fec', this.has_fec.prop.Value);
 
 }

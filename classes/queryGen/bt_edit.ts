@@ -73,7 +73,7 @@ export class bt_edit extends COMPONENT {
     await localClone('vi_cap_db_query', RecordSource, filter)
     this.Parent.Grid.prop.RecordSource = RecordSource
 
-    if (this.Sql.db.View[this.Parent.Grid.prop.RecordSource].recCount == 0) {
+    if (View[this.Parent.Grid.prop.RecordSource].recCount == 0) {
       await this.Parent.Grid.appendRow(m)
     }
 

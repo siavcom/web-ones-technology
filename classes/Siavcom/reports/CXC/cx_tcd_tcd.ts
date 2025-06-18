@@ -1,10 +1,10 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
 // BaseClass : component
-// Class : in_tcd_tcd
+// Class : cx_tcd_tcd
 // Description : Clasificacion de documento
-// Author : El Fer Blocks
-// Creation : 2023-09-20
+// Author : MGSR
+// Creation : 2025-06-10
 // Update Date  :
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -12,7 +12,7 @@
 ///////////////////////////////////////
 
 import { COMPONENT } from "@/classes/Component";
-export class in_tcd_tcd extends COMPONENT {
+export class cx_tcd_tcd extends COMPONENT {
   constructor() {
     super();
     this.prop.Caption = "Clasificación de documento"; // Etiqueta que tendra este componente
@@ -31,6 +31,7 @@ export class in_tcd_tcd extends COMPONENT {
   override async init() {
     const data = await SQLExec(`select des_tcd,tcd_tcd,tdo_tdo,key_pri from man_cometcd  `, 'loc_cometcd')
     this.prop.RowSource = "select '  Todos ' as des_tcd,'??' as tcd_tcd  "
+    this.prop.Value = '??'
     //  RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
 
   }

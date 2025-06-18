@@ -20,5 +20,16 @@ export class has_fec extends COMPONENT {
         this.prop.Type = 'date'
         this.prop.Value = '1900-01-01'
     }
+    override async init() {
 
+        this.prop.Value = this.Form.mPublic.fpo_pge;
+    }
+    override async valid() {
+
+        if (this.prop.Value < this.Parent.des_fec.prop.Valid)
+            return false
+        else
+            return true
+
+    }
 }

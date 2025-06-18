@@ -17,7 +17,7 @@ export class ref_dat extends COLUMN {
     constructor() {
         super()
         this.prop.Order = 3
-        this.prop.ColumnTextLabel = 'textLabel'
+        this.prop.ColumnTextLabel = 'Caption'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_for.ref_dat'
         this.prop.ReadOnly = false

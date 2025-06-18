@@ -30,7 +30,7 @@ export class num_fam extends COMPONENT {
     const data = await SQLExec(`select des_fam,cla_fam,num_fam,case num_fam when 1 then 0 when 2 then pri_cla when 3 then ter_cla else cua_cla end pri_cla,
             case num_fam when 1 then pri_cla when 2 then seg_cla when 3 then ter_cla else len(rtrim(ima_pge)) end ult_cla,
             'des_fa'+cast(num_fam as char(1)) as que_fam
-            from mPublic v,man_comefam
+            from publicVar v,man_comefam
      `, 'loc_comefam')
   }
   async valid() {

@@ -4,8 +4,8 @@
     <div id="header" style="width: 98%;height: auto; display: flex;">
       <!--img class="logoVue" :src="logo" style="width:50px;height:50px;" /-->
       <div id="webOnes" class="Web-ones">
-        <img loading="lazy" class="logoWebOnes" :src="logo" style="width:50px;height:50px" />eb-Ones
-        Technology
+        <img loading="lazy" class="logoWebOnes" :src="logo" style="width:200px;height:100px" />
+
       </div>
 
       <div id="company" class="Company" style="align-self:flex-end;margin-left: auto;">
@@ -35,7 +35,8 @@
 
 //import logo from '@/assets/logo.png'
 
-import logo from '/assets/WebOnes2.ico'
+import logo from '/assets/WebOnes3.jpeg'
+//import logo from '/assets/WebOnes2.ico'
 //import logo from '/assets/WebOnes.png'
 
 

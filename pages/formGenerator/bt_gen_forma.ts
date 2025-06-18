@@ -154,7 +154,7 @@ export class bt_gen_forma extends COMPONENT {
         // const nom_ind=component.nom_ind
         const nullvalue = component.nullvalue;
         const PlaceHolder = component.placeholder;
-        const textLabel = component.ref_dat;
+        const Caption = component.ref_dat;
 
         let Type = "text";
 
@@ -208,8 +208,8 @@ export class bt_gen_forma extends COMPONENT {
         if (vis_grid == "vi_cap_grid") row_com = Column;
 
         row_com = row_com.replaceAll("<<cam_dat>>", cam_dat.trim());
-        row_com = row_com.replaceAll("<<textLabel>>", textLabel.trim());
-        row_com = row_com.replaceAll("<<ref_dat>>", textLabel.trim());
+        row_com = row_com.replaceAll("<<Caption>>", Caption.trim());
+        row_com = row_com.replaceAll("<<ref_dat>>", Caption.trim());
         row_com = row_com.replaceAll("<<Type>>", Type);
         row_com = row_com.replaceAll("<<BaseClass>>", BaseClass);
         row_com = row_com.replaceAll("<<ControlSource>>", controlSource.trim());

@@ -16,6 +16,9 @@ export class option extends COMPONENT {
     this.prop.Type = "checkBox";
     this.prop.OptionNumber = OptionNumber; // Posicion dentro del optionGroup
     this.prop.Value = 0
+    this.inputStyle.color = 'black';
+    this.inputStyle.textAlign = 'center';
+    this.inputStyle.appearance = 'none';
 
     if (OptionNumber == 1)
       this.prop.Value = 1
@@ -34,9 +37,9 @@ export class option extends COMPONENT {
 
 
   override async click() {
+
     if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
       this.Parent.prop.Value = this.prop.OptionNumber
-
 
   }
 

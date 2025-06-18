@@ -35,6 +35,27 @@ export class var_ord extends COMPONENT {
 */
   override async onChangeValue(styles?: any) {
 
+    if (this.prop.Value == 'cla_isu') {
+      this.Form.des_dat.prop.InputMask = Public.value.ima_pge.trim()
+      this.Form.has_dat.prop.InputMask = Public.value.ima_pge.trim()
+      if (this.Form.des_isu)
+        this.Form.des_isu.prop.InputMask = Public.value.ima_pge.trim()
+      if (this.Form.has_isu)
+        this.Form.has_isu.prop.InputMask = Public.value.ima_pge.trim()
+
+    }
+    else {
+      this.Form.des_dat.prop.InputMask = ''
+      this.Form.has_dat.prop.InputMask = ''
+      if (this.Form.des_isu)
+        this.Form.des_isu.prop.InputMask = ''
+      if (this.Form.has_isu)
+        this.Form.has_isu.prop.InputMask = ''
+
+    }
+
+    console.log('var_ord=', this.prop.Value)
+
     if (this.prop.RowSource == '') return
     if (this.prop.RowSourceType == 0) return
 

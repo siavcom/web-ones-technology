@@ -3,7 +3,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -84,7 +84,7 @@
 
     <!--   CHECKBOX   -->
 
-    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkBox" type="checkbox" :style=Styles.inputStyle
+    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
       ref="Ref" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled || This.prop.ReadOnly"
       :tabindex="prop.TabIndex" v-model="checkValue" @click="clickCheckBox()" @focus="onFocus"
       @keypress="keyPress($event)">
@@ -107,7 +107,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1899,7 +1899,8 @@ const styleAssing = async () => {
 
   if (Type == 'checkbox') {
     //  console.log('2) EditText Name=', This.prop.Name, 'Styles.inputStyle.width =', Styles.inputStyle.width)
-    Styles.inputStyle.width = '20px'
+    Styles.inputStyle.width = '15px'
+    Styles.inputStyle.borderRadius = '50%';
   }
 
 }
@@ -1936,6 +1937,22 @@ onMounted(async () => {
 
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
     Styles.inputStyle.maxHeight = Styles.style.fontSize
+
+  if (propType.value.toLowerCase == 'checkbox') {
+
+    // Styles.inputStyle.padding = '5px';
+    // Styles.inputStyle.marginRight = '5px';
+    //Styles.inputStyle.border = '1px solid #D6D6D6';
+    //  Styles.inputStyle.borderRadius = '50%';
+    //  Styles.inputStyle.cursor = 'pointer';
+    //   Styles.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
+    //   Styles.inputStyle.backgroundRepeat = 'no-repeat';
+    //   Styles.inputStyle.backgroundPosition = 'center';
+    //   Styles.inputStyle.backgroundSize = '5px 5px';
+    //   Styles.inputStyle.width = '5px';
+
+  }
+
 
   if (propType.value == 'textarea')
     Styles.captionStyle.alignContent = 'flex-start'
@@ -2022,3 +2039,51 @@ onMounted(() => {
 
 
 </script>
+<style scoped>
+.checkbox {
+  /*
+  text-align: center;
+  appearance: none;
+  height: 5px;
+  width: 5px;
+  padding: 10px;
+  margin-right: 5px;
+  border: 3px solid #D6D6D6;
+  border-radius: 50%;
+  cursor: pointer;
+  background: radial-gradient(circle at center, #f2f2f2 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+  */
+
+  text-align: center;
+  appearance: none;
+  height: 31px;
+  width: 31px;
+  padding: 6px;
+  /* adjust this to control the space between border and background */
+  margin-right: 12px;
+  border: 3px solid #D6D6D6;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  background-clip: content-box;
+  box-sizing: border-box;
+  background: radial-gradient(circle at center, #f2f2f2 50%, transparent 50%);
+
+
+}
+
+.checkbox:checked {
+  /*
+  background: radial-gradient(circle at center, black 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+  */
+  background-color: black;
+  background: radial-gradient(circle at center, black 50%, transparent 50%);
+
+}
+</style>

@@ -40,22 +40,30 @@ export class optionGroup extends COMPONENT {
   }
 
   override async onChangeValue() {
-    console.log('onChangeValue', this.prop.Value, this.options)
+
     for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
       const item = this.options[i]
 
       if (item.prop.OptionNumber == this.prop.Value) {
-
-        if (item.prop.Value = 0) {
+        if (item.prop.Value = 0)
           item.prop.Value = 1
 
-        }
+        item.prop.ReadOnly = true
+        //        item.inputStyle.background = 'radial-gradient(circle at center, black 50%, transparent 50%);'
+
       }
-      else
+      else {
         if (item.prop.Value == 1)
           item.prop.Value = 0;  // marca el seleccionado     
-    }
 
+        item.prop.ReadOnly = false
+
+        //      item.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
+
+
+      }
+    }
+    console.log('onChangeValue', this.prop.Value, this.options)
     return;
   }
 
