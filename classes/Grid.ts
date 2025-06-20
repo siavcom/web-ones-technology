@@ -11,6 +11,7 @@ export class GRID extends COMPONENT {
   // Tenemos que utilizar renglon o data
   data = [{}]; // arreglo donde esta el data
   Row = -1;
+  Column = ""; // Columna actual
   // autoLoad=false
   // declare variable:string='Hola'
 
@@ -183,33 +184,53 @@ export class GRID extends COMPONENT {
     return true;
   }
 
+  /*
   /////////////////////////////////////////////////////
   // asignaRenglon
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
   public async asignaRenglon_old(row: number, colName: string) {
-    //    if (row>this.Sql.db.View[this.prop.RecordSource].recnoVal.length-1)
-    //      row=this.Sql.db.View[this.prop.RecordSource].recnoVal.length-1
-    //let sw_recno = false
-    /*
-        for (let i = 0; i < this.main.length; i++) {
-          this[this.main[i]].prop.ReadOnly = false;
-          
-        }
-    */
+   
     this.Row = row;
 
     nextTick(() => {
       //  console.log("Grid.ts asignaRenglon row ", row, " Columna=", colName, this[colName].prop.BaseClass);
 
       this[colName].prop.Focus = true;
-      /*
-            if (this[colName].prop.BaseClass == 'imgButton')
-              this[colName].click()
-            else
-              this[colName].prop.First = true;
-      */
+   
     });
+  }
+
+*/
+
+  ////////////////////////////////
+  // Aumenta la pila de eventos a ejecutar de la forma principal
+  // En caso que hay una estatus de un componente
+  // no ejecuta el evento
+  /////////////////////////////////
+  //const asignaRenglon = (newEvento: string) => {
+  public async asignaRenglon_new(Row: number, ColumnName: string) {
+    ColumnName = ColumnName.trim();
+    if (this.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
+      //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
+      /*
+            for (const columna of this.elements) {
+      
+              if (!this[columna.Name].prop.Valid)
+                return this[columna.Name].setFocus() // Se posiciona el cursor en el componente no validado
+            }
+      */
+
+    }
+    this.Row = Row;
+    this.Column = ColumnName
+    this[ColumnName].prop.Focus = true; // Establece el foco en la columna seleccionada
+    console.log('asignaRenglon ColumnaName =', ColumnName, this[ColumnName].prop.Focus)
+
+    //  console.log('asignaRenglon ColumnaName =', ColumnName, this[ColumnName].prop)
+
+
+
   }
 
   ///////////////////////////////////////////////////

@@ -20,6 +20,7 @@ export class CONTAINER extends COMPONENT {
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.prop.Capture = false;
+    this.style.borderRadius = '5%'
     this.captionStyle.color = 'black'
     this.captionStyle.fontWeight = 'bold'
     this.captionStyle.fontSize = '17px'

@@ -19,7 +19,7 @@ export class optionGroup extends COMPONENT {
     this.inputStyle.visibility = 'collapse';
     this.style.borderRadius = '1.5%'
     this.style.padding = '3%'
-    this.style.width = 'min-content'
+    this.style.width = 'max-content'
     this.style.border = '1px solid black';
     this.style.padding = '.1px';
     this.style.borderRadius = '3px';

@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -382,27 +382,25 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     Status.value = 'P'
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
-
-
     if (swInit) { // swInit Value.value.trim().length == 0
+      if (columnas.length == 0)
+        return renderComboBox()
+
       Value.value = columnas[0].value
       swInit = false
     }
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    console.log('2) =======>>>>> comboBox emitValue writeCampo Name=', props.prop.Name, 'isValid=', isValid, 'Value=', Valor)
-
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
       Value.value = Valor
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
-
     This.prop.Value = Value.value
 
-
     if (!isValid) {
+
       await This.interactiveChange()
       This.prop.Valid = false
       inputBuffer = ''
@@ -417,19 +415,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
         if (This.prop.Valid)
           This.prop.Valid = false
-        //Ref.value.select() 
 
-        // thisElement.select(); // Hace select en este elemento. Se quito 13/Dic/2024
-
-        // This.prop.Status = 'A'
-        //   Status.value = 'A'
-        //   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
       }
+      This.prop.Valid = true
+      This.prop.Status = 'A'
+      Status.value = 'A'
+      emit("update:Status", 'A')
 
       if (newValue != This.prop.Value)
         return
-
 
       sw_focus.value = false
 
@@ -565,9 +560,7 @@ const asignaValor = async () => {
 const toggleClick = async () => {
 
   if (!toggle.value) {
-    //   console.log('bpe_bpe toggleClick() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'toggle=', toggle.value)
-    // thisElement.focus({ focusVisible: true })
-    await when()
+    //     await when()   // 18/Junio/2025
   }
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
@@ -789,16 +782,22 @@ const when = async (click?: boolean) => {
     return
   }
 
-  console.log('2) EditText onFocus Grid Name', This.prop.Name)
+  console.log('2) comboBox onFocus Grid Name', This.prop.Name)
 
   if (!sw_focus.value) {
     sw_focus.value = true
     //    This.Form.eventos.push(This.prop.Map + '.when()')
   }
-  This.Form.eventos.push(This.prop.Map + '.when()')
 
-  if (click)
-    This.Form.eventos.push(This.prop.Map + '.click()')
+  nextTick(() => {
+    This.Form.eventos.push(This.prop.Map + '.when()')
+
+    if (click)
+      This.Form.eventos.push(This.prop.Map + '.click()')
+
+  });
+
+
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -870,7 +869,7 @@ const onFocus = async () => {
 
   emit("update:Valid", true)
 
-  console.log('3) EditText onFocus Name', This.prop.Name, 'Focus=', This.prop.Focus)
+  console.log('3) comboBox onFocus Name', This.prop.Name, 'Focus=', This.prop.Focus)
   if (!This.prop.Focus)// 13 Junio 2025
     return
 
@@ -896,7 +895,7 @@ const onFocus = async () => {
 
 
   }, 0);
-  This.when()
+  // This.when()
   // This.Form.eventos.push(This.prop.Map + '.when()')
 
 
@@ -907,22 +906,16 @@ const onFocus = async () => {
 // Renderizado del combo box
 /////////////////////////////////////////////////////
 const renderComboBox = async (readData?: boolean) => {
-
-
   //console.log(' 0-) Render Multiselect comboBox prop.Name=', props.prop.Name, ' List.value=', List.value, ' columnas.length=', columnas.length)
 
   if (columnas.length > 0) return
 
   // if (props.prop.Status == 'I') return
 
-
-
   // 9/Feb/2024 borra las columnas si las tiene 
   // se cambia cada ves que se renderiza en el watch o init
   //  while (columnas.length > 0)
   //  columnas.pop()
-
-
 
   /*
   for (let ren = 0; ren < columnas.length; ren++) {
@@ -1234,8 +1227,9 @@ watch(
   async (new_val, old_val) => {
     if (new_val != old_val) {
       //console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
-      emitValue(true, true)
       This.Recno = props.Registro
+      emitValue(true, true)
+      //This.Recno = props.Registro
     }
   },
   { deep: false }
@@ -1566,7 +1560,6 @@ onMounted(async () => {
 
   await renderComboBox()
 
-
   //  console.log('2) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
   //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
@@ -1577,13 +1570,14 @@ onMounted(async () => {
 
   This.Recno = props.Registro
 
-
   //oldVal = Value.value   // asignamos el valor viejo
   // si es el primer elemento a posicionarse
   // si es el primer elemento a posicionarse
-  if (props.prop.First) {
+  if ((props.prop.First || props.prop.Focus) && This.Parent.BaseClass != "grid") {
     First = true
+    This.prop.Focus = false
     This.prop.Focus = true
+
   }
   This.prop.Init = false
 

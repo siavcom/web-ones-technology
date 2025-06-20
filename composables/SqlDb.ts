@@ -1040,7 +1040,7 @@ export const tableUpdate = async (
                 // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
                 console.error(
                     "No se pudo actualizar el registro en tabla " + alias,
-                    dat_vis
+                    dat_vis, 'LocalSQL', await localAlaSql(`select * from Now.${alias} `)
                 );
                 errorAlert(
                     "SQL Error: No se pudo actualizar el registro en tabla " +

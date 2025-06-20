@@ -1332,7 +1332,11 @@ const onFocus_old = async () => {
   }
 
   if (focusIn.value == 0) { //!This.prop.First && !This.prop.Focus && 
-    This.Form.eventos.push(This.prop.Map + '.when()')
+
+    nextTick(() => {
+      This.Form.eventos.push(This.prop.Map + '.when()')
+    });
+
   }
 
 
@@ -1565,30 +1569,22 @@ watch(
 watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
+    console.log('1)EditText Watch Focus Name=', This.prop.Name, This.prop.Focus)
     if (!new_val) {
       return
     }
+
+
     // Se pidio desde afuera el setFocus
     if (thisElement != null && document.activeElement != thisElement)
       return thisElement.focus();
 
     //  const length = thisElement.value.length;
     // Set the cursor to the end
+    console.log('2)EditText Watch Focus Name=', This.prop.Name)
     select()
 
-    /*
-        //thisElement.focus({ focusVisible: true });
-        setTimeout(function () {
-          //thisElement.focus({ focusVisible: true });
-          if (thisElement.select)
-            thisElement.select();
-    
-        }, 300);
-    
-        */
-
     return
-
   },
   { deep: false }
 )
@@ -1898,9 +1894,9 @@ const styleAssing = async () => {
     Styles.inputStyle.textAlign = 'right'
 
   if (Type == 'checkbox') {
-    //  console.log('2) EditText Name=', This.prop.Name, 'Styles.inputStyle.width =', Styles.inputStyle.width)
-    Styles.inputStyle.width = '15px'
-    Styles.inputStyle.borderRadius = '50%';
+
+    Styles.inputStyle.width = '13px'
+    Styles.inputStyle.borderRadius = '50%';  // No quitar esto porque quita el circulo
   }
 
 }
@@ -1996,9 +1992,13 @@ onMounted(async () => {
 
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
-    props.prop.First = false
-    props.prop.Focus = false
-    props.prop.Focus = true
+    // This.prop.First = false
+    This.prop.Focus = false
+    This.prop.Focus = true
+    // props.prop.First = false
+    // props.prop.Focus = false
+    // props.prop.Focus = true
+
     // select()
     //    onFocus()
     return
@@ -2041,21 +2041,7 @@ onMounted(() => {
 </script>
 <style scoped>
 .checkbox {
-  /*
-  text-align: center;
-  appearance: none;
-  height: 5px;
-  width: 5px;
-  padding: 10px;
-  margin-right: 5px;
-  border: 3px solid #D6D6D6;
-  border-radius: 50%;
-  cursor: pointer;
-  background: radial-gradient(circle at center, #f2f2f2 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 10px 10px;
-  */
+
 
   text-align: center;
   appearance: none;
@@ -2076,12 +2062,7 @@ onMounted(() => {
 }
 
 .checkbox:checked {
-  /*
-  background: radial-gradient(circle at center, black 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 10px 10px;
-  */
+
   background-color: black;
   background: radial-gradient(circle at center, black 50%, transparent 50%);
 

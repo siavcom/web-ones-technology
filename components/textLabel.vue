@@ -6,7 +6,7 @@
         " " }}</div>
 
 
-    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkBox" type="checkBox"
+    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
       :style="Styles.inputStyle" :checked="checkValue" readonly="true" />
 
     <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
@@ -633,10 +633,13 @@ const init = async () => {
   if (Styles.inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
     Styles.inputStyle.width = '99%'
 
-  if (props.prop.Type.toLowerCase() == 'checkbox')
-    Styles.inputStyle.width = '20px'
+  if (props.prop.Type.toLowerCase() == 'checkbox') {
 
+    Styles.inputStyle.width = '13px'
+    Styles.inputStyle.borderRadius = '50%';
+    Styles.captionStyle.alignContent = "center";
 
+  }
   if (Styles.inputStyle.maxWidth == 'auto')
     Styles.inputStyle.maxWidth = '99%'
 
@@ -696,8 +699,31 @@ const handler = (event) => {
 
 init();
 </script>
+
 <style scoped>
 .button {
   background-color: bind("props.style.backgroundColor")
+}
+
+.checkbox {
+  text-align: center;
+  appearance: none;
+  height: 31px;
+  width: 31px;
+  padding: 6px;
+  /* adjust this to control the space between border and background */
+  margin-right: 12px;
+  border: 3px solid #D6D6D6;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  background-clip: content-box;
+  box-sizing: border-box;
+  background: radial-gradient(circle at center, #f2f2f2 50%, transparent 50%);
+}
+
+.checkbox:checked {
+  background-color: black;
+  background: radial-gradient(circle at center, black 50%, transparent 50%);
 }
 </style>

@@ -163,6 +163,7 @@ export class COMPONENT {
 
   captionStyle = {
     accept: "",
+
     background: "", //transparent
     borderRadius: "1px",
     color: "",
@@ -178,7 +179,7 @@ export class COMPONENT {
     zIndex: 1, // profundidad
     visibility: 'visible',
     width: "fit-content",
-    alignContent: "flex-start" //"flex-end",
+    alignContent: "flex-start" //"flex-end", //alignContent: "center",
   }
 
   inputStyle = { ...this.captionStyle }

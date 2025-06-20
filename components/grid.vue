@@ -6,7 +6,8 @@
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99.5%' }">
+    <div v-if="scroll.dataPage && scroll.dataPage.length" :id="Id + '_grid_datos'" class="gridDatos"
+      :style="{ height: 'auto', width: '99.5%' }">
 
       <!--label text-align="center">{{ prop.ColumnTextLabel }}</label>  -->
       <h2 v-if="prop.Caption.length > 0">{{ prop.Caption }}</h2>
@@ -34,20 +35,20 @@
             <!-------------  Renglones  ------------------------>
             <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage && scroll.dataPage.length > 0"
               v-for="(item, key) in scroll.dataPage" :key="item && item.recno ? item.recno : 0"
-              :style="item.id != This.Row ? trStyleInactive : trStyleActive">
+              :style="This.Row < 0 || item.id != This.Row ? trStyleInactive : trStyleActive">
               <!-- No utilizar vertical-aling en renNumber-->
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
                 item.recno
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
-              <td :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
+              <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name" :style='{ "height": This[col.Name].style.height, padding: 0 }'
                 :headers="col.Name">
 
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
-                  v-bind:style="This[col.Name].style" @click.capture="asignaRenglon(item.id, col.Name)" @focusout.stop>
+                  v-bind:style="This[col.Name].style" @click.stop="asignaRenglon(item.id, col.Name)" @focusout.stop>
                 </textLabel>
                 <!--   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
 
@@ -247,11 +248,12 @@ const Status = ref(props.prop.Status);
 const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
 
-const Column = ref('')
+const Column = ref(This.Column) // Columna actual ''
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
 
-let First = ''
+//let First = ''
+let firstElement = ''
 
 //const Focus = ref(false)
 const trStyleActive =
@@ -491,6 +493,7 @@ watch(
 
         if (This.prop.Valid)
           This.prop.Valid = false
+
         return
       }
       if (!compValid[comp])
@@ -516,10 +519,18 @@ watch(
 
 
     if (This.Row == -1) {  // Recarga datos
+      console.log('1) dele row Grid watch Row = ', This.Row)
 
-      restableceStatus()
-      load_data = true
-      loadData()
+      //load_data = true
+      await last() // carga el ultimo renglon
+      //await loadData()
+      console.log('2) dele row Grid watch Row = ', This.Row)
+      //restableceStatus()
+
+      //if (scroll.dataPage.length > 0)
+      //  This.Row = 0
+
+
       return
     }
 
@@ -530,7 +541,16 @@ watch(
 
       await last(true)
 
+      console.log('1)Grid watch Row = ', This.Row)
+
+
       RowInsert = true
+
+      if (scroll.dataPage[scroll.dataPage.length - 1]) {
+        const Row = scroll.dataPage[scroll.dataPage.length - 1].id
+        await asignaRenglon(Row, firstElement)
+      }
+
       //RowInsert = false
 
       //This.Row = scroll.dataPage[rows].id
@@ -548,14 +568,20 @@ watch(
     // ponemos todos los campos de captura en ReadOnly=false
 
     if (This.Row >= 0) {
+
+      console.log('2) Grid watch Row = ', This.Row, 'Column.value=', Column.value, 'RowInsert=', RowInsert)
       for (let i = 0; i < This.main.length; i++) {
         const comp = This.main[i]
         This[comp].prop.ReadOnly = false;
         This[comp].prop.Valid = !RowInsert
 
         if (Column.value > '' && comp == Column.value) {
-          This[comp].prop.Focus = true
-          Column.value = ''
+          //     Aqui mero   . Checar que ya este montaDOM EL COMPONENTE PARA HACER EL FOCO
+          console.log('2) Grid watch Row Focus = ', This.Row)
+          if (!This[comp].prop.Focus) {
+            This[comp].prop.Focus = true
+            Column.value = ''
+          }
         }
       }
       if (RowInsert) {
@@ -578,16 +604,23 @@ watch(
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
 
+  // console.log('asignaRenglon Row=', Row, ' ColumnName=', ColumnName, ' This.Row=', This.Row, 'Column.value=', Column.value)
+  // This.Form.eventos.push(This.prop.Map + `.asignaRenglon(${Row},'${ColumnName}' )`)
+  // return
+
+
   if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
-    console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
+    //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
     for (const columna of This.elements) {
 
       if (!This[columna.Name].prop.Valid)
         return This[columna.Name].setFocus() // Se posiciona el cursor en el componente no validado
     }
   }
+
   This.Row = Row;
   Column.value = ColumnName
+
 }
 
 const asignaStyle = (style: {}, itemId: string) => {
@@ -610,14 +643,20 @@ const asignaStyle = (style: {}, itemId: string) => {
 
 const loadData = async (Pos?: number) => {
 
-  if (This.prop.RecordSource.length < 2) return
 
-  for (let i = 0; i < This.main.length && First == ''; i++) { // Recorre todos los estatus del grid
-    if (!This[This.main[i]].prop.Disabled)
-      First = This[This.main[i]].prop.Name
-  }
+  if (This.prop.RecordSource.length < 2) return
+  /*
+    for (let i = 0; i < This.main.length && First == ''; i++) { // Recorre todos los estatus del grid
+      if (!This[This.main[i]].prop.Disabled)
+        First = This[This.main[i]].prop.Name
+    }
+  
+  */
 
   This.Row = -100   // Quita la posicion actual del renglon
+
+
+
   load_data = false
 
   if (!scroll.rows || scroll.rows == 0) scroll.rows = 10
@@ -626,7 +665,7 @@ const loadData = async (Pos?: number) => {
 
   // Se inserto un renglon
   if (RowInsert) {
-    console.log('loadData() RowInsert')
+
     let page = Sql.View[props.prop.RecordSource].recnoVal.length / scroll.rows
     page = Math.trunc(page)
     if (scroll.page != page)
@@ -638,7 +677,7 @@ const loadData = async (Pos?: number) => {
     scroll.dataPage.pop() // borramos todos los renglones
 
 
-  // console.log('2) loadData()')
+
   try {
 
     if (!Sql || props.prop.RecordSource.length < 2
@@ -820,21 +859,24 @@ const appendRow = async () => {
   if (This.Row >= 0) {
     for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
       const comp = This.main[i]
-      console.log('before appendRow', comp, This[comp].prop.Valid)
+
       if (This[comp].prop.Capture && !This[comp].prop.Valid) { // Si alguno no esta Validado
         if (!This[comp].valid()) {
+          console.log('before appendRow Not valid', comp, This[comp].prop.Valid)
           This[comp].prop.Focus = true
           return
         }
       }
     }
   }
-  await last()
+  //await last()
   await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
-  if (scroll.dataPage[scroll.dataPage.length - 1]) {
-    const Row = scroll.dataPage[scroll.dataPage.length - 1].id
-    await asignaRenglon(Row, First)
-  }
+  /*  18/Jun/2025 
+    if (scroll.dataPage[scroll.dataPage.length - 1]) {
+      const Row = scroll.dataPage[scroll.dataPage.length - 1].id
+      await asignaRenglon(Row, First)
+    }
+  */
 
 }
 
@@ -963,10 +1005,12 @@ onMounted(async () => {
   console.log('Init Grid==>', props.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
   // await This.init()
-  let firstElement = ''
+
   //  for (const comp in This.elements) {
   for (let i = 0; i < This.main.length; i++) {
     const comp = This.main[i]
+    if (i == 0)
+      firstElement = comp
     if (This[comp].sw_translate)
       This[comp].translate()
 

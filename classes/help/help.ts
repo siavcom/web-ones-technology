@@ -53,7 +53,6 @@ export class HELP extends CONTAINER {
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
     this.style.height = 'auto'
 
-
     this.block[0] = {
       component: {
         [0]: this.cam_dat,
