@@ -278,9 +278,11 @@ export class GRID extends COMPONENT {
 
     if (force || await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
       this.prop.Status = 'A'
-      await deleteRow(recno, this.prop.RecordSource);
+      const result = await deleteRow(recno, this.prop.RecordSource);
+      console.log('deleteRow result=', result)
       // await restableceStatus()
-      this.Row = -1;
+      if (result)
+        this.Row = -1;
       // load_data = true
     }
   }

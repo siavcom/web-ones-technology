@@ -1284,10 +1284,10 @@ export const deleteRow = async (recno: number, alias: any) => {
         try {
 
             const response = await axiosCall(dat_vis);
-            if (response == null) {
-                MessageBox("Error al borrar en la base de datos", 16, "SQL Error");
-                return null;
-
+            if (!response || response == null) {
+                if (response == null)
+                    MessageBox("Error al borrar en la base de datos", 16, "SQL Error");
+                return false;
             }
             console.log('Db deleteRow SQLServer Rgistro borrado dat_vis=', dat_vis, 'Respuesta=', response)
 
@@ -2652,7 +2652,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
                 // statusText - The HTTP status message from the server response e.g. OK, Bad Request, Not Found.
                 //  const error = thrown;
                 //          errorAlert("SQL Data Base Error  :" + error.response.data);
-                await errorAlert("SQL Data Base Error  :" + messageError);
+                await errorAlert(messageError);
 
                 // si es un error de desconexion
                 const status = error.response.status.toString()
@@ -2697,6 +2697,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
                     if (id_con.value == "") numLogin = 3;
                 } else await This.value.delay(2000); // espera 2 segundos para tratar de reconectar
             }
+            return false;
         } // Fin catch error
     } while (numLogin < 3);
     // This.value.axiosActive = false;
