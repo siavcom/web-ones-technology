@@ -81,7 +81,7 @@ export class ThisForm extends captureForm {
       return false
     }
 
-    const data = await scatter('FIELDS', ['key_pri'], 'vi_cap_db_users')
+    const data = await scatter(['key_pri'], 'vi_cap_db_users')
 
     if (data.key_pri == 0)
       this.newUser = true

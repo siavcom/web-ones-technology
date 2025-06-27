@@ -19,11 +19,18 @@ export class des_fec extends COMPONENT {
 
   }
   override async init() {
-    this.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'M'); // resta un mes
+
+    // console.log('1) addInterval', addInterval('2025-03-01', "day", -29))
+
+    const dias = +this.Form.mPublic.fpo_pge.slice(8, 10)
+
+    this.prop.Value = addDate(this.Form.mPublic.fpo_pge, -dias, 'D'); // resta dias
+    //  console.log('4) des_fec stringToDate des_fec=', this.prop.Value)
+
   }
   override async interactiveChange() {
-
-    this.Parent.has_fec.prop.Value = this.prop.Value;
+    if (this.Parent.has_fec.prop.Value < this.prop.Value)
+      this.Parent.has_fec.prop.Value = this.prop.Value;
     return true;
   }
 

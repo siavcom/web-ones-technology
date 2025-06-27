@@ -23,7 +23,7 @@
       prop.Caption
     }}</span>
     <!--List Box -->
-    <div :id="Id + '_multiselect'" v-if="prop.MultiSelect" class="multiSelect" @lostFocus="validList()">
+    <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
       <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
         <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
@@ -233,7 +233,7 @@ const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
 let First = false
 let Focus = false
-
+const MultiSelect = ref(props.prop.MultiSelect)
 const Styles =
 {
   labelStyle: labelStyle,
@@ -284,7 +284,7 @@ const sw_focus = ref(false)
 
 
 
-if (props.prop.MultiSelect) {
+if (MultiSelect.value) {
   if (!Styles.style.borderStyle)
     Styles.style.borderStyle = "solid"
   if (!Styles.style.borderRadius)
@@ -346,7 +346,7 @@ const columnContainer = reactive({
   //zIndex: comboStyle.zIndex + 1
 })
 
-//if (props.prop.MultiSelect) {
+//if (multiSelect.value) {
 columnContainer.height = 'min-content'
 columnContainer.maxHeight = 'min-content'
 columnContainer.maxHeight = 'min-content'
@@ -518,7 +518,7 @@ const asignaValor = async () => {
 
   // console.log('1)asignaValor comboBox Name=', This.prop.Name, 'Value.value=', Value.value)
   let found = false
-  if (!props.prop.MultiSelect) {  // Si no es multi select, calcula el valor resultante
+  if (!MultiSelect.value) {  // Si no es multi select, calcula el valor resultante
     for (let i = 0; i < columnas.length && !found; i++) {
       //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
 
@@ -851,7 +851,7 @@ const onFocus = async () => {
           valor = data[campo]
       }
 
-      if (props.prop.MultiSelect) { // Si es multi seleccion generaramos el arreglo
+      if (MultiSelect.value) { // Si es multi seleccion generaramos el arreglo
         //console.log('Multiselect comboBox prop.Name=', props.prop.Name, 'valor=', valor, This.prop.Value)
         if (This.prop.Value.trim().length > 0)
           List.value = eval('[' + This.prop.Value.trim() + ']')
@@ -1055,7 +1055,7 @@ const renderComboBox = async (readData?: boolean) => {
     return
   }
 
-  if (props.prop.MultiSelect) {
+  if (MultiSelect.value) {
 
     if (This.prop.Value.trim().length > 0) {
       const listValue = "['" + This.prop.Value.trim().replaceAll(",", "','") + "']"
@@ -1068,7 +1068,7 @@ const renderComboBox = async (readData?: boolean) => {
   for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
     // asignamos el Value del BoundColum 
     let check = false
-    if (props.prop.MultiSelect) {
+    if (MultiSelect.value) {
       for (let i = 0; i < List.value.length; i++) {
         if (props.prop.ColumnCount <= 1 && List.value[i] == val_col[ren]) {
           check = true
@@ -1503,7 +1503,10 @@ onMounted(async () => {
 
   if (This.prop.Init) {
 
-    if (props.prop.MultiSelect)
+    if (props.prop.Style == 0)
+      MultiSelect.value = true
+
+    if (MultiSelect.value)
       Styles.labelStyle.alignContent = 'flex-start';
 
     let textWidth = 0

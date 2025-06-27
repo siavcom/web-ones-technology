@@ -580,7 +580,7 @@ export class tzo_usr extends CAPTURECOMPONENT {
 
    override async when_old() {
 
-      const data = await scatter('FIELDS', ['key_pri'], 'vi_cap_db_users')
+      const data = await scatter(['key_pri'], 'vi_cap_db_users')
       if (data.key_pri == 0) {
          //let Valor = (new Date().getTimezoneOffset() / 60).toString()
          let Valor = (new Date().toString().match(/([-\+][0-9]+)\s/)[1]).slice(0, 3) + ':' + (new Date().toString().match(/([-\+][0-9]+)\s/)[1]).slice(-2)

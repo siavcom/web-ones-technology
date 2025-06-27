@@ -22,12 +22,16 @@ export class op_tdo_tdo extends COMPONENT {
       this.prop.BoundColumn = 2; // = VFP
       this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px
       this.prop.Value = "?? ";
+      this.style.maxHeight = "200px";
+      this.inputStyle.width = "300px";
+      this.prop.MultiSelect = false;
+      this.style.width = "auto";
 
       //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
    }
    override async init() {
       var ins_loc = ''
-      const data = await SQLExec(`select des_tdo,tdo_tdo,coa_tdo,cop_nom,inv_tdo from man_cometdo where coa_tdo in ('C','A') and cop_nom in ('C','P') `, 'loc_cometdo')
+      const data = await SQLExec(`select des_tdo,tdo_tdo,coa_tdo,cop_nom,inv_tdo from man_cometdo where cop_nom in ('C','P') `, 'loc_cometdo')
       switch (this.Form.prop.Name) {
          case 'come5201':	//& Relación de documentos
             {
@@ -36,7 +40,7 @@ export class op_tdo_tdo extends COMPONENT {
                   tip_cop = 'C'
                else
                   tip_cop = 'P'
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A')  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
                break;
             }
          case 'come5204':	//& Relación de documentos
@@ -46,9 +50,21 @@ export class op_tdo_tdo extends COMPONENT {
                   tip_cop = 'C'
                else
                   tip_cop = 'P'
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A') order by des_tdo `
                break;
             }
+         case 'come5206':	//& Relación de documentos
+            {
+               var tip_cop = this.Form.Params[0].replaceAll("´", "")
+               if (tip_cop == 'VE')
+                  tip_cop = 'C'
+               else
+                  tip_cop = 'P'
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}' and inv_tdo='P' order by des_tdo `
+               this.prop.MultiSelect=true;
+               break;
+            }
+   
          default: {
             {
                var tip_cop = this.Form.Params[0].replaceAll("´", "")
@@ -56,7 +72,7 @@ export class op_tdo_tdo extends COMPONENT {
                   tip_cop = 'C'
                else
                   tip_cop = 'P'
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A')  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
                break;
             }
          }

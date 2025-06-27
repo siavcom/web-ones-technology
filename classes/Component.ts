@@ -128,7 +128,7 @@ export class COMPONENT {
     SqlUpdate: false, //Si es verdadero actualiza automaticamente
     Status: "I",
     Step: "1",
-    Style: 1, //commonly in comboBox
+    Style: 2, //commonly in comboBox
 
     TabIndex: 0,
     Tag: "",

@@ -1,3 +1,7 @@
+/*
+    * Composable to manage public variable values in a Vue.js application.
+    * This variables includes general parameters, user/session information, and other configurations.
+*/
 const state = reactive({
     Public: {
         Company: "",

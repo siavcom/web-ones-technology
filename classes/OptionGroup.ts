@@ -9,7 +9,7 @@
 import { COMPONENT } from "@/classes/Component";
 import { option } from './Option'
 
-export class optionGroup extends COMPONENT {
+export class OPTIONGROUP extends COMPONENT {
 
   options: [] = []
   constructor() {

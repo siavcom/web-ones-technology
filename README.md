@@ -1,24 +1,22 @@
-# Complete framework for web data aplication. 
+# COMPLETE WEB DEVELOPMENT PLATFORM for build SQL web applications.
 
 # This Framework is to make a simple SQL web data capture program in TypeScript (class-based), without knowledge of web programming (HTML, CSS, VUE).
 
 ### MORE INFORMATION IN
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/siavcom/web-ones-technology)
 
-
 # This Framework It's has 3 layers :
 
 - Frontend . Programed in Vue/Nuxt and  web-ones-technology framework.
    This frontEnd  is based on VFP (Visual Fox Pro) functions and instructions.
    It's have :
-   - SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access. See the SqlDictionary page where you can add tables with fields, index, and SQL views for manipulating data access.
-  - Menu maintenance page.
+  . SQL database maintenance dictionary, you can add tables with fields, index, and SQL views for manipulating data access. See the SqlDictionary page where you can add tables with fields, index, and SQL views for manipulating data access.
 
+  . Menu maintenance page.
 
 - Backend with Node express and VFPnode project https://github.com/siavcom/VFP-NODE. This backend is a server that provides a web service to the front-end of the framework.
 
 - SQL Database . Programed in Postgres or MSSQL (12 or newer).
-
 
 # It uses:
 - Vue 3 with SFC
@@ -716,7 +714,7 @@ this class is used to manipulate a SQL database it's have several methods:
 - skip(`<`rowNumbers`>`).
   Skip a reccord number of a local SQL table
 
-- scatter(`<`type`>`,`<`fieldArray`>`).
+- scatter(`<`fieldArray?`>`,`<`alias?`>`).
   Scatter values in a object values of a local SQL table 
 
 - scatterBlank(`<`fieldArray`>`,`<`alias?`>`).
@@ -778,6 +776,39 @@ this class is used to manipulate a SQL database it's have several methods:
              1 will update all records. If TableUpdate encounters a record that cannot be updated, it will fail at that point and return a value of false 
              2 will update all records. If a record cannot be updated, it will continue with the remaining records and update as many as it can. TableUpdate will return a value of false.
 
+## web-ones functions
+- addMonth(`<`date`>``<`month`>`) . Add a specified number of months to a given date.
+- addYear(`<`date`>``<`year`>`) . Add a specified number of years to a given date.
+- addDay(`<`date`>``<`day`>`) . Add a specified number of days to a given date.
+- left(`<`string`>``<`length`>`) . Return the leftmost characters of a string.
+- right(`<`string`>``<`length`>`) . Return the rightmost characters of a string.
+- at(`<`string`>``<`index`>`) . Return the character at a specified index in a string.
+- atc(`<`string`>``<`index`>`) . Return the character at a specified index in a string.
+- space(`<`length`>`) . Return a string of spaces.
+- len(`<`string`>`) . Return the length of a string.
+- int(`<`number`>`) . Return the integer part of a number.
+- rTrim(`<`string`>`) . Return a string with trailing spaces removed.
+- lTrim(`<`string`>`) . Return a string with leading spaces removed.
+- allTrim(`<`string`>`) . Return a string with leading and trailing spaces removed.
+- replicateString(`<`string`>``<`length`>`) . Return a string repeated a specified number of times.
+- rat(`<`string`>``<`index`>`) . Return the last position of a given substring in a string.
+- replace(`<`string`>``<`oldString`>``<`newString`>`) . Replace a substring with another substring in a string.
+- asc(`<`char`>`) . Return the ASCII code of a character.
+- substr(`<`string`>``<`first`>``<`length?`>`) . Extract a substring from a string.
+- strtran(`<`string`>``<`oldString`>``<`newString`>`) . Replace a substring with another substring in a string.
+- dateToSql(`<`date`>`) . Convert a date to a string in the format YYYYMMDD.
+- dateToString(`<`date`>`) . Convert a date to a string in the format YYYY-MM-DD.
+- stringToDate(`<`string`>`) . Convert a string to a date in the format YYYY-MM-DD.
+- currentTime() . Return the current time as a string in the format YYYY-MM-DD HH24:MI:SS.
+- dateTimeToSql(`<`date`>`) . Convert a date to a string in the format YYYYMMDDHHMMSS.
+- stringToTime(`<`string`>`) . Convert a string to a date in the format YYYY-MM-DD HH24:MI.
+- dayToMilliseconds(`<`day`>``<`Type?`>`) . Convert days to milliseconds.
+- addDate(`<`date`>``<`data`>``<`Type?`>`) . Add a specified amount of time to a given date. Type='D' (default) to add days, 'M' to add months, 'Y' to add years, 'W' to add weeks.
+- multiFilter(`<`array`>``<`filters`>`) . Filter an array based on the values of specific fields.
+- MessageBox(`<`text`>``<`type?`>``<`title?`>``<`timer?`>`) . Display a message box with the specified text, type, title, and timer duration. 
+- Delay(`<`ms`>`) . Wait for a specified number of milliseconds.
+- objToLowerCase(`<`object`>`) . Convert a name of elements of an object to lowercase.
+- roundTo(`<`n`>``<`digits?`>`) . Rounds a number to a specified number of decimal places.
 
 ## Recommended IDE Setup
 

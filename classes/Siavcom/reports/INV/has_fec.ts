@@ -19,6 +19,7 @@ export class has_fec extends COMPONENT {
         this.prop.Caption = 'Hasta la fecha'
         this.prop.Type = 'date'
         this.prop.Value = '1900-01-01'
+        this.prop.ErrorMessage = 'La fecha debe ser mayor o igual a la fecha desde'
     }
     override async init() {
 
@@ -26,8 +27,10 @@ export class has_fec extends COMPONENT {
     }
     override async valid() {
 
-        if (this.prop.Value < this.Parent.des_fec.prop.Valid)
+        if (this.prop.Value < this.Parent.des_fec.prop.Value) {
+            MessageBox('La fecha debe ser mayor o igual a la fecha desde', 16, 'ERROR')
             return false
+        }
         else
             return true
 

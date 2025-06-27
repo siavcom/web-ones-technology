@@ -282,7 +282,8 @@ export const strtran = (stringSource: string, stringSearch: string, stringReplac
  * @returns {string} - La fecha convertida a AAAAMMDD.
  */
 export const dateToSql = (fecha: string): string => {
-  return fecha.replaceAll("-", "").slice(0, 8);
+  const new_date = new Date(fecha).toISOString().slice(0, 10)
+  return new_date.replaceAll("-", "");
 };
 
 /*
@@ -316,7 +317,8 @@ export const dateToString = (texto: Date): string => {
   if (texto == null || texto == undefined) {
     texto = new Date("1900-01-01 00:00:00");
   }
-  return texto.toString();
+  // return texto.toString();
+  return new Date(texto).toISOString()
 };
 
 /**
@@ -378,7 +380,9 @@ export const stringToDate = (texto?: string): string => {
   let date = texto
   if (date.length >= 10)
     date = date.slice(0, 10) + 'Z';
-  console.log('stringToDate date=', date)
+  console.log('1) stringToDate date=', date)
+  console.log('2) stringToDate date=', new Date(date).toISOString())
+  console.log('3) stringToDate date=', new Date(date).toISOString().substring(0, 10))
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
@@ -414,45 +418,99 @@ export const dayToMilliseconds = (day: number, Type?: string): number => {
     return day * 1000 * 60 * 60 * 24 * 7; // Por 7 dias de la semana
 };
 
-////////////////////////////////////////////////////
-// Suma fecha
-// date : date
-// data : data to sum
-// tipo : type ( 'D'=days,'W'=weeks, 'M'=months, Null=date)
 
 /**
- * Suma una fecha.
- * @param {Date} date - Fecha a sumar.
- * @param {number} data - Numero de dias o semanas a sumar.
- * @param {string} [tipo] - Tipo de suma. 'D' para dias, 'W' para semanas, 'M' para meses, 'Y' para a os.
- * @returns {Promise<string>} - La fecha resultante en formato 'AAAA-MM-DD'.
+ * Adds a specified number of days to a given date.
+ *
+ * @param {string} dateString - The initial date to which the days will be added.
+ * @param {number} dias - The amount of days to add.
+ * @returns {string} - A new date string with the specified days added.
  */
-export const addDate = (date: Date, data: any, tipo?: string): string => {
-  const thisDate = new Date(date);
+export function addDay(dateString: string, dias: number): string {
+  const fechaActual = new Date(dateString);
+  const fechaMilisegundos = fechaActual.getTime() + (dias * 24 * 60 * 60 * 1000);
+  return new Date(fechaMilisegundos).toISOString().slice(0, 10); // ISOString es formato 'AAAA-MM-DD'
+}
+
+/**
+ * Adds a specified number of months to a given date.
+ *
+ * @param {string} dateString - The initial date to which the months will be added.
+ * @param {number} months - The amount of months to add.
+ * @returns {string} - A new date string with the specified months added.
+ */
+export function addMonth(dateString: string, months: number): string {
+  const fecha = new Date(dateString);
+  let mes = fecha.getMonth();
+  let año = fecha.getFullYear();
+  let dia = fecha.getDate() + 1;
+  let sumaAno = Math.trunc(months / 12)
+  año = año + sumaAno
+  months = months - Math.trunc(months / 12) * 12
+  mes = mes + months
+  if (mes > 11) {
+    mes = mes - 12
+    año++
+  }
+  if (mes < 0) {
+    mes = mes + 12
+    año--
+  }
+
+  const diasMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  if (año % 4 == 0 && año % 100 != 0 || año % 400 == 0) {
+    diasMes[1] = 29 //Febrero tiene 29 dias si es bisiesto
+  }
+
+  if (dia > diasMes[mes])
+    dia = diasMes[mes] //Si el dia es mayor al ultimo dia
+
+  console.log('1) ThisForm init dia', dia, mes, año)
+
+  return new Date(año, mes, dia).toISOString().slice(0, 10);
+
+}
+
+/**
+ * Adds a specified number of years to a given date.
+ *
+ * @param {string} dateString - The initial date to which the years will be added.
+ * @param {number} years - The amount of years to add.
+ * @returns {string} - A new date string with the specified years added.
+ */
+export function addYear(dateString: string, years: number): string {
+  let months = years * 12
+  return addMonth(dateString, months);
+
+}
+
+/**
+ * Adds a specified amount of time to a given date.
+ *
+ * @param {string} dateString - The initial date to which the time will be added.
+ * @param {number} data - The amount of time to add.
+ * @param {string} [tipo='D'] - The type of time to add. Can be 'Y' for years, 'M' for months, 'D' for days, or 'W' for weeks.
+ * @returns {string} - A new date string with the specified time added.
+ */
+export const addDate = (dateString: string, data: any, tipo?: string): string => {
+
   if (!tipo)
-    tipo = 'D'
-  /*
-    if (tipo == "W" || tipo == "S" || tipo == "D") {
-      return new Date(thisDate.getTime() + (await dayToMilliseconds(data, tipo)))
-        .toISOString()
-        .substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
-    }
-  */
+    tipo = 'D';
 
+  switch (tipo.toUpperCase()) {
+    case 'M':
+      return addMonth(dateString, data)
+    case 'D':
+      return addDay(dateString, data)
+    case 'Y':
+      return addYear(dateString, data)
+    case 'W':
+      tipo = 'day';
+      data = data * 7;
+      return addDay(dateString, data)
+  }
 
-  let day = +thisDate.toISOString().slice(8, 10)
-  let year = thisDate.getFullYear();
-  let month = thisDate.getMonth();
-
-  if (tipo == "W") day = day + data * 7;
-
-  if (tipo == "D") day = day + data;
-
-  if (tipo == "Y") year = year + data;
-
-  if (tipo == "M") month = month + data;
-
-  return new Date(year, month, day).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
+  return addDay(dateString, data)
 };
 
 ///////////////////////////////////////////////

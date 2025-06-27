@@ -16,6 +16,7 @@ export class alm_rep extends COMPONENT {
 
     this.prop.Caption = "Almacen";
     this.prop.BaseClass = "comboBox";
+    this.prop.RowSourceType = 4;  //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px /
@@ -46,6 +47,15 @@ export class alm_rep extends COMPONENT {
         this.inputStyle.width = "300px";
         break;
       }
+       case 'come5206': {
+        this.prop.BoundColumn = 2;
+        this.prop.ColumnCount = 2;
+        this.prop.RowSource = `select des_tda,alm_tda  from loc_cometda 
+         order by des_tda `
+        this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px /
+        break;
+      }
+
       case 'come3237': {
         this.prop.BoundColumn = 2;
         this.prop.ColumnCount = 4;
@@ -60,7 +70,5 @@ export class alm_rep extends COMPONENT {
       }
 
     }
-    this.prop.RowSourceType = 4;  //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
-
   }
 }
