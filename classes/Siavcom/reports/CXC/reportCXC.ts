@@ -8,8 +8,6 @@
 
 // Importa las clases base a este espacio de trabajo
 import { reportForm } from "@/classes/reportForm/reportForm"
-import { des_fec } from "./des_fec";
-import { has_fec } from "./has_fec";
 import { cx_tdo_tdo } from "./cx_tdo_tdo";
 import { cx_tcd_tcd } from "./cx_tcd_tcd";
 import { con_con } from "./con_con";
@@ -17,8 +15,6 @@ import { con_con } from "./con_con";
 // Generamos la clase en memoria 
 export class reportCXC extends reportForm {
 
-  public des_fec = new des_fec()
-  public has_fec = new has_fec()
   public cx_tdo_tdo = new cx_tdo_tdo()
   public cx_tcd_tcd = new cx_tcd_tcd()
   public con_con = new con_con()
@@ -60,9 +56,9 @@ export class reportCXC extends reportForm {
     this.prop.cam_pri = 'cod_nom' // campo de buqueda principal
     // Campos de orden de la vista
     this.fields = [
-      ["cod_nom", "Código del " + nom_par],
-      ["nom_nom", "Nombre del " + nom_par],
-      ["rfc_nom", "RFC del " + nom_par]
+      ["cod_nom", "Código del " + nom_par, "'000000'", "'999999'"],
+      ["nom_nom", "Nombre del " + nom_par, "''", "'ZZZZZZZZZZZZZ'"],
+      ["rfc_nom", "RFC del " + nom_par, "''", "'ZZZZZZZZZZZZZ'"]
 
     ]
   }

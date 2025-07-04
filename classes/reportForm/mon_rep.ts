@@ -35,14 +35,15 @@ export class mon_rep extends COMPONENT {
   public async init() {
     const m = this.Form.mPublic;
     const des_mon = [
-      "Todas",
+      //     "Todas",
       m.pr1_pge,
       m.pr2_pge,
       m.pr3_pge,
       m.pr4_pge,
       m.pr5_pge,
     ];
-    const num_mon = [0, 1, 2, 3, 4, 5];
+    const num_mon = [ // 0,
+      1, 2, 3, 4, 5];
     this.prop.RowSource = [des_mon, num_mon];
     this.prop.Value = 0;
   }

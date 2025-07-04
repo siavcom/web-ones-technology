@@ -64,10 +64,22 @@ export class op_tdo_tdo extends COMPONENT {
                this.prop.MultiSelect=true;
                break;
             }
+         case 'come5208':	//& Insumos por surtir
+            {
+               var tip_cop = this.Form.Params[0].replaceAll("´", "")
+               if (tip_cop == 'VE')
+                  tip_cop = 'C'
+               else
+                  tip_cop = 'P'
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}' and inv_tdo='P' order by des_tdo `
+               this.prop.MultiSelect=true;
+               break;
+            }
+
    
          default: {
             {
-               var tip_cop = this.Form.Params[0].replaceAll("´", "")
+               var tip_cop ='VE' ;//this.Form.Params[0].replaceAll("´", "")
                if (tip_cop == 'VE')
                   tip_cop = 'C'
                else

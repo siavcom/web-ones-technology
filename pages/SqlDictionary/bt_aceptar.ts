@@ -271,12 +271,22 @@ export class bt_aceptar extends COMPONENT {
       m.sis_sis = this.Form.sis_sis.prop.Value;
 
       this.Form.grid_tablas.prop.RecordSource = '';
-      await this.Form.db.use("vi_cap_cometab", m);
-      // console.log('vi_cap_cometab=', await this.Sql.localAlaSql('select * from vi_cap_cometab'))
+
+      await use("vi_cap_cometab", m);
+
+      console.log('1) bt_aceptar vi_cap_cometab recCount =', await recCount("vi_cap_cometab"))
+
+
+      if (await recCount("vi_cap_cometab") == 0) {
+        await appendBlank("vi_cap_cometab", m);
+      }
+      console.log('2) bt_aceptar vi_cap_cometab recCount =', await localAlaSql("select * from vi_cap_cometab"))
+
+
 
       this.Form.grid_tablas.prop.RecordSource = 'vi_cap_cometab';
-
       this.Form.grid_tablas.prop.Visible = true;
+
       this.Form.bt_gen_all_models.prop.Visible = true;
       //  this.Form.btGenTablas.prop.Visible = true
     }

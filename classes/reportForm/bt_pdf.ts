@@ -61,7 +61,7 @@ export class bt_pdf extends COMPONENT {
 
 
     const query = await this.Form.gen_query()
-    // console.log('bt_pdf',query,this.Form.for_imp.prop.Value)
+    console.log('bt_pdf', 'Data=', this.Form.data)
 
     // const dataView=await this.Form.obtData()  
     this.Parent.report.prop.Disabled = false

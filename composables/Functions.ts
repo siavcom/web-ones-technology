@@ -615,6 +615,20 @@ export const numberFormat = (
 // Fucniones varias
 //////////////////////////////////////////////
 
+/**
+ * Funcion que devuelve un valor dependiendo de una condicion.
+ * Si la condicion es verdadera devuelve el primer valor, si es falsa devuelve el segundo.
+ * @param condicion - condicion a evaluar
+ * @param verdadero - valor a devolver si la condicion es verdadera
+ * @param falso - valor a devolver si la condicion es falsa
+ * @returns el valor devuelto dependiendo de la condicion
+ */
+export const iif = (condicion: boolean, verdadero: any, falso: any): any => {
+  if (condicion) return verdadero;
+  else return falso;
+
+};
+
 //////////////////////////////////////////////
 // Clase : MessageBox
 // Author : Fernando Cuadras Angulo

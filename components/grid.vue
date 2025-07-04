@@ -347,13 +347,13 @@ watch(
   () => props.prop.RecordSource,
   async (RecordSource, old_val) => {
 
-    if (props.prop.Visible && RecordSource.length > 1) {
+    if (This.prop.Visible && RecordSource.length > 1) {
       // inicializamos scroll
       scroll.page = 0
       scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
       scroll.top = true     //Pprincipio de la pagina
       scroll.bottom = false // Final de pagina
-      console.log('loadData() RecordSource', RecordSource)
+      console.log('1) watch RecordSource loadData() RecordSource=', RecordSource, Sql.View[RecordSource])
       await loadData()
       if (Sql.View[RecordSource]) {
         if (Sql.View[RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
@@ -372,15 +372,23 @@ watch(
   async (Visible, old_val) => {
 
     // Si no hay renglones , aumenta un renglon
-    if (Visible && props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource]) {
+    if (Visible && props.prop.RecordSource.length > 1) {
 
-      // si no hay datos, inserta renglon 
-      /* 26 Noviembre 2024 
-      if (Sql.View[props.prop.RecordSource].recnoVal.length == 0)
-        await appendRow()
-      else
-      */
-      loadData()
+      scroll.page = 0
+      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
+      scroll.top = true     //Pprincipio de la pagina
+      scroll.bottom = false // Final de pagina
+      console.log('1) watch RecordSource loadData() RecordSource=', RecordSource, Sql.View[RecordSource])
+      await loadData()
+      console.log('loadData() RecordSource=', RecordSource, Sql.View[RecordSource])
+      if (Sql.View[RecordSource]) {
+        if (Sql.View[RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
+          await appendRow()
+
+      }
+
+
+
 
     }
   },

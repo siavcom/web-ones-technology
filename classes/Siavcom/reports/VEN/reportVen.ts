@@ -2,21 +2,15 @@
 // Clase : Forma para generar reportes de vendedores
 // Author : MGSR
 // Creacion : 14/mayo/2025
-// Ult.Mod  : 
+// Ult.Mod  : 30/junio/2025
 /////////////////////////////////////////////
 
 
 // Importa las clases base a este espacio de trabajo
 import { reportForm } from "@/classes/reportForm/reportForm"
-import { des_fec } from "./des_fec";
-import { has_fec } from "./has_fec";
-
 
 // Generamos la clase en memoria 
 export class reportVen extends reportForm {
-
-  public des_fec = new des_fec()
-  public has_fec = new has_fec()
 
   constructor() {
     super()
@@ -45,7 +39,7 @@ export class reportVen extends reportForm {
 
     if (!sw_detallado) {
       this.has_fec.prop.Value = this.Form.mPublic.fpo_pge;
-      this.des_fec.prop.Value = await addDate(this.Form.mPublic.fpo_pge, -1, 'M'); // resta un mes
+      this.des_fec.prop.Value = await addMonth(this.Form.mPublic.fpo_pge, -1); // resta un mes
     }
     //  console.log("ThisForm des_fec=",this.des_fec.prop.Value,' has_fec', this.has_fec.prop.Value);
   }

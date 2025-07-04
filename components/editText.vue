@@ -3,7 +3,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -107,7 +107,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -383,6 +383,9 @@ const compJson = ref([])
 
 const typeNumber = ref('text');
 
+
+
+
 const maska = ref({
   mask: props.prop.InputMask,
 
@@ -404,7 +407,6 @@ const maska = ref({
   }
 
 })
-
 
 // convierte "!" en "A" en el inpputMask (VFP)
 maska.value.mask = maska.value.mask.replace(/!/gi, 'A')
@@ -1465,6 +1467,14 @@ watch(
   { deep: false }
 );
 
+
+watch(
+  () => This.prop.InputMask,
+  () => {
+    maska.value.mask = This.prop.InputMask.replace(/!/gi, 'A')
+  },
+  { deep: false }
+);
 
 /////////////////////////////////////////////////////////////////////
 // change This.prop.Enabled

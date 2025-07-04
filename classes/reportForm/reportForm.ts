@@ -18,6 +18,8 @@ import { for_imp } from "./for_imp";
 import { report } from "./report/report";
 import { reportFields } from "./reportFields";
 import { bt_pdf } from "./bt_pdf";
+import { des_fec } from "./des_fec";
+import { has_fec } from "./has_fec";
 
 
 import { des_dat } from './des_dat'
@@ -48,6 +50,9 @@ export class reportForm extends FORM {
   public bt_pdf = new bt_pdf();
   public report = new report();
 
+  public des_fec = new des_fec();
+  public has_fec = new has_fec();
+
   tab_ord: string = ""; // tabla para indicar el orden del reporte
   vis_rep: string = ""; // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ""; // variables extras para el orden del select
@@ -64,20 +69,22 @@ export class reportForm extends FORM {
     super();
     this.mon_rep.prop.TabIndex = 101;
     this.tip_rep.prop.TabIndex = 102;
-    this.var_ord.prop.TabIndex = 103;
+    this.des_fec.prop.TabIndex = 103;
+    this.has_fec.prop.TabIndex = 104;
+    this.var_ord.prop.TabIndex = 111;
 
     //  this.cam_dat.prop.TabIndex = 104;
-    this.tip_con.prop.TabIndex = 105;
-    this.des_dat.prop.TabIndex = 106;
-    this.has_dat.prop.TabIndex = 107;
+    this.tip_con.prop.TabIndex = 112;
+    this.des_dat.prop.TabIndex = 113;
+    this.has_dat.prop.TabIndex = 114;
 
-    this.queryPri.prop.TabIndex = 108;
-    this.queryUsu.prop.TabIndex = 109;
-    this.queryGen.prop.TabIndex = 110;
+    this.queryPri.prop.TabIndex = 115;
+    this.queryUsu.prop.TabIndex = 116;
+    this.queryGen.prop.TabIndex = 117;
 
-    this.for_imp.prop.TabIndex = 111;
-    this.reportFields.prop.TabIndex = 112;
-    this.report.prop.TabIndex = 113;
+    this.for_imp.prop.TabIndex = 118;
+    this.reportFields.prop.TabIndex = 119;
+    this.report.prop.TabIndex = 120;
 
     this.prop.cam_pri = ''
 
@@ -383,7 +390,7 @@ export class reportForm extends FORM {
 
     var executeQuery: string = "select * from " + this.vis_rep;
 
-    const m = await this.obtData(); // Variable de memoria los propiedades de la forma
+    // const m = await this.obtData(); // Variable de memoria los propiedades de la forma
 
     //    if (this.query.length > 1) executeQuery = this.query;
 
@@ -399,8 +406,6 @@ export class reportForm extends FORM {
       }
     }
 
-
-
     if (this.queryGen.prop.Visible) {
       const where_gen = await this.gen_where("queryGen");
       if (where_gen.length > 3) {
@@ -414,9 +419,6 @@ export class reportForm extends FORM {
       orden = orden + "," + this.ord_vis;
     }
 
-
-
-
     if (this.sqlQuery) {
       // si hay generacion de query
 
@@ -426,7 +428,7 @@ export class reportForm extends FORM {
 
       executeQuery = executeQuery + where + orden;
     }
-
+    const m = await this.obtData(); // Variable de memoria los propiedades de la forma
 
 
     console.log("reportForm query", executeQuery);
@@ -467,6 +469,9 @@ export class reportForm extends FORM {
     this.data = data;
     data['ord_rep'] = this.ord_rep // Aumenta la propiedad this.con_rep
     this.data = data;
+
+    console.log("bt_json obtData= ", data);
+
     return data;
   }
 
