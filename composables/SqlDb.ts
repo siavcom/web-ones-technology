@@ -1070,11 +1070,9 @@ export const tableUpdate = async (
 /// ////////////////////////////////////////////
 export const appendBlank = async (alias?: string, m?: {}) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-
-
     const ThisForm = This.value.Form;
 
-    console.log("Db appendBlank alias=", alias, 'Public', Public.value);
+    console.log("3) Db appendBlank alias=", alias, 'm', m);
 
     if (!alias) {
         // si no se da el alias
@@ -1142,8 +1140,13 @@ export const appendBlank = async (alias?: string, m?: {}) => {
                 );
 
                 console.error(
-                    "appendBlank can't eval(" + val_eval + ")",
-                    "Error=",
+                    " appendBlank can't eval(" +
+                    val_eval +
+                    ") campo=" +
+                    campo +
+                    " alias=" +
+                    alias +
+                    " Error=" +
                     error
                 );
 

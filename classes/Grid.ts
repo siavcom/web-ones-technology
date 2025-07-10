@@ -245,11 +245,21 @@ export class GRID extends COMPONENT {
 
     if (!mem) mem = {};
 
-    const { ...m } = mem;
+    let m = appendM(mem, Public.value)
 
-    // Leemos variables publicas
-    for (const variable in this.Form.mPublic)
-      m[variable] = this.Form.mPublic[variable];
+    //const { ...m } = mem;
+
+    /*
+        // Leemos variables publicas
+        m=appendM(m,Public.value)
+    
+        for (const variable in Public.value) {
+          m[variable] = Public.Value[variable];
+    
+    
+        }
+    */
+
 
     // leemos valores de los componentes de la forma
 
@@ -262,7 +272,6 @@ export class GRID extends COMPONENT {
     }
     // select(this.prop.RecordSource)
 
-    console.log('2) appendRow comedat m=', m)
     const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     this.prop.Disabled = false;
 

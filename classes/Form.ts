@@ -71,9 +71,9 @@ export class FORM extends COMPONENT {
         Public.value[comp] = Var.value[comp];
 
 
-    this.mPublic = Var.value;
+    this.mPublic = Public.value;
     this.dialect = dialect.value;
-    console.log("Form :", this.prop.Name, "dialect=", this.dialect, 'Puiblic=', Public.value, 'this.mPublic=', this.mPublic);
+    console.log("ThisForm :", this.prop.Name, "dialect=", this.dialect, 'Puiblic=', Public.value, 'this.mPublic=', this.mPublic);
 
   }
 
