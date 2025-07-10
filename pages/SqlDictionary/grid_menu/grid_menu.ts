@@ -51,19 +51,7 @@ export class grid_menu extends GRID {
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow() {
-    /*
-    // Obtiene el consecutivo con_ind del cursor local
-    const data=await this.Form.db.VfpCursor("select max(num_ind) as num_ind from vi_cap_comeind\
-    where  (trim(cam_ind) <> 'USU_CRE' and \
-    trim(cam_ind) <> 'USU_USU' and \
-    trim(cam_ind) <> 'TIE_UAC' and \
-    trim(cam_ind) <> 'TIE_CRE' and \
-    trim(cam_ind) <> 'TIMESTAMP' and \
-    trim(cam_ind) <> 'KEY_PRI') ")
 
-    //console.log('appendRow',data[0])    
-    const con_ind=data[0].con_ind+.1     
- */
     // asigna campos que no estan en el grid
 
     const m = { sis_sis: "   ", tpr_prg: "S" };

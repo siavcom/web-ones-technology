@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -560,7 +560,8 @@ const asignaValor = async () => {
 const toggleClick = async () => {
 
   if (!toggle.value) {
-    //     await when()   // 18/Junio/2025
+    if (!sw_focus.value)
+      await when()   // 18/Junio/2025
   }
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
@@ -1007,6 +1008,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
     case 3: {   // SQL Server Query
       data = await SQLExec(RowSource, 'MEMVAR') //This.Form.db.
+
       //console.log('render comboBox data ===>', data)
 
       break

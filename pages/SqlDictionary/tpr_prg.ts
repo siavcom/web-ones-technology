@@ -34,18 +34,6 @@ export class tpr_prg extends COMPONENT {
     this.style.fontWeight = "bold";
     this.prop.Visible = false;
 
-
-    /*
-        this.prop.RowSource = [
-          ['Activo', 'Bloqueado', 'Promoción', 'Mantenimiento', 'Desactivo'],
-          ['A', 'B', 'P', 'M', 'D']];
-        this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
-        this.prop.ColumnCount = 2;
-        this.prop.BoundColumn = 2;
-    */
-
-
-
   }
 
 
@@ -53,10 +41,9 @@ export class tpr_prg extends COMPONENT {
     this.Form.sis_sis.prop.Visible = false;
     this.Form.nom_tab.prop.Visible = false;
     this.Form.grid_menu.prop.Visible = false;
-
+    this.Form.bt_aceptar.prop.Value = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     return true;
   }
-  override async afterMounted(): Promise<void> {
-    this.Form.bt_aceptar.prop.Value = 'Accept';
-  }
+
+
 }

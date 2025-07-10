@@ -80,8 +80,7 @@ export class grid extends GRID {
     let vis_cap = "vi_cap_form";
     if ((this.Name = "grid_form")) vis_cap = "vi_cap_grid";
 
-    const data = await this.Form.db
-      .VfpCursor(`select max(con_dat) as con_dat from ${vis_cap}\
+    const data = await localAlaSql(`select max(con_dat) as con_dat from ${vis_cap}\
    where  (trim(cam_dat) <> 'USU_CRE' and \
    trim(cam_dat) <> 'USU_USU' and \
    trim(cam_dat) <> 'TIE_UAC' and \

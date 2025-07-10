@@ -80,7 +80,6 @@ export class bt_aceptar extends COMPONENT {
     }
 
     const session = Session();
-
     const { id_con, pass, user, nom_emp } = storeToRefs(session); //pasa los elementos por referencia al Global
 
     id_con.value = "";

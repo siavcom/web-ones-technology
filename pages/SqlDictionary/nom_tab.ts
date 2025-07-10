@@ -23,24 +23,24 @@ export class nom_tab extends COMPONENT {
     this.prop.RowSource = '' // "select des_tab,nom_tab,sis_sis from vi_cap_cometab order by sis_sis,nom_tab";
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "60%,25%,15%";
+    this.prop.ColumnWidths = "200px,150px,150px";
     this.prop.Visible = false;
     this.prop.MultiSelect = false;
     this.prop.List = [];
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.inputStyle.fontSize = "17px";
     this.inputStyle.fontWeight = "bold";
-    this.inputStyle.width = "500px";
-
+    this.style.width = "700px";
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
 
   }
-
-  ////////////////////////////////
-  public async when() {
-    // public setFocus = async () => {
-    // console.log('nom_tab when')
+  override async when() {
+    this.interactiveChange()
+    return true
+  }
+  override async interactiveChange() {
+    // console.log('nom_tab interactiveChange')
     this.Form.grid_datos.prop.Visible = false;
     this.Form.grid_vistas.prop.Visible = false;
     this.Form.grid_indices.prop.Visible = false;
@@ -51,12 +51,11 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
     this.Form.bt_aceptar.prop.Visible = true;
-    this.Form.bt_aceptar.prop.Value = 'Accept';
+    this.Form.bt_aceptar.prop.Value = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
 
-    return true;
   }
-  override async afterMounted(): Promise<void> {
-    this.Form.bt_aceptar.prop.Value = 'Accept';
-  }
+  // override async afterMounted(): Promise<void> {
+  //   this.Form.bt_aceptar.prop.Value = 'Accept';
+  // }
 }
 

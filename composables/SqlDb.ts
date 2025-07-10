@@ -146,6 +146,18 @@ export const View = async () => {
     return This.value.View
 }
 
+/**
+ * Release the specified SQL view alias, and delete the corresponding table
+ * from both the "Now" and "Last" databases.
+ * 
+ * @param alias - (Optional) The alias name of the view to be released.
+ *                If not provided, the current working area alias is used.
+ * 
+ * @returns true if the view was successfully released, otherwise false.
+ * 
+ * Note: This function does not delete the view definition, it only deletes the
+ * table associated with the view from both the "Now" and "Last" databases.
+ */
 export const releaseUse = async (alias?: string) => {
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
@@ -162,6 +174,39 @@ export const releaseUse = async (alias?: string) => {
     }
 
 }
+
+/**
+ * Locates the first record in a local SQL table matching the specified condition.
+ * 
+ * @param where - The SQL condition to locate the record.
+ * @param alias - (Optional) The alias name of the view to be used. If not provided, the current working area alias is used.
+ * 
+ * @returns The first record matching the condition if found, otherwise returns false.
+ * 
+ * Updates the `found` property of the view to indicate whether a record was found.
+ */
+
+export const locate = async (where: string, alias?: string) => {
+
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    if (!alias)       // si no se da el alias
+        alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+
+    const res = await localAlaSql(`SELECT top 1* FROM Now.${alias} WHERE ${where} order by recno;`)
+
+    if (res && res.length > 0) {
+        This.value.View[alias].Recno = res[0].recno
+
+        return res[0]
+    }
+    This.value.View[alias].Recno = 0
+
+    return false
+
+
+}
+
 
 /// /////////////  Vfp Use nodata ///////////////////
 // nom_vis : Nombre de la vista a utilizar
@@ -213,6 +258,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             This.value.View[alias].recno = 0; // Registro en cero
             This.value.View[alias].eof = false; // Fin de archivo
             This.value.View[alias].bof = false; // Principio de archivo
+
             This.value.View[alias].row = -1; // Renglon posicionado el registro
 
 
@@ -329,6 +375,7 @@ export const use = async (
             This.value.View[alias].eof = false; // Fin de archivo
             This.value.View[alias].bof = false; // Principio de archivo
             This.value.View[alias].row = -1; // Renglon posicionado el registro
+
         } else {
             delete This.value.View[alias]
             await localAlaSql("drop table if exists Now." + alias);
@@ -521,7 +568,7 @@ export const requery = async (alias?: string) => {
 /////////////  Hace un requery de una vista /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
 ////////////////////////////////////////////
-export const tablerevert = async (alias?: string) => {
+export const tableRevert = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias)       // si no se da el alias
@@ -1024,8 +1071,10 @@ export const tableUpdate = async (
 export const appendBlank = async (alias?: string, m?: {}) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
+
     const ThisForm = This.value.Form;
-    console.log("Db appendBlank this", ThisForm);
+
+    console.log("Db appendBlank this", ThisForm, 'this', this);
 
     if (!alias) {
         // si no se da el alias
@@ -1077,6 +1126,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
             try {
                 val_eval = val_eval.replaceAll(String.fromCharCode(13), ' ')
                 val_eval = val_eval.replaceAll(String.fromCharCode(10), ' ')
+                val_eval = val_eval.replaceAll('this.Form', 'ThisForm')
 
                 val_defa = eval(val_eval);
             } catch (error) {
@@ -1496,6 +1546,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
     This.value.View[alias].recCount = 0; // Total de registros de la vista
     This.value.View[alias].eof = false; // Fin de archivo
     This.value.View[alias].bof = false; // Principio de archivo
+
     This.value.View[alias].row = -1; // Renglon posicionado el registro
 
     const dat_vis = {
@@ -1533,6 +1584,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         This.value.View[alias].recCount = 0; // Total de registros de la vista
         This.value.View[alias].eof = false; // Fin de archivo
         This.value.View[alias].bof = false; // Principio de archivo
+
         This.value.View[alias].row = -1; // Renglon posicionado el registro
 
         await select(alias);
@@ -2108,8 +2160,11 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
         This.value.View[alias].val_def = { recno: "recno" }; // valores default
         This.value.View[alias].recCount = 0; // Total de registros de la vista
+        This.value.View[alias].recno = 0; // Total de registros de la vista
+
         This.value.View[alias].eof = false; // Fin de archivo
         This.value.View[alias].bof = false; // Principio de archivo
+
         This.value.View[alias].row = -1; // Renglon posicionado el registro
 
         // agregamos toda la definicion de la tabla
@@ -2338,6 +2393,25 @@ export const recNo = (alias?: string) => {
     }
     return This.value.View[alias].recno;
 }
+
+/// /////////////////////////////  Vfp found() /////////////////////
+// Devuelve true si el registro si se encontro en un locate
+// alias    : Alias
+/// ////////////////////////////////////////////
+export const found = (alias?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    if (!alias) {
+        // alias = This.value.are_tra[-1]; // buscamos a cual alias pertenece
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
+
+    if (This.value.View[alias].recno == 0)
+        return false
+
+    return true
+}
+
 
 /// /////////////////////////////  local Db ///////////////////////////////////
 // Borra  LocalDb
@@ -2997,6 +3071,7 @@ export const goto = async (despla: undefined, alias?: string) => {
         const row = This.value.View[alias].recnoVal.find((ele) => ele.recno == recno);
         This.value.View[alias].row = row.id;
         This.value.View[alias].data = data[0]
+
 
         bof(alias)
         eof(alias)

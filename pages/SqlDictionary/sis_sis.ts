@@ -42,9 +42,8 @@ export class sis_sis extends COMPONENT {
     //this.style.zIndex=2
   }
 
-  override async when() {
-    this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql, 5-Array
-
+  override async interactiveChange() {
+    //aqui me mquede . Manto diccionmari de datos Definicion de tabla Tablas del SQL Server Indices Vistas de captura Menú de programas
     this.Form.grid_menu.prop.Visible = false;
     this.Form.grid_tablas.prop.Visible = false;
     this.Form.grid_vistas.prop.Visible = false;
@@ -56,32 +55,57 @@ export class sis_sis extends COMPONENT {
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
 
-    this.Form.bt_aceptar.prop.Visible = true;
-    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
-
     this.Form.nom_tab.prop.RowSourceType = 0
     this.Form.nom_tab.prop.RowSource = ''
     this.Form.nom_tab.prop.Value = ''
-    this.Form.nom_tab.prop.Visible = false;
-    this.Form.bt_aceptar.prop.Value = 'Accept';
+    this.Form.nom_tab.prop.Visible = false
 
+    if (this.Form.dic_dat.prop.Value == 'D') {
+      this.Form.bt_aceptar.prop.Visible = false
+
+      let where = ''
+      if (this.prop.Value > '   ')
+        where = ` where sis_sis = '${this.prop.Value.trim()}'`
+
+      await SQLExec(`select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by nom_tab`, 'cap_cometab')
+
+      if (recCount('cap_cometab') > 0) {
+        // if (this.Sql.View.cap_cometab && this.Sql.View.cap_cometab.recnoVal.length > 0) {
+        this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from cap_cometab `
+        //this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by nom_tab`
+        this.Form.nom_tab.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 4-LocalSql 5-Array
+        //    this.Form.bt_aceptar.prop.Visible = true;
+        this.Form.nom_tab.prop.Visible = true;
+
+      } else {
+        this.Form.nom_tab.prop.Visible = false
+        this.Form.bt_aceptar.prop.Visible = false;
+      }
+
+
+      return
+    }
+    this.Form.bt_aceptar.prop.Value = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
+    this.Form.bt_aceptar.prop.Visible = true;
 
     //  this.Form.dic_dat.when(true)
-    return true;
+    return;
   }
 
 
-  override async valid() {
+  override async when() {
+    this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql, 5-Array
+    this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
+    return !this.interactiveChange()
+  }
+
+
+  async valid_old() {
     // if (this.Form.nom_tab.prop.Visible) {
 
     // Tablas o diseño de Tablas
 
     if (this.Form.dic_dat.prop.Value == 'D') {
-      this.Form.nom_tab.prop.RowSourceType = 0
-      this.Form.nom_tab.prop.RowSource = ''
-      this.Form.nom_tab.prop.Value = ''
-      this.Form.nom_tab.prop.Visible = false
-      this.Form.bt_aceptar.prop.Visible = false;
 
 
       let where = ''
@@ -93,13 +117,13 @@ export class sis_sis extends COMPONENT {
       if (this.Sql.View.cap_cometab && this.Sql.View.cap_cometab.recnoVal.length > 0) {
         this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from cap_cometab `
         this.Form.nom_tab.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 5-Array
-        this.Form.bt_aceptar.prop.Visible = true;
+        //    this.Form.bt_aceptar.prop.Visible = true;
         this.Form.nom_tab.prop.Visible = true;
 
       }
       return true
     }
-    this.Form.bt_aceptar.prop.Visible = true;
+    //  this.Form.bt_aceptar.prop.Visible = true;
     return true
   }
 

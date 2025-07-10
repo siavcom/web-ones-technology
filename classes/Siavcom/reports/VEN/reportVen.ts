@@ -8,17 +8,18 @@
 
 // Importa las clases base a este espacio de trabajo
 import { reportForm } from "@/classes/reportForm/reportForm"
-
+import { tip_imp } from "./tip_imp"
 // Generamos la clase en memoria 
 export class reportVen extends reportForm {
-
+  public tip_imp = new tip_imp()
   constructor() {
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
     this.des_fec.prop.TabIndex = 1
     this.has_fec.prop.TabIndex = 2
-
+    this.tip_imp.prop.Visible = false
+    this.tip_imp.prop.Disabled = true
     // Campos de orden de la vista
     this.fields = [
       ["ven_ven", "Número de vendedor", "0", "9999"],

@@ -129,8 +129,8 @@
 
               <div id="salir" class="salir" @click='clickSalir()'>
 
-                <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg" style="float:right"
-                  :style="{ 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
+                <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg"
+                  :style="{ 'float': 'right', 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
 
               </div>
 

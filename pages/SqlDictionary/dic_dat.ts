@@ -42,38 +42,26 @@ export class dic_dat extends COMPONENT {
 
     //this.style.zIndex=3
   }
-  async interactiveChange() {
+
+
+  public override async when() {
+    await this.interactiveChange()
+    return !this.prop.ReadOnly;
+  }
+
+  override async interactiveChange() {
     this.Form.nom_tab.prop.Visible = false
     this.Form.bt_gen_all_models.prop.Visible = false
     if (this.prop.Value == "M") {
       this.Form.sis_sis.prop.Visible = false;
       this.Form.bt_aceptar.prop.Visible = true;
     } else {
-
       this.Form.sis_sis.prop.Visible = true;
       this.Form.bt_aceptar.prop.Visible = false;
-
     }
-  }
-
-
-  // init del componente
-  public init = async (form: any) => {
-    // await super.Init(form)
-    this.prop.Value = "T";
-    //this.Form.nom_tab.Visible = true;
-  };
-
-  public async when(sis_sis?: boolean) {
-
-    if (!sis_sis) {
-      // this.Form.sis_sis.prop.Visible = false
-    }
-    await this.interactiveChange()
 
     this.Form.nom_tab.prop.Visible = false;
     this.Form.tpr_prg.prop.Visible = false;
-
 
     this.Form.grid_datos.prop.Visible = false;
     this.Form.grid_indices.prop.Visible = false;
@@ -85,10 +73,10 @@ export class dic_dat extends COMPONENT {
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
     this.Form.bt_gen_all_models.prop.Visible = false;
-    //this.interactiveChange()
 
+    this.Form.bt_aceptar.prop.Value = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
 
-    return !this.prop.ReadOnly;
   }
+
 
 }

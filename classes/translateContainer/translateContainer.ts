@@ -219,9 +219,7 @@ export class translateContainer extends CONTAINER {
     this.prop.Disabled = true
     this.prop.Visible = false
     // Grabamos las traducciones
-    //ue   console.log('Grabamos las traducciones ', await this.Sql.localAlaSql(`select * from vi_cap_db_languages`))
-    await this.Sql.tableUpdate(0, false, 'vi_cap_db_languages')
-    //await this.Sql.tableUpdate(0, false, 'vi_cap_db_messages')
 
+    await tableUpdate(0, false, 'vi_cap_db_languages')
   }
 }

@@ -1,16 +1,17 @@
 <template>
-  <div :id="Id + '_main_divi_grid'" class="divi"
-    v-if="props.prop.Visible && props.prop.RecordSource.length > 1 && Sql.View[prop.RecordSource]" :style="divStyle"
-    ref="Ref" @click.middle.stop="middleClick()">
+  <div :id="Id + '_main_divi_grid'" class="divi" v-if="props.prop.Visible && props.prop.RecordSource.length > 1"
+    :style="divStyle" ref="Ref" @click.middle.stop="middleClick()">
     <label :id="Id + '_lable'" class=" error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
     <!-- Grid  -->
     <!--form class="gridDatos"  :style="{ height: 'auto', width: 'inherit' }" -->
-    <div v-if="scroll.dataPage && scroll.dataPage.length" :id="Id + '_grid_datos'" class="gridDatos"
-      :style="{ height: 'auto', width: '99.5%' }">
+    <div :id="Id + '_grid_datos'" class="gridDatos" :style="{ height: 'auto', width: '99.5%' }">
 
       <!--label text-align="center">{{ prop.ColumnTextLabel }}</label>  -->
       <h2 v-if="prop.Caption.length > 0">{{ prop.Caption }}</h2>
+
+      <!-- v-if="scroll.dataPage && scroll.dataPage.length" -->
+
       <div :id="Id + '_div_grid_tabla'" class="tabla"
         :style="{ minHeight: '250px', height: 'fit-content', width: 'inherit' }">
         <table :id="Id + '_grid_tabla'" class="gridTable" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
@@ -218,6 +219,7 @@ const Component = ref(props.prop.This)
 //const ThisGrid = Component.value
 
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
+const Prop = ref(This.prop) // Propiedades del componente
 
 const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
@@ -340,60 +342,6 @@ watch(
 );
 
 
-///////////////////////////////////////////////
-// Cuando se cambia el RecordSource  
-///////////////////////////////////////////////
-watch(
-  () => props.prop.RecordSource,
-  async (RecordSource, old_val) => {
-
-    if (This.prop.Visible && RecordSource.length > 1) {
-      // inicializamos scroll
-      scroll.page = 0
-      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
-      scroll.top = true     //Pprincipio de la pagina
-      scroll.bottom = false // Final de pagina
-      console.log('1) watch RecordSource loadData() RecordSource=', RecordSource, Sql.View[RecordSource])
-      await loadData()
-      if (Sql.View[RecordSource]) {
-        if (Sql.View[RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
-          await appendRow()
-
-      }
-    }
-  }
-  ,
-  { deep: false }
-);
-
-
-watch(
-  () => props.prop.Visible,
-  async (Visible, old_val) => {
-
-    // Si no hay renglones , aumenta un renglon
-    if (Visible && props.prop.RecordSource.length > 1) {
-
-      scroll.page = 0
-      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
-      scroll.top = true     //Pprincipio de la pagina
-      scroll.bottom = false // Final de pagina
-      console.log('1) watch RecordSource loadData() RecordSource=', RecordSource, Sql.View[RecordSource])
-      await loadData()
-      console.log('loadData() RecordSource=', RecordSource, Sql.View[RecordSource])
-      if (Sql.View[RecordSource]) {
-        if (Sql.View[RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
-          await appendRow()
-
-      }
-
-
-
-
-    }
-  },
-  { deep: false }
-);
 
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
@@ -512,6 +460,67 @@ watch(
   },
   { deep: true }
 );
+
+///////////////////////////////////////////////
+// Cuando se cambia el RecordSource  
+///////////////////////////////////////////////
+watch(
+  () => Prop.RecordSource,
+  async (RecordSource, old_val) => {
+
+    console.log('1) Grid watch Vsible  RecordSource=', RecordSource)
+
+    if (This.prop.Visible && This.prop.RecordSource.length > 1) {
+      console.log('1) Grid watch RecordSource loadData() RecordSource=', This.prop.RecordSource, Sql.View[RecordSource])
+
+
+      // inicializamos scroll
+      scroll.page = 0
+      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
+      scroll.top = true     //Pprincipio de la pagina
+      scroll.bottom = false // Final de pagina
+
+      if (Sql.View[This.prop.RecordSource]) {
+        if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
+          await appendRow()
+
+      }
+      else
+        await loadData()
+    }
+  }
+  ,
+  { deep: true }
+);
+
+
+watch(
+  () => Prop.Visible,
+  async (new_val, old_val) => {
+
+    console.log('1) Grid watch Vsible  RecordSource=', new_val)
+
+    // Si no hay renglones , aumenta un renglon
+    if (This.prop.Visible && props.prop.RecordSource.length > 1) {
+
+      scroll.page = 0
+      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
+      scroll.top = true     //Pprincipio de la pagina
+      scroll.bottom = false // Final de pagina
+      console.log('1) Grid watch Vsible loadData() RecordSource=', This.prop.RecordSource, Sql.View[RecordSource])
+      if (Sql.View[This.prop.RecordSource]) {
+        if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
+          await appendRow()
+
+      } else
+        await loadData()
+
+    }
+  },
+  { deep: true }
+);
+
+
 
 
 //////////////////////////////////////////////
@@ -650,7 +659,7 @@ const asignaStyle = (style: {}, itemId: string) => {
 /////////////////////////////////////////
 
 const loadData = async (Pos?: number) => {
-
+  console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'Pos=', Pos, 'RowInsert=', RowInsert)
 
   if (This.prop.RecordSource.length < 2) return
   /*
@@ -662,8 +671,6 @@ const loadData = async (Pos?: number) => {
   */
 
   This.Row = -100   // Quita la posicion actual del renglon
-
-
 
   load_data = false
 
@@ -693,13 +700,14 @@ const loadData = async (Pos?: number) => {
     ) {
       console.log('2.5) loadData()')
 
-      scroll.controls = false
       scroll.page = 0
       scroll.top = false
       scroll.bottom = false
-      if (props.prop.RecordSource.length > 1) {
+      if (props.prop.RecordSource.length > 1)
         scroll.controls = true
-      }
+      else
+        scroll.controls = false
+
       This.Form.prop.Status = 'A'
       return false
 
@@ -1010,7 +1018,7 @@ const autoLoad = async (RecordSource: string) => {
 
 
 onMounted(async () => {
-  console.log('Init Grid==>', props.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
+  console.log('1) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
   // await This.init()
 
@@ -1045,11 +1053,21 @@ onMounted(async () => {
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
 
-  if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid
+  console.log('2) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
+
+  if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid para abrir tabla de captura 
     await This.valid()
 
+
   if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
-    loadData()
+    await loadData()
+
+
+  console.log('3)Init Grid==>', This.Name, 'Vsisble=', props.prop.Visible, 'RecordSource=', props.prop.RecordSource)
+
+
+  This.prop.Valid = true // Asignamos el valor de validacion del grid
+  scroll.controls = true
 
 })
 

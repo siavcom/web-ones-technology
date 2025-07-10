@@ -22,8 +22,7 @@ export class bt_accept extends COMPONENT {
 
   }
 
-  async click() {
-
-    this.Parent.close()
+  override async click() {
+    return this.Parent.close()
   }
 }

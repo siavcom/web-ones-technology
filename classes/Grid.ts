@@ -66,7 +66,7 @@ export class GRID extends COMPONENT {
    * Si no es un dato nuevo: Muestra los datos para permitir su modificacion
    * @returns {Promise<boolean>} Verdadero si el formulario esta validado
    */
-  public async valid(): Promise<boolean> {
+  public override async valid(): Promise<boolean> {
 
     if (this.prop.RecordSource.length < 2) {
       // No hay recordSource

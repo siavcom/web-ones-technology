@@ -60,8 +60,11 @@ export class reportVtas extends reportForm {
     this.op_has_fam.prop.Disabled = true
 
     this.prop.cam_pri = 'ndo_doc' // campo de buqueda principal
-    // Campos de orden de la vista
-    var par_prg = this.Form.Params[0].replaceAll("´", "").toLowerCase()
+    // obtenemos parametros del llamado del programa
+    var par_prg = 've'
+    if (this.Form.Params[0] && typeof this.Form.Params[0] == 'string') {
+      par_prg = this.Form.Params[0].replaceAll("´", "").toLowerCase()
+    }
     var nom_par = ''
     if (par_prg == "ve")
       nom_par = 'clientes'

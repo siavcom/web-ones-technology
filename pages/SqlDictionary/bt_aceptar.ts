@@ -17,7 +17,7 @@ export class bt_aceptar extends COMPONENT {
 
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
-    this.prop.Caption = "Aceptar";
+
     this.prop.Capture = false;
     this.prop.Visible = false;
     this.prop.Image = "/Iconos/svg/accept.svg";
@@ -39,10 +39,12 @@ export class bt_aceptar extends COMPONENT {
       ["Menú Principal"], // 13
       ["Menú de Mantenimiento"], // 14
       ["Menú de Reportes"], // 15
-      ["Menú de Procesos"] // 16
+      ["Menú de Procesos"], // 16
+      ["Aceptar"], // 17
+      ["Actualiza tabla"], // 18
     ];
-
-    console.log('bt_aceptar constructor Messages', this.prop.Messages)
+    this.prop.Caption = this.prop.Messages[17][0]; // "Aceptar";
+    // console.log('bt_aceptar constructor Messages', this.prop.Messages)
 
 
   } // Fin constructor
@@ -202,7 +204,8 @@ export class bt_aceptar extends COMPONENT {
           }
 
           this.Form.grid_datos.prop.Visible = true;
-          this.prop.Caption = "Table update";
+          this.prop.Caption = this.Form.bt_aceptar.prop.Messages[18][0]  // "Actualiza tabla";
+
           this.Form.grid_datos.prop.Caption =
             this.prop.Messages[10][0] + this.Form.nom_tab.prop.Value;
           // "Definicion de campos SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;

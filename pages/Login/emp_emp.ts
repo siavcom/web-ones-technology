@@ -62,6 +62,16 @@ export class emp_emp extends COMPONENT {
   }
 
   public valid = async () => {
+    if (this.prop.Value != this.old_value) {
+      const router = useRouter();
+
+      const rutas = router.getRoutes();
+      for (const ruta of rutas) {
+        console.log('ruta= ', ruta.name, ruta.path);
+        router.removeRoute(ruta.name); // Elimina la ruta del router
+      }
+    }
+
     const ThisForm = this.Form;
     const This = this.prop; // Hace referencia a las propiedades del componente
     const m: any = {}; // :  Record<string, never> ;
