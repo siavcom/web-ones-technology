@@ -67,6 +67,11 @@ export class op_tdo_tdo extends COMPONENT {
                this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
             }
+         case 'come5213':	//& Ventas por familia
+            {
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               break;
+            }
          case 'come5218':	//& Ventas por familia
             {
                this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `

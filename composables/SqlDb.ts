@@ -1074,7 +1074,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
 
     const ThisForm = This.value.Form;
 
-    console.log("Db appendBlank this", ThisForm, 'this', this);
+    console.log("Db appendBlank alias=", alias, 'Public', Public.value);
 
     if (!alias) {
         // si no se da el alias
@@ -1133,7 +1133,9 @@ export const appendBlank = async (alias?: string, m?: {}) => {
                 errorAlert(
                     " appendBlank can't eval(" +
                     val_eval +
-                    ")" +
+                    ") campo=" +
+                    campo +
+                    " alias=" +
                     alias +
                     " Error=" +
                     error
