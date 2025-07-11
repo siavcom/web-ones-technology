@@ -56,10 +56,13 @@ export class bt_obtener extends COMPONENT {
     const query = await this.Form.gen_query();
     const result = await SQLExec(query, "sqlresult");
 
-    if (!result || result.length == 0) {
 
-      await this.Form.report.bt_close.click();
+    this.Form.report.displayBrowse.table.isLoading = false
+
+    if (!result || result.length == 0) {
       MessageBox("No data to show");
+      await this.Form.report.bt_close.click();
+
       return;
     }
 

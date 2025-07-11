@@ -64,15 +64,14 @@ export class bt_pdf extends COMPONENT {
     console.log('bt_pdf', 'Data=', this.Form.data)
 
     // const dataView=await this.Form.obtData()  
-    this.Parent.report.prop.Disabled = false
+    this.Form.report.prop.Disabled = false
 
     const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
-
+    this.Form.report.displayBrowse.table.isLoading = false
     if (buffer == null) {
+      MessageBox("No data to show");
       this.Form.report.bt_close.click()
-
       return
-
     }
 
     this.Form.report.displayPdf.prop.Source = buffer

@@ -556,14 +556,14 @@ watch(
 
       if (RowInsert)
         return
-      console.log('2) Insert Grid watch Row = ', This.Row)
+      // console.log('2) Insert Grid watch Row = ', This.Row)
 
       //await loadData()
 
       await last(true)
       RowInsert = true
 
-      console.log('3) Insert Grid watch Row = ', This.Row)
+      //console.log('3) Insert Grid watch Row = ', This.Row)
 
       if (scroll.dataPage[scroll.dataPage.length - 1]) {
         const Row = scroll.dataPage[scroll.dataPage.length - 1].id
@@ -588,7 +588,7 @@ watch(
 
     if (This.Row >= 0) {
 
-      console.log('2) Grid watch Row = ', This.Row, 'Column.value=', Column.value, 'RowInsert=', RowInsert)
+      // console.log('2) Grid watch Row = ', This.Row, 'Column.value=', Column.value, 'RowInsert=', RowInsert)
       for (let i = 0; i < This.main.length; i++) {
         const comp = This.main[i]
         This[comp].prop.ReadOnly = false;
@@ -596,7 +596,7 @@ watch(
 
         if (Column.value > '' && comp == Column.value) {
           //     Aqui mero   . Checar que ya este montaDOM EL COMPONENTE PARA HACER EL FOCO
-          console.log('2) Grid watch Row Focus = ', This.Row)
+          //   console.log('2) Grid watch Row Focus = ', This.Row)
           if (!This[comp].prop.Focus) {
             This[comp].prop.Focus = true
             Column.value = ''
@@ -661,7 +661,7 @@ const asignaStyle = (style: {}, itemId: string) => {
 /////////////////////////////////////////
 
 const loadData = async (Pos?: number) => {
-  console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'Pos=', Pos, 'RowInsert=', RowInsert)
+  // console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'Pos=', Pos, 'RowInsert=', RowInsert)
 
   if (This.prop.RecordSource.length < 2) return
   /*
@@ -697,8 +697,7 @@ const loadData = async (Pos?: number) => {
 
     if (!Sql || props.prop.RecordSource.length < 2
       || Sql.View[props.prop.RecordSource].recnoVal.length == 0) {
-      console.log('2.5) loadData()')
-
+      console.warn(' Grid loadData() No hay datos en la vista o no existe la vista=', props.prop.RecordSource)
       scroll.page = 0
       scroll.top = false
       scroll.bottom = false
@@ -825,13 +824,13 @@ const last = async (insert?: boolean) => {
 
   scroll.controls = false
   // if (scroll.bottom && !RowInsert) return
-  console.log('2.5) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length, 'scroll.rowa', scroll.rows)
+  //  console.log('2.5) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length, 'scroll.rowa', scroll.rows)
 
   scroll.page = Sql.View[props.prop.RecordSource].recnoVal.length / scroll.rows
 
   scroll.page = Math.trunc(scroll.page)
 
-  console.log('2.6) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length)
+  //console.log('2.6) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length)
 
   await loadData(1)
 
@@ -880,7 +879,7 @@ const appendRow = async () => {
 
       if (This[comp].prop.Capture && !This[comp].prop.Valid) { // Si alguno no esta Validado
         if (!This[comp].valid()) {
-          console.log('before appendRow Not valid', comp, This[comp].prop.Valid)
+          //  console.log('before appendRow Not valid', comp, This[comp].prop.Valid)
           This[comp].prop.Focus = true
           return
         }
@@ -908,7 +907,7 @@ const borraRenglon = async (recno?: number) => {
     // busca a cual recno pertenece el This.Row
 
 
-    console.log('borraRenglon data Page====>', This.Row, scroll.dataPage)
+    //  console.log('borraRenglon data Page====>', This.Row, scroll.dataPage)
 
     for (let i = 0; i < scroll.dataPage.length; i++) {
       //  console.log('Grid.vue borraRenglon This.row=', This.Row, ' scroll.dataPage=', scroll.dataPage[i])
@@ -986,7 +985,7 @@ const saveTable = async () => {
   //if (This.Row < 0) return
   scroll.controls = false
   //const { $MessageBox } = useNuxtApp()
-  console.log('Grid SaveTable', This.prop.Name, 'Map=', This.prop.Map)
+  // console.log('Grid SaveTable', This.prop.Name, 'Map=', This.prop.Map)
 
   eventos.push(This.prop.Map + '.grabaTabla()')
 
@@ -1020,7 +1019,7 @@ const autoLoad = async (RecordSource: string) => {
 
 
 onMounted(async () => {
-  console.log('1) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
+  //  console.log('1) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 
   // await This.init()
 
@@ -1055,7 +1054,7 @@ onMounted(async () => {
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
 
-  console.log('2) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
+
 
   if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid para abrir tabla de captura 
     await This.valid()
@@ -1064,8 +1063,8 @@ onMounted(async () => {
   if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
     await loadData()
 
-
-  console.log('3)Init Grid==>', This.Name, 'Vsisble=', props.prop.Visible, 'RecordSource=', props.prop.RecordSource)
+  console.log('2) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main,
+    'RecordSource=', props.prop.RecordSource)
 
 
   This.prop.Valid = true // Asignamos el valor de validacion del grid

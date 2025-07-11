@@ -682,11 +682,20 @@ this class is used to manipulate a SQL database it's have several methods:
 - appendBlank(`<`alias`>`,`<`memoryObject`>`).
    Append a row in a local SQL table with default Type Script Value defined in SqlDictionary form
 
+- bof(`<`alias?`>`).
+  after locate, skip or goto get true if there is locate at last row in a local SQL table
+
 - deleteRow(`<`key_pri`>`,`<`alias?`>`).
    Delete current row in a local SQL table
 
 - deleteSql(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
    Delete a row with recno in a local SQL table
+
+- eof(`<`alias?`>`).
+  after locate, skip or goto get true if there is locate at first row in a local SQL table
+
+- found(`<`alias?`>`).
+  after locate, skip or goto get true if there is a current row in a local SQL table
 
 - gatther (`<`object values`>`).
   Gatther values in a local SQL table from a object values

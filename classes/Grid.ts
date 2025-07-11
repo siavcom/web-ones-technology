@@ -35,7 +35,7 @@ export class GRID extends COMPONENT {
     this.prop.messageUpdate = "Grabamos la tabla";
     this.prop.messageDelete = "Borramos renglon";
     this.prop.headerHeight = "30px";
-    this.prop.Rows = 15;   // renglones de la grid por defecto
+    this.prop.Rows = 13;   // renglones de la grid por defecto
 
     this.style.width = '-moz-available' //"max-content"
     this.style.minHeight = "150px";

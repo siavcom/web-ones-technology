@@ -31,7 +31,7 @@ export class tip_con extends COMPONENT {
   }
 
 
-  async when() {
+  override async when() {
 
     if (this.Parent.var_ord.Type == 'text') {
       this.prop.ReadOnly = false
@@ -40,9 +40,10 @@ export class tip_con extends COMPONENT {
     this.prop.ReadOnly = true
     return false
 
-
   }
-  async interactiveChange() {
+  override async interactiveChange() {
+    if (this.prop.Disabled)
+      return
     if (this.Parent.var_ord.Type == 'text')
       if (this.prop.Value == 'C') {
         this.Parent.des_dat.prop.Caption = ''

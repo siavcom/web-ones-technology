@@ -35,7 +35,6 @@ export class bt_close extends COMPONENT {
     const ThisForm = this.Form
     for (let i = 0; i < main.length; i++) {
       if (ThisForm[main[i]].prop.Name != "translateContainer" && !ThisForm[main[i]].prop.Disabled)
-
         ThisForm[main[i]].prop.Visible = true
     }
 
@@ -53,7 +52,7 @@ export class bt_close extends COMPONENT {
 
     this.Form.bt_obtener.prop.Visible = true
 
-    this.Form.var_ord.prop.Visible = true
+    // this.Form.var_ord.prop.Visible = true
 
     this.Form.queryPri.prop.Visible = true
     this.Form.queryUsu.prop.Visible = true
