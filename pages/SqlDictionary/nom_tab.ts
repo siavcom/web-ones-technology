@@ -50,12 +50,10 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_model.prop.Visible = false;
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
+    this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     this.Form.bt_aceptar.prop.Visible = true;
-    this.Form.bt_aceptar.prop.Value = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
 
   }
-  // override async afterMounted(): Promise<void> {
-  //   this.Form.bt_aceptar.prop.Value = 'Accept';
-  // }
+
 }
 

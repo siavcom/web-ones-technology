@@ -85,7 +85,7 @@ export class sis_sis extends COMPONENT {
 
       return
     }
-    this.Form.bt_aceptar.prop.Value = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
+    this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     this.Form.bt_aceptar.prop.Visible = true;
 
     //  this.Form.dic_dat.when(true)

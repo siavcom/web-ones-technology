@@ -534,14 +534,15 @@ watch(
 
     if (This.Row == -100) return
 
+    console.log('1) Grid watch Row = ', This.Row)
 
     if (This.Row == -1) {  // Recarga datos
-      console.log('1) dele row Grid watch Row = ', This.Row)
+      console.log('2) dele row Grid watch Row = ', This.Row)
 
       //load_data = true
       await last() // carga el ultimo renglon
       //await loadData()
-      console.log('2) dele row Grid watch Row = ', This.Row)
+      console.log('3) dele row Grid watch Row = ', This.Row)
       //restableceStatus()
 
       //if (scroll.dataPage.length > 0)
@@ -555,13 +556,14 @@ watch(
 
       if (RowInsert)
         return
+      console.log('2) Insert Grid watch Row = ', This.Row)
+
+      //await loadData()
 
       await last(true)
-
-      console.log('1)Grid watch Row = ', This.Row)
-
-
       RowInsert = true
+
+      console.log('3) Insert Grid watch Row = ', This.Row)
 
       if (scroll.dataPage[scroll.dataPage.length - 1]) {
         const Row = scroll.dataPage[scroll.dataPage.length - 1].id
@@ -691,13 +693,10 @@ const loadData = async (Pos?: number) => {
   while (scroll.dataPage.length > 0)
     scroll.dataPage.pop() // borramos todos los renglones
 
-
-
   try {
 
     if (!Sql || props.prop.RecordSource.length < 2
-      || Sql.View[props.prop.RecordSource].recnoVal.length == 0
-    ) {
+      || Sql.View[props.prop.RecordSource].recnoVal.length == 0) {
       console.log('2.5) loadData()')
 
       scroll.page = 0
@@ -826,10 +825,13 @@ const last = async (insert?: boolean) => {
 
   scroll.controls = false
   // if (scroll.bottom && !RowInsert) return
+  console.log('2.5) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length, 'scroll.rowa', scroll.rows)
+
   scroll.page = Sql.View[props.prop.RecordSource].recnoVal.length / scroll.rows
 
   scroll.page = Math.trunc(scroll.page)
 
+  console.log('2.6) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length)
 
   await loadData(1)
 
