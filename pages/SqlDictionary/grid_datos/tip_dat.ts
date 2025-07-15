@@ -43,7 +43,7 @@ export class tip_dat extends COLUMN {
     this.style.width = "128px"; /* width/height  - initial value: auto */
   }
 
-  async valid() {
+  override async valid() {
     if (this.prop.ReadOnly) {
       this.prop.Valid = true
       return true
@@ -63,7 +63,7 @@ export class tip_dat extends COLUMN {
     }
     if (this.prop.Value == 'I') {
       this.Parent.lon_dat.prop.Valid = true
-      if (this.Parent.lon_dat.prop.Value != 1 && this.Parent.lon_dat.prop.Value == 2 && this.Parent.lon_dat.prop.Value != 4) {
+      if (this.Parent.lon_dat.prop.Value != 1 && this.Parent.lon_dat.prop.Value != 2 && this.Parent.lon_dat.prop.Value != 4) {
         this.Parent.lon_dat.prop.Value = 2
       }
     }
@@ -75,7 +75,7 @@ export class tip_dat extends COLUMN {
   //////////////////////////////////
   // Evento When
   ///////////////////////////////////
-  async when() {
+  override async when() {
     this.prop.Valid = true
     if (!this.prop.ReadOnly! && !await this.Parent.cam_dat.when()) {
       this.prop.ReadOnly = true

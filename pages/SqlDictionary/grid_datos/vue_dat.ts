@@ -66,14 +66,17 @@ export class vue_dat extends COLUMN {
 
     override async valid(): Promise<any> {
         if (this.prop.Value.trim() > '   ') {
-            this.Parent.cal_dat.prop.Value = ''
 
+            this.Parent.cal_dat.prop.Value = ''
             this.Parent.cal_dat.prop.ReadOnly = true
             this.Parent.cal_dat.prop.Valid = true
 
             this.Parent.def_dat.prop.Value = ''
             this.Parent.def_dat.prop.ReadOnly = true
-            this.Parent.cal_dat.prop.Valid = true
+            this.Parent.def_dat.prop.Valid = true
+        } else {
+            this.Parent.cal_dat.prop.ReadOnly = false
+            this.Parent.def_dat.prop.ReadOnly = false
         }
 
         return true

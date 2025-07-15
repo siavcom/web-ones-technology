@@ -383,7 +383,7 @@ const compJson = ref([])
 
 const typeNumber = ref('text');
 
-
+let KeyPressed = false
 
 
 const maska = ref({
@@ -608,13 +608,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
           //  console.log('3.3.1) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
-          displayError.value = true
-          This.prop.ShowError = true
           This.prop.Valid = false
 
           // 7/Feb/2024       
           //This.Form.prop.Status = 'A'
-          select()
+          if (KeyPressed) {
+            select()
+            displayError.value = true
+            This.prop.ShowError = true
+
+          }
 
           //          This.prop.Focus = true
           // This.prop.Status = 'A'
@@ -1068,8 +1071,8 @@ const keyPress = ($event: {
 
 }) => {
   // <input       @keypress="keyPress($event)"
-
-  //console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
+  KeyPressed = true
+  console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
   const char = +$event.charCode
   const Type = propType.value
   if (displayError.value) {
@@ -1213,6 +1216,7 @@ const onFocus = async () => {
     This.prop.Status = 'A'
     return
   }
+  KeyPressed = false
 
   // textValue[0]  perdio foco, textValue[1] obtiene el foco
   // Si es la primera vez que se hace foco
@@ -1579,7 +1583,7 @@ watch(
 watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
-    console.log('1)EditText Watch Focus Name=', This.prop.Name, This.prop.Focus)
+    //console.log('1)EditText Watch Focus Name=', This.prop.Name, This.prop.Focus)
     if (!new_val) {
       return
     }
@@ -1591,7 +1595,7 @@ watch(
 
     //  const length = thisElement.value.length;
     // Set the cursor to the end
-    console.log('2)EditText Watch Focus Name=', This.prop.Name)
+    // console.log('2)EditText Watch Focus Name=', This.prop.Name)
     select()
 
     return
@@ -1635,7 +1639,7 @@ watch(
 
 
 
-    if (watchPropValue) // Si secambio desde el emitValue se ignora
+    if (watchPropValue) // Si se cambio desde el emitValue se ignora
       return
 
     if (new_val === undefined || new_val === null) {
@@ -1841,13 +1845,14 @@ watch(
   () => This.prop.Valid, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
     if (new_val !== old_val) {
+      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
 
-      if (new_val) {
+      if (This.prop.Valid) {
         Styles.inputStyle.background = This.inputStyle.background
 
       } else {
-        if (focusIn.value == 0) // Si no tiene el foco
-          Styles.inputStyle.background = '#f2e7e9'
+        // if (focusIn.value == 0) // Si no tiene el foco
+        Styles.inputStyle.background = '#f2e7e9'
       }
 
     }
@@ -1855,8 +1860,6 @@ watch(
   },
   { deep: false }
 );
-
-
 
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
   console.log('onMaska=',

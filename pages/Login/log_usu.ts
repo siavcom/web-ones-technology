@@ -41,7 +41,7 @@ export class log_usu extends COMPONENT {
 
   override async valid(): Promise<boolean> {
 
-    console.log('>>>>>>>>>>>>log_usu valid', this.prop.Value)
+
     if (this.prop.Value.trim().length == 0) {
       return false
     }

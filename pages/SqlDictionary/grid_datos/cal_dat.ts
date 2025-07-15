@@ -58,10 +58,16 @@ export class cal_dat extends COLUMN {
     }
     override async valid(): Promise<any> {
         if (this.prop.Value.trim() > '   ') {
+            this.Parent.vue_dat.prop.Valid = true
             this.Parent.vue_dat.prop.Value = ''
             this.Parent.vue_dat.prop.ReadOnly = true
+
+            this.Parent.def_dat.prop.Valid = true
             this.Parent.def_dat.prop.Value = ''
             this.Parent.def_dat.prop.ReadOnly = true
+        } else {
+            this.Parent.vue_dat.prop.ReadOnly = false
+            this.Parent.def_dat.prop.ReadOnly = false
         }
 
         return true

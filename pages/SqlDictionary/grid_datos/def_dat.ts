@@ -46,9 +46,13 @@ export class def_dat extends COLUMN {
             this.Parent.vue_dat.prop.ReadOnly = true
             this.Parent.vue_dat.prop.Valid = true
 
+            this.Parent.cal_dat.prop.Value = ''
             this.Parent.cal_dat.prop.ReadOnly = true
             this.Parent.cal_dat.prop.Valid = true
-            this.prop.ReadOnly = false
+        } else {
+            this.Parent.vue_dat.prop.ReadOnly = true
+            this.Parent.cal_dat.prop.ReadOnly = true
+
         }
         return true
     }
