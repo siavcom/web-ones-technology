@@ -24,7 +24,7 @@ export class bt_gen_vistas extends COMPONENT {
     this.prop.Disabled = true;
 
     await this.Form.bt_aceptar.grabaDatos("vi_cap_comevis");
-    const vistas = await this.Form.db.localAlaSql("select nom_vis from vi_cap_comevis");
+    const vistas = await localAlaSql("select nom_vis from vi_cap_comevis");
 
     for (let i = 0; i < vistas.length; i++) {
       if (await MessageBox("Geneneramos la vista " + vistas[i].nom_vis + " en SQL Server de la tabla :" +

@@ -24,7 +24,7 @@ export class cam_dat extends COLUMN {
     //this.prop.First=true;
     this.prop.Value = "";
     this.style.width = "100px";
-    this.prop.ErrorMessage = "Campo existente dentro del diccionario";
+    this.prop.ErrorMessage = "Campo existente o valor no permitido";
   }
 
   //////////////////////////////////
@@ -53,6 +53,7 @@ export class cam_dat extends COLUMN {
 
   override async valid() {
     if (!this.prop.When) return true;
+    if (this.prop.Value.trim().length == 0) return false;
 
     this.prop.Value = this.prop.Value.toLowerCase();
     const valor = this.prop.Value.trim();

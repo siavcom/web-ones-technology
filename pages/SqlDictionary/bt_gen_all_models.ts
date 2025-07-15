@@ -26,7 +26,7 @@ export class bt_gen_all_models extends COMPONENT {
   async click() {
 
     if (await MessageBox('Generamos sequelize MODELS de todas las tablas', 4, '') == 6) {
-      const error = await this.Form.db.genModel('ALL')
+      const error = await genModel('ALL')
       if (error.length)
         console.error('Error al generar todos los sequalize MODELS ', this.Form.nom_tab.prop.Value)
     }

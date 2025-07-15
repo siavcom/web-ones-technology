@@ -39,7 +39,7 @@ export class bt_gen_indices extends COMPONENT {
           ""
         )) == 6
       ) {
-        const error = await this.Form.db.genIndices(
+        const error = await genIndices(
           this.Form.nom_tab.prop.Value,
           indices[i].nom_ind
         );

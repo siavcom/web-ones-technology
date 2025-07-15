@@ -137,6 +137,7 @@ export function initSql(Form: {}) {
     This.value.Form.Sql.localClone = localClone
     This.value.Form.Sql.jasperReport = jasperReport
     This.value.Form.Sql.View = View
+    This.value.Form.Sql.genTabla = genTabla
     This.value.Form.db = This.value.Form.Sql  // Porteo viejo a db
     return
 } // Fin constructor
@@ -1007,7 +1008,7 @@ export const tableUpdate = async (
                 sw_val = false;
                 if (dat_act[row].key_pri > 0) {
                     // si es un dato existennte
-                    const respuesta = await This.value.obtRegistro(
+                    const respuesta = await obtRegistro(
                         nom_tab,
                         dat_act[row].key_pri
                     ); // se trae de nuevo los datos
@@ -1833,11 +1834,11 @@ export const genModel = async (tabla: string) => {
     try {
         const respuesta = await axiosCall(dat_vis);
         if (respuesta == null) return;
-        if (respuesta.length == 0 && dat_vis.tip_llamada == "GENMODEL")
-            MessageBox("Se genero el MODEL para la tabla " + tabla + respuesta[0]);
+        if (dat_vis.tip_llamada == "GENMODEL")
+            MessageBox("The sequelize MODEL (BACK-END) was generated for the table " + tabla + " " + respuesta[0]);
         else
             MessageBox(
-                "Se generaron todos los sequelize MODELS" + tabla + respuesta[0]
+                "All sequelize MODELS (BACK-END) were generated " + respuesta[0]
             );
 
         return true;

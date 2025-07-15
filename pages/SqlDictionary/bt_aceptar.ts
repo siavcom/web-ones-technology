@@ -390,6 +390,9 @@ export class bt_aceptar extends COMPONENT {
       )
         data[i].con_dat = i + 100;
     }
+
+
+
     // borramos la tabla original y la reinsertamos en Cursor temporal
     await this.Sql.localAlaSql(
       "Use Now ; \
@@ -446,8 +449,8 @@ export class bt_aceptar extends COMPONENT {
 
     if (resultado == 6) {
       if (vis_cap == "vi_cap_comedat") {
-        // para obtener el con_dat definitivo
-        await this.ObtDefTabla();
+        // asigna consecutivos (con_dat) de USU_USU,USU_CRE,TIE_UAC,TIE_CRE definitivo
+        // await this.ObtDefTabla();
       }
       console.log("bt_aceptar grabaDatos vis_cap,vis_act", vis_cap, vis_act);
 
