@@ -33,9 +33,9 @@ export class bt_aceptar extends COMPONENT {
       ["Quieres grabar el MENU del sistema"], // 7
       ["Diccionario actualizado"], // 8
       ["No se grabaron los datos"], // 9
-      ["Definicion de campos SQL-Server de la tabla "], // 10
-      ["Definicion de indices SQL-Server de la tabla "], // 11
-      ["Definicion de vistas SQL-Server de la tabla "], // 12
+      ["Definición de campos SQL-Server de la tabla "], // 10
+      ["Definición de indices SQL-Server de la tabla "], // 11
+      ["Definición de vistas SQL-Server de la tabla "], // 12
       ["Menú Principal"], // 13
       ["Menú de Mantenimiento"], // 14
       ["Menú de Reportes"], // 15
@@ -57,7 +57,7 @@ export class bt_aceptar extends COMPONENT {
       return;
     }
 
-    //  ["Tablas del SQL Server", "Definicion de Tabla", "Menú de programas"],
+    //  ["Tablas del SQL Server", "Definición de Tabla", "Menú de programas"],
     //  ["T",                     "D",                   "M"],
     const dic_dat = this.Form.dic_dat.prop.Value
     this.prop.Visible = false;
@@ -80,7 +80,7 @@ export class bt_aceptar extends COMPONENT {
         this.Form.bt_gen_indices.prop.Visible = false;
         this.Form.bt_gen_vistas.prop.Visible = false;
 
-        if (dic_dat == "D" && this.Sql.View.vi_cap_cometab && this.Sql.View.vi_cap_cometab.recnoVal.length > 0) { // Definicion de Tabla
+        if (dic_dat == "D" && this.Sql.View.vi_cap_cometab && this.Sql.View.vi_cap_cometab.recnoVal.length > 0) { // Definición de Tabla
           //this.Form.nom_tab.prop.RowSourceType = 0;
           this.Form.bt_gen_all_models.Visible = false;
           //this.Form.nom_tab.prop.RowSourceType = 4;
@@ -98,7 +98,7 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
-      // Hay datos capturados em definicion de tablas. Grabara informacion
+      // Hay datos capturados em Definición de tablas. Grabara informacion
       let dataUpdate = false;
       let data = false;
       if (
@@ -186,7 +186,7 @@ export class bt_aceptar extends COMPONENT {
         return;
       }
 
-      // Definicion de tablas 
+      // Definición de tablas 
 
       if (this.Form.nom_tab.prop.Visible) {
         // Campos de las Tablas del servidor SQL
@@ -208,7 +208,7 @@ export class bt_aceptar extends COMPONENT {
 
           this.Form.grid_datos.prop.Caption =
             this.prop.Messages[10][0] + this.Form.nom_tab.prop.Value;
-          // "Definicion de campos SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
+          // "Definición de campos SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
           this.Form.bt_gen_model.prop.Visible = true;
 
           // Indices SQL
@@ -217,7 +217,7 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_indices.RecordSource = 'vi_cap_comeind';
           this.Form.grid_indices.prop.Caption =
             this.prop.Messages[11][0] + this.Form.nom_tab.prop.Value;
-          // "Definicion de indices SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
+          // "Definición de indices SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comeind")) == 0) {
             await this.Form.grid_indices.appendRow();
@@ -233,7 +233,7 @@ export class bt_aceptar extends COMPONENT {
           this.Form.grid_vistas.RecordSource = 'vi_cap_comevis';
           this.Form.grid_vistas.prop.Caption =
             this.prop.Messages[12][0] + this.Form.nom_tab.prop.Value;
-          // "Definicion de vistas SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
+          // "Definición de vistas SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
           if ((await this.Form.db.recCount("vi_cap_comevis")) == 0) {
             const m = {
@@ -367,7 +367,7 @@ export class bt_aceptar extends COMPONENT {
   } // Fin si es menu de programas
 
   //////////////////////////////////
-  // Obten definicion de la tabla y asigna el consecutivo
+  // Obten Definición de la tabla y asigna el consecutivo
   // que quedara en la base de datos
   /////////////////////////////////
   async ObtDefTabla() {

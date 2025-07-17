@@ -119,17 +119,22 @@
             <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/svg/last.svg" width="35" />
           </span>
 
-          <span :id="Id + '_page_rows'">
-            Display's rows
-            <input ref="Ref" :id="Id + '_Rows_page_number'" type="number" v-model="scroll.rows" :step="1" min="5"
-              max="500">
-          </span>
         </span>
+
 
         <span :id="Id + '_botton_controles_delete_row'" title="Delete row" v-show="prop.deleteButton && This.Row >= 0"
           :style="{ 'padding': '5px' }" @click.stop="borraRenglon()">
           <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-color.svg" width="40" />
         </span>
+
+        <span :id="Id + '_page_rows'">
+          Rows to display
+          <input ref="Ref" :id="Id + '_Rows_page_number'" type="number" v-model="scroll.rows" :step="1" min="5"
+            max="500">
+        </span>
+
+
+
 
         <!--
         <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">

@@ -56,7 +56,10 @@ export class lon_dat extends COLUMN {
     }
 
 
-    async valid() {
+    override async valid() {
+        console.log('valid lon_dat=', this.prop.Value)
+
+
 
         if (this.prop.Value == 0 && this.Parent.tip_dat.prop.Value != 'V') {
             this.prop.ErrorMessage = 'El tamaño debe ser mayor a 0 '
@@ -83,7 +86,7 @@ export class lon_dat extends COLUMN {
                 this.prop.ErrorMessage = 'Maximo valor permitido 8000'
                 return false
             }
-            if (this.prop.Value = 0) {
+            if (this.prop.Value == 0) {
                 this.prop.ErrorMessage = 'El valor debe ser mayor a 0'
                 return false
             }
