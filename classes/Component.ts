@@ -726,7 +726,7 @@ export class COMPONENT {
    * Handles key press events for the input.
    * The pressed key value is stored in this.prop.Key.
    */
-  public keyPress(): void {
+  public keyPress(nKeyCode: number): void {
     // Implementation goes here
   }
 

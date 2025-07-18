@@ -187,26 +187,29 @@ export const releaseUse = async (alias?: string) => {
  * Updates the `found` property of the view to indicate whether a record was found.
  */
 
-export const locate = async (where: string, alias?: string) => {
+export const locateFor = async (where: string, alias?: string) => {
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias)       // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 
-    const res = await localAlaSql(`SELECT top 1* FROM Now.${alias} WHERE ${where} order by recno;`)
+    const records = await localAlaSql(`SELECT recno FROM Now.${alias} WHERE ${where} order by recno;`)
 
+    This.value.View[alias].Records = records
     if (res && res.length > 0) {
         This.value.View[alias].Recno = res[0].recno
 
-        return res[0]
+
+        return records
     }
     This.value.View[alias].Recno = 0
 
-    return false
-
+    return records
 
 }
+
+
 
 
 /// /////////////  Vfp Use nodata ///////////////////
@@ -259,8 +262,8 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             This.value.View[alias].recno = 0; // Registro en cero
             This.value.View[alias].eof = false; // Fin de archivo
             This.value.View[alias].bof = false; // Principio de archivo
-
             This.value.View[alias].row = -1; // Renglon posicionado el registro
+            This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
 
 
             console.log("Db useNodata alias", alias, This.value.View);
@@ -376,6 +379,7 @@ export const use = async (
             This.value.View[alias].eof = false; // Fin de archivo
             This.value.View[alias].bof = false; // Principio de archivo
             This.value.View[alias].row = -1; // Renglon posicionado el registro
+            This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
 
         } else {
             delete This.value.View[alias]
@@ -633,7 +637,7 @@ export const tableUpdate = async (
     updateType?: number,
     force?: boolean,
     alias?: string,
-    tab_man?: string) => {
+    tab_man?: string): Promise<boolean> => {
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -1552,6 +1556,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
     This.value.View[alias].recCount = 0; // Total de registros de la vista
     This.value.View[alias].eof = false; // Fin de archivo
     This.value.View[alias].bof = false; // Principio de archivo
+    This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
 
     This.value.View[alias].row = -1; // Renglon posicionado el registro
 
@@ -1592,7 +1597,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         This.value.View[alias].bof = false; // Principio de archivo
 
         This.value.View[alias].row = -1; // Renglon posicionado el registro
-
+        This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
         await select(alias);
 
         // console.log('Db SQLExec =====>',respuesta)
@@ -2113,6 +2118,7 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
         // console.log('Db RecnoVal===>', This.value.View[alias].recnoVa)
     } else {
         This.value.View[alias].data = {};
+        This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
     } // no hay datos
 }
 
@@ -2172,7 +2178,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         This.value.View[alias].bof = false; // Principio de archivo
 
         This.value.View[alias].row = -1; // Renglon posicionado el registro
-
+        This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
         // agregamos toda la definicion de la tabla
 
         if (!respuesta.est_tabla) {
@@ -2353,6 +2359,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         return respuesta;
     } else {
         This.value.View[alias].data = {};
+        This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
     } // no hay datos
 };
 
@@ -3276,7 +3283,7 @@ export const scatter = async (aliasFields?: undefined, alias?: string) => {
     }
 
     const ins_sql = select + ' FROM Now.' + alias + ' WHERE recno=' + recno
-    console.log('Db gatherFrom update=', ins_sql)
+    console.log('Db scatter update=', ins_sql)
 
     const data = await localAlaSql(ins_sql);
 
@@ -3344,7 +3351,7 @@ export const scatterBlank = async (aliasFields?: undefined, alias?: string) => {
  *                                    otherwise performs the update operation.
  */
 
-export const gatherFrom = async (from: [], aliasFields?: [], alias?: string) => {
+export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Promise<null | boolean> => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     let resultado = [];

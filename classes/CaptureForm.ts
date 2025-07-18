@@ -326,7 +326,7 @@ export class captureForm extends FORM {
       this.style.width = "64px";
     } // Fin constructor
 
-    async click() {
+    override async click() {
       if (!await this.Parent.inSave())
         return
 
@@ -416,7 +416,7 @@ export class captureForm extends FORM {
       this.style.width = "64px";
     } // Fin constructor
 
-    async click() {
+    override async click() {
       if (this.prop.Disabled)
         return;
 

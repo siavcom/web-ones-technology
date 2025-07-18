@@ -57,14 +57,32 @@ export const appendM = (valueA: {}, valueB: {}): object => {
 // Funciones String
 //////////////////////////////////////
 
+/**
+ * Converts a string to lower case.
+ * @param {string} data - The string to convert
+ * @returns {string} The converted string in lower case
+ */
+export const lower = (data: string): string => {
+  return data.toLowerCase();
+}
 
-export const space = (numero: number) => {
-  return ' '.repeat(numero);
+/**
+ * Converts a string to upper case.
+ * @param {string} data - The string to convert
+ * @returns {string} The converted string in upper case
+ */
+export const upper = (data: string): string => {
+  return data.toUpperCase();
 }
 
 
-export const int = (numero: number) => {
-  return Math.trunc(numero);
+/**
+ * Generates a string with a specified number of spaces
+ * @param {number} numero - The number of spaces to generate
+ * @returns {string} A string with the specified number of spaces
+ */
+export const space = (numero: number): string => {
+  return ' '.repeat(numero);
 }
 
 
@@ -109,7 +127,7 @@ export const allTrim = (input: string): string => {
  * @param {string} strVariable - The string whose length is to be determined.
  * @returns {number} - The length of the string.
  */
-export const len = (strVariable: string): string => {
+export const len = (strVariable: string): number => {
   return strVariable.length()
 }
 
@@ -148,8 +166,6 @@ export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, n
   }
   return 0;
 }
-
-
 
 /**
  * Replicates a given string the specified number of times.
@@ -536,6 +552,17 @@ export const multiFilter = (array: [], filters: {}): Array<any> => {
 ///////////////////////////////////////////////
 // Funciones de números
 ///////////////////////////////////////////////
+
+
+/**
+ * Returns the integer part of a given number.
+ * @param {number} numero - Number to get the integer part of.
+ * @returns {number} - The integer part of the number.
+ */
+export const int = (numero: number) => {
+  return Math.trunc(numero);
+}
+
 
 /**
  * Convierte un número en una cadena con separadores de miles, decimales y signo.
@@ -973,9 +1000,6 @@ export function sleep(sleepDuration: number) {
     /* Do nothing */
   }
 }
-
-
-
 
 /**
  * Importa un componente de manera asíncrona

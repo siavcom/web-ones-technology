@@ -50,7 +50,7 @@ export class grid_menu extends GRID {
   // Incerta renglon
   // m : valiables de memoria
   ///////////////////////////////////////////////////
-  public async appendRow() {
+  public override async appendRow() {
 
     // asigna campos que no estan en el grid
 

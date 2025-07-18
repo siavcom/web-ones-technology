@@ -315,7 +315,8 @@ export class GRID extends COMPONENT {
         }
     */
 
-    if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6) return false;
+    if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6)
+      return false;
 
     this.Form.prop.Visible = false;
     resultado = await tableUpdate(
