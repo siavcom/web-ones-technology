@@ -1,9 +1,17 @@
 # manual PACKAGE instalation 
+#!/bin/bash
 
-npm i @vueuse/nuxt @vueuse/core @nuxt/kit @vueuse/integrations
-npm i pinia @pinia/nuxt
-
+##################################################
+# instala nuxt 3.17.5
+# npm install nuxt@^3.17.5   
+##################################################
+npm i pinia
 npm i pinia-plugin-persistedstate
+npm i @pinia/nuxt
+
+npx nuxi@latest module add vueuse
+npm i @vueuse/nuxt @vueuse/core @nuxt/kit @vueuse/integrations
+
 npx nuxi@latest module add image
 
 npm i axios
@@ -12,7 +20,9 @@ npm i vue-sweetalert2
 
 npm i buffer
 npm i nuxt-socket-io
+
 npm audit fix --force
+
 npm i file-saver
 
 npm i maska

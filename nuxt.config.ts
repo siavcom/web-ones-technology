@@ -34,7 +34,7 @@ export default defineNuxtConfig({
   // Linux development. To create symbolic links, directories are increased so that Vite accepts them.
 
   vite: {
-    /////// incluir estas dos lineas para correr nuxt 3.17
+    /////// include this 2 lines to run nuxt 3.17 y 4.0
     optimizeDeps: { exclude: ['axios', 'form-data'] },
     ssr: { noExternal: true },
     /////////////////////////////////////////////// 
@@ -45,8 +45,8 @@ export default defineNuxtConfig({
     },
     /*
     server: {
-      fs: { // Permite el acceso a los archivos del servidor
-        allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'], // absolute path to web-ones directory
+      fs: { // allow access to server files
+        allow: ['/desarrollo/desarrolloweb/Vue/web-ones/'], //  absolute path to web-ones directory in this computer
       },
     },
      */
