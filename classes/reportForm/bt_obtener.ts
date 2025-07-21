@@ -25,6 +25,16 @@ export class bt_obtener extends COMPONENT {
   } // Fin constructor
 
   async click() {
+    this.Form.prop.Visible = false;
+
+    let bloque = 0
+    for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
+      this.Form.block[bloque].prop.Visible = false
+
+    bloque = this.Form.block.length - 1
+
+    this.Form.block[bloque].prop.Visible = true  // resultado
+
     this.Form.report.bt_excel.prop.Visible = false;
     this.Form.report.bt_json.prop.Visible = false;
 
@@ -43,7 +53,7 @@ export class bt_obtener extends COMPONENT {
         this.Form[main[i]].prop.Visible = false
     }
 
-    this.Form.bt_obtener.prop.Visible = false;
+
     this.Form.bt_pdf.prop.Visible = false;
 
     //   const ins_sql = await this.Form.gen_query()
@@ -56,15 +66,20 @@ export class bt_obtener extends COMPONENT {
     const query = await this.Form.gen_query();
     const result = await SQLExec(query, "sqlresult");
 
-
     this.Form.report.displayBrowse.table.isLoading = false
 
     if (!result || result.length == 0) {
       MessageBox("No data to show");
+      this.Form.block[bloque].prop.Visible = false  // resultado
       await this.Form.report.bt_close.click();
 
       return;
     }
+
+    // console.log("bt_obtener", "Form.block=", this.Form.block);
+    // const i = this.Form.block.length - 1
+
+
 
     this.Form.report.displayBrowse.prop.RowSource = "Now.sqlresult";
     this.Form.report.displayBrowse.prop.Visible = true;

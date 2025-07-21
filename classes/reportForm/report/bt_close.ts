@@ -30,6 +30,16 @@ export class bt_close extends COMPONENT {
   } // Fin constructor
 
   async click() {
+
+
+    let bloque = 0
+    for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
+      if (!this.Form.block[bloque].prop.Disabled)
+        this.Form.block[bloque].prop.Visible = true
+
+    bloque = this.Form.block.length - 1
+    this.Form.block[bloque].prop.Visible = false  // resultado
+
     const main = this.Form.main
     // console.log('bt_close main=', main)
     const ThisForm = this.Form

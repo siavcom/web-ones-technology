@@ -436,7 +436,6 @@ const nextFocus = async ($event) => {
 
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
-
 const mounted = ref(false)
 onBeforeMount(async () => {
 

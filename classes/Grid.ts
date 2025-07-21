@@ -38,7 +38,7 @@ export class GRID extends COMPONENT {
     this.prop.Rows = 10;   // renglones de la grid por defecto
 
     this.style.width = '-moz-available' //"max-content"
-    this.style.minHeight = "150px";
+    this.style.minHeight = "120px";
     this.style.height = "max-content";
     this.Recno = 0;
 

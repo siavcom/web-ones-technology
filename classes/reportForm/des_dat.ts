@@ -13,7 +13,7 @@ import { COMPONENT } from "@/classes/Component";
 export class des_dat extends COMPONENT {
   constructor() {
     super();
-    this.prop.Caption = "Desde ";
+    this.prop.Caption = "";
     this.prop.BaseClass = "editText";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";

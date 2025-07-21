@@ -159,6 +159,7 @@ export class COMPONENT {
     //  justifyContent: "flex-end",
     //  width: "100%"
     paddingLeft: "auto",
+
   }
 
   captionStyle = {

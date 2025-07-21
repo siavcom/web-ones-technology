@@ -28,6 +28,8 @@ export class reportInv extends reportForm {
   public num_fam = new num_fam()
   public op_des_fam = new op_des_fam()
   public op_has_fam = new op_has_fam()
+  num_blocks: number = 1; // Bloque del reporte usuario
+
 
   constructor() {
     super()
@@ -65,6 +67,24 @@ export class reportInv extends reportForm {
       ["sku_isu", "SKU", , "''", "'ZZZZZZZZZZ'"]
 
     ]
+
+    this.block[0] = structuredClone(this.container)
+    this.block[0].component = {
+      [0]: this.sep_fam,
+      [1]: this.num_fam,
+      [2]: this.op_des_fam,
+      [3]: this.op_has_fam,
+      [4]: this.tip_imp,
+      [5]: this.alm_rep,
+      [6]: this.op_des_isu,
+      [7]: this.op_has_isu
+    }
+    this.block[0].prop.Visible = true
+    this.block[0].title = 'Familias'
+
+
+
+
 
 
   }

@@ -28,8 +28,10 @@ export class reportVtas extends reportForm {
   public op_des_fam = new op_des_fam()
   public op_has_fam = new op_has_fam()
   public tip_imp = new tip_imp()
+  override num_blocks = 1 // Bloque del reporte usuario
 
   constructor() {
+
     super()
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
@@ -78,6 +80,15 @@ export class reportVtas extends reportForm {
       ["fel_doc", "Fecha de captura"],
       ["fve_doc", "Fecha de vencimiento"]
     ]
+    this.block[0] = structuredClone(this.container)
+    this.block[0].component = {
+      [0]: this.sep_fam,
+      [1]: this.num_fam,
+      [2]: this.op_des_fam,
+      [3]: this.op_has_fam
+    }
+    this.block[0].prop.Visible = false
+    this.block[0].title = 'Familias'
   }
 
   async init_ant(sw_detallado?: boolean) {

@@ -30,6 +30,14 @@ export class bt_pdf extends COMPONENT {
   async click() {
     this.prop.Visible = false
 
+    let bloque = 0
+    for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
+      this.Form.block[bloque].prop.Visible = false
+
+    bloque = this.Form.block.length - 1
+
+    this.Form.block[bloque].prop.Visible = true  // resultado
+
     const main = this.Form.main
 
     this.Form.queryPri.prop.Visible = false
@@ -56,19 +64,18 @@ export class bt_pdf extends COMPONENT {
     this.Form.report.bt_json.prop.Visible = false
 
     this.Form.bt_obtener.prop.Visible = false
-    //this.Form.var_ord.prop.Visible = false
-    //this.Form.for_imp.prop.Visible = false
 
-
-    const query = await this.Form.gen_query()
-    console.log('bt_pdf', 'Data=', this.Form.data)
-
-    // const dataView=await this.Form.obtData()  
     this.Form.report.prop.Disabled = false
 
+    this.Form.report.displayBrowse.table.isLoading = true; // indicadorm de caqrga
+    const query = await this.Form.gen_query()
+
     const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
+    // console.log("bt_pdf buffer=", buffer, query, this.Form.for_imp.prop.Value, this.Form.data)
+
     this.Form.report.displayBrowse.table.isLoading = false
     if (buffer == null) {
+      this.Form.block[bloque].prop.Visible = false  // resultado
       MessageBox("No data to show");
       this.Form.report.bt_close.click()
       return

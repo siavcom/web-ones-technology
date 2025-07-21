@@ -65,6 +65,9 @@ export class reportForm extends FORM {
 
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
 
+  num_blocks: number = 0; // Bloque del reporte usuario
+
+
   constructor() {
     super();
     this.mon_rep.prop.TabIndex = 101;
@@ -87,6 +90,65 @@ export class reportForm extends FORM {
     this.report.prop.TabIndex = 120;
 
     this.prop.cam_pri = ''
+
+
+    let i = 0
+
+    for (i = 0; i < this.num_blocks; i++) {
+      this.block[i] = structuredClone(this.container)
+      this.block[i].prop.Visible = true
+    }
+
+
+
+    this.block[i] = structuredClone(this.container)
+    this.block[i].component = {
+      [0]: this.mon_rep,
+      [1]: this.tip_rep,
+
+    }
+
+    this.block[i].prop.Visible = true
+    this.block[i].title = 'Datos base'
+
+    i++
+
+    this.block[i] = structuredClone(this.container)
+    this.block[i].component = {
+      [0]: this.var_ord,
+      [1]: this.tip_con,
+      [2]: this.des_dat,
+      [3]: this.has_dat
+
+    }
+
+    this.block[i].title = 'Rango'
+    this.block[i].prop.Visible = true
+    this.block[0].style.maxWidth = '500px'
+
+    i++
+
+    this.block[i] = structuredClone(this.container)
+    this.block[i].component = {
+      [0]: this.queryPri,
+      [1]: this.queryUsu,
+      [2]: this.queryGen
+    }
+
+    this.block[i].title = 'Condiciones'
+    this.block[i].prop.Visible = true
+
+    i++
+
+    this.block[i] = structuredClone(this.container)
+    this.block[i].component = {
+      [0]: this.report,
+      [1]: this.reportFields,
+
+    }
+
+    this.block[i].title = 'Resultado'
+    this.block[i].prop.Visible = false
 
     /*
     
