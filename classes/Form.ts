@@ -73,7 +73,7 @@ export class FORM extends COMPONENT {
 
     this.mPublic = Public.value;
     this.dialect = dialect.value;
-    console.log("ThisForm :", this.prop.Name, "dialect=", this.dialect, 'Puiblic=', Public.value, 'this.mPublic=', this.mPublic);
+    console.log("ThisForm :", this.prop.Name, "dialect=", this.dialect, 'Public=', Public.value, 'this.mPublic=', this.mPublic);
 
   }
 

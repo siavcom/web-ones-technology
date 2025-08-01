@@ -8,12 +8,26 @@ import { COMPONENT } from "@/classes/Component";
 
 // importa archivos de texto
 //import Main from '/templates/Main.txt?raw'
+/*
 import Main from "@/public/templates/Main.txt?raw";
-
 import Form from "@/public/templates/ThisForm.txt?raw";
 import Component from "@/public/templates/Component.txt?raw";
 import Grid from "@/public/templates/Grid.txt?raw";
 import Column from "@/public/templates/Column.txt?raw";
+*/
+
+// Cambio Nuxt 4 . Quitar @/public
+// Example
+// For example, referencing an image file in the public/img/ directory, available at the static URL /img/nuxt.png:
+
+// todos los archivos de templates estan en la carpeta templates de public
+
+import Main from "/templates/Main.txt?raw";
+import Form from "/templates/ThisForm.txt?raw";
+import Component from "/templates/Component.txt?raw";
+import Grid from "/templates/Grid.txt?raw";
+import Column from "/templates/Column.txt?raw";
+
 
 //import { readFileSync } from 'fs'
 //https://github.com/gildas-lormeau/zip.js

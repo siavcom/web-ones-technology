@@ -1,7 +1,8 @@
 //import fs from '@/node_modules/file-system/file-system.js';
 
 ///////// Funciones nativas de NodeJS /////////
-import fs from 'fs'
+//import fs from 'fs'
+import fs from 'fs/promises'; // Use fs.promises for async/await
 import { exec } from 'child_process'
 ////////////////////////////////////////////
 
@@ -24,7 +25,7 @@ export default defineEventHandler(async (event) => {
       // original
       // data=fs.readFileSync(path + '/Empresas.json')
 
-      const res = fs.readFileSync(path + '/Empresas.json', "utf-8")
+      const res = await fs.readFile(path + '/Empresas.json', "utf-8")
       data = JSON.parse(res)
 
       body.data = data
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event) => {
     case 'readFile':
       nameFile = body.nameFile.trim()
       try {
-        const contents = fs.readFileSync(path + nameFile);
+        const contents = await fs.readFile(path + nameFile);
         body.data = data
         return data
       } catch (error) {
@@ -49,7 +50,7 @@ export default defineEventHandler(async (event) => {
 
       try {
         //const contents = await readFile(path + nameFile, { encoding: 'base64' });
-        const contents = fs.readFileSync(path + nameFile, { encoding: 'base64' });
+        const contents = await fs.readFile(path + nameFile, { encoding: 'base64' });
         data = `data:image/${tipArchivo};base64,` + contents
         body.data = data
         // console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
@@ -79,7 +80,7 @@ export default defineEventHandler(async (event) => {
       //      const file = '/tmp/ticket' + ((Math.random() * 100).toFixed(0)).toString() + '.txt'
       const file = '/tmp/ticketBascula.txt'
 
-      Fs.writeFile(file, buffDatos, function (err) {
+      await Fs.writeFile(file, buffDatos, function (err) {
         if (err) {
           return console.log(err);
         }

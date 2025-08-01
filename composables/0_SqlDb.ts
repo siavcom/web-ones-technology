@@ -351,8 +351,8 @@ export const use = async (
         alias = nom_vis; // asignamos el nombre de la vista
     }
     alias = alias.trim();
-    if (alias == 'vi_cap_cometab')
-        console.log("1 Db USE ", alias);
+    //  if (alias == 'vi_cap_cometab')
+    //      console.log("1 Db USE ", alias);
 
     if (This.value.View[alias]) {
         console.log("Db Use==>>>>", alias, This.value.View[alias]);
@@ -391,8 +391,8 @@ export const use = async (
 
     if (!This.value.View[alias] || (await select(alias)) == 0) {
         // si el alias no existe
-        if (alias == 'vi_cap_cometab')
-            console.log("1 Db USE ", alias);
+        // if (alias == 'vi_cap_cometab')
+        //     console.log("1 Db USE ", alias);
 
         console.log("Db Use UseNodata", nom_vis, alias);
         await useNodata(nom_vis, alias);
@@ -3154,7 +3154,7 @@ export const oldValue = async (field: string, alias?: string) => {
     const data = await localAlaSql(`select Last.${field} from ${alias} where recno=${recno}`)
 
     if (data.length > 0)
-        return
+        return data[0][field]
     return false
 }
 
@@ -3270,7 +3270,7 @@ export const scatter = async (aliasFields?: undefined, alias?: string) => {
     let sep = ''
 
 
-    if (!aliasFields || (typeof aliasFields == 'string' && aliasFields == 'm') || (typeof aliasFields == 'string' && aliasFields == 'memvar')) {
+    if (!aliasFields || '*' || (typeof aliasFields == 'string' && aliasFields == 'm') || (typeof aliasFields == 'string' && aliasFields == 'memvar')) {
         select = select + ' * '
     }
     else {

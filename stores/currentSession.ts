@@ -375,14 +375,18 @@ export const Session = defineStore(
 
                   if (Public.value[comp]) {
                     Public.value[comp] = Var.value[comp];
+                    console.log("1) Pinia Public.value=", comp, Public.value[comp], Var.value[comp]);
 
                   }
                 }
 
-                for (const comp in Public.value)
-                  if (Var.value[comp])
+                for (const comp in Public.value) {
+                  if (Var.value[comp]) {
                     Public.value[comp] = Var.value[comp];
 
+                    console.log("2) Pinia Public.value=", comp, Public.value[comp], Var.value[comp]);
+                  }
+                }
               }
 
               console.log("Pinia Public.value=", Public.value);

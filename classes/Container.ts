@@ -24,6 +24,8 @@ export class CONTAINER extends COMPONENT {
     this.captionStyle.color = 'black'
     this.captionStyle.fontWeight = 'bold'
     this.captionStyle.fontSize = '17px'
+    this.style.height = 'auto'
+    this.style.width = "80%";
     // Estilo de cada contenedor del modal
 
 

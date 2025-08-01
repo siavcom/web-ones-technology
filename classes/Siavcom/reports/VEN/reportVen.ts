@@ -12,8 +12,8 @@ import { tip_imp } from "./tip_imp"
 // Generamos la clase en memoria 
 export class reportVen extends reportForm {
   public tip_imp = new tip_imp()
-  constructor() {
-    super()
+  constructor(num_blocks: number) {
+    super(num_blocks)
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
     this.des_fec.prop.TabIndex = 1

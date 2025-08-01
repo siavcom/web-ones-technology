@@ -36,7 +36,7 @@ export class op_tdo_tdo extends COMPONENT {
          tip_cop = this.Form.Params[0].replaceAll("´", "")
       if (tip_cop == 'VE')
          tip_cop = 'C'
-      else
+      if (tip_cop == 'CO')
          tip_cop = 'P'
 
       switch (this.Form.prop.Name) {
@@ -62,12 +62,17 @@ export class op_tdo_tdo extends COMPONENT {
                this.prop.MultiSelect = true;
                break;
             }
-         case 'come5212':	//& Ventas por familia
+         case 'come5212':	//& Estadisticas de ventas/compras
             {
                this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
             }
-         case 'come5213':	//& Ventas por familia
+         case 'come5213':	//& Análisis de ventas/compras
+            {
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               break;
+            }
+         case 'come5217':	//& Comparativo de ventas/compras
             {
                this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
@@ -75,6 +80,14 @@ export class op_tdo_tdo extends COMPONENT {
          case 'come5218':	//& Ventas por familia
             {
                this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               break;
+            }
+         case 'come3234':	//& Estadistica de insumos por documento
+            {
+               if (tip_cop == 'IN')
+                  this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where inv_tdo<>'N'  and nmo_tdo>0  order by des_tdo `
+               else
+                  this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0   order by des_tdo `
                break;
             }
 

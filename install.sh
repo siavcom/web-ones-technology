@@ -1,18 +1,18 @@
-# manual PACKAGE instalation 
 #!/bin/bash
 
+# manual PACKAGE instalation 
 ##################################################
 # instala nuxt 3.17.5
-# npm install nuxt@^3.17.5   
+npm install nuxt@^4.0.1
 ##################################################
+npx nuxi@latest module add vueuse
+npm i @vueuse/nuxt @vueuse/core @nuxt/kit @vueuse/integrations
+npx nuxi@latest module add image
+
+# npm i @pinia/nuxt again
 npm i pinia
 npm i pinia-plugin-persistedstate
 npm i @pinia/nuxt
-
-npx nuxi@latest module add vueuse
-npm i @vueuse/nuxt @vueuse/core @nuxt/kit @vueuse/integrations
-
-npx nuxi@latest module add image
 
 npm i axios
 npm i alasql 
@@ -20,8 +20,6 @@ npm i vue-sweetalert2
 
 npm i buffer
 npm i nuxt-socket-io
-
-npm audit fix --force
 
 npm i file-saver
 
@@ -32,6 +30,10 @@ npm i @point-of-sale/receipt-printer-encoder
 npm i @zip.js/zip.js
 
 npm i xlsx
+
+npm audit fix --force
+
+
 ## da un problema high y el npm audit fix no lo puede arreglar
 
 

@@ -27,9 +27,20 @@ export class pas_usu extends COMPONENT {
     this.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
 
   }
+
+  override async when() {
+    if (this.Parent.log_usu.prop.Value.trim == '') {
+      this.Parent.log_usu.setFocus()
+      return false
+    }
+    return true
+  }
+
   public override async valid(Valid: boolean) {
-    console.log('pas_usu This.form=')
-    console.log(this.Form)
+    if (this.Parent.log_usu.prop.Value.trim == '')
+      return true
+
+
     if (this.prop.Value.trim().length == 0) {
       return false
     }

@@ -14,25 +14,23 @@ import { op_des_fam } from "./op_des_fam";
 import { op_has_fam } from "./op_has_fam";
 import { sep_fam } from "./sep_fam";
 import { num_fam } from "./num_fam";
-import { des_isu } from "./des_isu";
-import { has_isu } from "./has_isu";
+import { op_des_isu } from "./op_des_isu";
+import { op_has_isu } from "./op_has_isu";
 
 // Generamos la clase en memoria 
 export class reportInv extends reportForm {
 
   public alm_rep = new alm_rep()
   public tip_imp = new tip_imp()
-  public op_des_isu = new des_isu()
-  public op_has_isu = new has_isu()
+  public op_des_isu = new op_des_isu()
+  public op_has_isu = new op_has_isu()
   public sep_fam = new sep_fam()
   public num_fam = new num_fam()
   public op_des_fam = new op_des_fam()
   public op_has_fam = new op_has_fam()
-  num_blocks: number = 1; // Bloque del reporte usuario
 
-
-  constructor() {
-    super()
+  constructor(num_blocks: number) {
+    super(num_blocks)
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
     this.des_fec.prop.TabIndex = 1
@@ -50,13 +48,8 @@ export class reportInv extends reportForm {
     this.op_has_fam.prop.TabIndex = 92
     this.des_dat.prop.InputMask = Public.value.ima_pge.trim()
     this.has_dat.prop.InputMask = Public.value.ima_pge.trim()
-
-    //this.has_fam.prop.Type = "string"
-    //this.has_fam.prop.MaxLength=10
-    //this.has_fam.prop.Value = " "
-    //this.has_fam.prop.Caption = "Hasta "
-    // this.has_fam.style.width='100px'
-    // this.has_fam.inputStyle.width='50px'
+    this.op_des_isu.prop.InputMask = Public.value.ima_pge.trim()
+    this.op_has_isu.prop.InputMask = Public.value.ima_pge.trim()
 
 
     this.prop.cam_pri = 'cla_isu' // campo de buqueda principal
@@ -67,27 +60,19 @@ export class reportInv extends reportForm {
       ["sku_isu", "SKU", , "''", "'ZZZZZZZZZZ'"]
 
     ]
-
-    this.block[0] = structuredClone(this.container)
-    this.block[0].component = {
-      [0]: this.sep_fam,
-      [1]: this.num_fam,
-      [2]: this.op_des_fam,
-      [3]: this.op_has_fam,
-      [4]: this.tip_imp,
-      [5]: this.alm_rep,
-      [6]: this.op_des_isu,
-      [7]: this.op_has_isu
-    }
-    this.block[0].prop.Visible = true
-    this.block[0].title = 'Familias'
-
-
-
-
-
-
+    /*
+       this.block[0].component = {
+          [0]: this.sep_fam,
+          [1]: this.num_fam,
+          [2]: this.op_des_fam,
+          [3]: this.op_has_fam
+        }
+        this.block[0].prop.Visible = false
+        this.block[0].prop.Disabled = true
+        this.block[0].title = 'Familias'
+    */
   }
+
   async init_ant(sw_detallado?: boolean) {
     await super.init()
     if (!sw_detallado) {

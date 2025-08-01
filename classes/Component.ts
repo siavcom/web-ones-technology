@@ -572,12 +572,24 @@ export class COMPONENT {
     );
 */
     if (this.init) {
-      // console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This=', this)
-      await this.init(); // Corre el init principal
-    }
-    return TabIndex;
-  }
 
+      if (this.prop.Map == 'ThisForm' && this.Form.Params && this.Form.Params.length > 0) {
+        console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This.Form=', this.Form.Params)
+
+        if (this.Form.Params.length == 1)
+          await this.init(this.Form.Params[0]); // Corre el init principal
+        if (this.Form.Params.length == 2)
+          await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
+        if (this.Form.Params.length == 3)
+          await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
+
+      }
+      else {
+        await this.init(); // Corre el init principal
+      }
+      return TabIndex;
+    }
+  }
   /**
    * Initializes the component.
    *

@@ -28,11 +28,11 @@ export class reportVtas extends reportForm {
   public op_des_fam = new op_des_fam()
   public op_has_fam = new op_has_fam()
   public tip_imp = new tip_imp()
-  override num_blocks = 1 // Bloque del reporte usuario
 
-  constructor() {
 
-    super()
+  constructor(num_blocks: number) {
+    super(num_blocks)
+    console.log('2) reporVentas constructor', num_blocks)
     // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
     this.op_tdo_tdo.prop.TabIndex = 1
@@ -80,15 +80,26 @@ export class reportVtas extends reportForm {
       ["fel_doc", "Fecha de captura"],
       ["fve_doc", "Fecha de vencimiento"]
     ]
-    this.block[0] = structuredClone(this.container)
+
     this.block[0].component = {
+      [0]: this.op_tdo_tdo,
+      [1]: this.op_tcd_tcd,
+      [2]: this.des_fec,
+      [3]: this.has_fec
+    }
+    this.block[0].prop.Visible = true
+    this.block[0].prop.Disabled = false
+    this.block[0].title = 'Generales'
+
+    this.block[1].component = {
       [0]: this.sep_fam,
       [1]: this.num_fam,
       [2]: this.op_des_fam,
       [3]: this.op_has_fam
     }
-    this.block[0].prop.Visible = false
-    this.block[0].title = 'Familias'
+    this.block[1].prop.Visible = false
+    this.block[1].prop.Disabled = true
+    this.block[1].title = 'Familias'
   }
 
   async init_ant(sw_detallado?: boolean) {

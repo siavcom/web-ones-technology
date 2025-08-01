@@ -9,20 +9,20 @@ const state = reactive({
         token: "",
         // General parameters
         nem_pge: "", grl_pge: "", tii_pge: "", ima_pge: "", uac_pge: "", fpo_pge: "",
-        an1_pge: "", an2_pge: "", an3_pge: "", tiv_pge: "", fde_pge: "", ine_pge: "",
+        an1_pge: 0, an2_pge: 0, an3_pge: 0, tiv_pge: "", fde_pge: 0, ine_pge: "",
         ctc_pge: "", ctp_pge: "", dct_pge: "", mos_pge: "", pva_pge: "",
-        li1_pge: "", li2_pge: "", li3_pge: "", li4_pge: "", li5_pge: "", // impuestos
+        li1_pge: 0, li2_pge: 0, li3_pge: 0, li4_pge: 0, li5_pge: 0, // impuestos
         cl1_sat: "", cl2_sat: "", cl3_sat: "", cl4_sat: "", cl5_sat: "", // claves de impuesto segun el sat
         po1_pge: 0, po2_pge: 0, po3_pge: 0, po4_pge: 0, po5_pge: 0, // porcentajes de vendedores
-        cpa_pge: "", cdi_pge: "", va1_pge: "",
-        va2_pge: "", va3_pge: "", va4_pge: "", va5_pge: "", de1_pge: "", de2_pge: "",
+        cpa_pge: "", cdi_pge: "", va1_pge: 0,
+        va2_pge: 0, va3_pge: 0, va4_pge: 0, va5_pge: 0, de1_pge: "", de2_pge: "",
         de3_pge: "", de4_pge: "", de5_pge: "", pr1_pge: "", pr2_pge: "", pr3_pge: "",
         pr4_pge: "", di0_pge: "", di1_pge: "", di2_pge: "", di3_pge: "", di4_pge: "", di5_pge: "", itr_pge: "",
         vi1_pge: "", vi2_pge: "", vi3_pge: "", pol_pge: "", suc_pge: "",
-        dcp_pge: "", dci_pge: "", pgi_pge: "", coc_pge: "", cpr_pge: "",
-        pap_pge: "", pac_pge: "", dbl_pge: "", inm_pge: "", pmv_pge: "",
+        dcp_pge: 0, dci_pge: 0, pgi_pge: 0, coc_pge: "", cpr_pge: "",
+        pap_pge: "", pac_pge: "", dbl_pge: 0, inm_pge: "", pmv_pge: "",
         dec_pge: "", tip_pge: "",
-        dpm_pge: "", mpv_pge: "", rfc_pge: "",
+        dpm_pge: "", mpv_pge: 0, rfc_pge: "",
         cal_pge: "", ext_pge: "", int_pge: "", col_pge: "", loc_pge: "", mun_pge: "", edo_pge: "", cpo_pge: "",
         nru_pge: "",
         rfi_pge: "", rfi_sat: "", icl_pge: "", ipr_pge: "", ipg_pge: "", gnl_pge: "",
@@ -32,7 +32,7 @@ const state = reactive({
         aju_hor: "", // Ajuste de horario
 
         // User/session
-        usu_usu: "", log_usu: "", pas_usu: "", nom_usu: "", gru_gru: "", alm_usu: "", usu_act: "", num_usu: 0,
+        usu_usu: 0, log_usu: "", pas_usu: "", nom_usu: "", gru_gru: "", alm_usu: "", usu_act: "", num_usu: 0,
         dpm_usu: "", pmv_usu: "", usu_alm: "",
         dat_ses: "",
         dir_emp: "", sql_emp: "", dbs_emp: "",

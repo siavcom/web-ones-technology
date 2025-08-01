@@ -54,6 +54,10 @@ export class alm_rep extends COMPONENT {
         this.prop.ColumnWidths = "40%,10%,10%,40%"; // Puede ser en puntos 60px,30px /
         break;
       }
+      case 'come3206': {
+        this.prop.RowSource = `select des_tda,alm_tda from loc_cometda where alm_tda<>'?? ' order by des_tda `
+        break;
+      }
       default: {
         this.prop.RowSource = "select des_tda,alm_tda from loc_cometda order by des_tda "
         break;

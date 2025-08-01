@@ -36,22 +36,24 @@ export class bt_pdf extends COMPONENT {
 
     bloque = this.Form.block.length - 1
 
-    this.Form.block[bloque].prop.Visible = true  // resultado
+    console.log('bt_pdf click No bloque=', bloque, 'bloques=', this.Form.block, 'Form.block.length=', this.Form.block.length)
+
+    this.Form.block[bloque].prop.Visible = true  // resultado ultimo bloque
 
     const main = this.Form.main
-
-    this.Form.queryPri.prop.Visible = false
-    this.Form.queryUsu.prop.Visible = false
-    this.Form.queryGen.prop.Visible = false
-    this.Form.reportFields.prop.Visible = false
-
-
-
-    for (let i = 0; i < main.length; i++) {
-      if (!this.Form[main[i]].prop.Disabled)
-        this.Form[main[i]].prop.Visible = false
-    }
-
+    /*
+        this.Form.queryPri.prop.Visible = false
+        this.Form.queryUsu.prop.Visible = false
+        this.Form.queryGen.prop.Visible = false
+        this.Form.reportFields.prop.Visible = false
+    
+    
+    
+        for (let i = 0; i < main.length; i++) {
+          if (!this.Form[main[i]].prop.Disabled)
+            this.Form[main[i]].prop.Visible = false
+        }
+    */
 
     this.Form.report.displayPdf.prop.Source = 'XXXX'
     this.Form.report.displayPdf.prop.Visible = true
@@ -70,12 +72,12 @@ export class bt_pdf extends COMPONENT {
     this.Form.report.displayBrowse.table.isLoading = true; // indicadorm de caqrga
     const query = await this.Form.gen_query()
 
+    console.log("bt_pdf buffer=", query, this.Form.for_imp.prop.Value, this.Form.data)
     const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
-    // console.log("bt_pdf buffer=", buffer, query, this.Form.for_imp.prop.Value, this.Form.data)
+
 
     this.Form.report.displayBrowse.table.isLoading = false
     if (buffer == null) {
-      this.Form.block[bloque].prop.Visible = false  // resultado
       MessageBox("No data to show");
       this.Form.report.bt_close.click()
       return

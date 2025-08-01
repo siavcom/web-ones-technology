@@ -239,6 +239,10 @@ export class GRID extends COMPONENT {
   // m : valiables de memoria
   ///////////////////////////////////////////////////
   public async appendRow(mem?: {}) {
+    if (this.prop.RecordSource.length < 3)
+      return
+
+
     this.prop.Disabled = true;
     //this.Row = -1;
 

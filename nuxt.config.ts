@@ -34,10 +34,11 @@ export default defineNuxtConfig({
   // Linux development. To create symbolic links, directories are increased so that Vite accepts them.
 
   vite: {
-    /////// include this 2 lines to run nuxt 3.17 y 4.0
-    optimizeDeps: { exclude: ['axios', 'form-data'] },
-    ssr: { noExternal: true },
-    /////////////////////////////////////////////// 
+   /////// Include the next 2 lines to run nuxt 3.17 and 4.0 (npx nuxi dev) /////////////////////////
+   /////// Take off to compile (npx nuxi build ) //////////////////////////////////////////////////
+   // optimizeDeps: { exclude: ['axios', 'form-data'] },
+   // ssr: { noExternal: true },
+   //////////////////////////////////////////////////////////////////////////////////// 
 
     resolve: {
       preserveSymlinks: true,

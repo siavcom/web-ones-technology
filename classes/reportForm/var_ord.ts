@@ -22,7 +22,7 @@ export class var_ord extends COMPONENT {
     this.prop.Capture = false;
     this.prop.updateKey = true;
     this.prop.ColumnWidths = "200px,56px";
-    this.style.width = "256px";
+    this.style.width = "fit-content";
     // this.style.marginLeft = "10px";
 
 

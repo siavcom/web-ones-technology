@@ -32,6 +32,8 @@ import modalContainer from '@/components/modalContainer.vue'
 // Sweetalert 2
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from "sweetalert2";
+import fs from 'fs'
+//import fs from 'fs/promises'; // Use fs.promises for async/await
 
 const ThisForm = ref(null)
 export const openForm = (This: any) => {
@@ -58,6 +60,15 @@ export const appendM = (valueA: {}, valueB: {}): object => {
 //////////////////////////////////////
 
 /**
+ * Checks if a string is null.
+ * @param {string} data - The string to check
+ * @returns {boolean} true if the string is null, false otherwise
+ */
+export const isNull = (data: string): boolean => {
+  return data == null ? true : false;
+}
+
+/**
  * Converts a string to lower case.
  * @param {string} data - The string to convert
  * @returns {string} The converted string in lower case
@@ -65,7 +76,6 @@ export const appendM = (valueA: {}, valueB: {}): object => {
 export const lower = (data: string): string => {
   return data.toLowerCase();
 }
-
 /**
  * Converts a string to upper case.
  * @param {string} data - The string to convert
@@ -75,7 +85,6 @@ export const upper = (data: string): string => {
   return data.toUpperCase();
 }
 
-
 /**
  * Generates a string with a specified number of spaces
  * @param {number} numero - The number of spaces to generate
@@ -84,7 +93,6 @@ export const upper = (data: string): string => {
 export const space = (numero: number): string => {
   return ' '.repeat(numero);
 }
-
 
 /**
  * Removes trailing carriage return and newline characters from the end of a string.
@@ -120,6 +128,33 @@ export const allTrim = (input: string): string => {
   return input.trim();
 }
 
+/**
+ * Converts a file to a string by reading its contents.
+ * 
+ * @param {string} file - The file whose contents are to be read.
+ * @returns {Promise<string>} - A promise that resolves to the file contents as a string.
+ */
+
+function fileToStr(input: string): string {
+  // const fs = require('fs');
+  const contents = fs.readFileSync(input).toString()
+  return contents
+}
+
+/**
+ * Converts a string from a file to a Blob and creates a File object.
+ * 
+ * @param {string} input - The path to the file to be read and converted.
+ * @returns {File} - A File object created from the string content of the file.
+
+ */
+function strToFile(input: string) {
+  // const fs = require('fs');
+  const blob = new Blob([input], { type: 'text/plain' });
+  var file = new File([blob], input, { type: "text/plain" });
+  return
+
+}
 
 /**
  * Returns the length of a string.

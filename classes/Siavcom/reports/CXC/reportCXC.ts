@@ -18,9 +18,8 @@ export class reportCXC extends reportForm {
   public cx_tdo_tdo = new cx_tdo_tdo()
   public cx_tcd_tcd = new cx_tcd_tcd()
   public con_con = new con_con()
-  constructor() {
-    super()
-    // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
+  constructor(num_blocks: number) {
+    super(num_blocks)    // Asinamos el orden de captura ya que la clase base ya tiene componentes y hay que ponerlo adelante
     // de esos componentes 
     this.des_fec.prop.TabIndex = 1
     this.has_fec.prop.TabIndex = 2

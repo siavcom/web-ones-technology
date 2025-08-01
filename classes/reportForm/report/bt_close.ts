@@ -33,12 +33,13 @@ export class bt_close extends COMPONENT {
 
 
     let bloque = 0
-    for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
+    for (bloque = 0; bloque < this.Form.block.length - 2; bloque++)
       if (!this.Form.block[bloque].prop.Disabled)
         this.Form.block[bloque].prop.Visible = true
 
     bloque = this.Form.block.length - 1
-    this.Form.block[bloque].prop.Visible = false  // resultado
+    this.Form.block[bloque].prop.Visible = false  // reportFields
+    this.Form.block[bloque - 1].prop.Visible = false  // resultado
 
     const main = this.Form.main
     // console.log('bt_close main=', main)

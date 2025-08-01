@@ -65,11 +65,11 @@ export class reportForm extends FORM {
 
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
 
-  num_blocks: number = 0; // Bloque del reporte usuario
 
-
-  constructor() {
+  constructor(num_blocks: number) {
     super();
+
+
     this.mon_rep.prop.TabIndex = 101;
     this.tip_rep.prop.TabIndex = 102;
     this.des_fec.prop.TabIndex = 103;
@@ -94,13 +94,12 @@ export class reportForm extends FORM {
 
     let i = 0
 
-    for (i = 0; i < this.num_blocks; i++) {
+    for (i = 0; i <= num_blocks; i++) {
       this.block[i] = structuredClone(this.container)
       this.block[i].prop.Visible = true
     }
 
-
-
+    i = num_blocks + 1
     this.block[i] = structuredClone(this.container)
     this.block[i].component = {
       [0]: this.mon_rep,
@@ -124,7 +123,7 @@ export class reportForm extends FORM {
 
     this.block[i].title = 'Rango'
     this.block[i].prop.Visible = true
-    this.block[0].style.maxWidth = '500px'
+
 
     i++
 
@@ -142,69 +141,27 @@ export class reportForm extends FORM {
 
     this.block[i] = structuredClone(this.container)
     this.block[i].component = {
-      [0]: this.report,
-      [1]: this.reportFields,
+      [0]: this.reportFields,
 
+    }
+
+    this.block[i].title = 'Campos de reporte'
+    this.block[i].prop.Visible = false
+
+    i++
+
+    this.block[i] = structuredClone(this.container)
+    this.block[i].component = {
+      [0]: this.report,
     }
 
     this.block[i].title = 'Resultado'
     this.block[i].prop.Visible = false
 
-    /*
-    
-        this.block[0] = structuredClone(this.container)
-        this.block[0].component = {
-          [0]: this.mon_rep,
-          [1]: this.tip_rep,
-          [2]: this.var_ord
-    
-    
-        }
-    
-       
-    
-        this.block[1] = structuredClone(this.container)
-        this.block[1].component = {
-          [0]: this.tip_con,
-          [1]: this.des_dat,
-          [2]: this.has_dat
-    
-    
-        }
-    
-        this.block[1].title = 'Rango'
-    
-    
-        this.block[2] = structuredClone(this.container)
-        this.block[2].component = {
-          [0]: this.queryPri,
-          [1]: this.queryUsu,
-          [2]: this.queryGen
-        }
-    
-        this.block[2].title = 'Condiciones'
-    
-    
-    
-        this.block[3] = structuredClone(this.container)
-        this.block[3].component = {
-          [0]: this.for_imp,
-          [1]: this.reportFields,
-          [2]: this.bt_obtener,
-          [3]: this.bt_pdf,
-          [4]: this.report
-    
-        }
-    
-    
-        this.block[3].title = 'Reporte'
-    
-    */
-
-
   }
 
   public override async init() {
+
 
     // this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
     // this.var_ord.prop.RowSourceType = 3;
@@ -274,9 +231,8 @@ export class reportForm extends FORM {
       this.reportFields.prop.Visible = true;
 
     }
-    console.log("0) report init form sw_init= ", this.sw_init, this.prop.Name)
+
     await this.open()
-    console.log("0.1) report init form sw_init= ", this.sw_init, this.prop.Name)
     return
 
   }
@@ -401,7 +357,7 @@ export class reportForm extends FORM {
     let where = ''
 
     let Type = this.var_ord.Type.toLowerCase()
-    console.log('reportForm query Type=', Type)
+    // console.log('reportForm query Type=', Type)
     if (this.tip_con.prop.Value == 'C') {  // contenga
       // Falta dialecto para Postgres
       where = ` ${this.var_ord.prop.Value} like '%${this.des_dat.prop.Value.trim()}%'`
@@ -428,7 +384,7 @@ export class reportForm extends FORM {
           has_dat = this.has_dat.prop.Value;
           break;
       }
-      console.log('gen_query des_dat=', des_dat, 'has_dat=', has_dat)
+      // console.log('gen_query des_dat=', des_dat, 'has_dat=', has_dat)
 
       where = ` ${this.var_ord.prop.Value} >= ${des_dat} and \
     ${this.var_ord.prop.Value} <= ${has_dat}`
@@ -518,6 +474,10 @@ export class reportForm extends FORM {
     }
 
     // Obtenemos variables Publicas
+
+
+
+
     const Var = this.mPublic;
     for (let component in Var) {
       data[component] = Var[component];
@@ -532,7 +492,7 @@ export class reportForm extends FORM {
     data['ord_rep'] = this.ord_rep // Aumenta la propiedad this.con_rep
     this.data = data;
 
-    console.log("bt_json obtData= ", data);
+    // console.log("bt_json obtData= ", data);
 
     return data;
   }
@@ -572,12 +532,11 @@ export class reportForm extends FORM {
 
     }
 
-    console.log("1) open fields=", fields, "tab_ord=", this.tab_ord, await this.Sql.localAlaSql("select * from diccionario"))
 
     this.var_ord.prop.Value = this.prop.cam_pri // asignamos campo principal
     this.var_ord.prop.RowSource = `diccionario.ref_dat,cam_dat`;
     this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
-    console.log("2) open var_ord=", this.var_ord.prop.Value, this.prop.cam_pri)
+
 
     // await this.var_ord.interactiveChange()
 

@@ -13,6 +13,7 @@ export class captureForm extends FORM {
   public gridCaptura: [] = [];
   public noData = false;
   public First = null
+  sw_nue = false; // bandera de nuevo registro
 
   // se debe de poner siempre el contructor
   constructor() {
@@ -480,4 +481,29 @@ export class captureForm extends FORM {
 
     return;
   }
+
+
+  // Metodo		: grabar
+  // Comentarios	: Este metodo es general para todas las rutinas de actualización de datos
+  async grabar(com_gra?: string) {
+
+    if (recCount() == 0) {		// si no hay registro activo
+      return true							// regresa
+    }
+    if (!com_gra) {						// si no se pasan parametros
+      com_gra = 'El registro '	// el comentario de grabación sera "El registro"
+    }
+
+    if (await tableUpdate(0)) {							// graba el registro
+      this.sw_nue = false
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+
+
+
 }

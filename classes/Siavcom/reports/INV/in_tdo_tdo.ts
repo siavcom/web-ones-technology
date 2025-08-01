@@ -31,10 +31,10 @@ export class in_tdo_tdo extends COMPONENT {
   }
   override async init() {
     var ins_loc = ''
-    const data = await SQLExec(`select des_tdo,tdo_tdo,inv_tdo,cop_nom from man_cometdo where inv_tdo in ('S','E') and nmo_tdo >0 `, 'loc_cometdo')
+    const data = await SQLExec(`select des_tdo,tdo_tdo,inv_tdo,cop_nom,nmo_tdo from man_cometdo where inv_tdo in ('S','E') and nmo_tdo >0 `, 'loc_cometdo')
     switch (this.Form.prop.Name) {
       case 'come3210':	//& tipo de analisis sobre ganancia
-        this.prop.RowSource = " select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo"
+        this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo `
         break;
       case 'come3214':
         {
@@ -44,11 +44,21 @@ export class in_tdo_tdo extends COMPONENT {
         }
       case 'come3226':
         {
-          this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='C' and inv_tdo<>'N' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo `
+          this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='C' and inv_tdo<>'N'  order by des_tdo `
+          break;
+        }
+      case 'come5203_gv':	//& tipo de analisis sobre ganancia
+        {
+          var tip_cop = this.Form.Params[0].replaceAll("´", "")
+          if (tip_cop == "VE")
+            tip_cop = 'C'
+          else
+            tip_cop = 'P'
+          this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo `
           break;
         }
       default:
-        this.prop.RowSource = "select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where inv_tdo='S' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo "
+        this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where inv_tdo='S' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'N' as inv_tdo order by des_tdo `
         break;
     }
     /*   if (this.Form.prop.Name=="come3210" )
