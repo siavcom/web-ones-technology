@@ -16,6 +16,14 @@ export class GRID extends COMPONENT {
   // declare variable:string='Hola'
 
   //elements = [{}]
+  rowStyleActive = {
+    backgroundColor: 'antiquewhite'
+  }
+
+  rowStyleInactive = {
+    backgroundColor: 'black' //'darkgray'   //'white'
+  }
+
   constructor() {
     super();
     //this.Name = "Grid";
@@ -50,6 +58,11 @@ export class GRID extends COMPONENT {
       ["Registro no actualizado de la tabla "], // 4
       ['Borramos el reglon '], //5
     ];
+  }
+
+  override async init(): Promise<void> {
+
+    this.rowStyleInactive = this.Form.mainStyle.backgroundColor
   }
 
   ////////////////////////////////////////

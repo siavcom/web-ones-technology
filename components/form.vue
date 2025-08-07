@@ -30,7 +30,7 @@
         <section class="pagina" :style="ThisForm.style">
           <div id='backGround' class='backGround'>
             <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
-            <section class="formheader">
+            <section class="formheader" :style="ThisForm.headerStyle">
               <slot name="header">
 
                 <!--template v-slot:header-->
@@ -59,7 +59,7 @@
               </slot>
             </section>
             <!-- Despliega todo los componentes de la forma  -->
-            <section class="formmain">
+            <section class="formmain" :style="ThisForm.mainStyle">
               <slot name="main">
 
                 <TransitionGroup name='detailForm'>
@@ -99,7 +99,7 @@
 
             <!--/template-->
             <!--template v-slot:footer  -->
-            <section class="formfooter">
+            <section class="formfooter" :style="ThisForm.footerStyle">
               <!--Transition tag='div' -->
               <nuxt-img class='circle'
                 :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"

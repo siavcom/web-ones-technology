@@ -183,7 +183,19 @@ export class COMPONENT {
     alignContent: "flex-start" //"flex-end", //alignContent: "center",
   }
 
-  inputStyle = { ...this.captionStyle }
+  inputStyle = {
+    ...this.captionStyle,
+    border: 'rgb(0, 5, 2)',  /*1px solid */
+
+    borderRadius: '3px',
+    textAlign: 'left',
+    width: '96%',
+    minWidth: 'auto',
+    zIndex: '1',
+    boxShadow: '0px 1px 1px 0, 0 1px 1px 0',
+    marginTop: '2px',
+
+  }
 
   style = {
     //display: "flex", "inline-block"
@@ -193,7 +205,7 @@ export class COMPONENT {
     backgroundImage: "",
     border: "",  //    backgroundImage: "",
     borderRadius: "", //"2px",
-    color: "#b94295", // '#872169', //    
+    color: "#b94295", //"#b94295", // '#872169', //    
     cols: "60",
     display: "inline-flex",
     flexGrow: "0" /* do not grow   - initial value: 0 */,

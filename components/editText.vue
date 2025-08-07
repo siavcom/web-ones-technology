@@ -485,9 +485,7 @@ const onInput = ({ target }) => {
       currentValue.value[1] = '0.'
       return
     }
-
   }
-
 
   if (isNaN(TargetValue)) {
     currentValue.value[1] = oldVal
@@ -1226,6 +1224,8 @@ const onFocus = async () => {
     sw_when = true
     focusIn.value = 1
   }
+  //Asignamos  el background del input originañ
+  Styles.inputStyle.background = This.inputStyle.background
 
   focusIn.value = 1  // cambia el valor en el input number 
   This.prop.Focus = false
@@ -1946,6 +1946,8 @@ onMounted(async () => {
 
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
     Styles.inputStyle.maxHeight = Styles.style.fontSize
+  if (propType.value == 'number')
+    Styles.inputStyle.textAlign = 'right'
 
   if (propType.value.toLowerCase == 'checkbox') {
 

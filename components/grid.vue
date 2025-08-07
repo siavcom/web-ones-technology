@@ -24,7 +24,11 @@
                   -->
                 <div :id="Id + '_div_grid_column_header' + column" v-show="This[column.Name].prop.Visible">
                   <!--Imprime como etiqueta el header de cada columna-->
-                  {{ This[column.Name].prop.ColumnTextLabel }}
+                  <!--{{ This[column.Name].prop.ColumnTextLabel }}-->
+
+                  <textlabel wrap="hard" :style="This[column.Name].captionStyle">{{
+                    This[column.Name].prop.ColumnTextLabel }}</textlabel>
+
                 </div>
               </th>
             </tr>
@@ -36,7 +40,8 @@
             <!-------------  Renglones  ------------------------>
             <tr :id="Id + '_grid_tr_' + key" v-if="scroll.dataPage && scroll.dataPage.length > 0"
               v-for="(item, key) in scroll.dataPage" :key="item && item.recno ? item.recno : 0"
-              :style="This.Row < 0 || item.id != This.Row ? trStyleInactive : trStyleActive">
+              :style="This.Row < 0 || item.id != This.Row ? This.rowStyleInactive : This.rowStyleActive">
+              <!-- :style="This.Row < 0 || item.id != This.Row ? trStyleInactive : trStyleActive"-->
               <!-- No utilizar vertical-aling en renNumber-->
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
                 item.recno
@@ -269,15 +274,15 @@ const Error = ref(false)
 let firstElement = ''
 
 //const Focus = ref(false)
+/*
 const trStyleActive =
   { backgroundColor: 'antiquewhite' }
 
 const trStyleInactive =
-  { backgroundColor: 'white' }
-
-
-
-
+{
+  backgroundColor: 'darkgray'   //'white'
+}
+*/
 const scroll = reactive({
   controls: false,
   dataPage: [],  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]

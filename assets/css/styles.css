@@ -3,7 +3,7 @@ div.ThisForm {
   margin-left: -3%;
   display: inline-block;
 }
-
+ 
 section.pagina {
   background: white;
  /* color: #b94295; /* #b94295;*/
@@ -153,7 +153,7 @@ transform: scale(2) translate(0px, 10px);*/
   background-color: rgb(109, 134, 113);
 }
 
-input.checkBox {
+input.checkBox_old {
   border: rgb(0, 5, 2);  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
@@ -167,7 +167,7 @@ input.checkBox {
   /*min-width: 50%; */
 }
 
-input.date {
+input.date_old {
   border:  rgb(0, 5, 2);  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
@@ -179,7 +179,7 @@ input.date {
   margin-top:2px;
 }
 
-input[class="number"] {
+input[class="number_old"] {
   border: rgb(0, 5, 2);  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
@@ -428,7 +428,7 @@ input[class="number"] {
 }
 */
 
-section.formheader {
+section.formheader_old {
   display: flex;
   /*  flex;*/
   /*flex-direction: column; */
@@ -445,7 +445,7 @@ section.formheader {
 
 
 
-section.formmain {
+section.formmain_old {
   /*display: flex;*/
   /*  flex;*/
   /*flex-direction: column; */
@@ -466,7 +466,7 @@ section.formmain {
 
 
 
-section.formfooter {
+section.formfooter_old {
   display: flex;
   /*  flex;*/
   /*flex-direction: column; */

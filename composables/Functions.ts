@@ -564,6 +564,60 @@ export const addDate = (dateString: string, data: any, tipo?: string): string =>
   return addDay(dateString, data)
 };
 
+
+/**
+ * Returns the day of the month from a given date string.
+ * 
+ * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
+ * @returns {number} - The day of the month as a number.
+ */
+export const day = (dateString: string): number => {
+
+  const currentDate = new Date(dateString); // Creates a Date object for the current date and time
+  return currentDate.getDate(); // Retrieves the day of the month
+}
+
+
+/**
+ * Returns the month from a given date string.
+ * 
+ * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
+ * @returns {number} - The month as a number (1-12).
+ */
+
+export const month = (dateString: string): number => {
+  const currentDate = new Date(dateString); // Creates a Date object for the current date and time
+  return currentDate.getMonth() + 1; // Retrieves the month (0-11) and adds 1 to get the month number (1-12)  
+
+}
+
+/**
+ * Returns the year from a given date string.
+ * 
+ * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
+ * @returns {number} - The year as a number.
+ */
+
+export const year = (dateString: string): number => {
+  const currentDate = new Date(dateString); // Creates a Date object for the current date and time
+  return currentDate.getFullYear();
+
+}
+
+
+/**
+ * Returns the day of the week from a given date string.
+ * 
+ * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
+ * @returns {number} - The day of the week as a number (0-6), where 0 is Sunday and 6 is Saturday.
+ */
+export const getDay = (dateString: string): number => {
+  const currentDate = new Date(dateString); // Creates a Date object for the current date and time
+  return currentDate.getDay();
+}
+
+
+
 ///////////////////////////////////////////////
 // Funciones para arreglos de objetos
 ///////////////////////////////////////////////

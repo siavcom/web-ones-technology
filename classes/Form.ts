@@ -27,6 +27,67 @@ export class FORM extends COMPONENT {
   Recno = ref(999999999)
 
 
+  headerStyle = {
+    display: 'flex',
+    alignItems: 'last baseline',
+
+    justifyContent: 'space-around',
+
+    height: 'fit-content',
+    backgroundColor: '#ebf8ee',
+    border: '1px solid rgb(0, 0, 0)',
+    borderRadius: '6px',
+
+    /*  flex;
+    flex-direction: column; 
+    center;
+    width: 100%;*/
+
+  }
+
+
+
+  mainStyle = {
+    textAlign: 'left',
+    backgroundColor: '#f2f4ef',
+    border: '1px solid rgb(0, 0, 0)',
+    borderRadius: '6px',
+
+    zIndex: '1',
+
+    /*border: 1px solid rgb(0, 0, 0);
+      border-radius: 6px; */
+    /*display: flex;*/
+    /*  flex;*/
+    /*flex-direction: column; */
+    /*align-items: left; */
+    /*center;*/
+    /*justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    */
+
+  }
+
+  footerStyle = {
+    display: 'flex',
+    alignItems: 'last baseline',
+    justifyContent: 'space-around',
+    height: 'fit-content',
+    backgroundColor: '#c8e0ce',
+    border: '1px solid rgb(0, 0, 0)',
+    borderRadius: '6px',
+    zIndex: '2',
+
+    /*  flex;*/
+    /*flex-direction: column; */
+    /*center;*/
+    /*width: 100%;*/
+
+  }
+
+
+
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -40,9 +101,19 @@ export class FORM extends COMPONENT {
 
     this.prop.Status = "I";
 
+    /*********** Style **********************/
     //this.style.width = "99%";
     this.style.width = "-moz-available";
     this.style.height = "96%";
+    this.style.background = 'white';
+
+    this.style.minWidth = '375px';
+    this.style.minHeight = '812px';
+
+    /* margin-top: 250px; */
+
+
+
     // this.style.maxWidth = '100%'
     //    this.style.maxHeight='920px'
 

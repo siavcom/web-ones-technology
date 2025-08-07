@@ -587,11 +587,10 @@ export const tableRevert = async (alias?: string) => {
 }
 
 
-
 /////////////  Hace un requery de una vista /////////////////////
 // alias  : Encuantra el alias de la vista actual
 ////////////////////////////////////////////
-export const alias = async () => {
+export const alias = () => {
     return This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 }
 
@@ -1962,11 +1961,11 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
 /// /////////////  Vfp select() /////////////////////
 // alias : area seleccionada
 /// //////////////////////////////////////////////
-export const select = async (alias: unknown) => {
+export const select = async (alias?: unknown) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     // console.log('Db Select 0',This.value.Form)
-    if (alias == null) {
+    if (!alias) {
         return This.value.num_are;
     }
 

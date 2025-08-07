@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -1032,7 +1032,7 @@ const renderComboBox = async (readData?: boolean) => {
 
   //    if (data[0]) {
   if ((rowSourceType >= 2 && rowSourceType <= 4)) {
-    if (data.length == 0) {
+    if (!data || (data && data.length == 0)) {
       console.warn('1) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', RowSource, ' RowSourceType=', props.prop.RowSourceType)
       return
     }
