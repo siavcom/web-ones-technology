@@ -47,7 +47,7 @@ export default defineNuxtConfig({
     /*
     server: {
       fs: { // allow access to server files
-        allow: ['/desarrollo/desarrolloweb/Vue/web-ones/'], //  absolute path to web-ones directory in this computer
+        allow: ['/systems/web-ones/'], //  absolute path to web-ones directory in this computer
       },
     },
      */

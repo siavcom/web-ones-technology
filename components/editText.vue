@@ -3,7 +3,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -107,7 +107,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -343,7 +343,7 @@ This.prop.htmlId = Id
 const Value = ref(props.prop.Value)
 //const Valor = toRef(This.prop, "Value")
 const Valid = ref(props.prop.Valid)
-Valid.value = true
+//Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 // let Help = false
 
@@ -611,7 +611,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           // 7/Feb/2024       
           //This.Form.prop.Status = 'A'
           if (KeyPressed) {
-            select()
+            select()  // 8/Ags/2025
             displayError.value = true
             This.prop.ShowError = true
 
@@ -628,7 +628,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
       }
 
-      //  console.log('3.4) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+      // console.log('3.4) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
       This.prop.Valid = true
       This.prop.Status = 'A'
       Status.value = 'A'
@@ -648,7 +648,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   }
   else {  // Si hay lectura de campo
-    //console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
+    console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
 
     // Valor = ''
     This.prop.Valid = true
@@ -1070,7 +1070,7 @@ const keyPress = ($event: {
 }) => {
   // <input       @keypress="keyPress($event)"
   KeyPressed = true
-  console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
+  //  console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
   const char = +$event.charCode
   const Type = propType.value
   if (displayError.value) {
@@ -1078,7 +1078,7 @@ const keyPress = ($event: {
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
-  //  console.log('1)>>>>>KeyPress===>', char, 'Type=', Type)
+
 
   // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
@@ -1281,7 +1281,7 @@ const onFocus = async () => {
             }
         */
     })
-    select() // 20/Dic/2024 Se quito porque en version compilada no funciona
+    // select() // 8/Ags/2025 Se quito 
 
   }
 

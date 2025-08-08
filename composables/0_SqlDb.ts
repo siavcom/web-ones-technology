@@ -209,9 +209,6 @@ export const locateFor = async (where: string, alias?: string) => {
 
 }
 
-
-
-
 /// /////////////  Vfp Use nodata ///////////////////
 // nom_vis : Nombre de la vista a utilizar
 /// /////////////////////////////////////////////////
@@ -1961,7 +1958,7 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
 /// /////////////  Vfp select() /////////////////////
 // alias : area seleccionada
 /// //////////////////////////////////////////////
-export const select = async (alias?: unknown) => {
+export const select = async (alias?: string | number) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     // console.log('Db Select 0',This.value.Form)
@@ -3040,21 +3037,22 @@ export const goto = async (despla: undefined, alias?: string) => {
 
         if (despla == "top") {
             data = await localAlaSql(
-                "SELECT top 1 recno   FROM Now." + alias + " order by recno desc"
+                "SELECT top 1 recno  FROM Now." + alias + " order by recno desc"
             );
         }
         if (despla == "bottom") {
             data = await localAlaSql(
-                "SELECT top 1 recno   FROM Now." + alias + " order by recno "
+                "SELECT top 1 recno  FROM Now." + alias + " order by recno "
             );
         }
 
         if (data.length == 0) { // No hay datos
             initAlias(alias) // Inicializa el alias si no hay datos
-            return 0;
+            return [];
         }
 
         recno = data[0][recno];
+        // Asigna el Row del grid
         This.value.View[alias].row = -1;
         for (let row = 0; This.value.View[alias].recnoVal.lenght; row++) {
             if (This.value.View[alias].recnoVal[row].recno == recno) {
@@ -3066,15 +3064,16 @@ export const goto = async (despla: undefined, alias?: string) => {
         }
     }
 
-    // leedatos
-    if (recno == 0)  // se posiciona en el registro actual
+    // Si no hay hay datos en el recno solicitado
+    if (recno == 0) { // se posiciona en el registro actual
         recno = This.value.View[alias].recno
 
-    if (recno == 0) { // no has datos
-        initAlias(alias) // Inicializa el alias si no hay datos
-        return 0;
-    }
+        if (recno == 0) { // no has datos
+            initAlias(alias) // Inicializa el alias si no hay datos
 
+        }
+        return [];
+    }
     data = await localAlaSql(" SELECT * FROM Now." + alias + "  where recno=?", recno);
 
     // Lee datos del alias del registro actual
@@ -3087,12 +3086,12 @@ export const goto = async (despla: undefined, alias?: string) => {
 
         bof(alias)
         eof(alias)
-        return recno //This.value.View[alias].data;
+        return data //This.value.View[alias].data;
     }
 
     initAlias(alias) // Inicializa el alias si no hay datos
 
-    return 0;
+    return [];
 };
 
 

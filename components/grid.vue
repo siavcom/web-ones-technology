@@ -19,15 +19,16 @@
             <tr style="font-size: 13px">
               <th> </th>
               <th :id="Id + '_grid_th_column_header' + column.Name" v-for="column in This.elements" :key="column.Id"
-                :style="{ height: prop.headerHeight, lineHeight: '15px' }">
+                :style="{ height: prop.headerHeight, lineHeight: '15px', textAlign: '-moz-center' }">
                 <!--Header:
                   -->
-                <div :id="Id + '_div_grid_column_header' + column" v-show="This[column.Name].prop.Visible">
+                <div :id="Id + '_div_grid_column_header' + column" v-show="This[column.Name].prop.Visible"
+                  :style="This[column.Name].captionStyle">
                   <!--Imprime como etiqueta el header de cada columna-->
                   <!--{{ This[column.Name].prop.ColumnTextLabel }}-->
 
-                  <textlabel wrap="hard" :style="This[column.Name].captionStyle">{{
-                    This[column.Name].prop.ColumnTextLabel }}</textlabel>
+                  <label wrap="hard">{{
+                    This[column.Name].prop.ColumnTextLabel }}</label>
 
                 </div>
               </th>

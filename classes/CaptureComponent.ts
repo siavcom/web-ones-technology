@@ -18,6 +18,8 @@ export class CAPTURECOMPONENT extends COMPONENT {
     super();
     this.prop.ReadOnly = true;
     this.prop.ValidOnRead = true;
+    this.prop.Capture = true
+    this.prop.Valid = false
   }
 
   public async init(): Promise<void> {
@@ -35,6 +37,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
       // Si es llave de actualizacion
       this.Form.bt_graba.prop.Visible = false;
       this.Form.bt_borra.prop.Visible = false;
+      this.Form.bt_modifica.prop.Visible = false;
       await this.Form.refreshComponent();
 
     }
@@ -51,14 +54,20 @@ export class CAPTURECOMPONENT extends COMPONENT {
       return true
     }
 
-    if (!this.prop.updateKey || !this.prop.Capture) {
+    if (!this.prop.updateKey && !this.prop.Capture) {
       this.prop.Valid = true;
       return this.prop.Valid;
     }
 
-    this.prop.Valid = await this.Form.validComponent(this.Name);
-
-
+    this.prop.Valid = await this.Form.validComponent(ref(this));
+    /*   Se puso en elCapture form con el NextTick
+        if (this.prop.updateKey) {
+    
+          for (const comp of this.Form.main) {// Apaga validaciones 
+              this.Form[comp].prop.Valid = this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey ? false : this.Form[comp].prop.Valid
+          }
+        }
+    */
     return this.prop.Valid;
   }
 }
