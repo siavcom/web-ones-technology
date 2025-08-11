@@ -173,11 +173,13 @@ const click = async () => {
   // Si esta en un grid checa sus estatus de todas las columnas
   if (!await checkGrid())
     return
-  console.log('imgButton click Name=', This.Form.prop.BaseClass.toLowerCase())
+
 
   ToolTipText.value = false  // Activamos el ToolTipText
   // await This.when()
-  if (!This.prop.Disabled && This.Form.prop.BaseClass.toLowerCase() == 'form') {
+  if (!This.prop.Disabled) { // && This.Form.prop.BaseClass.toLowerCase() == 'form'
+    console.log('imgButton click Name=', This.prop.Map + '.click()')
+
     This.Form.eventos.push(This.prop.Map + '.click()')
   } else
     This.click()

@@ -2,7 +2,7 @@
     * Composable to manage public variable values in a Vue.js application.
     * This variables includes general parameters, user/session information, and other configurations.
 */
-const state = reactive({
+const publico = reactive({
     Public: {
         Company: "",
         User: "",
@@ -72,6 +72,6 @@ const state = reactive({
 
 
 export const Public = computed(() => {
-    const { Public } = toRefs(state)
+    const { Public } = toRefs(publico)
     return Public.value
 })

@@ -1073,7 +1073,8 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     const ThisForm = This.value.Form;
 
-    console.log("3) Db appendBlank alias=", alias, 'm', m);
+    //console.log("3) Db appendBlank alias=", alias, 'm', m);
+    console.log("4) Db appendBlank Public=", Public.value);
 
     if (!alias) {
         // si no se da el alias
@@ -3017,7 +3018,7 @@ export const getAlias = (alias?: string): string | null => {
  * @param alias {string} : nombre del alias
  * @returns {number|null} : recno del registro, null si no hay datos
  */
-export const goto = async (despla: undefined, alias?: string) => {
+export const goto = async (despla: string | number, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     alias = alias ? alias : getAlias(); // obtiene el alias actual si no se especifica
@@ -3245,7 +3246,7 @@ export const skip = async (despla?: number, alias?: string) => {
 // scatter Lee los datos del registro actual
 // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
 /// //////////////////////////////////////
-export const scatter = async (aliasFields?: undefined, alias?: string) => {
+export const scatter = async (aliasFields?: [], alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     let resultado = [];
     let fields = []
@@ -3258,37 +3259,55 @@ export const scatter = async (aliasFields?: undefined, alias?: string) => {
         alias = This.value.are_tra[This.value.num_are - 1];
     }
 
-    // checar diferencia entre recnoVal y recno
-    // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
 
-    const recno = await goto(0, alias); // lee los datos actuales
+    const res = await goto(0, alias); // lee los datos actuales
+    if (!aliasFields)
+        return res
+
+    for (const ele of aliasFields)
+        resultado.push(res[ele])
+
+    return resultado
 
 
-    let select = 'SELECT '
-    let sep = ''
-
-
-    if (!aliasFields || '*' || (typeof aliasFields == 'string' && aliasFields == 'm') || (typeof aliasFields == 'string' && aliasFields == 'memvar')) {
-        select = select + ' * '
-    }
-    else {
-
-        for (const field of aliasFields) {
-            select = select + sep + field
-
-            sep = ','
+    /*
+    
+        // checar diferencia entre recnoVal y recno
+        // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
+    
+        const recno = await goto(0, alias); // lee los datos actuales
+    
+    
+    
+        let select = 'SELECT '
+        let sep = ''
+    
+    
+        if (!aliasFields || '*' || (typeof aliasFields == 'string' && aliasFields == 'm') || (typeof aliasFields == 'string' && aliasFields == 'memvar')) {
+            select = select + ' * '
         }
-    }
+        else {
+    
+            for (const field of aliasFields) {
+                select = select + sep + field
+    
+                sep = ','
+            }
+        }
+    
+        const ins_sql = select + ' FROM Now.' + alias + ' WHERE recno=' + recno
+        console.log('Db scatter update=', ins_sql)
+    
+        const data = await localAlaSql(ins_sql);
+    
+        if (data.length == 0) {
+            return null; // No hay datos
+        }
+        return data[0]; // Retorna el primer registro
+    
+    */
 
-    const ins_sql = select + ' FROM Now.' + alias + ' WHERE recno=' + recno
-    console.log('Db scatter update=', ins_sql)
 
-    const data = await localAlaSql(ins_sql);
-
-    if (data.length == 0) {
-        return null; // No hay datos
-    }
-    return data[0]; // Retorna el primer registro
 
 };
 
@@ -3297,9 +3316,9 @@ export const scatter = async (aliasFields?: undefined, alias?: string) => {
 // scatter Lee los registros y pone sus campos en blanco del registro actual
 // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
 /// //////////////////////////////////////
-export const scatterBlank = async (aliasFields?: undefined, alias?: string) => {
+export const scatterBlank = async (aliasFields?: [], alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-    let resultado = [];
+    let resultado = {}
     let fields = []
 
 
@@ -3312,27 +3331,41 @@ export const scatterBlank = async (aliasFields?: undefined, alias?: string) => {
 
     // checar diferencia entre recnoVal y recno
     // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
+    // const recno = await goto(0, alias); // lee los datos actuales
+    //const recno = await goto(0, alias); // lee los datos actuales
 
-    const recno = await goto(0, alias); // lee los datos actuales
-
-
-    let select = 'SELECT '
-    let sep = ''
-    for (const field in aliasFields) {
-        select = select + sep + field
-
-        sep = ','
+    if (!aliasFields) {
+        for (const campo of View[alias].val_def)
+            resultado[campo] = View[alias].val_def[campo]
+        return resultado
     }
 
-    const ins_sql = select + 'FROM Now.' + alias + ' WHERE recno=-1'
+    for (const campo of aliasFields)
+        resultado.push(View[alias].val_def[campo])
 
-    const data = await localAlaSql(ins_sql);
+    return resultado
 
-    if (data.length == 0) {
-        return null; // No hay datos
-    }
-    return data[0]; // Retorna el primer registro
-
+    /*
+    
+    
+    
+        let select = 'SELECT '
+        let sep = ''
+        for (const field in aliasFields) {
+            select = select + sep + field
+    
+            sep = ','
+        }
+    
+        const ins_sql = select + 'FROM Now.' + alias + ' WHERE recno=-1'
+    
+        const data = await localAlaSql(ins_sql);
+    
+        if (data.length == 0) {
+            return null; // No hay datos
+        }
+        return data[0]; // Retorna el primer registro
+    */
 };
 
 
@@ -3352,7 +3385,7 @@ export const scatterBlank = async (aliasFields?: undefined, alias?: string) => {
 export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Promise<null | boolean> => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    let resultado = [];
+    //    let resultado = [];
     let fields = []
 
     if (!alias) {
@@ -3365,39 +3398,38 @@ export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Pr
     if (!aliasFields) {
         aliasFields = []
 
-        for (const field in This.value.View[alias].val_def) {
-            aliasFields.push(field)
+        for (const campo of This.value.View[alias].val_def) {
+            aliasFields.push(campo)
         }
     }
-
 
     // checar diferencia entre recnoVal y recno
     // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
 
-    const recno = await goto(0, alias); // lee los datos actuales
+    const res = await goto(0, alias); // lee los datos actuales
 
-    if (recno == null) {
-        return null;
+    if (res.length == 0) {  // no hay regisro a actualoizar
+        return false;
     }
+
+    const recno = res.recno
 
     let update = 'UOPDATE Now.' + alias + ' SET '
     let sep = ''
 
-    for (const field in aliasFields) {
+    for (const field of aliasFields) {
         if (from[field]) {
             const valor = from[field]
             if (typeof valor == 'string') {
-
-                update = update + sep + field + "='" + valor + "'"
+                update = update + sep + field + `='${valor}'`
             } else
-                update = update + sep + field + '=' + valor.toString()
-
+                update = update + sep + field + `=${valor}`
             sep = ','
         }
 
     }
 
-    update = update + ' WHERE recno=' + recno
+    update = update + ` WHERE recno=${recno} `
     console.log('Db gatherFrom update=', update)
     return await localAlaSql(update);
 };

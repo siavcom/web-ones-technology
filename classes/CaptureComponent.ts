@@ -20,6 +20,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
     this.prop.ValidOnRead = true;
     this.prop.Capture = true
     this.prop.Valid = false
+    this.prop.updateKey = false
   }
 
   public async init(): Promise<void> {
@@ -27,22 +28,37 @@ export class CAPTURECOMPONENT extends COMPONENT {
     else this.prop.ReadOnly = true;
   }
 
-  //////////////////////////////////
-  // event when
-  ///////////////////////////////////
 
-  override async when() {
-    if (this.prop.ReadOnly) return false;
-    if (this.prop.updateKey) {
-      // Si es llave de actualizacion
-      this.Form.bt_graba.prop.Visible = false;
-      this.Form.bt_borra.prop.Visible = false;
-      this.Form.bt_modifica.prop.Visible = false;
-      await this.Form.refreshComponent();
+  async beforeWhen() {
+    if (!this.prop.updateKey)
+      return
 
-    }
-    return true;
+    await this.Form.beforeWhenComponent(ref(this))
+
   }
+
+
+  override async when_old() {
+    if (!this.prop.updateKey)
+      return true
+
+    console.log('when component=', this.prop.Name, 'this.Form.main', this.Form.main)
+
+    for (let i = 0; i < this.Form.main.length; ++i) {
+      const comp = this.Form.main[i]
+
+      if (!this.Form[comp].prop.updateKey && this.Form[comp].prop.Capture) {
+        //  this.Form[comp].prop.Valid = true
+        this.Form[comp].prop.ShowError = false
+        console.log('update when component=', this.Form[comp].prop.Name)
+      }
+    }
+
+    return true
+
+  }
+
+
 
   //////////////////////////////////
   // event valid

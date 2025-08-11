@@ -15,6 +15,7 @@ export class captureForm extends FORM {
   public First = null
   sw_nue = false; // bandera de nuevo registro
 
+
   // se debe de poner siempre el contructor
   constructor() {
     super();
@@ -97,6 +98,49 @@ export class captureForm extends FORM {
   public async inSave() { return true }
 
   /// /////////////////////////////////////
+  // Metodo : when
+  // Descripcion :Si es la propiedad de captureKey==true. lLena todos los campos en blanco y apaga validaciones 
+  //              de todos los campos para quitar los mensaje de error
+  /// /////////////////////////////////////
+
+  async beforeWhenComponent(Comp: undefined) {
+    const thisComp = Comp.value
+    console.clear()
+    console.log('before When Component=', thisComp.prop.Name)
+    for (const comp of this.Form.main) {
+
+      if (!this.Form[comp].prop.updateKey && this.Form[comp].prop.capture) {
+        this.prop.Status = 'A'
+
+
+        if (typeof this.Form[comp].prop.Value == 'string')
+          if (this.Form[comp].prop.Value != '')
+            this.Form[comp].prop.Value = ''
+          else
+            if (this.Form[comp].prop.Value != 0)
+              this.Form[comp].prop.Value = 0
+
+        // this.Form[comp].prop.Valid = true
+
+        // this.Form[comp].prop.Valid = true
+
+
+      }
+
+
+
+    }
+
+    this.Form.bt_graba.prop.Visible = false;
+    this.Form.bt_borra.prop.Visible = false;
+    this.Form.bt_modifica.prop.Visible = false;
+
+    this.Form.refreshComponent();
+
+
+  }
+
+  /// /////////////////////////////////////
   // Metodo : valid
   // Descripcion : Valida los componentes de la forma. Si es un dato nuevo
   //              manda refrescar la forma para permitir su captura
@@ -112,17 +156,14 @@ export class captureForm extends FORM {
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
     //const thisComp = this[compName];
 
-
-
     if (thisComp.prop.updateKey == false) {
-
       let sw_val = true
-      console.log('1) Valid No updateKey Capture component= ', thisComp.prop.Name)
+      //  console.log('1) Valid No updateKey Capture component= ', thisComp.prop.Name)
 
       for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
         if (sw_val && !this[comp].prop.Valid)
           sw_val = false
-        console.log('Valid Capture component Name= ', this[comp].prop.Name, 'Valid=', this[comp].prop.Valid)
+        //        console.log('Valid Capture component Name= ', this[comp].prop.Name, 'Valid=', this[comp].prop.Valid)
 
         if (thisComp.prop.Visible && thisComp.prop.Capture && !this[comp].prop.Valid) {
           return true;
@@ -198,6 +239,8 @@ export class captureForm extends FORM {
     let key_pri = 0;
 
     if (data.length == 0) {
+      this.sw_nue = true
+
       // No hay datos
       const result = await appendBlank(this.prop.RecordSource, m);
       //      console.log('CaptureForm appendBlank alaSql=',await  localAlaSql(`select * from ${this.prop.RecordSource}`))
@@ -230,6 +273,7 @@ export class captureForm extends FORM {
     } else {
       // 29 Ags 2024
       // Recno = data[0].recno;
+      this.sw_nue = false
       this.Recno = data[0].recno;
 
       key_pri = data[0].key_pri;

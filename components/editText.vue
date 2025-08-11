@@ -611,7 +611,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           // 7/Feb/2024       
           //This.Form.prop.Status = 'A'
           if (KeyPressed) {
-            select()  // 8/Ags/2025
+            //select()  //  Quitamos 11/Ags/2025
             displayError.value = true
             This.prop.ShowError = true
 
@@ -648,7 +648,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   }
   else {  // Si hay lectura de campo
-    console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
+    //console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
 
     // Valor = ''
     This.prop.Valid = true
@@ -939,8 +939,6 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 /////////////////////////////////////////////////////////////////
 const lostFocus = async () => {
 
-
-
   if (This.prop.ReadOnly || This.prop.Disabled) {
     return
   }
@@ -1190,6 +1188,9 @@ const onFocus = async () => {
 
   // const click = Click == true ? true : false
   // Si esta en un grid checa sus estatus de todas las columnas
+  if (This.beforeWhen())
+    await This.beforeWhen()
+
   if (This.Parent && This.Parent.BaseClass == "grid") {
     const grid = This.Parent
     //console.log('EditText onFocus Grid Name', This.prop.Name)
@@ -1218,14 +1219,14 @@ const onFocus = async () => {
 
   // textValue[0]  perdio foco, textValue[1] obtiene el foco
   // Si es la primera vez que se hace foco
-  let sw_when = false
+  //  let sw_when = false
   if (focusIn.value == 0) {
     await emitValue(true)
-    sw_when = true
+    //   sw_when = true
     focusIn.value = 1
+    //Asignamos  el background del input originañ
   }
-  //Asignamos  el background del input originañ
-  Styles.inputStyle.background = This.inputStyle.background
+
 
   focusIn.value = 1  // cambia el valor en el input number 
   This.prop.Focus = false
@@ -1267,11 +1268,11 @@ const onFocus = async () => {
       This.prop.ShowError = false
   }
 
-
-
   emit("update:Value", Value.value)
 
-  if (sw_when) { //!This.prop.First && !This.prop.Focus && 
+  if (Styles.inputStyle.background != This.inputStyle.background)
+    Styles.inputStyle.background = This.inputStyle.background
+  if (focusIn.value) { // sw_when 11/Ags/2025
 
     nextTick(function () {
       This.Form.eventos.push(This.prop.Map + '.when()')
@@ -1466,7 +1467,7 @@ watch(
   () => {
     if (displayError.value != This.prop.ShowError)
       displayError.value = This.prop.ShowError
-
+    console.log('Component=', This.prop.Name, 'displayError=', displayError.value)
   },
   { deep: false }
 );
@@ -1837,9 +1838,9 @@ watch(
   { deep: false }
 );
 
-
 ////////////////////////////////////////////////////////////////////
-// change This.prop.Type
+// change This.prop.Valid   
+// Change background color of input whene not Valid
 /////////////////////////////////////////////////////////////////
 watch(
   () => This.prop.Valid, //props.prop.Value, //Value.value,
@@ -1847,8 +1848,13 @@ watch(
     if (new_val !== old_val) {
       //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
 
-      if (This.prop.Valid) {
+      if (This.prop.Valid || focusIn.value == 1) {
         Styles.inputStyle.background = This.inputStyle.background
+        if (!This.prop.ReadOnly)
+          Styles.inputStyle.opacity = '1'
+
+        else
+          Styles.inputStyle.opacity = '0.7'
 
       } else {
         // if (focusIn.value == 0) // Si no tiene el foco
@@ -1860,6 +1866,36 @@ watch(
   },
   { deep: false }
 );
+
+////////////////////////////////////////////////////////////////////
+// change This.prop.ReadOnly
+// Change background color of input whene ReadOnly
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
+  async (new_val: boolean, old_val: boolean) => {
+    if (new_val !== old_val) {
+      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
+
+      // if (focusIn.value != 1) {
+      if (!This.prop.ReadOnly) {
+        Styles.inputStyle.opacity = '1'
+
+      } else {
+        // if (focusIn.value == 0) // Si no tiene el foco
+        Styles.inputStyle.opacity = '0.7'
+      }
+
+    }
+
+    // }
+
+  },
+  { deep: false }
+);
+
+// 
+
 
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
   console.log('onMaska=',

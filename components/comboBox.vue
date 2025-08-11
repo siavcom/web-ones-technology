@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -232,7 +232,8 @@ const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
 let First = false
-let Focus = false
+//let Focus = false
+let focusIn = false
 const MultiSelect = ref(props.prop.MultiSelect)
 const Styles =
 {
@@ -680,6 +681,9 @@ const validClick = async (num_ren: number) => {
   console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
   //  await This.interactiveChange()
   emitValue()
+  focusIn = false // Perdio el foco
+
+
   return
 
 };
@@ -735,6 +739,8 @@ const validList = async () => {
     }
   }
 
+  focusIn = false // Perdio el foco
+
 
 
   //toggle.value = false
@@ -754,7 +760,10 @@ const validList = async () => {
 /////////////////////////////////////////////////////////////////
 const when = async (click?: boolean) => {
 
-  if (This.Parent.BaseClass = "grid") {
+  focusIn = true
+
+
+  if (This.Parent.BaseClass == "grid") {
     const grid = This.Parent
 
     for (const comp in grid.elements) {
@@ -1251,20 +1260,6 @@ watch(
 
 
 ////////////////////////////////////////
-// watch Valid
-///////////////////////////////////////
-watch(
-  () => props.prop.Valid,
-  (new_val, old_val) => {
-    if (!props.prop.Valid) {
-      ShowError.value = true
-      This.prop.ShowError = true
-    }
-  },
-  { deep: false }
-);
-
-////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
 /* watch(
@@ -1491,6 +1486,92 @@ watch(
   { deep: false }
 );
 
+
+
+////////////////////////////////////////
+// watch Valid     8/Ags/2025 .- Se anexo al watch This.prop.Valid
+///////////////////////////////////////
+/*
+watch(
+  () => props.prop.Valid,
+  (new_val, old_val) => {
+    if (!props.prop.Valid) {
+      ShowError.value = true
+      This.prop.ShowError = true
+    }
+  },
+  { deep: false }
+);
+*/
+
+
+////////////////////////////////////////////////////////////////////
+// change This.prop.Valid   
+// Change background color of input whene not Valid
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.Valid, //props.prop.Value, //Value.value,
+  async (new_val: boolean, old_val: boolean) => {
+    if (!This.prop.Valid) {
+      ShowError.value = true
+      This.prop.ShowError = true
+    }
+
+    if (new_val !== old_val) {
+      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
+
+      if (This.prop.Valid || focusIn == true) {
+        Styles.inputStyle.background = This.inputStyle.background
+        if (!This.prop.ReadOnly)
+          Styles.inputStyle.opacity = '1'
+
+        else
+          Styles.inputStyle.opacity = '0.7'
+
+      } else {
+        // if (focusIn.value == 0) // Si no tiene el foco
+        Styles.inputStyle.background = '#f2e7e9'
+      }
+
+    }
+
+  },
+  { deep: false }
+);
+
+////////////////////////////////////////////////////////////////////
+// change This.prop.ReadOnly
+// Change background color of input whene ReadOnly
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
+  async (new_val: boolean, old_val: boolean) => {
+    if (new_val !== old_val) {
+      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
+
+      // if (focusIn.value != 1) {
+      if (!This.prop.ReadOnly) {
+        Styles.inputStyle.opacity = '1'
+
+      } else {
+        // if (focusIn.value == 0) // Si no tiene el foco
+        Styles.inputStyle.opacity = '0.7'
+      }
+
+    }
+
+    // }
+
+  },
+  { deep: false }
+);
+
+
+
+
+
+
+
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
@@ -1587,7 +1668,7 @@ onMounted(async () => {
   This.prop.Init = false
 
   This.afterMounted()
-  console.log(' comboBox onMounted Name=', This.prop.Name)
+  //  console.log(' comboBox onMounted Name=', This.prop.Name)
 
 })
 
@@ -1609,7 +1690,7 @@ onMounted(async () => {
 
 */
 onBeforeMount(async () => {
-  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+  //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
   //    if (This.init)
   //      await This.init()
 })
