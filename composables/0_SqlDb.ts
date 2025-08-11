@@ -3071,9 +3071,9 @@ export const goto = async (despla: string | number, alias?: string) => {
 
         if (recno == 0) { // no has datos
             initAlias(alias) // Inicializa el alias si no hay datos
-
+            return [];
         }
-        return [];
+
     }
     data = await localAlaSql(" SELECT * FROM Now." + alias + "  where recno=?", recno);
 
@@ -3087,7 +3087,9 @@ export const goto = async (despla: string | number, alias?: string) => {
 
         bof(alias)
         eof(alias)
-        return data //This.value.View[alias].data;
+
+
+        return data[0] //This.value.View[alias].data;
     }
 
     initAlias(alias) // Inicializa el alias si no hay datos
@@ -3248,7 +3250,7 @@ export const skip = async (despla?: number, alias?: string) => {
 /// //////////////////////////////////////
 export const scatter = async (aliasFields?: [], alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-    let resultado = [];
+
     let fields = []
 
 
@@ -3264,9 +3266,16 @@ export const scatter = async (aliasFields?: [], alias?: string) => {
     if (!aliasFields)
         return res
 
-    for (const ele of aliasFields)
-        resultado.push(res[ele])
 
+    const resultado = {};
+    for (const ele of aliasFields) {
+        console.log('scatter res=', ele)
+        resultado[ele] = res[ele]
+
+
+    }
+
+    console.log('scatter res=', resultado)
     return resultado
 
 
