@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -762,7 +762,6 @@ const when = async (click?: boolean) => {
 
   focusIn = true
 
-
   if (This.Parent.BaseClass == "grid") {
     const grid = This.Parent
 
@@ -817,7 +816,7 @@ const when = async (click?: boolean) => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
 
-  if (This.Parent.BaseClass = "grid") {
+  if (This.Parent.BaseClass == "grid") {
     const grid = This.Parent
     //console.log('EditText onFocus Grid Name', This.prop.Name)
     for (const comp in grid.elements) {

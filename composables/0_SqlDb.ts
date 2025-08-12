@@ -352,9 +352,8 @@ export const use = async (
     //      console.log("1 Db USE ", alias);
 
     if (This.value.View[alias]) {
-        console.log("Db Use==>>>>", alias, This.value.View[alias]);
-        // si exite ya la vista, Borra los datos locales
 
+        // si exite ya la vista, Borra los datos locales
 
         if (alias == nom_vis) {
             await localAlaSql("delete from Now." + alias);
@@ -367,8 +366,6 @@ export const use = async (
             while (This.value.View[alias].data.length > 0)
                 This.value.View[alias].data.pop();
 
-
-
             // This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
             This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
             This.value.View[alias].recCount = 0; // Total de registros de la vista
@@ -377,6 +374,7 @@ export const use = async (
             This.value.View[alias].bof = false; // Principio de archivo
             This.value.View[alias].row = -1; // Renglon posicionado el registro
             This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
+
 
         } else {
             delete This.value.View[alias]

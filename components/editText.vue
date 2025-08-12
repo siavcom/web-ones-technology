@@ -3,7 +3,7 @@
   <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -107,7 +107,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -581,7 +581,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     This.prop.Valid = true
 
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
-      // console.log('2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+      console.log('2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
       Value.value = newValor
 
@@ -599,7 +599,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         await This.interactiveChange()
 
       if (!isValid) {
-        //  console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+        //console.clear()
+        //console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
         const newValue = This.prop.Value
         if (!await This.valid()) {
@@ -636,6 +637,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //     console.log('--------------------------------------3) editText emitValue() Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
     }
+    //else
+    //  displayError.value = false
 
     // Reasigamos valor de Value
     if (Value.value != newValor)
@@ -688,7 +691,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         const Recno = props.Registro
         const data = await This.Form.db.readCampo(ControlSource, Recno)
         //   console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
-
 
         for (const campo in data) {
 
@@ -1296,115 +1298,6 @@ const onFocus = async () => {
 }
 
 
-
-/////////////////////////////////////////////////////////////////////
-// onFocus
-// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
-//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
-// Obs: el when() se llama desde el coponente parent 
-/////////////////////////////////////////////////////////////////
-const onFocus_old = async () => {
-
-  // Si esta en un grid checa sus estatus de todas las columnas
-
-  if (This.Parent.BaseClass == "grid") {
-    const grid = This.Parent
-    //console.log('EditText onFocus Grid Name', This.prop.Name)
-    for (const comp in grid.elements) {
-      const compName = grid.elements[comp].Name
-      // 24/Dic/2024
-      if (grid[compName].prop.Status != 'A' || grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-        // console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
-        return
-      }
-    }
-  }
-
-
-
-  // No se permite el focus si es solo lectura
-  if (!This.Help)
-    This.Help = false
-
-  if (This.prop.ReadOnly) {
-    if (!This.prop.Disabled) {
-      This.prop.Disabled = true
-      setTimeout(function () {
-        This.prop.Disabled = false
-
-      }, 100);
-    }
-    //thisElement.next(':input').focus();
-    return
-  }
-
-  if (focusIn.value == 0) { //!This.prop.First && !This.prop.Focus && 
-
-    nextTick(() => {
-      This.Form.eventos.push(This.prop.Map + '.when()')
-    });
-
-  }
-
-
-  // currentValue[0]  perdio foco, currentValue[1] obtiene el foco
-  focusIn.value = 1  // cambia el valor en el input number 
-  This.prop.Focus = false
-  This.prop.First = false
-
-  const Type = propType.value
-  ToolTipText.value = false
-  //  displayError.value = false
-
-  const ControlSource = props.prop.ControlSource
-  const pos = ControlSource.indexOf(".") + 1;
-
-  // Calcula la longitud maxima
-  if (pos > 1 && !sw_MaxLength) {
-    sw_MaxLength = true
-    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
-    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-
-    let lon_campo = This.prop.Value.length
-    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
-
-      if (!This.Sql.View[tabla].est_tabla[campo]) {
-        console.error('editText onFocus() Error: No se encontro el campo', campo, 'en la vista', tabla)
-        return
-      }
-      lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
-      if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
-
-        MaxLength.value = lon_campo
-      }
-    }
-  }
-
-  // El displayError se apaga en el keyPress cuando es un input text, number o date 
-  if ((Type == 'json' || Type == 'checkbox') && displayError.value) {
-    displayError.value = false
-    if (This.prop.ShowError)
-      This.prop.ShowError = false
-  }
-
-  // select() 20/Dic/2024 Se quito porque en version compilada no funciona
-
-  emit("update:Value", Value.value)
-
-
-  //nextTick(function () {
-
-  // const element = document.getElementById(Id);
-  // select()   // 4 Julio 2024
-
-  return
-}
-
-
-
-
-
 const clickHelp = async () => {
 
   if (focusIn.value == 0)
@@ -1465,8 +1358,8 @@ const select = async () => {
 watch(
   () => This.prop.ShowError,
   () => {
-    if (displayError.value != This.prop.ShowError)
-      displayError.value = This.prop.ShowError
+    if (!This.prop.ShowError && displayError.value)
+      displayError.value = false
     console.log('Component=', This.prop.Name, 'displayError=', displayError.value)
   },
   { deep: false }
@@ -1874,18 +1767,17 @@ watch(
 watch(
   () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-    if (new_val !== old_val) {
-      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
+    // if (new_val !== old_val) {
+    //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
 
-      // if (focusIn.value != 1) {
-      if (!This.prop.ReadOnly) {
-        Styles.inputStyle.opacity = '1'
+    // if (focusIn.value != 1) {
+    if (!This.prop.ReadOnly) {
+      Styles.inputStyle.opacity = '1'
 
-      } else {
-        // if (focusIn.value == 0) // Si no tiene el foco
-        Styles.inputStyle.opacity = '0.7'
-      }
-
+    } else {
+      // if (focusIn.value == 0) // Si no tiene el foco
+      Styles.inputStyle.opacity = '0.7'
+      displayError.value = false // Apagamos mensaje de error
     }
 
     // }
@@ -2054,6 +1946,9 @@ onMounted(async () => {
     //    onFocus()
     return
   }
+
+  if (This.prop.ReadOnly)
+    Styles.inputStyle.opacity = '0.7'
 
 })
 

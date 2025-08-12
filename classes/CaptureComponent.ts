@@ -28,15 +28,11 @@ export class CAPTURECOMPONENT extends COMPONENT {
     else this.prop.ReadOnly = true;
   }
 
-
   async beforeWhen() {
     if (!this.prop.updateKey)
       return
-
     await this.Form.beforeWhenComponent(ref(this))
-
   }
-
 
   override async when_old() {
     if (!this.prop.updateKey)

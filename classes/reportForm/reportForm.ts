@@ -247,7 +247,6 @@ export class reportForm extends FORM {
       tabla[column].prop.ControlSource = RecordSource + "." + column;
     }
   }
-
   /////////////////////////////////////
   // gen_where : genera la parte del where de cada modulo de condicion
   // where : where ya generado y que se le aumentara el resultado de este

@@ -335,6 +335,26 @@ const keyPress = ($event) => {
 }
 
 
+
+const loadGrid = () => {
+  // inicializamos scroll
+  scroll.page = 0
+  scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
+  scroll.top = true     //Pprincipio de la pagina
+  scroll.bottom = false // Final de pagina
+
+  if (Sql.View[This.prop.RecordSource]) {
+    loadData()
+    /*
+    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
+      appendRow()
+
+    else
+      loadData()
+*/
+  }
+}
+
 ///////////////////////////////////////////////
 // Cuando cambia el estatus de Inicial a Activo, emite valores  
 ///////////////////////////////////////////////
@@ -482,62 +502,33 @@ watch(
 // Cuando se cambia el RecordSource  
 ///////////////////////////////////////////////
 watch(
-  () => Prop.RecordSource,
+  () => This.prop.RecordSource,
   async (RecordSource, old_val) => {
-
-    console.log('1) Grid watch Vsible  RecordSource=', RecordSource)
+    console.log('1) Grid watch RecordSource RecordSource=', RecordSource)
 
     if (This.prop.Visible && This.prop.RecordSource.length > 1) {
-      console.log('1) Grid watch RecordSource loadData() RecordSource=', This.prop.RecordSource, Sql.View[RecordSource])
-
-
-      // inicializamos scroll
-      scroll.page = 0
-      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
-      scroll.top = true     //Pprincipio de la pagina
-      scroll.bottom = false // Final de pagina
-
-      if (Sql.View[This.prop.RecordSource]) {
-        if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
-          await appendRow()
-
-      }
-      else
-        await loadData()
+      loadGrid()
     }
   }
   ,
-  { deep: true }
+  { deep: false }
 );
 
 
 watch(
-  () => Prop.Visible,
+  () => This.prop.Visible,
   async (new_val, old_val) => {
 
     console.log('1) Grid watch Vsible  RecordSource=', new_val)
 
     // Si no hay renglones , aumenta un renglon
     if (This.prop.Visible && props.prop.RecordSource.length > 1) {
-
-      scroll.page = 0
-      scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
-      scroll.top = true     //Pprincipio de la pagina
-      scroll.bottom = false // Final de pagina
-      console.log('1) Grid watch Vsible loadData() RecordSource=', This.prop.RecordSource, Sql.View[RecordSource])
-      if (Sql.View[This.prop.RecordSource]) {
-        if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
-          await appendRow()
-
-      } else
-        await loadData()
+      loadGrid()
 
     }
   },
-  { deep: true }
+  { deep: false }
 );
-
-
 
 
 //////////////////////////////////////////////
@@ -678,9 +669,16 @@ const asignaStyle = (style: {}, itemId: string) => {
 /////////////////////////////////////////
 
 const loadData = async (Pos?: number) => {
-  // console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'Pos=', Pos, 'RowInsert=', RowInsert)
+  console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'Pos=', Pos, 'RowInsert=', RowInsert)
 
-  if (This.prop.RecordSource.length < 2) return
+  while (scroll.dataPage.length > 0)
+    scroll.dataPage.pop() // borramos todos los renglones
+
+  if (This.prop.RecordSource.length < 2) {
+
+
+    return
+  }
   /*
     for (let i = 0; i < This.main.length && First == ''; i++) { // Recorre todos los estatus del grid
       if (!This[This.main[i]].prop.Disabled)
@@ -707,8 +705,10 @@ const loadData = async (Pos?: number) => {
   }
 
   This.Form.prop.Status = 'P'
-  while (scroll.dataPage.length > 0)
-    scroll.dataPage.pop() // borramos todos los renglones
+  /*
+    while (scroll.dataPage.length > 0)
+      scroll.dataPage.pop() // borramos todos los renglones
+  */
 
   try {
 

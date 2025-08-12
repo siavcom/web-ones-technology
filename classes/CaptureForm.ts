@@ -98,20 +98,20 @@ export class captureForm extends FORM {
   public async inSave() { return true }
 
   /// /////////////////////////////////////
-  // Metodo : when
-  // Descripcion :Si es la propiedad de captureKey==true. lLena todos los campos en blanco y apaga validaciones 
-  //              de todos los campos para quitar los mensaje de error
+  // Metodo : before when component
+  // Descripcion :Si es un campo llave, inicializa todos los componentes
   /// /////////////////////////////////////
 
   async beforeWhenComponent(Comp: undefined) {
     const thisComp = Comp.value
     console.clear()
-    console.log('before When Component=', thisComp.prop.Name)
+    //console.log('before When Component=', thisComp.prop.Name)
     for (const comp of this.Form.main) {
 
-      if (!this.Form[comp].prop.updateKey && this.Form[comp].prop.capture) {
-        this.prop.Status = 'A'
+      if (!this.Form[comp].prop.updateKey && this.Form[comp].prop.Capture) {
 
+        // this.prop.Status = 'A'
+        this.Form[comp].prop.ReadOnly = true
 
         if (typeof this.Form[comp].prop.Value == 'string')
           if (this.Form[comp].prop.Value != '')
@@ -120,14 +120,12 @@ export class captureForm extends FORM {
             if (this.Form[comp].prop.Value != 0)
               this.Form[comp].prop.Value = 0
 
-        // this.Form[comp].prop.Valid = true
-
-        // this.Form[comp].prop.Valid = true
+        this.Form[comp].prop.ShowError = false
+        this.Form[comp].prop.Valid = true
+        console.log('Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
 
 
       }
-
-
 
     }
 
@@ -135,7 +133,7 @@ export class captureForm extends FORM {
     this.Form.bt_borra.prop.Visible = false;
     this.Form.bt_modifica.prop.Visible = false;
 
-    this.Form.refreshComponent();
+    //this.Form.refreshComponent();
 
 
   }
@@ -150,6 +148,7 @@ export class captureForm extends FORM {
 
   async validComponent(Comp: undefined) {
     const thisComp = Comp.value
+
     console.log('Valid validaciones Este=', thisComp)
     //if (!compName) return false;
 
@@ -404,7 +403,7 @@ export class captureForm extends FORM {
       super();
       this.prop.Name = "bt_graba";
       this.prop.Caption = "Graba datos";
-      this.prop.Capture = false;
+
       // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
@@ -490,8 +489,6 @@ export class captureForm extends FORM {
       super();
       this.prop.Name = "bt_modifca";
       this.prop.Caption = "Modifica datos";
-      this.prop.Capture = false;
-
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
@@ -503,7 +500,7 @@ export class captureForm extends FORM {
 
     override async click() {
 
-      console.log('bt_modifica ')
+      console.log('Click bt_modifica ')
       this.prop.Visible = false
       for (const comp of this.Form.main) {
 
@@ -531,8 +528,6 @@ export class captureForm extends FORM {
       super();
       this.prop.Name = "bt_borra";
       this.prop.Caption = "Borra datos";
-      this.prop.Capture = false;
-      // this.prop.Sw_val = false;
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
