@@ -345,13 +345,13 @@ const loadGrid = () => {
 
   if (Sql.View[This.prop.RecordSource]) {
     loadData()
-    /*
-    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton)  // No hay renglones
-      appendRow()
 
-    else
-      loadData()
-*/
+    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton && This.prop.addRow)  // No hay renglones
+      appendRow()
+    /*
+        else
+          loadData()
+    */
   }
 }
 

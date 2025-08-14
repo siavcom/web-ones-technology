@@ -12,8 +12,8 @@ export class bt_gen_all_models extends COMPONENT {
 
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
-    this.prop.Caption = " Sequelize MODELS"
-    this.prop.ToolTipText = 'Genera todos sequelize MODEL en Back-End-Server'
+    this.prop.Caption = " Actualiza TODOS los sequelize MODELS"
+    this.prop.ToolTipText = 'Generate/Update ALL sequelize MODEL in Back-End-Server'
     this.prop.Visible = false
     this.prop.Value = "All MODELS"
     this.prop.TabIndex = 1

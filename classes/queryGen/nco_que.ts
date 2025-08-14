@@ -32,30 +32,32 @@ export class nco_que extends COMPONENT {
     this.prop.sw_add = false;
     //this.style.width='30px'
   }
-
-  public async valid() {
-    await this.interactiveChange();
-    return true;
-  }
+  /*
+    public async valid_old() {
+      await this.interactiveChange();
+      return true;
+    }
+  */
   //////////////////////////////////
   // Interactive Change
   ///////////////////////////////////
 
-  async interactiveChange() {
-    if (!this.Parent.bt_add.prop.Visible)
-      this.Parent.bt_add.prop.Visible = true;
-    if (!this.Parent.query.prop.Visible) this.Parent.query.prop.Visible = true;
+  override async interactiveChange() {
 
     if (this.prop.Value <= 0) {
       this.prop.Value = 1;
     }
     //console.log("1 InteractiveChange Value", this.prop.Value, this.Parent.Name);
     const tabla = this.Parent.tabla;
+
+
     this.Parent.bt_edit.prop.Visible = false;
     this.Parent.bt_delete.prop.Visible = false;
     this.Parent.Grid.prop.Visible = false;
+
     this.Parent.query.prop.Visible = false;
     this.Parent.query.prop.Value = "";
+
     var query = "";
 
     if (this.prop.sw_add) return;
@@ -69,7 +71,7 @@ export class nco_que extends COMPONENT {
     */
     const q = {
       usu_que: this.Parent.usu_que,
-      nco_que: +this.Parent.nco_que.prop.Value,
+      nco_que: +this.prop.Value,
     };
 
     const RecordSource = this.Parent.Grid.prop.RecordSource;
@@ -78,9 +80,10 @@ export class nco_que extends COMPONENT {
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`;
 
     const data = await localAlaSql(ins_sql);
+    //  console.log('Numero de condicion renglones=', await localAlaSql(ins_sql))
 
     if (data.length == 0) {
-      console.log("2 No hay datos interactiveChange ", ins_sql, "Data=", data);
+
       //      this.Parent.query.prop.Value = '' // limpiamos el query
       if (this.prop.Value == 1) {
         this.Parent.query.prop.Value = ""; // limpiamos el query

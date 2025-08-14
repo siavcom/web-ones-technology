@@ -51,8 +51,10 @@ export class Grid extends GRID {
 
   }
 
-  public async appendRow(m?: {}) {
+  override async appendRow(m?: {}) {
     if (!m) m = {}
+
+    this.Parent.nco_que.prop.sw_add = true
 
     m.nco_que = this.Parent.nco_que.prop.Value
     m.prg_prg = this.Form.prop.Name
@@ -61,36 +63,30 @@ export class Grid extends GRID {
     m.ren_que = 1
     m.con_que = '='
     m.cam_dat = this.Form.var_ord.prop.Value
-
+    m.vis_rep = this.Form.vis_rep
 
     const db = this.Form.db
+
     const data = await db.localAlaSql(`select max(ren_que)+1 as max_ren from ${this.prop.RecordSource} `)
 
     if (data[0] && data[0].max_ren && data[0].max_ren != null)
       m.ren_que = data[0].max_ren
 
     await super.appendRow(m)
-    // console.log('appendRow ala ===>',await db.localAlaSql(`select * from ${this.prop.RecordSource}`))
 
-    /*   
-    if (!m) m = {}
-    this.Row=-1 // Quitamos donde esta el renglon
-    const values= await  appendBlank(this.prop.RecordSource, m) //Incertamos un renglon en blanco
-    this.prop.Valid=false
-    console.log('======grid Incertamos renglon========>',this.Name,values)
-   */
   }
 
   //////////////////////////////////
   // Graba Tabla
   /////////////////////////////////
-  async grabaTabla_ant() {
+  override async grabaTabla() {
     let resultado = false
 
-    console.log('grabaTabla ala ===>', await localAlaSql(`select * from ${this.prop.RecordSource}`))
-
+    //  console.log('grabaTabla ala ===>', await localAlaSql(`select * from ${this.prop.RecordSource}`))
 
     if (await super.grabaTabla()) {
+      await this.Form.openFilters() // actualiza la visa de querys
+
       /*  const m = {
           prg_prg: this.Form.prop.Name,
           par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',

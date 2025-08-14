@@ -14,8 +14,8 @@ export class bt_gen_model extends COMPONENT {
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
     this.prop.Visible = false
-    this.prop.Caption = "Sequelize MODEL"
-    this.prop.ToolTipText = 'Generates sequelize MODEL'
+    this.prop.Caption = "Actualiza Sequelize MODEL"
+    this.prop.ToolTipText = 'Generate/Update SEQUELIZE`S MODEL'
     this.prop.TabIndex = 1
     this.prop.Image = "/Iconos/svg/data-modelling.svg"
     this.style.width = "68px";

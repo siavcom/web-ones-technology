@@ -68,7 +68,7 @@ export class reportForm extends FORM {
 
   constructor(num_blocks: number) {
     super();
-
+    this.prop.addRow = false; // Si es verdadero aumenta renglon automaticamente
 
     this.mon_rep.prop.TabIndex = 101;
     this.tip_rep.prop.TabIndex = 102;
@@ -195,13 +195,15 @@ export class reportForm extends FORM {
     }
 
     // todos los querys del reporte
-
-    const m = {
-      prg_prg: this.prop.Name,
-      par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
-      nom_tab: vis_rep,
-    };
-    await this.Sql.use("vi_cap_db_query", m); // todos los querys del reporte
+    /*
+        const m = {
+          prg_prg: this.prop.Name,
+          par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
+          nom_tab: vis_rep,
+        };
+        */
+    await this.openFilters()
+    // await use("vi_cap_db_query", m); // todos los querys del reporte
 
     // Query Principal
     await this.asignaRecordSource("queryPri", "query_main");
@@ -216,15 +218,19 @@ export class reportForm extends FORM {
     await this.asignaRecordSource("queryUsu", "query_user");
     this.queryUsu.usu_que = this.Sql.session.user;
     this.queryUsu.prop.Caption =
-      "Condiciones por usuario :" + this.queryUsu.usu_que;
+      "Por usuario :" + this.queryUsu.usu_que;
 
     // Query Todos
 
     await this.asignaRecordSource("queryGen", "query_all");
 
-    this.queryPri.activa.prop.Value = 0;
+    console.log('query_pri RecordSource=', this.queryPri.Grid.prop.RecordSource)
+    console.log('query_usu RecordSource=', this.queryUsu.Grid.prop.RecordSource)
+    console.log('query_gen RecordSource=', this.queryGen.Grid.prop.RecordSource)
 
-    await this.queryPri.nco_que.interactiveChange();
+    //    this.queryPri.activa.prop.Value = 0;
+
+    //  await this.queryPri.nco_que.interactiveChange();
 
 
     if (this.Sql.session.user == "sa") {
@@ -237,10 +243,24 @@ export class reportForm extends FORM {
 
   }
 
+  async openFilters() {
+
+    const m = {
+      prg_prg: this.prop.Name,
+      par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
+      nom_tab: this.vis_rep,
+    };
+    await use("vi_cap_db_query", m); // todos los querys del reporte
+  }
+
+
   // asignamos RecordSource y ControlSource de cada columna
   async asignaRecordSource(nom_que: string, RecordSource: string) {
     const tabla = this[nom_que].Grid;
-    tabla.prop.RecordSource = RecordSource;
+    tabla.prop.RecordSource = RecordSource
+
+    // tabla.prop.RecordSource = RecordSource;
+
     for (let i = 0; i < tabla.elements.length; i++) {
       const column = tabla.elements[i].Name;
       tabla[column].prop.RecordSource = RecordSource;

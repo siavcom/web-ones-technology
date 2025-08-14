@@ -25,7 +25,7 @@ export class uni_que extends COLUMN {
     //this.prop.ControlSource ='query.uni_que'
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "70%,10%";
+    this.prop.ColumnWidths = "33%,66%";
     this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
     this.style.width = "40px";
     //this.style.zIndex=2

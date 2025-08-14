@@ -1,0 +1,18 @@
+// server/api/websocket.js
+export default defineWebSocketHandler({
+    open(peer) {
+        console.log('WebSocket connection opened:', peer.id)
+        peer.send('Welcome to the server!')
+    },
+
+    message(peer, message) {
+        console.log('Received message:', message)
+
+        // Broadcast to all connected clients
+        peer.send('Hello from the server!')
+    },
+
+    close(peer) {
+        console.log('WebSocket connection closed:', peer.id)
+    }
+})

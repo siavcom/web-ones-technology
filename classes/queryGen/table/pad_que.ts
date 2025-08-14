@@ -31,5 +31,14 @@ export class pad_que extends COLUMN {
             this.prop.Value = ' '
     }
 
+    override async valid(): Promise<any> {
+        if (this.prop.Value != ')' && this.prop.Value != ' ')
+            this.prop.Value = ''
+
+
+        return true
+    }
+
+
 
 }

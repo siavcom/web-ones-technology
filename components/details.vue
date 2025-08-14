@@ -243,17 +243,19 @@ const emitValue = async () => {
 };
 
 const toggle = () => {
-  if (sw_ini) {
-    sw_ini = false
-    return
-  }
-
+  /*
+    if (sw_ini) {
+      sw_ini = false
+      return
+    }
+  */
   This.prop.Disabled = !This.prop.Disabled
   if (openDetail != This.prop.Disabled)
     openDetail = This.prop.Disabled
 
   console.log('toggle', props.prop.Name, 'This.prop.Disabled', This.prop.Disabled, openDetail)
-  This.click()
+  if (!openDetail)
+    This.click()
 }
 ////////////////////////////////////////
 // Hacer el set focus 

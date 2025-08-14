@@ -24,11 +24,21 @@ export class pai_que extends COLUMN {
         this.style.width = '15px'
     }
 
-    async click() {
+    override async click() {
         if (this.prop.Value != '(')
             this.prop.Value = '('
         else
             this.prop.Value = ' '
+        this.prop.Valid = true
+        this.Parent.pad_que.prop.Valid = true
+    }
+
+    override async valid(): Promise<any> {
+        if (this.prop.Value != '(' && this.prop.Value != ' ')
+            this.prop.Value = ''
+
+        this.Parent.pad_que.prop.Valid = true
+        return true
     }
 
 

@@ -23,4 +23,17 @@ export class val_que extends COLUMN {
         this.style.width = '200px'
     }
 
+    override async valid(): Promise<any> {
+        if (this.prop.Value.trim() == '')
+            return false
+
+        this.Parent.pad_que.prop.Valid = true
+        this.Parent.pai_que.prop.Valid = true
+        this.Parent.uni_que.prop.Valid = true
+        return true
+
+    }
+
+
+
 }

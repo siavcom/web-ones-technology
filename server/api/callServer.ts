@@ -6,9 +6,10 @@ import fs from 'fs/promises'; // Use fs.promises for async/await
 import { exec } from 'child_process'
 ////////////////////////////////////////////
 
-
 //import dat_emp from './Empresas.json'
 export default defineEventHandler(async (event) => {
+  //const sqlServer = require("./app/siavcom.controllers.js");
+
   const path = '/sistemas/web-ones/public'
   const body = await readBody(event)
 
@@ -18,6 +19,13 @@ export default defineEventHandler(async (event) => {
   let nameFile = ''
 
   switch (call) {
+    case 'sql':
+      const sqlCall = body.sqlCall
+      const req = body.sqlReq
+      const result = {}
+      //data = sqlServer[sqlCall](req, result)
+      return data
+
     case 'leeEmpresas':
 
 

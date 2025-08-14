@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : bt_delete
+// Clase : bt_add
 // Author : Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 /////////////////////////////////////////////
@@ -8,30 +8,29 @@ import { COMPONENT } from '@/classes/Component'
 *
 *
 * @export
-* @class BT_ACEPTAR
+* @class bt_add
 * @extends {COMPONENT}
 */
-export class bt_delete extends COMPONENT {
+export class bt_view extends COMPONENT {
 
   constructor() {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
+    this.prop.Caption = 'Ver'
     this.prop.Position = 'footer'
-    this.prop.Caption = "Borrar"
-    this.prop.Visible = false
-    this.prop.Image = "/Iconos/svg/delete2-color.svg";
-    this.prop.ToolTipText = 'Borra toda la condicio'
+    this.prop.Image = "/Iconos/svg/glasses.svg";
+    this.prop.ToolTipText = 'Ver condicion'
     this.captionStyle.fontSize = '10px'
-    this.style.width = '50px'
-
-
+    this.style.width = '55px'
+    this.prop.Visible = false
   } // Fin constructor
 
-  async click() {
-    await localAlaSql(`delete from ${this.Parent.prop.RecordSource}`)
-    this.Parent.table.grabaTabla()
+  override async click() {
     this.prop.Visible = false
+    await this.Parent.Grid.grabaTabla()
+    this.Parent.nco_que.prop.sw_add = false
+    this.Parent.nco_que.interactiveChange()
 
   }
 

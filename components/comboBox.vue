@@ -19,9 +19,9 @@
     <!--Etiqueta del componente -->
     <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
-    <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.labelStyle">{{
+    <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -40,7 +40,7 @@
               'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height
             }">
             <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
-              :style:="columnLabelStyle" />
+              :style:="columncaptionStyle" />
           </div>
 
           <!--nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
@@ -79,7 +79,7 @@
               v-for="(text, col) in option.text" :key="col"
               :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height }">
               <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
-                :style:="columnLabelStyle" />
+                :style:="columncaptionStyle" />
             </div>
 
           </div>
@@ -227,7 +227,7 @@ const Component = ref(props.prop.This)
 const This = Component.value
 
 const Este = props.prop.This
-const labelStyle = reactive({ ...Este.labelStyle })
+const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
@@ -237,7 +237,7 @@ let focusIn = false
 const MultiSelect = ref(props.prop.MultiSelect)
 const Styles =
 {
-  labelStyle: labelStyle,
+  captionStyle: captionStyle,
   inputStyle: inputStyle,
   style: divStyle
 }
@@ -326,7 +326,7 @@ const toggleZIndex = comboStyle.zIndex + 1
 const inputWidth = ref('auto')
 
 
-const columnLabelStyle = {
+const columncaptionStyle = {
   width: 'auto', //inputWidth.value,
   border: "1px solid rgb(0, 5, 2)",
   borderRadius: "4px",
@@ -1589,7 +1589,7 @@ onMounted(async () => {
       MultiSelect.value = true
 
     if (MultiSelect.value)
-      Styles.labelStyle.alignContent = 'flex-start';
+      Styles.captionStyle.alignContent = 'flex-start';
 
     let textWidth = 0
 

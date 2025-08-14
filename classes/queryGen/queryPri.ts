@@ -17,7 +17,7 @@ export class queryPri extends queryGen {
     constructor() {
         super()
         this.usu_que = 'MAIN'
-        this.prop.Caption = 'Condiciones principales'
+        this.prop.Caption = 'Principales'
         this.prop.Disabled = false
         this.query.prop.Visible = true
         this.prop.TabIndex = 12

@@ -189,7 +189,7 @@ export class COMPONENT {
 
     borderRadius: '3px',
     textAlign: 'left',
-    width: '96%',
+    width: 'fit-content',        //'96%',
     minWidth: 'auto',
     zIndex: '1',
     boxShadow: '0px 1px 1px 0, 0 1px 1px 0',
@@ -224,7 +224,7 @@ export class COMPONENT {
     padding: "",
     position: "relative",
     textAlign: "left",
-    width: "max-content",      // 95%
+    width: "auto",          //"max-content",      // 95%
     wordWrap: "break-word", // Parte las palabras
     zIndex: 1, // profundidad
 

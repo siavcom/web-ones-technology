@@ -18,14 +18,13 @@ export class bt_edit extends COMPONENT {
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
-    //this.prop.Value = "Editar";
+    this.prop.Caption = "Editar";
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/edit1-color.svg";
-    this.prop.ToolTipText = 'Edita'
+    this.prop.ToolTipText = 'Editar condicion'
     this.prop.Visible = false
-
-    this.style.fontSize = '10px'
-    this.style.width = '30px'
+    this.captionStyle.fontSize = '10px'
+    this.style.width = '50px'
 
 
   } // Fin constructor
@@ -35,54 +34,47 @@ export class bt_edit extends COMPONENT {
       this.Parent.nco_que.prop.Value = 1
 
     this.prop.Visible = false
-    this.Parent.bt_add.prop.Visible = false
+    //this.Parent.bt_add.prop.Visible = false
     const RecordSource = this.Parent.Grid.prop.RecordSource
+    this.Parent.Grid.prop.Visible = false
     this.Parent.Grid.prop.RecordSource = ''
 
     // || this.Sql.db.View[this.Parent.Grid.prop.RecordSource].recCount==0
 
+    /*
     const m = {
       prg_prg: this.Form.prop.Name,
       par_prg: this.Form.Params.par_prg ? this.Form.Params.par_prg : '',
       usu_que: this.Parent.usu_que,
-      ren_que: 1,
       nco_que: this.Parent.nco_que.prop.Value
     }
-
-    if (add) {
-      this.Parent.nco_que.prop.sw_add = true
-
-      const data = await SQLExec(`select max(nco_que)+1 as max_que from man_db_query \
-      where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
-         and usu_que='${m.usu_que}' `)
-      m.nco_que = 1
-      if (data[0] && data[0].max_que && data[0].max_que != null) {
-        m.nco_que = data[0].max_que
-      }
-      this.Parent.nco_que.prop.Value = m.nco_que
-    }
-
+*/
     const filter = {
       usu_que: this.Parent.usu_que,
       nco_que: this.Parent.nco_que.prop.Value
     }
 
-    // if (this.Sql.db.View[this.Parent.Grid.prop.RecordSource])
-    //     await  useNodata(this.Parent.Grid.prop.RecordSource)
-    // else    
     await localClone('vi_cap_db_query', RecordSource, filter)
     this.Parent.Grid.prop.RecordSource = RecordSource
 
-    if (View[this.Parent.Grid.prop.RecordSource].recCount == 0) {
-      await this.Parent.Grid.appendRow(m)
-    }
 
-    console.log('bt_add alaSql recordSource=', this.Parent.Grid.prop.RecordSource,
+    console.log('bt_edit alaSql recordSource=', this.Parent.Grid.prop.RecordSource,
       await localAlaSql(`select * from ${this.Parent.Grid.prop.RecordSource}`))
+
+    console.log('bt_edit Fin')
+
     //this.Parent.activa.prop.Value=1
     this.Parent.query.prop.Visible = false
     this.Parent.Grid.prop.Visible = true
     this.Parent.bt_delete.prop.Visible = true
+    this.Parent.bt_view.prop.Visible = true
+    /*
+        if (View[this.Parent.Grid.prop.RecordSource].recCount == 0) {
+          this.Parent.nco_que.prop.sw_add = true
+          await this.Parent.Grid.appendRow()
+        }
+    */
+
 
   }
 

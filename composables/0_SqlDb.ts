@@ -3566,7 +3566,13 @@ export const localClone = async (
         //    This.value.View[alias]["tablaSql"] = alias // tabla en servidor SQL
         This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
         This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
+        return
     }
+    This.value.View[alias].recno = -1; // asignamos el ultimo numero registro de trabajo
+    This.value.View[alias].recCount = 0; // registros totales
+    //    This.value.View[alias]["tablaSql"] = alias // tabla en servidor SQL
+    This.value.View[alias].data = []; // asignamos el valor del ultimo registro
+    This.value.View[alias].recnoVal = []; // utilizamos el spread Operator
 };
 
 /**

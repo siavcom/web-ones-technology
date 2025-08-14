@@ -34,6 +34,7 @@ export class GRID extends COMPONENT {
     this.prop.Row = 0;
     this.prop.Caption = "Grid de datos";
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
+    this.prop.addRow = true; // Si es verdadero aumenta renglon automaticamente
     this.prop.Visible = false;
 
     this.prop.addButton = true; // Estos componentes estan en grid.vue
