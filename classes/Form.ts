@@ -104,16 +104,14 @@ export class FORM extends COMPONENT {
     /*********** Style **********************/
     //this.style.width = "99%";
     this.style.width = "-moz-available";
-    this.style.height = "96%";
+    this.style.height = "auto" //"96%";
     this.style.background = 'white';
-
     this.style.minWidth = '375px';
     this.style.minHeight = '812px';
+    this.style.backgroundColor = 'darkgray';
+    this.style.borderRadius = '10px';
 
     /* margin-top: 250px; */
-
-
-
     // this.style.maxWidth = '100%'
     //    this.style.maxHeight='920px'
 
@@ -147,8 +145,6 @@ export class FORM extends COMPONENT {
     console.log("ThisForm :", this.prop.Name, "dialect=", this.dialect, 'Public=', Public.value, 'this.mPublic=', this.mPublic);
 
   }
-
-
 
   public salir = new class {
     constructor() {
@@ -196,10 +192,5 @@ export class FORM extends COMPONENT {
     console.log("Form :", this.Name, " unload");
   }
 
-
-
-
 }
-
-
 

@@ -435,15 +435,16 @@ export class reportForm extends FORM {
     if (where_pri.length > 3)
       where = `${where} and ${where_pri}`
 
-    if (this.queryUsu.prop.Visible) {
+    // Anexa al where si hay condiciones por usuario
+    if (this.queryUsu.activa.prop.Value == 1) {
       const where_usu = await this.gen_where("queryUsu");
       if (where_usu.length > 3) {
         if (where.length == 0) where = where_usu;
         else where = where + " and " + where_usu;
       }
     }
-
-    if (this.queryGen.prop.Visible) {
+    // Anexa al where si hay condiciones en forma general
+    if (this.queryGen.activa.prop.Value == 1) {
       const where_gen = await this.gen_where("queryGen");
       if (where_gen.length > 3) {
         if (where.length == 0) where = where_gen;
