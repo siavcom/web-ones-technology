@@ -1079,7 +1079,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     const ThisForm = This.value.Form;
 
     //console.log("3) Db appendBlank alias=", alias, 'm', m);
-    console.log("4) Db appendBlank Public=", Public.value);
+    console.log("4) Db appendBlank Public=", Public.value, 'm=', m);
 
     if (!alias) {
         // si no se da el alias
