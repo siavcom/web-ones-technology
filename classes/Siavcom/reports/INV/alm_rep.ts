@@ -39,7 +39,7 @@ export class alm_rep extends COMPONENT {
     switch (this.Form.prop.Name) {
 
       case 'come3241': {
-        this.prop.RowSource = "select des_tda,alm_tda,ubi_tda from loc_cometda order by des_tda "
+        this.prop.RowSource = "select des_tda,alm_tda,ubi_tda from Now.loc_cometda order by des_tda "
         this.prop.ColumnCount = 3
         this.prop.BoundColumn = 2;
         this.prop.ColumnWidths = "60%,15%,25%"; // Puede ser en puntos 60px,30px /
@@ -49,17 +49,17 @@ export class alm_rep extends COMPONENT {
       case 'come3237': {
         this.prop.BoundColumn = 2;
         this.prop.ColumnCount = 4;
-        this.prop.RowSource = `select des_tda,alm_tda,alm_tra,des_tra  from loc_cometda 
+        this.prop.RowSource = `select des_tda,alm_tda,alm_tra,des_tra  from Now.loc_cometda 
          order by des_tda `
         this.prop.ColumnWidths = "40%,10%,10%,40%"; // Puede ser en puntos 60px,30px /
         break;
       }
       case 'come3206': {
-        this.prop.RowSource = `select des_tda,alm_tda from loc_cometda where alm_tda<>'?? ' order by des_tda `
+        this.prop.RowSource = `select des_tda,alm_tda from Now.loc_cometda where alm_tda<>'?? ' order by des_tda `
         break;
       }
       default: {
-        this.prop.RowSource = "select des_tda,alm_tda from loc_cometda order by des_tda "
+        this.prop.RowSource = "select des_tda,alm_tda from Now.loc_cometda order by des_tda "
         break;
       }
 

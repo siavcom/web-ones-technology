@@ -68,6 +68,12 @@ export const isNull = (data: string): boolean => {
   return data == null ? true : false;
 }
 
+export const nvl = (data: string | number, resultado: string | number) => {
+  if (data == null)
+    return resultado
+  return data
+}
+
 /**
  * Converts a string to lower case.
  * @param {string} data - The string to convert

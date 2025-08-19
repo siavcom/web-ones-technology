@@ -685,7 +685,7 @@ this class is used to manipulate a SQL database it's have several methods:
 - bof(`<`alias?`>`).
   after locate, skip or goto get true if there is locate at last row in a local SQL table
 
-- deleteRow(`<`key_pri`>`,`<`alias?`>`).
+- deleteSqlRow(`<`alias?`>`,`<`key_pri?`>`,).
    Delete current row in a local SQL table
 
 - deleteSql(`<`recno`>`,`<`alias`>`,`<`SqlUpdate`>`).
@@ -698,10 +698,12 @@ this class is used to manipulate a SQL database it's have several methods:
   after locate, skip or goto get true if there is a current row in a local SQL table
 
 - gatther (`<`object values`>`).
-  Gatther values in a local SQL table from a object values
+  Return :Gatther values in a local SQL table from a object values
 
 - goto(`<`row`>`).
-  Goto a reccord number of a local SQL table
+  Goto a reccord number of a local SQL 
+  If row=0 the record number is a current row
+  Return: Data of reccord number
 
 - insert(`<`alias`>`,`<`memoryObject`>`). ( not in use)
 
@@ -719,24 +721,30 @@ this class is used to manipulate a SQL database it's have several methods:
 
 - select(`<`alias?`>`).
   Select default values in a local SQL table
+  Return: Data of current reccord
+
 
 - skip(`<`rowNumbers`>`).
   Skip a reccord number of a local SQL table
 
 - scatter(`<`fieldArray?`>`,`<`alias?`>`).
   Scatter values in a object values of a local SQL table 
+  Return: data current row 
+
 
 - scatterBlank(`<`fieldArray`>`,`<`alias?`>`).
   Scatter values with blank values of a local SQL table
 
 - SQLExecute(`<`query`>`).
   Execute a query in a SQL-Server
+  return: Data row array 
 
 - tableUpdate (`<`updateType`>`,`<`force`>`,`<`alias`>`).
   Update a local SQL table in to SQL-Server table
 
 - use(`<`table`>`,`<`memoryObject`>`,`<`alias?`>`).
    Prepare a local SQL table with data and is a clone of the original SQL-Server view
+   Return: Data result of use
 
 - useNodata(`<`table`>`,`<`alias?`>`).
    Prepare a local SQL table without data and is a clone of the original SQL-Server view 

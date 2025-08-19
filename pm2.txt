@@ -15,7 +15,7 @@ PM2 es un gestor de procesos Node.js que le permite administrar sus aplicaciones
 Una vez instalado PM2, puede usarlo para ejecutar y administrar sus aplicaciones Node.js.
 
     Iniciar una aplicación Node.js:Navegue hasta el directorio de su aplicación Node.js y utilice PM2 para iniciarla:
-    pm2 start app.js
+    pm2 start --max-old-space-size=3072  app.js
  
 
     Sustituya app.j s por el punto de entrada de su aplicación.

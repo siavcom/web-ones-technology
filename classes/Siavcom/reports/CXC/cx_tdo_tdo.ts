@@ -36,19 +36,19 @@ export class cx_tdo_tdo extends COMPONENT {
       case 'come1207':	//& Relación de documentos
         {
           var tip_cop = this.Form.Params[0].replaceAll("´", "")
-          this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+          this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and coa_tdo='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
           break;
         }
       case 'come1211':	//& calculo de fluctuación
         {
           var tip_cop = this.Form.Params[0].replaceAll("´", "")
-          this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo=case when '${tip_cop}'='P' then 'A' else 'C' end union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+          this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and coa_tdo=case when '${tip_cop}'='P' then 'A' else 'C' end union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
           break;
         }
 
       default: {
         var tip_cop = this.Form.Params[0].replaceAll("´", "")
-        this.prop.RowSource = `select des_tdo,tdo_tdo,coa_tdo from loc_cometdo  where cop_nom='${tip_cop}'  and coa_tdo='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+        this.prop.RowSource = `select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo  where cop_nom='${tip_cop}'  and coa_tdo='C' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
         break;
       }
     }
@@ -58,14 +58,14 @@ export class cx_tdo_tdo extends COMPONENT {
   override async interactiveChange() {
     //    if (this.prop.Value.trim().length<4 && this.prop.Value.trim()!="??")
     if (this.prop.Value.length < 4) {
-      const data = await this.Sql.localAlaSql(`select count(*) as key_pri from loc_cometcd where tdo_tdo='${this.prop.Value}'`)
+      const data = await this.Sql.localAlaSql(`select count(*) as key_pri from Now.loc_cometcd where tdo_tdo='${this.prop.Value}'`)
       console.log('dato=', data[0].key_pri)
       if (data[0].key_pri > 0) {
         if (this.Form.prop.Name == 'come1207')
           return true
         else {
           this.Parent.cx_tcd_tcd.prop.RowSource =
-            ` select des_tcd,tcd_tcd from loc_cometcd where tdo_tdo='${this.prop.Value}' union select '  Todos ' as des_tcd,'??' as tcd_tcd order by des_tcd  `;
+            ` select des_tcd,tcd_tcd from Now.loc_cometcd where tdo_tdo='${this.prop.Value}' union select '  Todos ' as des_tcd,'??' as tcd_tcd order by des_tcd  `;
           this.Parent.cx_tcd_tcd.prop.Visible = true;
           this.Parent.cx_tcd_tcd.prop.Disabled = false;
           this.Parent.cx_tcd_tcd.prop.Value = "??"

@@ -106,8 +106,8 @@ export class FORM extends COMPONENT {
     this.style.width = "-moz-available";
     this.style.height = "auto" //"96%";
     this.style.background = 'white';
-    this.style.minWidth = '375px';
-    this.style.minHeight = '812px';
+    this.style.minWidth = 'fit-content';
+    this.style.minHeight = 'auto';
     this.style.backgroundColor = 'darkgray';
     this.style.borderRadius = '10px';
 

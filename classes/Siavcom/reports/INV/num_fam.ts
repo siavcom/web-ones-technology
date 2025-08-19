@@ -37,8 +37,8 @@ export class num_fam extends COMPONENT {
     console.log("num_fam Interactivechange Value=", this.prop.Value);
     this.Parent.op_des_fam.prop.RowSource = "";
     this.Parent.op_has_fam.prop.RowSource = "";
-    this.Parent.op_des_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from loc_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
-    this.Parent.op_has_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from loc_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
+    this.Parent.op_des_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from Now.loc_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
+    this.Parent.op_has_fam.prop.RowSource = `select des_fam,cla_fam,num_fam from Now.loc_comefam  where num_fam=${this.prop.Value} order by num_fam,cla_fam  `;
     return true;
   }
 }

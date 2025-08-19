@@ -33,11 +33,12 @@ export class tip_rep extends COMPONENT {
   }
 
   override async interactiveChange() {
-
+    this.Form.openFilters()
     if (this.prop.Value == 1) {
       // Detallado
       this.Form.for_imp.prop.Value = this.Form.for_ori + "_d";
       this.Form.vis_rep = this.Form.vis_ori + "_d";
+
     } else {
       //General
       this.Form.for_imp.prop.Value = this.Form.for_ori + "_g";

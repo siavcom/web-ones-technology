@@ -1,4 +1,3 @@
-
 //////////////////////////////////////////////
 // Page: SqlDictionary
 // Clase base : ThisForm
@@ -54,7 +53,7 @@ export class ThisForm extends FORM {
 
     this.prop.Name = "SqlDictionary"
 
-    this.prop.tag = ""
+    //this.prop.tag = ""
     this.prop.Caption = "Mantenimiento al diccionario de datos"
     this.prop.Status = "A"
     this.style.display = "inline-flex"
@@ -64,92 +63,79 @@ export class ThisForm extends FORM {
     this.style.position = "center" //absolute,
     //this.style.backgroundImage = "/logos/Logo_Empresa.png"
   }
-
-  ////////////////////////////////////////
-  // Init de la forma
-  // Se abriran las vistas remotas SQL que se utilizaran
-  //////////////////////////////////////
-
-  //public Init = async (Form) => {
-  async init() {
-    try {
-      console.log("ThisForm.init")
-    } catch (error) {
-      console.log("======Error Init=====" + this.prop.Name, error)
+  /*
+    async appendDatos() {
+      const m = {}
+      m.con_dat = 11
+      m.cam_dat = "usu_usu"
+      m.des_dat = "usu_usu"
+      m.tip_dat = "I"
+      m.lon_dat = 4
+      m.dec_dat = 0
+      m.des_dat = "USUARIO"
+      m.val_tab = ""
+      m.nom_tab = this.Form.nom_tab.prop.Value
+      await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  
+      m.con_dat = 12
+      m.cam_dat = "tie_uac"
+      m.des_dat = "tie_uac"
+      m.tip_dat = "D"
+      m.lon_dat = 8
+      m.dec_dat = 0
+      m.des_dat = "FECHA ULTIMA ACTUALIZACION"
+      m.val_tab = ""
+      m.nom_tab = this.Form.nom_tab.prop.Value
+  
+      await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  
+      m.con_dat = 13
+      m.cam_dat = "usu_cre"
+      m.des_dat = "usu_cre"
+      m.tip_dat = "I"
+      m.lon_dat = 2
+      m.dec_dat = 0
+      m.des_dat = "USUARIO CREAOOR"
+      m.val_tab = ""
+      m.nom_tab = this.Form.nom_tab.prop.Value
+      await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  
+      m.con_dat = 14
+      m.cam_dat = "tie_cre"
+      m.des_dat = "tie_cre"
+      m.tip_dat = "D"
+      m.lon_dat = 8
+      m.dec_dat = 0
+      m.des_dat = "TIEMPO DE CREACION"
+      m.val_tab = ""
+      m.nom_tab = this.Form.nom_tab.prop.Value
+      await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  
+      m.con_dat = 15
+      m.cam_dat = "timestamp"
+      m.des_dat = "timestamp"
+      m.tip_dat = "T"
+      m.lon_dat = 8
+      m.dec_dat = 0
+      m.des_dat = "TIMESTAMP"
+      m.val_tab = ""
+      m.nom_tab = this.Form.nom_tab.prop.Value
+      await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  
+  
+      m.con_dat = 16
+      m.cam_dat = "key_pri"
+      m.des_dat = "key_pri"
+      m.tip_dat = "I"
+      m.lon_dat = 4
+      m.dec_dat = 0
+      m.des_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    "
+      m.val_tab = ""
+      m.nom_tab = this.Form.nom_tab.prop.Value
+      await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
+  //    console.log('ThisForm appendBlank ', await this.Form.db.localSql('select * from vi_cap_comedat'))
+  
     }
-  }
-  async appendDatos() {
-    const m = {}
-    m.con_dat = 11
-    m.cam_dat = "usu_usu"
-    m.des_dat = "usu_usu"
-    m.tip_dat = "I"
-    m.lon_dat = 4
-    m.dec_dat = 0
-    m.des_dat = "USUARIO"
-    m.val_tab = ""
-    m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-
-    m.con_dat = 12
-    m.cam_dat = "tie_uac"
-    m.des_dat = "tie_uac"
-    m.tip_dat = "D"
-    m.lon_dat = 8
-    m.dec_dat = 0
-    m.des_dat = "FECHA ULTIMA ACTUALIZACION"
-    m.val_tab = ""
-    m.nom_tab = this.Form.nom_tab.prop.Value
-
-    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-
-    m.con_dat = 13
-    m.cam_dat = "usu_cre"
-    m.des_dat = "usu_cre"
-    m.tip_dat = "I"
-    m.lon_dat = 2
-    m.dec_dat = 0
-    m.des_dat = "USUARIO CREAOOR"
-    m.val_tab = ""
-    m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-
-    m.con_dat = 14
-    m.cam_dat = "tie_cre"
-    m.des_dat = "tie_cre"
-    m.tip_dat = "D"
-    m.lon_dat = 8
-    m.dec_dat = 0
-    m.des_dat = "TIEMPO DE CREACION"
-    m.val_tab = ""
-    m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-
-    m.con_dat = 15
-    m.cam_dat = "timestamp"
-    m.des_dat = "timestamp"
-    m.tip_dat = "T"
-    m.lon_dat = 8
-    m.dec_dat = 0
-    m.des_dat = "TIMESTAMP"
-    m.val_tab = ""
-    m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-
-
-    m.con_dat = 16
-    m.cam_dat = "key_pri"
-    m.des_dat = "key_pri"
-    m.tip_dat = "I"
-    m.lon_dat = 4
-    m.dec_dat = 0
-    m.des_dat = "LLAVE PRIMARIA PARA LA ACTUALIZACION DE VISTAS    "
-    m.val_tab = ""
-    m.nom_tab = this.Form.nom_tab.prop.Value
-    await this.Form.db.appendBlank('vi_cap_comedat', m) //Incertamos un renglon en blanco
-    console.log('ThisForm appendBlank ', await this.Form.db.localSql('select * from vi_cap_comedat'))
-
-
-
-  }
+  
+    */
 }

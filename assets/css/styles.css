@@ -5,11 +5,11 @@ div.ThisForm {
 }
  
 section.pagina {
-  background: white;
- /* color: #b94295; /* #b94295;*/
-  min-width: 375px;
+ /* background: white;
+  color: #b94295; /* #b94295;*/
+/*  min-width: 375px;
   min-height: 812px;
-
+*/
   /* margin-top: 250px; */
 }
 div.mainForm {

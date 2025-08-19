@@ -26,6 +26,7 @@ export class op_tdo_tdo extends COMPONENT {
       this.inputStyle.width = "300px";
       this.prop.MultiSelect = false;
       this.style.width = "auto";
+      this.prop.ErrorMessage = "No hay documento seleccionado"
 
       //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
    }
@@ -42,57 +43,61 @@ export class op_tdo_tdo extends COMPONENT {
       switch (this.Form.prop.Name) {
          case 'come5201':	//&  documentos
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A')  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A')  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
                break;
             }
          case 'come5204':	//& Ventas por día
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A') and nmo_tdo>0 and inv_tdo<>'P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A') and nmo_tdo>0 and inv_tdo<>'P' order by des_tdo `
                break;
             }
          case 'come5206':	//& Relación de documentos
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}' and inv_tdo='P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and inv_tdo='P' order by des_tdo `
                this.prop.MultiSelect = true;
                break;
             }
          case 'come5208':	//& Insumos por surtir
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}' and inv_tdo='P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and inv_tdo='P' order by des_tdo `
                this.prop.MultiSelect = true;
                break;
             }
          case 'come5212':	//& Estadisticas de ventas/compras
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
             }
          case 'come5213':	//& Análisis de ventas/compras
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
             }
          case 'come5217':	//& Comparativo de ventas/compras
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
             }
          case 'come5218':	//& Ventas por familia
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0  and inv_tdo<>'P' order by des_tdo `
                break;
             }
          case 'come3234':	//& Estadistica de insumos por documento
             {
                if (tip_cop == 'IN')
-                  this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where inv_tdo<>'N'  and nmo_tdo>0  order by des_tdo `
+                  this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from Now.loc_cometdo where inv_tdo<>'N'  and nmo_tdo>0  order by des_tdo `
                else
-                  this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0   order by des_tdo `
+                  this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from Now.loc_cometdo where cop_nom='${tip_cop}'  and nmo_tdo>0   order by des_tdo `
                break;
             }
-
+         case 'come5226':	//& Estadistica de insumos por documento
+            {
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,inv_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo  order by des_tdo `
+               break;
+            }
          default: {
-            this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A')  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
+            this.prop.RowSource = ` select des_tdo,tdo_tdo,coa_tdo from Now.loc_cometdo where cop_nom='${tip_cop}' and coa_tdo in ('C','A')  union select '  Todos ' as des_tdo,'?? ' as tdo_tdo,'T' as coa_tdo order by des_tdo `
             break;
          }
       }
@@ -100,11 +105,11 @@ export class op_tdo_tdo extends COMPONENT {
    }
    async interactiveChange() {
       //   En caso de tener clasificacion de documentos, llenamos comboBox de clasificacion
-      const data = await this.Sql.localAlaSql(`select count(*) as key_pri from loc_cometcd where tdo_tdo='${this.prop.Value}'`)
+      const data = await this.Sql.localAlaSql(`select count(*) as key_pri from Now.loc_cometcd where tdo_tdo='${this.prop.Value}'`)
       console.log('dato=', data[0].key_pri)
       if (data[0].key_pri > 0) {
          this.Parent.op_tcd_tcd.prop.RowSource =
-            ` select des_tcd,tcd_tcd from loc_cometcd where tdo_tdo='${this.prop.Value}' union select '  Todos ' as des_tcd,'??' as tcd_tcd order by des_tcd  `;
+            ` select des_tcd,tcd_tcd from Now.loc_cometcd where tdo_tdo='${this.prop.Value}' union select '  Todos ' as des_tcd,'??' as tcd_tcd order by des_tcd  `;
          //for (let i = 0; i < columnas.length && !found; i++) {
          //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
 
@@ -130,6 +135,17 @@ export class op_tdo_tdo extends COMPONENT {
          this.Parent.op_tcd_tcd.prop.Value = "??"
       }
       return true;
-   } //
+   }
+
+   //
+   override async valid() {
+      if (this.prop.Value == '') {
+         //await MessageBox('Fecha inválida',6,'Error')
+         return false
+      }
+      else
+         return true
+   }
+
 }
 
