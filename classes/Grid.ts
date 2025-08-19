@@ -256,7 +256,6 @@ export class GRID extends COMPONENT {
     if (this.prop.RecordSource.length < 3)
       return
 
-
     this.prop.Disabled = true;
     //this.Row = -1;
 
@@ -266,24 +265,6 @@ export class GRID extends COMPONENT {
 
     let m = appendM(mem, Public.value)
 
-    //const { ...m } = mem;
-
-    /*
-        // Leemos variables publicas
-        m=appendM(m,Public.value)
-    
-        for (const variable in Public.value) {
-          m[variable] = Public.Value[variable];
-    
-    
-        }
-    */
-
-
-    // leemos valores de los componentes de la forma
-
-    // for (const i in this.Form.main)
-    // Forma principal de captura. Los valores de los componentes de captura se pasan a memoria
     for (const comp of this.Form.main) {
       if (!m[comp])
         m[comp] = this.Form[comp].prop.Value;
@@ -306,7 +287,7 @@ export class GRID extends COMPONENT {
 
     if (force || await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
       this.prop.Status = 'A'
-      const result = await deleteRow(recno, this.prop.RecordSource);
+      const result = await deleteSqlRow(recno, this.prop.RecordSource);
       console.log('deleteRow result=', result)
       // await restableceStatus()
       if (result)

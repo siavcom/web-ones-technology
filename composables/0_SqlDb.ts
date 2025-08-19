@@ -723,7 +723,7 @@ export const tableUpdate = async (
         ) {
             const key_pri = data[row].key_pri;
             // console.log('Db deleteSqlRow ===', key_pri, alias)
-            await deleteSqlRow(alias, key_pri,);
+            await deleteSqlRow(key_pri, alias);
             sw_delete = true;
         }
     }
@@ -1218,7 +1218,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
 /// ////////////////////////////////////////////
-export const deleteSqlRow = async (alias?: any, recno?: number) => {
+export const deleteSqlRow = async (recno?: number, alias?: any,) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
@@ -1232,7 +1232,6 @@ export const deleteSqlRow = async (alias?: any, recno?: number) => {
         //      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
         return false;
     }
-
 
     if (!recno) {
         const res = await goto(0, alias)
@@ -1357,10 +1356,10 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
         */
 
         // utiliza la tabla de actualizacionde SQL
-        // console.log('Db delete alias DeleteRow',key_pri, alias)
+        // console.log('Db delete alias DeleteSqlRow',key_pri, alias)
         if (key_pri > 0) {
             // si existe en el SQLSERVER
-            if (!(await deleteSqlRow(alias, key_pri))) {
+            if (!(await deleteSqlRow(key_pri, alias))) {
                 return false;
             }
         }
