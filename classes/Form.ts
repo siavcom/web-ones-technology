@@ -120,7 +120,14 @@ export class FORM extends COMPONENT {
     const { params } = useRoute();
 
     for (const par in router.query) {
-      this.Params.push(router.query[par]);
+      let param = router.query[par]
+      param = param.trim().replaceAll('´', "")
+      if (left(param, 1) == "'")
+        param = param.replace("'", "")
+      if (right(param, 1) == "'")
+        param = param.replace("'", "")
+
+      this.Params.push(param);
     }
 
     if (router.query.params) {
@@ -188,6 +195,12 @@ export class FORM extends COMPONENT {
   
     }
    */
+  public RemoveObject(nom_obj: string) {
+
+    delete this[nom_obj];
+
+  }
+
   public unload() {
     console.log("Form :", this.Name, " unload");
   }

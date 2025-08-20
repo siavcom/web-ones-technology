@@ -41,7 +41,6 @@ export class bt_add extends COMPONENT {
     m.cam_dat = this.Form.var_ord.prop.Value
     m.vis_rep = this.Form.vis_rep
 
-    const db = this.Form.db
 
     const data = await SQLExec(`select max(nco_que)+1 as max_que from man_db_query \
       where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \

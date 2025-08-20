@@ -139,7 +139,7 @@ export class GRID extends COMPONENT {
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
   /////////////////////////////////////////////////////
 
-  public async validColumn(column: string) {
+  public async validColumn(column: {}): Promise<boolean> {
     //const column = this[name];
 
     if (column.prop.updateKey) {
@@ -149,13 +149,13 @@ export class GRID extends COMPONENT {
         column.prop.Value.trim().length == 0
       ) {
         column.prop.ErrorMessage = "No permite datos en blanco";
-        column.prop.ShowError = true;
+        //column.prop.ShowError = true;
         column.prop.Valid = false;
         return false;
       }
       if (!(await this.validKey(column.prop.name, column.Recno))) {
         column.prop.ErrorMessage = "Dato duplicado";
-        column.prop.ShowError = true;
+        //column.prop.ShowError = true;
         column.prop.Valid = false;
         return false;
       }
