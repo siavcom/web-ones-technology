@@ -178,7 +178,7 @@ const click = async () => {
   ToolTipText.value = false  // Activamos el ToolTipText
   // await This.when()
   if (!This.prop.Disabled) { // && This.Form.prop.BaseClass.toLowerCase() == 'form'
-
+    await nextTick()
     This.Form.eventos.push(This.prop.Map + '.click()')
   }// else
   //This.click()

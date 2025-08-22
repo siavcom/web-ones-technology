@@ -195,11 +195,6 @@ export class FORM extends COMPONENT {
   
     }
    */
-  public RemoveObject(nom_obj: string) {
-
-    delete this[nom_obj];
-
-  }
 
   public unload() {
     console.log("Form :", this.Name, " unload");

@@ -49,8 +49,7 @@
 
                 <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
                   :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
-                  <component :id="'component_' + compHeader"
-                    :is="impComponent(ThisForm[compHeader].prop.BaseClass, 'header')"
+                  <component :id="'component_' + compHeader" :is="impComponent(ThisForm[compHeader].prop.BaseClass)"
                     :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
                     :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
                     :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
@@ -112,16 +111,14 @@
               -->
 
                 <div :id="'div_' + compFooter" v-for="(compFooter) in ThisForm.footer" :class="compFooter"
-                  v-show='ThisForm[compFooter].prop.Visible'>
-                  <!--div v-for="(obj, compFooter,key) in ThisForm" :key="obj.Index"
-                      @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
-                -->
-                  <component :id="'component_' + compFooter"
-                    :is="impComponent(ThisForm[compFooter].prop.BaseClass, 'footer')"
+                  v-show='ThisForm[compFooter].prop.Visible'>{{ console.log('Footer=', ThisForm.footer) }}
+
+                  <component v-if="ThisForm[compFooter].prop.Visible" :id="Id + 'FooterComponent_' + compFooter"
+                    :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
                     v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                    :ShowError="ThisForm[compFooter].prop.ShowError" v-model:Key="ThisForm[compFooter].prop.Key"
-                    :Registro="ThisForm[compFooter].Recno" v-bind:prop="ThisForm[compFooter].prop"
-                    :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
+                    :Registro="ThisForm[compFooter].Recno" :prop="ThisForm[compFooter].prop"
+                    :style="ThisForm[compFooter].style" />
+
                   <!--:inputStyle="ThisForm[compFooter].inputStyle"
                   @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
                 </div>
@@ -154,6 +151,14 @@
 </template>
 
 <script lang="ts" setup>
+/*
+                  <component v-if="ThisForm[compFooter].prop.Visible" :id="Id + 'FooterComponent_' + compFooter"
+                    :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
+                    v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
+                    :Registro="ThisForm[compFooter].Recno" :prop="ThisForm[compFooter].prop"
+                    :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
+
+*/
 //Vapor="true"
 //<script lang="ts" setup >
 import { storeToRefs } from 'pinia'

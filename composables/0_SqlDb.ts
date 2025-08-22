@@ -12,6 +12,7 @@
 //import { watch } from 'vue'
 
 //import { io } from 'socket.io-client';
+import { xml2js, xml2json } from 'xml-js'
 import axios from "axios";
 import alasql from "alasql";
 import { storeToRefs } from "pinia";
@@ -195,7 +196,7 @@ export const locateFor = async (where: string, alias?: string) => {
     if (!alias)       // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 
-    const records = await localAlaSql(`SELECT recno FROM Now.${alias} WHERE ${where} order by recno;`)
+    const records = await localAlaSql(`SELECT * FROM Now.${alias} WHERE ${where} order by recno;`)
 
     This.value.View[alias].Records = records
     if (res && res.length > 0) {
@@ -233,6 +234,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 
     alias = alias.trim();
 
+    console.log("1) Db useNodata nom_vis==> ", nom_vis, alias);
 
     if (This.value.View[alias]) {
         // si exite ya la vista, solo borra los datos locales
@@ -282,17 +284,25 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     // Por el momento se quita y se graba en localDb
     // const vis_act = ThisForm.ctx[alias];
 
+
+
     const dat_vis = {
         id_con: "",
         tip_llamada: "USENODATA",
         // tok_aut: This.value.tok_aut,
         nom_vis: "",
     };
-
     dat_vis.nom_vis = nom_vis; // Nombre de la vista
+
+    console.log("2) Db useNodata nom_vis==> ", nom_vis, alias, dat_vis);
+
     //   console.log("Db useNodata VIEW==> ", nom_vis, alias, dat_vis);
     try {
+        console.log("2).1 Db useNodata nom_vis==> ");
         const response: any = await axiosCall(dat_vis);
+        console.log("2).2 Db useNodata nom_vis==> ");
+
+
 
         if (response == null) {
             console.error("==== . No existe la tabla===>", alias);
@@ -302,12 +312,17 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         if ((await genera_tabla(response, alias, true)) == null)
             // generamos la tabla segun la estructura regresada
             return false;
+        console.log("2).3 Db useNodata nom_vis==> ");
         // abre  la tabla de mantenimiento
         //console.log( "Db useNodata VIEW despues de generar_tabla==> ", alias,"response=", response        );
         if (This.value.View[alias] && This.value.View[alias].tip_obj.trim() == "VIEW") {
+
             alias = This.value.View[alias].tablaSql.trim();
-            await useNodata(alias);
-            //  console.log("Db useNodata VIEW salir useNodata==> ", alias);
+            console.log("3) Db useNodata alias==> ", alias);
+            if (alias.trim() > '  ') { // si es de lectura no inicializa la tabla de actualizacion
+                await useNodata(alias);
+
+            }
         }
         //  This.value.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
@@ -359,33 +374,40 @@ export const use = async (
 
         // si exite ya la vista, Borra los datos locales
 
-        if (alias == nom_vis) {
+        //  if (alias == nom_vis) {
+
+        alasql('use Now')
+        if (alasql.tables[alias])
             await localAlaSql("delete from Now." + alias);
-            await localAlaSql("delete from  Last." + alias);
 
-            // Inicializamos el alias
-            while (This.value.View[alias].recnoVal.length > 0)
-                This.value.View[alias].recnoVal.pop();
+        alasql('use Last')
+        if (alasql.tables[alias])
+            await localAlaSql("delete from Last." + alias);
 
-            while (This.value.View[alias].data.length > 0)
-                This.value.View[alias].data.pop();
+        // Inicializamos el alias
+        while (This.value.View[alias].recnoVal.length > 0)
+            This.value.View[alias].recnoVal.pop();
 
-            // This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
-            This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
-            This.value.View[alias].recCount = 0; // Total de registros de la vista
-            This.value.View[alias].recno = 0; // Registro en cero
-            This.value.View[alias].eof = false; // Fin de archivo
-            This.value.View[alias].bof = false; // Principio de archivo
-            This.value.View[alias].row = -1; // Renglon posicionado el registro
-            This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
-            This.value.View[alias].m = m    // m 
+        while (This.value.View[alias].data.length > 0)
+            This.value.View[alias].data.pop();
 
-        } else {
-            delete This.value.View[alias]
-            await localAlaSql("drop table if exists Now." + alias);
-            await localAlaSql("drop table if exists Last." + alias);
-
-        }
+        // This.value.View[alias].recnoVal = []; // Generamos el arreglo de recnoVal
+        This.value.View[alias].data = {}; // asignamos el valor del ultimo registro
+        This.value.View[alias].recCount = 0; // Total de registros de la vista
+        This.value.View[alias].recno = 0; // Registro en cero
+        This.value.View[alias].eof = false; // Fin de archivo
+        This.value.View[alias].bof = false; // Principio de archivo
+        This.value.View[alias].row = -1; // Renglon posicionado el registro
+        This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
+        This.value.View[alias].m = m    // m 
+        /*
+                } else {
+                    delete This.value.View[alias]
+                    await localAlaSql("drop table if exists Now." + alias);
+                    await localAlaSql("drop table if exists Last." + alias);
+        
+                }
+                */
     }
 
     if (!This.value.View[alias] || (await select(alias)) == 0) {
@@ -393,7 +415,8 @@ export const use = async (
         // if (alias == 'vi_cap_cometab')
         //     console.log("1 Db USE ", alias);
 
-        console.log("Db Use UseNodata", nom_vis, alias);
+        console.log("desde use >>>>>Db Use UseNodata", nom_vis, alias);
+
         await useNodata(nom_vis, alias);
     }
 
@@ -3670,6 +3693,16 @@ export const VfpCursor = async (query: string) => {
     return data;
 };
 
+export const xmlToCursor = (xml: string, alias: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+    xml = xml.replace('<VFPData>', '')
+    xml = xml.replace('</VFPData>', '')
+    const jsonString = xml2js(xml, { compact: true, spaces: 2 });
+    const data = [jsonString.data._attributes]
+    alasql(`USE Now; CREATE TABLE ${alias};`);
+    alasql.tables[alias].data = data;
+    // alasql(`SELECT INTO ${alias} FROM ?`,[data]);
+}
 
 const errorAlert = async (message: string) => {
 

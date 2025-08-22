@@ -870,12 +870,50 @@ export class COMPONENT {
     return
   }
 
+
   async getWord(prop: any) {
     if (!this.Form.languages || this.Sql.Views.vi_cap_db_languages.recCount == 0)
       return
 
 
   }
+
+  /**
+   * Removes an object from the component.
+   * @param {string} nom_obj - The name of the object to remove.
+   */
+  public RemoveObject(nom_obj: string) {
+    // Elimina el objeto del componente
+
+
+    delete this[nom_obj];
+    for (let i = 0; i < this.header.length; i++)
+      if (this.header[i] == nom_obj) this.header.splice(i, 1);
+    for (let i = 0; i < this.main.length; i++)
+      if (this.main[i] == nom_obj) this.main.splice(i, 1);
+    for (let i = 0; i < this.footer.length; i++)
+      if (this.footer[i] == nom_obj) this.footer.splice(i, 1);
+    for (let i = 0; i < this.elements.length; i++)
+      if (this.elements[i].Name == nom_obj) this.elements.splice(i, 1)
+
+    for (let i = 0; i < this.block.length; i++) {
+      // Recorre todos los bloques
+      for (let j = 0; j < this.block[i].component.length; j++) {
+        if (this.block[i].component[j].Name == nom_obj) {
+          this.block[i].component.splice(j, 1);
+          break;
+        }
+      }
+    }
+
+
+  }
+
+
+
+
+
+
   /////////////////////////////////////////////////////////////////////
   // Refe
   // Descripcion: asigna la ref html del componente desplegado
