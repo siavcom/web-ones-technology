@@ -1,16 +1,10 @@
 <template>
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <UButton :id="Id + '_button_' + prop.Name" class='button' :label="prop.Image.trim() == '' ? prop.Caption : ''"
-      v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.captionStyle"
-      :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
-      <img :id="Id + '_img_' + prop.Name" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.inputStyle" @click.stop="click" />{{ prop.Image.length
-          == 0 ? prop.Caption
-          : '' }}
-      <label :id="Id + '_label_' + prop.Name" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
-        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible">{{ prop.Image.length > 0 ? prop.Caption : ''
-        }}</label>
+    <UButton :id="Id + '_button_' + prop.Name" class='button' :src="prop.Image" :label="prop.Caption"
+      v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus"
+      @focusout="focusOut" @click.stop="click">{{ prop.Caption }}
+
     </UButton>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
@@ -218,6 +212,10 @@ const checkGrid = async () => {
   return true
 }
 
+
+
+
+
 onMounted(async () => {
   // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
@@ -241,15 +239,6 @@ onMounted(async () => {
     }
 
   };
-  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
-
-
-  if (This.prop.Image.length > 0) {
-    Styles.inputStyle.boxShadow = ''
-    Styles.style.height = Styles.inputStyle.height
-    Styles.style.width = Styles.inputStyle.width
-  }
-
   This.afterMounted()
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
 })
@@ -266,6 +255,9 @@ const middleClick = () => {
 }
 
 
+onMounted(async () => {
+  if (This.onMounted) await This.onMounted()
+})
 
 onUnmounted(async () => {
   if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
@@ -283,8 +275,8 @@ const handler = (event) => {
 </script>
 
 <style scoped>
-/*
 .button {
   background-color: bind("props.style.backgroundColor");
-*/
+
+}
 </style>

@@ -4,7 +4,7 @@
 // Creacion : 25/Mayo/2023
 // Ult.Mod : 10/Agosto/2023
 /////////////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
+import { IMGBUTTON } from "@/classes/imgButton";
 import { saveAs } from "file-saver";
 /**
  *
@@ -13,7 +13,7 @@ import { saveAs } from "file-saver";
  * @class bt_json
  * @extends {COMPONENT}
  */
-export class bt_json extends COMPONENT {
+export class bt_json extends IMGBUTTON {
   constructor() {
     super();
     this.Index = 1;

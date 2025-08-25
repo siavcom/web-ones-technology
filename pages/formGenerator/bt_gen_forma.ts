@@ -40,7 +40,7 @@ import {
 
 import { saveAs } from "file-saver";
 
-export class bt_gen_forma extends COMPONENT {
+export class bt_gen_forma extends IMGBUTTON {
   constructor() {
     super();
     this.Index = 2;

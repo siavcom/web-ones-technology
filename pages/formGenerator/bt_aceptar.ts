@@ -4,7 +4,7 @@
 // Creacion : Agosto/2021
 // Ult.Mod : 10/Julio/2023
 /////////////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
+
 /**
 *
 *
@@ -12,7 +12,7 @@ import { COMPONENT } from "@/classes/Component";
 * @class BT_ACEPTAR
 * @extends {COMPONENT}
 */
-export class bt_aceptar extends COMPONENT {
+export class bt_aceptar extends IMGBUTTON {
   constructor() {
     super();
     this.Index = 1;

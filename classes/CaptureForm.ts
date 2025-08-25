@@ -7,6 +7,7 @@
 
 //import { truncate } from "fs/promises";
 import { COMPONENT } from "./Component";
+import { IMGBUTTON } from "@/classes/imgButton";
 import { FORM } from "@/classes/Form";
 
 export class captureForm extends FORM {
@@ -397,7 +398,7 @@ export class captureForm extends FORM {
   // Metodo : bt_graba
   // Descripcion : Graba los datos de la forma
   /// //////////////////////////////
-  public bt_graba = new (class extends COMPONENT {
+  public bt_graba = new (class extends IMGBUTTON {
     public Grid = [];
     constructor() {
       super();
@@ -405,7 +406,7 @@ export class captureForm extends FORM {
       this.prop.Caption = "Graba datos";
 
       // this.prop.Sw_val = false;
-      this.prop.BaseClass = "imgButton";
+
       this.prop.Position = "footer";
       this.prop.Visible = false;
       this.prop.Image = "/Iconos/svg/accept.svg";
@@ -484,7 +485,7 @@ export class captureForm extends FORM {
   // Descripcion : Modifca los datos de la forma
   /// //////////////////////////////
 
-  public bt_modifica = new (class extends COMPONENT {
+  public bt_modifica = new (class extends IMGBUTTON {
     constructor() {
       super();
       this.prop.Name = "bt_modifca";
@@ -523,12 +524,12 @@ export class captureForm extends FORM {
   // Descripcion : Borra los datos de la forma
   /// //////////////////////////////
 
-  public bt_borra = new (class extends COMPONENT {
+  public bt_borra = new (class extends IMGBUTTON {
     constructor() {
       super();
       this.prop.Name = "bt_borra";
       this.prop.Caption = "Borra datos";
-      this.prop.BaseClass = "imgButton";
+
       this.prop.Position = "footer";
       this.prop.Visible = false;
 

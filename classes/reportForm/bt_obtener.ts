@@ -3,7 +3,8 @@
 // Author : Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 /////////////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
+
+import { IMGBUTTON } from "@/classes/imgButton";
 /**
  *
  *
@@ -11,7 +12,7 @@ import { COMPONENT } from "@/classes/Component";
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
-export class bt_obtener extends COMPONENT {
+export class bt_obtener extends IMGBUTTON {
   constructor() {
     super();
     this.Index = 1;

@@ -111,7 +111,7 @@
               -->
 
                 <div :id="'div_' + compFooter" v-for="(compFooter) in ThisForm.footer" :class="compFooter"
-                  v-show='ThisForm[compFooter].prop.Visible'>{{ console.log('Footer=', ThisForm.footer) }}
+                  v-show='ThisForm[compFooter].prop.Visible'>
 
                   <component v-if="ThisForm[compFooter].prop.Visible" :id="Id + 'FooterComponent_' + compFooter"
                     :is="impComponent(ThisForm[compFooter].prop.BaseClass)"

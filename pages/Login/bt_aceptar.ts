@@ -8,7 +8,7 @@
 import { COMPONENT } from "@/classes/Component";
 import { storeToRefs } from "pinia";
 
-export class bt_aceptar extends COMPONENT {
+export class bt_aceptar extends IMGBUTTON {
   num_int = 0;
 
   constructor() {

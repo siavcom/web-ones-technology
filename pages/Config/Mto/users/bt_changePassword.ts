@@ -10,7 +10,7 @@
  * @class bt_actividades
  * @extends {COMPONENT}
  */
-export class bt_changePassword extends COMPONENT {
+export class bt_changePassword extends IMGBUTTON {
   constructor() {
     super();
 

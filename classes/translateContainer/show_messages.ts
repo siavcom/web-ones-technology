@@ -5,9 +5,8 @@
 // Author : El Fer Blocks
 // Update Date  : 2025-03-03
 /////////////////////////////////////////////
-
-import { COMPONENT } from "@/classes/Component";
-export class show_messages extends COMPONENT {
+import { IMGBUTTON } from "@/classes/imgButton";
+export class show_messages extends IMGBUTTON {
   constructor() {
     super();
     // this.prop.Caption = "Close";

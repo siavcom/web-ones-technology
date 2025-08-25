@@ -10,7 +10,7 @@
  * @class bt_actividades
  * @extends {COMPONENT}
  */
-export class bt_newSession extends COMPONENT {
+export class bt_newSession extends IMGBUTTON {
   constructor() {
     super();
 

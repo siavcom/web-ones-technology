@@ -3,8 +3,8 @@
 // Author : Fernando Cuadras Angulo
 // Creacion : Sep/2022
 /////////////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
-export class bt_gen_vistas extends COMPONENT {
+
+export class bt_gen_vistas extends IMGBUTTON {
   constructor() {
     super();
 

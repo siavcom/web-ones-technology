@@ -9,8 +9,9 @@
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
-export class bt_close extends COMPONENT {
+
+import { IMGBUTTON } from "@/classes/imgButton";
+export class bt_close extends IMGBUTTON {
   constructor() {
     super();
     // this.prop.Value = "Close";
