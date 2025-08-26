@@ -5,8 +5,8 @@
 // Ult. Mod: 15/Mayo/2023
 /////////////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
-export class bt_gen_model extends COMPONENT {
+
+export class bt_gen_model extends IMGBUTTON {
 
   constructor() {
     super()

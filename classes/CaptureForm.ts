@@ -207,6 +207,7 @@ export class captureForm extends FORM {
 
 
       if (this[comp].prop.updateKey) {
+        //   console.log('2) Valid comp=', comp, 'prop.Valid=', this[comp].prop.Valid)
         if (!this[comp].prop.Valid) {  // si el componente no es valido
           return true;
 
@@ -226,7 +227,7 @@ export class captureForm extends FORM {
       console.warn('No hay vista de actualizacion en el Form')
       return false
     }
-
+    //console.log('Valid RecordSource=', this.prop.RecordSource)
     const data = await use(this.prop.RecordSource, m);
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
@@ -251,7 +252,7 @@ export class captureForm extends FORM {
         return false;
       }
 
-      this.Recno = result.recno   // asignamos el thisrecno de la vista leida
+      this.Recno = result.recno   // asignamos el this recno de la vista leida
 
       key_pri = 0;
       this.bt_borra.prop.Visible = false;
@@ -267,7 +268,7 @@ export class captureForm extends FORM {
       });
 
 
-      console.log('ValidComponent appendBlank Return')
+      // console.log('ValidComponent appendBlank Return')
       return true
 
     } else {
@@ -283,7 +284,7 @@ export class captureForm extends FORM {
         this.bt_modifica.prop.Visible = true;
     }
 
-    console.log('ValidComponent Refresh component')
+    // console.log('ValidComponent Refresh component', this.Recno, key_pri)
     await this.refreshComponent(this.Recno, key_pri);
     if (!this.bt_graba.prop.Disabled)
       // this.bt_graba.prop.Visible = true; // 8 / Ags / 2025
@@ -298,7 +299,7 @@ export class captureForm extends FORM {
 
   async refreshComponent(Recno?: number, key_pri?: number) {
 
-    console.log('=====================Refresh CXomponent')
+    // console.log('1) =====================Refresh Component')
     let activate = true;
 
     if (!Recno) {
@@ -313,13 +314,12 @@ export class captureForm extends FORM {
         Comp.prop.ShowError = false
       }
     }
-
-
+    //    console.log('2) =====================Refresh Component')
     if (this.noData && !activate) {
       // Ya se hizo el useNodata y refresh sin datos
       return;
     }
-
+    //  console.log('3) =====================Refresh Component')
     if (Recno == -1) { // Inicializamos la forma
       this.noData = true;
       this.bt_graba.prop.Visible = false;
@@ -346,6 +346,10 @@ export class captureForm extends FORM {
 
       if (Comp.prop.Capture) {
         if (!Comp.prop.updateKey) {
+          //  console.log('Refresh=', Comp.Name, Comp.Recno)
+          const RecnoNu = Comp.Recno
+          Comp.Recno = 0
+
           // No es llave de actualizacion
           if (!Comp.prop.Visible)
             Comp.prop.Visible = true;
@@ -384,12 +388,13 @@ export class captureForm extends FORM {
           }
           */
 
-
+          Comp.Recno = RecnoNu
 
         } else {
           Comp.prop.ReadOnly = false; // Si es llave de captura
 
         }
+
       }
     }
   } // fin metodo
@@ -501,7 +506,7 @@ export class captureForm extends FORM {
 
     override async click() {
 
-      console.log('Click bt_modifica ')
+      //  console.log('Click bt_modifica ')
       this.prop.Visible = false
       for (const comp of this.Form.main) {
 

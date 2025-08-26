@@ -19,8 +19,9 @@
             <tr style="font-size: 13px">
               <th> </th>
               <th :id="Id + '_grid_th_column_header' + column.Name" v-for="column in This.elements" :key="column.Id"
-                :style="{ height: prop.headerHeight, lineHeight: '15px', textAlign: '-moz-center' }">
-                <!--Header:
+                :style="This[column.Name].headerStyle">
+                <!--Header       :
+                { height: prop.headerHeight, lineHeight: '11px', textAlign: '-moz-center' }
                   -->
                 <div :id="Id + '_div_grid_column_header' + column" v-show="This[column.Name].prop.Visible"
                   :style="This[column.Name].captionStyle">
@@ -49,7 +50,8 @@
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
-                :key="item.recno.toString() + col.Name" :style='{ "height": This[col.Name].style.height, padding: 0 }'
+                :key="item.recno.toString() + col.Name"
+                :style='{ height: This[col.Name].style.height, padding: 0, textAlign: "-webkit-center" }'
                 :headers="col.Name">
 
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"

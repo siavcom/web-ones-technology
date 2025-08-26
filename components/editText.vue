@@ -1460,9 +1460,9 @@ watch(
 //       Se utiliza para el manejo de grid
 ///////////////////////////////////////
 watch(
-  () => props.Registro,
+  () => This.Recno, //props.Registro,
   async () => {
-    // console.log('EditText Watch prop.Registro Name=', This.prop.Name)
+    //    console.log('EditText Watch prop.Registro Name=', This.prop.Name)
     await emitValue(true)
     This.Recno = props.Registro
     This.recnoChange()

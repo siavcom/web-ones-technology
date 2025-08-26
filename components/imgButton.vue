@@ -1,9 +1,10 @@
 <template>
   <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <UButton :id="Id + '_button_' + prop.Name" class='button' :label="prop.Image.trim() == '' ? prop.Caption : ''"
-      v-show="prop.Visible" :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.captionStyle"
-      :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" @click.stop="click">
+    <!-- UButton -->
+    <button :id="Id + '_button_' + prop.Name" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
+      :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.captionStyle" :tabindex="prop.TabIndex" @focus="onFocus"
+      @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img_' + prop.Name" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
         :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.inputStyle" @click.stop="click" />{{ prop.Image.length
           == 0 ? prop.Caption
@@ -11,7 +12,8 @@
       <label :id="Id + '_label_' + prop.Name" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
         :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible">{{ prop.Image.length > 0 ? prop.Caption : ''
         }}</label>
-    </UButton>
+    </button>
+    <!--/UButton-->
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"

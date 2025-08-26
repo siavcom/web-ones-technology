@@ -560,9 +560,9 @@ export const use = async (
 
         if (data.length) {
             // No hubo error
-            console.log("3 Db Use Axios =====>"); // .data
+            console.log("3 Db Use Axios =====>data=", data); // .data
             const response = await genera_tabla(data, alias)
-            console.log("4 Db Use Axios =====>"); // .data
+            console.log("4 Db Use Axios =====>response=", response); // .data
             return response;
         }
         else return []; //   { return [] }
@@ -2348,10 +2348,10 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         // Borra las tablas
         //      await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
         //      await localAlaSql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + ';')
-        console.log("4 Db genera_tabla"); // .data
+        //  console.log("4 Db genera_tabla"); // .data
 
         await select(alias);
-        console.log("5 Db genera_tabla"); // .data
+        //  console.log("5 Db genera_tabla"); // .data
 
         try {
             await localAlaSql(
@@ -2376,16 +2376,19 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             console.error("Error al generar Vis_captura" + alias, error);
             return null;
         }
-        console.log("5 Db genera_tabla"); // .data
+        // console.log("5 Db genera_tabla"); // .data
         This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
 
         //console.log('Db View leida respuesta ===>', alias, respuesta)
 
         // si  no hay asignacion a valores de componentes
 
+        //   26/Ags/2025
         if (!This.value.View[alias].componente) {
+            //  console.log("6 Db genera_tabla respuesta=", respuesta); // .data
             return respuesta;
         }
+
 
         const componente = This.value.View[alias].componente;
         // revisar no entiendo
@@ -2395,10 +2398,10 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
                 componente[comp][i].value = recnoVal[comp]; // asignamos el valor a c/componente del form
             }
         }
-        console.log("6 Db genera_tabla"); // .data
+        // console.log("6 Db genera_tabla"); // .data
         return respuesta;
     } else {
-        console.log("7 Db genera_tabla"); // .data
+        // console.log("7 Db genera_tabla"); // .data
         This.value.View[alias].data = {};
         This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
     } // no hay datos
@@ -3330,48 +3333,8 @@ export const scatter = async (aliasFields?: [], alias?: string) => {
 
     }
 
-    console.log('scatter res=', resultado)
+    // console.log('scatter res=', resultado)
     return resultado
-
-
-    /*
-    
-        // checar diferencia entre recnoVal y recno
-        // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
-    
-        const recno = await goto(0, alias); // lee los datos actuales
-    
-    
-    
-        let select = 'SELECT '
-        let sep = ''
-    
-    
-        if (!aliasFields || '*' || (typeof aliasFields == 'string' && aliasFields == 'm') || (typeof aliasFields == 'string' && aliasFields == 'memvar')) {
-            select = select + ' * '
-        }
-        else {
-    
-            for (const field of aliasFields) {
-                select = select + sep + field
-    
-                sep = ','
-            }
-        }
-    
-        const ins_sql = select + ' FROM Now.' + alias + ' WHERE recno=' + recno
-        console.log('Db scatter update=', ins_sql)
-    
-        const data = await localAlaSql(ins_sql);
-    
-        if (data.length == 0) {
-            return null; // No hay datos
-        }
-        return data[0]; // Retorna el primer registro
-    
-    */
-
-
 
 };
 

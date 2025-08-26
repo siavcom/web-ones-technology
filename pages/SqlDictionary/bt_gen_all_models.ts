@@ -4,8 +4,8 @@
 // Creacion : Sep/2022
 /////////////////////////////////////////////
 
-import { COMPONENT } from '@/classes/Component'
-export class bt_gen_all_models extends COMPONENT {
+
+export class bt_gen_all_models extends IMGBUTTON {
 
   constructor() {
     super()
@@ -15,8 +15,6 @@ export class bt_gen_all_models extends COMPONENT {
     this.prop.Caption = " Actualiza TODOS los sequelize MODELS"
     this.prop.ToolTipText = 'Generate/Update ALL sequelize MODEL in Back-End-Server'
     this.prop.Visible = false
-    this.prop.Value = "All MODELS"
-    this.prop.TabIndex = 1
     this.prop.Image = "/Iconos/svg/data-modelling.svg"
     this.style.width = "92px";
 

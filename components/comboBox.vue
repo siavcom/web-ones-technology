@@ -540,7 +540,7 @@ const asignaValor = async () => {
 
       Value.value = columnas[0].value
       displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
-      console.log('1.7) comboBox Name=', props.prop.Name, 'found= ', found, 'Value=', Value.value)
+      // console.log('1.7) comboBox Name=', props.prop.Name, 'found= ', found, 'Value=', Value.value)
       // await This.Form.db.updateCampo(Value.value, props.prop.ControlSource, props.Registro)
 
     }
@@ -678,7 +678,7 @@ const validClick = async (num_ren: number) => {
   comboStyle.zIndex = zIndex.value
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
+  //console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
   //  await This.interactiveChange()
   emitValue()
   focusIn = false // Perdio el foco
@@ -769,7 +769,7 @@ const when = async (click?: boolean) => {
       const compName = grid.elements[comp].Name
       // 24/Dic/2024 .- Se aumenta que sea componente Capture
       if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-        console.log('comboBox onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
+        // console.log('comboBox onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
         return
       }
     }
@@ -791,7 +791,7 @@ const when = async (click?: boolean) => {
     return
   }
 
-  console.log('2) comboBox onFocus Grid Name', This.prop.Name)
+  //console.log('2) comboBox onFocus Grid Name', This.prop.Name)
 
   if (!sw_focus.value) {
     sw_focus.value = true
@@ -878,7 +878,7 @@ const onFocus = async () => {
 
   emit("update:Valid", true)
 
-  console.log('3) comboBox onFocus Name', This.prop.Name, 'Focus=', This.prop.Focus)
+  //  console.log('3) comboBox onFocus Name', This.prop.Name, 'Focus=', This.prop.Focus)
   if (!This.prop.Focus)// 13 Junio 2025
     return
 
@@ -1146,7 +1146,7 @@ const ColumnWidth = (columnas: string) => {
 // $event.charCode == 13 // Down Key  
 const nextElement = async () => {  //clickReturn
 
-  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
+  //  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
 
   await asignaValue()
   await emitValue() // 
@@ -1179,7 +1179,7 @@ const nextElement = async () => {  //clickReturn
   const nextElement = document.getElementById(nextFocus);
   // console.log('EditText keyPres Name',this.prop.Name=', setElement)
   if (nextElement) {
-    console.log('clickReturn nextFocus =', nextFocus)
+    // console.log('clickReturn nextFocus =', nextFocus)
     nextElement.focus()
     nextElement.focus()
 
@@ -1233,7 +1233,7 @@ watch(
 //       Se utiliza para el manejo de grid
 ///////////////////////////////////////
 watch(
-  () => props.Registro,
+  () => This.Recno, //props.Registro,
   async (new_val, old_val) => {
     if (new_val != old_val) {
       //console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)

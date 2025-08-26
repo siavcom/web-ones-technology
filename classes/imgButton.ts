@@ -19,7 +19,7 @@ export class IMGBUTTON extends COMPONENT {
     super();
     this.prop.BaseClass = 'imgButton';
     this.style.width = "72px"
-    this.style.height = "26px"
+    this.style.height = "auto"
     this.prop.Position = 'footer'; // main, header , footer
     this.captionStyle = {
       fontSize: '13px',
@@ -27,8 +27,9 @@ export class IMGBUTTON extends COMPONENT {
       color: '#000000',
       textAlign: 'center',
       minWidth: '-moz-available',
-      minHeight: '26px',
-      background: 'lightgray'
+
+      background: '#dfdcdc',
+      borderRadius: '5%',
     }
     this.inputStyle.background = 'white'
     this.inputStyle.color = 'black'
@@ -38,11 +39,4 @@ export class IMGBUTTON extends COMPONENT {
 
   }
 
-  public override async init_(): Promise<void> {
-    if (this.prop.Image.length > 0) {
-      delete this.inputStyle.boxShadow
-
-    }
-
-  }
 }
