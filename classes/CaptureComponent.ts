@@ -34,27 +34,13 @@ export class CAPTURECOMPONENT extends COMPONENT {
     await this.Form.beforeWhenComponent(ref(this))
   }
 
-  override async when_old() {
-    if (!this.prop.updateKey)
-      return true
+  override async when() {
+    this.prop.Status = 'A'
 
-    console.log('when component=', this.prop.Name, 'this.Form.main', this.Form.main)
-
-    for (let i = 0; i < this.Form.main.length; ++i) {
-      const comp = this.Form.main[i]
-
-      if (!this.Form[comp].prop.updateKey && this.Form[comp].prop.Capture) {
-        //  this.Form[comp].prop.Valid = true
-        this.Form[comp].prop.ShowError = false
-        console.log('update when component=', this.Form[comp].prop.Name)
-      }
-    }
-
+    if (this.prop.updateKey)
+      this.Recno = 0
     return true
-
   }
-
-
 
   //////////////////////////////////
   // event valid

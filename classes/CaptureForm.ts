@@ -25,18 +25,6 @@ export class captureForm extends FORM {
 
   }
 
-
-  /*
-    async asignaRecno() {
-      for (const comp in this) {
-        const Comp = this[comp]
-        // ControlSource contiene el RecordSource de la forma
-        if (Comp && Comp.prop && Comp.prop.Capture && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
-          Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
-        }
-      }
-    }
-  */
   /// //////////////////////////////////////////////////
   // Metodo init
   // Aqui se deben de asignar las areas de trabajo de los archivos
@@ -104,7 +92,10 @@ export class captureForm extends FORM {
 
   async beforeWhenComponent(Comp: undefined) {
     const thisComp = Comp.value
-    console.clear()
+    if (thisComp.prop.updateKey)
+      this.Recno = 0
+
+    //console.clear()
     //console.log('before When Component=', thisComp.prop.Name)
     for (const comp of this.Form.main) {
 
@@ -122,9 +113,7 @@ export class captureForm extends FORM {
 
         this.Form[comp].prop.ShowError = false
         this.Form[comp].prop.Valid = true
-        console.log('Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
-
-
+        console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
       }
 
     }
@@ -134,8 +123,6 @@ export class captureForm extends FORM {
     this.Form.bt_update.prop.Visible = false;
 
     //this.Form.refreshComponent();
-
-
   }
 
   /// /////////////////////////////////////
@@ -149,7 +136,7 @@ export class captureForm extends FORM {
   async validComponent(Comp: undefined) {
     const thisComp = Comp.value
 
-    console.log('Valid validaciones Este=', thisComp)
+    console.log('validComponent Este=', thisComp)
     //if (!compName) return false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
@@ -177,17 +164,15 @@ export class captureForm extends FORM {
 
     // si es llave de captura
 
-    console.log('1) Valid UpdateKey component= ', thisComp.prop.Name)
-
     if (
-      (typeof thisComp.prop.Value == "string" &&
-        thisComp.prop.Value.trim().length == 0) ||
+      (typeof thisComp.prop.Value == "string" && thisComp.prop.Value.trim().length == 0) ||
       (typeof thisComp.prop.Value == "number" && thisComp.prop.Value == 0)
     ) {
 
       thisComp.prop.ErrorMessage = "No permite datos en blanco";
       thisComp.prop.ShowError = true;
       thisComp.prop.Valid = false;
+      // console.log('1) ValidComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
       return thisComp.prop.Valid;
     }
 
@@ -207,7 +192,9 @@ export class captureForm extends FORM {
 
       if (this[comp].prop.updateKey) {
         //   console.log('2) Valid comp=', comp, 'prop.Valid=', this[comp].prop.Valid)
-        if (!this[comp].prop.Valid) {  // si el componente no es valido
+        if (this[comp].prop.Name != thisComp.prop.Name && !this[comp].prop.Valid) {  // si el componente no es valido
+          //    console.log('1) ValidComponent UpdateKey component= ', thisComp.prop.Name, this[comp].prop.Name)
+
           return true;
           // asignamos variables de memoria que se utilizaran en el use
           // console.log("m[comp]=", m[comp])
@@ -225,9 +212,9 @@ export class captureForm extends FORM {
       console.warn('No hay vista de actualizacion en el Form')
       return false
     }
-
-
+    // console.log('1) validComponent m=', m)
     const data = await use(this.prop.RecordSource, m);
+    console.log('2) validComponent data=', data)
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
@@ -284,7 +271,7 @@ export class captureForm extends FORM {
       this.sw_nue = false
       this.Recno = data[0].recno;
 
-      console.log('Hay datos Valid RecordSource=', this.prop.RecordSource, 'Recno', this.Recno, 'This=', this)
+      //    console.log('Hay datos Valid RecordSource=', this.prop.RecordSource, 'Recno', this.Recno, 'This=', this)
 
       key_pri = data[0].key_pri;
       //if (!this.bt_delete.prop.Disabled)

@@ -2,8 +2,8 @@
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
-export class bt_aceptar extends COMPONENT {
+
+export class bt_aceptar extends IMGBUTTON {
   /** 
   * Author : Fernando Cuadras Angulo
   *  @CreationDate : 16/Abr/2024
@@ -18,13 +18,9 @@ export class bt_aceptar extends COMPONENT {
     Object.assign(this.prop, {
       textLabel: "OK",
       Capture: false,
-      BaseClass: "imgButton",
-
       Image: "/Iconos/svg/accept.svg",
-
-
     });
-    Object.assign(this.style, { width: "64px" });
+
     Object.assign(this.style, { float: "left" })
   }
 
@@ -36,7 +32,10 @@ export class bt_aceptar extends COMPONENT {
    * Si no hay datos en el RecordSource, se oculta el componente browse.
    * Luego llama al metodo when() del componente tip_con.
    */
-  async click() {
+  override async click() {
+
+
+    console.log('<==================help click=============>')
 
     this.Parent.browse.prop.RowSource = ''
 

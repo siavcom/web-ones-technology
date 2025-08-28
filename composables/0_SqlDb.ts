@@ -1102,6 +1102,9 @@ export const appendBlank = async (alias?: string, m?: {}) => {
         errorAlert("SQL Error : No existe la vista SQL " + alias);
     }
 
+    m = !m ? Public.value : m
+    console.log('appendBlank m=', m)
+
     let recno = 0;
     // Obtenemos el valor del siguiente recno
     const res = await localAlaSql(

@@ -10,13 +10,11 @@
 // base class
 ///////////////////////////////////////
 
-import { IMGBUTTON } from "@/classes/imgButton";
 export class bt_close extends IMGBUTTON {
   constructor() {
     super();
     // this.prop.Value = "Close";
     this.prop.Capture = false;
-    this.prop.BaseClass = "imgButton";
     this.prop.Image = "/Iconos/svg/close-color.svg"; //bx-calendar.svg"
     this.style.width = "64px";
     this.style.float = "right"
