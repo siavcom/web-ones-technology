@@ -4,7 +4,7 @@
 // Creacion : 25/Mayo/2023
 // Ult.Mod : 10/Agosto/2023
 /////////////////////////////////////////////
-import { IMGBUTTON } from "@/classes/imgButton";
+
 import { saveAs } from "file-saver";
 /**
  *

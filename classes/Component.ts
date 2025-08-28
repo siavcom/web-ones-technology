@@ -18,7 +18,7 @@ export class COMPONENT {
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
   Sql: any = {};
-  Recno: number = 0; // ref(0)
+  Recno: number; // ref(0)
   //Ref: null | undefined;
   Show: true = true;
   Index!: number;
@@ -303,12 +303,14 @@ export class COMPONENT {
    * @returns {Promise<void>}
    */
   public asignaRecno() {
+
+    console.log('1) Asignado recno por referencia al padre', this.prop.Name, 'RecordSource=', this.prop.RecordSource)
     for (const comp in this) {
       const Comp = this[comp]
-
+      // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.ControlSource && Comp.prop.ControlSource.indexOf(this.prop.RecordSource) == 0) {
-        //console.log('Asignado recno por referencia al padre', Comp.prop.Name)
+      if (Comp && Comp.prop && Comp.prop.ControlSource && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
+        console.log('3) Asignado recno por referencia al padre', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
       }
     }
@@ -708,7 +710,6 @@ export class COMPONENT {
    */
   public async setFocus() {
     this.prop.Focus = true;
-
   }
 
   /////////////////////////////////////////////////////////////////////

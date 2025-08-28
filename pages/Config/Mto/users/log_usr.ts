@@ -39,7 +39,7 @@ export class log_usr extends CAPTURECOMPONENT {
 
       this.Form.bt_newSesion.prop.Visible = false
       this.Form.bt_changePassword.prop.Visible = false
-      this.Form.bt_borra.prop.Visible = false
+      this.Form.bt_delete.prop.Visible = false
 
       return true
 

@@ -14,12 +14,12 @@
 
 import { CONTAINER } from '@/classes/Container'
 import { var_dxm } from './var_dxm'
-import { bt_grabar } from './bt_grabar'
+import { bt_saver } from './bt_saver'
 import { xml2js, xml2json } from 'xml-js'
 
 export class TAB_XML extends CONTAINER {
   public var_dxm = new var_dxm()  // Variable de datos xml/json
-  public bt_grabar = new bt_grabar() // Boton de grabar xml/json
+  public bt_saver = new bt_saver() // Boton de grabar xml/json
   nom_tab: string = '' // Nombre de la tabla
   key_xmd: number = 0 // Clave del registro
   par_dxm: string = '' // Parametros de datos xml,

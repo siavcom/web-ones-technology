@@ -10,7 +10,7 @@
 
 import { IMGBUTTON } from "@/classes/imgButton";
 
-export class bt_grabar extends IMGBUTTON {
+export class bt_saver extends IMGBUTTON {
     constructor() {
         super()
         this.prop.Caption = 'Graba' // Column Header

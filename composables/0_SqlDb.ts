@@ -234,7 +234,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 
     alias = alias.trim();
 
-    console.log("1) Db useNodata nom_vis==> ", nom_vis, alias);
+    // console.log("1) Db useNodata nom_vis==> ", nom_vis, alias);
 
     if (This.value.View[alias]) {
         // si exite ya la vista, solo borra los datos locales
@@ -294,13 +294,13 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     };
     dat_vis.nom_vis = nom_vis; // Nombre de la vista
 
-    console.log("2) Db useNodata nom_vis==> ", nom_vis, alias, dat_vis);
+    // console.log("2) Db useNodata nom_vis==> ", nom_vis, alias, dat_vis);
 
     //   console.log("Db useNodata VIEW==> ", nom_vis, alias, dat_vis);
     try {
-        console.log("2).1 Db useNodata nom_vis==> ");
+        //     console.log("2).1 Db useNodata nom_vis==> ");
         const response: any = await axiosCall(dat_vis);
-        console.log("2).2 Db useNodata nom_vis==> ");
+        //    console.log("2).2 Db useNodata nom_vis==> ");
 
 
 
@@ -312,13 +312,13 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         if ((await genera_tabla(response, alias, true)) == null)
             // generamos la tabla segun la estructura regresada
             return false;
-        console.log("2).3 Db useNodata nom_vis==> ");
+        //  console.log("2).3 Db useNodata nom_vis==> ");
         // abre  la tabla de mantenimiento
         //console.log( "Db useNodata VIEW despues de generar_tabla==> ", alias,"response=", response        );
         if (This.value.View[alias] && This.value.View[alias].tip_obj.trim() == "VIEW") {
 
             alias = This.value.View[alias].tablaSql.trim();
-            console.log("3) Db useNodata alias==> ", alias);
+            //  console.log("3) Db useNodata alias==> ", alias);
             if (alias.trim() > '  ') { // si es de lectura no inicializa la tabla de actualizacion
                 await useNodata(alias);
 
@@ -415,7 +415,7 @@ export const use = async (
         // if (alias == 'vi_cap_cometab')
         //     console.log("1 Db USE ", alias);
 
-        console.log("desde use >>>>>Db Use UseNodata", nom_vis, alias);
+        console.log("use-> Db Use UseNodata", nom_vis, alias);
 
         await useNodata(nom_vis, alias);
     }
@@ -464,7 +464,7 @@ export const use = async (
 
                 return false;
             }
-            console.log("2 Db USE " + alias + "m=", m, " View =", This.value.View[alias]);
+            //  console.log("2 Db USE " + alias + "m=", m, " View =", This.value.View[alias]);
             if (exp_ind == undefined) {
                 errorAlert(
                     "No se pudo evaluar el indice de la tabla=" +
@@ -483,7 +483,7 @@ export const use = async (
 
             try {
                 exp_whe = eval(val_eval);
-                console.log("Db use eval where ", val_eval, m, 'exp_whe=', exp_whe);
+                //console.log("Db use eval where ", val_eval, m, 'exp_whe=', exp_whe);
             } catch (error) {
                 console.error("eval =", val_eval, error);
                 return false;
@@ -523,11 +523,7 @@ export const use = async (
     } else {
         // es un MODEL{
         //      const val_eval = "`"+This.value.View[alias].exp_indice+"`"
-        console.log(
-            "3 Db USE This.value.View MODEL eval exp_indice",
-            This.value.View[alias],
-            dat_vis
-        );
+        //console.log( "3 Db USE This.value.View MODEL eval exp_indice", This.value.View[alias],dat_vis );
 
         const val_eval = This.value.View[alias].exp_indice;
 
@@ -539,12 +535,7 @@ export const use = async (
             return false;
         }
 
-        console.log(
-            "Db USE eval dat_vis ===>",
-            val_eval,
-            "dat_vis.where=",
-            dat_vis.where
-        );
+        //c onsole.log( "Db USE eval dat_vis ===>",val_eval,"dat_vis.where=",dat_vis.where );
 
         // eval("dat_vis.where=`" + This.value.View[alias].exp_indice+"`") // obtenemos la expresion del indice
     }
@@ -555,14 +546,13 @@ export const use = async (
         console.log("1 Db Use Axios =====>", dat_vis); // .data
         // This.value.View[alias].m = m; // Variables m para hacer requery
         const data = await axiosCall(dat_vis);
-        console.log("2 Db Use Axios =====>"); // .data
+
         //console.log("5 Db Use Axios Ok response =====>", dat_vis, data); // .data
 
         if (data.length) {
             // No hubo error
-            console.log("3 Db Use Axios =====>data=", data); // .data
             const response = await genera_tabla(data, alias)
-            console.log("4 Db Use Axios =====>response=", response); // .data
+            console.log("4 Db Use Axios data=", data, "=====>response=", response); // .data
             return response;
         }
         else return []; //   { return [] }
@@ -930,14 +920,14 @@ export const tableUpdate = async (
                                         : dat_act[row][campo];
                             } else m[campo] = "";
                         } catch (error) {
-                            console.log(
+                            console.error(
                                 error,
                                 "campo=",
                                 campo,
                                 "Valor=",
                                 dat_act[row][campo]
                             );
-                            return;
+                            return false;
                         }
                     //console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo], 'typeof=', typeof dat_act[row][campo])
                 }
@@ -1102,7 +1092,6 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     const ThisForm = This.value.Form;
 
     //console.log("3) Db appendBlank alias=", alias, 'm', m);
-    console.log("4) Db appendBlank Public=", Public.value, 'm=', m);
 
     if (!alias) {
         // si no se da el alias
@@ -1225,11 +1214,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     This.value.View[alias].recCount = This.value.View[alias].recCount + 1;
     This.value.View[alias].row = This.value.View[alias].recnoVal.length - 1; // asignamos nuevo row
     valores.recno = recno;
-    console.log(
-        "Db DataBAse Insert Now  alaSql=====>",
-        alias,
-        await localAlaSql(`select * from  Last.${alias} `)
-    );
+    //console.log( "Db DataBAse Insert Now  alaSql=====>",        alias,        await localAlaSql(`select * from  Last.${alias} `)    );
     return valores;
 
     /* locaDb
@@ -1267,7 +1252,12 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
         return;
     }
 
-    const res = await localAlaSql("select key_pri from Now." + alias + " where recno=" + recno)
+    console.log('deleteSqlRow localAlasql=', await localAlaSql(`select * from Now.${alias} `))
+
+    const res = await localAlaSql(`select key_pri from Now.${alias}  where recno=${recno}`)
+    console.log('deleteSqlRow res=', res)
+
+
     if (res && res[0].key_pri > 0) {
 
         const key_pri = res[0].key_pri;
@@ -1291,7 +1281,7 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
                     MessageBox("Error al borrar en la base de datos", 16, "SQL Error");
                 return false;
             }
-            console.log('Db deleteSqlRow SQLServer Rgistro borrado dat_vis=', dat_vis, 'Respuesta=', response)
+            // console.log('Db deleteSqlRow SQLServer Rgistro borrado dat_vis=', dat_vis, 'Respuesta=', response)
 
             const respuesta = response.data;
         } catch (error) {
@@ -1327,6 +1317,7 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
 /// /////////////  deleteSqlRow local SQL /////////////////////
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
+// SqlUpodate : Actualizacion inmediata en SQLSERVER
 /// ////////////////////////////////////////////
 export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: boolean) => {
 
@@ -1355,14 +1346,12 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
         return null;
     } // no hay row por borrar
 
-    await localAlaSql(
-        " delete from Now." + alias + ` where recno=${recno}`
-    );
 
     console.log("Db  delete from Now." + alias + ` where recno=${recno}`);
 
     // Actualizacion inmediata en SQLSERVER
     if (SqlUpdate) {
+        /* 28/ags/2025
         const data = await localAlaSql(
             "USE Last;\
     select key_pri from Last." +
@@ -1371,7 +1360,7 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
             recno
         );
         const key_pri = data[1][0].key_pri;
-        /* 26/Dic/2024 el deleteSqlRow se encarga de borrar en SQLSERVER y localSql
+         26/Dic/2024 el deleteSqlRow se encarga de borrar en SQLSERVER y localSql
         await localAlaSql(
           " delete from Now." + alias + " where recno=?",
           recno
@@ -1380,13 +1369,14 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
 
         // utiliza la tabla de actualizacionde SQL
         // console.log('Db delete alias DeleteSqlRow',key_pri, alias)
-        if (key_pri > 0) {
-            // si existe en el SQLSERVER
-            if (!(await deleteSqlRow(key_pri, alias))) {
-                return false;
-            }
-        }
-    }
+        //if (key_pri > 0) {
+        // si existe en el SQLSERVER
+        if (!(await deleteSqlRow(recno, alias)))
+            return false;
+
+        //}
+    } else
+        await localAlaSql(`delete from Now.${alias} where recno=${recno}`);
 
     const recnoArray = await localAlaSql(
         " select recno from Now." + alias + "  order by recno"
@@ -1413,7 +1403,7 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
         recno = recnoArray[row].recno;
     }
 
-    console.log('Db Despues de borrar recnoval ', This.value.View[alias].recnoVal)
+    // console.log('Db Despues de borrar recnoval ', This.value.View[alias].recnoVal)
     // console.log('Db delete despues slice recno reg recnoVal===>',recno,This.value.View[alias].recnoVal)
     // console.log('Db Despues de borrar alaSql',localAlaSql('select recno,key_pri from '+ alias ))
     if (recno > 0) {
@@ -1760,7 +1750,7 @@ export const genTabla = async (tabla: string) => {
         return true;
         // }
     } catch (error) {
-        console.log("SQL Error", error.response);
+        console.error("SQL Error", error.response);
         errorAlert(
             "SQL Error :" +
             error.response.status.toString() +
@@ -2009,7 +1999,7 @@ export const select = async (alias?: string | number) => {
         This.value.num_are = This.value.are_tra.indexOf(alias_sel) + 1; // busca el numero de alias
     }
 
-    console.log("Db Select alias ", alias);
+    //console.log("Db Select alias ", alias);
 
     return This.value.num_are;
 };
@@ -2427,7 +2417,7 @@ export const recCount = (alias?: string) => {
 
     //    if (!alias) MessageBox('No existe el alias',alias)
     //         return 0
-    console.log("Db Reccount alias ===>", alias, This.value.View[alias].recCount);
+    // console.log("Db Reccount alias ===>", alias, This.value.View[alias].recCount);
     return This.value.View[alias].recCount;
 }
 
@@ -3548,7 +3538,7 @@ export const localClone = async (
     var query = `select *  from Now.${baseAlias}  ${where}`;
 
     const respuesta = await This.value.localSql(query);
-    console.log("Db Clone respuesta ", query, respuesta);
+    //console.log("Db Clone respuesta ", query, respuesta);
     //query = `select *  from Now.${alias} `
     //const respuesta = await This.value.localSql(query)
 
@@ -3573,10 +3563,7 @@ export const localClone = async (
             ]);
         }
 
-        console.log(
-            "Db Clone Last ",
-            await This.value.localSql("select * from Last." + alias)
-        );
+        //console.log("Db Clone Last ", await This.value.localSql("select * from Last." + alias) );
 
         //Generamos el Last
         //query = `select * INTO Last.${alias} from New.${alias}`

@@ -15,7 +15,7 @@
     <input v-if="!This.prop.Disabled" id="get_file" ref="fileInput" type="file" @change="readFile($event)"
       :disabled="This.prop.Disabled" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept"
       src="/Iconos/svg/delete-color.svg" />
-    <img v-if="Value.length > 0" :id="Id + '_bt_borrar'" class="img" src="/Iconos/svg/delete-color.svg"
+    <img v-if="Value.length > 0" :id="Id + '_bt_deleter'" class="img" src="/Iconos/svg/delete-color.svg"
       :alt="prop.Value" :disabled="prop.ReadOnly" style="width:32px;height:32px ;" @click.capture="bt_delete()" />
 
   </span>

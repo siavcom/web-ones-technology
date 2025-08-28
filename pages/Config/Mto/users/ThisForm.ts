@@ -63,18 +63,17 @@ export class ThisForm extends captureForm {
   }
   override async validComponent(compName?: string) {
     const result = await super.validComponent(compName)
-    if (this.bt_borra.prop.Visible) {
+    if (this.bt_delete.prop.Visible) {
       this.bt_newSesion.prop.Visible = true
       this.bt_changePassword.prop.Visible = true
 
-      console.log('this.bt_borra.prop.Visible', this.bt_borra.prop.Visible)
+      console.log('this.bt_delete.prop.Visible', this.bt_delete.prop.Visible)
     }
     return result
 
   }
 
-
-  override async inSave() {
+  override async bt_saveClick() {
     this.newUser = false
     if (this.pw1_usr.prop.Value.trim() != this.pw2_usr.prop.Value.trim()) {
       MessageBox('Las contraseñas no coinciden', 16, 'Error')
@@ -89,7 +88,7 @@ export class ThisForm extends captureForm {
       this.newUser = false
 
 
-    return true
+    return super.bt_saveClick()
   }
 
   override async afterSave(): Promise<void> {

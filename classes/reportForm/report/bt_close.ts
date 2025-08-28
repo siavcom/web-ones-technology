@@ -3,7 +3,7 @@
 // Author : Fernando Cuadras Angulo
 // Creacion : 29/May/2023
 /////////////////////////////////////////////
-import { COMPONENT } from '@/classes/Component'
+
 /** 
 * Clase : close
 * Author : Fernando Cuadras Angulo
@@ -13,7 +13,7 @@ import { COMPONENT } from '@/classes/Component'
  * @class BT_ACEPTAR
  * @extends {COMPONENT}
  */
-export class bt_close extends COMPONENT {
+export class bt_close extends IMGBUTTON {
 
   constructor() {
     super()

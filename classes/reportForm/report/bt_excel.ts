@@ -4,7 +4,7 @@
 // Creacion : 25/Mayo/2023
 // Ult.Mod. : 10/Agosto/2023
 /////////////////////////////////////////////
-import { COMPONENT } from '@/classes/Component'
+
 /**
  *
  *
@@ -17,7 +17,7 @@ import { COMPONENT } from '@/classes/Component'
 //  revisar utilería https://vue-xlsx.netlify.app/guide/#quick-start
 
 import { read, writeFileXLSX, utils } from "xlsx";
-export class bt_excel extends COMPONENT {
+export class bt_excel extends IMGBUTTON {
 
   constructor() {
     super()

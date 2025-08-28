@@ -243,7 +243,7 @@ onMounted(async () => {
     }
 
   };
-  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
+  //  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
 
 
   if (This.prop.Image.length > 0) {
