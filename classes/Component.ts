@@ -205,7 +205,7 @@ export class COMPONENT {
     backgroundImage: "",
     border: "",  //    backgroundImage: "",
     borderRadius: "", //"2px",
-    color: "#b94295", //"#b94295", // '#872169', //    
+    color: 'black',// "#b94295", //"#b94295", // '#872169', //    
     cols: "60",
     display: "inline-flex",
     flexGrow: "0" /* do not grow   - initial value: 0 */,

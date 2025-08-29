@@ -21,7 +21,10 @@ export class bt_aceptar extends IMGBUTTON {
       Image: "/Iconos/svg/accept.svg",
     });
 
-    Object.assign(this.style, { float: "left" })
+    Object.assign(this.style, {
+      float: "left",
+      width: "52px"
+    })
   }
 
   /**

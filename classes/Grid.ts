@@ -21,7 +21,7 @@ export class GRID extends COMPONENT {
   }
 
   rowStyleInactive = {
-    backgroundColor: 'black' //'darkgray'   //'white'
+    backgroundColor: 'aliceblue;'//'darkgray'   //'white' //
   }
 
   constructor() {
@@ -62,7 +62,6 @@ export class GRID extends COMPONENT {
   }
 
   override async init(): Promise<void> {
-
     this.rowStyleInactive = this.Form.mainStyle.backgroundColor
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_main_span'" class="divi_imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!-- UButton -->
     <button :id="Id + '_button_' + prop.Name" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"

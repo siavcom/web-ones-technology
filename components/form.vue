@@ -27,7 +27,7 @@
 
       <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
         :style="{ 'width': '-moz-available' }">
-        <section class="pagina" :style="ThisForm.style">
+        <section class="ThisForm" :style="ThisForm.style">
           <div id='backGround' class='backGround'>
             <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
             <section class="formheader" :style="ThisForm.headerStyle">
@@ -35,17 +35,10 @@
 
                 <!--template v-slot:header-->
                 <h2 class="header2" float="left">
-
-                  <div id="titFor" class="titFor" :style="{ 'width': 'auto', 'font-size': '20px' }">
+                  <div id="titFor" class="titFor" :style="ThisForm.captionStyle">
                     <label text-align="center">{{ ThisForm.prop.Caption }}</label>
-                    <!--label text-align="right">{{ ThisForm.prop.Name }}</label-->
-
                   </div>
                 </h2>
-                <!--transition-group> -->
-                <!-- @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
-                   @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')"
-              -->
 
                 <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
                   :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
@@ -126,8 +119,13 @@
 
               <div id="salir" class="salir" @click='clickSalir()'>
 
-                <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg"
-                  :style="{ 'float': 'right', 'word-wrap': 'break-word', 'font-size': '13px', 'color': 'green', 'width': '60px' }" />
+                <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg" :style="{
+                  'float': 'right',
+                  'word-wrap': 'break-word',
+                  'font-size': '13px',
+                  'color': 'green',
+                  'width': '60px',
+                }" />
 
               </div>
 

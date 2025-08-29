@@ -113,7 +113,7 @@ export class captureForm extends FORM {
 
         this.Form[comp].prop.ShowError = false
         this.Form[comp].prop.Valid = true
-        console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
+        //    console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
       }
 
     }
@@ -558,7 +558,7 @@ export class captureForm extends FORM {
 
       this.prop.Image = "/Iconos/svg/update-content.svg";
       // this.prop.TabIndex= 21
-      this.style.width = "64px";
+      this.style.width = "72px";
     } // Fin constructor
 
     override async click() {

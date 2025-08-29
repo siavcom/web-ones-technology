@@ -37,23 +37,20 @@ export class FORM extends COMPONENT {
     backgroundColor: '#ebf8ee',
     border: '1px solid rgb(0, 0, 0)',
     borderRadius: '6px',
-
+    width: 'auto',
+    fontSize: '20px',
     /*  flex;
     flex-direction: column; 
     center;
-    width: 100%;*/
-
+   width: 100%;*/
   }
-
-
 
   mainStyle = {
     textAlign: 'left',
     backgroundColor: '#f2f4ef',
     border: '1px solid rgb(0, 0, 0)',
     borderRadius: '6px',
-
-    zIndex: '1',
+    zIndex: '5',
 
     /*border: 1px solid rgb(0, 0, 0);
       border-radius: 6px; */
@@ -77,7 +74,7 @@ export class FORM extends COMPONENT {
     backgroundColor: '#c8e0ce',
     border: '1px solid rgb(0, 0, 0)',
     borderRadius: '6px',
-    zIndex: '2',
+    zIndex: '1',
 
     /*  flex;*/
     /*flex-direction: column; */
@@ -85,6 +82,7 @@ export class FORM extends COMPONENT {
     /*width: 100%;*/
 
   }
+
 
 
 
@@ -110,7 +108,7 @@ export class FORM extends COMPONENT {
     this.style.minHeight = 'auto';
     this.style.backgroundColor = 'darkgray';
     this.style.borderRadius = '10px';
-
+    this.captionStyle.color = 'black';
     /* margin-top: 250px; */
     // this.style.maxWidth = '100%'
     //    this.style.maxHeight='920px'

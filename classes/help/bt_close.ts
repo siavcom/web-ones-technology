@@ -16,7 +16,7 @@ export class bt_close extends IMGBUTTON {
     // this.prop.Value = "Close";
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/close-color.svg"; //bx-calendar.svg"
-    this.style.width = "64px";
+    this.style.width = "52px";
     this.style.float = "right"
 
   }

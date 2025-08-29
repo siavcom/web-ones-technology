@@ -38,8 +38,8 @@ export class CONTAINER extends COMPONENT {
       this.style.borderStyle = 'double'
       this.style.background = 'antiquewhite'
       this.style.backgroundColor = 'antiquewhite'
-      this.style.left = '3%'
-      this.style.borderRadius = '1.5%'
+      this.style.left = '5%'
+      this.style.borderRadius = '5%'
       this.style.padding = '3%'   //Margen entre los bordes y el contenido
       this.captionStyle.color = 'black'
     }

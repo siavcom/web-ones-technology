@@ -3,6 +3,7 @@
 // Author : Fernando Cuadras Angulo
 // Creacion : 1/Julio/2025
 // Ult.Mod  : 1/Julio/2023
+//            29/Ags/2025 Se pasa diseño por propiedades
 // Descripcion : Clase para el componente imgButton
 // Esta clase extiende de la clase COMPONENT y define un botón de imagen
 // con propiedades específicas como Capture y Valid.
@@ -18,8 +19,6 @@ export class IMGBUTTON extends COMPONENT {
   constructor() {
     super();
     this.prop.BaseClass = 'imgButton';
-    this.style.width = "72px"
-    this.style.height = "auto"
     this.prop.Position = 'footer'; // main, header , footer
     this.captionStyle = {
       fontSize: '13px',
@@ -27,15 +26,21 @@ export class IMGBUTTON extends COMPONENT {
       color: '#000000',
       textAlign: 'center',
       minWidth: '-moz-available',
-
       background: '#dfdcdc',
       borderRadius: '5%',
     }
     this.inputStyle.background = 'white'
     this.inputStyle.color = 'black'
-    this.style.background = 'white'
-    this.style.color = 'black'
 
+    Object.assign(this.style, {
+      background: 'white',
+      color: 'black',
+      width: "72px",
+      height: "auto",
+      borderRadius: '10%',
+      boxShadow: "0 4px 8px 0, 0 6px 20px 0",
+      boxSizing: "border-box",
+    })
 
   }
 

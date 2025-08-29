@@ -37,7 +37,7 @@ export class COLUMN extends COMPONENT {
     this.style.height = "auto"; //99%";
     this.style.fontSize = '13px'
     this.style.fontWeight = 'bold'
-    this.style.color = '#000000'
+    //  this.style.color = '#000000'
     this.inputStyle.width = "96%";
     this.inputStyle.height = "auto";  // auto para que en los componentes como json,
     this.captionStyle.textAlign = '-webkit-center'
