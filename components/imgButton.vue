@@ -10,7 +10,8 @@
           == 0 ? prop.Caption
           : '' }}
       <label :id="Id + '_label_' + prop.Name" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
-        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible">{{ prop.Image.length > 0 ? prop.Caption : ''
+        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible" @click.stop="click">{{ prop.Image.length > 0 ?
+          prop.Caption : ''
         }}</label>
     </button>
     <!--/UButton-->

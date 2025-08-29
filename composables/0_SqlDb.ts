@@ -1314,9 +1314,6 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
     return true;
 };
 
-
-
-
 /// /////////////  deleteSqlRow local SQL /////////////////////
 // alias  : Nombre de la vista a utilizar
 // row : Renglon donde se encuentra el registro a borrar
@@ -1701,20 +1698,14 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         if (respuesta.length > 0) {
             // si hay datos
             // Asignamos los valores a la vista
-            //      This.value.View[alias] = response; // asignamos su estructura  y filtros de condiciones
             This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
             This.value.View[alias].recCount = respuesta.length; // registros totales
-            //    This.value.View[alias]["tablaSql"] = alias // tabla en servidor SQL
             This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
             This.value.View[alias].recnoVal = [...recnoVal];
-            // console.log('Db exec ',This.value.View[alias])
         }
-
-
 
         if (tip_res.toUpperCase() == "NULL") return true;
         if (tip_res == 'J') return JSON.stringify(respuesta)
-
 
         return respuesta;
     } catch (error) {

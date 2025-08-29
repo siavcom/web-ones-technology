@@ -96,16 +96,16 @@ export class bt_aceptar extends IMGBUTTON {
       this.Parent.browse.table.columns.push(columns[i])
 
     }
-    console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
+    //    console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
+    /*
+        if (this.Sql.View.browse) {
+          delete this.Sql.View.browse
+          localAlaSql(`drop table IF EXISTS Now.browse`)
+        }
+    */
+    const res = await SQLExec(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
 
-    if (this.Sql.View.browse) {
-      delete this.Sql.View.browse
-      this.Sql.localAlaSql(`drop table browse`)
-    }
-
-    await SQLExec(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
-
-    const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
+    //const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
 
     if (!res || !this.Sql.View.browse || this.Sql.View.browse.recCount == 0) {
       if (!res)

@@ -324,7 +324,6 @@ const waitEval = async (evento: string) => {
   })
 }
 
-
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
 // no ejecuta el evento
@@ -334,10 +333,11 @@ watch(
   async (new_val, old_val) => {
     if (ThisForm.eventos.length == 0) // 27/Dic/2024
       return
-    // console.log('1) eventos Entro watch ThisForm.estatus=', ThisForm.eventos)
+
     for (const comp in ThisForm.estatus) {
 
       if (ThisForm.estatus[comp] != 'A') {
+        console.warn('1) Form.vue Watch  Eventos Componente en proceso=', comp)
         ThisForm.eventos = []
         // ThisForm.prop.Status = 'P'
         // console.log('2) eventos Entro watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
