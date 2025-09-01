@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -384,9 +384,15 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
     if (swInit) { // swInit Value.value.trim().length == 0
-      if (columnas.length == 0)
-        return renderComboBox()
+      if (columnas.length == 0) {
+        await renderComboBox()
+        This.prop.Status = 'A'
+        Status.value = 'A'
+        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+        return
 
+
+      }
       Value.value = columnas[0].value
       swInit = false
     }
@@ -416,6 +422,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
         if (This.prop.Valid)
           This.prop.Valid = false
+
+        This.prop.Status = 'A'
+        Status.value = 'A'
+        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+
+
 
         return
       }
@@ -563,6 +575,7 @@ const toggleClick = async () => {
   if (!toggle.value) {
     if (!sw_focus.value)
       await when()   // 18/Junio/2025
+
   }
   if (!This.prop.ReadOnly)
     toggle.value = !toggle.value
@@ -666,14 +679,15 @@ const focusOut = async () => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const validClick = async (num_ren: number) => {
-
-  for (const element of This.Parent.elements) {
-    const comp = element.Name
-    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
-      return
+  /*
+    for (const element of This.Parent.elements) {
+      const comp = element.Name
+      console.log('ComboBox validClick componente=', comp)
+      if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
+        return
+      }
     }
-  }
-
+  */
   toggle.value = false
   comboStyle.zIndex = zIndex.value
 

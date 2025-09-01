@@ -187,6 +187,7 @@ export class captureForm extends FORM {
 
     for (const comp of this.main) {
       // Asigna cual es el componente First de la forma
+      //     console.log('capture form comp=', comp, this[comp])
       if (this[comp].prop.First)
         this.First = this[comp]
 
@@ -584,11 +585,8 @@ export class captureForm extends FORM {
   public async bt_updateClick() {
     this.bt_update.prop.Visible = false
     for (const comp of this.Form.main) {
-
       if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
-
         this[comp].prop.ReadOnly = false
-
       }
     }
     this.bt_delete.prop.Visible = true;

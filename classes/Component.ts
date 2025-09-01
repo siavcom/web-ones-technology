@@ -304,13 +304,13 @@ export class COMPONENT {
    */
   public asignaRecno() {
 
-    console.log('1) Asignado recno por referencia al padre', this.prop.Name, 'RecordSource=', this.prop.RecordSource)
+    // console.log('1) Asignado recno por referencia al padre', this.prop.Name, 'RecordSource=', this.prop.RecordSource)
     for (const comp in this) {
       const Comp = this[comp]
       // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
       if (Comp && Comp.prop && Comp.prop.ControlSource && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
-        console.log('3) Asignado recno por referencia al padre', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
+        //   console.log('3) Asignado recno por referencia al padre', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
       }
     }
@@ -673,6 +673,9 @@ export class COMPONENT {
    */
   public async when() {
     this.old_value = this.prop.Value
+    if (!this.prop.ReadOnly)
+      await this.gotFocus()
+
     return !this.prop.ReadOnly;
   }
 
@@ -717,6 +720,7 @@ export class COMPONENT {
   // Descripcion: Llamado cuando el elemento recibe el foco
   /////////////////////////////////////////////////////////////////
   public async gotFocus() {
+    return
   }
 
   /////////////////////////////////////////////////////////////////////
