@@ -16,7 +16,7 @@ export class FORM extends COMPONENT {
 
   loading = true;
   eventos = []; // eventos a ejecutar en el stack
-  estatus = []; // estatus de los componentes hijos
+  // estatus = []; // estatus de los componentes hijos
   Params = [];
   //db = new VFPDB(); // conexion a la base de datos
   mPublic = {};

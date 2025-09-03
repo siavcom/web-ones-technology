@@ -560,8 +560,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
     if (!watchPropValue) {
       This.prop.Status = 'P'
-      Status.value = 'P'
-      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+      //2/Sep/2025 Status.value = 'P'
+      //2/Sep/2025 emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
       // Si no viene del watch This.prop.Value
       if (!newValor)
@@ -634,8 +634,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       // console.log('3.4) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
       This.prop.Valid = true
       This.prop.Status = 'A'
-      Status.value = 'A'
-      emit("update:Status", 'A')
+      //2/Sep/2025  Status.value = 'A'
+      //2/Sep/2025  emit("update:Status", 'A')
       //     console.log('--------------------------------------3) editText emitValue() Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
     }
@@ -891,7 +891,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 */
 
   Status.value = 'A'  // se necesita para que el watch padre funcione
-  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  //2/Sep/2025   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   This.prop.Status = 'A'
 
   if (typeof This.prop.Value == 'number') {
@@ -1213,6 +1213,8 @@ const onFocus = async () => {
 
   // Cuando esta en un grid y se hace foco a un renglon que no tiene el foco, se debe de correr en when  
   // al hacer el appendRow pone los ReadOnly en false en todos los componentes del grid
+
+
   if (This.prop.ReadOnly || This.prop.Disabled) {
 
     //thisElement.next(':input').focus();
@@ -1276,16 +1278,21 @@ const onFocus = async () => {
 
   if (Styles.inputStyle.background != This.inputStyle.background)
     Styles.inputStyle.background = This.inputStyle.background
-  if (focusIn.value) { // sw_when 11/Ags/2025
 
-    nextTick(function () {
-      This.Form.eventos.push(This.prop.Map + '.when()')
-      /*      if (Clicked) {
-              This.Form.eventos.push(This.prop.Map + '.click()')
-              console.log('1)====> when cam_dat=', This.prop.Name, 'Clicked=', Clicked)
-            }
-        */
-    })
+  if (focusIn.value == 1) { // sw_when 11/Ags/2025
+
+    await nextTick()
+
+    This.Form.eventos.push(This.prop.Map + '.when()')
+    console.log('++++++++++++ =====EditTextgotFocus', This.prop.Name, This.Form.eventos)
+
+
+    /*      if (Clicked) {
+            This.Form.eventos.push(This.prop.Map + '.click()')
+            console.log('1)====> when cam_dat=', This.prop.Name, 'Clicked=', Clicked)
+          }
+      */
+    //   })
     // select() // 8/Ags/2025 Se quito 
 
   }
@@ -1476,6 +1483,8 @@ watch(
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
+
+
 watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
@@ -1483,17 +1492,33 @@ watch(
     if (!new_val) {
       return
     }
-
+    /*
+       En comboBox se utiliza 
+       onFocus()
+       return
+    */
 
     // Se pidio desde afuera el setFocus
-    if (thisElement != null && document.activeElement != thisElement)
-      return thisElement.focus();
 
-    //  const length = thisElement.value.length;
-    // Set the cursor to the end
-    // console.log('2)EditText Watch Focus Name=', This.prop.Name)
-    select()
+    if (document.activeElement != thisElement) {
+      thisElement.select();
 
+    }
+    setTimeout(function () {
+      thisElement.focus({ focusVisible: true });
+      thisElement.select();
+
+
+    }, 0);
+
+
+
+    /*  Se cambio 4/Sep/2025
+        if (thisElement != null && document.activeElement != thisElement)
+          return thisElement.focus();
+    
+        select()
+    */
     return
   },
   { deep: false }
@@ -1933,7 +1958,7 @@ onMounted(async () => {
   This.afterMounted()
 
   await This.recnoChange()
-
+  This.prop.Status = 'A'
 
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {

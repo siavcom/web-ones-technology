@@ -26,7 +26,7 @@ export class COMPONENT {
   main: [] = []; // elementos que tiene el componente en main
   footer: [] = []; // elementos que tiene el componente en footer
   elements: [] = []; // elementos que tiene el componente
-  status: {} = {}; // status de todos los hijos del componente
+  estatus: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
   block: [] = [] // bloque del componentes
   error = false

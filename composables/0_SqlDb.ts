@@ -1591,13 +1591,14 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
     try {
         console.log("Begin SQLEXEC  Query=", query);
 
-        const respuesta = await axiosCall(dat_vis);
+        let respuesta = await axiosCall(dat_vis);
         // console.log('Db execute alias query,respuesta', dat_vis.query, respuesta)
 
         if (respuesta.length == 0) return respuesta
 
         if (respuesta == null) return null;
 
+        // respuesta=objToLowerCase(respuesta)
         //  console.log('Db execute alias query,respuesta', dat_vis.query,respuesta)
         if (alias.toUpperCase() == "MEMVAR") {
 
@@ -3290,19 +3291,25 @@ export const skip = async (despla?: number, alias?: string) => {
 // scatter Lee los datos del registro actual
 // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
 /// //////////////////////////////////////
+/**
+ * Gets the data from the current record
+ * @param {Object} aliasFields - fields to read in an array ['field1','field2'.....'filedn']
+ * @param {Object} alias - alias table
+ * @returns {Object} A new object with data field 
+ */
+
 export const scatter = async (aliasFields?: [], alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
+
     let fields = []
-
-
     if (!alias) {
         if (!This.value.are_tra[This.value.num_are - 1]) {
             return false;
         }
         alias = This.value.are_tra[This.value.num_are - 1];
     }
-
+    console.log('sccater fields', aliasFields, alias)
 
     const res = await goto(0, alias); // lee los datos actuales
     if (!aliasFields)

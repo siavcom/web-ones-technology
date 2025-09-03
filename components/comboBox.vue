@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -231,7 +231,7 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
-let First = false
+//let First = false
 //let Focus = false
 let focusIn = false
 const MultiSelect = ref(props.prop.MultiSelect)
@@ -271,7 +271,7 @@ const width = reactive(['60%', '20%', '20%']);
 const RefCombo = ref(null)
 
 const Status = ref(props.prop.Status);
-Status.value = 'I'
+// Status.value = 'I'
 const toggle = ref(false)
 
 
@@ -379,16 +379,17 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   let readValid = false
 
   if (!readCam) {  // Se cambio el valor del campo.  Graba el valor en Sql localmente.
-    This.prop.Status = 'P'
-    Status.value = 'P'
-    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+    if (!isValid)
+      This.prop.Status = 'P'
+    //2/Sep/2025 Status.value = 'P'
+    //2/Sep/2025 emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
     if (swInit) { // swInit Value.value.trim().length == 0
       if (columnas.length == 0) {
         await renderComboBox()
         This.prop.Status = 'A'
-        Status.value = 'A'
-        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+        //2/Sep/2025  Status.value = 'A'
+        //2/Sep/2025  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
 
 
@@ -424,17 +425,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
           This.prop.Valid = false
 
         This.prop.Status = 'A'
-        Status.value = 'A'
-        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-
-
-
+        //2/Sep/2025 Status.value = 'A'
+        //2/Sep/2025 emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
       }
       This.prop.Valid = true
       This.prop.Status = 'A'
-      Status.value = 'A'
-      emit("update:Status", 'A')
+      //2/Sep/2025 Status.value = 'A'
+      //2/Sep/2025 emit("update:Status", 'A')
 
       if (newValue != This.prop.Value)
         return
@@ -485,8 +483,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
   This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
   This.prop.Status = 'A'
-  Status.value = 'A'  // se necesita para que el watch padre funcione
-  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  //2/Sep/2025  Status.value = 'A'  // se necesita para que el watch padre funcione
+  //2/Sep/2025   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
 
   if (Value.value == null) {
@@ -573,7 +571,8 @@ const asignaValor = async () => {
 const toggleClick = async () => {
 
   if (!toggle.value) {
-    if (!sw_focus.value)
+    // if (!sw_focus.value)
+    if (!focusIn)
       await when()   // 18/Junio/2025
 
   }
@@ -774,7 +773,9 @@ const validList = async () => {
 /////////////////////////////////////////////////////////////////
 const when = async (click?: boolean) => {
 
-  focusIn = true
+  if (focusIn)
+    return
+
 
   if (This.Parent.BaseClass == "grid") {
     const grid = This.Parent
@@ -788,6 +789,9 @@ const when = async (click?: boolean) => {
       }
     }
   }
+
+  focusIn = true
+
 
   // No se permite el focus si es solo lectura
   if (This.prop.ReadOnly || This.prop.Disabled) {
@@ -812,13 +816,12 @@ const when = async (click?: boolean) => {
     //    This.Form.eventos.push(This.prop.Map + '.when()')
   }
 
-  nextTick(() => {
-    This.Form.eventos.push(This.prop.Map + '.when()')
+  await nextTick()
+  This.Form.eventos.push(This.prop.Map + '.when()')
+  console.log('when comboBox =', This.prop.Name, 'Eventos=', This.Form.eventos)
+  if (click)
+    This.Form.eventos.push(This.prop.Map + '.click()')
 
-    if (click)
-      This.Form.eventos.push(This.prop.Map + '.click()')
-
-  });
 
 
 }
@@ -845,25 +848,11 @@ const onFocus = async () => {
 
   // No se permite el focus si es solo lectura
   if (This.prop.ReadOnly || This.prop.Disabled) {
-    //console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
-    /*
-     if (!This.prop.Disabled) {
-       This.prop.Disabled = true
-       setTimeout(function () {
-         This.prop.Disabled = false
- 
-       }, 100);
-     }
-     */
-    //thisElement.next(':input').focus();
     This.prop.Estatus = 'A'
     return
   }
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
-    //   Valid.value = true
-
-    //    if (props.Recno > 0) {
     if (Recno.value > 0) {
 
       const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value, 'Old')
@@ -898,17 +887,13 @@ const onFocus = async () => {
 
   This.prop.Focus = false
 
-  First = false  // 13 Junio 2025
+  // First = false  // 13 Junio 2025
   ShowError.value = false
   This.prop.ShowError = false
 
   //const element = document.getElementById(Id);
 
   if (document.activeElement != thisElement) {
-    // Ref.value.focus();
-    // Ref.value.select();
-
-    // thisElement.focus({ focusVisible: true });
     thisElement.select();
 
   }
@@ -1135,8 +1120,8 @@ const renderComboBox = async (readData?: boolean) => {
 
   await emitValue(true, true)
   This.prop.Status = 'A'
-  Status.value = 'A'
-  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  //2/Sep/2025 Status.value = 'A'
+  //2/Sep/2025emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   //console.log('3) render combobox ===>>', This.Name, 'Value=', Value.value)
   return
 
@@ -1673,7 +1658,7 @@ onMounted(async () => {
   // si es el primer elemento a posicionarse
   // si es el primer elemento a posicionarse
   if ((props.prop.First || props.prop.Focus) && This.Parent.BaseClass != "grid") {
-    First = true
+    // First = true
     This.prop.Focus = false
     This.prop.Focus = true
 
@@ -1745,6 +1730,7 @@ function myClick(e) {
 
     if (!RefCombo.value.contains(clickedEl)) {
       sw_focus.value = false
+      focusIn = false
       if (toggle.value) {
         toggle.value = false
       }

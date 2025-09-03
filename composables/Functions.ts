@@ -1071,16 +1071,25 @@ export async function Dime2D(rows: number): Array<any> {
  * @param {object} data - objeto a recorrer
  * @returns {object} objeto con nombres de propiedades en lowercase
  */
-export async function objToLowerCase(data: {}): object {
+export function objToLowerCase(data: {}): object {
 
-  const objeto = {}
-  for (const ele in data) {
-    objeto[ele.toLowerCase()] = data[ele]
+  console.log('objToLowerCase datalebgth ', data)
+  if (!data.length) {
+    const objeto = {}
+    for (const ele in data) {
+      objeto[ele.toLowerCase()] = data[ele]
+    }
+    return objeto
   }
-
-  console.log('objToLowerCase res=', objeto)
+  const objeto = []
+  for (let i = 0; data.length > i; i++) {
+    const renglon = data[i]
+    for (const ele in renglon) {
+      objeto[i][ele.toLowerCase()] = data[i][ele]
+    }
+  }
+  console.log('objToLowerCase renglones res=', objeto)
   return objeto
-
 }
 
 /**

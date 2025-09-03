@@ -241,6 +241,7 @@ const props = defineProps<{
   ThisForm: null;
 }>();
 const ThisForm = reactive(new props.ThisForm) // no quitar el new 
+const Estatus = ref(ThisForm.estatus)
 //const Id = ThisForm.prop.Name
 
 const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
@@ -335,9 +336,15 @@ watch(
     for (const comp in ThisForm.estatus) {
 
       if (ThisForm.estatus[comp] != 'A') {
-        console.warn('1) Form.vue Watch  Eventos Componente en proceso=', comp)
-        ThisForm.eventos = []
-        // ThisForm.prop.Status = 'P'
+        console.warn('1) Form.vue Watch  Eventos Componente en proceso=', comp, ThisForm.eventos)
+        if (ThisForm.eventos.length > 1) {
+          const evento = ThisForm.eventos[0]
+          ThisForm.eventos = []
+          ThisForm.eventos.push(evento)
+          console.warn('2) Form.vue Watch  Eventos Componente en proceso=', comp, ThisForm.eventos)
+          // ThisForm.prop.Status = 'P'
+        }
+
         // console.log('2) eventos Entro watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
         return
       }
@@ -351,7 +358,7 @@ watch(
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
 watch(
-  () => ThisForm.estatus,
+  () => Estatus.value, //ThisForm.estatus,
   async (new_val, old_val) => {
     console.log('estatus Entro watch ThisForm.estatus=. ', ThisForm.estatus)
 
@@ -360,14 +367,12 @@ watch(
 
       if (ThisForm.estatus[comp] != 'A') {
         console.log('Proceso watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
-        ThisForm.prop.Status = 'P'
+        // ThisForm.prop.Status = 'P'
         ThisForm.eventos = []
         return
       }
     }
-
     console.log('Form watch status ', ThisForm.eventos[0])
-
     ejeEventos()
   },
   { deep: true }
@@ -461,11 +466,14 @@ onBeforeMount(async () => {
             // if (ThisForm[componente].Ref)
             // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
             ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
-
+            // Se quita el toRef para que quede con reactividad
+            //ThisForm.estatus[componente] = ThisForm[componente].prop.Status // stack de estatus de componentes
           }
         }
 
       }
+
+      console.log('ThisForm.estatus', ThisForm.estatus)
 
 
       await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
