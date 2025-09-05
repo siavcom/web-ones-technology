@@ -4,7 +4,7 @@
  *  Author : Fernando Cuadras Angulo
  *  Creacion : Noviembre/2021
  *  Ult.Mod  : 20/Marzo/2023
- *
+ *  
  *  RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
  *
  * @export
@@ -120,8 +120,8 @@ export class COMPONENT {
     RecordSource: "",
     RefValue: null, // Valor por Referencia de otro componente
     Row: 0,
-    RowSource: '',
-    RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
+    RowSource: '', /** @Value  Formulario que contiene al componente actual  */
+    RowSourceType: 0, /** @Value 1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array */
 
     ShowError: false,
     ShowValue: false,
@@ -708,6 +708,7 @@ export class COMPONENT {
   //public setFocus = async () => {
 
   /**
+   * @description
    * Setea el foco en el elemento actual.
    * @returns void
    */
@@ -753,6 +754,7 @@ export class COMPONENT {
 
 
   /**
+   * @description*
    * Handles key press events for the input.
    * The pressed key value is stored in this.prop.Key.
    */
@@ -760,9 +762,10 @@ export class COMPONENT {
     // Implementation goes here
   }
 
-  /*
-   *
+  /**
+   * @description*
    * onMounted VFP
+   
    * Descripcion: Cuando se monta el componente en el DOM
    * 
    * No se puede utilizar como nombre onMounted porque NUXT lo interpreta comom el onMounted de VUE y hace 
@@ -773,9 +776,20 @@ export class COMPONENT {
     this.prop.Status = "A";
 
   }
+  /**
+   * @description*
+   * Requery values of component and refresh
+*/
 
+  public requery() {
+    const RowSource = this.prop.RowSource
+    this.prop.RowSource = ''
+    this.prop.RowSource = RowSource
+
+  }
 
   /**
+   * @description*
    * Translates component properties based on the current language settings (pubicVar.lan_lan).
    * This function checks if the form and mPublic are defined and attempts
    * to retrieve translations from the 'vi_cap_db_languages' table. If translations
@@ -880,16 +894,15 @@ export class COMPONENT {
     if (!this.Form.languages || this.Sql.Views.vi_cap_db_languages.recCount == 0)
       return
 
-
   }
 
   /**
+   * @description*
    * Removes an object from the component.
    * @param {string} nom_obj - The name of the object to remove.
    */
   public RemoveObject(nom_obj: string) {
     // Elimina el objeto del componente
-
 
     delete this[nom_obj];
     for (let i = 0; i < this.header.length; i++)
@@ -910,14 +923,7 @@ export class COMPONENT {
         }
       }
     }
-
-
   }
-
-
-
-
-
 
   /////////////////////////////////////////////////////////////////////
   // Refe

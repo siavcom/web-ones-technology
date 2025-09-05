@@ -336,21 +336,12 @@ watch(
     for (const comp in ThisForm.estatus) {
 
       if (ThisForm.estatus[comp] != 'A') {
-        console.warn('1) Form.vue Watch  Eventos Componente en proceso=', comp, ThisForm.eventos)
-        if (ThisForm.eventos.length > 1) {
-          const evento = ThisForm.eventos[0]
-          ThisForm.eventos = []
-          ThisForm.eventos.push(evento)
-          console.warn('2) Form.vue Watch  Eventos Componente en proceso=', comp, ThisForm.eventos)
-          // ThisForm.prop.Status = 'P'
-        }
-
-        // console.log('2) eventos Entro watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
+        console.warn('1) Form.vue Watch  Eventos Componente en proceso=', comp, 'Eventos=', ThisForm.eventos)
         return
       }
     }
+    console.warn('Form.vue Watch  Eventos ')
     ejeEventos()
-
   }, { deep: true }
 );
 
@@ -360,19 +351,18 @@ watch(
 watch(
   () => Estatus.value, //ThisForm.estatus,
   async (new_val, old_val) => {
-    console.log('estatus Entro watch ThisForm.estatus=. ', ThisForm.estatus)
+    if (ThisForm.eventos.length == 0)
+      return
 
     for (const comp in new_val) {
       //  console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
 
       if (ThisForm.estatus[comp] != 'A') {
-        console.log('Proceso watch ThisForm.eventos comp. ', comp, 'estatus=', ThisForm.estatus[comp])
-        // ThisForm.prop.Status = 'P'
-        ThisForm.eventos = []
+        console.log('Proceso watch Estatus de componentes  comp. ', comp, 'estatus=', ThisForm.estatus[comp], 'Eventos', ThisForm.eventos = [])
         return
       }
     }
-    console.log('Form watch status ', ThisForm.eventos[0])
+    console.log('Proceso watch Estatus de componentes ')
     ejeEventos()
   },
   { deep: true }
@@ -404,8 +394,6 @@ const ejeEventos = async () => {
       }
     }
     ThisForm.eventos = [...new_arr]
-
-
     console.log('############Evento terminado ############ Evento ejecutado==>>> ', evento, 'ThisForm.prop.Status=', ThisForm.prop.Status, 'Eventos restantes=', ThisForm.eventos.length, 'Eventos', ThisForm.eventos)
 
     //await eje_eve(evento)

@@ -282,14 +282,11 @@ export const Session = defineStore(
         return;
       }
 
-
-
-
       const dat_vis = {
         id_con: id_con.value,
         tip_llamada: "SQLEXEC",
         // tok_aut: this.tok_aut,
-        query: "SELECT * from vcomeprg order by NUM_PRG,SIS_SIS,TPR_PRG",
+        query: "SELECT * from vcomeprg order by num_prg,sis_sis,tpr_prg",
       };
 
       if (socket) {   // 
@@ -375,7 +372,6 @@ export const Session = defineStore(
 
                   if (Public.value[comp]) {
                     Public.value[comp] = Var.value[comp];
-                    console.log("1) Pinia Public.value=", comp, Public.value[comp], Var.value[comp]);
 
                   }
                 }
@@ -384,7 +380,6 @@ export const Session = defineStore(
                   if (Var.value[comp]) {
                     Public.value[comp] = Var.value[comp];
 
-                    console.log("2) Pinia Public.value=", comp, Public.value[comp], Var.value[comp]);
                   }
                 }
               }
@@ -392,7 +387,6 @@ export const Session = defineStore(
               console.log("Pinia Public.value=", Public.value);
               console.log("Pinia Var.value=", Var.value);
             }
-
 
             );
           } catch (error) {

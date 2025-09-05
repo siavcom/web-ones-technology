@@ -31,19 +31,7 @@ export class captureForm extends FORM {
   /// //////////////////////////////////////////////////
 
   override async init() {
-    // (Form)
-    // super.init() // corre el init de la clase para asignar los valores this a todos los componentes
 
-    try {
-      if (this.prop.RecordSource.length > 1) {
-
-        await this.refreshComponent();
-      }
-    } catch (error) {
-      console.error("======Error Init=====" + this.Name, error);
-    }
-    // aqui me quede . Hay que poner en ThisForm de de la pagina en el constructor
-    // cada componente.prop.Recno=ref(this.Recno)
     this.bt_save.Grid = this.gridCaptura; // asignamos el arreglo de grid
   }
 
@@ -92,32 +80,33 @@ export class captureForm extends FORM {
 
   async beforeWhenComponent(Comp: undefined) {
     const thisComp = Comp.value
-    if (thisComp.prop.updateKey)
+    if (thisComp.prop.updateKey && this.Recno != 0)
       this.Recno = 0
 
     //console.clear()
-    //console.log('before When Component=', thisComp.prop.Name)
+    console.log('before When Component=', thisComp.prop.Name)
     for (const comp of this.Form.main) {
 
-      if (!this.Form[comp].prop.updateKey && this.Form[comp].prop.Capture) {
+      if (this.Form[comp].prop.Capture) {
+        if (!this.Form[comp].prop.updateKey) {
+          // this.prop.Status = 'A'
+          this.Form[comp].prop.ReadOnly = true
 
-        // this.prop.Status = 'A'
-        this.Form[comp].prop.ReadOnly = true
+          if (typeof this.Form[comp].prop.Value == 'string')
+            if (this.Form[comp].prop.Value != '')
+              this.Form[comp].prop.Value = ''
+            else
+              if (this.Form[comp].prop.Value != 0)
+                this.Form[comp].prop.Value = 0
 
-        if (typeof this.Form[comp].prop.Value == 'string')
-          if (this.Form[comp].prop.Value != '')
-            this.Form[comp].prop.Value = ''
-          else
-            if (this.Form[comp].prop.Value != 0)
-              this.Form[comp].prop.Value = 0
+          //    console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
+        }
 
-        this.Form[comp].prop.ShowError = false
-        this.Form[comp].prop.Valid = true
-        //    console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
+        this.Form[comp].prop.Valid = false
       }
 
     }
-
+    //  thisComp.prop.Valid = false
     this.Form.bt_save.prop.Visible = false;
     this.Form.bt_delete.prop.Visible = false;
     this.Form.bt_update.prop.Visible = false;
@@ -133,87 +122,100 @@ export class captureForm extends FORM {
   //              modificacion
   /// /////////////////////////////////////
 
-  async validComponent(Comp: undefined) {
+  async validKeyComponent(Comp: undefined) {
     const thisComp = Comp.value
 
-    console.log('validComponent Este=', thisComp)
+    console.log('validKeyComponent Este=', thisComp.prop.Name)
     //if (!compName) return false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
     //const thisComp = this[compName];
+    /*
+      if (!thisComp.prop.updateKey) {
+        let sw_val = true
+        //  console.log('1) Valid No updateKey Capture component= ', thisComp.prop.Name)
+  
+        for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
+          if (sw_val && !this[comp].prop.Valid)
+            sw_val = false
+  
+          console.log('Valid Capture component Name= ', this[comp].prop.Name, 'Valid=', this[comp].prop.Valid)
+  
+          if (thisComp.prop.Visible && thisComp.prop.Capture && !this[comp].prop.Valid) {
+            return true;
+          }
+        }
+  
+        if (!this.bt_save.prop.Disabled && sw_val)  // Si se validaron todos los componentes
+          this.bt_save.prop.Visible = true;    // 8/Gas/2025
+        //this.bt_save.prop.Visible = false;
+        return true;
+      } else {  // Si es llave de captura
+  
+      */
 
-    if (thisComp.prop.updateKey == false) {
-      let sw_val = true
-      //  console.log('1) Valid No updateKey Capture component= ', thisComp.prop.Name)
+    const sw_val = true
+    for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
-      for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
-        if (sw_val && !this[comp].prop.Valid)
-          sw_val = false
-        //        console.log('Valid Capture component Name= ', this[comp].prop.Name, 'Valid=', this[comp].prop.Valid)
+      if (this[comp].prop.Capture && this[comp].prop.UpdateKey) {
 
-        if (thisComp.prop.Visible && thisComp.prop.Capture && !this[comp].prop.Valid) {
-          return true;
+        if ((this[comp].prop.name != ThisComp.prop.Name && !this[comp].prop.Valid) ||
+          (typeof this[comp].prop.Value == "string" && this[comp].prop.Value.trim().length == 0) ||
+          (typeof this[comp].prop.Value == "number" && this[comp].prop.Value == 0)
+        ) {
+
+          this[comp].prop.ErrorMessage = "Dato no permitido";
+          this[comp].prop.Valid = false;
+          this[comp].prop.Focus = true
+          // console.log('1) ValidComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
+          return this[comp].prop.Valid
         }
       }
-
-      if (!this.bt_save.prop.Disabled && sw_val)  // Si se validaron todos los componentes
-        this.bt_save.prop.Visible = true;    // 8/Gas/2025
-      //this.bt_save.prop.Visible = false;
-      return true;
     }
 
-    // si es llave de captura
-
-    if (
-      (typeof thisComp.prop.Value == "string" && thisComp.prop.Value.trim().length == 0) ||
-      (typeof thisComp.prop.Value == "number" && thisComp.prop.Value == 0)
-    ) {
-
-      thisComp.prop.ErrorMessage = "No permite datos en blanco";
-      thisComp.prop.ShowError = true;
-      thisComp.prop.Valid = false;
-      // console.log('1) ValidComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
-      return thisComp.prop.Valid;
-    }
-
+    // Termino la validacion de llaves principales
     thisComp.prop.Valid = true;
 
-    const { ...m } = this.mPublic; // Tomamos las variables publicas de la forma
-    // Generamos variables de memoria de componentes locales y solo updateKey
+    const { ...m } = Public.value; // Tomamos las variables publicas de la forma
     // for (const main in this.main) {
     //  const comp = this.main[main];
     if (this.First == null)
       this.First = this.main.length > 0 ? this[this.main[0]] : null
 
+    // Generamos variables de memoria 
+
     for (const comp of this.main) {
       // Asigna cual es el componente First de la forma
       //     console.log('capture form comp=', comp, this[comp])
-      if (this[comp].prop.First)
-        this.First = this[comp]
-
-      if (this[comp].prop.updateKey) {
-        //   console.log('2) Valid comp=', comp, 'prop.Valid=', this[comp].prop.Valid)
-        if (this[comp].prop.Name != thisComp.prop.Name && !this[comp].prop.Valid) {  // si el componente no es valido
-          //    console.log('1) ValidComponent UpdateKey component= ', thisComp.prop.Name, this[comp].prop.Name)
-
-          return true;
-          // asignamos variables de memoria que se utilizaran en el use
-          // console.log("m[comp]=", m[comp])
-        }
+      if (this[comp].prop.Capture) {
+        if (this[comp].prop.First)
+          this.First = this[comp]
+        /*
+                if (this[comp].prop.updateKey) {
+                  //   console.log('2) Valid comp=', comp, 'prop.Valid=', this[comp].prop.Valid)
+                  if (this[comp].prop.Name != thisComp.prop.Name && !this[comp].prop.Valid) {  // si el componente no es valido
+                    //    console.log('1) ValidComponent UpdateKey component= ', thisComp.prop.Name, this[comp].prop.Name)
+        
+                    return true;
+                    // asignamos variables de memoria que se utilizaran en el use
+                    // console.log("m[comp]=", m[comp])
+                  }
+                }
+                */
+        if (this[comp].prop.Type == "number")
+          m[comp] = +this[comp].prop.Value;
+        else
+          m[comp] = this[comp].prop.Value;
       }
-      if (this[comp].prop.Type == "number")
-        m[comp] = +this[comp].prop.Value;
-      else m[comp] = this[comp].prop.Value;
     }
-
-
 
     // Leemos datos de la tabla de actualizacion
     if (this.prop.RecordSource.length < 2) {
-      console.warn('No hay vista de actualizacion en el Form')
+      MessageBox('No hay vista de actualizacion en el Form')
       return false
     }
-    // console.log('1) validComponent m=', m)
+
+    console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
     const data = await use(this.prop.RecordSource, m);
     console.log('2) validComponent data=', data)
 
@@ -266,29 +268,26 @@ export class captureForm extends FORM {
       // console.log('ValidComponent appendBlank Return')
       return true
 
-    } else {
-      // 29 Ags 2024
-      // Recno = data[0].recno;
+    } else {  // Hay datos
+
       this.sw_nue = false
       this.Recno = data[0].recno;
 
-      //    console.log('Hay datos Valid RecordSource=', this.prop.RecordSource, 'Recno', this.Recno, 'This=', this)
 
-      key_pri = data[0].key_pri;
-      //if (!this.bt_delete.prop.Disabled)
-      if (key_pri > 0) {
-        this.bt_update.prop.Visible = true;
 
+      for (const comp of this.main) {
+        const Comp = this[comp]
+        Comp.prop.ShowError = false
+        Comp.prop.Valid = true
       }
-    }
 
-    // console.log('ValidComponent Refresh component', this.Recno, key_pri)
-    await this.refreshComponent(this.Recno, key_pri);
-    if (!this.bt_save.prop.Disabled)
-      // this.bt_save.prop.Visible = true; // 8 / Ags / 2025
-      this.bt_save.prop.Visible = false
-    return true;
-  } // fin metodo valid
+      this.bt_update.prop.Visible = true;
+      this.bt_delete.prop.Visible = true;
+
+    }
+    return true
+  } // Fin Metodo Valid
+
 
   /////////////////////////////////////////
   // Metodo : refreshComponent
@@ -297,6 +296,7 @@ export class captureForm extends FORM {
 
   async refreshComponent(Recno?: number, key_pri?: number) {
 
+    return
     // console.log('1) =====================Refresh Component')
     let activate = true;
 
@@ -343,6 +343,7 @@ export class captureForm extends FORM {
       const Comp = this[comp]
 
       if (Comp.prop.Capture) {
+        Comp.prop.Valid = false;
         if (!Comp.prop.updateKey) {
           //  console.log('Refresh=', Comp.Name, Comp.Recno)
           //          const RecnoNu = Comp.Recno
@@ -373,23 +374,9 @@ export class captureForm extends FORM {
             Comp.prop.Valid = false;
 
 
-          //Se quita el 4 Septiembre 2024 
-          /*
-          if (Recno >= 0) {
-            const RecordSource = Comp.prop.RecordSource;
-            Comp.prop.RecordSource = "";
- 
-            // 29 Ags 2024  
-            //  Comp.Recno = Recno; // Actualiza el registro del componente
- 
-            Comp.prop.RecordSource = RecordSource; // Hace el refresh del componente
-          }
-          */
-
-          //    Comp.Recno = RecnoNu
-
         } else {
           Comp.prop.ReadOnly = false; // Si es llave de captura
+
 
         }
 

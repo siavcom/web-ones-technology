@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -1219,6 +1219,9 @@ watch(
       comboStyle.height = '0%'
     else
       comboStyle.height = Styles.style.height // This.style.height
+
+    renderComboBox(true) // Refresca componente
+
     //readCampo(props.Registro)
 
   },

@@ -148,6 +148,38 @@ function fileToStr(input: string): string {
 }
 
 /**
+ * Converts a string from number
+ * 
+ * @param {number} nExpression - Number to convert.
+ * @param {number} nLength - Result Length .
+ * @param {number} nDecimalPlaces - Decimal places
+ * @returns {string} - A string converted
+ */
+function str(nExpression: number, nLength?: number, nDecimalPlaces?: number) {
+  let result = nExpression.toString();
+
+  // Handle decimal places
+  if (nDecimalPlaces !== undefined) {
+    result = nExpression.toFixed(nDecimalPlaces);
+  } else {
+    result = nExpression.toString();
+  }
+
+  // Handle length and padding
+  if (nLength !== undefined) {
+    if (result.length < nLength) {
+      // Pad with spaces if shorter
+      result = ' '.repeat(nLength - result.length) + result;
+    } else if (result.length > nLength) {
+      // Truncate if longer (behaves differently than VFP's STR which might round)
+      result = result.substring(0, nLength);
+    }
+  }
+  return result;
+}
+
+
+/**
  * Converts a string from a file to a Blob and creates a File object.
  * 
  * @param {string} input - The path to the file to be read and converted.

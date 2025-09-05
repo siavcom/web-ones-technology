@@ -198,10 +198,10 @@ export const locateFor = async (where: string, alias?: string) => {
 
     const records = await localAlaSql(`SELECT * FROM Now.${alias} WHERE ${where} order by recno;`)
 
-    This.value.View[alias].Records = records
-    if (res && res.length > 0) {
-        This.value.View[alias].Recno = res[0].recno
 
+    if (records && records.length > 0) {
+        This.value.View[alias].Recno = records[0].recno
+        This.value.View[alias].data = records[0];
 
         return records
     }
@@ -1592,7 +1592,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         console.log("Begin SQLEXEC  Query=", query);
 
         let respuesta = await axiosCall(dat_vis);
-        // console.log('Db execute alias query,respuesta', dat_vis.query, respuesta)
+        console.log('Db execute alias query,respuesta', dat_vis.query, respuesta)
 
         if (respuesta.length == 0) return respuesta
 
@@ -1645,64 +1645,16 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         resp = await localAlaSql(` SELECT * INTO Now.${alias} FROM ? ; USE Now ;`, [
             respuesta,
         ]);
-
-        //   await localAlaSql(" USE Now ");
-        /*
-              let resp_sql = {}
-              //const resp_sql = await
-              alasql.promise(' CREATE TABLE ' + alias + ' ; \
-                  SELECT * INTO '+ alias + '  FROM ?', [respuesta]).
-                then(function () {
-                  alasql.promise('USE Now ; SELECT * FROM ' + alias)
-                    .then(function (data) {
-                      resp_sql = data
-  
-                    })
-                    .catch(function (error) {
-                      console.error('Execute SELECT * FROM ' + alias, error)
-                    })
-                })
-         */
-
-        /*
-      const est_sql={}  // estructura de la respuesta
-      for (const campo in respuesta[0])
-          {
-            const tip_dat=respuesta[0].campo.typeof
-  
-            let dataType: any; // asignamos el tipo de datos a newLocalDb
-            switch (tip_dat) {
-              case "C":
-                dataType = DATA_TYPE.String;
-                break;
-              case "I":
-                dataType = DATA_TYPE.Number;
-                break;
-              case "N":
-                dataType = DATA_TYPE.Number;
-                break;
-              case "D":
-                // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
-                dataType = DATA_TYPE.String;
-                break;
-              case "L":
-                dataType = DATA_TYPE.Boolean;
-                break;
-              default:
-                dataType = DATA_TYPE.String;
-            }
-          } */
         //    console.log('Db Axios sqlexec',response[0][0])
         //    const respuesta = response.data;
-
         //* ******************** */
-        if (respuesta.length > 0) {
-            // si hay datos
-            // Asignamos los valores a la vista
+        if (respuesta.length > 0) { // si hay datos Asignamos los valores a la vista
             This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
             This.value.View[alias].recCount = respuesta.length; // registros totales
             This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
             This.value.View[alias].recnoVal = [...recnoVal];
+            for (let i = 0; i < respuesta.length; i++)
+                This.value.View[alias].Records[i] = respuesta[i].recno
         }
 
         if (tip_res.toUpperCase() == "NULL") return true;
@@ -2314,14 +2266,16 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         // si hay datos
         // Generamos el campo recno
         const recnoVal = [];
+        const records = []
         for (let i = 0; i < respuesta.length; i++) {
             respuesta[i].recno = i + 1;
             //        recnoVal[i] = i + 1
             recnoVal[i] = { recno: i + 1, id: i };
+            records.push(i)
         }
 
+        This.value.View[alias].Records = records
         // Asignamos los valores a la vista
-
         //      This.value.View[alias] = response; // asignamos su estructura  y filtros de condiciones
         // console.log("1) Db genera_tabla View creada", alias, 'recno=', This.value.View[alias].recno);
         This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo

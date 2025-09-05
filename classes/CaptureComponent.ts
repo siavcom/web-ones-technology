@@ -24,12 +24,16 @@ export class CAPTURECOMPONENT extends COMPONENT {
   }
 
   public async init(): Promise<void> {
-    if (this.prop.updateKey == true) this.prop.ReadOnly = false;
-    else this.prop.ReadOnly = true;
+    if (this.prop.updateKey == true)
+      this.prop.ReadOnly = false;
+    else
+      this.prop.ReadOnly = true;
+
+
   }
 
   async beforeWhen() {
-    if (!this.prop.updateKey)
+    if (!this.prop.updateKey || !this.prop.First)
       return
     await this.Form.beforeWhenComponent(ref(this))
   }
@@ -44,28 +48,14 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
   //////////////////////////////////
   // event valid
+  // Solo os campos updateKey
   ///////////////////////////////////
-
   override async valid() {
 
-    if (this.prop.ReadOnly) {
+    if (this.prop.ReadOnly || !this.prop.updateKey || !this.prop.Capture) {
       return true
     }
-
-    if (!this.prop.updateKey && !this.prop.Capture) {
-      this.prop.Valid = true;
-      return this.prop.Valid;
-    }
-
-    this.prop.Valid = await this.Form.validComponent(ref(this));
-    /*   Se puso en elCapture form con el NextTick
-        if (this.prop.updateKey) {
-    
-          for (const comp of this.Form.main) {// Apaga validaciones 
-              this.Form[comp].prop.Valid = this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey ? false : this.Form[comp].prop.Valid
-          }
-        }
-    */
+    this.prop.Valid = await this.Form.validKeyComponent(ref(this));
     return this.prop.Valid;
   }
 }

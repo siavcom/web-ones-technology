@@ -490,12 +490,10 @@ const obtMenu = () => {
         system: ''
       })
 
-
-
   }
 
-
-  for (let i = 0; usrMenu.value.length > i; i++) {
+  console.log('usrMenu.value[i].prg_prg', usrMenu.value)
+  for (let i = 0; usrMenu.value.length > 0 && usrMenu.value.length > i; i++) {
     // solo agrega menu principal
     if (usrMenu.value[i].tpr_prg === 'S') {
       let link = '#'
@@ -509,7 +507,7 @@ const obtMenu = () => {
       const system = usrMenu.value[i].sis_sis
       const urlVue = ''
 
-      if (usrMenu.value[i].prg_prg.trim() != 'null' && usrMenu.value[i].prg_prg.trim() > ' ') {
+      if (usrMenu.value[i].prg_prg != null && usrMenu.value[i].prg_prg.trim() > ' ') {
 
         link = urlVue + '/' + usrMenu.value[i].prg_prg.trim()
         path.path = '/' + usrMenu.value[i].prg_prg.trim()
@@ -577,7 +575,9 @@ const obtSubMenu = (system: string) => {
   const Rep = []
   const Pro = []
   //const menu = session.menu
-  for (let i = 0; usrMenu.value.length > i; i++) {
+
+  console.log('usrMenu.value[i].prg_prg', usrMenu.value)
+  for (let i = 0; usrMenu.value.length > 0 && usrMenu.value.length > i; i++) {
     // solo agrega menu principal
 
     if (usrMenu.value[i].ico_prg == null)
@@ -595,7 +595,9 @@ const obtSubMenu = (system: string) => {
       const type = usrMenu.value[i].tpr_prg
       const system = usrMenu.value[i].sis_sis
       const urlVue = ' '
-      if (usrMenu.value[i].prg_prg.trim() != null && usrMenu.value[i].prg_prg.trim() > ' ') {
+
+      console.log('usrMenu.value[i].prg_prg', usrMenu.value[i])
+      if (usrMenu.value[i].prg_prg != null && usrMenu.value[i].prg_prg.trim() > ' ') {
         link = urlVue + '/' + usrMenu.value[i].prg_prg.trim()
         path.path = '/' + usrMenu.value[i].prg_prg.trim()
 
