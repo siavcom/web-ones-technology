@@ -3,7 +3,7 @@
   <span :id="Id + '_main'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1814,9 +1814,7 @@ const ReadOnly = () => {
     Styles.inputStyle.background = This.inputStyle.background
     Styles.inputStyle.opacity = This.inputStyle.opacity
   }
-
 }
-// 
 
 
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
