@@ -21,6 +21,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
     this.prop.Capture = true
     this.prop.Valid = false
     this.prop.updateKey = false
+
   }
 
   public async init(): Promise<void> {
@@ -33,7 +34,7 @@ export class CAPTURECOMPONENT extends COMPONENT {
   }
 
   async beforeWhen() {
-    if (!this.prop.updateKey || !this.prop.First)
+    if (!this.prop.updateKey) // || !this.prop.First
       return
     await this.Form.beforeWhenComponent(ref(this))
   }
@@ -53,9 +54,12 @@ export class CAPTURECOMPONENT extends COMPONENT {
   override async valid() {
 
     if (this.prop.ReadOnly || !this.prop.updateKey || !this.prop.Capture) {
+      console.log('bt_save Visible=', this.Form.bt_save.prop.Visible)
       return true
     }
+
     this.prop.Valid = await this.Form.validKeyComponent(ref(this));
+
     return this.prop.Valid;
   }
 }

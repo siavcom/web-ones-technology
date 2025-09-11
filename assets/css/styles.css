@@ -323,7 +323,7 @@ input[class="number_old"] {
   position: absolute;
   /*bottom: 50%; */
   border-style: double;
-  z-index: 2;
+  z-index: 999;
 
   /* arrow*/
   content: " ";

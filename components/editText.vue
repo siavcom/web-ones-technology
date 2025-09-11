@@ -1,9 +1,9 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <span :id="Id + '_main_span'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_main'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -32,10 +32,7 @@
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
       :step="This.prop.Step" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
       @click.capture="onClick" @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()">
-
     <!--v-on:keyup.enter="clickReturn()" -->
-
-
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle>
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style=Styles.inputStyle
@@ -43,7 +40,6 @@
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
         @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"></textarea>
     </div>
-
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
@@ -51,16 +47,11 @@
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly"
       :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus"
       @focusout="lostFocus" v-on:keyup.63="clickHelp()">
-
     <!--v-on:keyup.enter="clickReturn()" -->
-
     <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
-
-
     <div :id="Id" class='json' v-else-if="propType == 'json'" ref="Ref" :style=Styles.style>
-
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
@@ -107,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -159,9 +150,7 @@
  Objeto		: VUE
  Comentarios	: Componente de edicion de texto
  ----------------------------------------------------------------------------------------------
-
 */
-
 
 import { vMaska } from "maska/vue"
 //import { Money } from "v-money3";
@@ -175,9 +164,6 @@ const emit = defineEmits(["update", "update:Value",
   "input:currentDate", "input:displayDate",
   "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
 
-
-//console.log('editText Meta Server===>', import.meta.server)
-//console.log('editText Meta Client====>', import.meta.client)
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -198,23 +184,6 @@ const props = defineProps<{
     Autofocus: false;
     BaseClass: "EditText";
     Capture: true;
-
-    /* componentStyle: {
-       background: "white",
-       cols: 100,
-       color: "black",
-       fontFamily: "Arial",
-       fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-       fontWeight: "normal",
-       height: "85%",
-       maxHeight: "auto",
-       maxWidth: "100%",
-       rows: 5,
-       textAlign: "left",
-       textTransform: "none",
-       zIndex: 1, // profundidad
-       width: "auto",
-     },*/
 
     ControlSource: string;
     Currency: '   '; //USD,EUR,MXN
@@ -274,46 +243,51 @@ const props = defineProps<{
 
 
   };
-  /*
-    style: {
-      background: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "auto";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
-      zIndex: 0
-  
-    };
-  
-    */
+
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
     Top: number;
   };
-  //db: any
+
 }>();
-
-
-//const ReadOnly = computed(() => !props.prop.When ||props.prop.ReadOnly ? true : false)
 
 const Component = toRef(() => props.prop.This)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
 const Este = props.prop.This
+
+const captionStyle = reactive({ ...This.captionStyle })
+const inputStyle = reactive({ ...This.inputStyle })
+
+const divStyle = reactive({ ...This.style })
+const containerStyle = reactive({ ...This.containerStyle })
+
+const invalidInputStyle = reactive({ ...This.invalidInputStyle })
+const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
+
+console.log('EditText readOnlyInputStyle=', readOnlyInputStyle)
+
+
+
+/*
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
+
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
+
+const invalidInputStyle = reactive({ ...Este.invalidInputStyle })
+const readOnlyInputStyle = reactive({ ...Este.readOnlyInputStyle })
+
+*/
 
 const Styles =
 {
   captionStyle: captionStyle,
   inputStyle: inputStyle,
-  style: divStyle
+  style: divStyle,
+  //invalidInputStyle: invalidInputStyle
 }
 
 const helpStyle = {
@@ -342,7 +316,7 @@ This.prop.htmlId = Id
 
 const Value = ref(props.prop.Value)
 //const Valor = toRef(This.prop, "Value")
-const Valid = ref(props.prop.Valid)
+//const Valid = ref(props.prop.Valid)
 //Valid.value = true
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 // let Help = false
@@ -577,11 +551,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       // Value.value = Valor
     }
 
-    // Si no hay error
     This.prop.Valid = true
 
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
-      console.log('2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+      // console.log('isValid', isValid, '2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
       Value.value = newValor
 
@@ -607,39 +580,41 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         // Aqui me quede 30/Ags/2025
         if (!This.prop.ReadOnly && !await This.valid()) {
 
-          //  console.log('3.3.1) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
+          console.log('3.3.1) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
           This.prop.Valid = false
 
           // 7/Feb/2024       
           //This.Form.prop.Status = 'A'
-          if (KeyPressed) {
-            //select()  //  Quitamos 11/Ags/2025
-            displayError.value = true
-            This.prop.ShowError = true
+          //if (KeyPressed) {
+          // focusIn.value    
+          //select()  //  Quitamos 11/Ags/2025
+          displayError.value = true
+          This.prop.ShowError = true
 
-          }
+          //}
 
           //          This.prop.Focus = true
           This.prop.Status = 'A'
           return
         } //else This.prop.Valid = true
+        This.prop.Valid = true
         This.prop.Status = 'A'
         // 13/Marzo/2025 Si en el valid cambio el valor se sale para que con el watch prop.Value se actualice el valor
         if (newValue != This.prop.Value)
           return
-
       }
 
       // console.log('3.4) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
-      This.prop.Valid = true
+      // This.prop.Valid = true
       This.prop.Status = 'A'
       //2/Sep/2025  Status.value = 'A'
       //2/Sep/2025  emit("update:Status", 'A')
       //     console.log('--------------------------------------3) editText emitValue() Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
     }
-    //else
+    else
+      This.prop.Valid = true
     //  displayError.value = false
 
     // Reasigamos valor de Value
@@ -655,8 +630,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   else {  // Si hay lectura de campo
     //console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
 
-    // Valor = ''
-    This.prop.Valid = true
+
+    //    This.prop.Valid = true
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
       if (ControlSource.length > 0 || props.prop.Value == null) {
@@ -695,9 +670,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         //   console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
 
         for (const campo in data) {
-
-          if (campo == 'key_pri' && data.key_pri > 0)
-            This.prop.Valid = true
+          /*
+                    if (campo == 'key_pri')
+                      if (!This.prop.updateKey && data.key_pri == 0)
+                        This.prop.Valid = false
+            */
 
           if (campo != 'key_pri') {
             sw_dat = true
@@ -957,12 +934,13 @@ const lostFocus = async () => {
       }
     }
   }
-
-  if (displayError.value) {
-    displayError.value = false
-    if (This.prop.ShowError)
-      This.prop.ShowError = false
-  }
+  /*
+    if (displayError.value) {
+      displayError.value = false
+      if (This.prop.ShowError)
+        This.prop.ShowError = false
+    }
+  */
 
   await asignaValue()
 
@@ -1207,7 +1185,6 @@ const onFocus = async () => {
     }
   }
 
-
   if (!This.Help)
     This.Help = false
 
@@ -1221,7 +1198,15 @@ const onFocus = async () => {
     This.prop.Status = 'A'
     return
   }
-  KeyPressed = false
+  /*
+    if (Styles.inputStyle.background != This.inputStyle.background)
+      Styles.inputStyle.background = This.inputStyle.background
+  */
+  //  if (Styles.inputStyle.background != inputStyle.background)
+
+  // Styles.inputStyle.background = inputStyle.background
+
+  //  KeyPressed = false
 
   // textValue[0]  perdio foco, textValue[1] obtiene el foco
   // Si es la primera vez que se hace foco
@@ -1232,7 +1217,6 @@ const onFocus = async () => {
     focusIn.value = 1
     //Asignamos  el background del input originañ
   }
-
 
   focusIn.value = 1  // cambia el valor en el input number 
   This.prop.Focus = false
@@ -1276,16 +1260,11 @@ const onFocus = async () => {
 
   emit("update:Value", Value.value)
 
-  if (Styles.inputStyle.background != This.inputStyle.background)
-    Styles.inputStyle.background = This.inputStyle.background
-
   if (focusIn.value == 1) { // sw_when 11/Ags/2025
 
     await nextTick()
 
     This.Form.eventos.push(This.prop.Map + '.when()')
-    console.log('++++++++++++ =====EditTextgotFocus', This.prop.Name, This.Form.eventos)
-
 
     /*      if (Clicked) {
             This.Form.eventos.push(This.prop.Map + '.click()')
@@ -1765,27 +1744,11 @@ watch(
 watch(
   () => This.prop.Valid, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-    if (new_val !== old_val) {
-      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
-
-      if (This.prop.Valid || focusIn.value == 1) {
-        Styles.inputStyle.background = This.inputStyle.background
-        if (!This.prop.ReadOnly)
-          Styles.inputStyle.opacity = '1'
-
-        else
-          Styles.inputStyle.opacity = '0.7'
-
-      } else {
-        // if (focusIn.value == 0) // Si no tiene el foco
-        Styles.inputStyle.background = '#f2e7e9'
-      }
-
-    }
-
+    Valid()
   },
   { deep: false }
 );
+
 
 ////////////////////////////////////////////////////////////////////
 // change This.prop.ReadOnly
@@ -1794,25 +1757,65 @@ watch(
 watch(
   () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-    // if (new_val !== old_val) {
-    //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
 
-    // if (focusIn.value != 1) {
-    if (!This.prop.ReadOnly) {
-      Styles.inputStyle.opacity = '1'
-
-    } else {
-      // if (focusIn.value == 0) // Si no tiene el foco
-      Styles.inputStyle.opacity = '0.7'
-      displayError.value = false // Apagamos mensaje de error
-    }
-
-    // }
+    ReadOnly()
 
   },
   { deep: false }
 );
 
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun su validacion
+////////////////////////////////////////////////////////
+const Valid = () => {
+  const estilo = This.inputStyle
+  const invalid = This.invalidInputStyle
+  const readOnly = This.readOnlyInputStyle
+  ReadOnly()
+  if (This.prop.ReadOnly) {
+    return
+  }
+
+  Styles.inputStyle.background = estilo.background
+  Styles.inputStyle.opacity = estilo.opacity
+
+  if (This.prop.Valid) {
+    console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
+
+    Styles.inputStyle.border = estilo.border
+    if (This.Parent.Valid[This.refValid]) // predemos el arreglo de validaciones para el watch
+      This.Parent.Valid[This.refValid].value = true   // 
+
+    //This.Valid.value[This.refValue]=true 
+    //Comp.refValid = this.Valid.value.length-1
+
+  } else {
+
+    Styles.inputStyle.border = invalid.border
+
+    if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
+      This.Parent.Valid[This.refValid].value = false
+  }
+
+}
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun si es de solo lectura
+////////////////////////////////////////////////////////
+const ReadOnly = () => {
+  if (This.prop.ReadOnly) {
+    //      Styles.inputStyle = { ...This.readOnlyInputStyle }
+
+    Styles.inputStyle.background = readOnlyInputStyle.background
+    Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+    displayError.value = false // Apagamos mensaje de error
+  }
+  else {
+    //Styles.inputStyle = { ...This.inputStyle }
+    Styles.inputStyle.background = This.inputStyle.background
+    Styles.inputStyle.opacity = This.inputStyle.opacity
+  }
+
+}
 // 
 
 
@@ -1974,8 +1977,8 @@ onMounted(async () => {
     return
   }
 
-  if (This.prop.ReadOnly)
-    Styles.inputStyle.opacity = '0.7'
+  Valid()
+
 
 })
 

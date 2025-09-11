@@ -5,9 +5,11 @@
 // Ult.Mod  : 28/Agosto/2025
 /////////////////////////////////////////////
 
-
 import { IMGBUTTON } from "@/classes/imgButton";
 import { FORM } from "@/classes/Form";
+
+import { watch } from 'vue';
+
 
 export class captureForm extends FORM {
   public gridCaptura: [] = [];
@@ -15,13 +17,31 @@ export class captureForm extends FORM {
   public First = null
   sw_nue = false; // bandera de nuevo registro
 
-
   // se debe de poner siempre el contructor
   constructor() {
     super();
     this.style.width = "-moz-available";
 
     // asignamos los Recno de los componentes de main 
+    watch(this.Valid.value, async (Valid) => {
+      console.log('Checando valid ', Valid, Valid.length)
+      const This = this
+      for (let i = 0; i < Valid.length; i++)
+        if (!Valid[i].value) {
+          console.log('1) Checando valid False', i, Valid[i].value, 'Valid=', Valid)
+          This.showBt('bt_update', false)
+          This.showBt('bt_delete', false)
+          This.showBt('bt_save', false)
+
+          return
+        }
+      //   console.log('Checando valid bt_save ', this.bt_save.prop.Visible)
+      console.log('1) Checando prediendo bt_save ', This.bt_save.prop.Visible)
+      This.showBt('bt_save', true)
+      //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
+
+    },
+      { deep: true });
 
   }
 
@@ -31,6 +51,11 @@ export class captureForm extends FORM {
   /// //////////////////////////////////////////////////
 
   override async init() {
+
+    if (this.prop.RecordSource.length > 2)
+      await useNodata(this.prop.RecordSource)
+    else
+      console.warn('ThisForm.prop.RecordSource empty', this.prop.Name)
 
     this.bt_save.Grid = this.gridCaptura; // asignamos el arreglo de grid
   }
@@ -73,6 +98,20 @@ export class captureForm extends FORM {
    */
   //public async inSave_old() { return true }
 
+  async showBt(botton: string, valor: boolean) {
+
+    if (this[botton].prop.Visible != valor) {
+      // await this.Form[botton].show.value(valor)
+
+      console.log('shwoBt ', `ThisForm.${botton},prop.Visible=${valor}`)
+
+      this.eventos.push(`ThisForm.${botton}.prop.Visible=${valor}`)
+      //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
+
+
+    }
+  }
+
   /// /////////////////////////////////////
   // Metodo : before when component
   // Descripcion :Si es un campo llave, inicializa todos los componentes
@@ -80,7 +119,7 @@ export class captureForm extends FORM {
 
   async beforeWhenComponent(Comp: undefined) {
     const thisComp = Comp.value
-    if (thisComp.prop.updateKey && this.Recno != 0)
+    if (this.Recno != 0)
       this.Recno = 0
 
     //console.clear()
@@ -102,16 +141,18 @@ export class captureForm extends FORM {
           //    console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
         }
 
-        this.Form[comp].prop.Valid = false
+        //     this.Form[comp].prop.Valid = false
       }
 
     }
     //  thisComp.prop.Valid = false
-    this.Form.bt_save.prop.Visible = false;
-    this.Form.bt_delete.prop.Visible = false;
-    this.Form.bt_update.prop.Visible = false;
+    // this.Form.bt_save.prop.Visible = false;
 
-    //this.Form.refreshComponent();
+    console.log('beforeWhen  apagamos botones')
+    this.bt_delete.prop.Visible = false;
+    this.bt_update.prop.Visible = false;
+    this.bt_save.prop.Visible = false;
+
   }
 
   /// /////////////////////////////////////
@@ -154,6 +195,13 @@ export class captureForm extends FORM {
   
       */
 
+
+    thisComp.prop.Valid = true;
+    const { ...m } = Public.value;
+
+    if (this.First == null)
+      this.First = this.main.length > 0 ? this[this.main[0]] : null
+
     const sw_val = true
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
@@ -170,44 +218,22 @@ export class captureForm extends FORM {
           // console.log('1) ValidComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
           return this[comp].prop.Valid
         }
+
       }
-    }
-
-    // Termino la validacion de llaves principales
-    thisComp.prop.Valid = true;
-
-    const { ...m } = Public.value; // Tomamos las variables publicas de la forma
-    // for (const main in this.main) {
-    //  const comp = this.main[main];
-    if (this.First == null)
-      this.First = this.main.length > 0 ? this[this.main[0]] : null
-
-    // Generamos variables de memoria 
-
-    for (const comp of this.main) {
-      // Asigna cual es el componente First de la forma
-      //     console.log('capture form comp=', comp, this[comp])
       if (this[comp].prop.Capture) {
         if (this[comp].prop.First)
           this.First = this[comp]
-        /*
-                if (this[comp].prop.updateKey) {
-                  //   console.log('2) Valid comp=', comp, 'prop.Valid=', this[comp].prop.Valid)
-                  if (this[comp].prop.Name != thisComp.prop.Name && !this[comp].prop.Valid) {  // si el componente no es valido
-                    //    console.log('1) ValidComponent UpdateKey component= ', thisComp.prop.Name, this[comp].prop.Name)
-        
-                    return true;
-                    // asignamos variables de memoria que se utilizaran en el use
-                    // console.log("m[comp]=", m[comp])
-                  }
-                }
-                */
         if (this[comp].prop.Type == "number")
           m[comp] = +this[comp].prop.Value;
         else
           m[comp] = this[comp].prop.Value;
       }
+
+
     }
+
+    // Termino la validacion de llaves principales
+    thisComp.prop.Valid = true;
 
     // Leemos datos de la tabla de actualizacion
     if (this.prop.RecordSource.length < 2) {
@@ -295,8 +321,11 @@ export class captureForm extends FORM {
   /// /////////////////////////////////////
 
   async refreshComponent(Recno?: number, key_pri?: number) {
-
     return
+  }
+
+
+  async refreshComponent_old(Recno?: number, key_pri?: number) {
     // console.log('1) =====================Refresh Component')
     let activate = true;
 
@@ -372,14 +401,9 @@ export class captureForm extends FORM {
             Comp.prop.Valid = false // true (false);
           else
             Comp.prop.Valid = false;
-
-
         } else {
           Comp.prop.ReadOnly = false; // Si es llave de captura
-
-
         }
-
       }
     }
   } // fin metodo
@@ -394,15 +418,11 @@ export class captureForm extends FORM {
       super();
       this.prop.Name = "bt_save";
       this.prop.Caption = "Graba datos";
-
-      // this.prop.Sw_val = false;
-
       this.prop.Position = "footer";
-      this.prop.Visible = false;
       this.prop.Image = "/Iconos/svg/accept.svg";
-      //this.prop.TabIndex= 20
       this.style.width = "64px";
     } // Fin constructor
+
 
     override async click() {
 
@@ -550,6 +570,7 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     override async click() {
+      console.log('1) bt_update click')
       return this.Parent.bt_updateClick()
 
       //  console.log('Click bt_update ')
@@ -570,6 +591,7 @@ export class captureForm extends FORM {
   })
 
   public async bt_updateClick() {
+    console.log('2) bt_update click')
     this.bt_update.prop.Visible = false
     for (const comp of this.Form.main) {
       if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
@@ -654,7 +676,8 @@ export class captureForm extends FORM {
 
     // if (!await this.inDelete())
     //   return
-    this.bt_update.prop.Visible = false
+
+    this.bt_update.prop.Visible = false;
     this.bt_save.prop.Visible = false;
     this.bt_delete.prop.Visible = false;
 
@@ -674,7 +697,7 @@ export class captureForm extends FORM {
       this.First.setFocus()  // asemos focon en el primer elemento
       return
     }
-
+    this.bt_update.prop.Visible = true;
     this.bt_save.prop.Visible = true;
     this.bt_delete.prop.Visible = true;
     return
@@ -718,6 +741,7 @@ export class captureForm extends FORM {
       return false
     }
   }
+
 
 
 

@@ -178,6 +178,11 @@ function str(nExpression: number, nLength?: number, nDecimalPlaces?: number) {
   return result;
 }
 
+function transform(nExpression: number, image?: string) {
+  return nExpression.toLocaleString()
+
+
+}
 
 /**
  * Converts a string from a file to a Blob and creates a File object.
@@ -407,7 +412,25 @@ export const dateToString = (texto: Date): string => {
     texto = new Date("1900-01-01 00:00:00");
   }
   // return texto.toString();
+  // checar console.log(date.toLocaleString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })); // Output: "vendredi 5 septembre 2025" (example)
   return new Date(texto).toISOString()
+};
+
+/**
+ * Convierte una fecha tipo Date en una cadena tipo string.
+ * @param {Date} texto - Fecha a convertir. Si no se pasa parametro, se devuelve la fecha "1900-01-01".
+ * @returns {string} - La fecha convertida a texto  
+ */
+export const dateToText = (texto: Date): string => {
+  let date =
+    texto != undefined && texto != null && texto != "" ? texto : "1900-01-01";
+
+  if (texto == null || texto == undefined) {
+    texto = new Date("1900-01-01 00:00:00");
+  }
+  // return texto.toString();
+  // checar console.log(date.toLocaleString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })); // Output: "vendredi 5 septembre 2025" (example)
+  return new Date(texto).date.toLocaleString(navigator.language, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 };
 
 /**

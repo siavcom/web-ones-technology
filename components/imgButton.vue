@@ -1,15 +1,15 @@
 <template>
-  <span :id="Id + '_main_span'" class="divi_imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_main'" class="divi_imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!-- UButton -->
-    <button :id="Id + '_button_' + prop.Name" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
+    <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
       :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.captionStyle" :tabindex="prop.TabIndex" @focus="onFocus"
       @focusout="focusOut" @click.stop="click">
-      <img :id="Id + '_img_' + prop.Name" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
+      <img :id="Id + '_img_'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
         :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.inputStyle" @click.stop="click" />{{ prop.Image.length
           == 0 ? prop.Caption
           : '' }}
-      <label :id="Id + '_label_' + prop.Name" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
+      <label :id="Id + '_label_'" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
         :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible" @click.stop="click">{{ prop.Image.length > 0 ?
           prop.Caption : ''
         }}</label>
@@ -28,58 +28,85 @@
 <script setup lang="ts">
 
 const props = defineProps<{
-  //Value: string;
-  Registro: 0;
+
+  Value: any;
+  Registro: number;  // Se pone para el manejo de grid
+  // Block: number;
+  // displayError: boolean;
   prop: {
-    Click: false;
-    ToolTipText: string;
-    View: "";
+
+    Autofocus: false;
+    BaseClass: "EditText";
+    Capture: true;
+
+    ControlSource: string;
+    Currency: '   '; //USD,EUR,MXN
+    CurrencyDisplay: 'code'; //to use the ISO currency code.
+
+    Decimals: number;
+    Disabled: boolean;
+
+    ErrorMessage: '';
+
     Field: "";
-    Recno: "";
-    Value: string;
-    Placeholder: "";
+    First: boolean;
+    Focus: boolean;
     Format: "";
+
+    Grid: false;
+
+    Help: false;
+
+    htmlId: string;
+
     InputMask: "";
-    MaxLenght: 0;
+
+    Key: number;
+
+    MaxLength: 0;
+    Min: number;
+    Max: number;
+
+    Name: string;
+    Notation: 'standard'; //standard,scientific,enginniering,compact
+    Nu: 'arab';//
+
+    Placeholder: "";
+
     ReadOnly: false;
-    Disabled: false;
-    Tag: "";
-    Sw_val: false;
-    Capture: false;
-    Name: "";
-    Label: "";
-    textLabel: string;
-    Type: "text";
-    Visible: boolean;
+    RefValue: null;
+
+    Status: string;
+    ShowError: boolean;
+
+    Style: string; // decimal, currency,percent,unit
+
     TabIndex: number;
-    BaseClass: "imgButton";
-    Image: "";
+    Tag: "";
+    textLabel: "";
+    This: null;
+    ToolTipText: string;
+    Type: string;
+
+    Valid: true;
+    Value: string;
+    View: "";
+    Visible: true;
+    When: boolean;
+
   };
-  /*
-    style: {
-      background: "white";
-      backgroundColor: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "500px";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
-      borderColor: "#000a01";
-      borderWidth: "1px";
-      zIndex: 1;
-    };
-    position: {
-      position: "left"; //left,right,center,absolute. Si es absulute poner valor left y top
-      left: number;
-      Top: number;
-    };
-  */
+
+  position: {
+    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
+    left: number;
+    Top: number;
+  };
+
 }>();
 
-const Component = ref(props.prop.This)
-const This = Component.value
+const Component = toRef(() => props.prop.This)
+const This = Component.value  // falta probar reactividad utilizando Component.value.This
+
 const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
@@ -95,92 +122,34 @@ const Styles =
 //const Id = This.prop.Name + props.Registro.toString().trim()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
-
-
+This.Id = Id + '_main'
 This.Recno = props.Registro
 
-const Value = ref(props.prop.Value)
 const ToolTipText = ref(true)
-
-
-watch(
-  () => props.prop.Value,
-
-  (new_val, old_val) => {
-    console.log('Button cambio Value', new_val, old_val)
-  },
-  { deep: false }
-);
-
-
-////////////////////////////////////////
-// Registro
-// Nota: Lee de la base de datos local segun el valor de Registro
-//       Se utiliza para el manejo de grid
-///////////////////////////////////////
-watch(
-  () => props.Registro,
-  async () => {
-
-    // console.log('EditText Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
-    //  emitValue(true)
-    This.Recno = props.Registro
-  },
-  { deep: true }
-);
-
-////////////////////////////////////////
-// Hacer el set focus 
-///////////////////////////////////////
-watch(
-  () => This.prop.Focus, //props.prop.Focus,
-  (new_val: any, old_val: any) => {
-    if (!new_val) {
-      return
-    }
-    /*
-    // Se pidio desde afuera el setFocus
-    if (document.activeElement != thisElement) {
-      console.log('editText Watch Focus Name=', This.prop.Name, 'thisElement=', thisElement)
-      return thisElement.focus();
-    }
-     */
-    This.click()
-
-    /*
-        //thisElement.focus({ focusVisible: true });
-        setTimeout(function () {
-          //thisElement.focus({ focusVisible: true });
-          if (thisElement.select)
-            thisElement.select();
-    
-        }, 300);
-    
-        */
-
-    return
-
-  },
-  { deep: false }
-)
-
 
 /////////////////////////////////////////////////////////////////////
 // focusOut
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
-
   ToolTipText.value = true  // Activamos el ToolTipText
+};
+/*
+const showVisible = async (visible: boolean) => {
+  console.log('botton ', this.prop.Name, visible)
+  This.prop.Visible = true
 
 };
 
-const click = async () => {
+This.show = ref(showVisible())
+*/
 
+
+
+const click = async () => {
   // Si esta en un grid checa sus estatus de todas las columnas
   if (!await checkGrid())
     return
-
 
   ToolTipText.value = false  // Activamos el ToolTipText
   // await This.when()
@@ -192,7 +161,6 @@ const click = async () => {
   //This.click()
 
 }
-
 
 const onFocus = async () => {
   // Si esta en un grid checa sus estatus de todas las columnas
@@ -222,6 +190,54 @@ const checkGrid = async () => {
   return true
 }
 
+watch(
+  () => props.prop.Value,
+  (new_val, old_val) => {
+    console.log('Button cambio Value', new_val, old_val)
+  },
+  { deep: false }
+);
+
+
+/*
+watch(
+  () => This.prop.Visible,
+  (new_val, old_val) => {
+    console.log('check cambio Visible', This.prop.Name, new_val, old_val)
+  },
+  { deep: true }
+);
+*/
+
+
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+watch(
+  () => props.Registro,
+  async () => {
+    This.Recno = props.Registro
+  },
+  { deep: true }
+);
+
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+watch(
+  () => This.prop.Focus, //props.prop.Focus,
+  (new_val: any, old_val: any) => {
+    if (!new_val) {
+      return
+    }
+    This.click()
+    return
+  },
+  { deep: false }
+)
+
 onMounted(async () => {
   // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
@@ -231,23 +247,11 @@ onMounted(async () => {
 
   if (props.Registro > 0) {
     if (props.prop.ControlSource.length > 0) {
-
-      Status.value = 'P';  // en lectura
-      emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-
-      await readCampo(props.Registro)
-      if (!props.prop.First) {
-
-        //await emitValue()
-      }
-      Status.value = 'A';  // Activo
-      emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+      await readCampo(props.prop.ControlSource, props.Registro)
     }
 
   };
   //  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
-
-
   if (This.prop.Image.length > 0) {
     Styles.inputStyle.boxShadow = ''
     Styles.style.height = Styles.inputStyle.height
@@ -257,11 +261,6 @@ onMounted(async () => {
   This.afterMounted()
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
 })
-/*
-onMounted(() => {
-  init() // Ejecuta el init
-});
-*/
 
 const middleClick = () => {
   // console.log('middleClick')
@@ -269,13 +268,11 @@ const middleClick = () => {
     This.Form.translateContainer.open(ref(This))
 }
 
-
-
 onUnmounted(async () => {
   if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
 })
 
-
+/*
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
@@ -284,11 +281,5 @@ const handler = (event) => {
   event.preventDefault();
 }
 
-</script>
-
-<style scoped>
-/*
-.button {
-  background-color: bind("props.style.backgroundColor");
 */
-</style>
+</script>

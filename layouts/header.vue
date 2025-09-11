@@ -39,7 +39,6 @@ import logo from '/assets/WebOnes3.jpeg'
 //import logo from '/assets/WebOnes2.ico'
 //import logo from '/assets/WebOnes.png'
 
-
 //
 
 interface Props {

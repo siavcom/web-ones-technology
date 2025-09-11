@@ -29,11 +29,14 @@ export class COMPONENT {
   estatus: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
   block: [] = [] // bloque del componentes
+  Valid = ref([]) //Validaciones de componentes hijos
+  refValid = -1
   error = false
   sw_init = false
   Help = false
   textLabel = ""
   sw_translate = true
+  Id = ''
 
   prop = {
     autoLoad: false,
@@ -185,8 +188,8 @@ export class COMPONENT {
 
   inputStyle = {
     ...this.captionStyle,
-    border: 'rgb(0, 5, 2)',  /*1px solid */
-
+    //border: ' rgb(0, 5, 2)',  /*1px solid */
+    border: '1px black',
     borderRadius: '3px',
     textAlign: 'left',
     width: 'fit-content',        //'96%',
@@ -194,7 +197,22 @@ export class COMPONENT {
     zIndex: '1',
     boxShadow: '0px 1px 1px 0, 0 1px 1px 0',
     marginTop: '2px',
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
+    opacity: '1'
 
+  }
+
+  readOnlyInputStyle = {
+
+    background: '#d4f0eb',
+    opacity: '1' //'0.7'
+  }
+
+  invalidInputStyle = {
+    border: '1px solid red',
   }
 
   style = {
@@ -303,17 +321,24 @@ export class COMPONENT {
    * @returns {Promise<void>}
    */
   public asignaRecno() {
+    if (this.prop.Name == 'translateContainer')
+      return
 
-    // console.log('1) Asignado recno por referencia al padre', this.prop.Name, 'RecordSource=', this.prop.RecordSource)
     for (const comp in this) {
       const Comp = this[comp]
+
       // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.ControlSource && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
+      if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer' && Comp.prop.ControlSource && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
         //   console.log('3) Asignado recno por referencia al padre', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+        this.Valid.value.push(ref(this[comp].prop.Valid))
+        Comp.refValid = this.Valid.value.length - 1
       }
+
+
     }
+    console.log('1) Asignado recno por referencia al padre', this.prop.Name, this, this.Valid.value)
 
   }
 
@@ -501,7 +526,6 @@ export class COMPONENT {
     //////////////////////  Main //////////////////////////////
     // Obtenemos solo los elementos del Main
     const mainElement = await multiFilter(elements, { Position: "main" });
-
 
     for (const i in mainElement) {  // recorremos todos los componentes del main
       const comp = mainElement[i].Name; // Obtenemos el nombre

@@ -42,6 +42,7 @@ export class IMGBUTTON extends COMPONENT {
       boxSizing: "border-box",
     })
 
+
   }
 
 }
