@@ -1,5 +1,5 @@
 <template>
-  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_component'" class="divi imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <img v-if="prop.Type = 'QR'" :id="Id + '_QR'" class=" mt-6 mb-2 rounded border" :src="Image.value"
       :alt="prop.Caption" />

@@ -1,5 +1,5 @@
 <template>
-  <div :id="Id + '_div_label'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
+  <div :id="Id + '_component'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
 
     <div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
       :style="captionStyle">{{ prop.Caption +

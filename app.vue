@@ -47,7 +47,7 @@
 
                     <li @click="isMan = !isMan">
                       <span class="links_options">{{ Props.maintenance
-                        }}</span>
+                      }}</span>
                       <nuxt-img class="ico" :src="isMan ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">

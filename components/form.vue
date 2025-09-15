@@ -56,10 +56,9 @@
 
                 <TransitionGroup name='detailForm'>
 
-                  <div :id="Id + 'main_div_' + compMain" v-if="ThisForm.block.length == 0"
-                    v-for="(compMain) in ThisForm.main" :key="compMain" :class="compMain"
-                    v-show='ThisForm[compMain].prop.Visible'>
-                    <component v-if="ThisForm[compMain].prop.Visible" :id="Id + '_mainComponent_' + compMain"
+                  <div :id="Id + '_' + compMain" v-if="ThisForm.block.length == 0" v-for="(compMain) in ThisForm.main"
+                    :key="compMain" :class="compMain" v-show='ThisForm[compMain].prop.Visible'>
+                    <component v-if="ThisForm[compMain].prop.Visible"
                       :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                       v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                       :Registro="ThisForm[compMain].Recno" :prop="ThisForm[compMain].prop"
@@ -157,6 +156,7 @@
 //<script lang="ts" setup >
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
+import { refreshNuxtData } from '#app'
 
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
@@ -241,6 +241,7 @@ const ThisForm = Component.value
 
 const Este = ref(ThisForm)
 const Estatus = ref(ThisForm.estatus)
+const Valid = reactive(ThisForm.Valid)
 //const Id = ThisForm.prop.Name
 
 const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
@@ -320,6 +321,9 @@ const waitEval = async (evento: string) => {
   })
 }
 
+//////////////////////////////////////////////////////////////////
+//////////////// Whatchers ///////////////////////////////////////
+
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
 // no ejecuta el evento
@@ -365,6 +369,31 @@ watch(
   { deep: true }
 );
 
+watch(Valid, async (new_val) => {
+
+  if (ThisForm.prop.BaseClass !== 'CaptureForm')
+    return
+
+  console.log('Checando valid ', Valid, Valid.length)
+
+  const lon = Valid.length
+  const This = this
+  for (let i = 0; i < Valid.length; i++)
+    if (!Valid[i].value) {
+      console.log('1) Checando valid False', i, Valid[i].value, 'Valid=', Valid)
+      ThisForm.bt_update.prop.Visible = false
+      ThisForm.bt_delete.prop.Visible = false
+      ThisForm.bt_save.prop.Visible = false
+
+      return
+    }
+  ThisForm.bt_saveClick()
+
+},
+  { deep: true }); //, flush: 'post'
+
+///////////////////////////////////////////////////////////
+////////////////////// Functions //////////////////////////
 
 const ejeEventos = async () => {
   console.log('Form ejeEventos ===>>> ', ThisForm.eventos)
@@ -480,6 +509,9 @@ onBeforeMount(async () => {
      console.log('Error al inicializa la forma ', error)
    }
  */
+  //Valid = toRef(ThisForm, "Valid")
+
+
   console.log('ThisForm onMounted  ', ThisForm)
   loading.value = false
   ThisForm.afterMounted()
@@ -505,6 +537,11 @@ const handler = (event) => {
   event.preventDefault();
 }
 
+
+const NextTick = (ins: string) => {
+  console.log('NextTick', ins)
+  nextTick(function () { waitEval(ins) });
+}
 
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

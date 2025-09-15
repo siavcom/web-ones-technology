@@ -8,7 +8,7 @@
 import { IMGBUTTON } from "@/classes/imgButton";
 import { FORM } from "@/classes/Form";
 
-import { watch } from 'vue';
+import { provide, watch } from 'vue';
 
 
 export class captureForm extends FORM {
@@ -17,31 +17,23 @@ export class captureForm extends FORM {
   public First = null
   sw_nue = false; // bandera de nuevo registro
 
+
+
   // se debe de poner siempre el contructor
   constructor() {
     super();
-    this.style.width = "-moz-available";
-
+    this.prop.BaseClass = "CaptureForm",
+      this.style.width = "-moz-available";
+    this.prop.Messages[0] = 'Grabamos datos'
+    this.prop.Messages[1] = 'Borramos los datos'
     // asignamos los Recno de los componentes de main 
-    watch(this.Valid.value, async (Valid) => {
-      console.log('Checando valid ', Valid, Valid.length)
-      const This = this
-      for (let i = 0; i < Valid.length; i++)
-        if (!Valid[i].value) {
-          console.log('1) Checando valid False', i, Valid[i].value, 'Valid=', Valid)
-          This.showBt('bt_update', false)
-          This.showBt('bt_delete', false)
-          This.showBt('bt_save', false)
-
-          return
-        }
-      //   console.log('Checando valid bt_save ', this.bt_save.prop.Visible)
-      console.log('1) Checando prediendo bt_save ', This.bt_save.prop.Visible)
-      This.showBt('bt_save', true)
-      //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
-
-    },
-      { deep: true });
+    /*
+      watch(this.Valid.value, async (Valid) => {
+        console.log('Checando valid ', Valid, Valid.length)
+  
+      },
+        { deep: true, flush: 'post' });
+  */
 
   }
 
@@ -103,9 +95,22 @@ export class captureForm extends FORM {
     if (this[botton].prop.Visible != valor) {
       // await this.Form[botton].show.value(valor)
 
-      console.log('shwoBt ', `ThisForm.${botton},prop.Visible=${valor}`)
+      console.log('shwoBt ', `ThisForm.${botton}.prop.Visible=${valor}`)
 
-      this.eventos.push(`ThisForm.${botton}.prop.Visible=${valor}`)
+      //      this.eventos.push(`ThisForm.${botton}.prop.Visible=${valor}`)
+
+      const Id = this.Form[botton].prop.htmlId + '_main'
+      this.Form[botton].prop.Visible = !valor
+      await nextTick()
+      this.Form[botton].prop.Visible = valor
+      // this.eventos.push(`ThisForm.${botton}.prop.Visible=${valor};` + `NextTick('ThisForm.${botton}.prop.Visible=${valor}')`)
+
+      console.log('shwoBt ', this[botton].prop.Visible)
+
+      //await nextTick()
+
+      //this.eventos.push(`nextTick(function () {ThisForm.${botton}.prop.Visible=${valor}});`)
+
       //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
 
 
@@ -170,31 +175,6 @@ export class captureForm extends FORM {
     //if (!compName) return false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
-    //const thisComp = this[compName];
-    /*
-      if (!thisComp.prop.updateKey) {
-        let sw_val = true
-        //  console.log('1) Valid No updateKey Capture component= ', thisComp.prop.Name)
-  
-        for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
-          if (sw_val && !this[comp].prop.Valid)
-            sw_val = false
-  
-          console.log('Valid Capture component Name= ', this[comp].prop.Name, 'Valid=', this[comp].prop.Valid)
-  
-          if (thisComp.prop.Visible && thisComp.prop.Capture && !this[comp].prop.Valid) {
-            return true;
-          }
-        }
-  
-        if (!this.bt_save.prop.Disabled && sw_val)  // Si se validaron todos los componentes
-          this.bt_save.prop.Visible = true;    // 8/Gas/2025
-        //this.bt_save.prop.Visible = false;
-        return true;
-      } else {  // Si es llave de captura
-  
-      */
-
 
     thisComp.prop.Valid = true;
     const { ...m } = Public.value;
@@ -215,7 +195,7 @@ export class captureForm extends FORM {
           this[comp].prop.ErrorMessage = "Dato no permitido";
           this[comp].prop.Valid = false;
           this[comp].prop.Focus = true
-          // console.log('1) ValidComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
+          console.log('1) validKeyComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
           return this[comp].prop.Valid
         }
 
@@ -241,7 +221,7 @@ export class captureForm extends FORM {
       return false
     }
 
-    console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
+    //console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
     const data = await use(this.prop.RecordSource, m);
     console.log('2) validComponent data=', data)
 
@@ -294,23 +274,23 @@ export class captureForm extends FORM {
       // console.log('ValidComponent appendBlank Return')
       return true
 
-    } else {  // Hay datos
+    }   // Hay datos
 
-      this.sw_nue = false
-      this.Recno = data[0].recno;
+    this.sw_nue = false
+    this.Recno = data[0].recno;
 
+    for (const comp of this.main) {
+      const Comp = this[comp]
+      Comp.prop.ShowError = false
+      Comp.prop.Valid = true
+    }
 
-
-      for (const comp of this.main) {
-        const Comp = this[comp]
-        Comp.prop.ShowError = false
-        Comp.prop.Valid = true
-      }
+    console.log('validComponent Con datos ')
+    await nextTick(() => {
 
       this.bt_update.prop.Visible = true;
       this.bt_delete.prop.Visible = true;
-
-    }
+    })
     return true
   } // Fin Metodo Valid
 
@@ -495,18 +475,11 @@ export class captureForm extends FORM {
   });
 
   public async bt_saveClick() {
-
     //    if (!await this.inSave())
     //      return
-
+    // await nextTick()
     if (this.bt_save.prop.Disabled)
       return;
-
-    this.bt_save.prop.Visible = false;
-    this.bt_save.prop.Valid = false;
-    this.bt_delete.prop.Visible = false
-
-
 
 
     // Recorremos toda la forma y revisamos si estan validados
@@ -530,23 +503,29 @@ export class captureForm extends FORM {
         }
       }
     }
+    await nextTick()
 
-    //console.log("CaptureForm bt_save");
-    const result = await tableUpdate(
-      0,
-      false,
-      this.prop.RecordSource
-    );
+    this.bt_save.prop.Visible = false;
+    const bt_delete = this.bt_delete.prop.Visible
+    this.bt_delete.prop.Visible = false;
 
-    if (result) {
-      MessageBox("Datos actualizados");
-    } else {
-      await this.Sql.requery(this.prop.RecordSource)
+    if (await MessageBox(this.prop.Messages[0], 4, "") == 6) {
+      //console.log("CaptureForm bt_save");
+      const result = await tableUpdate(
+        0,
+        false,
+        this.prop.RecordSource
+      );
+
+      if (result) {
+        MessageBox("Datos actualizados");
+      } else {
+        await this.Sql.requery(this.prop.RecordSource)
+      }
     }
 
     this.bt_save.prop.Visible = true;
-    this.bt_delete.prop.Visible = true
-
+    this.bt_delete.prop.Visible = bt_delete
     return;
   }
 
@@ -585,9 +564,7 @@ export class captureForm extends FORM {
            }
            this.Form.bt_save.prop.Visible = true
      */
-
     }
-
   })
 
   public async bt_updateClick() {
@@ -602,7 +579,6 @@ export class captureForm extends FORM {
     this.Form.bt_save.prop.Visible = true
     return
   }
-
 
   /// //////////////////////////////
   // Metodo : bt_delete
@@ -681,7 +657,7 @@ export class captureForm extends FORM {
     this.bt_save.prop.Visible = false;
     this.bt_delete.prop.Visible = false;
 
-    if ((await MessageBox("Borramos los datos", 4, "")) === 6) {
+    if ((await MessageBox(this.prop.Messages[1], 4, "")) === 6) {
       console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
       const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
 

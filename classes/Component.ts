@@ -42,7 +42,7 @@ export class COMPONENT {
     autoLoad: false,
     Autofocus: false,
 
-    BaseClass: "editText",
+    BaseClass: "editText",  // comboBox, textLabel, Form, captureForm, grid, column 
     BoundColumn: 1,
 
     Caption: '',
@@ -59,7 +59,7 @@ export class COMPONENT {
     Decimals: 2,
 
     Enabled: true,
-    ErrorMessage: "",
+    ErrorMessage: "--INVALID DATA--",
     First: false,
     Focus: false,
     Format: "", //"ke" tipo fecha seleccionada al input
@@ -207,12 +207,13 @@ export class COMPONENT {
 
   readOnlyInputStyle = {
 
-    background: '#d4f0eb',
+    background: '#f4f7d9ff', //'#d4f0eb',
     opacity: '1' //'0.7'
   }
 
   invalidInputStyle = {
     border: '1px solid red',
+
   }
 
   style = {
@@ -324,21 +325,19 @@ export class COMPONENT {
     if (this.prop.Name == 'translateContainer')
       return
 
+    console.log('======== Asignado recno por referencia al padre ', this.prop.Name)
     for (const comp in this) {
       const Comp = this[comp]
 
       // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer' && Comp.prop.ControlSource && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
-        //   console.log('3) Asignado recno por referencia al padre', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
+      if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer' && !Comp.prop.updateKey && Comp.prop.ControlSource && Comp.prop.ControlSource.length > 0 && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
+        console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
         this.Valid.value.push(ref(this[comp].prop.Valid))
         Comp.refValid = this.Valid.value.length - 1
       }
-
-
     }
-    console.log('1) Asignado recno por referencia al padre', this.prop.Name, this, this.Valid.value)
 
   }
 

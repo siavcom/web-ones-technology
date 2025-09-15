@@ -1,6 +1,6 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
-  <span :id="Id + '_main_span'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
+  <span :id="Id + '_component'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
 
     <img v-if="Value.length > 0 && This.inputStyle.accept != 'application/pdf'" :id="Id + '_img'" class="img"
@@ -10,13 +10,15 @@
       :style="inputStyle"></iframe>
 
     <!--div v-if="!This.prop.Disabled"-->
-    <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('get_file').click()">{{
-      prop.Caption }}</button>
-    <input v-if="!This.prop.Disabled" id="get_file" ref="fileInput" type="file" @change="readFile($event)"
-      :disabled="This.prop.Disabled" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept"
+    <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('get_file').click()"
+      :disabled="prop.ReadOnly || prop.Disabled">{{
+        prop.Caption }}</button>
+    <input v-if="!prop.Disabled" :id="Id + '_get_file'" ref="fileInput" type="file" @change="readFile($event)"
+      :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept"
       src="/Iconos/svg/delete-color.svg" />
     <img v-if="Value.length > 0" :id="Id + '_bt_deleter'" class="img" src="/Iconos/svg/delete-color.svg"
-      :alt="prop.Value" :disabled="prop.ReadOnly" style="width:32px;height:32px ;" @click.capture="bt_delete()" />
+      :alt="prop.Value" :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;"
+      @click.capture="bt_delete()" />
 
   </span>
 </template>
@@ -235,6 +237,8 @@ const bt_delete = async () => {
 
 const readFile = ($event) => {
   // Reference to the DOM input element
+  if (This.prop.ReadOnly)
+    return
   const input = $event.target;
 
   // Ensure that you have a file before attempting to read it

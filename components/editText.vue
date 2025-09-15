@@ -1,9 +1,9 @@
 <template>
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <span :id="Id + '_main'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -217,11 +217,11 @@ const props = defineProps<{
     Notation: 'standard'; //standard,scientific,enginniering,compact
     Nu: 'arab';//
 
-
     Placeholder: "";
 
     ReadOnly: false;
     RefValue: null;
+    // Required: true;
 
     Status: string;
     ShowError: boolean;
@@ -240,7 +240,6 @@ const props = defineProps<{
     View: "";
     Visible: true;
     When: boolean;
-
 
   };
 
@@ -282,13 +281,13 @@ const readOnlyInputStyle = reactive({ ...Este.readOnlyInputStyle })
 
 */
 
-const Styles =
-{
-  captionStyle: captionStyle,
-  inputStyle: inputStyle,
-  style: divStyle,
-  //invalidInputStyle: invalidInputStyle
-}
+const Styles = reactive(
+  {
+    captionStyle: captionStyle,
+    inputStyle: inputStyle,
+    style: divStyle,
+    //invalidInputStyle: invalidInputStyle
+  })
 
 const helpStyle = {
   // position: 'absolute',
@@ -551,7 +550,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       // Value.value = Valor
     }
 
-    This.prop.Valid = true
+    //  This.prop.Valid = true
 
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       // console.log('isValid', isValid, '2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
@@ -723,12 +722,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   }
 
-  // console.log('2.2) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
-
-  if (This.onChangeValue) {
-    await This.onChangeValue(ref(Styles))
-  }
-
+  /* antes 15/Sep/2025 esbaba actualizado el valor this.prop.Value 
+    if (This.onChangeValue) {
+      console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
+      await This.onChangeValue(ref(Styles))
+    }
+  */
   //  console.log('2.2.0) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
   switch (Type) {
     case 'number':
@@ -838,6 +837,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update") // emite un update en el componente padre
+
+  if (This.onChangeValue) {
+    console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
+    await This.onChangeValue(ref(Styles))
+  }
+
 
 
   // })
@@ -1708,7 +1713,7 @@ watch(
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
     watchPropValue = false
     if (This.prop.Valid && This.onChangeValue) {
-      //console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
+      console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
       if (This.onChangeValue) {
         await This.onChangeValue(ref(Styles))
       }
@@ -1765,7 +1770,7 @@ watch(
 );
 
 ////////////////////////////////////////////////////////
-// Cambia el estilo del input segun su validacion
+// Cambia el estilo del input segun su validacion llamado por watchers
 ////////////////////////////////////////////////////////
 const Valid = () => {
   const estilo = This.inputStyle
@@ -1780,19 +1785,15 @@ const Valid = () => {
   Styles.inputStyle.opacity = estilo.opacity
 
   if (This.prop.Valid) {
-    console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
-
+    //    console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
     Styles.inputStyle.border = estilo.border
     if (This.Parent.Valid[This.refValid]) // predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = true   // 
 
-    //This.Valid.value[This.refValue]=true 
-    //Comp.refValid = this.Valid.value.length-1
-
   } else {
 
     Styles.inputStyle.border = invalid.border
-
+    console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
     if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = false
   }

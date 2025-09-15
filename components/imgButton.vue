@@ -1,5 +1,5 @@
 <template>
-  <span :id="Id + '_main'" class="divi_imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_component'" class="divi_imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!-- UButton -->
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
@@ -144,13 +144,13 @@ const showVisible = async (visible: boolean) => {
 This.show = ref(showVisible())
 */
 
-
-
 const click = async () => {
   // Si esta en un grid checa sus estatus de todas las columnas
   if (!await checkGrid())
     return
 
+  if (This.prop.ReadOnly)
+    return
   ToolTipText.value = false  // Activamos el ToolTipText
   // await This.when()
   if (!This.prop.Disabled) { // && This.Form.prop.BaseClass.toLowerCase() == 'form'
@@ -197,17 +197,6 @@ watch(
   },
   { deep: false }
 );
-
-
-/*
-watch(
-  () => This.prop.Visible,
-  (new_val, old_val) => {
-    console.log('check cambio Visible', This.prop.Name, new_val, old_val)
-  },
-  { deep: true }
-);
-*/
 
 
 ////////////////////////////////////////

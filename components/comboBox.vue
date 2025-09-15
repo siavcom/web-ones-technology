@@ -14,14 +14,14 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <span :id="Id + '_div_comboBox'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_component'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!--Etiqueta del componente -->
     <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -92,11 +92,17 @@
 
       <!--/div-->
     </div>
-    <!--span :id="Id + '_tooltip'" class="errortext" v-if="prop.ToolTipText.length > 0"
-      v-show="ToolTipText && prop.Valid" :style="{ zIndex: zIndex + 10 }">{{ prop.ToolTipText }}</span-->
-    <span class="errorText" v-show="!prop.Valid && ShowError">{{ prop.ErrorMessage }}</span>
-    <!-- v-bind:Component="ref(This[compMain])" 
-     v-model:Status="This[compMain].prop.Status"-->
+    <!--span class="errorText" v-show="!prop.Valid && displayError">{{ prop.ErrorMessage }}</span-->
+
+    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ This.prop.ErrorMessage.toString().length >= 1 ?
+      This.prop.ErrorMessage
+      :
+      '--- Invalid Input ---'
+      }}</div>
+
+
+
+
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
       v-model:Value="This[compMain].prop.Value" :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop"
@@ -169,7 +175,7 @@ const props = withDefaults(defineProps<Props>(), {
 
     Sorted: false,
     Status: "",
-    ShowError: false,
+    displayError: false,
     ShowValue: false,
     Style: 0, //0=DropDown Combo 2=DropDown List
 
@@ -231,17 +237,18 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
+const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 //let First = false
 //let Focus = false
 let focusIn = false
 const MultiSelect = ref(props.prop.MultiSelect)
-const Styles =
-{
-  captionStyle: captionStyle,
-  inputStyle: inputStyle,
-  style: divStyle
-}
-
+const Styles = reactive(
+  {
+    captionStyle: captionStyle,
+    inputStyle: inputStyle,
+    style: divStyle
+  }
+)
 const styleOption = reactive({
   backgroundColor: "white"
   //background-color: aquamarine;
@@ -279,7 +286,9 @@ const hover = ref(false)
 //const Focus = ref(props.prop.Focus)
 //const First = ref(props.prop.First)
 
-const ShowError = ref(false)
+
+
+const displayError = ref(false)
 const sw_focus = ref(false)
 // Focus.value = false
 
@@ -418,8 +427,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       if (!await This.valid()) {
 
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
-        ShowError.value = true
-        This.prop.ShowError = true
+        displayError.value = true
+        This.prop.displayError = true
 
         if (This.prop.Valid)
           This.prop.Valid = false
@@ -510,8 +519,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   //})
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
-  ShowError.value = false  // Desactivamos mensaje de error
-  This.prop.ShowError = false
+  displayError.value = false  // Desactivamos mensaje de error
+  This.prop.displayError = false
 
   //  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Text=', Text.value)
 
@@ -589,9 +598,9 @@ const toggleClick = async () => {
 const keyPress = ($event) => {
   //console.log('1) >>>>>KeyPress===>', This.prop.ReadOnly) //, $event.target, $event.target.value)
   if (This.prop.ReadOnly || This.prop.Disabled) return
-  if (ShowError.value) {
-    ShowError.value = false
-    This.prop.ShowError = false
+  if (displayError.value) {
+    displayError.value = false
+    This.prop.displayError = false
   }
   if (!ToolTipText.value)
     ToolTipText.value = false
@@ -642,7 +651,7 @@ const keyPress = ($event) => {
 
 const help = async () => {
   if (This.help) {
-    This.prop.ShowError = false
+    This.prop.displayError = false
     This.prop.Valid = true
     await This.help.open()
     This.prop.Valid = true
@@ -888,8 +897,8 @@ const onFocus = async () => {
   This.prop.Focus = false
 
   // First = false  // 13 Junio 2025
-  ShowError.value = false
-  This.prop.ShowError = false
+  displayError.value = false
+  This.prop.displayError = false
 
   //const element = document.getElementById(Id);
 
@@ -1248,13 +1257,13 @@ watch(
 );
 
 /////////////////////////////////////////////////////////////////////
-// change This.prop.ShowError
+// change This.prop.displayError
 /////////////////////////////////////////////////////////////////
 watch(
-  () => This.prop.ShowError,
+  () => This.prop.displayError,
   () => {
-    if (ShowError.value != This.prop.ShowError)
-      ShowError.value = This.prop.ShowError
+    if (displayError.value != This.prop.displayError)
+      displayError.value = This.prop.displayError
   },
   { deep: false }
 );
@@ -1488,7 +1497,6 @@ watch(
 );
 
 
-
 ////////////////////////////////////////
 // watch Valid     8/Ags/2025 .- Se anexo al watch This.prop.Valid
 ///////////////////////////////////////
@@ -1497,14 +1505,15 @@ watch(
   () => props.prop.Valid,
   (new_val, old_val) => {
     if (!props.prop.Valid) {
-      ShowError.value = true
-      This.prop.ShowError = true
+      displayError.value = true
+      This.prop.displayError = true
     }
   },
   { deep: false }
 );
 */
 
+////*********************** */
 
 ////////////////////////////////////////////////////////////////////
 // change This.prop.Valid   
@@ -1513,29 +1522,7 @@ watch(
 watch(
   () => This.prop.Valid, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-    if (!This.prop.Valid) {
-      ShowError.value = true
-      This.prop.ShowError = true
-    }
-
-    if (new_val !== old_val) {
-      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
-
-      if (This.prop.Valid || focusIn == true) {
-        Styles.inputStyle.background = This.inputStyle.background
-        if (!This.prop.ReadOnly)
-          Styles.inputStyle.opacity = '1'
-
-        else
-          Styles.inputStyle.opacity = '0.7'
-
-      } else {
-        // if (focusIn.value == 0) // Si no tiene el foco
-        Styles.inputStyle.background = '#f2e7e9'
-      }
-
-    }
-
+    ValidWatch()
   },
   { deep: false }
 );
@@ -1547,30 +1534,60 @@ watch(
 watch(
   () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-    if (new_val !== old_val) {
-      //  console.log('watch This.prop.Valid Name=', props.prop.Name, 'Valid=', This.prop.Valid)
 
-      // if (focusIn.value != 1) {
-      if (!This.prop.ReadOnly) {
-        Styles.inputStyle.opacity = '1'
-
-      } else {
-        // if (focusIn.value == 0) // Si no tiene el foco
-        Styles.inputStyle.opacity = '0.7'
-      }
-
-    }
-
-    // }
+    ReadOnlyWatch()
 
   },
   { deep: false }
 );
 
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun su validacion llamado por watchers
+////////////////////////////////////////////////////////
+const ValidWatch = () => {
+  const estilo = This.inputStyle
+  const invalid = This.invalidInputStyle
+  const readOnly = This.readOnlyInputStyle
+  ReadOnlyWatch()
+  if (This.prop.ReadOnly) {
+    return
+  }
 
+  Styles.inputStyle.background = estilo.background
+  Styles.inputStyle.opacity = estilo.opacity
 
+  if (This.prop.Valid) {
+    //    console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
+    Styles.inputStyle.border = estilo.border
+    if (This.Parent.Valid[This.refValid]) // predemos el arreglo de validaciones para el watch
+      This.Parent.Valid[This.refValid].value = true   // 
 
+  } else {
 
+    Styles.inputStyle.border = invalid.border
+    console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
+    if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
+      This.Parent.Valid[This.refValid].value = false
+  }
+
+}
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun si es de solo lectura
+////////////////////////////////////////////////////////
+const ReadOnlyWatch = () => {
+  if (This.prop.ReadOnly) {
+    //      Styles.inputStyle = { ...This.readOnlyInputStyle }
+
+    Styles.inputStyle.background = readOnlyInputStyle.background
+    Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+    displayError.value = false // Apagamos mensaje de error
+  }
+  else {
+    //Styles.inputStyle = { ...This.inputStyle }
+    Styles.inputStyle.background = This.inputStyle.background
+    Styles.inputStyle.opacity = This.inputStyle.opacity
+  }
+}
 
 
 /////////////////////////////////////////
