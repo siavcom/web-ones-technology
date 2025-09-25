@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -163,7 +163,6 @@ const emit = defineEmits(["update", "update:Value",
   "input:currentValue",  // "input:currentValue[1]",
   "input:currentDate", "input:displayDate",
   "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
-
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -265,9 +264,7 @@ const containerStyle = reactive({ ...This.containerStyle })
 const invalidInputStyle = reactive({ ...This.invalidInputStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 
-console.log('EditText readOnlyInputStyle=', readOnlyInputStyle)
-
-
+//console.log('EditText readOnlyInputStyle=', readOnlyInputStyle)
 
 /*
 const captionStyle = reactive({ ...Este.captionStyle })
@@ -839,7 +836,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   emit("update") // emite un update en el componente padre
 
   if (This.onChangeValue) {
-    console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
+    //  console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
     await This.onChangeValue(ref(Styles))
   }
 
@@ -1193,6 +1190,7 @@ const onFocus = async () => {
   if (!This.Help)
     This.Help = false
 
+  Styles.inputStyle.background = This.inputStyle.background
   // Cuando esta en un grid y se hace foco a un renglon que no tiene el foco, se debe de correr en when  
   // al hacer el appendRow pone los ReadOnly en false en todos los componentes del grid
 
@@ -1269,7 +1267,7 @@ const onFocus = async () => {
 
     await nextTick()
 
-    This.Form.eventos.push(This.prop.Map + '.when()')
+    This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
 
     /*      if (Clicked) {
             This.Form.eventos.push(This.prop.Map + '.click()')
@@ -1485,13 +1483,15 @@ watch(
     // Se pidio desde afuera el setFocus
 
     if (document.activeElement != thisElement) {
-      thisElement.select();
+      if (thisElement.select)
+        thisElement.select();
 
     }
     setTimeout(function () {
-      thisElement.focus({ focusVisible: true });
-      thisElement.select();
-
+      if (thisElement.select) {
+        thisElement.focus({ focusVisible: true });
+        thisElement.select();
+      }
 
     }, 0);
 
@@ -1543,9 +1543,10 @@ watch(
       return
 
 
-
     if (watchPropValue) // Si se cambio desde el emitValue se ignora
       return
+    const Type = This.prop.Type
+    //  console.log('>>> EditText Watch This.prop.Value Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'TYPE=', Type)
 
     if (new_val === undefined || new_val === null) {
       switch (Type) {
@@ -1787,12 +1788,14 @@ const Valid = () => {
   if (This.prop.Valid) {
     //    console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
     Styles.inputStyle.border = estilo.border
+    Styles.inputStyle.background = estilo.background
     if (This.Parent.Valid[This.refValid]) // predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = true   // 
 
   } else {
 
     Styles.inputStyle.border = invalid.border
+    Styles.inputStyle.background = invalid.background
     console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
     if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = false

@@ -37,26 +37,29 @@ export class TAB_XML extends CONTAINER {
     this.nom_tab = nom_tab
     this.key_xmd = key_xmd
     this.par_dxm = par_dxm
-    return await this.lee_xml()
+    return await this.lee_xml(nom_tab, par_dxm, key_xmd)
   }
 
-  async lee_xml() {
+  async lee_xml(nom_tab: string, par_dxm: string, key_xmd: number) {
+
+    this.nom_tab = nom_tab
+    this.key_xmd = key_xmd
+    this.par_dxm = par_dxm
 
     const m = {
-      nom_tab: this.nom_tab,  // nombre de la tabla
-      par_dxm: this.par_dxm,  // parametros de datos xml
-      key_xmd: this.key_xmd,  // clave primaria del registro
+      nom_tab: nom_tab,  // nombre de la tabla
+      par_dxm: par_dxm,  // parametros de datos xml
+      key_xmd: key_xmd,  // clave primaria del registro
     }   // inicializamos m
     //  const convert = require('xml-js'); // For xml-js
     // const xml2js = require('xml2js'); // For xml2js
 
     const ord_dxm = 0
     this.prop.RecordSource = ' ' 			// Se indica cual el la tabla de donde tomara los datos
-    this.prop.RecordSource = 'tab_xml' 			// Se indica cual el la tabla de donde tomara los datos
 
-    await use('vi_cap_dxm', m) // definicion de campos xml
+    await use('vi_cap_comedxm', m) // definicion de campos xml
 
-    requery('lla1_xmd', m)  // obtiene los campos xml de la tabla 
+    await use('lla1_xmd', m)  // obtiene los campos xml de la tabla 
 
     let jsonResult = {}
     let var_dxm = {}
@@ -82,28 +85,28 @@ export class TAB_XML extends CONTAINER {
         "readOnly":false, 
         "style":{"width":"auto"} }
     }
-    
-    
+       
     
     */
 
     if (await recCount('lla1_xmd') > 0) { // si hay campos xml
-      const comexmd = goto(0, 'lla1_xmd')  // nos posicionamos en la tabla de campos xml
+      const lla1_xmd = goto(0, 'lla1_xmd')  // nos posicionamos en la tabla de campos xml
 
 
-      if (key_xmd > 0 && comexmd.xml_xmd.trim() > '') {   // si hay campos xml guardados en la base de datos
-        const jsonString = await xml2json(xml_xmd, { compact: true, spaces: 2 });
+      if (lla1_xmd.key_xmd > 0 && lla1_xmd.xml_xmd.trim() > '') {   // si hay campos xml guardados en la base de datos
+        const jsonString = await xml2json(lla1_xmd.xml_xmd, { compact: true, spaces: 2 });
         console.log(jsonString);
         jsonResult = JSON.parse(jsonString);
 
-        for (const dato of jsonResult.VFPData.data) {  // busca en todas los campos si son campos libres
+        const var_dxm = jsonResult.VFPData.data
+        for (const dato of var_dxm) {  // busca en todas los campos si son campos libres
           var_dxm[dato]['type'] = 'text'
           var_dxm[dato]['label'] = dato
           var_dxm[dato]['readOnly'] = false
           var_dxm[dato]['style'] = { width: "fit-content" }
           var_dxm[dato]['value'] = jsonResult.VFPData.data[dato] // obtiene el valor
 
-          let dxm = await localAlaSql(`SELECT * FROM vi_cap_dxm where upper(var_dxm=${dato.toUpperCase()} )`) // leemos la definicion de campos
+          let dxm = await localAlaSql(`SELECT * FROM vi_cap_comedxm where upper(var_dxm=${dato.toUpperCase()} )`) // leemos la definicion de campos
           if (dxm.length > 0) {  // si lo encontro en la tabla de campos xml
             if (dxm[0].tip_dxm == 'D')   // si es fecha
               var_dxm[dato]['type'] = 'date'
@@ -134,10 +137,12 @@ export class TAB_XML extends CONTAINER {
       }
     }
 
-    if (recCount('vi_cap_dxm') > 0) { // si hay campos xml definidos
-      const datos_dxm = await localAlaSql(`SELECT * FROM vi_cap_dxm order by ord_dxm`); // leemos la definicion de campos
+    if (recCount('vi_cap_comedxm') > 0) { // si hay campos xml definidos
+      const datos_dxm = await localAlaSql(`SELECT * FROM vi_cap_comedxm order by ord_dxm`); // leemos la definicion de campos
+
       for (let i = 0; i < datos_dxm.length; i++) {
         if (!(datos_dxm[i].var_dxm in var_dxm)) { // si no existe el campo lo aumenta
+          const dato = datos_dxm[i].var_dxm
           var_dxm[dato] = {}
           var_dxm[dato]['value'] = datos_dxm[i].val_dxm
           var_dxm[dato]['label'] = datos_dxm[i].des_dxm // descripcion del campo
@@ -190,7 +195,7 @@ export class TAB_XML extends CONTAINER {
       nom_tab: nom_tab,  // nombre de la tabla
       key_pri: key_pri,  // clave primaria del registro
     }
-    await use('vi_cap_dxm', m) // use vi_cap_dxm 
+    await use('vi_cap_comedxm', m) // use vi_cap_comedxm 
 
     let var_dxm = JSON.parse(this.var_dxm.prop.Value) // convierte el string a objeto
 

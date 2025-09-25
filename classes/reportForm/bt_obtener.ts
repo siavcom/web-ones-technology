@@ -22,7 +22,7 @@ export class bt_obtener extends IMGBUTTON {
     this.prop.Position = "footer";
     this.prop.Image = "/Iconos/svg/report-document.svg"; //print-color3.svg";
     this.prop.TabIndex = 1;
-    this.style.width = "64px";
+    this.style.width = "78px";
   } // Fin constructor
 
   async click() {

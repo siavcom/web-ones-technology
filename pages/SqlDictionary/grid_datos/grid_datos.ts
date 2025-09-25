@@ -53,7 +53,6 @@ export class grid_datos extends GRID {
     this.prop.Caption = "Definicion de campos";
     this.prop.RecordSource = "vi_cap_comedat";
     this.prop.Visible = false;
-    this.prop.ReadOnly = false;
     this.prop.autoLoad = false;
     this.prop.MaxLength = 8;
   }

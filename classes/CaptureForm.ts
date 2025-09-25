@@ -396,9 +396,10 @@ export class captureForm extends FORM {
     public Grid = [];
     constructor() {
       super();
-      this.prop.Name = "bt_save";
-      this.prop.Caption = "Graba datos";
+      // this.prop.Name = "bt_save";
+      this.prop.Caption = "Grabar";
       this.prop.Position = "footer";
+      this.prop.ToolTipText = 'Graba los datos '
       this.prop.Image = "/Iconos/svg/accept.svg";
       this.style.width = "64px";
     } // Fin constructor
@@ -537,7 +538,7 @@ export class captureForm extends FORM {
   public bt_update = new (class extends IMGBUTTON {
     constructor() {
       super();
-      this.prop.Name = "bt_modifca";
+      //this.prop.Name = "bt_update";
       this.prop.Caption = "Modifica datos";
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";

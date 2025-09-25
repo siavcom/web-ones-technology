@@ -826,12 +826,11 @@ const when = async (click?: boolean) => {
   }
 
   await nextTick()
-  This.Form.eventos.push(This.prop.Map + '.when()')
+  //This.Form.eventos.push(This.prop.Map + '.when()')
+  This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
   console.log('when comboBox =', This.prop.Name, 'Eventos=', This.Form.eventos)
   if (click)
     This.Form.eventos.push(This.prop.Map + '.click()')
-
-
 
 }
 
@@ -1565,7 +1564,7 @@ const ValidWatch = () => {
   } else {
 
     Styles.inputStyle.border = invalid.border
-    console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
+    //  console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
     if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = false
   }

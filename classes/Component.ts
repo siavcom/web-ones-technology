@@ -213,6 +213,7 @@ export class COMPONENT {
 
   invalidInputStyle = {
     border: '1px solid red',
+    background: 'rgba(247, 230, 230, 1)'
 
   }
 
@@ -325,14 +326,14 @@ export class COMPONENT {
     if (this.prop.Name == 'translateContainer')
       return
 
-    console.log('======== Asignado recno por referencia al padre ', this.prop.Name)
+    // console.log('======== Asignado recno por referencia al padre ', this.prop.Name)
     for (const comp in this) {
       const Comp = this[comp]
 
       // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
       if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer' && !Comp.prop.updateKey && Comp.prop.ControlSource && Comp.prop.ControlSource.length > 0 && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
-        console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
+        // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
         this.Valid.value.push(ref(this[comp].prop.Valid))
         Comp.refValid = this.Valid.value.length - 1
@@ -948,6 +949,26 @@ export class COMPONENT {
     }
   }
 
+
+  setAll(prop: any, value: any) {
+    // Asigna a todos los componentes el valor
+    for (let i in this) {
+      if (
+        i != "Parent" &&
+        i != "ThisForm" &&
+        i != "Form" &&
+        i != "_init" &&
+        this[i] != null &&
+        this[i] != undefined &&
+        this[i] &&
+        this[i].prop &&
+        this[i].Init
+      ) {
+        if (this[i].prop.hasOwnProperty(prop))
+          this[i].prop[prop] = value
+      }
+    }
+  }
   /////////////////////////////////////////////////////////////////////
   // Refe
   // Descripcion: asigna la ref html del componente desplegado

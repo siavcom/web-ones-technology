@@ -606,6 +606,7 @@ export const tableRevert = async (alias?: string) => {
 // alias  : Encuantra el alias de la vista actual
 ////////////////////////////////////////////
 export const alias = () => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
     return This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 }
 
@@ -1931,7 +1932,7 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
 /// /////////////  Vfp select() /////////////////////
 // alias : area seleccionada
 /// //////////////////////////////////////////////
-export const select = async (alias?: string | number) => {
+export const select = (alias?: string | number) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     // console.log('Db Select 0',This.value.Form)
@@ -2744,7 +2745,7 @@ export const localAlaSql = async (ins_sql: string, datos?: any) => {
 
         return await alasql(ins_sql, datos);
     } catch (error) {
-        console.error("localAlaSql error==>", error, ins_sql, datos);
+        console.error("localAlaSql error==>", error, ins_sql);
         errorAlert("local SQL error :" + ins_sql);
 
         return false;

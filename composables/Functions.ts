@@ -141,7 +141,7 @@ export const allTrim = (input: string): string => {
  * @returns {Promise<string>} - A promise that resolves to the file contents as a string.
  */
 
-function fileToStr(input: string): string {
+export function fileToStr(input: string): string {
   // const fs = require('fs');
   const contents = fs.readFileSync(input).toString()
   return contents
@@ -155,7 +155,7 @@ function fileToStr(input: string): string {
  * @param {number} nDecimalPlaces - Decimal places
  * @returns {string} - A string converted
  */
-function str(nExpression: number, nLength?: number, nDecimalPlaces?: number) {
+export function str(nExpression: number, nLength?: number, nDecimalPlaces?: number): string {
   let result = nExpression.toString();
 
   // Handle decimal places
@@ -178,9 +178,8 @@ function str(nExpression: number, nLength?: number, nDecimalPlaces?: number) {
   return result;
 }
 
-function transform(nExpression: number, image?: string) {
+export function transform(nExpression: number, image?: string) {
   return nExpression.toLocaleString()
-
 
 }
 
@@ -191,7 +190,7 @@ function transform(nExpression: number, image?: string) {
  * @returns {File} - A File object created from the string content of the file.
 
  */
-function strToFile(input: string) {
+export function strToFile(input: string) {
   // const fs = require('fs');
   const blob = new Blob([input], { type: 'text/plain' });
   var file = new File([blob], input, { type: "text/plain" });
@@ -209,6 +208,12 @@ export const len = (strVariable: string): number => {
   return strVariable.length()
 }
 
+
+export function isObject(value: null | undefined | object): boolean {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+
 /**
  * Searches for a value in an array, similar to the VFP ASscan() function.
  *
@@ -220,9 +225,24 @@ export const len = (strVariable: string): number => {
  * @returns {number} - The position of the found element, or 0 if not found.
  */
 export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, numElements: number = array.length, searchColumn?: number): number {
+
+
+  if (!Array.isArray(array))
+  //   array = variable
+  {
+    array = Object.keys(array);
+    numElements = array.length
+  }
+
+  //  const keysArray = Object.keys(myObject);
+
   if (startElement < 1 || startElement > array.length) {
     return 0;
   }
+
+
+  if (numElements == undefined)
+    numElements = array.length
 
   let startIndex = startElement - 1;
   let endIndex = Math.min(startIndex + numElements, array.length);
@@ -236,8 +256,10 @@ export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, n
       }
     }
   } else {
+    searchValue = searchValue.toUpperCase()
     for (let i = startIndex; i < endIndex; i++) {
-      if (array[i] === searchValue) {
+
+      if (array[i].toUpperCase() == searchValue) {
         return i + 1;
       }
     }

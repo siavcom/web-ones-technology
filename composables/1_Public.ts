@@ -38,14 +38,14 @@ const publico = reactive({
         dir_emp: "", sql_emp: "", dbs_emp: "",
 
         // Moneda arrays
-        val_mon1: [1, 0, 0, 0, 0],
-        des_mon1: ["MXN", "", "", "", ""],
-        pro_mon1: ["M.N.", "", "", "", ""],
+        val_mon1: [0, 1, 0, 0, 0, 0],
+        des_mon1: ["", "MXN", "", "", "", ""],
+        pro_mon1: ["", "M.N.", "", "", "", ""],
         dec_mon1: ["", "", "", "", ""],
 
         // Impuestos arrays
-        des_imp1: ["", "", "", "", "", ""],
-        val_imp1: ["", "", "", "", "", ""],
+        des_imp1: ["", "", "", "", "", "", ""],
+        val_imp1: ["", "", "", "", "", "", ""],
 
         // Database and security
         num_dbs: 0, // número de coneccion hacia la base de datos

@@ -11,8 +11,7 @@
 
     <!--div v-if="!This.prop.Disabled"-->
     <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('get_file').click()"
-      :disabled="prop.ReadOnly || prop.Disabled">{{
-        prop.Caption }}</button>
+      :disabled="prop.ReadOnly || prop.Disabled">{{ prop.Caption }}</button>
     <input v-if="!prop.Disabled" :id="Id + '_get_file'" ref="fileInput" type="file" @change="readFile($event)"
       :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept"
       src="/Iconos/svg/delete-color.svg" />

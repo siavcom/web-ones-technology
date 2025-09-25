@@ -13,7 +13,7 @@
       <!-- v-if="scroll.dataPage && scroll.dataPage.length" -->
 
       <div :id="Id + '_div_grid_tabla'" class="tabla"
-        :style="{ minHeight: '250px', height: 'fit-content', width: 'inherit' }">
+        :style="{ minHeight: 'fit-content', height: 'fit-content', width: 'inherit' }">
         <table :id="Id + '_grid_tabla'" class="gridTable" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
           <thead>
             <tr style="font-size: 13px">
@@ -60,10 +60,7 @@
                   v-bind:style="This[col.Name].style" @click.stop="asignaRenglon(item.id, col.Name)" @focusout.stop>
                 </textLabel>
                 <!--   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
-
-
                 <!--/Transition-->
-
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
                   :is="impComponent(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
                   v-model:Key="This[col.Name].prop.Key"
@@ -336,8 +333,6 @@ const keyPress = ($event) => {
   Key.value = key
 }
 
-
-
 const loadGrid = () => {
   // inicializamos scroll
   scroll.page = 0
@@ -506,9 +501,10 @@ watch(
 watch(
   () => This.prop.RecordSource,
   async (RecordSource, old_val) => {
-    console.log('1) Grid watch RecordSource RecordSource=', RecordSource)
+    console.log('1) Grid watch RecordSource RecordSource=', RecordSource, 'Visible=', This.prop.Visible)
+    // This.prop.Visible && 
+    if (This.prop.RecordSource.length > 1) {
 
-    if (This.prop.Visible && This.prop.RecordSource.length > 1) {
       loadGrid()
     }
   }
@@ -521,7 +517,7 @@ watch(
   () => This.prop.Visible,
   async (new_val, old_val) => {
 
-    console.log('1) Grid watch Vsible  RecordSource=', new_val)
+    console.log('1) Grid watch Visible  RecordSource=', new_val)
 
     // Si no hay renglones , aumenta un renglon
     if (This.prop.Visible && props.prop.RecordSource.length > 1) {
@@ -1084,7 +1080,6 @@ onMounted(async () => {
 
   console.log('2) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main,
     'RecordSource=', props.prop.RecordSource)
-
 
   This.prop.Valid = true // Asignamos el valor de validacion del grid
   scroll.controls = true

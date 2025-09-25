@@ -21,7 +21,7 @@ export class GRID extends COMPONENT {
   }
 
   rowStyleInactive = {
-    backgroundColor: 'aliceblue;'//'darkgray'   //'white' //
+    backgroundColor: 'aliceblue' //'darkgray'   //'white' //
   }
 
   constructor() {
@@ -47,7 +47,8 @@ export class GRID extends COMPONENT {
     this.prop.Rows = 10;   // renglones de la grid por defecto
 
     this.style.width = '-moz-available' //"max-content"
-    this.style.minHeight = "120px";
+    //this.style.minHeight = "120px";
+    this.style.minHeight = "fit-content";
     this.style.height = "max-content";
     this.Recno = 0;
 
@@ -242,8 +243,6 @@ export class GRID extends COMPONENT {
     console.log('asignaRenglon ColumnaName =', ColumnName, this[ColumnName].prop.Focus)
 
     //  console.log('asignaRenglon ColumnaName =', ColumnName, this[ColumnName].prop)
-
-
 
   }
 

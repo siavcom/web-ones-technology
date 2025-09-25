@@ -20,9 +20,9 @@
         <component id="pas_usu" :is="impComponent(ThisForm.pas_usu.prop.BaseClass)" :Value="ThisForm.pas_usu.prop.Value"
           :Registro="0" :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style"
           :position="ThisForm.pas_usu.position" />
-        <component id="bt_aceptar" :is="impComponent(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" :Registro="0"
-          :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" :position="ThisForm.bt_aceptar.position"
-          :imagen="ThisForm.bt_aceptar.imagen" />
+        <component id="bt_aceptar" :is="impComponent(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" Value=" "
+          :Registro="0" :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style"
+          :position="ThisForm.bt_aceptar.position" :imagen="ThisForm.bt_aceptar.imagen" />
       </div>
     </div>
   </div>
@@ -62,12 +62,7 @@ watch(
   },
   { deep: false }
 )
-/*
-const bt_aceptar = () => {
-  console.log('bt_aceptar click num_int=', ThisForm.num_int)
-  ThisForm.bt_aceptar.click()  // call the method in the form
-}
-*/
+
 /////////////////////////////////////////
 // 
 /////////////////////////////////////////
@@ -83,24 +78,6 @@ onBeforeMount(async () => {
 </script>
 
 <style>
-/*
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: start;
-  color: #08315a;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-form.LoginForm {
-  align-content: center;
-  
-}
-*/
 div.imagen {
   align-content: center;
   border: 2px solid green;

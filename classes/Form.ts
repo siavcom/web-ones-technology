@@ -26,13 +26,10 @@ export class FORM extends COMPONENT {
   language = false
   Recno = ref(999999999)
 
-
   headerStyle = {
     display: 'flex',
     alignItems: 'last baseline',
-
     justifyContent: 'space-around',
-
     height: 'fit-content',
     backgroundColor: '#ebf8ee',
     border: '1px solid rgb(0, 0, 0)',
@@ -51,6 +48,8 @@ export class FORM extends COMPONENT {
     border: '1px solid rgb(0, 0, 0)',
     borderRadius: '6px',
     zIndex: '5',
+    display: 'flex',
+    flexWrap: 'wrap'
 
     /*border: 1px solid rgb(0, 0, 0);
       border-radius: 6px; */
