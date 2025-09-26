@@ -583,17 +583,17 @@ export class ThisForm extends FORM {
         Value = true enable automatic update.
         Value = false disable automati update
 
- - addButton = `<`Show add button `>`
+ - showAddButton = `<`Show add button `>`
         Type : boolean
         Value = true to show add button.
         Value = false to hide add button.
 
- - saveButton = `<`Show save button `>`
+ - showSaveButton = `<`Show save button `>`
         Type : boolean
         Value = true to show save button.
         Value = false to hide save button.
 
- - deleteButton = `<`Show delete button `>`
+ - showDeleteButton = `<`Show delete button `>`
         Type : boolean
         Value = true to show delete button.
         Value = false to hide delete button.
@@ -602,6 +602,12 @@ export class ThisForm extends FORM {
         Type : boolean
         Value = true to show insert button.
         Value = false to hide insert button.
+
+- autoUpdate = `<`Auto update`>`
+        Type : boolean
+        Value = true  update data when all row is valid.
+        Value = false disable auto update.
+
 
 ### Grid component has it's own methods
 
