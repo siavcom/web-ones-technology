@@ -68,7 +68,7 @@ export class grid extends GRID {
     //this.prop.MaxLength=8
     this.toolTipText.prop.Last = true; // ultimo elemento
     this.style.width = "98%";
-    this.prop.saveButton = false;
+    this.prop.showSaveButton = false;
   }
 
   ///////////////////////////////////////////////////

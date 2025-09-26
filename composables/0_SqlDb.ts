@@ -605,7 +605,7 @@ export const tableRevert = async (alias?: string) => {
 /////////////  Hace un requery de una vista /////////////////////
 // alias  : Encuantra el alias de la vista actual
 ////////////////////////////////////////////
-export const alias = () => {
+export const alias = (): string => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     return This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 }

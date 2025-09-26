@@ -210,7 +210,7 @@ export class reportForm extends FORM {
 
     if (this.prop.Development == false) {
       this.queryPri.bt_add.prop.Visible = false;
-      this.queryPri.Grid.prop.saveButton = false;
+      this.queryPri.Grid.prop.showSaveButton = false;
     }
 
     // Query Usuario

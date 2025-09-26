@@ -91,12 +91,12 @@
       <div :id="Id + '_bottom_controles'" class="controles" :disabled="!scroll.controls">
 
         <!-- click.capture.stop -->
-        <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.saveButton && This.prop.Valid"
+        <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.showSaveButton && This.prop.Valid"
           @click="saveTable()" :style="{ 'padding': '5px' }">
           <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="40" />
         </span>
 
-        <span :id="Id + '_botton_controles_add'" title="Insert row" v-show="prop.addButton && This.prop.Valid"
+        <span :id="Id + '_botton_controles_add'" title="Insert row" v-show="prop.showAddButton && This.prop.Valid"
           :style="{ 'padding': '5px' }" @click="appendRow()">
           <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/svg/add-color.svg" width="35" />
         </span>
@@ -127,8 +127,8 @@
         </span>
 
 
-        <span :id="Id + '_botton_controles_delete_row'" title="Delete row" v-show="prop.deleteButton && This.Row >= 0"
-          :style="{ 'padding': '5px' }" @click.stop="borraRenglon()">
+        <span :id="Id + '_botton_controles_delete_row'" title="Delete row"
+          v-show="prop.showDeleteButton && This.Row >= 0" :style="{ 'padding': '5px' }" @click.stop="borraRenglon()">
           <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-color.svg" width="40" />
         </span>
 
@@ -343,7 +343,7 @@ const loadGrid = () => {
   if (Sql.View[This.prop.RecordSource]) {
     loadData()
 
-    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.saveButton && This.prop.addRow)  // No hay renglones
+    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.showSaveButton && This.prop.addRow)  // No hay renglones
       appendRow()
     /*
         else
@@ -628,6 +628,7 @@ watch(
 /////////////////////////////////
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
+  if (This.prop.ReadOnly) return
 
   // console.log('asignaRenglon Row=', Row, ' ColumnName=', ColumnName, ' This.Row=', This.Row, 'Column.value=', Column.value)
   // This.Form.eventos.push(This.prop.Map + `.asignaRenglon(${Row},'${ColumnName}' )`)

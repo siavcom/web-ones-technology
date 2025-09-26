@@ -616,6 +616,8 @@ watch(
         Text.value = new_val
     }
 
+    asignaResultado()
+
   },
   { deep: true }
 );
