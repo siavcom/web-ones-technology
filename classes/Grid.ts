@@ -37,10 +37,10 @@ export class GRID extends COMPONENT {
     this.prop.addRow = true; // Si es verdadero aumenta renglon automaticamente
     this.prop.Visible = false;
 
-    this.prop.showAddButton = true; // Estos componentes estan en grid.vue
-    this.prop.showDeleteButton = true;
-    this.prop.showSaveButton = true;
-    this.prop.showUpdatedButton = false;
+    this.prop.showAddButton = true; // Si es verdadero muestra el boton de agregar
+    this.prop.showDeleteButton = true; // Si es verdadero muestra el boton de borrar
+    this.prop.showSaveButton = true; // Si es verdadero muestra el boton de grabar
+    this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
     this.prop.messageUpdate = "Grabamos la tabla";
     this.prop.messageDelete = "Borramos renglon";
     this.prop.headerHeight = "30px";

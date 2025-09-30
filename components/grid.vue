@@ -241,10 +241,14 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+
+// Nos sirve para deshabilitar todo el grid si es de solo lectura
+divStyle.pointerEvents = This.prop.ReadOnly ? 'none' : 'auto'
+console.log(This.prop.Name, 'Grid divStyle=', divStyle, 'This.prop.ReadOnly=', This.prop.ReadOnly)
+
 //const Id = This.prop.Name + props.Registro.toString().trim()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
-
 
 const compStatus = reactive({})
 const compValid = reactive({})      // Arreglo de validacion de los componentes
@@ -512,7 +516,6 @@ watch(
   { deep: false }
 );
 
-
 watch(
   () => This.prop.Visible,
   async (new_val, old_val) => {
@@ -527,6 +530,22 @@ watch(
   },
   { deep: false }
 );
+
+watch(
+  () => This.prop.ReadOnly,
+  async (new_val, old_val) => {
+    console.log('1) Grid watch ReadOnly=', new_val)
+    divStyle.pointerEvents = new_val ? 'none' : 'auto'
+
+  },
+  { deep: false }
+);
+
+
+
+
+
+
 
 
 //////////////////////////////////////////////

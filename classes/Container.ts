@@ -24,8 +24,10 @@ export class CONTAINER extends COMPONENT {
     this.captionStyle.color = 'black'
     this.captionStyle.fontWeight = 'bold'
     this.captionStyle.fontSize = '17px'
-    this.style.height = 'auto'
-    this.style.width = "80%";
+    this.style.height = 'min-content';
+    this.style.width = "auto";
+    this.style.backgroundColor = "antiquewhite"
+    this.style.left = '18%'
     // Estilo de cada contenedor del modal
 
 
@@ -41,6 +43,7 @@ export class CONTAINER extends COMPONENT {
       this.style.left = '5%'
       this.style.borderRadius = '5%'
       this.style.padding = '3%'   //Margen entre los bordes y el contenido
+
       this.captionStyle.color = 'black'
     }
 

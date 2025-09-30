@@ -574,13 +574,27 @@ export const use = async (
 /////////////  Hace un requery de una vista /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
 ////////////////////////////////////////////
-export const requery = async (m?: {}, alias?: string) => {
+export const requery = async (alias?: string, currentRow?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias)       // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
-    if (!m)
-        m = This.value.View[alias].m
+
+    const m = await goto(0, alias)
+
+    if (currentRow) {
+
+        const resultado = await SQLExec(`select * from ${alias} where key_pri=${m.key_pri}`)
+        if (resultado && resultado.length > 0) {
+            for (let i = 0; i < resultado.length; i++) {
+                for (const field in resultado[i]) {
+                    const alias_field = `${alias}.${field}`
+                    await updateCampo( resultado[0][field], alias_field, m.recno, true)
+                }
+            }
+        }
+        return resultado
+    }
 
     return await use(alias, m)
 }
@@ -617,6 +631,9 @@ export const alias = (): string => {
 // aqui me quede . revisar todo esto, puede que la tabla tenga varios alias
 
 export const obtRegistro = async (nom_tab: "", key_pri: number) => {
+
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
     const dat_vis = {
         id_con: "",
         tip_llamada: "USE",
@@ -624,15 +641,13 @@ export const obtRegistro = async (nom_tab: "", key_pri: number) => {
         nom_vis: nom_tab,
         where: { key_pri },
     };
-
-    const { This } = toRefs(state) // Hace referencia al valor inicial
+    console.log('obtenRegistro', dat_vis)
     const response = await axiosCall(dat_vis);
     if (response == null) return;
 
-    if (response.data) {
-        const respuesta = response.data;
+    if (response.length > 0) {
         // console.log('Db Obten Registro===>', respuesta)
-        return respuesta[0]; // response.data;
+        return response[0]; // response.data;
     }
     return [];
 };
@@ -1019,47 +1034,44 @@ export const tableUpdate = async (
                     "No se pudo actualizar el registro en tabla " + alias,
                     dat_vis, 'LocalSQL', await localAlaSql(`select * from Now.${alias} `)
                 );
+                /*
                 errorAlert(
                     "SQL Error: No se pudo actualizar el registro en tabla " +
                     alias +
                     dat_vis
                 );
+                */
                 sw_val = false;
                 if (dat_act[row].key_pri > 0) {
+                    const key_pri = dat_act[row].key_pri
                     // si es un dato existennte
-                    const respuesta = await obtRegistro(
-                        nom_tab,
-                        dat_act[row].key_pri
-                    ); // se trae de nuevo los datos
-                    if (respuesta.key_pri) {
-                        respuesta.recno = dat_act[row].recno;
-                        if (force) {
-                            // Actualiza el valor de timestamp para tratar de grabar de nuevo
-                            dat_vis.dat_act[row].timestamp = respuesta.timestamp;
-                        } else {
-                            await localAlaSql(
-                                "USE Now;\
-                DELETE Now." +
-                                alias +
-                                ` WHERE recno=${dat_act[row].recno};\
-                INSERT INTO ` +
-                                alias +
-                                " VALUES ?",
-                                [respuesta]
-                            );
-
-                            await localAlaSql(
-                                "USE Last;\
-                DELETE Last." +
-                                alias +
-                                ` WHERE recno=${dat_act[row].recno};\
-                INSERT INTO ` +
-                                alias +
-                                " VALUES ?",
-                                [respuesta]
-                            );
-                        } // fin else
+                    console.log('tableUpdate ', nom_tab, key_pri)
+                    await requery(alias, true) // obtenemos los datos desde el sql server
+                    const respuesta = await goto(0, alias) // se trae de nuevo los datos
+                    /*
+                                        const respuesta = await obtRegistro(
+                                            nom_tab,
+                                            dat_act[row].key_pri
+                                        ); 
+                    */
+                    // borramos registro local
+                    if (respuesta.length > 0 && force) {
+                        // Actualiza el valor de timestamp para tratar de grabar de nuevo
+                        dat_vis.dat_act[row].timestamp = respuesta.timestamp;
+                    } else {
+                        force = false
+                        /*
+                              await localAlaSql(`DELETE FROM Now.${alias} WHERE recno=${dat_act[row].recno} `)
+                              await localAlaSql(`DELETE FROM Last.${alias} WHERE recno=${dat_act[row].recno} `)
+                              if (respuesta.length > 0 && respuesta.key_pri) {
+                                  respuesta.recno = dat_act[row].recno;
+                                  await localAlaSql(`INSERT INTO Now.${alias} VALUES ?`, [respuesta]);
+                                  await localAlaSql(`INSERT INTO Last.${alias} VALUES ?`, [respuesta]);
+                              } // fin else
+                        */
                     }
+
+
                 } // Fin si es un dato existente
                 if (updateType < 2) {
                     num_int = 2;
@@ -2897,7 +2909,7 @@ export const readValue = async (
 /// /////////////////////////////////////////////////
 // Graba Value de la tabla local
 /// //////////////////////////////////////
-export const updateCampo = async (Value: any, ControlSource: string, recno: number) => {
+export const updateCampo = async (Value: any, ControlSource: string, recno: number, old?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     // async update(Value: any) {
     //  const ControlSource = This.value.ControlSource;
@@ -2935,9 +2947,14 @@ export const updateCampo = async (Value: any, ControlSource: string, recno: numb
 
     try {
         //     await localAlaSql('USE Now;')
-        const ins_sql = `USE Now; UPDATE ${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`;
+        const ins_sql = `UPDATE Now.${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`;
         // console.log("Db update ala===>", ins_sql);
         await localAlaSql(ins_sql);
+        if (old) {
+            const ins_sql = `UPDATE Last.${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`;
+            // console.log("Db update ala===>", ins_sql);
+            await localAlaSql(ins_sql);
+        }
     } catch (error) {
         console.error("AlaSql error==>", error);
     }
@@ -3599,7 +3616,7 @@ export const VfpCursor = async (query: string) => {
     return data;
 };
 
-export const xmlToCursor = (xml: string, alias: string) => {
+export const xmlToCursor = async (xml: string, alias: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     xml = xml.replace('<VFPData>', '')
     xml = xml.replace('</VFPData>', '')
@@ -3607,7 +3624,7 @@ export const xmlToCursor = (xml: string, alias: string) => {
     const data = [jsonString.data._attributes]
     alasql(`USE Now; CREATE TABLE ${alias};`);
     alasql.tables[alias].data = data;
-    // alasql(`SELECT INTO ${alias} FROM ?`,[data]);
+
 }
 
 const errorAlert = async (message: string) => {

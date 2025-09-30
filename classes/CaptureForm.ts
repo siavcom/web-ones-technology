@@ -22,10 +22,10 @@ export class captureForm extends FORM {
   // se debe de poner siempre el contructor
   constructor() {
     super();
-    this.prop.BaseClass = "CaptureForm",
-      this.style.width = "-moz-available";
-    this.prop.Messages[0] = 'Grabamos datos'
-    this.prop.Messages[1] = 'Borramos los datos'
+    this.prop.BaseClass = "CaptureForm"
+    this.style.width = "-moz-available";
+    //this.prop.Messages[100] = 'Grabamos datos'
+    //this.prop.Messages[101] = 'Borramos los datos'
     // asignamos los Recno de los componentes de main 
     /*
       watch(this.Valid.value, async (Valid) => {
@@ -128,9 +128,9 @@ export class captureForm extends FORM {
       this.Recno = 0
 
     //console.clear()
-    console.log('before When Component=', thisComp.prop.Name)
     for (const comp of this.Form.main) {
-
+    
+ 
       if (this.Form[comp].prop.Capture) {
         if (!this.Form[comp].prop.updateKey) {
           // this.prop.Status = 'A'
@@ -155,7 +155,7 @@ export class captureForm extends FORM {
 
     console.log('beforeWhen  apagamos botones')
     this.bt_delete.prop.Visible = false;
-    this.bt_update.prop.Visible = false;
+    this.bt_modify.prop.Visible = false;
     this.bt_save.prop.Visible = false;
 
   }
@@ -288,7 +288,7 @@ export class captureForm extends FORM {
     console.log('validComponent Con datos ')
     await nextTick(() => {
 
-      this.bt_update.prop.Visible = true;
+      this.bt_modify.prop.Visible = true;
       this.bt_delete.prop.Visible = true;
     })
     return true
@@ -331,7 +331,7 @@ export class captureForm extends FORM {
       this.noData = true;
       this.bt_save.prop.Visible = false;
       this.bt_delete.prop.Visible = false;
-      this.bt_update.prop.Visible = false;
+      this.bt_modify.prop.Visible = false;
       if (this.Recno != 0)
         this.Recno = 0 // por referencia se pasa el valor component.Recno=0
 
@@ -399,9 +399,9 @@ export class captureForm extends FORM {
       // this.prop.Name = "bt_save";
       this.prop.Caption = "Grabar";
       this.prop.Position = "footer";
-      this.prop.ToolTipText = 'Graba los datos '
+      this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";
-      this.style.width = "64px";
+      this.style.width = " min-content";
     } // Fin constructor
 
 
@@ -476,12 +476,13 @@ export class captureForm extends FORM {
   });
 
   public async bt_saveClick() {
-    //    if (!await this.inSave())
-    //      return
-    // await nextTick()
+
     if (this.bt_save.prop.Disabled)
       return;
+    let resultado = false
+    let vistaCaptura = goto(0, this.prop.RecordSource)
 
+    let Recno = vistaCaptura.recno
 
     // Recorremos toda la forma y revisamos si estan validados
     for (const comp of this.main) {
@@ -510,7 +511,7 @@ export class captureForm extends FORM {
     const bt_delete = this.bt_delete.prop.Visible
     this.bt_delete.prop.Visible = false;
 
-    if (await MessageBox(this.prop.Messages[0], 4, "") == 6) {
+    if (await MessageBox(this.bt_save.prop.Caption, 4, "") == 6) {
       //console.log("CaptureForm bt_save");
       const result = await tableUpdate(
         0,
@@ -520,25 +521,31 @@ export class captureForm extends FORM {
 
       if (result) {
         MessageBox("Datos actualizados");
+        resultado = true
       } else {
-        await this.Sql.requery(this.prop.RecordSource)
+        // actualiza datos porque hubo error de grabacion
+        console.log('bt_saveClick',)
+        await requery(this.prop.RecordSource)
+        const Recno = this.Recno
+        this.Recno = 0
+        this.Recno = Recno
       }
     }
 
     this.bt_save.prop.Visible = true;
     this.bt_delete.prop.Visible = bt_delete
-    return;
+    return resultado;
   }
 
   /// //////////////////////////////
-  // Metodo : bt_update
+  // Metodo : bt_modify
   // Descripcion : Modifca los datos de la forma
   /// //////////////////////////////
 
-  public bt_update = new (class extends IMGBUTTON {
+  public bt_modify = new (class extends IMGBUTTON {
     constructor() {
       super();
-      //this.prop.Name = "bt_update";
+      //this.prop.Name = "bt_modify";
       this.prop.Caption = "Modifica datos";
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
@@ -546,14 +553,15 @@ export class captureForm extends FORM {
 
       this.prop.Image = "/Iconos/svg/update-content.svg";
       // this.prop.TabIndex= 21
-      this.style.width = "72px";
+
+      this.style.width = " min-content";
     } // Fin constructor
 
     override async click() {
-      console.log('1) bt_update click')
-      return this.Parent.bt_updateClick()
+      console.log('1) bt_modify click')
+      return this.Parent.bt_modifyClick()
 
-      //  console.log('Click bt_update ')
+      //  console.log('Click bt_modify ')
       /*     this.prop.Visible = false
            for (const comp of this.Form.main) {
      
@@ -568,9 +576,9 @@ export class captureForm extends FORM {
     }
   })
 
-  public async bt_updateClick() {
-    console.log('2) bt_update click')
-    this.bt_update.prop.Visible = false
+  public async bt_modifyClick() {
+    console.log('2) bt_modify click')
+    this.bt_modify.prop.Visible = false
     for (const comp of this.Form.main) {
       if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
         this[comp].prop.ReadOnly = false
@@ -597,7 +605,8 @@ export class captureForm extends FORM {
 
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
       // this.prop.TabIndex= 21
-      this.style.width = "64px";
+
+      this.style.width = " min-content";
     } // Fin constructor
 
     override async click() {
@@ -654,11 +663,11 @@ export class captureForm extends FORM {
     // if (!await this.inDelete())
     //   return
 
-    this.bt_update.prop.Visible = false;
+    this.bt_modify.prop.Visible = false;
     this.bt_save.prop.Visible = false;
     this.bt_delete.prop.Visible = false;
 
-    if ((await MessageBox(this.prop.Messages[1], 4, "")) === 6) {
+    if ((await MessageBox(this.bt_delete.prop.Caption, 4, "")) === 6) {
       console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
       const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
 
@@ -674,7 +683,7 @@ export class captureForm extends FORM {
       this.First.setFocus()  // asemos focon en el primer elemento
       return
     }
-    this.bt_update.prop.Visible = true;
+    this.bt_modify.prop.Visible = true;
     this.bt_save.prop.Visible = true;
     this.bt_delete.prop.Visible = true;
     return

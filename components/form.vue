@@ -381,7 +381,7 @@ watch(Valid, async (new_val) => {
   for (let i = 0; i < Valid.length; i++)
     if (!Valid[i].value) {
       console.log('1) Checando valid False', i, Valid[i].value, 'Valid=', Valid)
-      ThisForm.bt_update.prop.Visible = false
+      ThisForm.bt_modify.prop.Visible = false
       ThisForm.bt_delete.prop.Visible = false
       ThisForm.bt_save.prop.Visible = false
 
