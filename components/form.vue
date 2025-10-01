@@ -12,11 +12,13 @@
 <template>
   <!--header :style="{ 'display': 'inlineBlock' }"-->
   <div id='LoadingData' v-if="!mounted">
+    <!--div class="progress-bar" :style="{ width: progreso + '%' }">Loaded {{progreso}} %</div>-->
 
     <div class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
           <p>...`Loaded ${progress.value}%`... </p>
+
         </div>
       </div>
     </div>
@@ -156,7 +158,9 @@
 //<script lang="ts" setup >
 import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
-import { refreshNuxtData } from '#app'
+//import { refreshNuxtData } from '#app'
+
+
 
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
@@ -289,19 +293,6 @@ const loading = ref(true)
 
 //ThisThisForm.refs.fea_nom.Value=ahora;
 //console.log('Fecha ahora ====>',ThisThisForm.refs.fea_nom.Value);
-
-
-const {
-  progress,
-  isLoading,
-  start,      // Start from 0
-  set,        // Overwrite progress
-  finish,     // Finish and cleanup
-  clear       // Clean up all timers and reset
-} = useLoadingIndicator({
-  duration: 1000,  // Defaults to 2000
-  throttle: 300,   // Defaults to 200
-});
 
 ////////////////////////////////////////////
 // Metodos propios

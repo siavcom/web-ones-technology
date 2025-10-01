@@ -139,7 +139,7 @@
         <NuxtLayout name='header' :logoEmp="logoEmp" :nomEmp="nom_emp" :titleName="titleName" :fpo_pge="fpo_pge"
           :user="user" />
         <NuxtLayout name='default'>
-          <NuxtLoadingIndicator />
+       
           <NuxtPage />
         </NuxtLayout>
         <NuxtLayout name='footer' :user="user" :form="Props.form" />
