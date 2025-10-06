@@ -9,8 +9,6 @@
 // Clase base
 ///////////////////////////////////////
 import { GRID } from "@/classes/Grid";
-// import {COLUMN} from  '@/classes/Column'
-// import { COMPONENT } from '@/classes/Component'
 
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
 import { con_dat } from "./con_dat";

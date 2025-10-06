@@ -47,7 +47,7 @@ export class captureForm extends FORM {
     if (this.prop.RecordSource.length > 2)
       await useNodata(this.prop.RecordSource)
     else
-      console.warn('ThisForm.prop.RecordSource empty', this.prop.Name)
+      console.warn('this.Form.prop.RecordSource empty', this.prop.Name)
 
     this.bt_save.Grid = this.gridCaptura; // asignamos el arreglo de grid
   }
@@ -62,14 +62,14 @@ export class captureForm extends FORM {
   /**
    * AfterSave Method
    * Description: function that is executed after the save button is executed.
-   * Obs: this method is inherited and can be modified from the ThisForm.
+   * Obs: this method is inherited and can be modified from the this.Form.
    */
   // public async afterSave() { }
 
   /**
    * AfterDelete Method
    * Description: function that is executed after the delete button is executed.
-   * Obs: this method is inherited and can be modified from the ThisForm.
+   * Obs: this method is inherited and can be modified from the this.Form.
    */
   // public async afterDelete() { }
 
@@ -78,7 +78,7 @@ export class captureForm extends FORM {
    * inDelete Method
    * Description: function that is executed when you enter the delete method.
    *              It will continue with the deletion if it returns true.
-   * Obs: this method is inherited and can be modified from the ThisForm.
+   * Obs: this method is inherited and can be modified from the this.Form.
    */
   //  public async inDelete() { return true }
 
@@ -129,8 +129,8 @@ export class captureForm extends FORM {
 
     //console.clear()
     for (const comp of this.Form.main) {
-    
- 
+
+
       if (this.Form[comp].prop.Capture) {
         if (!this.Form[comp].prop.updateKey) {
           // this.prop.Status = 'A'
@@ -402,6 +402,7 @@ export class captureForm extends FORM {
       this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";
       this.style.width = " min-content";
+      this.prop.Visible = false;
     } // Fin constructor
 
 
@@ -680,7 +681,7 @@ export class captureForm extends FORM {
       }
 
 
-      this.First.setFocus()  // asemos focon en el primer elemento
+      this.First.setFocus()  // hacemos focon en el primer elemento
       return
     }
     this.bt_modify.prop.Visible = true;
@@ -728,8 +729,34 @@ export class captureForm extends FORM {
     }
   }
 
+  // Metodo		:rev_per
+  // Comentarios	: Reviza prmisos de seguridad de la tabla comedoc 
 
+  async rev_per(nom_cam: string, sw_mov?: boolean) {
 
+    const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
 
+    if (!sw_mov)
+      sw_mov = false
 
+    // si es el adminstrador o se dio password de autorización
+    if (Public.value.log_usu == 'ADMIN')
+      return true
+
+    // busca el nombre del objeto en el arreglo nom_cam
+    const pos = ascan(this.Form.nom_obj, upper(left(nom_cam, 3)))
+    if (pos > 0) {									// si encuentra el campo
+      if (this.Form.nom_obj(pos + 1) == '1' || this.Form.nom_obj(pos + 1) == '3')	// permite Modifica o Captura y modifica
+        return true
+      // reviza si se permite la captura
+      if (this.Form.nom_obj(pos + 1) >= '2' && ((!sw_mov && this.Form.sw_nue) || (sw_mov && this.Form.num_mov == 0)))
+        return true
+
+      // si permite la captura es impresión pero no se a impreso ni timbrado
+      if (this.Form.nom_obj(pos + 1) == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
+        return true
+    }
+    return false
+
+  }
 }

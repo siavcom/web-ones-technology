@@ -205,9 +205,12 @@ export function strToFile(input: string) {
  * @returns {number} - The length of the string.
  */
 export const len = (strVariable: string): number => {
+  console.log('len strVariable', strVariable, typeof strVariable)
+  if (typeof strVariable != 'string' || strVariable == null || strVariable == undefined || strVariable == '')
+    return 0
+
   return strVariable.length()
 }
-
 
 export function isObject(value: null | undefined | object): boolean {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -383,8 +386,8 @@ export const char = (ascci: number): string => {
  */
 
 export const strtran = (stringSource: string, stringSearch: string, stringReplace: string): string => {
+  console.log('strtran', stringSource, stringSearch, stringReplace)
   return stringSource.replaceAll(stringSearch, stringReplace);
-
 };
 
 

@@ -28,7 +28,7 @@ export class min extends COLUMN {
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
         this.style.width = '40px'
     }
-    async when() {
+    override async when() {
         if (this.Parent.tip_dat.prop != 'N')
             this.prop.ReadOnly = true
         return !this.prop.ReadOnly

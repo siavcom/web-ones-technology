@@ -929,7 +929,7 @@ export class COMPONENT {
     // Elimina el objeto del componente
 
     delete this[nom_obj];
-    console.log('1) RemoveObject', nom_obj, this[nom_obj])
+    // console.log('1) RemoveObject', nom_obj, this[nom_obj])
     for (let i = 0; i < this.header.length; i++)
       if (this.header[i] == nom_obj) this.header.splice(i, 1);
     for (let i = 0; i < this.main.length; i++)
@@ -945,10 +945,10 @@ export class COMPONENT {
       //for (let j = 0; j < this.block[i].component.length; j++) {
       for (const objeto in this.block[i].component) {
 
-        console.log('2.0 RemoveObject', objeto, this.block[i].component[objeto].prop.Name, nom_obj)
+        //  console.log('2.0 RemoveObject', objeto, this.block[i].component[objeto].prop.Name, nom_obj)
         if (this.block[i].component[objeto].prop.Name == nom_obj) {
 
-          console.log('2.1 RemoveObject', this.block[i].component[objeto].prop.Name)
+          //    console.log('2.1 RemoveObject', this.block[i].component[objeto].prop.Name)
           delete this.block[i].component[objeto]
           //       console.log('2.2 RemoveObject', this.block[i].component[objeto].prop.Name, nom_obj)
           break;
@@ -962,7 +962,7 @@ export class COMPONENT {
       }
 
     }
-    console.log('3) RemoveObject', this, this.block,)
+    //  console.log('3) RemoveObject', this, this.block,)
   }
 
 

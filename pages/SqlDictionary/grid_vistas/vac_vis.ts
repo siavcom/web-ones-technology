@@ -26,7 +26,7 @@ export class vac_vis extends COLUMN {
     this.prop.Placeholder = "vista remota SQL"
     this.inputStyle.textTransform = 'lowercase'
 
-    this.style.width = '200px'
+    this.style.width = '140px'
   }
 
   public async valid() {

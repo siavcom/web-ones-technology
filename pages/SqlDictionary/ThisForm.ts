@@ -56,11 +56,14 @@ export class ThisForm extends FORM {
     //this.prop.tag = ""
     this.prop.Caption = "Mantenimiento al diccionario de datos"
     this.prop.Status = "A"
-    this.style.display = "inline-flex"
-    this.style.background = "white"
-    this.style.color = "#b94295"
-    this.style.fontSize = "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    this.style.position = "center" //absolute,
+
+
+    //    this.mainStyle.display = ""
+    //    this.mainStyle.background = "white"
+    //    this.mainStyle.color = "#b94295"
+    //    this.mainStyle.fontSize = "13px" // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    //this.mainStyle.position = "center" //absolute,
+    this.mainStyle.display = 'inherit'
     //this.style.backgroundImage = "/logos/Logo_Empresa.png"
   }
   /*

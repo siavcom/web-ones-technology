@@ -23,8 +23,7 @@ export class nom_vis extends COLUMN {
         this.prop.ControlSource = 'vi_cap_comevis.nom_vis'
         this.prop.ToolTipText = 'Nombre de la vista'
         this.prop.Placeholder = "Nombre de la vista"
-        this.style.width = '200px'
+        this.style.width = '140px'
     }
-
 
 }

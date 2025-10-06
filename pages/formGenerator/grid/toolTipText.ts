@@ -27,13 +27,10 @@ export class toolTipText extends COLUMN {
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when() {
+    override async when() {
         this.prop.ReadOnly = await !this.Parent.cam_dat.when()
         return !this.prop.ReadOnly
         //   await super.when(row)
     }
-
-
-
 
 }

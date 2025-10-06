@@ -145,6 +145,9 @@ This.show = ref(showVisible())
 */
 
 const click = async () => {
+  console.log('button click()', This.prop.Name, 'Disabled', This.prop.Disabled, 'ReadOnly', This.prop.ReadOnly)
+  if (This.prop.Disabled || This.prop.ReadOnly)
+    return
   // Si esta en un grid checa sus estatus de todas las columnas
   if (!await checkGrid())
     return

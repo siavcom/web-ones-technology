@@ -589,7 +589,7 @@ export const requery = async (alias?: string, currentRow?: boolean) => {
             for (let i = 0; i < resultado.length; i++) {
                 for (const field in resultado[i]) {
                     const alias_field = `${alias}.${field}`
-                    await updateCampo( resultado[0][field], alias_field, m.recno, true)
+                    await updateCampo(resultado[0][field], alias_field, m.recno, true)
                 }
             }
         }
@@ -3035,13 +3035,17 @@ export const goto = async (despla: string | number, area?: string, last?: boolea
     const alias = area ? area : getAlias(); // obtiene el alias actual si no se especifica
     table = table + alias // agrega la base de datos al alias
 
+    if (!This.value.View[alias])
+        return null
+
+    console.log("1) Db goto alias ===>", alias, This.value.View[alias], 'Desplazamiento===> ', despla);
+
 
     This.value.View[alias].eof = false;
     This.value.View[alias].bof = false;
 
     let data = [];
     let recno = 0;
-    console.log("1) Db goto alias ===>", table, 'Desplazamiento===> ', despla);
 
 
     if (typeof despla == "number") {
