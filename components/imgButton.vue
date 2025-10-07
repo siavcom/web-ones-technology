@@ -136,7 +136,7 @@ const focusOut = async () => {
 };
 /*
 const showVisible = async (visible: boolean) => {
-  console.log('botton ', this.prop.Name, visible)
+  console.log('button ', this.prop.Name, visible)
   This.prop.Visible = true
 
 };

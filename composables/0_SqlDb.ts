@@ -200,12 +200,12 @@ export const locateFor = async (where: string, alias?: string) => {
 
 
     if (records && records.length > 0) {
-        This.value.View[alias].Recno = records[0].recno
+        This.value.View[alias].recno = records[0].recno
         This.value.View[alias].data = records[0];
 
         return records
     }
-    This.value.View[alias].Recno = 0
+    This.value.View[alias].recno = 0
 
     return records
 
@@ -3016,9 +3016,9 @@ export const getAlias = (alias?: string): string | null => {
 /**
  * goto: Se mueve al registro segun desplazamiento
  * despla : Si es numerico brinca al recno con ese numero,
- *          Si es string top=brinca la primer registro del alias, botton=brinca la ultimo registro del alias
+ *          Si es string top=brinca la primer registro del alias, button=brinca la ultimo registro del alias
  * @param despla {number|string} : desplazamiento, si es numerico brinca al recno con ese numero, si es string
- * top=brinca la primer registro del alias, botton=brinca la ultimo registro del alias
+ * top=brinca la primer registro del alias, button=brinca la ultimo registro del alias
  * @param alias {string} : nombre del alias
  * @returns {number|null} : recno del registro, null si no hay datos
  */
@@ -3030,15 +3030,12 @@ export const goto = async (despla: string | number, area?: string, last?: boolea
     if (last)
         table = 'Last.'
 
-    //  console.log("1) Db goto alias ===>", area, 'Desplazamiento===> ', despla);
-
     const alias = area ? area : getAlias(); // obtiene el alias actual si no se especifica
     table = table + alias // agrega la base de datos al alias
 
     if (!This.value.View[alias])
         return null
 
-    console.log("1) Db goto alias ===>", alias, This.value.View[alias], 'Desplazamiento===> ', despla);
 
 
     This.value.View[alias].eof = false;
@@ -3047,75 +3044,70 @@ export const goto = async (despla: string | number, area?: string, last?: boolea
     let data = [];
     let recno = 0;
 
+    if (typeof despla == "string") {  // desplazamiento top o bottom
+        despla = despla.toLowerCase().trim()
 
-    if (typeof despla == "number") {
-        recno = despla;
+        if (despla == 'top')
+            data = await localAlaSql(`SELECT top 1 *  FROM ${table} order by recno `);
 
-    } else {  // desplazamiento top o bottom
-        if (despla.toLowerCase() == "top") {
-            data = await localAlaSql(`SELECT top 1 recno  FROM ${table} order by recno desc`);
-        }
-        if (despla.toLowerCase() == "bottom") {
-            data = await localAlaSql(`SELECT top 1 recno  FROM ${table} order by recno `);
-        }
+        if (despla == 'bottom')
+            data = await localAlaSql(`SELECT top 1 *  FROM ${table} order by recno desc`)
 
 
-        if (!last) {
-
-            if (data.length == 0) { // No hay datos
-
+        if (data.length == 0) { // No hay datos
+            if (!last)
                 initAlias(alias) // Inicializa el alias si no hay datos
-                return [];
-            }
-            recno = data[0][recno];
-            // Asigna el Row del grid
-            This.value.View[alias].row = -1;
 
-            for (let row = 0; This.value.View[alias].recnoVal.lenght; row++) {
-                if (This.value.View[alias].recnoVal[row].recno == recno) {
-                    This.value.View[alias].row = row;
-                    break;
-                }
-                //          This.value.View[alias].row   = This.value.View[alias].recnoVal
-                //          This.value.View[alias].recno = This.value.nowValue(alias, 'recno', recno) // asignamos valores del alias posicionado
+            return [];
+        }
+        recno = data[0].recno;
+        // Asigna el Row del grid
+        This.value.View[alias].row = -1;
+
+        /*
+        for (let row = 0; This.value.View[alias].recnoVal.lenght; row++) {
+            if (This.value.View[alias].recnoVal[row].recno == recno) {
+                This.value.View[alias].row = row;
+                break;
             }
         }
+        */
+        const row = This.value.View[alias].recnoVal.find((ele) => ele.recno == recno);
+
+        This.value.View[alias].row = row.id;
+
+        This.value.View[alias].recno = recno;
+        This.value.View[alias].data = data[0];
+        bof(alias)
+        eof(alias)
+        return data[0]
     }
 
-    if (!last) {  // Si no hay hay datos en el recno solicitado
+    recno = despla;
+    if (recno == 0)
+        recno = This.value.View[alias].recno;
 
 
-        if (recno == 0) { // se posiciona en el registro actual
-            recno = This.value.View[alias].recno
+    data = await localAlaSql(` SELECT * FROM ${table}  where recno=?`, recno);
 
-            if (recno == 0) { // no has datos
-                await initAlias(alias) // Inicializa el alias si no hay datos
-                return [];
-            }
-
-        }
-        data = await localAlaSql(` SELECT * FROM ${table}  where recno=?`, recno);
-
-        // Lee datos del alias del registro actual
-        if (data.length > 0) {
-            This.value.View[alias].recno = data[0].recno;
-            const row = This.value.View[alias].recnoVal.find((ele) => ele.recno == recno);
-            This.value.View[alias].row = row.id;
-            This.value.View[alias].data = data[0]
-
-
-            bof(alias)
-            eof(alias)
-
-
-            return data[0] //This.value.View[alias].data;
-        }
-
-        initAlias(alias) // Inicializa el alias si no hay datos
+    if (data.length == 0) {
+        if (!last)
+            initAlias(alias) // Inicializa el alias si no hay datos
+        return [];
     }
-    return [];
+
+    This.value.View[alias].row = -1;
+
+    // Lee datos del alias del registro actual
+    This.value.View[alias].recno = data[0].recno;
+    const row = This.value.View[alias].recnoVal.find((ele) => ele.recno == recno);
+    This.value.View[alias].row = row.id;
+    This.value.View[alias].data = data[0]
+    bof(alias)
+    eof(alias)
+    return data[0]
+
 };
-
 
 /**
  * Inicializa el alias si no hay datos
@@ -3132,7 +3124,6 @@ export const initAlias = (alias: string): void => {
     This.value.View[alias].data = []; // No hay datos
 
 }
-
 
 //////////////////////////////////////////////
 // bof : Indica si esta a principo del archivo

@@ -55,7 +55,7 @@ export class captureForm extends FORM {
   /// /////////////////////////////////////
   // Metodos : afterSave y afterDelete 
   // Descripcion : funciones que se ejectutara despues de ejecutar
-  // botton de graba y borra.
+  // button de graba y borra.
   // Obs: estos metodos se heredan y se mofican desde el ThisForm
   ////////////////////////////////////////
 
@@ -90,26 +90,26 @@ export class captureForm extends FORM {
    */
   //public async inSave_old() { return true }
 
-  async showBt(botton: string, valor: boolean) {
+  async showBt(button: string, valor: boolean) {
 
-    if (this[botton].prop.Visible != valor) {
-      // await this.Form[botton].show.value(valor)
+    if (this[button].prop.Visible != valor) {
+      // await this.Form[button].show.value(valor)
 
-      console.log('shwoBt ', `ThisForm.${botton}.prop.Visible=${valor}`)
+      console.log('shwoBt ', `ThisForm.${button}.prop.Visible=${valor}`)
 
-      //      this.eventos.push(`ThisForm.${botton}.prop.Visible=${valor}`)
+      //      this.eventos.push(`ThisForm.${button}.prop.Visible=${valor}`)
 
-      const Id = this.Form[botton].prop.htmlId + '_main'
-      this.Form[botton].prop.Visible = !valor
+      const Id = this.Form[button].prop.htmlId + '_main'
+      this.Form[button].prop.Visible = !valor
       await nextTick()
-      this.Form[botton].prop.Visible = valor
-      // this.eventos.push(`ThisForm.${botton}.prop.Visible=${valor};` + `NextTick('ThisForm.${botton}.prop.Visible=${valor}')`)
+      this.Form[button].prop.Visible = valor
+      // this.eventos.push(`ThisForm.${button}.prop.Visible=${valor};` + `NextTick('ThisForm.${button}.prop.Visible=${valor}')`)
 
-      console.log('shwoBt ', this[botton].prop.Visible)
+      console.log('shwoBt ', this[button].prop.Visible)
 
       //await nextTick()
 
-      //this.eventos.push(`nextTick(function () {ThisForm.${botton}.prop.Visible=${valor}});`)
+      //this.eventos.push(`nextTick(function () {ThisForm.${button}.prop.Visible=${valor}});`)
 
       //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
 
