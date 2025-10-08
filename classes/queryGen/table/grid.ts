@@ -79,12 +79,12 @@ export class Grid extends GRID {
   //////////////////////////////////
   // Graba Tabla
   /////////////////////////////////
-  override async grabaTabla() {
+  override async saveTable() {
     let resultado = false
 
-    //  console.log('grabaTabla ala ===>', await localAlaSql(`select * from ${this.prop.RecordSource}`))
+    //  console.log('saveTable ala ===>', await localAlaSql(`select * from ${this.prop.RecordSource}`))
 
-    if (await super.grabaTabla()) {
+    if (await super.saveTable()) {
       await this.Form.openFilters() // actualiza la visa de querys
 
       /*  const m = {

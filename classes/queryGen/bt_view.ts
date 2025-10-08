@@ -28,7 +28,7 @@ export class bt_view extends COMPONENT {
 
   override async click() {
     this.prop.Visible = false
-    await this.Parent.Grid.grabaTabla()
+    await this.Parent.Grid.saveTable()
     this.Parent.nco_que.prop.sw_add = false
     this.Parent.nco_que.interactiveChange()
 

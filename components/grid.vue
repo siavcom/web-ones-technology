@@ -541,13 +541,6 @@ watch(
   { deep: false }
 );
 
-
-
-
-
-
-
-
 //////////////////////////////////////////////
 // This.Row
 /////////////////////////////////////////////////
@@ -562,12 +555,12 @@ watch(
     console.log('1) Grid watch Row = ', This.Row)
 
     if (This.Row == -1) {  // Recarga datos
-      console.log('2) dele row Grid watch Row = ', This.Row)
+      //console.log('2) dele row Grid watch Row = ', This.Row)
 
       //load_data = true
       await last() // carga el ultimo renglon
       //await loadData()
-      console.log('3) dele row Grid watch Row = ', This.Row)
+      // console.log('3) dele row Grid watch Row = ', This.Row)
       //restableceStatus()
 
       //if (scroll.dataPage.length > 0)
@@ -665,6 +658,15 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
 
   This.Row = Row;
   Column.value = ColumnName
+
+  // busca el ID del Row
+
+  const res = scroll.dataPage.find((ele) => ele.id == Row);
+  const Recno = res.recno
+
+  // actualiza el row
+  View[This.prop.RecordSource].recno = Recno
+  //  console.log('asignaRenglon Row=', Row, 'RecordSource=', This.prop.RecordSource, 'View=', View[This.prop.RecordSource].recno)
 
 }
 
@@ -1022,7 +1024,7 @@ const saveTable = async () => {
   //const { $MessageBox } = useNuxtApp()
   // console.log('Grid SaveTable', This.prop.Name, 'Map=', This.prop.Map)
 
-  eventos.push(This.prop.Map + '.grabaTabla()')
+  eventos.push(This.prop.Map + '.saveTable()')
 
   //load_data = true
 }

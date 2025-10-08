@@ -54,10 +54,10 @@ export class GRID extends COMPONENT {
 
     this.prop.Messages = [
       ["Actualizamos la tabla"], // 0
-      ["Actualizamos el registro"], // 1
+      ["Actualizamos el renglon"], // 1
       ["Datos actualizados de la tabla"], //2 ["Data updated of "], // 3
       ["Datos no actualizados de la tabla "], //3 No se grabaron los datos de la tabla"], // 4
-      ["Registro no actualizado de la tabla "], // 4
+      ["Renglon no actualizado de la tabla "], // 4
       ['Borramos el reglon '], //5
     ];
   }
@@ -293,12 +293,23 @@ export class GRID extends COMPONENT {
       // load_data = true
     }
   }
+  async saveRow() {
+    await this.saveTable(true)
+  }
+
   //////////////////////////////////
   // Graba Tabla
   // vis_cap: Vista de captura
   /////////////////////////////////
-  async grabaTabla() {
+  async saveTable(oneRow?: boolean) {
     let resultado = true;
+    let Recno = 0;
+    let updateType = 1;
+    if (oneRow) {
+      updateType = 0;
+      Recno = this.Row;
+
+    }
 
     /*
         for (let i = 0; i < this.main.length; i++) { // Recorre todos los estatus del grid
@@ -312,24 +323,30 @@ export class GRID extends COMPONENT {
         }
     */
 
-    if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6)
-      return false;
+    if (oneRow) {
+      if ((await MessageBox(this.prop.Messages[1][0], 4, "")) != 6)
+        return false;
+    }
+    else {
+      if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6)
+        return false;
+    }
 
     this.Form.prop.Visible = false;
     resultado = await tableUpdate(
-      1,
+      updateType,
       false,
       this.prop.RecordSource
     );
     if (resultado) {
       // Actualiza todos los registros
-      MessageBox(this.prop.Messages[2][0] + this.prop.Caption);
+      if (!oneRow)
+        MessageBox(this.prop.Messages[2][0] + this.prop.Caption);
     } else {
-      MessageBox(
-        this.prop.Messages[3][0] + this.prop.RecordSource,
-        16,
-        "ERROR"
-      );
+      if (oneRow)
+        MessageBox(this.prop.Messages[4][0] + this.prop.RecordSource, 16, "ERROR");
+      else
+        MessageBox(this.prop.Messages[3][0] + this.prop.RecordSource, 16, "ERROR");
     }
     this.Row = -1
     return resultado;

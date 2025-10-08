@@ -30,7 +30,7 @@ export class bt_delete extends COMPONENT {
 
   async click() {
     await localAlaSql(`delete from ${this.Parent.prop.RecordSource}`)
-    this.Parent.table.grabaTabla()
+    this.Parent.table.saveTable()
     this.prop.Visible = false
 
   }
