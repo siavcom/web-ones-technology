@@ -1,3 +1,21 @@
+/*
+************** Nitro Storage *******************     
+https://click.convertkit-mail.com/lmumr5503gtmhn6n54xt6h83x5400bghn382/25h2h9u337vlm7u8/aHR0cHM6Ly9taWNoYWVsbnRoaWVzc2VuLmNvbS93ZWVrbHktMjM4LW9jdG9iZXItMDg=
+
+Nitro, the server that Nuxt uses, comes with a very powerful key-value storage system:
+const storage = useStorage();
+
+// Save a value
+await storage.setItem('some:key', value);
+
+// Retrieve a value
+const item = await storage.getItem('some:key');
+***********************************************
+
+
+*/
+
+
 //import fs from '@/node_modules/file-system/file-system.js';
 
 ///////// Funciones nativas de NodeJS /////////

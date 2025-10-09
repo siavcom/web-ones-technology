@@ -307,7 +307,6 @@ export class GRID extends COMPONENT {
     let updateType = 1;
     if (oneRow) {
       updateType = 0;
-      Recno = this.Row;
 
     }
 

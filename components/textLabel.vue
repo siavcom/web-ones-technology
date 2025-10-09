@@ -567,9 +567,7 @@ watch(
 
   async (new_val: any, old_val: any) => {
 
-    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
-
-
+    //Se comenta 10/Oct/2025    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
 
     if (new_val == Value.value)
       return
