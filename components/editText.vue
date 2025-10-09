@@ -1761,8 +1761,7 @@ watch(
 watch(
   () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-
-    ReadOnly()
+    ReadOnly() //
 
   },
   { deep: false }
@@ -1771,11 +1770,12 @@ watch(
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers
 ////////////////////////////////////////////////////////
-const Valid = () => {
+const Valid = (forReadOnly?: boolean) => {
   const estilo = This.inputStyle
   const invalid = This.invalidInputStyle
   const readOnly = This.readOnlyInputStyle
-  ReadOnly()
+  if (!forReadOnly)
+    ReadOnly()
   if (This.prop.ReadOnly) {
     return
   }
@@ -1815,6 +1815,7 @@ const ReadOnly = () => {
     //Styles.inputStyle = { ...This.inputStyle }
     Styles.inputStyle.background = This.inputStyle.background
     Styles.inputStyle.opacity = This.inputStyle.opacity
+    Valid(true)
   }
 }
 

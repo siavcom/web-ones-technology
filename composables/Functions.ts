@@ -227,7 +227,7 @@ export function isObject(value: null | undefined | object): boolean {
  * @param {number} [searchColumn] - The column to search in if the array contains arrays.
  * @returns {number} - The position of the found element, or 0 if not found.
  */
-export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, numElements: number = array.length, searchColumn?: number): number {
+export function ascan<T>(array: T[], searchValue: string | number | boolean, startElement: number = 1, numElements: number = array.length, searchColumn?: number): number {
 
 
   if (!Array.isArray(array))
@@ -259,10 +259,14 @@ export function ascan<T>(array: T[], searchValue: T, startElement: number = 1, n
       }
     }
   } else {
-    searchValue = searchValue.toUpperCase()
+    if (typeof searchValue == 'string')
+      searchValue = searchValue.toUpperCase()
+
     for (let i = startIndex; i < endIndex; i++) {
 
-      if (array[i].toUpperCase() == searchValue) {
+      if (typeof array[i] == 'string')
+        array[i] = array[i].toUpperCase()
+      if (array[i] == searchValue) {
         return i + 1;
       }
     }
@@ -348,13 +352,22 @@ export const left = (texto: string, lon: number): string => {
  * @returns {string} - The extracted substring.
  */
 
-export const substr = (texto: string, first: number, lon?: number): string => {
+export const substr_old = (texto: string, first: number, lon?: number): string => {
   first = first - 1;
   if (!lon)
     lon = texto.length - first;
 
   return texto.substring(first, lon);
 };
+
+export function substr(cadena: string, inicio: number, longitud?: number): string {
+  // Ajusta el índice para que sea base 0, como en JavaScript.
+  const inicioAjustado = inicio - 1;
+
+  // Utiliza el método substr() de JavaScript para extraer la subcadena.
+  // El método substr() ya maneja los casos de longitud opcional.
+  return cadena.substring(inicioAjustado, longitud);
+}
 
 
 /**

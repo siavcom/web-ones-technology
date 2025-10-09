@@ -37,7 +37,7 @@ export class COMPONENT {
   textLabel = ""
   sw_translate = true
   Id = ''
-
+  Value: string | number | boolean | Date | null = ''
   prop = {
     autoLoad: false,
     Autofocus: false,
@@ -143,7 +143,7 @@ export class COMPONENT {
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
     Valid: true,
-    Value: '', // MaybeRefOrGetter<string | number | boolean | Date | null>("") >, // Valor del componente
+    Value: this.Value, // MaybeRefOrGetter<string | number | boolean | Date | null>("") >, // Valor del componente
     ValidOnRead: false, // Si es verdadero, cuando cambia se lee su valor desde AlaSql manda a la rutina de validacion del componente
     Visible: true,
 
@@ -202,19 +202,17 @@ export class COMPONENT {
     borderBottomColor: 'black',
     borderLeftColor: 'black',
     opacity: '1'
-
   }
 
   readOnlyInputStyle = {
-
     background: '#f4f7d9ff', //'#d4f0eb',
     opacity: '1' //'0.7'
   }
 
   invalidInputStyle = {
     border: '1px solid red',
-    background: 'rgba(247, 230, 230, 1)'
-
+    background: 'rgba(247, 230, 230, 1)',
+    textTransform: 'none', //    none,capitalize,uppercase,lowercase
   }
 
   style = {

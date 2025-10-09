@@ -3033,7 +3033,7 @@ export const goto = async (despla: string | number, area?: string, last?: boolea
     const alias = area ? area : getAlias(); // obtiene el alias actual si no se especifica
     table = table + alias // agrega la base de datos al alias
 
-    if (!This.value.View[alias])
+    if (!This.value.View[alias])  // No hay alias
         return null
 
 
@@ -3162,7 +3162,7 @@ export const oldValue = async (field: string, alias?: string) => {
     }
 
     const recno = This.value.View[alias].recno
-    const data = await localAlaSql(`select Last.${field} from ${alias} where recno=${recno}`)
+    const data = await localAlaSql(`select ${field} from Last.${alias} where recno=${recno}`)
 
     if (data.length > 0)
         return data[0][field]
