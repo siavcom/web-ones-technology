@@ -1149,53 +1149,56 @@ const ColumnWidth = (columnas: string) => {
 
 }
 
-
-// $event.charCode == 13 // Down Key  
 const nextElement = async () => {  //clickReturn
 
-  //  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
-
-  await asignaValue()
-  await emitValue() // 
-  if (!This.prop.Valid) {
-    return
-  }
   const TabIndex = This.prop.TabIndex
-  let lastIndex = 999999
+  let lastIndex = 9999999
   let nextFocus = ''
 
+  if (This.Parent != null)
+    if (This.Parent) {
+      console.clear()
 
-  for (const element of This.Parent.main) {
 
+      for (const element in This.Parent) { //.main
 
-    if (This.Parent[element].prop && This.Parent[element].prop.Visible &&
-      !This.Parent[element].prop.Disabled && !This.Parent[element].prop.ReadOnly) {
-      const Tab = This.Parent[element].prop.TabIndex
+        if (This.Parent[element] != undefined && This.Parent[element].prop
+          && !This.Parent[element].prop.Disabled
+          && !This.Parent[element].prop.ReadOnly
+          && This.Parent[element].prop.Visible) {
+          const Tab = This.Parent[element].prop.TabIndex
+          //          console.log('EditText nextElement element=====>', element, This.Parent[element].prop.Name,
+          //            'TabIndex=', Tab, TabIndex, lastIndex)
 
-      if (Tab > TabIndex && Tab < lastIndex) {
-        lastIndex = Tab
-        nextFocus = This.Parent[element].prop.htmlId
-        break
+          if (
+            This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+            lastIndex = Tab
+            nextFocus = This.Parent[element].prop.htmlId
+            console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+            break
+          }
+        }
       }
     }
+  if (nextFocus == '') { // No encontro siguiente elemento
+    console.log('No encontro siguiente elemento', This.prop.Name)
+    return
   }
-
-
+  //  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
   // $event.preventDefault();
   // Obtienee elemento a hacer el focus
   const nextElement = document.getElementById(nextFocus);
   // console.log('EditText keyPres Name',this.prop.Name=', setElement)
   if (nextElement) {
-    // console.log('clickReturn nextFocus =', nextFocus)
+    //  console.log('clickReturn nextFocus =', nextFocus)
     nextElement.focus()
-    nextElement.focus()
+    //  nextElement.focus()
 
     //$event.keycode = 9;
     return // $event.keycode;
   }
 
 }
-
 
 
 
@@ -1539,6 +1542,22 @@ watch(
   },
   { deep: false }
 );
+
+/////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.nextFocus,
+  () => {
+    console.log('NextFocus', This.prop.Name, This.prop.nextFocus)
+    if (This.prop.nextFocus) {
+      nextElement()
+      This.prop.nextFocus = false
+    }
+  },
+  { deep: false }
+);
+
 
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers

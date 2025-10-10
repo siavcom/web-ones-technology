@@ -364,15 +364,21 @@ watch(Valid, async (new_val) => {
 
   if (ThisForm.prop.BaseClass !== 'CaptureForm')
     return
-
-  console.log('Checando valid ', Valid, Valid.length)
-
+  console.clear()
+  console.log('Checando valid ', Valid, Valid.length, ThisForm.main)
+  /*
+    for (const i in ThisForm.main) {
+      const comp = ThisForm.main[i]
+      const Componente = ThisForm[comp]
+      console.log('Checando valid Componente ', comp, Componente.prop.Valid)
+    }
+  */
   const lon = Valid.length
   const This = this
   for (let i = 0; i < Valid.length; i++)
     if (!Valid[i].value) {
-      console.clear()
-      console.log('1) Checando valid False', i, Valid[i].value, 'Valid=', Valid)
+
+      console.log('1) Checando valid False', ThisForm.ValidName[i], Valid[i].value, 'Valid=', Valid)
       ThisForm.bt_modify.prop.Visible = false
       ThisForm.bt_delete.prop.Visible = false
       ThisForm.bt_save.prop.Visible = false

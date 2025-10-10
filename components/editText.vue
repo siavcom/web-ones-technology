@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -84,7 +84,7 @@
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="lostFocus" @click="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska"
+      @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska"
       @maska="onMaska">
     <!--v-on:keyup.enter="clickReturn()" @click.capture="onClick"-->
 
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1109,31 +1109,38 @@ const keyPress = ($event: {
 const nextElement = async () => {  //clickReturn
 
   const TabIndex = This.prop.TabIndex
-  let lastIndex = 999999
+  let lastIndex = 9999999
   let nextFocus = ''
 
   if (This.Parent != null)
-    if (This.Parent)
-      console.log('EditText nextElement Name=', This.prop.Name, 'This.Parent=', This.Parent)
+    if (This.Parent) {
+      console.clear()
 
 
-  for (const element in This.Parent) { //.main
-    //console.log('EditText nextElement element=', element)
-    if (This.Parent[element] != undefined && This.Parent[element].prop && This.Parent[element].prop.Visible &&
-      !This.Parent[element].prop.Disabled) {
-      const Tab = This.Parent[element].prop.TabIndex
+      for (const element in This.Parent) { //.main
 
-      if (Tab > TabIndex && Tab < lastIndex) {
-        lastIndex = Tab
-        nextFocus = This.Parent[element].prop.htmlId
-        break
+        if (This.Parent[element] != undefined && This.Parent[element].prop
+          && !This.Parent[element].prop.Disabled
+          && !This.Parent[element].prop.ReadOnly
+          && This.Parent[element].prop.Visible) {
+          const Tab = This.Parent[element].prop.TabIndex
+          //          console.log('EditText nextElement element=====>', element, This.Parent[element].prop.Name,
+          //            'TabIndex=', Tab, TabIndex, lastIndex)
+
+          if (
+            This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+            lastIndex = Tab
+            nextFocus = This.Parent[element].prop.htmlId
+            console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+            break
+          }
+        }
       }
     }
-  }
-
-  if (nextFocus == '')
+  if (nextFocus == '') { // No encontro siguiente elemento
+    console.log('No encontro siguiente elemento', This.prop.Name)
     return
-
+  }
   //  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
   // $event.preventDefault();
   // Obtienee elemento a hacer el focus
@@ -1195,9 +1202,8 @@ const onFocus = async () => {
   // al hacer el appendRow pone los ReadOnly en false en todos los componentes del grid
 
 
-  if (This.prop.ReadOnly || This.prop.Disabled) {
-
-    //thisElement.next(':input').focus();
+  if (This.prop.Disabled) {
+    This.prop.Valid = true
     This.prop.Status = 'A'
     return
   }
@@ -1222,6 +1228,13 @@ const onFocus = async () => {
   }
 
   focusIn.value = 1  // cambia el valor en el input number 
+
+  if (This.prop.ReadOnly) { //  10/Octubre/2025
+    await nextTick()
+    This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+    return
+  }
+
   This.prop.Focus = false
   This.prop.First = false
 
@@ -1385,6 +1398,7 @@ watch(
 watch(
   () => This.prop.nextFocus,
   () => {
+    console.log('NextFocus', This.prop.Name, This.prop.nextFocus)
     if (This.prop.nextFocus) {
       nextElement()
       This.prop.nextFocus = false
@@ -1392,8 +1406,6 @@ watch(
   },
   { deep: false }
 );
-
-
 
 
 /////////////////////////////////////////////////////////////////////
@@ -1794,7 +1806,7 @@ const Valid = (forReadOnly?: boolean) => {
 
     Styles.inputStyle.border = invalid.border
     Styles.inputStyle.background = invalid.background
-    console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
+    //   console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
     if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = false
   }

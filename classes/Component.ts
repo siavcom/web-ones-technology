@@ -30,6 +30,7 @@ export class COMPONENT {
   Position: [] = []; // Posicion del componente
   block: [] = [] // bloque del componentes
   Valid = ref([]) //Validaciones de componentes hijos
+  ValidName = [] //Validaciones de componentes hijos
   refValid = -1
   error = false
   sw_init = false
@@ -101,7 +102,7 @@ export class COMPONENT {
     Key: 0,
 
     Map: "", // Nos indica el mapSource del componente
-    MaxLength: 254,
+    MaxLength: 254,  // Maxima longitud del componente
     // Datos numericos
     Max: "999999999",
     Messages: [[]],   // Mensaje a emitir en este componente
@@ -330,10 +331,15 @@ export class COMPONENT {
 
       // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
-      if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer' && !Comp.prop.updateKey && Comp.prop.ControlSource && Comp.prop.ControlSource.length > 0 && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
+      if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer'
+        && !Comp.prop.updateKey && Comp.prop.ControlSource
+        && (Comp.prop.BaseClass == "editText" || Comp.prop.BaseClass == 'comboBox')
+        && Comp.prop.ControlSource.length > 0
+        && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
         // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
         this.Valid.value.push(ref(this[comp].prop.Valid))
+        this.ValidName.push(this[comp].prop.Name)
         Comp.refValid = this.Valid.value.length - 1
       }
     }
@@ -683,9 +689,7 @@ export class COMPONENT {
    * @returns {Promise<never>}
    */
 
-  public async click() {
-
-  }
+  public async click() { }
 
   /**
    * When VFP
@@ -694,7 +698,15 @@ export class COMPONENT {
    * @returns boolean
    */
   public async when() {
+
+    if (this.prop.ReadOnly) {
+      this.prop.Valid = true
+      this.prop.nextFocus = true
+      return false
+    } // End If 
     this.old_value = this.prop.Value
+
+
     if (!this.prop.ReadOnly)
       await this.gotFocus()
 
