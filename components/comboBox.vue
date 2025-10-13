@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
 
 
@@ -1157,7 +1157,7 @@ const nextElement = async () => {  //clickReturn
 
   if (This.Parent != null)
     if (This.Parent) {
-      console.clear()
+      //console.clear()
 
 
       for (const element in This.Parent) { //.main
@@ -1549,7 +1549,7 @@ watch(
 watch(
   () => This.prop.nextFocus,
   () => {
-    console.log('NextFocus', This.prop.Name, This.prop.nextFocus)
+    // console.log('watch NextFocus', This.prop.Name, This.prop.nextFocus)
     if (This.prop.nextFocus) {
       nextElement()
       This.prop.nextFocus = false

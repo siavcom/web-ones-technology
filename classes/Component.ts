@@ -338,9 +338,13 @@ export class COMPONENT {
         && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
         // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
-        this.Valid.value.push(ref(this[comp].prop.Valid))
-        this.ValidName.push(this[comp].prop.Name)
-        Comp.refValid = this.Valid.value.length - 1
+
+        if (Comp.prop.Capture) {
+          this.Valid.value.push(ref(this[comp].prop.Valid))
+          this.ValidName[this.Valid.value.length - 1] = this[comp].prop.Name
+
+          Comp.refValid = this.Valid.value.length - 1
+        }
       }
     }
 
@@ -953,10 +957,11 @@ export class COMPONENT {
       // console.log('1) RemoveObject', this.block[i])
       // Recorre todos los bloques
       //for (let j = 0; j < this.block[i].component.length; j++) {
+      console.log('1) RemoveObject', this.block[i])
       for (const objeto in this.block[i].component) {
 
-        //  console.log('2.0 RemoveObject', objeto, this.block[i].component[objeto].prop.Name, nom_obj)
-        if (this.block[i].component[objeto].prop.Name == nom_obj) {
+        if (this.block[i].component[objeto] == undefined || this.block[i].component[objeto].prop.Name == nom_obj) {
+          console.log('2.0 RemoveObject component', this.prop.Name, 'Objeto=', objeto)
 
           //    console.log('2.1 RemoveObject', this.block[i].component[objeto].prop.Name)
           delete this.block[i].component[objeto]

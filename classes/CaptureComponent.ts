@@ -62,4 +62,22 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
     return this.prop.Valid;
   }
+
+  async LostFocus() {
+    let m = {}   // inicializamos m
+    const RecordSource = this.Parent.prop.RecordSource
+    // Si no es un registro nuevo o es solo lectura
+    if (!RecordSource.key_pri || this.prop.ReadOnly)
+      return
+
+    const Record = await scatter(['key_pri'], RecordSource)
+    if (this.Form.prop.key == 27 || (Record.key_pri && (this.Form.prop.key == 19 || this.Form.prop.key == 15 || this.Form.prop.key == 5))) {
+      // si da un esc O flecha hacia atras
+      return true
+
+    } // End If 
+
+    return this.Form.bt_saveClick()
+  }   // Fin Procedure
+
 }

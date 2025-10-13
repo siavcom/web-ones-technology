@@ -477,6 +477,10 @@ export class captureForm extends FORM {
   });
 
   public async bt_saveClick() {
+    if (this.prop.RecordSource.length < 2)
+      return
+
+    const Key_pri = await goto(0, this.prop.RecordSource)
 
     if (this.bt_save.prop.Disabled)
       return;
@@ -507,6 +511,13 @@ export class captureForm extends FORM {
       }
     }
     await nextTick()
+    if (Key_pri.recno == 0) {
+      this.bt_save.prop.Disabled = false
+      this.bt_save.prop.Visible = true
+      return
+    }
+
+
 
     this.bt_save.prop.Visible = false;
     const bt_delete = this.bt_delete.prop.Visible
