@@ -208,8 +208,6 @@ export class captureForm extends FORM {
         else
           m[comp] = this[comp].prop.Value;
       }
-
-
     }
 
     // Termino la validacion de llaves principales
@@ -480,51 +478,30 @@ export class captureForm extends FORM {
     if (this.prop.RecordSource.length < 2)
       return
 
-    const Key_pri = await goto(0, this.prop.RecordSource)
+    this.bt_save.prop.Visible = false;
 
-    if (this.bt_save.prop.Disabled)
-      return;
     let resultado = false
-    let vistaCaptura = goto(0, this.prop.RecordSource)
-
-    let Recno = vistaCaptura.recno
 
     // Recorremos toda la forma y revisamos si estan validados
     for (const comp of this.main) {
-      //  for (const i in this.Parent.main) {
-      //    const comp: string = this.Parent.main[i];
-
-      // Checa si todos esta validados
-
       if (this[comp].prop.Capture && !this[comp].prop.ReadOnly && this[comp].prop.Visible && !this[comp].prop.Valid) {
-
+        // tratamos de validar 
         if (!(await this[comp].valid())) {
-          //console.log('2) CaptureForm bt_save click() Invalid comp=', comp)
-          if (!this.prop.Disabled)
-            this.prop.Visible = true;
-
+          console.warn('CaptureForm bt_save click() Invalid comp=', comp)
+          this.bt_save.prop.Visible = true;
           await this[comp].setFocus()
-
           return;
-
         }
       }
     }
     await nextTick()
-    if (Key_pri.recno == 0) {
-      this.bt_save.prop.Disabled = false
-      this.bt_save.prop.Visible = true
-      return
-    }
+    //const Registro = await goto(0, this.prop.RecordSource)
 
-
-
-    this.bt_save.prop.Visible = false;
     const bt_delete = this.bt_delete.prop.Visible
     this.bt_delete.prop.Visible = false;
 
     if (await MessageBox(this.bt_save.prop.Caption, 4, "") == 6) {
-      //console.log("CaptureForm bt_save");
+
       const result = await tableUpdate(
         0,
         false,
@@ -543,9 +520,10 @@ export class captureForm extends FORM {
         this.Recno = Recno
       }
     }
-
     this.bt_save.prop.Visible = true;
-    this.bt_delete.prop.Visible = bt_delete
+    const key_pri = await scatter(['key_pri'], this.prop.RecordSource)
+    if (key_pri > 0)
+      this.bt_delete.prop.Visible = bt_delete
     return resultado;
   }
 
