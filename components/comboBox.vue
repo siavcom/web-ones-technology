@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,10 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
-
-
-
+    }}</div>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -118,7 +115,6 @@
 
 <script setup lang="ts">
 // "update:Key", "update:Focus"
-
 
 const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
 ///////////////////////////////////////
@@ -241,6 +237,7 @@ const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 //let First = false
 //let Focus = false
 let focusIn = false
+let Evento = ''
 const MultiSelect = ref(props.prop.MultiSelect)
 const Styles = reactive(
   {
@@ -785,7 +782,6 @@ const when = async (click?: boolean) => {
   if (focusIn)
     return
 
-
   if (This.Parent.BaseClass == "grid") {
     const grid = This.Parent
 
@@ -801,19 +797,8 @@ const when = async (click?: boolean) => {
 
   focusIn = true
 
-
   // No se permite el focus si es solo lectura
   if (This.prop.ReadOnly || This.prop.Disabled) {
-    // console.log('editText onFocus readOnly Name=', This.prop.Name, 'thisElement=', thisElement)
-    /*
-    if (!This.prop.Disabled) {
-      This.prop.Disabled = true
-      setTimeout(function () {
-        This.prop.Disabled = false
-
-      }, 100);
-    }
-    */
     This.prop.Status = 'A'
     return
   }
@@ -825,12 +810,14 @@ const when = async (click?: boolean) => {
     //    This.Form.eventos.push(This.prop.Map + '.when()')
   }
 
-  await nextTick()
+  // await nextTick()
   //This.Form.eventos.push(This.prop.Map + '.when()')
-  This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
-  console.log('when comboBox =', This.prop.Name, 'Eventos=', This.Form.eventos)
-  if (click)
-    This.Form.eventos.push(This.prop.Map + '.click()')
+  //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+  console.log('when comboBox =', This.prop.Name)
+  Evento = 'when'
+  ChecaEventos()
+  //if (click)
+  //  This.Form.eventos.push(This.prop.Map + '.click()')
 
 }
 
@@ -1549,7 +1536,7 @@ watch(
 watch(
   () => This.prop.nextFocus,
   () => {
-    // console.log('watch NextFocus', This.prop.Name, This.prop.nextFocus)
+    console.log('watch NextFocus', This.prop.Name, This.prop.nextFocus)
     if (This.prop.nextFocus) {
       nextElement()
       This.prop.nextFocus = false
@@ -1557,6 +1544,39 @@ watch(
   },
   { deep: false }
 );
+
+watch(
+  () => This.Form.estatus,
+  async () => {
+    if (Evento.length > 2)
+      ChecaEventos()
+  }, { deep: true }
+);
+
+const ChecaEventos = async () => {
+
+  for (const comp in This.Form.estatus) {
+    if (This.Form.estatus[comp] != 'A') {
+      //    console.warn('1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
+      return
+    }
+  }
+
+  // console.log('comboBox Name=', This.prop.Name, 'Ejecutara Evento =', Evento)
+
+  if (Evento == 'when') {
+    Evento = ''
+    This.prop.ReadOnly = !await This.when()
+    if (!This.prop.ReadOnly)
+      This.click()
+  }
+
+}
+
+
+
+
+
 
 
 ////////////////////////////////////////////////////////

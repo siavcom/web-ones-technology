@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -263,6 +263,7 @@ const containerStyle = reactive({ ...This.containerStyle })
 
 const invalidInputStyle = reactive({ ...This.invalidInputStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
+let Evento = ''
 
 //console.log('EditText readOnlyInputStyle=', readOnlyInputStyle)
 
@@ -546,12 +547,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       await This.Form.db.updateCampo(newValor, props.prop.ControlSource, Recno)
       // Value.value = Valor
     }
-
-    //  This.prop.Valid = true
-
+    console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       // console.log('isValid', isValid, '2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
-
       Value.value = newValor
 
       // console.log('----------------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'newValor=', newValor, 'This.prop.Value = ', This.prop.Value)
@@ -1164,8 +1162,8 @@ const nextElement = async () => {  //clickReturn
  */
 
 const onClick = () => {
-  // console.log('EditText onClick Name', This.prop.Name)
-  This.Form.eventos.push(This.prop.Map + '.click()')
+  onFocus()
+  //This.Form.eventos.push(This.prop.Map + '.click()')
 
 }
 
@@ -1230,8 +1228,11 @@ const onFocus = async () => {
   focusIn.value = 1  // cambia el valor en el input number 
 
   if (This.prop.ReadOnly) { //  10/Octubre/2025
-    await nextTick()
-    This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+    //await nextTick()
+    //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+    Evento = 'when'
+    ChecaEventos()
+
     return
   }
 
@@ -1278,15 +1279,13 @@ const onFocus = async () => {
 
   if (focusIn.value == 1) { // sw_when 11/Ags/2025
 
-    await nextTick()
+    // await nextTick()
 
-    This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+    // This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+    Evento = 'when'
+    ChecaEventos()
 
-    /*      if (Clicked) {
-            This.Form.eventos.push(This.prop.Map + '.click()')
-            console.log('1)====> when cam_dat=', This.prop.Name, 'Clicked=', Clicked)
-          }
-      */
+
     //   })
     // select() // 8/Ags/2025 Se quito 
 
@@ -1778,6 +1777,48 @@ watch(
   },
   { deep: false }
 );
+
+watch(
+  () => This.Form.estatus,
+  async () => {
+    if (Evento.length > 2)
+      ChecaEventos()
+  }, { deep: true }
+);
+
+const ChecaEventos = async () => {
+
+  for (const comp in This.Form.estatus) {
+    if (This.Form.estatus[comp] != 'A') {
+      //    console.warn('1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
+      return
+    }
+  }
+
+  // console.log('comboBox Name=', This.prop.Name, 'Ejecutara Evento =', Evento)
+
+  if (Evento == 'when') {
+    Evento = ''
+    This.prop.ReadOnly = !await This.when()
+    if (!This.prop.ReadOnly)
+      This.click()
+  }
+
+  if (Evento == 'click') {
+    Evento = ''
+    This.click()
+  }
+
+}
+
+
+
+
+
+
+
+
+
 
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers

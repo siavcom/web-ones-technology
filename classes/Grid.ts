@@ -59,6 +59,8 @@ export class GRID extends COMPONENT {
       ["Datos no actualizados de la tabla "], //3 No se grabaron los datos de la tabla"], // 4
       ["Renglon no actualizado de la tabla "], // 4
       ['Borramos el reglon '], //5
+      ["No permite datos en blanco"], //6
+      ["Dato duplicado"], //7
     ];
   }
 
@@ -129,7 +131,7 @@ export class GRID extends COMPONENT {
     //    this.prop.RecordSource=RecordSource
     this.prop.Visible = true;
     ///////////////////
-    console.log("Grid Valid ", this.prop);
+    //  console.log("Grid Valid ", this.prop);
 
     return this.prop.Valid;
   }
@@ -139,29 +141,24 @@ export class GRID extends COMPONENT {
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
   /////////////////////////////////////////////////////
 
-  public async validColumn(column: {}): Promise<boolean> {
+  public async validColumn(refColumn: void): Promise<boolean> {
     //const column = this[name];
-
+    //   console.log("Column valid refColumn=", refColumn)
+    const column = refColumn.value
     if (column.prop.updateKey) {
-      console.log("Column valid updateKey ", column.prop.Name);
+
       if (
         typeof column.prop.Value == "string" &&
         column.prop.Value.trim().length == 0
       ) {
-        column.prop.ErrorMessage = "No permite datos en blanco";
-        //column.prop.ShowError = true;
-        column.prop.Valid = false;
+        column.prop.ErrorMessage = this.prop.Messages[6];
         return false;
       }
       if (!(await this.validKey(column.prop.name, column.Recno))) {
-        column.prop.ErrorMessage = "Dato duplicado";
-        //column.prop.ShowError = true;
-        column.prop.Valid = false;
+        column.prop.ErrorMessage = this.prop.Messages[7];
         return false;
       }
     }
-    console.log("Column valid ", column.prop.Name);
-    column.prop.Valid = true;
     return true;
   }
 
@@ -261,7 +258,9 @@ export class GRID extends COMPONENT {
 
     if (!mem) mem = {};
 
-    let m = appendM(mem, Public.value)
+    let m = appendM(mem, this.Form.mPublic)
+    console.log('appendRow m=', m)
+
 
     for (const comp of this.Form.main) {
       if (!m[comp])

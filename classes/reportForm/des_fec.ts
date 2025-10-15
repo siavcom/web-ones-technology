@@ -21,7 +21,7 @@ export class des_fec extends COMPONENT {
     // console.log('1) addInterval', addInterval('2025-03-01', "day", -29))
     const dias = +this.Form.mPublic.fpo_pge.slice(8, 10) - 1
     this.prop.Value = addDay(this.Form.mPublic.fpo_pge, -dias); // resta dias
-    console.log('4) des_fec stringToDate des_fec=', this.prop.Value, 'fpo_pge=', this.Form.mPublic.fpo_pge)
+    //console.log('4) des_fec stringToDate des_fec=', this.prop.Value, 'fpo_pge=', this.Form.mPublic.fpo_pge)
 
   }
   override async valid() {

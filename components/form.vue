@@ -326,7 +326,6 @@ watch(
       return
 
     for (const comp in ThisForm.estatus) {
-
       if (ThisForm.estatus[comp] != 'A') {
         console.warn('1) Form.vue Watch  Eventos Componente en proceso=', comp, 'Eventos=', ThisForm.eventos)
         return

@@ -177,7 +177,9 @@ export class captureForm extends FORM {
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
 
     thisComp.prop.Valid = true;
-    const { ...m } = Public.value;
+    //const { ...m } = Public.value;
+    const m = this.Form.mPublic
+
 
     if (this.First == null)
       this.First = this.main.length > 0 ? this[this.main[0]] : null
@@ -513,11 +515,14 @@ export class captureForm extends FORM {
         resultado = true
       } else {
         // actualiza datos porque hubo error de grabacion
-        console.log('bt_saveClick',)
-        await requery(this.prop.RecordSource)
-        const Recno = this.Recno
-        this.Recno = 0
-        this.Recno = Recno
+        console.error('Save error bt_saveClick',)
+        const m = await scatter(['key_pri', 'recno'], this.prop.RecordSource)
+        if (m.key_pri > 0) { // si es un registro existente 
+          await requery(this.prop.RecordSource)
+
+          this.Recno = 0
+          this.Recno = m.recno
+        }
       }
     }
     this.bt_save.prop.Visible = true;

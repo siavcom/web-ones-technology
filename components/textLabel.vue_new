@@ -43,6 +43,9 @@
 
 <script setup lang="ts">
 
+
+// Ultima modificacion 10/Oct/2025  watch This.prop.Value
+
 const emit = defineEmits(["update", "update:checkValue"]);
 
 ///////////////////////////////////////
@@ -566,8 +569,8 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
 
   async (new_val: any, old_val: any) => {
-
-    //Se comenta 10/Oct/2025    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
+//Se comenta 10/Oct/2025  
+      if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
 
     if (new_val == Value.value)
       return

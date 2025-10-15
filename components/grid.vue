@@ -276,6 +276,7 @@ const Error = ref(false)
 
 //let First = ''
 let firstElement = ''
+let RecordSource = This.prop.RecordSource
 
 //const Focus = ref(false)
 /*
@@ -443,6 +444,8 @@ watch(
 
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
+// Cabia el estatus del grid a Activo si todo ya no esta en proceso
+//////////////////////////////////////////////
 watch(
   () => compStatus,
   (new_val, old_val) => {
@@ -480,18 +483,16 @@ watch(
 watch(
   () => compValid,
   (new_val, old_val) => {
-    // console.log('1)  Grid watch compValid Row=', This.Row, RowInsert)
+    console.log('1)  Grid watch compValid Row=', This.Row, RowInsert)
     for (const comp in compValid) { // Recorre todos los estatus del grid
-      if (!compValid[comp] && !This[comp].prop.Disabled && This[comp].prop.Visible) { // Si alguno no esta validado
-        console.log('-- Grid watch compValid NO validado comp = ', This[comp].prop.Name, 'Disabled', This[comp].prop.Disabled)
 
-        if (This.prop.Valid)
-          This.prop.Valid = false
-
+      if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && This[comp].prop.Visible && !This[comp].prop.Valid) { // Si alguno no esta validado
+        // console.log('2) -- Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
+        This.prop.Valid = false
         return
       }
-      if (!compValid[comp])
-        compValid[comp] = true
+      //  if (!compValid[comp])
+      //    compValid[comp] = true
     }
     This.prop.Valid = true
     //console.log('------>>>>>>  Grid watch compValid Vaid=', This.prop.Valid, 'Row=', This.Row,)
@@ -504,11 +505,11 @@ watch(
 ///////////////////////////////////////////////
 watch(
   () => This.prop.RecordSource,
-  async (RecordSource, old_val) => {
-    console.log('1) Grid watch RecordSource RecordSource=', RecordSource, 'Visible=', This.prop.Visible)
+  async (RSource, old_val) => {
+    console.log('1) Grid watch RecordSource RecordSource=', RSource, 'Visible=', This.prop.Visible)
     // This.prop.Visible && 
     if (This.prop.RecordSource.length > 1) {
-
+      RecordSource = This.prop.RecordSource
       loadGrid()
     }
   }
@@ -665,7 +666,9 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
   const Recno = res.recno
 
   // actualiza el row
-  View[This.prop.RecordSource].recno = Recno
+  goto(Recno, RecordSource)
+
+  // View[This.prop.RecordSource].recno = Recno
   //  console.log('asignaRenglon Row=', Row, 'RecordSource=', This.prop.RecordSource, 'View=', View[This.prop.RecordSource].recno)
 
 }
@@ -909,6 +912,7 @@ const last = async (insert?: boolean) => {
 }
 
 const appendRow = async () => {
+  await last()
   scroll.controls = false
   if (This.Row >= 0) {
     for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid

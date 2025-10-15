@@ -136,17 +136,48 @@ export class FORM extends COMPONENT {
 
     initSql(ref(this))  // Inicializa la conexion al SQLServer
 
-    // const { Var, dialect } = storeToRefs(this.db.session); // variables publicas
-    const { Var, dialect } = storeToRefs(this.Sql.session); // variables publicas
+    const { dialect } = storeToRefs(this.Sql.session);
 
-    for (const comp in Public.value)
-      if (Var.value[comp])
+    // Variables publicas
+    const session = Session()
+    const { Var } = storeToRefs(session) // leemos variables publicas desde la base de datos
+
+    Public.value.des_mon1[1] = Var.value.de1_pge
+    Public.value.des_mon1[2] = Var.value.de2_pge
+    Public.value.des_mon1[3] = Var.value.de3_pge
+    Public.value.des_mon1[4] = Var.value.de4_pge
+    Public.value.des_mon1[5] = Var.value.de5_pge
+
+    Public.value.pro_mon1[1] = Var.value.pr1_pge
+    Public.value.pro_mon1[2] = Var.value.pr2_pge
+    Public.value.pro_mon1[3] = Var.value.pr3_pge
+    Public.value.pro_mon1[4] = Var.value.pr4_pge
+    Public.value.pro_mon1[5] = Var.value.pr5_pge
+
+    Public.value.des_imp1[0] = Var.value.di0_pge
+    Public.value.des_imp1[1] = Var.value.di1_pge
+    Public.value.des_imp1[2] = Var.value.di2_pge
+    Public.value.des_imp1[3] = Var.value.di3_pge
+    Public.value.des_imp1[4] = Var.value.di4_pge
+    Public.value.des_imp1[5] = Var.value.di5_pge
+
+    //        dec_mon1: ["", "", "", "", ""],
+    Public.value.val_mon1[1] = Var.value.va1_pge
+    Public.value.val_mon1[2] = Var.value.va2_pge
+    Public.value.val_mon1[3] = Var.value.va3_pge
+    Public.value.val_mon1[4] = Var.value.va4_pge
+    Public.value.val_mon1[5] = Var.value.va5_pge
+
+    for (const comp in Public.value) {
+      if (Var.value[comp]) {
         Public.value[comp] = Var.value[comp];
 
+      }
+    }
+    this.mPublic = { ...Public.value }
 
-    this.mPublic = Public.value;
     this.dialect = dialect.value;
-    console.log("ThisForm :", this.prop.Name, "dialect=", this.dialect, 'Public=', Public.value, 'this.mPublic=', this.mPublic);
+    console.log("ThisForm :", this.prop.Name, "dialect=", this.dialect, 'this.mPublic=', this.mPublic);
 
   }
 

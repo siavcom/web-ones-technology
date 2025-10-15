@@ -28,7 +28,6 @@ export class sis_sis extends COLUMN {
     this.prop.ColumnWidth = "300px,50px";
     this.prop.Style = 2; //Typode comboBox 1=DropDown Combo 2=DropDown List 
     this.style.width = '200px' /* width/height  - initial value: auto */
-
   }
 
 }

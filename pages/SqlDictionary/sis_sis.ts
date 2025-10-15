@@ -81,8 +81,6 @@ export class sis_sis extends COMPONENT {
         this.Form.nom_tab.prop.Visible = false
         this.Form.bt_aceptar.prop.Visible = false;
       }
-
-
       return
     }
     this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
@@ -91,12 +89,12 @@ export class sis_sis extends COMPONENT {
     //  this.Form.dic_dat.when(true)
     return;
   }
-
-
   override async when() {
     this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
-    return !this.interactiveChange()
+    console.log('sis_sis when', this.prop.Value)
+    this.interactiveChange()
+    return true
   }
 
 

@@ -33,7 +33,7 @@ export const Session = defineStore(
     const fpo_pge = ref(new Date().toDateString());
     const logoEmp = ref("");
     const fileLogoEmp = ref(null);
-    const Var = ref(0);
+    const Var = ref();
     const menu = ref([]);
     let socket = false; //: any = ref(null);  //  faltaba ref(null). Queda mejor con false
     const sockets: never[] = [];
@@ -342,7 +342,7 @@ export const Session = defineStore(
             // const result = await axios.post(url.value + "sql", dat_vis);
 
             socket.emit("sql async", dat_vis, (data) => {
-              /*  console.log("Pinia Var=", Var.value); */
+              console.log("1) Pinia Public.value=", Public.value);
               if (data && data.length > 0) {
                 Var.value = data[0];
                 for (const comp in Var.value) {
@@ -378,7 +378,13 @@ export const Session = defineStore(
                 Public.value.des_mon1[3] = Var.value.de3_pge
                 Public.value.des_mon1[4] = Var.value.de4_pge
                 Public.value.des_mon1[5] = Var.value.de5_pge
-
+                /*
+                                Var.value.des_mon1[1] = Var.value.de1_pge
+                                Var.value.des_mon1[2] = Var.value.de2_pge
+                                Var.value.des_mon1[3] = Var.value.de3_pge
+                                Var.value.des_mon1[4] = Var.value.de4_pge
+                                Var.value.des_mon1[5] = Var.value.de5_pge
+                */
                 Public.value.pro_mon1[1] = Var.value.pr1_pge
                 Public.value.pro_mon1[2] = Var.value.pr2_pge
                 Public.value.pro_mon1[3] = Var.value.pr3_pge
@@ -391,14 +397,27 @@ export const Session = defineStore(
                 Public.value.des_imp1[3] = Var.value.di3_pge
                 Public.value.des_imp1[4] = Var.value.di4_pge
                 Public.value.des_imp1[5] = Var.value.di5_pge
-
+                /*
+                                Var.value.des_imp1[0] = Var.value.di0_pge
+                                Var.value.des_imp1[1] = Var.value.di1_pge
+                                Var.value.des_imp1[2] = Var.value.di2_pge
+                                Var.value.des_imp1[3] = Var.value.di3_pge
+                                Var.value.des_imp1[4] = Var.value.di4_pge
+                                Var.value.des_imp1[5] = Var.value.di5_pge
+                */
                 //        dec_mon1: ["", "", "", "", ""],
                 Public.value.val_mon1[1] = Var.value.va1_pge
                 Public.value.val_mon1[2] = Var.value.va2_pge
                 Public.value.val_mon1[3] = Var.value.va3_pge
                 Public.value.val_mon1[4] = Var.value.va4_pge
                 Public.value.val_mon1[5] = Var.value.va5_pge
-
+                /*
+                                Var.value.val_mon1[1] = Var.value.va1_pge
+                                Var.value.val_mon1[2] = Var.value.va2_pge
+                                Var.value.val_mon1[3] = Var.value.va3_pge
+                                Var.value.val_mon1[4] = Var.value.va4_pge
+                                Var.value.val_mon1[5] = Var.value.va5_pge
+                */
                 for (const comp in Public.value) {
                   if (Var.value[comp]) {
                     Public.value[comp] = Var.value[comp];
@@ -407,8 +426,8 @@ export const Session = defineStore(
                 }
               }
 
-              console.log("Pinia Public.value=", Public.value);
-              console.log("Pinia Var.value=", Var.value);
+              console.log("2)Pinia Public.value=", Public.value, 'Var.value', Var.value);
+              // console.log("Pinia Var.value=", Var.value);
             }
 
             );

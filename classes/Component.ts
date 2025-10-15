@@ -954,14 +954,13 @@ export class COMPONENT {
       if (this.elements[i].Name == nom_obj) this.elements.splice(i, 1)
 
     for (let i = 0; i < this.block.length; i++) {
-      // console.log('1) RemoveObject', this.block[i])
       // Recorre todos los bloques
       //for (let j = 0; j < this.block[i].component.length; j++) {
-      console.log('1) RemoveObject', this.block[i])
+
       for (const objeto in this.block[i].component) {
 
         if (this.block[i].component[objeto] == undefined || this.block[i].component[objeto].prop.Name == nom_obj) {
-          console.log('2.0 RemoveObject component', this.prop.Name, 'Objeto=', objeto)
+          //   console.log('2.0 RemoveObject component', this.prop.Name, 'Objeto=', objeto)
 
           //    console.log('2.1 RemoveObject', this.block[i].component[objeto].prop.Name)
           delete this.block[i].component[objeto]
