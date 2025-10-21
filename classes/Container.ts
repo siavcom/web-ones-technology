@@ -41,10 +41,12 @@ export class CONTAINER extends COMPONENT {
       this.style.background = 'antiquewhite'
       this.style.backgroundColor = 'antiquewhite'
       this.style.left = '5%'
-      this.style.borderRadius = '5%'
+      this.style.borderRadius = '2%'
       this.style.padding = '3%'   //Margen entre los bordes y el contenido
-
+      this.style.height = 'min-content'
+      this.style.bottom = '-50%'
       this.captionStyle.color = 'black'
+
     }
 
     /*let elementos = []

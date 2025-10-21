@@ -3,14 +3,15 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" @keypress="keyPress($event)"
-      v-on:keyup.63="clickHelp()" v-on:keyup.delete="Key = 127" v-on:keyup.13="Key = 13" v-on:keyup.backspace="Key = 8"
+      v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)"
+      v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
       @input.self="onInput">
 
     <!-- @input.self="onInput"
@@ -31,14 +32,18 @@
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
       :step="This.prop.Step" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @click.capture="onClick" @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()">
+      @click.capture="onClick" @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()"
+      v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
+      v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()" -->
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle>
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style=Styles.inputStyle
         v-model="Value" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
-        @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"></textarea>
+        @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"
+        v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
+        v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"></textarea>
     </div>
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
@@ -46,7 +51,9 @@
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly"
       :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus"
-      @focusout="lostFocus" v-on:keyup.63="clickHelp()">
+      @focusout="lostFocus" v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)"
+      v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)"
+      v-on:keyup.up="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()" -->
     <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
@@ -83,9 +90,10 @@
     <!--  TEXT   -->
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
-      :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska"
-      @maska="onMaska">
+      :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus"
+      @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska" @maska="onMaska"
+      @keypress="keyPress($event)" @keypress.backspace="keyPress($event)" @keypress.delete="keyPress($event)"
+      @keypress.down="keyPress($event)" @keypress.up="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()" @click.capture="onClick"-->
 
     <!--/span-->
@@ -98,7 +106,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -565,18 +573,21 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (Type == 'spinner' || Type == 'checkbox')
         await This.interactiveChange()
 
+      if (isValid == undefined)
+        isValid = false
+
       if (!isValid) {
+        //  console.log('3.3.0.1) editText emitValue() Valid=', This.prop.Valid)
         //console.clear()
         //console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
         const newValue = This.prop.Value
 
         // Aqui me quede 30/Ags/2025
+        //This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
-
-          console.log('3.3.1) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
-
-          This.prop.Valid = false
+          if (This.prop.Valid)
+            This.prop.Valid = false
 
           // 7/Feb/2024       
           //This.Form.prop.Status = 'A'
@@ -591,16 +602,17 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           //          This.prop.Focus = true
           This.prop.Status = 'A'
           return
-        } //else This.prop.Valid = true
-        This.prop.Valid = true
+        }
         This.prop.Status = 'A'
+        This.prop.Valid = true
+        //   console.log('3.3.0.2) editText emitValue() Valid=', This.prop.Valid)
         // 13/Marzo/2025 Si en el valid cambio el valor se sale para que con el watch prop.Value se actualice el valor
         if (newValue != This.prop.Value)
           return
       }
 
       // console.log('3.4) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
-      // This.prop.Valid = true
+
       This.prop.Status = 'A'
       //2/Sep/2025  Status.value = 'A'
       //2/Sep/2025  emit("update:Status", 'A')
@@ -608,7 +620,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
     }
     else
-      This.prop.Valid = true
+      This.prop.Valid = true // si es ReadOnly o Disabled
     //  displayError.value = false
 
     // Reasigamos valor de Value
@@ -661,14 +673,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
         const Recno = props.Registro
         const data = await This.Form.db.readCampo(ControlSource, Recno)
-        //   console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
+        console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
 
         for (const campo in data) {
-          /*
-                    if (campo == 'key_pri')
-                      if (!This.prop.updateKey && data.key_pri == 0)
-                        This.prop.Valid = false
-            */
 
           if (campo != 'key_pri') {
             sw_dat = true
@@ -686,8 +693,15 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
             if (!isValid) {
               readValid = true
             }
+          } else {
+
+            if (data.key_pri > 0)
+              This.prop.Valid = true
+            else
+              This.prop.Valid = false
           }
         }
+
 
       }
       if (!sw_dat && pos > 1) { // No encontro dato
@@ -750,8 +764,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
       compJson.value = []
-
-      if (Value.value.trim().length > 5) {
+      console.log('editText Json Name', props.prop.Name, 'Value=', Value.value)
+      if (Value.value != null && Value.value.trim().length > 5) {
         try {
           currentJson.value = JSON.parse(Value.value)
           console.log('editText Json Name', props.prop.Name, 'currentJson Value=', currentJson.value)
@@ -1050,6 +1064,7 @@ const keyPress = ($event: {
 }) => {
   // <input       @keypress="keyPress($event)"
   KeyPressed = true
+  This.prop.Valid = false // comenzo a teclear. Apagamos validacion
   //  console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
   const char = +$event.charCode
   const Type = propType.value
@@ -1190,6 +1205,7 @@ const onFocus = async () => {
         return
       }
     }
+    This.Parent.prop.Status = 'A'
   }
 
   if (!This.Help)
@@ -1283,9 +1299,7 @@ const onFocus = async () => {
 
     // This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
     Evento = 'when'
-    ChecaEventos()
-
-
+    await ChecaEventos()
     //   })
     // select() // 8/Ags/2025 Se quito 
 
@@ -1952,6 +1966,7 @@ const handler = (event) => {
 //await callOnce(async () => {
 
 onMounted(async () => {
+
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
 
   styleAssing()
@@ -2017,6 +2032,7 @@ onMounted(async () => {
   await This.recnoChange()
   This.prop.Status = 'A'
 
+  console.log('onMounted Name=', This.prop.Name, 'Valid=', This.prop.Valid)
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
     // This.prop.First = false

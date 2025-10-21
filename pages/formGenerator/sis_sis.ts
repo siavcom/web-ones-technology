@@ -52,6 +52,8 @@ export class sis_sis extends COMPONENT {
     this.Form.tab_grid.prop.Visible = false;
     this.Form.nom_for.prop.Visible = false;
     this.Form.bt_aceptar.prop.Visible = false;
+
+    return true
   }
 
   override async interactiveChange() {

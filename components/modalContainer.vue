@@ -6,9 +6,10 @@
 
       <div :id="Id + '_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
 
-        <div :id="Id + '_modal_container'" class="modal-container" :style="divStyle" @click.middle.stop="middleClick()">
+        <div :id="Id + '_modal_container'" class="modal-container" :style="This.style"
+          @click.middle.stop="middleClick()">
 
-          <span :id="Id + 'label'" class=" modal-header" :style="captionStyle">
+          <span :id="Id + 'label'" class=" modal-header" :style="This.captionStyle">
             <label name="header">{{ This.prop.Caption }}</label>
           </span>
           <div :id="Id + 'modal_body'" class="modal-body">
@@ -167,7 +168,7 @@ const This = Component.value // Component.value
 const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
-const divStyle = reactive({ ...Este.style })
+//const divStyle = This.prop.style // reactive({ ...Este.style })
 
 //const Id = This.Name + props.Registro.toString()
 
@@ -296,7 +297,7 @@ const handler = (event) => {
 
 }
 
-.modal-container {
+.modal-container-old {
   /*width: 300px;*/
   margin: auto;
   padding: 20px 30px;

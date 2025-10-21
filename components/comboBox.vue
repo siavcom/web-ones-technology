@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -114,6 +114,8 @@
 </template>
 
 <script setup lang="ts">
+import { tip_sel } from '~/pages/VTA/Rep/come5212/tip_sel';
+
 // "update:Key", "update:Focus"
 
 const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
@@ -412,11 +414,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
     This.prop.Value = Value.value
+    if (isValid == undefined)
+      isValid = false
 
     if (!isValid) {
 
       await This.interactiveChange()
-      This.prop.Valid = false
+      //This.prop.Valid = false
       inputBuffer = ''
       //      This.prop.Valid = false
       const newValue = This.prop.Value
@@ -452,7 +456,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
       // Actualizamos el registro del form
 
-      This.prop.Valid = false
+      // This.prop.Valid = false
       //  if (This.Parent.Recno = !props.Registro)
       //    This.Parent.Recno = props.Registro
 
@@ -461,10 +465,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       let sw_dat = false
       for (const campo in data) {
 
-        if (campo == 'key_pri' && data.key_pri > 0)
-          This.prop.Valid = true
-
-
+        //   if (campo == 'key_pri' && data.key_pri > 0)
+        //     This.prop.Valid = true
 
         if (campo != 'key_pri') {
           sw_dat = true
@@ -477,17 +479,28 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
             readValid = true
           }
         }
+        else {
+
+          if (data.key_pri > 0)
+            This.prop.Valid = true
+          else
+            This.prop.Valid = false
+
+        }
+
       }
       if (!sw_dat) {
 
         Value.value = null  // asigna el primer Text valor
 
       }
-    }
+    } else  // si no hay controlSource
+      This.prop.Valid = true
+
 
   }
 
-  This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
+  // This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
   This.prop.Status = 'A'
   //2/Sep/2025  Status.value = 'A'  // se necesita para que el watch padre funcione
   //2/Sep/2025   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
@@ -519,7 +532,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   displayError.value = false  // Desactivamos mensaje de error
   This.prop.displayError = false
 
-  //  console.log('2 comboBox emitValue() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Text=', Text.value)
+  console.log('3.3 comboBox emitValue() Name', props.prop.Name, 'This.prop.Valid=', This.prop.Valid)
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     // console.log('comboBox emitValue valid() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
@@ -617,6 +630,7 @@ const keyPress = ($event) => {
   let Key: string = String.fromCharCode($event.charCode)
   Key = Key.toUpperCase()
   const buffer = inputBuffer + Key
+  This.prop.Valid = false
   let found = false
   let pos = 0
   // Busca el valor donde estaba
@@ -649,7 +663,7 @@ const keyPress = ($event) => {
 const help = async () => {
   if (This.help) {
     This.prop.displayError = false
-    This.prop.Valid = true
+    //  This.prop.Valid = true
     await This.help.open()
     This.prop.Valid = true
   }
@@ -676,7 +690,7 @@ const focusOut = async () => {
   emitValue()
   return
 };
-
+ 
 */
 /////////////////////////////////////////////////////////////////////
 // Valid
@@ -735,6 +749,7 @@ const validCheck = async (num_ren: number) => {
   Value.value = ValResultante
   //console.log('comboBox evalidCheck ', 'Value=', Value.value)
   // This.prop.Value = Value.value
+  This.prop.Valid = false
   emitValue()
   //This.prop.Value = ValResultante
   //
@@ -1290,6 +1305,43 @@ watch(
   { deep: false }
 )
 
+/*
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+ 
+ 
+watch(
+  () => This.prop.Focus, //props.prop.Focus,
+  (new_val: any, old_val: any) => {
+    //console.log('1)EditText Watch Focus Name=', This.prop.Name, This.prop.Focus)
+    if (!new_val) {
+      return
+    }
+ 
+ 
+    // Se pidio desde afuera el setFocus
+ 
+    if (document.activeElement != thisElement) {
+      if (thisElement.select)
+        thisElement.select();
+ 
+    }
+    setTimeout(function () {
+      if (thisElement.select) {
+        thisElement.focus({ focusVisible: true });
+        thisElement.select();
+      }
+ 
+    }, 0);
+    return
+  },
+  { deep: false }
+)
+ 
+*/
+
+
 ////////////////////////////////////////
 // Da click para renderizar 
 ///////////////////////////////////////
@@ -1738,12 +1790,12 @@ onMounted(() => {
 onMounted(async () => {
   if (This.onMounted)
     await This.when()
-
+ 
   //await This.onMounted()
   console.log(' comboBox onMounted Name=', This.prop.Name)
-
+ 
 })
-
+ 
 */
 onBeforeMount(async () => {
   //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)

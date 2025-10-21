@@ -164,6 +164,7 @@
 <script setup lang="ts">
 /*   Cambios en el componente
    4/Dic/2024   .- Se quito el loadData
+   //21 Octubre 2025 Column.value = ''
 */
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key"]);
@@ -324,8 +325,6 @@ const emitValue = async () => {
   return true;
 };
 
-
-
 /////////////////////////////////////////////////////////////////////
 // KeyPress
 // Descripcion: Cada tecla que se presiona en el input
@@ -476,25 +475,76 @@ watch(
   { deep: true }
 );
 
-
 //////////////////////////////////////////////
 // revisa las validaciones de todos los componentes
 //////////////////////////////////////////////
 watch(
   () => compValid,
-  (new_val, old_val) => {
-    console.log('1)  Grid watch compValid Row=', This.Row, RowInsert)
-    for (const comp in compValid) { // Recorre todos los estatus del grid
+  async (new_val, old_val) => {
+    // if (!This.prop.autoUpdate) return
 
+    //  console.log('2).0 3.3 -- Grid watch compValid', 'Row=', This.Row)
+    if (This.Row < 0) return
+    for (const comp in compValid) { // Recorre todos los estatus del grid
       if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && This[comp].prop.Visible && !This[comp].prop.Valid) { // Si alguno no esta validado
-        // console.log('2) -- Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
-        This.prop.Valid = false
+        console.log('2).1 3.3 -- Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
         return
       }
-      //  if (!compValid[comp])
-      //    compValid[comp] = true
+      This.prop.Valid = true
     }
-    This.prop.Valid = true
+
+    const res = scroll.dataPage.find((ele) => ele.id == This.Row);
+    const Recno = res.recno
+    //console.log('2).0 3.3 -- Grid watch compValid ColumnActive=', Column.value)
+    let ColumnActive = ''
+    ColumnActive = Column.value
+
+    const ControlSource = This[ColumnActive].prop.ControlSource
+    //console.log('2).0 3.3 -- Grid watch RecordSource=', ControlSource)
+    if (ControlSource.length == 0)
+      return
+
+    const pos = ControlSource.indexOf(".") + 1;
+    if (pos == 1) {
+      return;
+    } // si no hay definida vista
+
+    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
+    const tabla = ControlSource.slice(0, pos - 1).trim();
+
+    //console.log('3) 3.3.2 saveRow Grid watch compValid tabla=', tabla, 'campo=', campo)
+    const Now = await localAlaSql(`select ${campo} from Now.${tabla} where recno=${Recno}`)
+    const Last = await localAlaSql(`select ${campo} from Last.${tabla} where recno=${Recno}`)
+    if (Now.length == 0 || Last.length == 0) return
+
+    if (Now[0][campo] !== Last[0][campo]) {
+      console.log('<<<<<Grabara renglon>>>> 3.3.4 saveRow Grid watch compValid ColumnName=', ColumnActive)
+
+      if (!await This.saveRow(ColumnActive)) {
+        This[ColumnActive].prop.Valid = false
+        This[ColumnActive].prop.ShowError = true
+      }
+    }
+    /*
+    
+    
+        const Now = await localAlaSql(`select * from Now.${This.prop.RecordSource} where recno=${Recno}`)
+        const Last = await localAlaSql(`select * from Last.${This.prop.RecordSource} where recno=${Recno}`)
+        if (Now.length == 0 || Last.length == 0) return
+        const Campos = View[This.prop.RecordSource].est_tabla
+    
+        for (const campo in Campos) {
+          if (Now[0][campo] !== Last[0][campo]) {
+            console.log('3) 3.3 saveRow Grid watch compValid Status=', This.prop.Status, 'This.prop.Valid=', This.prop.Valid)
+            This.saveRow()
+            return;
+          }
+        }
+    
+    
+    */
+
+    //   This.prop.Valid = true
     //console.log('------>>>>>>  Grid watch compValid Vaid=', This.prop.Valid, 'Row=', This.Row,)
   },
   { deep: true }
@@ -550,6 +600,7 @@ watch(
   async (new_data, old_data) => {
 
     //"item.recno > 0 || item.recno != null ? item.recno : 0"
+    if (new_data == old_data) return
 
     if (This.Row == -100) return
 
@@ -580,7 +631,7 @@ watch(
       //await loadData()
 
       await last(true)
-      RowInsert = true
+      RowInsert = true  // para cuando loadData()
 
       //console.log('3) Insert Grid watch Row = ', This.Row)
 
@@ -611,14 +662,14 @@ watch(
       for (let i = 0; i < This.main.length; i++) {
         const comp = This.main[i]
         This[comp].prop.ReadOnly = false;
-        This[comp].prop.Valid = !RowInsert
+        // This[comp].prop.Valid = !RowInsert
 
         if (Column.value > '' && comp == Column.value) {
           //     Aqui mero   . Checar que ya este montaDOM EL COMPONENTE PARA HACER EL FOCO
           //   console.log('2) Grid watch Row Focus = ', This.Row)
           if (!This[comp].prop.Focus) {
             This[comp].prop.Focus = true
-            Column.value = ''
+            //21 Octubre 2025 Column.value = ''
           }
         }
       }
@@ -657,19 +708,25 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
     }
   }
 
+  if (This.Row == Row) return
+  This.prop.Valid = false
+  This.prop.Status = 'P'
+
   This.Row = Row;
   Column.value = ColumnName
+  console.log('3.3 asignaRenglon Row=', Row, ' This.Row=', This.Row, 'ColumnName=', Column.value)
 
   // busca el ID del Row
+  if (Row >= 0) {
+    const res = scroll.dataPage.find((ele) => ele.id == Row);
+    const Recno = res.recno
 
-  const res = scroll.dataPage.find((ele) => ele.id == Row);
-  const Recno = res.recno
-
-  // actualiza el row
-  goto(Recno, RecordSource)
-
+    // actualiza el row
+    goto(Recno, RecordSource)
+  }
   // View[This.prop.RecordSource].recno = Recno
   //  console.log('asignaRenglon Row=', Row, 'RecordSource=', This.prop.RecordSource, 'View=', View[This.prop.RecordSource].recno)
+  // This.prop.Status = 'A'
 
 }
 
@@ -702,6 +759,10 @@ const loadData = async (Pos?: number) => {
 
     return
   }
+
+  This.Form.prop.Status = 'P'
+  This.prop.Valid = false
+
   /*
     for (let i = 0; i < This.main.length && First == ''; i++) { // Recorre todos los estatus del grid
       if (!This[This.main[i]].prop.Disabled)
@@ -727,7 +788,7 @@ const loadData = async (Pos?: number) => {
       scroll.page = page
   }
 
-  This.Form.prop.Status = 'P'
+
   /*
     while (scroll.dataPage.length > 0)
       scroll.dataPage.pop() // borramos todos los renglones
@@ -747,6 +808,7 @@ const loadData = async (Pos?: number) => {
         scroll.controls = false
 
       This.Form.prop.Status = 'A'
+      This.prop.Valid = true
       return false
 
     }
@@ -785,14 +847,18 @@ const loadData = async (Pos?: number) => {
     }
     // console.log('3) loadData() RowNumber=', RowNumber, 'scroll.dataPage=', scroll.dataPage, 'SQL', Sql.View[props.prop.RecordSource].recnoVal)
 
+    This.prop.Valid = true
     if (RowInsert)
       return
-
+    //This.prop.Status = 'P'
+    /*
+    This.prop.Valid = false
     for (let i = 0; i < This.main.length; i++) {
       const comp = This.main[i]
       This[comp].prop.Valid = true
     }
-    This.prop.Valid = true
+    */
+
     //console.log('4) loadData() compValid This.prop.Valid=', This.prop.Valid, ' This.Row=', This.Row)
 
     // This.Row = -1
@@ -1006,6 +1072,7 @@ const saveRow = async (recno?: number) => {
   }
 }
 */
+
 const saveTable = async () => {
 
   if (This.Row >= 0) {
@@ -1065,6 +1132,7 @@ onMounted(async () => {
   // await This.init()
 
   //  for (const comp in This.elements) {
+
   for (let i = 0; i < This.main.length; i++) {
     const comp = This.main[i]
     if (i == 0)

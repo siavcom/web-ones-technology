@@ -31,6 +31,7 @@ export class con_dat extends COLUMN {
   }
   async when() {
     this.prop.Valid = true
+    return true
 
   }
 }

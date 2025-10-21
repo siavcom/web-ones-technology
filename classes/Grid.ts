@@ -52,16 +52,15 @@ export class GRID extends COMPONENT {
     this.style.height = "max-content";
     this.Recno = 0;
 
-    this.prop.Messages = [
-      ["Actualizamos la tabla"], // 0
-      ["Actualizamos el renglon"], // 1
-      ["Datos actualizados de la tabla"], //2 ["Data updated of "], // 3
-      ["Datos no actualizados de la tabla "], //3 No se grabaron los datos de la tabla"], // 4
-      ["Renglon no actualizado de la tabla "], // 4
-      ['Borramos el reglon '], //5
-      ["No permite datos en blanco"], //6
-      ["Dato duplicado"], //7
-    ];
+    this.prop.Messages[0] = "Actualizamos la tabla";
+    this.prop.Messages[1] = "Actualizamos el renglon";
+    this.prop.Messages[2] = "Datos actualizados ";
+    this.prop.Messages[3] = "Datos no actualizados  ";
+    this.prop.Messages[4] = "Renglon no actualizado ";
+    this.prop.Messages[5] = "Borramos el reglon ";
+    this.prop.Messages[6] = "No permite datos en blanco";
+    this.prop.Messages[7] = "Dato duplicado";
+
   }
 
   override async init(): Promise<void> {
@@ -145,6 +144,7 @@ export class GRID extends COMPONENT {
     //const column = this[name];
     //   console.log("Column valid refColumn=", refColumn)
     const column = refColumn.value
+
     if (column.prop.updateKey) {
 
       if (
@@ -159,6 +159,7 @@ export class GRID extends COMPONENT {
         return false;
       }
     }
+
     return true;
   }
 
@@ -252,6 +253,7 @@ export class GRID extends COMPONENT {
       return
 
     this.prop.Disabled = true;
+    this.prop.Status = 'P'
     //this.Row = -1;
 
     this[this.main[this.main.length - 1]].prop.Last = true;
@@ -259,8 +261,6 @@ export class GRID extends COMPONENT {
     if (!mem) mem = {};
 
     let m = appendM(mem, this.Form.mPublic)
-    console.log('appendRow m=', m)
-
 
     for (const comp of this.Form.main) {
       if (!m[comp])
@@ -271,6 +271,7 @@ export class GRID extends COMPONENT {
 
     const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     this.prop.Disabled = false;
+    this.prop.Status = 'A'
 
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
   }
@@ -281,32 +282,38 @@ export class GRID extends COMPONENT {
   // force: si es verdadero borra sin preguntar
   /////////////////////////
   async deleteRow(recno: number, force?: boolean) {
-
+    let result = true
+    // borramos el renglon?
     if (force || await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
       this.prop.Status = 'A'
-      const result = await deleteSqlRow(recno, this.prop.RecordSource);
+      result = await deleteSqlRow(recno, this.prop.RecordSource);
       console.log('deleteRow result=', result)
       // await restableceStatus()
       if (result)
         this.Row = -1;
-      // load_data = true
-    }
-  }
-  async saveRow() {
-    await this.saveTable(true)
-  }
 
+    }
+    return result
+  }
+  /*
+    async saveRow() {
+      await this.saveTable(true)  // solo graba el renglon actual
+    }
+  */
   //////////////////////////////////
   // Graba Tabla
   // vis_cap: Vista de captura
   /////////////////////////////////
   async saveTable(oneRow?: boolean) {
-    let resultado = true;
-    let Recno = 0;
-    let updateType = 1;
-    if (oneRow) {
-      updateType = 0;
 
+    if (oneRow == undefined)
+      oneRow = false
+
+    let resultado = true;
+
+    let updateType = 1;  // actualiza todos los registros
+    if (oneRow) {
+      updateType = 0;  // actualiza solo el renglon actual
     }
 
     /*
@@ -321,12 +328,12 @@ export class GRID extends COMPONENT {
         }
     */
 
-    if (oneRow) {
-      if ((await MessageBox(this.prop.Messages[1][0], 4, "")) != 6)
+    if (updateType) {
+      if (await MessageBox('', 4, this.prop.Messages[0]) != 6)
         return false;
     }
     else {
-      if ((await MessageBox(this.prop.Messages[0][0], 4, "")) != 6)
+      if (await MessageBox('', 4, this.prop.Messages[1]) != 6)
         return false;
     }
 
@@ -336,15 +343,15 @@ export class GRID extends COMPONENT {
       false,
       this.prop.RecordSource
     );
-    if (resultado) {
-      // Actualiza todos los registros
+    if (resultado)  //actualizacion con exito
+      MessageBox(this.prop.Messages[2][0]);
+
+    else {
       if (!oneRow)
-        MessageBox(this.prop.Messages[2][0] + this.prop.Caption);
-    } else {
-      if (oneRow)
-        MessageBox(this.prop.Messages[4][0] + this.prop.RecordSource, 16, "ERROR");
-      else
         MessageBox(this.prop.Messages[3][0] + this.prop.RecordSource, 16, "ERROR");
+      else
+        MessageBox(this.prop.Messages[4][0] + this.prop.RecordSource, 16, "ERROR");
+      return false;
     }
     this.Row = -1
     return resultado;
@@ -354,33 +361,30 @@ export class GRID extends COMPONENT {
   // Graba Renglon
   //
   /////////////////////////////////
-  async grabaRenglon() {
+  async saveRow(columnName?: string) {
 
-    for (let i = 0; i < this.main.length; i++) { // Recorre todos los estatus del grid
-
-      if (this[this.main[i]].prop.Capure && !this[this.main[i]].prop.Valid) { // Si alguno no esta Validado
-        this[this.main[i]].prop.ShowError = true
-
-        this[this.main[i]].setFocus()
-        return
-      }
-    }
-    //if (await MessageBox(this.prop.messageUpdate, 4, "") != 6) return
-    this.Form.prop.Visible = false;
-
-    if (
-      (await tableUpdate(1, false, this.prop.RecordSource)) == true
-    ) {
-      // Actualiza todos los registros
-      // MessageBox("Renglon actualizado correctamente");
-      return true;
-    } else {
-      MessageBox(
-        this.prop.Messages[5][0] + this.prop.RecordSource,
-        16,
-        "ERROR"
-      );
+    const resultado = await tableUpdate(
+      0,
+      false,
+      this.prop.RecordSource
+    );
+    if (resultado)  //actualizacion con exito
+      await MessageBox(this.prop.Messages[2][0]);
+    else
       return false;
-    }
+    /*
+    
+    {
+      //    MessageBox(this.prop.Messages[4] + this.prop.RecordSource, 16, "ERROR");
+      if (columnName) {
+        const Este = this[columnName]
+        Este.prop.Valid = false
+        nextTick(() => {
+          Este.setFocus()
+        })
+      } //fin columnName
+    } //Fin else
+  */
+    return true;
   }
 }

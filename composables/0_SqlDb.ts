@@ -345,7 +345,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 //  use = async (obj_vis:any, nom_vis:any , m: {}, alias?:any) => {
 export const use = async (
     nom_vis: string,
-    m?: Record<string, never>,
+    m?: {},
     alias?: string,
     order?: string) => {
 

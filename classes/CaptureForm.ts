@@ -278,18 +278,19 @@ export class captureForm extends FORM {
 
     this.sw_nue = false
     this.Recno = data[0].recno;
-
+    this.prop.Status = 'P'
     for (const comp of this.main) {
       const Comp = this[comp]
       Comp.prop.ShowError = false
       Comp.prop.Valid = true
     }
-
+    this.prop.Status = 'A'
     console.log('validComponent Con datos ')
     await nextTick(() => {
 
       this.bt_modify.prop.Visible = true;
       this.bt_delete.prop.Visible = true;
+      this.bt_modify.prop.Focus = true;
     })
     return true
   } // Fin Metodo Valid
@@ -401,7 +402,8 @@ export class captureForm extends FORM {
       this.prop.Position = "footer";
       this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";
-      this.style.width = " min-content";
+
+      this.style.width = "72px";
       this.prop.Visible = false;
     } // Fin constructor
 
@@ -549,11 +551,11 @@ export class captureForm extends FORM {
       this.prop.Image = "/Iconos/svg/update-content.svg";
       // this.prop.TabIndex= 21
 
-      this.style.width = " min-content";
+      this.style.width = "72px";
     } // Fin constructor
 
     override async click() {
-      console.log('1) bt_modify click')
+
       return this.Parent.bt_modifyClick()
 
       //  console.log('Click bt_modify ')
@@ -574,11 +576,13 @@ export class captureForm extends FORM {
   public async bt_modifyClick() {
     console.log('2) bt_modify click')
     this.bt_modify.prop.Visible = false
+    this.Form.prop.Status = 'P'
     for (const comp of this.Form.main) {
       if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
         this[comp].prop.ReadOnly = false
       }
     }
+    this.Form.prop.Status = 'A'
     this.bt_delete.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true
     return
@@ -601,7 +605,7 @@ export class captureForm extends FORM {
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
       // this.prop.TabIndex= 21
 
-      this.style.width = " min-content";
+      this.style.width = "72px";
     } // Fin constructor
 
     override async click() {
@@ -740,14 +744,14 @@ export class captureForm extends FORM {
     // busca el nombre del objeto en el arreglo nom_cam
     const pos = ascan(this.Form.nom_obj, upper(left(nom_cam, 3)))
     if (pos > 0) {									// si encuentra el campo
-      if (this.Form.nom_obj(pos + 1) == '1' || this.Form.nom_obj(pos + 1) == '3')	// permite Modifica o Captura y modifica
+      if (this.Form.nom_obj[pos + 1] == '1' || this.Form.nom_obj[pos + 1] == '3')	// permite Modifica o Captura y modifica
         return true
       // reviza si se permite la captura
-      if (this.Form.nom_obj(pos + 1) >= '2' && ((!sw_mov && this.Form.sw_nue) || (sw_mov && this.Form.num_mov == 0)))
+      if (this.Form.nom_obj[pos + 1] >= '2' && ((!sw_mov && this.Form.sw_nue) || (sw_mov && this.Form.num_mov == 0)))
         return true
 
       // si permite la captura es impresión pero no se a impreso ni timbrado
-      if (this.Form.nom_obj(pos + 1) == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
+      if (this.Form.nom_obj[pos + 1] == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
         return true
     }
     return false

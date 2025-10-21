@@ -387,7 +387,8 @@ watch(Valid, async (new_val) => {
         return
       }
   */
-  ThisForm.bt_saveClick()
+  // if (ThisForm.prop.Status == 'A')
+  //   ThisForm.bt_saveClick()
 
 },
   { deep: true }); //, flush: 'post'

@@ -124,6 +124,7 @@ const Styles =
 //const Id = This.prop.Name + props.Registro.toString().trim()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+let thisElement: Element | null
 
 This.prop.htmlId = Id
 
@@ -219,7 +220,7 @@ watch(
   },
   { deep: true }
 );
-
+/*
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
@@ -235,9 +236,47 @@ watch(
   { deep: false }
 )
 
+*/
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+
+
+watch(
+  () => This.prop.Focus, //props.prop.Focus,
+  (new_val: any, old_val: any) => {
+    console.log('1)imgButton Watch Focus Name=', This.prop.Name, 'New Val', new_val)
+    if (!new_val) {
+      return
+    }
+    console.log('1)imgButton Watch Focus Name=', This.prop.Name)
+
+    // Se pidio desde afuera el setFocus
+    console.log('2.1) imgButton Watch Focus document.activeElement=', document.activeElement)
+    console.log('2.2) imgButton Watch thisElement=', thisElement)
+
+    //   if (thisElement.focus)
+    thisElement.focus();
+
+    setTimeout(function () {
+      thisElement.focus({ focusVisible: true });
+      // thisElement.select();
+
+    }, 0);
+    This.prop.Focus = false
+    return
+  },
+  { deep: false }
+)
+
+
+
+
+
+
 onMounted(async () => {
   // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
-
+  thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
   Styles.inputStyle.width = '100%' //  divStyle.width
 
   This.Recno = props.Registro
