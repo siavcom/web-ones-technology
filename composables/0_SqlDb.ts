@@ -1251,7 +1251,7 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
     }
 
     if (!alias) {
-        errorAlert("SQL Error :No existe la vista SQL  " + alias);
+        errorAlert("SQL Server Error :no SQL view exists " + alias);
 
         //      MessageBox("No existe la vista SQL " + alias, 16, "SQL Error");
         return false;
@@ -1294,15 +1294,21 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
             const response = await axiosCall(dat_vis);
             if (!response || response == null) {
                 if (response == null)
-                    MessageBox("Error al borrar en la base de datos", 16, "SQL Error");
+                    MessageBox("", 16, "DELETE SQL Server Error");
                 return false;
             }
             // console.log('Db deleteSqlRow SQLServer Rgistro borrado dat_vis=', dat_vis, 'Respuesta=', response)
 
             const respuesta = response.data;
         } catch (error) {
-            console.error("Error en delete", error);
-            return null;
+
+            errorAlert("DELETE SQL Server Error :" +
+                error.response.status.toString() +
+                " " +
+                error.response.statusText);
+
+            console.error("DELETE SQL Server Error", error);
+            return false;
         }
 
     }
@@ -1346,7 +1352,7 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
     }
 
     if (!alias) {
-        errorAlert("SQL Error :No existe la vista SQL " + alias);
+        errorAlert("SQL Server Error :no SQL view exists :" + alias);
 
         return false;
     }
@@ -1491,7 +1497,7 @@ export const insert = async (alias: string, m: Record<string, never>) => {
     }
 
     if (!alias) {
-        errorAlert("SQL Error :No existe la vista SQL " + alias);
+        errorAlert("SQL Server Error :No SQL view exists " + alias);
         return;
     }
     // Leemos los datos a actualizar
@@ -1555,7 +1561,7 @@ export const insert = async (alias: string, m: Record<string, never>) => {
         return;
     } catch (error) {
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
@@ -1675,10 +1681,10 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
 
         return respuesta;
     } catch (error) {
-        console.error("SQL Error", query, error);
+        console.error("SQL Server Error", query, error);
         if (error.response) {
             errorAlert(
-                "SQL Error :" +
+                "SQL Server Error :" +
                 error.response.status.toString() +
                 " " +
                 error.response.statusText
@@ -1710,9 +1716,9 @@ export const genTabla = async (tabla: string) => {
         return true;
         // }
     } catch (error) {
-        console.error("SQL Error", error.response);
+        console.error("SQL Server Error", error.response);
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
@@ -1748,9 +1754,9 @@ export const genIndices = async (tabla: string, nom_ind: string) => {
             return true;
         }
     } catch (error) {
-        console.error("SQL Error", error);
+        console.error("SQL Server Error", error);
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
@@ -1786,9 +1792,9 @@ export const genVistasSql = async (tabla: string, nom_vis?: string) => {
             return true;
         }
     } catch (error) {
-        console.error("SQL Error", error);
+        console.error("SQL Server Error", error);
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
@@ -1830,9 +1836,9 @@ export const genModel = async (tabla: string) => {
 
         return true;
     } catch (error) {
-        console.error("SQL Error", error);
+        console.error("SQL Server Error", error);
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
@@ -1901,7 +1907,7 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
         exp_where = con_vis; // genera la expresion where
     } catch (error) {
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
@@ -1909,7 +1915,7 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
 
         // MessageBox( error.response.status.toString() + " " + error.response.statusText,16,"SQL Error " );
 
-        console.error("SQL Error", error);
+        console.error("SQL Server Error", error);
 
         return false;
     }
@@ -1930,13 +1936,13 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
         return await genera_tabla(data, alias);
     } catch (error) {
         errorAlert(
-            "SQL Error :" +
+            "SQL Server Error :" +
             error.response.status.toString() +
             " " +
             error.response.statusText
         );
 
-        console.error("SQL Error", error);
+        console.error("SQL Server Error", error);
         // MessageBox(error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error "      );
     }
 };

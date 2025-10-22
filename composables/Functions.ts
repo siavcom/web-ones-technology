@@ -157,7 +157,6 @@ export function fileToStr(input: string): string {
  */
 export function str(nExpression: number, nLength?: number, nDecimalPlaces?: number): string {
   let result = nExpression.toString();
-
   // Handle decimal places
   if (nDecimalPlaces !== undefined) {
     result = nExpression.toFixed(nDecimalPlaces);

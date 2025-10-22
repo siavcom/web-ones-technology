@@ -180,7 +180,10 @@ export class translateContainer extends CONTAINER {
       rowsource: rowsource,
       placeholder: comp.prop.Placeholder,
       tooltiptext: comp.prop.ToolTipText,
-      errormessage: comp.prop.ErrorMessage
+      errormessage: comp.prop.ErrorMessage,
+      okmessage: comp.prop.OkMessage,
+      updatemessage: comp.prop.UpdateMessage,
+      deletemessage: comp.prop.DeleteMessage,
     }
 
     const data = await this.Sql.localAlaSql(`select recno,messages,rowsource from vi_cap_db_languages where trim(map_lan)='${m.map_lan.trim()}'  `)

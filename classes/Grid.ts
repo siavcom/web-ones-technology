@@ -41,8 +41,10 @@ export class GRID extends COMPONENT {
     this.prop.showDeleteButton = true; // Si es verdadero muestra el boton de borrar
     this.prop.showSaveButton = true; // Si es verdadero muestra el boton de grabar
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
-    this.prop.messageUpdate = "Grabamos la tabla";
-    this.prop.messageDelete = "Borramos renglon";
+    this.prop.UpdateMessage = "Grabamos la tabla";
+    this.prop.DeleteMessage = "Borramos renglon";
+    this.prop.ErrorMessage = 'Datos no actualizados'
+    this.prop.OkMessage = 'Actualización exitosa'
     this.prop.headerHeight = "30px";
     this.prop.Rows = 10;   // renglones de la grid por defecto
 
@@ -52,14 +54,14 @@ export class GRID extends COMPONENT {
     this.style.height = "max-content";
     this.Recno = 0;
 
-    this.prop.Messages[0] = "Actualizamos la tabla";
-    this.prop.Messages[1] = "Actualizamos el renglon";
-    this.prop.Messages[2] = "Datos actualizados ";
-    this.prop.Messages[3] = "Datos no actualizados  ";
-    this.prop.Messages[4] = "Renglon no actualizado ";
-    this.prop.Messages[5] = "Borramos el reglon ";
-    this.prop.Messages[6] = "No permite datos en blanco";
-    this.prop.Messages[7] = "Dato duplicado";
+    //  this.prop.Messages[0] = "Actualizamos la tabla";
+    //  this.prop.Messages[1] = "Actualizamos el renglon";
+    // this.prop.Messages[2] = "Datos actualizados ";
+    //this.prop.Messages[3] = "Datos no actualizados  ";
+    //this.prop.Messages[4] = "Renglon no actualizado ";
+
+    //this.prop.Messages[6] = "No permite datos en blanco";
+    //this.prop.Messages[7] = "Dato duplicado";
 
   }
 
@@ -151,11 +153,11 @@ export class GRID extends COMPONENT {
         typeof column.prop.Value == "string" &&
         column.prop.Value.trim().length == 0
       ) {
-        column.prop.ErrorMessage = this.prop.Messages[6];
+
         return false;
       }
       if (!(await this.validKey(column.prop.name, column.Recno))) {
-        column.prop.ErrorMessage = this.prop.Messages[7];
+        //column.prop.ErrorMessage = this.prop.Messages[7];
         return false;
       }
     }
@@ -196,6 +198,9 @@ export class GRID extends COMPONENT {
 
     return true;
   }
+
+
+
 
   /*
   /////////////////////////////////////////////////////
@@ -253,7 +258,7 @@ export class GRID extends COMPONENT {
       return
 
     this.prop.Disabled = true;
-    this.prop.Status = 'P'
+
     //this.Row = -1;
 
     this[this.main[this.main.length - 1]].prop.Last = true;
@@ -270,8 +275,8 @@ export class GRID extends COMPONENT {
     // select(this.prop.RecordSource)
 
     const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
+    console.log('Append Row this.prop RecordSource= ', this.prop.RecordSource, '  ', await localAlaSql(`select  * from ${this.prop.RecordSource} `))
     this.prop.Disabled = false;
-    this.prop.Status = 'A'
 
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
   }
@@ -282,11 +287,11 @@ export class GRID extends COMPONENT {
   // force: si es verdadero borra sin preguntar
   /////////////////////////
   async deleteRow(recno: number, force?: boolean) {
-    let result = true
+
     // borramos el renglon?
-    if (force || await MessageBox(this.prop.Messages[5][0], 4, '') == 6) {
+    if (force || await MessageBox(this.prop.DeleteMessage, 4, '') == 6) {
       this.prop.Status = 'A'
-      result = await deleteSqlRow(recno, this.prop.RecordSource);
+      const result = await deleteSqlRow(recno, this.prop.RecordSource);
       console.log('deleteRow result=', result)
       // await restableceStatus()
       if (result)
@@ -295,6 +300,9 @@ export class GRID extends COMPONENT {
     }
     return result
   }
+
+
+
   /*
     async saveRow() {
       await this.saveTable(true)  // solo graba el renglon actual
@@ -329,7 +337,7 @@ export class GRID extends COMPONENT {
     */
 
     if (updateType) {
-      if (await MessageBox('', 4, this.prop.Messages[0]) != 6)
+      if (await MessageBox('', 4, this.prop.UpdateMessage) != 6)
         return false;
     }
     else {
@@ -344,13 +352,12 @@ export class GRID extends COMPONENT {
       this.prop.RecordSource
     );
     if (resultado)  //actualizacion con exito
-      MessageBox(this.prop.Messages[2][0]);
+      MessageBox(this.prop.OkMessage);
 
     else {
-      if (!oneRow)
-        MessageBox(this.prop.Messages[3][0] + this.prop.RecordSource, 16, "ERROR");
-      else
-        MessageBox(this.prop.Messages[4][0] + this.prop.RecordSource, 16, "ERROR");
+
+      MessageBox(this.prop.ErrorMessage + this.prop.RecordSource, 16, "ERROR");
+
       return false;
     }
     this.Row = -1
@@ -369,7 +376,7 @@ export class GRID extends COMPONENT {
       this.prop.RecordSource
     );
     if (resultado)  //actualizacion con exito
-      await MessageBox(this.prop.Messages[2][0]);
+      await MessageBox(this.prop.OkMessages);
     else
       return false;
     /*

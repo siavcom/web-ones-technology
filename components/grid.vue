@@ -928,6 +928,13 @@ const next = async () => {
 
 const last = async (insert?: boolean) => {
 
+
+
+  if (This.prop.RecordSource.length < 2 ||
+    Sql.View[props.prop.RecordSource].recnoVal.length == 0) return
+
+
+
   scroll.controls = false
   // if (scroll.bottom && !RowInsert) return
   //  console.log('2.5) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length, 'scroll.rowa', scroll.rows)
@@ -978,9 +985,11 @@ const last = async (insert?: boolean) => {
 }
 
 const appendRow = async () => {
+  console.clear()
   await last()
   scroll.controls = false
-  if (This.Row >= 0) {
+
+  if (Sql.View[props.prop.RecordSource].recnoVal.length > 0 && This.Row >= 0) {
     for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
       const comp = This.main[i]
 
@@ -1012,8 +1021,6 @@ const borraRenglon = async (recno?: number) => {
 
     if (This.Row < 0) return
     // busca a cual recno pertenece el This.Row
-
-
     //  console.log('borraRenglon data Page====>', This.Row, scroll.dataPage)
 
     for (let i = 0; i < scroll.dataPage.length; i++) {

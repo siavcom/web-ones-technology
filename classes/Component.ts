@@ -55,6 +55,7 @@ export class COMPONENT {
     Currency: "", //USD,EUR,MXN
     CurrencyDisplay: "code", //to use the ISO currency code.
 
+    DeleteMessage: 'Borramos',
     Development: false,
     Disabled: false,
     Decimals: 2,
@@ -115,6 +116,7 @@ export class COMPONENT {
     Last: false,
     ListCount: [],
 
+    OkMessage: 'Ok',
     Order: 1,
 
     Placeholder: "",
@@ -140,7 +142,7 @@ export class COMPONENT {
     This: null,
     ToolTipText: "",
     Type: "text",  // text, number, date, time, checKBox
-
+    UpdateMessage: 'Actualizamos',
     updateKey: false, // true when this component is a field index for a table select , update or delete
 
     Valid: true,
@@ -854,7 +856,10 @@ export class COMPONENT {
       rowsource: this.prop.RowSource,
       placeholder: this.prop.Placeholder,
       tooltiptext: this.prop.ToolTipText,
-      errormessage: this.prop.ErrorMessage
+      errormessage: this.prop.ErrorMessage,
+      okmessage: this.prop.OkMessage,
+      updatemessage: this.prop.UpdateMessage,
+      deletemessage: this.prop.DeleteMessage,
     }
 
     if (m.lan_lan.trim() == '')
