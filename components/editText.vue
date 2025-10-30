@@ -552,7 +552,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
-      await This.Form.db.updateCampo(newValor, props.prop.ControlSource, Recno)
+      await updateCampo(newValor, props.prop.ControlSource, Recno)
       // Value.value = Valor
     }
     console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
@@ -673,7 +673,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
         const Recno = props.Registro
         const data = await This.Form.db.readCampo(ControlSource, Recno)
-        console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
+        //  console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
 
         for (const campo in data) {
 
@@ -1480,7 +1480,8 @@ watch(
   async () => {
     //    console.log('EditText Watch prop.Registro Name=', This.prop.Name)
     await emitValue(true)
-    This.Recno = props.Registro
+    //29/Oct/2025 -- Se quita, daba problema en el grid
+    //This.Recno = props.Registro
     This.recnoChange()
   },
   { deep: true }
@@ -2002,6 +2003,8 @@ onMounted(async () => {
     Value.value = This.prop.RefValue.value
 
   const result = await emitValue(true)
+
+
   This.Recno = props.Registro
 
   if (typeof Value.value == 'number')

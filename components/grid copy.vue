@@ -13,11 +13,10 @@
       <!-- v-if="scroll.dataPage && scroll.dataPage.length" -->
 
       <div :id="Id + '_div_grid_tabla'" class="tabla" :style="{
-        minHeight: 'fit-content', height: 'max-content', width: 'inherit',
-
+        minHeight: 'fit-content', height: 'fit-content', width: 'inherit',
+        pointerEvents: props.prop.ReadOnly ? 'none' : 'auto'
       }">
-        <table :id="Id + '_grid_tabla'" class="gridTable"
-          :style="{ height: 'auto', pointerEvents: props.prop.ReadOnly ? 'none' : 'auto' }"> <!--lineHeight:11px-->
+        <table :id="Id + '_grid_tabla'" class="gridTable" :style="{ height: 'auto' }"> <!--lineHeight:11px-->
           <thead>
             <tr style="font-size: 13px">
               <th> </th>
@@ -56,19 +55,13 @@
                 :key="item.recno.toString() + col.Name"
                 :style='{ height: This[col.Name].style.height, padding: 0, textAlign: "-webkit-center" }'
                 :headers="col.Name">
-                <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
-                  v-bind:Registro="item.recno" v-bind:Id="item.id" v-bind:prop="This[col.Name].prop"
-                  v-bind:position="This[col.Name].position" v-bind:style="This[col.Name].style"
-                  @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
-                </textLabel>
 
-                <!--textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
+                <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
                   v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
                   v-bind:style="This[col.Name].style"
                   @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
-                </textLabel-->
-
+                </textLabel>
                 <!--   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
                 <!--/Transition-->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
@@ -106,46 +99,32 @@
           <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="40" />
         </span>
 
-        <span :id="Id + '_botton_controles_add'" title="Insert row" v-show="prop.showAddButton" :style="{
-          'padding': '5px',
-          'pointerEvents': This.prop.Valid && !This.prop.ReadOnly ? 'auto' : 'none',
-          'opacity': This.prop.Valid && !This.prop.ReadOnly ? '1' : '0.4'
-        }" @click="appendRow()">
+        <span :id="Id + '_botton_controles_add'" title="Insert row"
+          v-show="prop.showAddButton && This.prop.Valid && !This.prop.ReadOnly" :style="{ 'padding': '5px' }"
+          @click="appendRow()">
           <nuxt-img :id="Id + '_otton_controles_add_img'" src="/Iconos/svg/add-color.svg" width="35" />
         </span>
 
-        <span :id="Id + '_botton_controles_page'" v-show="This.prop.Valid">
+        <span :id="Id + '_botton_controles_page'" v-show="scroll.page > 0 && This.prop.Valid">
 
-          <span :id="Id + '_botton_controles_page_first'" title="First row" :style="{
-            'padding': '5px',
-            'pointerEvents': (scroll.page > 0) ? 'auto' : 'none',
-            'opacity': (scroll.page > 0 && This.prop.Valid) ? '1' : '0.4'
-          }" @click.capture.stop="first()">
+          <span :id="Id + '_botton_controles_page_first'" title="First row" :style="{ 'padding': '5px' }"
+            @click.capture.stop="first()">
             <nuxt-img :id="Id + '_botton_controles_page_first_img'" src="/Iconos/svg/first.svg" width="35" />
           </span>
 
-          <span :id="Id + '_botton_controles_page_previus'" title="Previus page" :style="{
-            'padding': '5px',
-            'pointerEvents': (scroll.page > 0) ? 'auto' : 'none',
-            'opacity': (scroll.page > 0 && This.prop.Valid) ? '1' : '0.4'
-          }" @click.capture.stop="previous()">
+          <span :id="Id + '_botton_controles_page_previus'" title="Previus page" :style="{ 'padding': '5px' }"
+            @click.capture.stop="previous()">
             <nuxt-img :id="Id + '_botton_controles_page_previus_img'" src="/Iconos/svg/previous.svg" width="35" />
           </span>
 
         </span>
-        <span :id="Id + '_botton_controles_one__page'" v-show="This.prop.Valid">
-          <span :id="Id + '_botton_controles_one__page_next'" title="Next page" @click="next()" :style="{
-            'padding': '5px',
-            'pointerEvents': (!scroll.bottom && scroll.dataPage.length > 0 && This.prop.Valid) ? 'auto' : 'none',
-            'opacity': (!scroll.bottom && scroll.dataPage.length > 0 && This.prop.Valid) ? '1' : '0.4'
-          }">
+        <span :id="Id + '_botton_controles_one__page'" v-show="!scroll.bottom && This.prop.Valid">
+          <span :id="Id + '_botton_controles_one__page_next'" title="Next page" @click="next()"
+            :style="{ 'padding': '5px' }">
             <nuxt-img :id="Id + '_botton_controles_one__page_next_img'" src="/Iconos/svg/next.svg" width="35" />
           </span>
-          <span :id="Id + '_botton_controles_one__page_last'" title="Last page" @click="last()" :style="{
-            'padding': '5px',
-            'pointerEvents': (!scroll.bottom && scroll.dataPage.length > 0 && This.prop.Valid) ? 'auto' : 'none',
-            'opacity': (!scroll.bottom && scroll.dataPage.length > 0 && This.prop.Valid) ? '1' : '0.4'
-          }">
+          <span :id="Id + '_botton_controles_one__page_last'" title="Last page" @click="last()"
+            :style="{ 'padding': '5px' }">
             <nuxt-img :id="Id + '_botton_controles_one__page_last_img'" src="/Iconos/svg/last.svg" width="35" />
           </span>
 
@@ -153,11 +132,8 @@
 
 
         <span :id="Id + '_botton_controles_delete_row'" title="Delete row"
-          v-show="prop.showDeleteButton && !This.prop.ReadOnly" :style="{
-            'padding': '5px',
-            'pointerEvents': (This.Row >= 0 && This.prop.Valid && !This.prop.ReadOnly) ? 'auto' : 'none',
-            'opacity': (This.Row >= 0 && This.prop.Valid && !This.prop.ReadOnly) ? '1' : '0.4'
-          }" @click.stop="borraRenglon()">
+          v-show="prop.showDeleteButton && This.Row >= 0 && !This.prop.ReadOnly" :style="{ 'padding': '5px' }"
+          @click.stop="borraRenglon()">
           <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-color.svg" width="40" />
         </span>
 
@@ -366,7 +342,7 @@ const keyPress = ($event) => {
   Key.value = key
 }
 
-const loadGrid = async () => {
+const loadGrid = () => {
   // inicializamos scroll
   scroll.page = 0
   scroll.dataPage = []  // Elementos que compone la pagina Sql.View[props.prop.RecordSource].recnoVal[elementNo]
@@ -374,7 +350,7 @@ const loadGrid = async () => {
   scroll.bottom = false // Final de pagina
 
   if (Sql.View[This.prop.RecordSource]) {
-    await loadData()
+    loadData()
 
     if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.showSaveButton && This.prop.addRow)  // No hay renglones
       appendRow()
@@ -632,19 +608,16 @@ watch(
   async (new_data, old_data) => {
 
     //"item.recno > 0 || item.recno != null ? item.recno : 0"
-    if (new_data == old_data)
-      return
+    if (new_data == old_data) return
 
-    if (This.Row == -100)
-      return
+    if (This.Row == -100) return
 
-    // console.log('1) Grid watch Row = ', This.Row)
+    console.log('1) Grid watch Row = ', This.Row)
 
     if (This.Row == -1) {  // Recarga datos
       //console.log('2) dele row Grid watch Row = ', This.Row)
 
       //load_data = true
-
       await last() // carga el ultimo renglon
       //await loadData()
       // console.log('3) dele row Grid watch Row = ', This.Row)
@@ -753,8 +726,7 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
   }
 
 
-  if (This.Row == Row)
-    return
+  if (This.Row == Row) return
   This.prop.Valid = false
   This.prop.Status = 'P'
 
@@ -769,12 +741,11 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
 
     // actualiza el row
     goto(Recno, RecordSource)
-    This.Recno = Recno
   }
   // View[This.prop.RecordSource].recno = Recno
   //  console.log('asignaRenglon Row=', Row, 'RecordSource=', This.prop.RecordSource, 'View=', View[This.prop.RecordSource].recno)
   // This.prop.Status = 'A'
-  This.prop.Valid = true
+
 }
 
 const asignaStyle = (style: {}, itemId: string) => {
@@ -796,26 +767,33 @@ const asignaStyle = (style: {}, itemId: string) => {
 /////////////////////////////////////////
 
 const loadData = async (Pos?: number) => {
-  console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'This.Row=', This.Row)
+  console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'Pos=', Pos, 'RowInsert=', RowInsert)
 
-  This.Recno = 0
   while (scroll.dataPage.length > 0)
     scroll.dataPage.pop() // borramos todos los renglones
 
   if (This.prop.RecordSource.length < 2) {
+
+
     return
   }
 
-
   This.Form.prop.Status = 'P'
   This.prop.Valid = false
+
+  /*
+    for (let i = 0; i < This.main.length && First == ''; i++) { // Recorre todos los estatus del grid
+      if (!This[This.main[i]].prop.Disabled)
+        First = This[This.main[i]].prop.Name
+    }
+  
+  */
 
   This.Row = -100   // Quita la posicion actual del renglon
 
   load_data = false
 
-  if (!scroll.rows || scroll.rows == 0)
-    scroll.rows = 10
+  if (!scroll.rows || scroll.rows == 0) scroll.rows = 10
 
   const Rows = scroll.rows
 
@@ -827,6 +805,12 @@ const loadData = async (Pos?: number) => {
     if (scroll.page != page)
       scroll.page = page
   }
+
+
+  /*
+    while (scroll.dataPage.length > 0)
+      scroll.dataPage.pop() // borramos todos los renglones
+  */
 
   try {
 
@@ -855,13 +839,9 @@ const loadData = async (Pos?: number) => {
     else
       scroll.top = false
     let RowNumber = 0
-    //18/Oct/2025
-
-    // console.log('2) Grid loadData()  RecordSource=', props.prop.RecordSource, 'recnoVal=', View[props.prop.RecordSource].recnoVal)
-    // scroll.dataPage = []
     for (let i = 0; i < Rows; i++) {
       const elementNo = ((scroll.page) * Rows) + i
-      if (View[props.prop.RecordSource].recnoVal[elementNo]) {
+      if (Sql.View[props.prop.RecordSource].recnoVal[elementNo]) {
         scroll.dataPage[i] = Sql.View[props.prop.RecordSource].recnoVal[elementNo]
         // console.log('loadData() elementNo=', elementNo, ' scroll.dataPage[i]=', scroll.dataPage[i])
         RowNumber = i
@@ -888,6 +868,37 @@ const loadData = async (Pos?: number) => {
     This.prop.Valid = true
     if (RowInsert)
       return
+    //This.prop.Status = 'P'
+    /*
+    This.prop.Valid = false
+    for (let i = 0; i < This.main.length; i++) {
+      const comp = This.main[i]
+      This[comp].prop.Valid = true
+    }
+    */
+
+    //console.log('4) loadData() compValid This.prop.Valid=', This.prop.Valid, ' This.Row=', This.Row)
+
+    // This.Row = -1
+    /*
+    if (RowInsert) {
+     
+      // This.Row = RowNumber
+      console.log('3) loadData() RowInsert RowNumber=', RowNumber, ' This.Row=', This.Row)
+      for (const comp of This.main) {
+        if (First == '') {
+          First = comp
+        }
+        This[comp].prop.Valid = false // Ponemos no validado todos los componentes
+      }
+      nextTick(() => {
+        console.log("4) loadData() RowInsert asignaRenglon row ", This.Row, " Columna=", First, scroll);
+
+        This[First].prop.Focus = true;
+      });
+      RowInsert = false
+    }
+  */
 
 
   } catch (err) {
@@ -936,16 +947,12 @@ const next = async () => {
 const last = async (insert?: boolean) => {
 
 
-  if (This.prop.RecordSource.length < 2 || View[props.prop.RecordSource].recnoVal.length == 0) {
-    scroll.page = 0
-    scroll.top = false
-    scroll.bottom = false
-    scroll.dataPage = []
-    if (This.prop.addRow)
-      await This.appendRow()
 
-    return
-  }
+  if (This.prop.RecordSource.length < 2 ||
+    Sql.View[props.prop.RecordSource].recnoVal.length == 0) return
+
+
+
   scroll.controls = false
   // if (scroll.bottom && !RowInsert) return
   //  console.log('2.5) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length, 'scroll.rowa', scroll.rows)
@@ -996,7 +1003,7 @@ const last = async (insert?: boolean) => {
 }
 
 const appendRow = async () => {
-
+  console.clear()
   await last()
   scroll.controls = false
 
@@ -1166,7 +1173,6 @@ onMounted(async () => {
         firstElement = comp
 
       //  compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
-      This[comp].prop.Valid = true
       compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
       compValid[comp] = toRef(This[comp].prop, "Valid"); // stack de estatus de componentes
 
@@ -1196,7 +1202,6 @@ onMounted(async () => {
 
   This.prop.Valid = true // Asignamos el valor de validacion del grid
   scroll.controls = true
-  This.Recno = 0
 
 })
 

@@ -126,6 +126,12 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 let noRegistro = ref(0)
+
+// 30/Oct/2025
+const Recno = props.Registro
+const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
+// Fin 30/Oct/2025
+
 const Styles =
 {
   captionStyle: captionStyle,
@@ -133,9 +139,7 @@ const Styles =
   style: divStyle
 }
 
-
 //const Id = This.prop.Name + props.Registro.toString().trim()
-
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 
@@ -191,19 +195,58 @@ const emitValue = async () => {
   return true;
 };
 
-
 //////////////////////////////////////////////////////
 // Asigna Resultado
 /////////////////////////////////////////////////////
-
-
-
 const asignaResultado = async (valor?: string) => {
   //console.log('inputStyle asignaResultado ',props.Name,valor)
-  if (props.prop.Status == 'I') return
-  if (props.prop.ColumnCount == 0) return;
-  if (props.prop.RowSourceType == 0) return;
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
+  // if (props.prop.Status == 'I') return
+  // if (props.prop.ColumnCount == 0) return;
+
+  if (props.prop.RowSourceType == 0 || !props.prop.RowSource || props.prop.RowSource.length < 1) {
+    if (Text.value === undefined || Text.value === null) {
+      switch (props.prop.Type) {
+        case 'number':
+          Text.value = 0
+          break;
+        case 'checkbox':
+          Text.value = 0
+          break;
+        case 'date':
+          Text.value = '1900-01-01' //T00:00:00'
+          break;
+        case 'datetime':
+          Text.value = '1900-01-01T00:00:00'
+          break;
+        default:
+          Text.value = ''
+      }
+
+    }
+
+    switch (props.prop.Type) {
+      case 'number':
+        Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+        break;
+      case 'date':
+        Text.value = Text.value.slice(0, 10)
+        break;
+      case 'datetime':
+        //Text.value = toNumberStr(Text.value);
+        Text.value = Text.value.slice(0, 16)
+        break;
+      case 'checkbox':
+        let check = Text.value == 0 ? false : true
+        if (checkValue.value != check) {
+          checkValue.value = check
+        }
+        emit("update:checkValue", checkValue)
+        break;
+    }
+
+    return;
+
+  }
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
@@ -241,6 +284,7 @@ const asignaResultado = async (valor?: string) => {
   }
   /////////////////////////////////////////////////////////////////////
 
+
   await emitValue()
 }
 
@@ -250,7 +294,7 @@ const asignaResultado = async (valor?: string) => {
 const renderComboBox = async () => {
 
   if (props.prop.RowSourceType < 1) return
-  if (props.prop.Status == 'I') return
+  // if (props.prop.Status == 'I') return
   if (props.prop.ColumnCount == 0) return
 
   if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) {
@@ -412,9 +456,11 @@ const renderComboBox = async () => {
   //Text.value = valor
   //console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
 
-  //asignaResultado(valor)
+
   //console.log('2) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', valor, 'ControlSource=', props.prop.ControlSource)
-  asignaResultado(valor)
+
+  //30/Oct/2025
+  //  asignaResultado(valor)
 
   //  ** ojo falta el multi select
   /*
@@ -429,11 +475,21 @@ const renderComboBox = async () => {
 
 }
 
-const readCampo = async () => {
+const readValue = async (on_Mounted?: boolean) => {
+
+  //  if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+  //    return
+
+  console.log('1) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
+
+  if (!on_Mounted && This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+    return
+  console.log('2) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
+
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
     // console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
-    const data = await This.Sql.readCampo(props.prop.ControlSource, props.Registro)
+    const data = await readCampo(props.prop.ControlSource, props.Registro)
 
     for (const campo in data) {
       if (campo != 'key_pri')
@@ -442,11 +498,13 @@ const readCampo = async () => {
     }
   }
 
+  asignaResultado()
 
-  This.prop.Value = Text.value
-  This.Recno = props.Registro
+  console.log('2) readValue This.prop.Name=', This.prop.Name, 'Text.value=', Text.value)
 
-
+  // This.prop.Value = Text.value
+  //This.Recno = props.Registro
+  return
   if (This.onChangeValue) {
     await This.onChangeValue(ref(Styles))
   }
@@ -480,10 +538,8 @@ const readCampo = async () => {
 
   //if (props.prop.Type == 'text' || props.prop.Type == 'textArea') {
   //  Text.value = Text.value.trim()
-
-
-
   await renderComboBox()
+  This.recnoChange()
 }
 
 /*
@@ -512,12 +568,37 @@ watch(
 */
 
 watch(
+  () => This.prop.RowSource,
+  async (new_val, old_val) => {
+    if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+      return
+    renderComboBox()
+    await asignaResultado()
+  },
+  { deep: false }
+)
+
+watch(
+  () => This.prop.RowSourceType,
+  async (new_val, old_val) => {
+    if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+      return
+    renderComboBox()
+    await asignaResultado()
+  },
+  { deep: false }
+)
+
+
+watch(
   () => props.Registro,
   async (new_val, old_val) => {
-    // console.log(' TextLabel=', This.prop.Name, 'watch Registro', old_val, new_val)
+    if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+      return
+    console.log(' TextLabel=', This.prop.Name, 'watch Registro', old_val, new_val)
+
     if (old_val != new_val && new_val > 0) {
-      await readCampo()
-      This.recnoChange()
+      await readValue()
     }
     if (new_val == 0)
       Text.value = ''
@@ -529,6 +610,8 @@ watch(
 watch(
   () => This.prop.ControlSource,
   async (new_val, old_val) => {
+    if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+      return
 
     //  console.log('watch controlSource', new_val, old_val)
     if (new_val != old_val && new_val.length > 2) {
@@ -546,33 +629,53 @@ watch(
   },
   { deep: false }
 )
-
+/*
 watch(
   () => noRegistro,
   async (new_val, old_val) => {
-    // console.log('watch noRegistro', new_val, old_val)
-    if (new_val != old_val)
-      This.Recno = new_val
+    console.log('watch noRegistro', new_val, old_val)
+   if (new_val != old_val)
+    This.Recno = new_val
     await readCampo()
 
   },
   { deep: true }
 )
-
+*/
 ////////////////////////////////////////
 // Si se cambia This.prop.Value desde afuera del componente 
 ///////////////////////////////////////
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
-
   async (new_val: any, old_val: any) => {
-
-    //10/Oct/2025  si se comenta deja de funcinar en el grid
-    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
 
     if (new_val == Value.value)
       return
 
+    //if ((This.Parent.Recno > 0 && This.Parent.Recno != props.Registro && This.BaseClass == 'Column') || This.Parent.Recno != props.Registro)
+
+
+    //if (This.BaseClass == 'Column' && (This.Parent.Recno == 0 || (This.Parent.Recno != props.Registro)))
+    //  return
+
+    if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+      return
+
+
+    //    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0)
+    //   return
+
+    console.log('readCampo watch value Name=', This.prop.Name, 'Value=', new_val,
+      'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno)
+
+    Text.value = new_val
+    if (props.Registro > 0 && This.prop.ControlSource.length > 2)
+      updateCampo(new_val, This.prop.ControlSource, props.Registro)
+
+    await asignaResultado()
+
+
+    return
     if (new_val === undefined || new_val === null) {
       switch (props.prop.Type) {
         case 'number':
@@ -615,11 +718,50 @@ watch(
         Text.value = new_val
     }
 
-    asignaResultado()
+    await asignaResultado()
+
+
+    if (This.onChangeValue) {
+      await This.onChangeValue(ref(Styles))
+    }
 
   },
   { deep: true }
 );
+
+////////////////////////////////////////////////////////////////////
+// change This.prop.ReadOnly
+// Change background color of input whene ReadOnly
+// 30/Oct/2025
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
+  async (new_val: boolean, old_val: boolean) => {
+    if (This.BaseClass == 'Column' || Recno != props.Registro)
+      return
+
+    ReadOnly() //
+
+  },
+  { deep: false }
+);
+
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun si es de solo lectura
+////////////////////////////////////////////////////////
+const ReadOnly = () => {
+  if (This.prop.ReadOnly) {
+    //      Styles.inputStyle = { ...This.readOnlyInputStyle }
+
+    Styles.inputStyle.background = readOnlyInputStyle.background
+    Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+  }
+  else {
+    //Styles.inputStyle = { ...This.inputStyle }
+    Styles.inputStyle.background = This.inputStyle.background
+    Styles.inputStyle.opacity = This.inputStyle.opacity
+  }
+}
 
 
 /////////////////////////////////////////
@@ -628,9 +770,8 @@ watch(
 // A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
 // Se tiene que emitir para que cambie el Valor en el template
 /////////////////////////////////////////
-
-const init = async () => {
-
+onMounted(async () => {
+  //const init = async () on_mounted=true
   if (Styles.inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
     Styles.inputStyle.width = '99%'
 
@@ -655,7 +796,11 @@ const init = async () => {
   if (This.prop.BaseClass == "imgButton")
     Type.value = 'imgButton'
 
-  await readCampo()
+
+  console.log('onMounted textLabel ', This.prop.Name)
+  await renderComboBox()
+
+  await readValue(true)
 
   if (This.prop.ControlSource.length > 2) {
     const pos = This.prop.ControlSource.indexOf(".") + 1;
@@ -680,7 +825,7 @@ const init = async () => {
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
-}
+})
 
 const middleClick = () => {
   // console.log('middleClick')
@@ -698,7 +843,6 @@ const handler = (event) => {
 }
 
 
-init();
 </script>
 
 <style scoped>

@@ -36,10 +36,10 @@ export class vac_vis extends COLUMN {
         return true
 
       const indice = this.prop.Value.trim()
-      const ins_sql = `select key_pri from Now.vi_cap_comeind where trim(nom_ind)='${indice}'`
+      const ins_sql = `select key_pri from now.vi_cap_comeind where trim(nom_ind)='${indice}'`
       const res = await this.Form.db.localAlaSql(ins_sql)
 
-      // await this.Form.db.localAlaSql('select key_pri,nom_ind from Now.vi_cap_comeind'))
+      // await this.Form.db.localAlaSql('select key_pri,nom_ind from now.vi_cap_comeind'))
 
       console.log('vac_ind res=', res)
       if (res.length == 0) {

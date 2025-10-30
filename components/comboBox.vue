@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { tip_sel } from '~/pages/VTA/Rep/come5212/tip_sel';
+
 
 // "update:Key", "update:Focus"
 
@@ -532,7 +532,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   displayError.value = false  // Desactivamos mensaje de error
   This.prop.displayError = false
 
-  console.log('3.3 comboBox emitValue() Name', props.prop.Name, 'This.prop.Valid=', This.prop.Valid)
+  //console.log('3.3 comboBox emitValue() Name', props.prop.Name, 'This.prop.Valid=', This.prop.Valid)
 
   if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
     // console.log('comboBox emitValue valid() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)

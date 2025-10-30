@@ -43,9 +43,6 @@
 
 <script setup lang="ts">
 
-
-// Ultima modificacion 10/Oct/2025  watch This.prop.Value
-
 const emit = defineEmits(["update", "update:checkValue"]);
 
 ///////////////////////////////////////
@@ -128,7 +125,11 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
+
+
 let noRegistro = ref(0)
+const Recno = props.Registro
 const Styles =
 {
   captionStyle: captionStyle,
@@ -147,25 +148,15 @@ const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString(
 const Value = ref(props.prop.Value)
 
 const Text = ref(null)
-const Status = ref(props.prop.Status)
+let Status = ref('I')   //  ref(props.prop.Status)
 
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
-Status.value = 'I'
+//Status.value = 'I'
 const checkValue = ref(false)
 const Type = ref(props.prop.Type.toLowerCase())
 
-/*
-const captionStyle = reactive(This.captionStyle)
-const InputStyle = reactive({ ...props.inputStyle })
-const refInputStyle = toRef(This.inputStyle)
-*/
-
-
-
 // el width y maxWidth de 99% fue lo mejor para los grid de columnas  
 // con 97% se desalinea horizontalmente en el grid de columnas
-
-
 /*
 let medida = ''
 
@@ -178,38 +169,39 @@ const textWidth = +inputStyle.width.replaceAll(medida, '') - 5
 inputStyle.width = textWidth.toString() + medida
 */
 
-
-
-//const zIndex = ref(props.style.zIndex)
-//const inputWidth = ref('auto')
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async () => {
 
+  //28/Oct/2025 This.prop.Status = 'A'
   Status.value = 'A'
   emit("update") // emite un update en el componente padre
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
 
-
 //////////////////////////////////////////////////////
 // Asigna Resultado
 /////////////////////////////////////////////////////
 
-
-
 const asignaResultado = async (valor?: string) => {
   //console.log('inputStyle asignaResultado ',props.Name,valor)
-  if (props.prop.Status == 'I') return
-  if (props.prop.ColumnCount == 0) return;
-  if (props.prop.RowSourceType == 0) return;
-  if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
-
-  const BoundColumn =
-    (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
+  //28/Oct/2025 se camvbio a Status.value
+  /*
+    if (Status.value == 'I') {
+      emitValue()
+      return
+    }
+  
+    if (props.prop.ColumnCount == 0) return;
+    if (props.prop.RowSourceType == 0) return;
+    if (!props.prop.RowSource || props.prop.RowSource.length < 1) return;
+  
+    const BoundColumn =
+      (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
+  */
   // recorre todo los renglones en columnas
 
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
@@ -252,19 +244,26 @@ const asignaResultado = async (valor?: string) => {
 /////////////////////////////////////////////////////
 const renderComboBox = async () => {
 
-  if (props.prop.RowSourceType < 1) return
-  if (props.prop.Status == 'I') return
+  if (props.prop.RowSourceType < 1) {
+    emitValue()
+    return
+  }
+  //28/Oct/2025 se camvbio a Status.value
+  //  if (Status.value == 'I') return
+
   if (props.prop.ColumnCount == 0) return
+
 
   if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) {
     return;
   }
 
+  console.log('1) renderComboBox Name=', props.prop.Name, 'ColumnCount=', props.prop.ColumnCount)
+
   //console.log('textLabel render comboBox ', props.prop.Map, ' RowSource=', props.prop.RowSource)
   //console.log('1) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', Text.value, 'ControlSource=', props.prop.ControlSource)
   //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
   const RowSource: string = props.prop.RowSource
-
 
   // RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
   // this.prop.RowSource = "camposView.ref_dat,cam_dat";
@@ -445,9 +444,9 @@ const readCampo = async () => {
     }
   }
 
-
   This.prop.Value = Text.value
-  This.Recno = props.Registro
+
+  //  This.Recno = props.Registro
 
 
   if (This.onChangeValue) {
@@ -483,8 +482,6 @@ const readCampo = async () => {
 
   //if (props.prop.Type == 'text' || props.prop.Type == 'textArea') {
   //  Text.value = Text.value.trim()
-
-
 
   await renderComboBox()
 }
@@ -554,8 +551,10 @@ watch(
   () => noRegistro,
   async (new_val, old_val) => {
     // console.log('watch noRegistro', new_val, old_val)
-    if (new_val != old_val)
-      This.Recno = new_val
+    /*
+       if (new_val != old_val)
+         This.Recno = new_val
+    */
     await readCampo()
 
   },
@@ -569,8 +568,32 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
 
   async (new_val: any, old_val: any) => {
-//Se comenta 10/Oct/2025  
-      if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0) return
+    if (Status.value == 'I') return
+
+    //10/Oct/2025  si se comenta deja de funcinar en el grid
+
+
+    if (Recno > 0 && props.prop.ControlSource.length > 0) {
+
+      //    console.log('watch text Label ala=', await localAlaSql(`select * from ${This.Parent.prop.RecordSource}`))
+      console.log('watch text Label This.prop.Name', This.prop.Name, 'prop.Registro=', props.Registro, 'Recno=', Recno, 'This.Parent.Recno', This.Parent.Recno)
+
+      if (This.BaseClass == 'Column' && This.Parent.Recno != props.Registro) // no pertenece al mismo renglom
+        return
+
+
+      //  console.log('watch This.prop.Value', new_val, old_val, 'Registro=', Registro, 'props.Registro=', props.Registro, 'props.prop.RowSourceType=', props.prop.RowSourceType, 'props.prop.RowSource=', props.prop.RowSource)
+
+      if (props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+        const Recno = props.Registro
+        await updateCampo(new_val, props.prop.ControlSource, Recno)
+        await readCampo()
+        // Value.value = Valor
+
+ 
+      }
+      return
+    }
 
     if (new_val == Value.value)
       return
@@ -617,11 +640,45 @@ watch(
         Text.value = new_val
     }
 
-    asignaResultado()
+    emitValue()
+    //    asignaResultado()
 
   },
   { deep: true }
 );
+
+////////////////////////////////////////////////////////////////////
+// change This.prop.ReadOnly
+// Change background color of input whene ReadOnly
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
+  async (new_val: boolean, old_val: boolean) => {
+    ReadOnly() //
+
+  },
+  { deep: false }
+);
+
+
+
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun si es de solo lectura
+////////////////////////////////////////////////////////
+const ReadOnly = () => {
+  if (This.prop.ReadOnly) {
+    //      Styles.inputStyle = { ...This.readOnlyInputStyle }
+
+    Styles.inputStyle.background = readOnlyInputStyle.background
+    Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+  }
+  else {
+    //Styles.inputStyle = { ...This.inputStyle }
+    Styles.inputStyle.background = This.inputStyle.background
+    Styles.inputStyle.opacity = This.inputStyle.opacity
+  }
+}
+
 
 
 /////////////////////////////////////////
@@ -630,8 +687,8 @@ watch(
 // A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
 // Se tiene que emitir para que cambie el Valor en el template
 /////////////////////////////////////////
-
-const init = async () => {
+onMounted(async () => {
+  //const init = async () => {
 
   if (Styles.inputStyle.width == 'auto' && props.prop.Type.toLowerCase() != 'checkbox')
     Styles.inputStyle.width = '99%'
@@ -657,6 +714,7 @@ const init = async () => {
   if (This.prop.BaseClass == "imgButton")
     Type.value = 'imgButton'
 
+  //This.Recno = props.Registro
   await readCampo()
 
   if (This.prop.ControlSource.length > 2) {
@@ -675,14 +733,12 @@ const init = async () => {
 
     }
   }
-
-
   await This.afterMounted()
 
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
-}
+})
 
 const middleClick = () => {
   // console.log('middleClick')
@@ -700,7 +756,7 @@ const handler = (event) => {
 }
 
 
-init();
+//init();
 </script>
 
 <style scoped>

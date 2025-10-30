@@ -36,7 +36,7 @@ export class cam_dat extends COMPONENT {
     await this.interactiveChange()
   }
   async interactiveChange() {
-    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from Now.diccionario where cam_dat='${this.prop.Value}'`)
+    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value}'`)
     const tip_dat = data[0].tip_dat
     let Type = 'string'
     let des_Value = ''

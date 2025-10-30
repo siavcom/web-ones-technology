@@ -32,7 +32,7 @@ export class bt_aceptar extends IMGBUTTON {
         this.Form.query.prop.Value.trim(),
         "sqlresult"
       );
-      if (result) this.Form.browse.prop.RowSource = "Now.sqlresult";
+      if (result) this.Form.browse.prop.RowSource = "now.sqlresult";
       // console.log('bt_aceptar ===>>> Datos leidos del SQL Server',this.Form.browse.prop.RowSource)
     }
   }

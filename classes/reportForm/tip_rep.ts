@@ -63,7 +63,7 @@ export class tip_rep extends COMPONENT {
   }
 }
 /*
- const  data = await  localAlaSql('select * from Now.camposView')
+ const  data = await  localAlaSql('select * from now.camposView')
 const  field={}
  for (let g=0;g<data.length;g++){
    const d=data[g]

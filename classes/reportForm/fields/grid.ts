@@ -51,7 +51,7 @@ export class Grid extends GRID {
     if (!m) m = {};
 
     const db = this.Form.db;
-    const campos = await db.localAlaSql("select * from Now.camposView");
+    const campos = await db.localAlaSql("select * from now.camposView");
 
     let fields = {}
 

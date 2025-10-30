@@ -50,8 +50,9 @@ export class GRID extends COMPONENT {
 
     this.style.width = '-moz-available' //"max-content"
     //this.style.minHeight = "120px";
-    this.style.minHeight = "fit-content";
+    //this.style.minHeight = "fit-content";
     this.style.height = "max-content";
+    this.style.background = "beige";
     this.Recno = 0;
 
     //  this.prop.Messages[0] = "Actualizamos la tabla";
@@ -173,7 +174,7 @@ export class GRID extends COMPONENT {
     let where = " where ";
     for (let i = 0; i < this.elements.length; i++) {
       const column = this.elements[i].Name;
-      console.log("Grid  validKeys column=", column, " where=", where);
+
       if (this[column].prop.updateKey) {
         if (name != column && !this[column].Valid) return true;
 
@@ -191,9 +192,9 @@ export class GRID extends COMPONENT {
     }
     where = where + ` recno<>${Recno} `;
     const select = `select count(recno) as existe from ${this.prop.RecordSource} ${where} `;
-
-    const data = await this.Sql.localSql(select);
-
+    console.log("Grid  validKeys select=", await localAlaSql(`select * from ${this.prop.RecordSource} ${where}`));
+    const data = await localSql(select);
+    console.log("Grid  validKeys select", select, 'data=', data);
     if (data[0].existe && data[0].existe >= 1) return false;
 
     return true;
@@ -298,7 +299,7 @@ export class GRID extends COMPONENT {
         this.Row = -1;
 
     }
-    return result
+    return true
   }
 
 
@@ -375,10 +376,12 @@ export class GRID extends COMPONENT {
       false,
       this.prop.RecordSource
     );
-    if (resultado)  //actualizacion con exito
-      await MessageBox(this.prop.OkMessages);
-    else
-      return false;
+    if (resultado) { //actualizacion con exito
+      MessageBox(this.prop.OkMessage);
+      return true;
+    }
+
+    return false;
     /*
     
     {
@@ -392,6 +395,6 @@ export class GRID extends COMPONENT {
       } //fin columnName
     } //Fin else
   */
-    return true;
+
   }
 }

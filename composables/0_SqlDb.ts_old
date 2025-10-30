@@ -93,8 +93,8 @@ export function initSql(Form: {}) {
     alasql("DROP DATABASE IF EXISTS now ;DROP DATABASE IF EXISTS last ;");
     alasql("CREATE DATABASE now ;CREATE DATABASE last ;");
     /*   
-       localAlaSql("DROP DATABASE IF EXISTS now ;");
-       localAlaSql("CREATE DATABASE now ;");
+       localAlaSql("DROP DATABASE IF EXISTS Now ;");
+       localAlaSql("CREATE DATABASE Now ;");
        localAlaSql("DROP DATABASE IF EXISTS last ;");
        localAlaSql("CREATE DATABASE last ;");
    
@@ -156,7 +156,7 @@ export const View = async () => {
 
 /**
  * Release the specified SQL view alias, and delete the corresponding table
- * from both the "now" and "last" databases.
+ * from both the "Now" and "last" databases.
  * 
  * @param alias - (Optional) The alias name of the view to be released.
  *                If not provided, the current working area alias is used.
@@ -164,7 +164,7 @@ export const View = async () => {
  * @returns true if the view was successfully released, otherwise false.
  * 
  * Note: This function does not delete the view definition, it only deletes the
- * table associated with the view from both the "now" and "last" databases.
+ * table associated with the view from both the "Now" and "last" databases.
  */
 export const releaseUse = async (alias?: string) => {
 
@@ -174,7 +174,7 @@ export const releaseUse = async (alias?: string) => {
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 
     if (This.value.View[alias]) {
-        await localAlaSql("delete from now." + alias);
+        await localAlaSql("delete from Now." + alias);
         // localAlaSql('USE last ; ')
         await localAlaSql("delete from  last." + alias);
         delete This.value.View[alias]
@@ -201,7 +201,7 @@ export const locateFor = async (where: string, alias?: string) => {
     if (!alias)       // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 
-    const records = await localAlaSql(`SELECT * FROM now.${alias} WHERE ${where} order by recno;`)
+    const records = await localAlaSql(`SELECT * FROM Now.${alias} WHERE ${where} order by recno;`)
 
 
     if (records && records.length > 0) {
@@ -244,7 +244,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     if (This.value.View[alias]) {
         // si exite ya la vista, solo borra los datos locales
         // console.log('Db useNodata View ',alias,This.value.View)
-        // localAlaSql('USE now ; ')
+        // localAlaSql('USE Now ; ')
 
         // Inicializamos el alias
         while (This.value.View[alias].recnoVal.length > 0) {
@@ -252,7 +252,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         }
 
         try {
-            await localAlaSql("delete from now." + alias);
+            await localAlaSql("delete from Now." + alias);
             // localAlaSql('USE last ; ')
             await localAlaSql("delete from  last." + alias);
         } catch (error) {
@@ -277,7 +277,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         }
         delete This.value.View[alias] // borramos la vista
         try {
-            await localAlaSql("drop table IF EXISTS now." + alias + " ;");
+            await localAlaSql("drop table IF EXISTS Now." + alias + " ;");
             await localAlaSql("drop table IF EXISTS last." + alias + " ;");
         } catch (error) {
             // console.log("Db useNodata error", error);
@@ -381,9 +381,9 @@ export const use = async (
 
         //  if (alias == nom_vis) {
 
-        await alasql('use now')
+        await alasql('use Now')
         if (alasql.tables[alias])
-            await localAlaSql("delete from now." + alias);
+            await localAlaSql("delete from Now." + alias);
 
         await alasql('use last')
         if (alasql.tables[alias])
@@ -408,7 +408,7 @@ export const use = async (
         /*
                 } else {
                     delete This.value.View[alias]
-                    await localAlaSql("drop table if exists now." + alias);
+                    await localAlaSql("drop table if exists Now." + alias);
                     await localAlaSql("drop table if exists last." + alias);
         
                 }
@@ -622,7 +622,7 @@ export const tableRevert = async (alias?: string) => {
 
     const recno = This.value.View[alias].recno
 
-    await localAlaSql('delete from now.' + alias + ' where recno=' + recno + ' ;insert into now.' + alias + ' select * from last.' + alias + ' where recno=' + recno + ' ;')
+    await localAlaSql('delete from Now.' + alias + ' where recno=' + recno + ' ;insert into Now.' + alias + ' select * from last.' + alias + ' where recno=' + recno + ' ;')
 
     return
 }
@@ -753,7 +753,7 @@ export const tableUpdate = async (
     // lee los datos originales haciendo un LEFT OUTER a los datos nuevos
     const data = await localAlaSql(` 
        Select Viejo.key_pri,Viejo.recno recnoOld, Nuevo.recno as recnoNew from last.${alias} Viejo \
-       LEFT OUTER JOIN now.${alias} Nuevo using recno ${where_del}`);
+       LEFT OUTER JOIN Now.${alias} Nuevo using recno ${where_del}`);
 
     // recorre registro por registro para buscar renglones borrados
     for (let row = 0; row < data.length; row++) {
@@ -769,12 +769,12 @@ export const tableUpdate = async (
         }
     }
 
-    //  Select Viejo.* from now.${alias} Nuevo \
+    //  Select Viejo.* from Now.${alias} Nuevo \
     //  LEFT OUTER JOIN last.${alias} Viejo using recno ${where}`))
 
     // obtenemos los datos a actualizar
     const dat_act = await localAlaSql(
-        `SELECT * FROM now.${alias} ${where}`
+        `SELECT * FROM Now.${alias} ${where}`
     );
 
     //const dat_act = datos
@@ -959,7 +959,7 @@ export const tableUpdate = async (
                         }
                     //console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo], 'typeof=', typeof dat_act[row][campo])
                 }
-                //console.log( "Db tableUpdate lee datos now", "val_def=",val_def);
+                //console.log( "Db tableUpdate lee datos Now", "val_def=",val_def);
 
                 //  Busca en la estructura de la tabla de mantenimiento si es campo actualizable
                 if (val_def[campo]) {
@@ -1011,12 +1011,12 @@ export const tableUpdate = async (
 
             if (response && response.key_pri && response.key_pri > 0) {
                 // No hay error
-                /*          const ins_sql = ' UPDATE now.' + alias + ` SET timestamp=${response.timestamp}',key_pri=${response.key_pri} WHERE recno=${dat_act[0].recno}; ` +
+                /*          const ins_sql = ' UPDATE Now.' + alias + ` SET timestamp=${response.timestamp}',key_pri=${response.key_pri} WHERE recno=${dat_act[0].recno}; ` +
                             ' USE last ; DELETE from last.' + alias + ` WHERE recno=${dat_act[0].recno}  ;` +
-                            ' INSERT INTO last.' + alias + ' SELECT * FROM now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
+                            ' INSERT INTO last.' + alias + ' SELECT * FROM Now.' + alias + ` WHERE recno=${dat_act[0].recno} ;`
                 */
                 const ins_sql =
-                    " UPDATE now." +
+                    " UPDATE Now." +
                     alias +
                     ` SET timestamp=?,key_pri=? WHERE recno=${recno}; ` +
                     " USE last ; DELETE from last." +
@@ -1024,7 +1024,7 @@ export const tableUpdate = async (
                     ` WHERE recno=${recno}  ;` +
                     " INSERT INTO last." +
                     alias +
-                    " SELECT * FROM now." +
+                    " SELECT * FROM Now." +
                     alias +
                     ` WHERE recno=${recno} ;`;
 
@@ -1044,7 +1044,7 @@ export const tableUpdate = async (
                 // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
                 console.error(
                     "No se pudo actualizar el registro en tabla " + alias,
-                    dat_vis, 'LocalSQL', await localAlaSql(`select * from now.${alias} `)
+                    dat_vis, 'LocalSQL', await localAlaSql(`select * from Now.${alias} `)
                 );
                 /*
                 errorAlert(
@@ -1073,11 +1073,11 @@ export const tableUpdate = async (
                     } else {
                         force = false
                         /*
-                              await localAlaSql(`DELETE FROM now.${alias} WHERE recno=${dat_act[row].recno} `)
+                              await localAlaSql(`DELETE FROM Now.${alias} WHERE recno=${dat_act[row].recno} `)
                               await localAlaSql(`DELETE FROM last.${alias} WHERE recno=${dat_act[row].recno} `)
                               if (respuesta.length > 0 && respuesta.key_pri) {
                                   respuesta.recno = dat_act[row].recno;
-                                  await localAlaSql(`INSERT INTO now.${alias} VALUES ?`, [respuesta]);
+                                  await localAlaSql(`INSERT INTO Now.${alias} VALUES ?`, [respuesta]);
                                   await localAlaSql(`INSERT INTO last.${alias} VALUES ?`, [respuesta]);
                               } // fin else
                         */
@@ -1098,8 +1098,8 @@ export const tableUpdate = async (
     if (sw_update && updateType > 0) {
       //console.log('Db tableUpdate genera_tabla', dat_act)
       await genera_tabla(dat_act, alias)
-      //console.log('Db tableUpdate genera_tabla now,last', await localAlaSql('select * from now.' + alias)
-      //  , await localAlaSql('select * from now.' + alias))
+      //console.log('Db tableUpdate genera_tabla Now,last', await localAlaSql('select * from Now.' + alias)
+      //  , await localAlaSql('select * from Now.' + alias))
  
     }
     */
@@ -1133,7 +1133,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     let recno = 0;
     // Obtenemos el valor del siguiente recno
     const res = await localAlaSql(
-        "USE now; select max(recno)+1 as recno from " + alias
+        "USE Now; select max(recno)+1 as recno from " + alias
     );
 
     if (res[1] && res[1][0].recno > 0) {
@@ -1215,13 +1215,13 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     console.log("Db DataBAse appendBlank alias ", alias, valores);
     try {
         await localAlaSql(
-            "USE now; INSERT INTO now." + alias + " VALUES ?",
+            "USE Now; INSERT INTO Now." + alias + " VALUES ?",
             [valores]
         );
         await localAlaSql(
             "USE last;INSERT INTO last." +
             alias +
-            " SELECT * FROM now." +
+            " SELECT * FROM Now." +
             alias +
             " WHERE recno=?",
             recno
@@ -1242,7 +1242,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     This.value.View[alias].recCount = This.value.View[alias].recCount + 1;
     This.value.View[alias].row = This.value.View[alias].recnoVal.length - 1; // asignamos nuevo row
     valores.recno = recno;
-    //console.log( "Db DataBAse Insert now  alaSql=====>",        alias,        await localAlaSql(`select * from  last.${alias} `)    );
+    //console.log( "Db DataBAse Insert Now  alaSql=====>",        alias,        await localAlaSql(`select * from  last.${alias} `)    );
     return valores;
 
     /* locaDb
@@ -1280,9 +1280,9 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
         return;
     }
 
-    //console.log('deleteSqlRow localAlasql=', await localAlaSql(`select * from now.${alias} `))
+    //console.log('deleteSqlRow localAlasql=', await localAlaSql(`select * from Now.${alias} `))
 
-    const res = await localAlaSql(`select key_pri from now.${alias}  where recno=${recno}`)
+    const res = await localAlaSql(`select key_pri from Now.${alias}  where recno=${recno}`)
     //console.log('deleteSqlRow res=', res)
 
 
@@ -1337,8 +1337,8 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
         console.log(`Table last.${alias} does not exist.`);
     }
 
-    await localAlaSql(` delete from now.${alias} where recno=${recno}`);
-    alasql('USE now;')
+    await localAlaSql(` delete from Now.${alias} where recno=${recno}`);
+    alasql('USE Now;')
 
     //  borra en el arreglo
     for (let i = 0; i < This.value.View[alias].recnoVal.length; i++) {
@@ -1389,7 +1389,7 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
     } // no hay row por borrar
 
 
-    console.log("Db  delete from now." + alias + ` where recno=${recno}`);
+    console.log("Db  delete from Now." + alias + ` where recno=${recno}`);
 
     // Actualizacion inmediata en SQLSERVER
     if (SqlUpdate) {
@@ -1404,7 +1404,7 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
         const key_pri = data[1][0].key_pri;
          26/Dic/2024 el deleteSqlRow se encarga de borrar en SQLSERVER y localSql
         await localAlaSql(
-          " delete from now." + alias + " where recno=?",
+          " delete from Now." + alias + " where recno=?",
           recno
         );
         */
@@ -1418,10 +1418,10 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
 
         //}
     } else
-        await localAlaSql(`delete from now.${alias} where recno=${recno}`);
+        await localAlaSql(`delete from Now.${alias} where recno=${recno}`);
 
     const recnoArray = await localAlaSql(
-        " select recno from now." + alias + "  order by recno"
+        " select recno from Now." + alias + "  order by recno"
     );
 
     console.log('Db delete recnoArray', recnoArray)
@@ -1460,8 +1460,8 @@ export const deleted = async (alias?: string) => {
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 
     const recno = This.value.View[alias].recno
-    const data = await localAlaSql('select now.' + alias + '.key_pri from now.' + alias + '  \
-        LEFT JOIN last.' + alias + ' on now.' + alias + '.key_pri=last.' + alias + 'key_pri' + ' where recno=? ', recno)
+    const data = await localAlaSql('select Now.' + alias + '.key_pri from Now.' + alias + '  \
+        LEFT JOIN last.' + alias + ' on Now.' + alias + '.key_pri=last.' + alias + 'key_pri' + ' where recno=? ', recno)
     if (data[0] && data[0].key_pri > 0)
         return true
     else
@@ -1537,7 +1537,7 @@ export const insert = async (alias: string, m: Record<string, never>) => {
    */
 
     const valores = await localAlaSql(
-        "USE now;\
+        "USE Now;\
             select from " +
         alias +
         " where renco=?",
@@ -1568,7 +1568,7 @@ export const insert = async (alias: string, m: Record<string, never>) => {
         This.value.insertLocalDb(alias, respuesta);
         */
         await localAlaSql(
-            "USE now;\
+            "USE Now;\
               UPDATE " + alias +
             ` set  key_pri=${respuesta.key_pri},set timestamp=${respuesta.timestamp} where recno=${recno} `
         );
@@ -1577,7 +1577,7 @@ export const insert = async (alias: string, m: Record<string, never>) => {
             "USE last;\
               DELETE last."+ alias +
             ` where recno=${recno}; INSERT INTO last.${alias} ` +
-            " SELECT * from now." + alias +
+            " SELECT * from Now." + alias +
             ` where recno=${recno}`
         );
 
@@ -1685,10 +1685,10 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         //  console.log('Db Ejecutara ala con  :', respuesta)
 
         let resp = await localAlaSql(
-            ` DROP TABLE IF EXISTS last.${alias} ; DROP TABLE IF EXISTS now.${alias} ; `
+            ` DROP TABLE IF EXISTS last.${alias} ; DROP TABLE IF EXISTS Now.${alias} ; `
         );
-        resp = await localAlaSql(` CREATE TABLE now.${alias} ;`);
-        resp = await localAlaSql(` SELECT * INTO now.${alias} FROM ? ; USE now ;`, [
+        resp = await localAlaSql(` CREATE TABLE Now.${alias} ;`);
+        resp = await localAlaSql(` SELECT * INTO Now.${alias} FROM ? ; USE Now ;`, [
             respuesta,
         ]);
         //    console.log('Db Axios sqlexec',response[0][0])
@@ -2014,8 +2014,8 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
         This.value.are_tra.push(alias); // Se incremente en uno y se asigna que alias tiene
     } else {
         // Si existe la tabla borra los regisros
-        // localAlaSql('USE now ; ')
-        await localAlaSql("delete from now." + alias + "; ");
+        // localAlaSql('USE Now ; ')
+        await localAlaSql("delete from Now." + alias + "; ");
         // localAlaSql('USE last ; ')
         await localAlaSql("delete from  last." + alias + "; ");
         return;
@@ -2092,7 +2092,7 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
 
         // Bora las tablas
         await localAlaSql(
-            "USE now ; DROP TABLE IF EXISTS now." + alias + ";"
+            "USE Now ; DROP TABLE IF EXISTS Now." + alias + ";"
         );
         await localAlaSql(
             "USE last ; DROP TABLE IF EXISTS last." + alias + ";"
@@ -2102,10 +2102,10 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
 
         alasql
             .promise(
-                "USE now; CREATE TABLE " +
+                "USE Now; CREATE TABLE " +
                 alias +
                 " ; \
-      SELECT * INTO now." +
+      SELECT * INTO Now." +
                 alias +
                 "  FROM ?",
                 [data]
@@ -2119,7 +2119,7 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
                         " ; \
           SELECT * INTO " +
                         alias +
-                        " FROM now." +
+                        " FROM Now." +
                         alias
                     )
 
@@ -2130,7 +2130,7 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
 
         // revisar despues si al insertar los datos el recno queda como lo habiamos generado
         // o seleccionar los recno para llenar el recnoval
-        // recnoVal=localAlaSql(SELECT recno FROM now.' + alias)
+        // recnoVal=localAlaSql(SELECT recno FROM Now.' + alias)
 
         This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
         // console.log('Db RecnoVal===>', This.value.View[alias].recnoVa)
@@ -2154,7 +2154,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
     This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
     // borra las tablas en ALA
-    await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
+    await localAlaSql("DROP TABLE IF EXISTS Now." + alias + ";");
     await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
 
     if (!This.value.View[alias]) {
@@ -2168,8 +2168,8 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         noData = true;
     } /*
     else { // Si existe la tabla borra los registros
-      // localAlaSql('USE now ; ')
-      await localAlaSql('delete from now.' + alias)
+      // localAlaSql('USE Now ; ')
+      await localAlaSql('delete from Now.' + alias)
       // localAlaSql('USE last ; ')
       await localAlaSql('delete from  last.' + alias)
     }
@@ -2233,7 +2233,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             /// /////////////////////////////
         }
         // borra las tablas en ALA
-        //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + ';')
+        //  await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
         //  await localAlaSql('USE last ; DROP TABLE IF EXISTS last.' + alias + ';')
 
         This.value.View[alias].est_tabla = respuesta.est_tabla; // estructura de la tabla
@@ -2275,8 +2275,8 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         //console.log("Db ins_sql=", des_tab);
 
         try {
-            //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + '; ')
-            await localAlaSql("USE now ;" + des_tab);
+            //  await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
+            await localAlaSql("USE Now ;" + des_tab);
 
             //  await localAlaSql('USE last ; DROP TABLE IF EXISTS last.' + alias + '; ')
             await localAlaSql("USE last ;" + des_tab);
@@ -2331,7 +2331,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
 
         // Borra las tablas
-        //      await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + ';')
+        //      await localAlaSql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + ';')
         //      await localAlaSql('USE last ; DROP TABLE IF EXISTS last.' + alias + ';')
         //  console.log("4 Db genera_tabla"); // .data
 
@@ -2340,10 +2340,10 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         try {
             await localAlaSql(
-                "USE now; CREATE TABLE now." +
+                "USE Now; CREATE TABLE Now." +
                 alias +
                 " ; \
-          SELECT * INTO now." +
+          SELECT * INTO Now." +
                 alias +
                 "  FROM ?",
                 [respuesta]
@@ -2749,13 +2749,13 @@ export const localSql = async (ins_sql: string, DataBase?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!DataBase) {
-        DataBase = "now";
+        DataBase = "Now";
     }
 
     // console.log('Db localSql===>>', DataBase.toLowerCase)
 
     if (DataBase.toUpperCase() == "NEW" || DataBase.toUpperCase() == "NOW") {
-        DataBase = "now";
+        DataBase = "Now";
     }
 
     if (DataBase.toUpperCase() == "OLD" || DataBase.toUpperCase() == "LAST") {
@@ -2780,12 +2780,12 @@ export const localSql = async (ins_sql: string, DataBase?: string) => {
 /// //////////////////////////////////////
 export const localAlaSql = async (ins_sql: string, datos?: any) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-    await alasql('USE now ;')
+    await alasql('USE Now ;')
 
     /*    if (ins_sql.slice(0,9)!='DROP DATA' || ins_sql.slice(0,11)!='CREATE DATA')
-       await alasql('USE now ;')
+       await alasql('USE Now ;')
 */
-    //  await alasql('USE now ;') // 12/Feb/2024
+    //  await alasql('USE Now ;') // 12/Feb/2024
     try {
         if (!datos)
             return await alasql(ins_sql);
@@ -2808,7 +2808,7 @@ export const selectInto = async (ins_sql: string, alias?: string, filename?: str
     //          CSV(filename,options)
     //          XLSX("restest280b.xlsx")
     try {
-        await localAlaSql(" USE now ; ");
+        await localAlaSql(" USE Now ; ");
 
         if (!alias) {
             alias = "sqlresult";
@@ -2878,11 +2878,11 @@ export const readCampo = async (
     } // No  hay ControlSource
 
     if (!DataBase) {
-        DataBase = "now";
+        DataBase = "Now";
     }
 
     if (DataBase.toUpperCase() == "NEW" || DataBase.toUpperCase() == "NOW") {
-        DataBase = "now";
+        DataBase = "Now";
     }
 
     if (DataBase.toUpperCase() == "OLD" || DataBase.toUpperCase() == "LAST") {
@@ -2981,8 +2981,8 @@ export const updateCampo = async (Value: any, ControlSource: string, recno: numb
     //    if (typeof Value=='string' || )
 
     try {
-        //     await localAlaSql('USE now;')
-        const ins_sql = `UPDATE now.${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`;
+        //     await localAlaSql('USE Now;')
+        const ins_sql = `UPDATE Now.${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`;
         // console.log("Db update ala===>", ins_sql);
         await localAlaSql(ins_sql);
         if (old) {
@@ -3060,7 +3060,7 @@ export const getAlias = (alias?: string): string | null => {
 export const goto = async (despla: string | number, area?: string, lastDatabase?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    let table = 'now.'
+    let table = 'Now.'
 
     if (lastDatabase)
         table = 'last.'
@@ -3087,7 +3087,7 @@ export const goto = async (despla: string | number, area?: string, lastDatabase?
         if (despla == 'bottom')
             data = await localAlaSql(`SELECT top 1 *  FROM ${table} order by recno desc`)
 
-        await alasql('USE now;')
+        await alasql('USE Now;')
         if (despla == 'top' && data.length == 0) { // No hay datos
             if (!lastDatabase)
                 initAlias(alias) // Inicializa el alias si no hay datos
@@ -3122,7 +3122,7 @@ export const goto = async (despla: string | number, area?: string, lastDatabase?
         recno = This.value.View[alias].recno;
 
     data = await localAlaSql(` SELECT * FROM ${table}  where recno=?`, recno);
-    await alasql('USE now;')
+    await alasql('USE Now;')
     if (data.length == 0) {
 
         if (!lastDatabase)
@@ -3169,8 +3169,8 @@ export const bof = async (alias?: string) => {
         alias = This.value.are_tra[This.value.num_are - 1];
 
     let bof = false
-    // await localAlaSql("USE now")
-    const data = await localAlaSql(" SELECT MIN(recno) as recno   FROM now." + alias + ' order by recno limit 1');
+    // await localAlaSql("USE Now")
+    const data = await localAlaSql(" SELECT MIN(recno) as recno   FROM Now." + alias + ' order by recno limit 1');
     if (data.length > 0) {
         if (data[0].recno == This.value.View[alias].recno)
             bof = true
@@ -3219,7 +3219,7 @@ export const currentValue = async (field: string, alias?: string) => {
     }
 
     const recno = This.value.View[alias].recno
-    const data = await localAlaSql(`select now.${field} from ${alias} where recno=${recno}`)
+    const data = await localAlaSql(`select Now.${field} from ${alias} where recno=${recno}`)
 
     if (data.length > 0)
         return
@@ -3236,7 +3236,7 @@ export const eof = async (alias?: string) => {
     if (!alias) {
         alias = This.value.are_tra[This.value.num_are - 1];
     }
-    const data = await localAlaSql(" SELECT recno as recno   FROM now." + alias + ' order by recno desc limit 1');
+    const data = await localAlaSql(" SELECT recno as recno   FROM Now." + alias + ' order by recno desc limit 1');
     let eof = false
     if (data.length > 0) {
         if (data[0].recno == This.value.View[alias].recno)
@@ -3276,9 +3276,9 @@ export const skip = async (despla?: number, alias?: string) => {
     let data = [];
     const recno = This.value.View[alias].recno
     if (despla > 0)
-        data = await localAlaSql(`"select recno from now.${alias} where recno >${recno} order by recno limit ${despla}`);
+        data = await localAlaSql(`"select recno from Now.${alias} where recno >${recno} order by recno limit ${despla}`);
     else
-        data = await localAlaSql(`"select recno from now.${alias} where recno <${recno} order by recno desc limit ${-despla}`);
+        data = await localAlaSql(`"select recno from Now.${alias} where recno <${recno} order by recno desc limit ${-despla}`);
 
     if (data.length > 0)
         return await goto(data[data.length - 1].recno, alias); // se va a leer registro
@@ -3376,7 +3376,7 @@ export const scatterBlank = async (aliasFields?: [], alias?: string) => {
             sep = ','
         }
     
-        const ins_sql = select + 'FROM now.' + alias + ' WHERE recno=-1'
+        const ins_sql = select + 'FROM Now.' + alias + ' WHERE recno=-1'
     
         const data = await localAlaSql(ins_sql);
     
@@ -3433,7 +3433,7 @@ export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Pr
 
     const recno = res.recno
 
-    let update = 'UOPDATE now.' + alias + ' SET '
+    let update = 'UOPDATE Now.' + alias + ' SET '
     let sep = ''
 
     for (const field of aliasFields) {
@@ -3524,7 +3524,7 @@ export const localClone = async (
         des_tab = des_tab + ");";
         // Creamos la tablas
         await localAlaSql(
-            "USE now ; DROP TABLE IF EXISTS now." + alias + "; " + des_tab + "; "
+            "USE Now ; DROP TABLE IF EXISTS Now." + alias + "; " + des_tab + "; "
         );
 
         await localAlaSql(
@@ -3537,14 +3537,14 @@ export const localClone = async (
     // borramos los datos
     await useNodata(alias);
 
-    //console.log('Db Clone Datos  ',baseAlias,alias,await This.value.localSql(`select * from now.${baseAlias}  ${where}`))
+    //console.log('Db Clone Datos  ',baseAlias,alias,await This.value.localSql(`select * from Now.${baseAlias}  ${where}`))
 
-    // var query = `select * INTO ${alias} from now.${baseAlias}  ${where}`
-    var query = `select *  from now.${baseAlias}  ${where}`;
+    // var query = `select * INTO ${alias} from Now.${baseAlias}  ${where}`
+    var query = `select *  from Now.${baseAlias}  ${where}`;
 
     const respuesta = await localSql(query);
     //console.log("Db Clone respuesta ", query, respuesta);
-    //query = `select *  from now.${alias} `
+    //query = `select *  from Now.${alias} `
     //const respuesta = await This.value.localSql(query)
 
     // Generamos el campo recno
@@ -3554,13 +3554,13 @@ export const localClone = async (
             const recno = respuesta[i].recno;
             respuesta[i].recno = i + 1;
             /*  if (respuesta[i].recno!=recno){
-               query = `update now.${alias} set recno=${respuesta[i].recno} where recno=${recno} `
+               query = `update Now.${alias} set recno=${respuesta[i].recno} where recno=${recno} `
                await This.value.localSql(query)
              }
             */
 
             recnoVal[i] = { recno: i + 1, id: i };
-            await localAlaSql("INSERT INTO now." + alias + " VALUES ?", [
+            await localAlaSql("INSERT INTO Now." + alias + " VALUES ?", [
                 respuesta[i],
             ]);
             await localAlaSql("INSERT INTO last." + alias + " VALUES ?", [
@@ -3568,7 +3568,7 @@ export const localClone = async (
             ]);
         }
 
-        console.log("Db Clone now ", await localSql("select * from now." + alias));
+        console.log("Db Clone Now ", await localSql("select * from Now." + alias));
 
         //Generamos el last
         //query = `select * INTO last.${alias} from New.${alias}`
@@ -3629,7 +3629,7 @@ export const jasperReport = async (query: string, for_rep: string, dataView?: st
 
 export function dropView(alias: string) {
     localAlaSql(
-        "USE now ; DROP TABLE IF EXISTS now." + alias + ";"
+        "USE Now ; DROP TABLE IF EXISTS Now." + alias + ";"
     );
     localAlaSql(
         "USE last ; DROP TABLE IF EXISTS last." + alias + ";"
@@ -3654,7 +3654,7 @@ export const xmlToCursor = async (xml: string, alias: string) => {
     xml = xml.replace('</VFPData>', '')
     const jsonString = xml2js(xml, { compact: true, spaces: 2 });
     const data = [jsonString.data._attributes]
-    alasql(`USE now; CREATE TABLE ${alias};`);
+    alasql(`USE Now; CREATE TABLE ${alias};`);
     alasql.tables[alias].data = data;
 
 }

@@ -81,7 +81,7 @@ export class bt_aceptar extends IMGBUTTON {
     where = ` where ${this.Parent.prop.Where} ${and} ${where} `
 
 
-    //    const data = await this.Sql.localAlaSql(`select cam_dat,ref_dat from Now.diccionario `)
+    //    const data = await this.Sql.localAlaSql(`select cam_dat,ref_dat from now.diccionario `)
     //    console.log('bt_aceptar data=', data)
     this.Parent.browse.table.columns = []
     const columns = []
@@ -103,7 +103,7 @@ export class bt_aceptar extends IMGBUTTON {
     /*
         if (this.Sql.View.browse) {
           delete this.Sql.View.browse
-          localAlaSql(`drop table IF EXISTS Now.browse`)
+          localAlaSql(`drop table IF EXISTS now.browse`)
         }
     */
     const res = await SQLExec(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')

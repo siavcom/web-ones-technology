@@ -111,8 +111,16 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const style = reactive({ ...Este.style })
+/*
+const style.pointerEvents=This.prop.ReadOnly ? 'none' : 'auto'
+const styel.opacity=!This.prop.ReadOnly ? '1' : '0.5'
 
 
+const style = computed(() => {
+  style.pointerEvents=This.prop.ReadOnly ? 'none' : 'auto'
+  styel.opacity=!This.prop.ReadOnly ? '1' : '0.5'
+})
+*/
 
 const Styles =
 {

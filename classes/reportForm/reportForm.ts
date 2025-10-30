@@ -313,7 +313,7 @@ export class reportForm extends FORM {
       m.val_que = m.val_que.trim();
 
       const data1 = await this.Sql.localAlaSql(
-        `select trim(tip_dat) as tip_dat from Now.camposView where trim(cam_dat)='${m.cam_dat}' ; `
+        `select trim(tip_dat) as tip_dat from now.camposView where trim(cam_dat)='${m.cam_dat}' ; `
       );
 
       if (data1.length > 0) {
@@ -548,7 +548,7 @@ export class reportForm extends FORM {
 
 
       for (let i = 0; i < this.fields.length; i++)
-        await this.Sql.localAlaSql(`update Now.diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
+        await this.Sql.localAlaSql(`update now.diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
 
     }
 

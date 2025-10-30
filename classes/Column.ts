@@ -26,12 +26,9 @@ export class COLUMN extends COMPONENT {
     textAlign: '-moz-center'
   }
 
-
-
   constructor() {
     super();
     this.prop.Capture = true;
-    this.prop.Valid = false;
     this.prop.Position = "main";
     this.style.width = "99%";
     this.style.height = "auto"; //99%";
@@ -41,6 +38,7 @@ export class COLUMN extends COMPONENT {
     this.inputStyle.width = "96%";
     this.inputStyle.height = "auto";  // auto para que en los componentes como json,
     this.captionStyle.textAlign = '-webkit-center'
+    this.prop.Valid = false
   }
 
   public override async init() {

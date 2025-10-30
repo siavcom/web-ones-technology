@@ -82,7 +82,7 @@ export class bt_obtener extends IMGBUTTON {
 
 
 
-    this.Form.report.displayBrowse.prop.RowSource = "Now.sqlresult";
+    this.Form.report.displayBrowse.prop.RowSource = "now.sqlresult";
     this.Form.report.displayBrowse.prop.Visible = true;
 
     // console.log('bt_obtener asigno RowSource',this.Parent.report)

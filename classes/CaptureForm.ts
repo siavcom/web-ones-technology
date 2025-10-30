@@ -403,7 +403,7 @@ export class captureForm extends FORM {
       this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";
 
-      this.style.width = "72px";
+      this.style.width = "76px";
       this.prop.Visible = false;
     } // Fin constructor
 
@@ -551,7 +551,7 @@ export class captureForm extends FORM {
       this.prop.Image = "/Iconos/svg/update-content.svg";
       // this.prop.TabIndex= 21
 
-      this.style.width = "72px";
+      this.style.width = "76px";
     } // Fin constructor
 
     override async click() {
@@ -605,7 +605,7 @@ export class captureForm extends FORM {
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
       // this.prop.TabIndex= 21
 
-      this.style.width = "72px";
+      this.style.width = "76px";
     } // Fin constructor
 
     override async click() {

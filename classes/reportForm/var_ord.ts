@@ -72,8 +72,8 @@ export class var_ord extends COMPONENT {
       }
     }
 
-    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from Now.diccionario where trim(cam_dat)='${this.prop.Value.trim()}'`)
-    console.log('interactiveChange var_ord', `select tip_dat,lon_dat,dec_dat from Now.diccionario where cam_dat='${this.prop.Value.trim()}'`, data)
+    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where trim(cam_dat)='${this.prop.Value.trim()}'`)
+    console.log('interactiveChange var_ord', `select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value.trim()}'`, data)
     const tip_dat = data[0].tip_dat
     const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
 
