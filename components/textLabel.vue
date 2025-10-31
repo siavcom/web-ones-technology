@@ -203,7 +203,13 @@ const asignaResultado = async (valor?: string) => {
   // if (props.prop.Status == 'I') return
   // if (props.prop.ColumnCount == 0) return;
 
-  if (props.prop.RowSourceType == 0 || !props.prop.RowSource || props.prop.RowSource.length < 1) {
+  //onsole.log('textLabel Name=', props.prop.Name, 'asignaResultado props.prop.RowSource=', props.prop.RowSource, typeof props.prop.RowSource)
+
+  // RowSource puede ser array
+
+  if (props.prop.RowSourceType == 0 ||
+    typeof props.prop.RowSource == 'object' ? props.prop.RowSource.length < 1 : props.prop.RowSource.trim().length < 3) {
+
     if (Text.value === undefined || Text.value === null) {
       switch (props.prop.Type) {
         case 'number':
@@ -248,6 +254,7 @@ const asignaResultado = async (valor?: string) => {
 
   }
 
+  valor = Text.value
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
   // recorre todo los renglones en columnas
@@ -256,6 +263,7 @@ const asignaResultado = async (valor?: string) => {
 
   ///////////////////////// Se aumento 5/Feb/2024 //////////////////////
   let found = false
+  console.log('textLabel Name=', props.prop.Name, 'Text.value=', Text.value, 'Value=', This.prop.Value, 'columns=', columnas)
 
   for (let i = 0; i < columnas.length && !found; i++) {
     //console.log('1) Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
@@ -480,11 +488,11 @@ const readValue = async (on_Mounted?: boolean) => {
   //  if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
   //    return
 
-  console.log('1) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
+  //console.log('1) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
 
   if (!on_Mounted && This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
     return
-  console.log('2) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
+  //console.log('2) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
 
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
@@ -500,7 +508,7 @@ const readValue = async (on_Mounted?: boolean) => {
 
   asignaResultado()
 
-  console.log('2) readValue This.prop.Name=', This.prop.Name, 'Text.value=', Text.value)
+  //console.log('2) readValue This.prop.Name=', This.prop.Name, 'Text.value=', Text.value)
 
   // This.prop.Value = Text.value
   //This.Recno = props.Registro
@@ -595,7 +603,7 @@ watch(
   async (new_val, old_val) => {
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-    console.log(' TextLabel=', This.prop.Name, 'watch Registro', old_val, new_val)
+    console.log('watch Registro TextLabel Name=', This.prop.Name, 'watch Registro', old_val, new_val)
 
     if (old_val != new_val && new_val > 0) {
       await readValue()
@@ -665,7 +673,7 @@ watch(
     //    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0)
     //   return
 
-    console.log('readCampo watch value Name=', This.prop.Name, 'Value=', new_val,
+    console.log('watch value Name=', This.prop.Name, 'Value=', new_val,
       'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno)
 
     Text.value = new_val

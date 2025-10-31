@@ -1,17 +1,22 @@
+body {
+  background-color: #f0f0f091;
+}
+
 div.ThisForm {
   background: white;
   margin-left: -3%;
   display: inline-block;
 }
- 
+
 section.pagina {
- /* background: white;
+  /* background: white;
   color: #b94295; /* #b94295;*/
-/*  min-width: 375px;
+  /*  min-width: 375px;
   min-height: 812px;
 */
   /* margin-top: 250px; */
 }
+
 div.mainForm {
   height: 100vh;
   display: block;
@@ -31,7 +36,7 @@ div.backGround {
 }
 
 .inputDivi {
-margin-top:1px
+  margin-top: 1px
 }
 
 
@@ -49,7 +54,8 @@ div.divi {
 
   height: 98%;
   /*  min-width: max-content;*/
-  flex-shrink: 0; /* adjustment para que funcione el width */
+  flex-shrink: 0;
+  /* adjustment para que funcione el width */
   /* box-shadow: 0 0 5px 0.5px gray; */
 
   border-radius: 3px;
@@ -64,8 +70,10 @@ div.textLabel {
   border-radius: 3px;
   height: 80%;
 }
+
 div.mensajes {
-  display: inline-flex; /* recomendado por raul*/
+  display: inline-flex;
+  /* recomendado por raul*/
   width: 100%;
   height: 100%;
 }
@@ -87,7 +95,8 @@ label.error {
   color: #f10c0c;
   text-align: center;
   visibility: visible;
-  padding: 5px 0; /*relleno alrededor */
+  padding: 5px 0;
+  /*relleno alrededor */
   border-radius: 5%;
   border-color: black;
   z-index: 2;
@@ -98,6 +107,7 @@ label.error {
   /* Fade in tooltip */
   opacity: 1;
 }
+
 /* Caption del texLabel */
 span.Caption {
   color: rgb(0, 0, 0);
@@ -113,25 +123,27 @@ span.etiqueta {
 }
 
 input.text {
-  border:  rgb(0, 5, 2); /*1px solid */
+  border: rgb(0, 5, 2);
+  /*1px solid */
   padding: "5px";
   border-radius: 3px;
   text-align: left;
   width: 96%;
   z-index: 1;
   box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
-  margin-top :2px;
+  margin-top: 2px;
 }
 
 textarea.textArea {
-  border:  rgb(0, 5, 2); /*1px solid */
+  border: rgb(0, 5, 2);
+  /*1px solid */
   padding: "5px";
   border-radius: 3px;
   text-align: left;
   width: 96%;
   z-index: 1;
   box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
-  margin-top :2px;
+  margin-top: 2px;
 }
 
 .imgButton {
@@ -154,7 +166,8 @@ transform: scale(2) translate(0px, 10px);*/
 }
 
 input.checkBox_old {
-  border: rgb(0, 5, 2);  /*1px solid */
+  border: rgb(0, 5, 2);
+  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: left;
@@ -162,13 +175,14 @@ input.checkBox_old {
   accent-color: rgb(163, 193, 168);
   z-index: 1;
   box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
-  margin-top:2px;
+  margin-top: 2px;
 
   /*min-width: 50%; */
 }
 
 input.date_old {
-  border:  rgb(0, 5, 2);  /*1px solid */
+  border: rgb(0, 5, 2);
+  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: left;
@@ -176,18 +190,19 @@ input.date_old {
   min-width: max-content;
   z-index: 1;
   box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
-  margin-top:2px;
+  margin-top: 2px;
 }
 
 input[class="number_old"] {
-  border: rgb(0, 5, 2);  /*1px solid */
+  border: rgb(0, 5, 2);
+  /*1px solid */
   /*padding: "5px";*/
   border-radius: 3px;
   text-align: right;
   width: 96%;
   z-index: 1;
   box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
-  margin-top:2px;
+  margin-top: 2px;
 }
 
 /* Tooltip and error container */
@@ -204,7 +219,8 @@ input[class="number_old"] {
   width: 120px;
   min-height: 11px;
   max-height: 33px;
-  background-color: #76a184; /*rgb(115, 181, 243);*/
+  background-color: #76a184;
+  /*rgb(115, 181, 243);*/
   color: #fff;
   text-align: center;
   padding: 5px 0;
@@ -243,7 +259,8 @@ input[class="number_old"] {
 .error {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  border-bottom: 1px dotted black;
+  /* If you want dots under the hoverable text */
 }
 
 .flipswitch {
@@ -288,7 +305,7 @@ input[class="number_old"] {
   content: "ON";
 }
 
-[type="checkbox"]:checked + span:before {
+[type="checkbox"]:checked+span:before {
   content: "\2714";
   position: absolute;
   top: -5px;
@@ -328,7 +345,7 @@ input[class="number_old"] {
   /* arrow*/
   content: " ";
   /*left: 64px;*/
-  bottom :18px;
+  bottom: 18px;
   border-width: 0 px;
   /*border-style: solid; */
   /*background-color: transparent;*/
@@ -347,15 +364,19 @@ input[class="number_old"] {
   0% {
     color: rgb(248, 8, 8);
   }
+
   49% {
     color: rgb(248, 7, 7);
   }
+
   60% {
     color: transparent;
   }
+
   99% {
     color: transparent;
   }
+
   100% {
     color: rgb(248, 4, 4);
   }
@@ -365,13 +386,13 @@ input[class="number_old"] {
   /* flex-direction: row-reverse;*/
 }
 
-.transition-group {
-}
+.transition-group {}
 
 /* ===============Spinner ======================  */
 .splash-screen {
   background: #f2f0ee;
-  width: 40px; /*60vw;*/
+  width: 40px;
+  /*60vw;*/
   height: 40px;
   position: fixed;
   background-color: rgb(255, 255, 255);
@@ -388,6 +409,7 @@ input[class="number_old"] {
 
   transform: translate(-50%, -50%);
 }
+
 .spinner {
   width: 80px;
   height: 80px;
@@ -403,6 +425,7 @@ input[class="number_old"] {
   0% {
     -webkit-transform: scale(0);
   }
+
   100% {
     -webkit-transform: scale(1);
     opacity: 0;
@@ -414,6 +437,7 @@ input[class="number_old"] {
     -webkit-transform: scale(0);
     transform: scale(0);
   }
+
   100% {
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -440,7 +464,7 @@ section.formheader_old {
   background-color: #ebf8ee;
   border: 1px solid rgb(0, 0, 0);
   border-radius: 6px;
- 
+
 }
 
 

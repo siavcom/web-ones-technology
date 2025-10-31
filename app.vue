@@ -139,7 +139,7 @@
         <NuxtLayout name='header' :logoEmp="logoEmp" :nomEmp="nom_emp" :titleName="titleName" :fpo_pge="fpo_pge"
           :user="user" />
         <NuxtLayout name='default'>
-       
+
           <NuxtPage />
         </NuxtLayout>
         <NuxtLayout name='footer' :user="user" :form="Props.form" />
@@ -150,6 +150,7 @@
 </template>
 
 <script lang="ts" setup>
+
 /*
  <NuxtPage @updateStatus="updateStatus @updateIsOpen="updateIsOpen">
                               <a :href="menuItem.link!='#'  ? menuItem.link : '#'">
@@ -647,6 +648,7 @@ watch(
   () => isOpen,
   (new_val, old_val) => {
     window.document.body.style.paddingLeft = Props.isOpened && Props.isPaddingLeft ? Props.menuOpenedPaddingLeftBody : Props.menuClosedPaddingLeftBody
+
   },
   { deep: false }
 )
@@ -682,6 +684,8 @@ watch(
 if (id_con.value > '' && Items.length < 3)
   obtMenu()
 
+
+
 </script>
 
 <style scoped>
@@ -694,6 +698,7 @@ if (id_con.value > '' && Items.length < 3)
 
 
 body {
+  background-color: 'antiquewhite';
   transition: all 0.5s ease;
 }
 

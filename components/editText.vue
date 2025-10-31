@@ -1827,14 +1827,6 @@ const ChecaEventos = async () => {
 }
 
 
-
-
-
-
-
-
-
-
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers
 ////////////////////////////////////////////////////////
@@ -1878,11 +1870,17 @@ const ReadOnly = () => {
     Styles.inputStyle.background = readOnlyInputStyle.background
     Styles.inputStyle.opacity = readOnlyInputStyle.opacity
     displayError.value = false // Apagamos mensaje de error
+    containerStyle.pointerEvents = 'none',
+      containerStyle.opacity = '0.7'
+
   }
   else {
     //Styles.inputStyle = { ...This.inputStyle }
     Styles.inputStyle.background = This.inputStyle.background
     Styles.inputStyle.opacity = This.inputStyle.opacity
+    containerStyle.pointerEvents = 'auto'
+    containerStyle.opacity = '1'
+
     Valid(true)
   }
 }
