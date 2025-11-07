@@ -52,6 +52,7 @@ export class HELP extends CONTAINER {
     this.prop.Disabled = true
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
     this.style.height = 'auto'
+    this.style.width = 'auto'
 
     this.block[0] = {
       component: {
@@ -95,16 +96,6 @@ export class HELP extends CONTAINER {
       title: ''
     }
 
-    /*
-        this.cam_dat.Position = [0, 0]
-        this.tip_con.Position = [0, 1]
-        this.des_dat.Position = [0, 2]
-        this.has_dat.Position = [0, 3]
-        this.browse.Position = [0, 4]
-    
-        this.bt_aceptar.Position = [1, 0]
-        this.bt_close.Position = [1, 1]
-    */
     this.cam_dat.prop.TabIndex = 8.1
     this.tip_con.prop.TabIndex = 8.2
     this.des_dat.prop.TabIndex = 8.3
@@ -112,8 +103,6 @@ export class HELP extends CONTAINER {
     this.bt_aceptar.prop.TabIndex = 8.5
     this.browse.prop.TabIndex = 8.6
     this.prop.oneClick = true
-    this.style.width = 'auto'
-
 
 
   }

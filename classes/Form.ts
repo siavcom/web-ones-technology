@@ -102,7 +102,7 @@ export class FORM extends COMPONENT {
     //this.style.width = "99%";
     this.style.width = "-moz-available";
     this.style.height = "auto" //"96%";
-    this.style.background = 'white';
+    this.style.background = 'antiquewhite'; // 'white';
     this.style.minWidth = 'fit-content';
     this.style.minHeight = 'auto';
     this.style.backgroundColor = 'darkgray';

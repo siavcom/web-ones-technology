@@ -13,8 +13,11 @@
     <div :id="Id + 'body'" class="body" style="width: 99%">
       <div v-if="!This.block || This.block.length == 0" :id="Id + 'no_block'">
         <slot name="componentes">
-          <div :id="Id + '_componentes'" v-if="Divi" v-for="(Ver, key) in Divi" :key="Ver"
-            :style="{ 'display': 'inline-flex' }">
+          <div :id="Id + '_componentes'" v-if="Divi" v-for="(Ver, key) in Divi" :key="Ver" :style="{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start'
+          }">
             <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for="(Ele) in Ver" :key="Ele"
               :style="{ 'padding-bottom': '2px', 'width': '100%' }">
               <component :id="Id + '_Ver_componentes_' + key + Ele.prop.Name" :is="impComponent(Ele.prop.BaseClass)"

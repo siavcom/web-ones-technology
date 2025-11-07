@@ -1,7 +1,7 @@
 <template>
   <!--Para quitar los errores de hidratacion, se puso que solo haga render del lado del cliente-->
   <ClientOnly>
-    <div class="Menu">
+    <div class="menu">
       <div class="sidebar" :class="isOpen ? 'open' : ''" :style="cssVars">
         <div class="logo-details" style="margin: 6px 14px 0 14px;">
           <img v-if="Props.menuLogo" :src="Props.menuLogo" alt="menu-logo" class="menu-logo icon" />
@@ -696,6 +696,10 @@ if (id_con.value > '' && Items.length < 3)
   font-family: 'Poppins', sans-serif;
 }
 
+.menu {
+  background-color: antiquewhite;
+
+}
 
 body {
   background-color: 'antiquewhite';

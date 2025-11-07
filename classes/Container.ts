@@ -20,31 +20,31 @@ export class CONTAINER extends COMPONENT {
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.prop.Capture = false;
-    this.style.borderRadius = '5%'
+    this.style.borderRadius = '20px'
     this.captionStyle.color = 'black'
     this.captionStyle.fontWeight = 'bold'
     this.captionStyle.fontSize = '17px'
     this.style.height = 'min-content';
-    this.style.width = "auto";
-    this.style.backgroundColor = "antiquewhite"
-    this.style.left = '18%'
-    // Estilo de cada contenedor del modal
+    this.style.width = "82%";
+    this.style.maxWidth = '82%'
+    this.style.background = 'antiquewhite'
 
+    this.style.left = '1%'
+    // Estilo de cada contenedor del modal
 
   }
   override async init() {
     await super.init()
     if (this.prop.BaseClass == 'modalContainer') {
-      this.style.maxWidth = '90%'
+
       this.style.maxHeight = '90%'
       this.style.borderStyle = 'double'
-      this.style.background = 'antiquewhite'
-      this.style.backgroundColor = 'antiquewhite'
+      this.style.backgroundColor = '#d7faea' //"antiquewhite"
+
       this.style.left = '5%'
-      this.style.borderRadius = '2%'
       this.style.padding = '3%'   //Margen entre los bordes y el contenido
-      this.style.height = 'min-content'
-      this.style.bottom = '-50%'
+
+      this.style.bottom = '-5%'
       this.captionStyle.color = 'black'
 
     }

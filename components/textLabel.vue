@@ -17,7 +17,7 @@
       :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
     <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="Styles.inputStyle">
       <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
-      <label v-if="Text.length > 0"
+      <label v-if="Text != null && Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
     </button>
     <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
@@ -150,10 +150,12 @@ const Value = ref(props.prop.Value)
 const Text = ref(null)
 const Status = ref(props.prop.Status)
 
-const columnas = reactive([{}]); // tiene todos los renglones del comboBox
+const columnas = reactive([]); // tiene todos los renglones del comboBox
 Status.value = 'I'
 const checkValue = ref(false)
 const Type = ref(props.prop.Type.toLowerCase())
+
+let Render = false
 
 /*
 const captionStyle = reactive(This.captionStyle)
@@ -261,37 +263,61 @@ const asignaResultado = async (valor?: string) => {
 
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
 
+
+  if (props.prop.RowSourceType < 1) return
+  // if (props.prop.Status == 'I') return
+  if (props.prop.ColumnCount == 0) return
+
+  if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) {
+    return;
+  }
+
+
+  if (props.prop.RowSourceType > 0 && props.prop.ColumnCount > 0 &&
+    props.prop.RowSource.length > 0 && !Render) {
+    await renderComboBox()
+    // console.log('Render 1) textLabel Name=', props.prop.Name, 'Text.value=', Text.value, 'Value=', This.prop.Value, 'columns=', columnas)
+
+
+  }
+
   ///////////////////////// Se aumento 5/Feb/2024 //////////////////////
   let found = false
-  console.log('textLabel Name=', props.prop.Name, 'Text.value=', Text.value, 'Value=', This.prop.Value, 'columns=', columnas)
+  // console.log('1) textLabel Name=', props.prop.Name, 'Text.value=', Text.value, 'Value=', This.prop.Value, 'columns=', columnas)
 
-  for (let i = 0; i < columnas.length && !found; i++) {
+  //   console.log('textLabel Name=', props.prop.Name, 'columns=', columnas)
+  for (let i = 0; columnas.length > 0 && i < columnas.length && !found; i++) {
     //console.log('1) Buscando Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
 
     //    if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
     //        Value.value == columnas[i].value) {
 
-    if (
-      (typeof columnas[i].value == 'string' && typeof valor == 'string' && valor.trim() == columnas[i].value.trim()) ||
-      valor == columnas[i].value) {
-      // El objeto columna tiene dos campos value y text
 
 
-      //displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+    if (columnas[i].value) {
+      if (
+        (typeof columnas[i].value == 'string' && typeof valor == 'string' && valor.trim() == columnas[i].value.trim()) ||
+        valor == columnas[i].value) {
+        // El objeto columna tiene dos campos value y text
 
-      Text.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
-      found = true
-      // console.log('2] Buscando Valor Encontro Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
 
+        //displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+
+        Text.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
+        found = true
+        // console.log('2] Buscando Valor Encontro Valor TextLabel comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value=', valor)
+
+      }
     }
   }
-  if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
+  if (!found && columnas.length > 0 && columnas[0].text) { // No se encontro el valor , asignara el primer valor
     //Value.value = columnas[0].value
+
+
     Text.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
     //  console.log('TextLabelcomboBox Name=', props.prop.Name, 'No found ', 'Value=', Text.value)
   }
   /////////////////////////////////////////////////////////////////////
-
 
   await emitValue()
 }
@@ -480,6 +506,7 @@ const renderComboBox = async () => {
 
   }
   */
+  Render = true
 
 }
 
@@ -488,7 +515,6 @@ const readValue = async (on_Mounted?: boolean) => {
   //  if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
   //    return
 
-  //console.log('1) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
 
   if (!on_Mounted && This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
     return
@@ -673,12 +699,13 @@ watch(
     //    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0)
     //   return
 
-    console.log('watch value Name=', This.prop.Name, 'Value=', new_val,
+    console.log('1) textLabel watch value Name=', This.prop.Name, 'Value=', new_val,
       'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno)
 
     Text.value = new_val
     if (props.Registro > 0 && This.prop.ControlSource.length > 2)
       updateCampo(new_val, This.prop.ControlSource, props.Registro)
+
 
     await asignaResultado()
 
@@ -805,10 +832,14 @@ onMounted(async () => {
     Type.value = 'imgButton'
 
 
-  console.log('onMounted textLabel ', This.prop.Name)
   await renderComboBox()
 
+  console.log('onMounted 1) textLabel Name=', This.prop.Name, 'columns=', columnas)
+
   await readValue(true)
+
+
+
 
   if (This.prop.ControlSource.length > 2) {
     const pos = This.prop.ControlSource.indexOf(".") + 1;
