@@ -1234,7 +1234,10 @@ export const appendBlank = async (alias?: string, m?: {}) => {
 
     This.value.View[alias].recno = recno;
     This.value.View[alias].recnoVal.push({ recno, id }); // insertamos en el arreglo para llenar el grid
-    This.value.View[alias].recCount = This.value.View[alias].recCount + 1;
+    if (!This.value.View[alias].recCount)
+        This.value.View[alias].recCount = 1;
+    else
+        This.value.View[alias].recCount = This.value.View[alias].recCount + 1;
     This.value.View[alias].row = This.value.View[alias].recnoVal.length - 1; // asignamos nuevo row
     valores.recno = recno;
     //console.log( "Db DataBAse Insert now  alaSql=====>",        alias,        await localAlaSql(`select * from  last.${alias} `)    );
@@ -2392,6 +2395,9 @@ export const recCount = (alias?: string) => {
     //    if (!alias) MessageBox('No existe el alias',alias)
     //         return 0
     // console.log("Db Reccount alias ===>", alias, This.value.View[alias].recCount);
+    const recCount = alasql(`select column count(recno) from ${alias}`)
+    console.log("Db Reccount alias ===>", alias, recCount);
+
     return This.value.View[alias].recCount;
 }
 

@@ -542,9 +542,9 @@ watch(
     const tabla = ControlSource.slice(0, pos - 1).trim();
 
     //console.log('3) 3.3.2 saveRow Grid watch compValid tabla=', tabla, 'campo=', campo)
-    const Now = await localAlaSql(`select ${campo} from Now.${tabla} where recno=${Recno}`)
-    const Last = await localAlaSql(`select ${campo} from Last.${tabla} where recno=${Recno}`)
-    if (Now.length == 0 || Last.length == 0) return
+    const Now = await localAlaSql(`select ${campo} from now.${tabla} where recno=${Recno}`)
+    const Last = await localAlaSql(`select ${campo} from last.${tabla} where recno=${Recno}`)
+    if (Now.length == 0 || last.length == 0) return
 
     if (Now[0][campo] !== Last[0][campo]) {
       console.log('<<<<<Grabara renglon>>>> 3.3.4 saveRow Grid watch compValid ColumnName=', ColumnActive)
@@ -557,9 +557,9 @@ watch(
     /*
     
     
-        const Now = await localAlaSql(`select * from Now.${This.prop.RecordSource} where recno=${Recno}`)
-        const Last = await localAlaSql(`select * from Last.${This.prop.RecordSource} where recno=${Recno}`)
-        if (Now.length == 0 || Last.length == 0) return
+        const Now = await localAlaSql(`select * from now.${This.prop.RecordSource} where recno=${Recno}`)
+        const Last = await localAlaSql(`select * from last.${This.prop.RecordSource} where recno=${Recno}`)
+        if (now.length == 0 || last.length == 0) return
         const Campos = View[This.prop.RecordSource].est_tabla
     
         for (const campo in Campos) {
