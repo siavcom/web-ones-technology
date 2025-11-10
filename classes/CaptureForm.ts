@@ -574,15 +574,15 @@ export class captureForm extends FORM {
   })
 
   public async bt_modifyClick() {
-    console.log('2) bt_modify click')
+
     this.bt_modify.prop.Visible = false
-    this.Form.prop.Status = 'P'
+
     for (const comp of this.Form.main) {
       if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
         this[comp].prop.ReadOnly = false
       }
     }
-    this.Form.prop.Status = 'A'
+
     this.bt_delete.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true
     return
@@ -674,18 +674,16 @@ export class captureForm extends FORM {
         this.Recno = 0  // Ponemos en 0 el recno para borrar los datos
         //            await this.refreshComponent();
         MessageBox("Datos borrados");
-      } else {
-        return await this.requery()
+        this.First.setFocus()  // hacemos focon en el primer elemento
+        return true
       }
+      await this.requery()
 
-
-      this.First.setFocus()  // hacemos focon en el primer elemento
-      return
     }
     this.bt_modify.prop.Visible = true;
     this.bt_save.prop.Visible = true;
     this.bt_delete.prop.Visible = true;
-    return
+    return false
   }
 
 

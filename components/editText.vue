@@ -12,7 +12,7 @@
       @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" @keypress="keyPress($event)"
       v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)"
       v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
-      @input.self="onInput">
+      @input.self="onInput" @keydown.delete="keyPress($event)">
 
     <!-- @input.self="onInput"
         
@@ -43,7 +43,8 @@
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
         @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"
         v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
-        v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"></textarea>
+        v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
+        @keydown.delete="keyPress($event)"></textarea>
     </div>
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
@@ -53,7 +54,7 @@
       :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus"
       @focusout="lostFocus" v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)"
       v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)"
-      v-on:keyup.up="keyPress($event)">
+      v-on:keyup.up="keyPress($event)" @keydown.delete="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()" -->
     <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
@@ -73,7 +74,7 @@
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
           :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
           :disabled="comp.disabled || This.prop.Disabled ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus">
+          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus" @focus="onFocus">
 
       </div>
       <!--/details-->
@@ -93,7 +94,7 @@
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus"
       @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska" @maska="onMaska"
       @keypress="keyPress($event)" @keypress.backspace="keyPress($event)" @keypress.delete="keyPress($event)"
-      @keypress.down="keyPress($event)" @keypress.up="keyPress($event)">
+      @keypress.down="keyPress($event)" @keypress.up="keyPress($event)" @keydown.delete="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()" @click.capture="onClick"-->
 
     <!--/span-->
@@ -1065,7 +1066,8 @@ const keyPress = ($event: {
   // <input       @keypress="keyPress($event)"
   KeyPressed = true
   This.prop.Valid = false // comenzo a teclear. Apagamos validacion
-  //  console.log('1) >>>>>KeyPress===>', $event.target, $event.target.value)
+  // $event.target.value  valor que tiene el buffer 
+  //console.log('1) >>>>>KeyPress===>', $event.target.value, +$event.charCode)
   const char = +$event.charCode
   const Type = propType.value
   if (displayError.value) {
@@ -1073,7 +1075,6 @@ const keyPress = ($event: {
     if (This.prop.ShowError)
       This.prop.ShowError = false
   }
-
 
   // oprimió ? (help)
   if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
@@ -1096,7 +1097,6 @@ const keyPress = ($event: {
 
   Key.value = $event.charCode
   This.prop.Key = $event.charCode
-
 
   /*
     if (Type == 'number') {

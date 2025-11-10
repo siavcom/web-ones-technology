@@ -855,7 +855,7 @@ export const iif = (condicion: boolean, verdadero: any, falso: any): any => {
 /**
  * Muestra un mensaje de alerta con una serie de botones y iconos segun el tipo y los parametros pasados.
  * @param texto - Texto a mostrar en la alerta.
- * @param tipo - Tipo de alerta, puede ser 0 (Ok), 1 (Ok+Cancel), 2 (Abort,Retry,Ignore), 3 (Yes,No,Cancel), 4 (Yes,No), 5 (Retry,Cancel).
+ * @param tipo - Tipo de alerta, puede ser 0 (Ok), 1 (Ok+Cancel), 2 (Abort,Retry,Ignore), 3 (Yes,No,Cancel), 4 (Yes,No), 5 (Retry,Cancel),   16: (stop sign), 32: (Question mark), 48: (Exclamation point), 64: (Information icon)
  * @param title - Titulo de la alerta.
  * @param timer - Tiempo en milisegundos que se muestra el mensaje antes de que se cierre automaticamente.
  * @returns Retorna el valor del boton que se ha seleccionado. Ok=6, Cancel=2, Abort=3, Retry=4, Ignore=5, Yes=6, No=7.
@@ -996,9 +996,7 @@ export async function MessageBox(
       break
   }
 
-
   valor = valor > 0 ? tipo - valor : tipo // restamos el primer resultado        
-
 
   val_ini = 512
   while (valor > 511) {

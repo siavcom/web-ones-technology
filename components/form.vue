@@ -364,6 +364,7 @@ watch(Valid, async (new_val) => {
   if (ThisForm.prop.BaseClass !== 'CaptureForm')
     return
 
+  console.warn('============ Watch Valid=========> ', ThisForm.prop.Name)
   for (const i in ThisForm.main) {
     const comp = ThisForm.main[i]
     const Componente = ThisForm[comp]
@@ -388,7 +389,7 @@ watch(Valid, async (new_val) => {
       }
   */
   // if (ThisForm.prop.Status == 'A')
-  //   ThisForm.bt_saveClick()
+  ThisForm.bt_saveClick()
 
 },
   { deep: true }); //, flush: 'post'
