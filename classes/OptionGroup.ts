@@ -45,7 +45,7 @@ export class OPTIONGROUP extends COMPONENT {
       const item = this.options[i]
 
       if (item.prop.OptionNumber == this.prop.Value) {
-        if (item.prop.Value = 0)
+        if (item.prop.Value == 0)
           item.prop.Value = 1
 
         item.prop.ReadOnly = true
@@ -63,7 +63,7 @@ export class OPTIONGROUP extends COMPONENT {
 
       }
     }
-    console.log('onChangeValue', this.prop.Value, this.options)
+    // console.log('onChangeValue checkBox ', this.Parent.prop.Name + "." + this.prop.Name, 'Value=', this.prop.Value)
     return;
   }
 

@@ -26,7 +26,7 @@ export class bt_obtener extends IMGBUTTON {
   } // Fin constructor
 
   async click() {
-    this.Form.prop.Visible = false;
+    this.prop.Visible = false;
 
     let bloque = 0
     for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
@@ -72,6 +72,7 @@ export class bt_obtener extends IMGBUTTON {
     if (!result || result.length == 0) {
       MessageBox("No data to show");
       this.Form.block[bloque].prop.Visible = false  // resultado
+      this.prop.Visible = true
       await this.Form.report.bt_close.click();
 
       return;

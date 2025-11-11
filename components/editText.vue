@@ -556,7 +556,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       await updateCampo(newValor, props.prop.ControlSource, Recno)
       // Value.value = Valor
     }
-    console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
+    // console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       // console.log('isValid', isValid, '2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
       Value.value = newValor
@@ -636,8 +636,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   }
   else {  // Si hay lectura de campo
     //console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
-
-
     //    This.prop.Valid = true
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
@@ -648,6 +646,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
             break;
           case 'checkbox':
             Value.value = 0
+            checkValue.value = false
             break;
           case 'date':
             Value.value = '1900-01-01' //T00:00:00'
@@ -658,8 +657,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           default:
             Value.value = ''
         }
-      } else
+      } else {
         Value.value = props.prop.Value // asignamos valor al Value.value
+      }
     }
     else {
       // leemos valor 
@@ -714,7 +714,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
             break;
           case 'checkbox':
             Value.value = 0
-
+            checkValue.value = false
             break;
           case 'date':
             Value.value = '1900-01-01' //'T00:00:00'
@@ -741,8 +741,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   //  console.log('2.2.0) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
   switch (Type) {
     case 'number':
-
-
       if (Value.value == null)
         Value.value = 0
 
@@ -754,9 +752,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     case 'checkbox':
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
+
       let check = Value.value == 0 ? false : true
       if (checkValue.value != check) {
         checkValue.value = check
+        // console.log('emitValue editText checkbox Name', props.prop.Name, 'Value=', Value.value, 'checkValue=', checkValue.value)
         emit("update:checkValue", checkValue)
       }
       break;
@@ -1211,7 +1211,8 @@ const onFocus = async () => {
   if (!This.Help)
     This.Help = false
 
-  Styles.inputStyle.background = This.inputStyle.background
+  if (This.prop.Type.toLowerCase() != 'checkbox')
+    Styles.inputStyle.background = This.inputStyle.background
   // Cuando esta en un grid y se hace foco a un renglon que no tiene el foco, se debe de correr en when  
   // al hacer el appendRow pone los ReadOnly en false en todos los componentes del grid
 
@@ -1255,7 +1256,7 @@ const onFocus = async () => {
   This.prop.Focus = false
   This.prop.First = false
 
-  const Type = propType.value
+  const Type = propType.value.toLowerCase()
   ToolTipText.value = false
   //  displayError.value = false
 
@@ -1427,11 +1428,20 @@ watch(
 watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
-
+    if (watchPropValue)
+      return
+    // console.log('watch checkValue checkbox editText Name', This.Parent.prop.Name + "." + This.prop.Name, 'CheckValue', new_val, 'OldVal=', old_val)
     if (new_val != old_val) {
 
-      //  console.log('watch checkValue editText Name', This.prop.Name, 'Value.value', Value.value, 'new_val=', new_val, 'old_val=', old_val)
       This.prop.Value = new_val ? 1 : 0
+      /*      if (!checkValue.value) {
+              Styles.inputStyle.backgroundColor = '#f2f2f2'
+              Styles.inputStyle.background = 'radial - gradient(circle at center, #f2f2f2 50 %, transparent 50 %)'
+            } else {
+              Styles.inputStyle.backgroundColor = 'black'
+              Styles.inputStyle.background = 'radial - gradient(circle at center, black 50 %, transparent 50 %)'
+            }
+      */
     }
   },
   { deep: false }
@@ -1571,8 +1581,10 @@ watch(
 
     if (watchPropValue) // Si se cambio desde el emitValue se ignora
       return
-    const Type = This.prop.Type
-    //  console.log('>>> EditText Watch This.prop.Value Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'TYPE=', Type)
+
+
+    const Type = This.prop.Type.toLowerCase()
+    //console.log('>>> EditText Watch This.prop.Value Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'TYPE=', Type)
 
     if (new_val === undefined || new_val === null) {
       switch (Type) {
@@ -1581,6 +1593,7 @@ watch(
           break;
         case 'checkbox':
           new_val = 0
+          checkValue.value = false
           break;
         case 'date':
           new_val = '1900-01-01' //T00:00:00'
@@ -1601,18 +1614,19 @@ watch(
     if (This.prop.Status == 'P') {// No se ha salido del componente
 
       ///////////  24/Marzo2025     Se cambia compara Value.value por new_val
-      switch (This.prop.Type) {
+      switch (This.prop.Type.toLowerCase()) {
         case 'number':
-
           currentValue.value[1] = +new_val //.toString().trim() // Captura
           currentValue.value[0] = await numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
 
           //          emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
           break;
         case 'checkbox':
-          let check = new_val == 0 ? false : true
+          const check = new_val == 0 ? false : true
           if (checkValue.value != check) {
             checkValue.value = check
+            console.log('2) >>> EditText Watch This.prop.Value checkbox Name=', This.prop.Name, 'new_val=', new_val, 'checkValue.value=', checkValue.value)
+
             //            emit("update:checkValue", checkValue)
           }
           break;
@@ -1740,7 +1754,7 @@ watch(
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
     watchPropValue = false
     if (This.prop.Valid && This.onChangeValue) {
-      console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
+      // console.log('2) watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
       if (This.onChangeValue) {
         await This.onChangeValue(ref(Styles))
       }
@@ -1787,6 +1801,7 @@ watch(
 watch(
   () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
+
     ReadOnly() //
 
   },
@@ -1839,23 +1854,27 @@ const Valid = (forReadOnly?: boolean) => {
   if (This.prop.ReadOnly) {
     return
   }
-
-  Styles.inputStyle.background = estilo.background
-  Styles.inputStyle.opacity = estilo.opacity
-
-  if (This.prop.Valid) {
-    //    console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
-    Styles.inputStyle.border = estilo.border
+  if (This.prop.Type.toLowerCase() != 'checkbox') {
     Styles.inputStyle.background = estilo.background
-    if (This.Parent.Valid[This.refValid]) // predemos el arreglo de validaciones para el watch
+    Styles.inputStyle.opacity = estilo.opacity
+  }
+  if (This.prop.Valid) {
+    // console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
+    if (This.prop.Type.toLowerCase() != 'checkbox') {
+      Styles.inputStyle.border = estilo.border
+      Styles.inputStyle.background = estilo.background
+    }
+    if (This.Parent.Valid[This.refValid] && !This.Parent.Valid[This.refValid].value) // predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = true   // 
 
   } else {
 
-    Styles.inputStyle.border = invalid.border
-    Styles.inputStyle.background = invalid.background
+    if (This.prop.Type.toLowerCase() != 'checkbox') {
+      Styles.inputStyle.border = invalid.border
+      Styles.inputStyle.background = invalid.background
+    }
     //   console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
-    if (This.Parent.Valid[This.refValid]) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
+    if (This.Parent.Valid[This.refValid] && This.Parent.Valid[This.refValid].value) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
       This.Parent.Valid[This.refValid].value = false
   }
 
@@ -1866,18 +1885,21 @@ const Valid = (forReadOnly?: boolean) => {
 const ReadOnly = () => {
   if (This.prop.ReadOnly) {
     //      Styles.inputStyle = { ...This.readOnlyInputStyle }
-
-    Styles.inputStyle.background = readOnlyInputStyle.background
-    Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+    if (This.prop.Type.toLowerCase() != 'checkbox') {
+      Styles.inputStyle.background = readOnlyInputStyle.background
+      Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+    }
     displayError.value = false // Apagamos mensaje de error
-    containerStyle.pointerEvents = 'none',
-      containerStyle.opacity = '0.7'
+    containerStyle.pointerEvents = 'none'
+    containerStyle.opacity = '0.7'
 
   }
   else {
     //Styles.inputStyle = { ...This.inputStyle }
-    Styles.inputStyle.background = This.inputStyle.background
-    Styles.inputStyle.opacity = This.inputStyle.opacity
+    if (This.prop.Type.toLowerCase() != 'checkbox') {
+      Styles.inputStyle.background = This.inputStyle.background
+      Styles.inputStyle.opacity = This.inputStyle.opacity
+    }
     containerStyle.pointerEvents = 'auto'
     containerStyle.opacity = '1'
 
@@ -2070,6 +2092,9 @@ onUnmounted(async () => {
 })
 
 
+
+
+
 /*
 onUnmounted(() => {
   console.log('EditText Desmontado onUnMounted', This.prop.Name)
@@ -2088,8 +2113,6 @@ onMounted(() => {
 </script>
 <style scoped>
 .checkbox {
-
-
   text-align: center;
   appearance: none;
   height: 31px;
@@ -2105,13 +2128,12 @@ onMounted(() => {
   box-sizing: border-box;
   background: radial-gradient(circle at center, #f2f2f2 50%, transparent 50%);
 
-
 }
 
 .checkbox:checked {
-
   background-color: black;
   background: radial-gradient(circle at center, black 50%, transparent 50%);
 
 }
 </style>
+background: radial-gradient(circle at center, black 50%, transparent 50%);

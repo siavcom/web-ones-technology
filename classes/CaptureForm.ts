@@ -47,7 +47,7 @@ export class captureForm extends FORM {
     if (this.prop.RecordSource.length > 2)
       await useNodata(this.prop.RecordSource)
     else
-      console.warn('this.Form.prop.RecordSource empty', this.prop.Name)
+      console.warn('.prop.RecordSource empty', this.prop.Name)
 
     this.bt_save.Grid = this.gridCaptura; // asignamos el arreglo de grid
   }
@@ -62,14 +62,14 @@ export class captureForm extends FORM {
   /**
    * AfterSave Method
    * Description: function that is executed after the save button is executed.
-   * Obs: this method is inherited and can be modified from the this.Form.
+   * Obs: this method is inherited and can be modified from the .
    */
   // public async afterSave() { }
 
   /**
    * AfterDelete Method
    * Description: function that is executed after the delete button is executed.
-   * Obs: this method is inherited and can be modified from the this.Form.
+   * Obs: this method is inherited and can be modified from the .
    */
   // public async afterDelete() { }
 
@@ -78,7 +78,7 @@ export class captureForm extends FORM {
    * inDelete Method
    * Description: function that is executed when you enter the delete method.
    *              It will continue with the deletion if it returns true.
-   * Obs: this method is inherited and can be modified from the this.Form.
+   * Obs: this method is inherited and can be modified from the .
    */
   //  public async inDelete() { return true }
 
@@ -93,7 +93,7 @@ export class captureForm extends FORM {
   async showBt(button: string, valor: boolean) {
 
     if (this[button].prop.Visible != valor) {
-      // await this.Form[button].show.value(valor)
+      // await [button].show.value(valor)
 
       console.log('shwoBt ', `ThisForm.${button}.prop.Visible=${valor}`)
 
@@ -156,7 +156,7 @@ export class captureForm extends FORM {
     console.log('beforeWhen  apagamos botones')
     this.bt_delete.prop.Visible = false;
     this.bt_modify.prop.Visible = false;
-    this.bt_save.prop.Visible = false;
+    //  this.bt_save.prop.Visible = false;
 
   }
 
@@ -582,6 +582,7 @@ export class captureForm extends FORM {
         this[comp].prop.ReadOnly = false
       }
     }
+    await nextTick()
 
     this.bt_delete.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true

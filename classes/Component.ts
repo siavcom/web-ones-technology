@@ -152,17 +152,16 @@ export class COMPONENT {
 
     When: true,
   };
-
+  // El estilo del container que tenga el componente
   containerStyle = {
     display: 'flex',
-    flexWrap: 'wrap',
-    maxWidth: '600px',
+    alignItems: 'flex-end',
     //  alignContent: "flex-end",
     //  alignItems: "flex-end",
     //  display: "flex",
     //  flexDirection: "row",
     //  flexWrap: "nowrap",
-    //  justifyContent: "flex-end",
+    justifyContent: "flex-star",
     //  width: "100%"
     paddingLeft: "auto",
 

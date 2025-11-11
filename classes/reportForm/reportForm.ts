@@ -53,6 +53,7 @@ export class reportForm extends FORM {
   public des_fec = new des_fec();
   public has_fec = new has_fec();
 
+
   tab_ord: string = ""; // tabla para indicar el orden del reporte
   vis_rep: string = ""; // nombre de la vista sql a utilizar en el reporte
   ord_vis: string = ""; // variables extras para el orden del select
@@ -68,6 +69,11 @@ export class reportForm extends FORM {
 
   constructor(num_blocks: number) {
     super();
+
+    this.mainStyle.display = 'inherit'
+
+
+
     this.prop.addRow = false; // Si es verdadero aumenta renglon automaticamente
 
     this.mon_rep.prop.TabIndex = 101;

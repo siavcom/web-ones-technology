@@ -363,16 +363,16 @@ watch(Valid, async (new_val) => {
 
   if (ThisForm.prop.BaseClass !== 'CaptureForm')
     return
-
-  console.warn('============ Watch Valid=========> ', ThisForm.prop.Name)
+  if (!ThisForm.bt_save.prop.Visible)
+    return
+  //console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
   for (const i in ThisForm.main) {
     const comp = ThisForm.main[i]
     const Componente = ThisForm[comp]
     if (!Componente.prop.Valid && Componente.prop.Capture && !Componente.prop.ReadOnly && Componente.prop.Visible) {
       console.warn('============ Componente no validado=========> ', comp, Componente.prop.Valid)
-      ThisForm.bt_modify.prop.Visible = false
+      //      ThisForm.bt_modify.prop.Visible = false
       ThisForm.bt_delete.prop.Visible = false
-      ThisForm.bt_save.prop.Visible = false
 
       return
     }
@@ -389,6 +389,8 @@ watch(Valid, async (new_val) => {
       }
   */
   // if (ThisForm.prop.Status == 'A')
+  //ThisForm.bt_save.prop.Visible = true
+
   ThisForm.bt_saveClick()
 
 },

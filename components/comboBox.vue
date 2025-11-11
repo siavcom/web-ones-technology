@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -1575,9 +1575,7 @@ watch(
 watch(
   () => This.prop.ReadOnly, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
-
     ReadOnlyWatch()
-
   },
   { deep: false }
 );
@@ -1667,14 +1665,11 @@ const ValidWatch = () => {
 const ReadOnlyWatch = () => {
   if (This.prop.ReadOnly) {
     //      Styles.inputStyle = { ...This.readOnlyInputStyle }
-
     Styles.inputStyle.background = readOnlyInputStyle.background
     Styles.inputStyle.opacity = readOnlyInputStyle.opacity
     displayError.value = false // Apagamos mensaje de error
-    containerStyle.pointerEvents = 'none',
-      containerStyle.opacity = '0.7'
-
-
+    containerStyle.pointerEvents = 'none'
+    containerStyle.opacity = '0.7'
   }
   else {
     //Styles.inputStyle = { ...This.inputStyle }
@@ -1682,7 +1677,6 @@ const ReadOnlyWatch = () => {
     Styles.inputStyle.opacity = This.inputStyle.opacity
     containerStyle.pointerEvents = 'auto'
     containerStyle.opacity = '1'
-
   }
 }
 
