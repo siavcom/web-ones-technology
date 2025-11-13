@@ -15,9 +15,7 @@ export class captureForm extends FORM {
   public gridCaptura: [] = [];
   public noData = false;
   public First = null
-  sw_nue = false; // bandera de nuevo registro
-
-
+  sw_update = false; // bandera de nuevo registro
 
   // se debe de poner siempre el contructor
   constructor() {
@@ -169,9 +167,13 @@ export class captureForm extends FORM {
   /// /////////////////////////////////////
 
   async validKeyComponent(Comp: undefined) {
-    const thisComp = Comp.value
 
-    console.log('validKeyComponent Este=', thisComp.prop.Name)
+    if (this.sw_update && this.bt_save.prop.Visible)
+      await this.bt_save.click()
+
+    this.Form.sw_update = false
+    const thisComp = Comp.value
+    // console.log('validKeyComponent Este=', thisComp.prop.Name)
     //if (!compName) return false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
@@ -237,7 +239,7 @@ export class captureForm extends FORM {
     let key_pri = 0;
 
     if (data.length == 0) {
-      this.sw_nue = true
+      //      this.sw_update = true
 
       // No hay datos
 
@@ -276,7 +278,7 @@ export class captureForm extends FORM {
 
     }   // Hay datos
 
-    this.sw_nue = false
+    //this.sw_update = false
     this.Recno = data[0].recno;
     this.prop.Status = 'P'
     for (const comp of this.main) {
@@ -305,90 +307,84 @@ export class captureForm extends FORM {
     return
   }
 
-
-  async refreshComponent_old(Recno?: number, key_pri?: number) {
-    // console.log('1) =====================Refresh Component')
-    let activate = true;
-
-    if (!Recno) {
-      Recno = -1;
-      key_pri = 0;
-    }
-
-    for (const comp of this.main) {
-      const Comp = this[comp]
-
-      if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apaga
-        Comp.prop.ShowError = false
+  /*
+    async refreshComponent_old(Recno?: number, key_pri?: number) {
+      // console.log('1) =====================Refresh Component')
+      let activate = true;
+  
+      if (!Recno) {
+        Recno = -1;
+        key_pri = 0;
       }
-    }
-    //    console.log('2) =====================Refresh Component')
-    if (this.noData && !activate) {
-      // Ya se hizo el useNodata y refresh sin datos
-      return;
-    }
-    //  console.log('3) =====================Refresh Component')
-    if (Recno == -1) { // Inicializamos la forma
-      this.noData = true;
-      this.bt_save.prop.Visible = false;
-      this.bt_delete.prop.Visible = false;
-      this.bt_modify.prop.Visible = false;
-      if (this.Recno != 0)
-        this.Recno = 0 // por referencia se pasa el valor component.Recno=0
-
-      if (this.prop.RecordSource.length > 2) { // Si hay vista
-        if (!this.Sql.View[this.prop.RecordSource] || this.Sql.View[this.prop.RecordSource].recno > 0) {
-          await useNodata(this.prop.RecordSource);
+  
+      for (const comp of this.main) {
+        const Comp = this[comp]
+  
+        if (Comp.prop.ShowError) {// Si hay alguna bandera de error prendida , la apaga
+          Comp.prop.ShowError = false
         }
-      } else
+      }
+      //    console.log('2) =====================Refresh Component')
+      if (this.noData && !activate) {
+        // Ya se hizo el useNodata y refresh sin datos
         return;
-
-      // this.bt_calendario.prop.Visible = false;
-    } // else this.noData = false;
-
-
-    //console.log('0) displayError refreshComponent main=', this.main)
-
-    for (const comp of this.main) {
-      const Comp = this[comp]
-
-      if (Comp.prop.Capture) {
-        Comp.prop.Valid = false;
-        if (!Comp.prop.updateKey) {
-          //  console.log('Refresh=', Comp.Name, Comp.Recno)
-          //          const RecnoNu = Comp.Recno
-          //          Comp.Recno = 0
-
-          // No es llave de actualizacion
-          if (!Comp.prop.Visible)
-            Comp.prop.Visible = true;
-
-          // console.log('Refresh key_pri=', key_pri, Recno)
-          /*
-                    if (Recno >= 0) {  // Solo si ya es una captura  // Cuando ya se validaron las llaves de actualizacion
-                      Comp.prop.ReadOnly = false;
-                    } else {  // Inicializacion de la captura
-                      Comp.prop.ReadOnly = true; // cuando la forma esta limpia
-                    }
-          */
-          if (Recno >= 0 && key_pri > 0) {  // Solo si ya es una captura  // Cuando ya se validaron las llaves de actualizacion
-            //Comp.prop.ReadOnly = true; // 8/Ags/2025
-            Comp.prop.ReadOnly = true;
-          } else {  // Inicializacion de la captura
-            Comp.prop.ReadOnly = false; // cuando la forma esta limpia
+      }
+      //  console.log('3) =====================Refresh Component')
+      if (Recno == -1) { // Inicializamos la forma
+        this.noData = true;
+        this.bt_save.prop.Visible = false;
+        this.bt_delete.prop.Visible = false;
+        this.bt_modify.prop.Visible = false;
+        if (this.Recno != 0)
+          this.Recno = 0 // por referencia se pasa el valor component.Recno=0
+  
+        if (this.prop.RecordSource.length > 2) { // Si hay vista
+          if (!this.Sql.View[this.prop.RecordSource] || this.Sql.View[this.prop.RecordSource].recno > 0) {
+            await useNodata(this.prop.RecordSource);
           }
-
-          if (key_pri == 0) // Si es captura y no hay llave de actualizacion, es valido  
-            Comp.prop.Valid = false // true (false);
-          else
-            Comp.prop.Valid = false;
-        } else {
-          Comp.prop.ReadOnly = false; // Si es llave de captura
+        } else
+          return;
+  
+        // this.bt_calendario.prop.Visible = false;
+      } // else this.noData = false;
+  
+  
+      //console.log('0) displayError refreshComponent main=', this.main)
+  
+      for (const comp of this.main) {
+        const Comp = this[comp]
+  
+        if (Comp.prop.Capture) {
+          Comp.prop.Valid = false;
+          if (!Comp.prop.updateKey) {
+            //  console.log('Refresh=', Comp.Name, Comp.Recno)
+            //          const RecnoNu = Comp.Recno
+            //          Comp.Recno = 0
+  
+            // No es llave de actualizacion
+            if (!Comp.prop.Visible)
+              Comp.prop.Visible = true;
+  
+            // console.log('Refresh key_pri=', key_pri, Recno)
+            
+            if (Recno >= 0 && key_pri > 0) {  // Solo si ya es una captura  // Cuando ya se validaron las llaves de actualizacion
+              //Comp.prop.ReadOnly = true; // 8/Ags/2025
+              Comp.prop.ReadOnly = true;
+            } else {  // Inicializacion de la captura
+              Comp.prop.ReadOnly = false; // cuando la forma esta limpia
+            }
+  
+            if (key_pri == 0) // Si es captura y no hay llave de actualizacion, es valido  
+              Comp.prop.Valid = false // true (false);
+            else
+              Comp.prop.Valid = false;
+          } else {
+            Comp.prop.ReadOnly = false; // Si es llave de captura
+          }
         }
       }
-    }
-  } // fin metodo
-
+    } // fin metodo
+  */
   /// //////////////////////////////
   // Metodo : bt_save
   // Descripcion : Graba los datos de la forma
@@ -407,65 +403,8 @@ export class captureForm extends FORM {
       this.prop.Visible = false;
     } // Fin constructor
 
-
     override async click() {
-
       return this.Parent.bt_saveClick()
-      /*   if (!await this.Parent.inSave())
-           return
-   
-   
-         if (this.prop.Disabled)
-           return;
-   
-         this.prop.Visible = false;
-         this.prop.Valid = false;
-         this.Parent.bt_delete.prop.Visible = false
-   
-         // Recorremos toda la forma y revisamos si estan validados
-         for (const comp of this.Parent.main) {
-           //  for (const i in this.Parent.main) {
-           //    const comp: string = this.Parent.main[i];
-   
-           // Checa si todos esta validados
-   
-           if (this.Parent[comp].prop.Capture && !this.Parent[comp].prop.ReadOnly && this.Parent[comp].prop.Visible && !this.Parent[comp].prop.Valid) {
-   
-             if (!(await this.Parent[comp].valid())) {
-               //console.log('2) CaptureForm bt_save click() Invalid comp=', comp)
-               if (!this.prop.Disabled)
-                 this.prop.Visible = true;
-   
-               await this.Parent[comp].setFocus()
-   
-               return;
-   
-             }
-           }
-         }
-   
-         //console.log("CaptureForm bt_save");
-         const result = await tableUpdate(
-           0,
-           false,
-           this.Parent.prop.RecordSource
-         );
-   
-         if (result) {
-           MessageBox("Datos actualizados");
-         } else {
-           await this.Sql.requery(this.Parent.prop.RecordSource)
-         }
-   
-         this.prop.Valid = true;
-         if (!this.Form.bt_delete.prop.Disabled)
-           this.Parent.bt_delete.prop.Visible = true;
-         this.prop.Visible = true;
-   
-         await this.Parent.afterSave();
-   
-         return;
-         */
     }
 
     public async lee_grid() {
@@ -515,6 +454,7 @@ export class captureForm extends FORM {
       if (result) {
         MessageBox("Datos actualizados");
         resultado = true
+        this.sw_update = false
       } else {
         // actualiza datos porque hubo error de grabacion
         console.error('Save error bt_saveClick',)
@@ -555,21 +495,7 @@ export class captureForm extends FORM {
     } // Fin constructor
 
     override async click() {
-
       return this.Parent.bt_modifyClick()
-
-      //  console.log('Click bt_modify ')
-      /*     this.prop.Visible = false
-           for (const comp of this.Form.main) {
-     
-             if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey) {
-     
-               this.Form[comp].prop.ReadOnly = false
-     
-             }
-           }
-           this.Form.bt_save.prop.Visible = true
-     */
     }
   })
 
@@ -611,49 +537,8 @@ export class captureForm extends FORM {
 
     override async click() {
       return this.Parent.bt_deleteClick()
-      /*    
-          if (this.prop.Disabled)
-            return;
-    
-          if (!await this.Parent.inDelete())
-            return
-    
-          this.prop.Visible = false;
-          this.Parent.bt_save.prop.Visible = false;
-    
-          if ((await MessageBox("Borramos los datos", 4, "")) === 6) {
-            if (this.Recno > 0) {
-              console.log(
-                "borra registro",
-                this.Form.prop.RecordSource,
-                this.Recno
-              );
-              const result = await deleteSql(
-                this.Recno,
-                this.prop.RecordSource,
-                true
-              );
-    
-              //          console.log("borra registro", result, 'this=', this);
-              this.Recno = 0  // Ponemos en 0 el recno para borrar los datos
-              if (result) {
-                //            await this.refreshComponent();
-                MessageBox("Datos borrados");
-              } else {
-                return await this.requery()
-              }
-            }
-            if (!this.Form.bt_save.prop.Disabled && this.Recno > 0) {
-              this.Parent.bt_save.prop.Visible = true;
-              this.prop.Visible = true;
-              return
-            }
-            this.First.Focus()  // asemos focon en el primer elemento
-            return;
-          }
-          await this.Parent.afterDelete();
-    */
     }
+
   });
 
   public async bt_deleteClick() {
@@ -706,6 +591,8 @@ export class captureForm extends FORM {
   }
 
 
+  /*
+
   // Metodo		: grabar
   // Comentarios	: Este metodo es general para todas las rutinas de actualización de datos
   async grabar(com_gra?: string) {
@@ -718,13 +605,16 @@ export class captureForm extends FORM {
     }
 
     if (await tableUpdate(0)) {							// graba el registro
-      this.sw_nue = false
+      this.sw_update = false
       return true
     }
     else {
       return false
     }
   }
+
+
+*/
 
   // Metodo		:rev_per
   // Comentarios	: Reviza prmisos de seguridad de la tabla comedoc 
@@ -746,7 +636,7 @@ export class captureForm extends FORM {
       if (this.Form.nom_obj[pos + 1] == '1' || this.Form.nom_obj[pos + 1] == '3')	// permite Modifica o Captura y modifica
         return true
       // reviza si se permite la captura
-      if (this.Form.nom_obj[pos + 1] >= '2' && ((!sw_mov && this.Form.sw_nue) || (sw_mov && this.Form.num_mov == 0)))
+      if (this.Form.nom_obj[pos + 1] >= '2' && ((!sw_mov && this.Form.sw_update) || (sw_mov && this.Form.num_mov == 0)))
         return true
 
       // si permite la captura es impresión pero no se a impreso ni timbrado
