@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -107,7 +107,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1625,7 +1625,7 @@ watch(
           const check = new_val == 0 ? false : true
           if (checkValue.value != check) {
             checkValue.value = check
-            console.log('2) >>> EditText Watch This.prop.Value checkbox Name=', This.prop.Name, 'new_val=', new_val, 'checkValue.value=', checkValue.value)
+            //console.log('2) >>> EditText Watch This.prop.Value checkbox Name=', This.prop.Name, 'new_val=', new_val, 'checkValue.value=', checkValue.value)
 
             //            emit("update:checkValue", checkValue)
           }
@@ -2133,7 +2133,5 @@ onMounted(() => {
 .checkbox:checked {
   background-color: black;
   background: radial-gradient(circle at center, black 50%, transparent 50%);
-
 }
 </style>
-background: radial-gradient(circle at center, black 50%, transparent 50%);

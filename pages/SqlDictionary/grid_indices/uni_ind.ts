@@ -27,4 +27,8 @@ export class uni_ind extends COLUMN {
     //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
     //      this.prop.Autofocus=true
   }
+  override async when() {
+    this.prop.Valid = true;
+    return true;
+  }
 }

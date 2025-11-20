@@ -7,7 +7,7 @@
 
 
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
-      :style="Styles.inputStyle" :checked="checkValue" readonly="true" />
+      :style=Styles.inputStyle :checked="checkValue" readonly="true" />
 
     <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
       readonly="true" />
@@ -209,51 +209,52 @@ const asignaResultado = async (valor?: string) => {
 
   // RowSource puede ser array
 
-  if (props.prop.RowSourceType == 0 ||
-    typeof props.prop.RowSource == 'object' ? props.prop.RowSource.length < 1 : props.prop.RowSource.trim().length < 3) {
 
-    if (Text.value === undefined || Text.value === null) {
-      switch (props.prop.Type) {
-        case 'number':
-          Text.value = 0
-          break;
-        case 'checkbox':
-          Text.value = 0
-          break;
-        case 'date':
-          Text.value = '1900-01-01' //T00:00:00'
-          break;
-        case 'datetime':
-          Text.value = '1900-01-01T00:00:00'
-          break;
-        default:
-          Text.value = ''
-      }
-
-    }
-
-    switch (props.prop.Type) {
+  if (Text.value === undefined || Text.value === null) {
+    switch (props.prop.Type.toLowerCase()) {
       case 'number':
-        Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-        break;
-      case 'date':
-        Text.value = Text.value.slice(0, 10)
-        break;
-      case 'datetime':
-        //Text.value = toNumberStr(Text.value);
-        Text.value = Text.value.slice(0, 16)
+        Text.value = 0
         break;
       case 'checkbox':
-        let check = Text.value == 0 ? false : true
-        if (checkValue.value != check) {
-          checkValue.value = check
-        }
-        emit("update:checkValue", checkValue)
+        Text.value = 0
+        checkValue.value = false
         break;
+      case 'date':
+        Text.value = '1900-01-01' //T00:00:00'
+        break;
+      case 'datetime':
+        Text.value = '1900-01-01T00:00:00'
+        break;
+      default:
+        Text.value = ''
     }
 
-    return;
+  }
 
+  switch (props.prop.Type.toLowerCase()) {
+    case 'number':
+      Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
+      break;
+    case 'date':
+      Text.value = Text.value.slice(0, 10)
+      break;
+    case 'datetime':
+      //Text.value = toNumberStr(Text.value);
+      Text.value = Text.value.slice(0, 16)
+      break;
+    case 'checkbox':
+
+      let check = Text.value == 0 ? false : true
+      if (checkValue.value != check) {
+        checkValue.value = check
+      }
+      emit("update:checkValue", checkValue)
+      console.log('checkBox TextLabel Name=', This.prop.Name, 'checkValue=', checkValue.value)
+      break;
+  }
+  if (props.prop.RowSourceType == 0 ||
+    typeof props.prop.RowSource == 'object' ? props.prop.RowSource.length < 1 : props.prop.RowSource.trim().length < 3) {
+    return;
   }
 
   valor = Text.value
@@ -838,9 +839,6 @@ onMounted(async () => {
 
   await readValue(true)
 
-
-
-
   if (This.prop.ControlSource.length > 2) {
     const pos = This.prop.ControlSource.indexOf(".") + 1;
     if (pos > 1) {
@@ -904,6 +902,7 @@ const handler = (event) => {
   background-clip: content-box;
   box-sizing: border-box;
   background: radial-gradient(circle at center, #f2f2f2 50%, transparent 50%);
+
 }
 
 .checkbox:checked {

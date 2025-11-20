@@ -3595,6 +3595,45 @@ export const jasperReport = async (query: string, for_rep: string, dataView?: st
     //   return buffer
 }
 
+export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    const dat_timbrado = {
+        id_con: This.value.session.id_con,
+        tip_llamada: "TIMBRACFDI",
+        tdo_tdo: tdo_tdo,
+        ndo_doc: ndo_doc
+    };
+    //    console.log("Db JasperReport Llamada", dat_rep);
+    // display contruyendo reporte
+
+    try {
+        const response = await axios.post(This.value.session.url + "sql", dat_timbrado, {
+            responseType: "arraybuffer",
+        });
+        //      console.log;
+        return response.data;
+    } catch (error) {
+        errorAlert("Report Server Error  :" + error.response.statusText);
+        //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
+        return null;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function dropView(alias: string) {
     localAlaSql(
