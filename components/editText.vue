@@ -940,11 +940,11 @@ const lostFocus = async () => {
   }
 
   for (const element of This.Parent.elements) {
-    const comp = element.Name.toLowerCase()
+    const comp = element.Name.toLowerCase().trim()
 
     if (comp.trim() != This.prop.Name.toLowerCase().trim()) {
       if (This.Parent[comp].prop.Status == 'P' && This.Parent.Recno > 0) {
-        console.warn('No esta validado el componente', comp, 'prop.Name=', This.prop.Name, 'Parent Status=', This.Parent[comp].prop.Status)
+        console.warn('No esta validado el componente', comp)
         return
       }
     }
