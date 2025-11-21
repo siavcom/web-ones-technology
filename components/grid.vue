@@ -510,7 +510,7 @@ watch(
 watch(
   () => compValid,
   async (new_val, old_val) => {
-    // if (!This.prop.autoUpdate) return
+    if (!This.prop.autoUpdate) return
 
     //  console.log('2).0 3.3 -- Grid watch compValid', 'Row=', This.Row)
     if (This.Row < 0) return

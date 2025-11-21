@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -767,8 +767,8 @@ const validCheck = async (num_ren: number) => {
 const validList = async () => {
 
   for (const element of This.Parent.elements) {
-    const comp = element.Name
-    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
+    const comp = element.Name.toLowerCase().trim()
+    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name.toLowerCase().trim()) {
       return
     }
   }

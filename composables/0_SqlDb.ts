@@ -1635,12 +1635,12 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
     };
 
     try {
-        console.log("1) Begin SQLEXEC  Query=", query, 'alias=', alias);
+        //console.log("1) Begin SQLEXEC  Query=", query, 'alias=', alias);
         let respuesta = await axiosCall(dat_vis);
         // console.log('2) Begin  SQLEXEC axios respuesta=', respuesta)
 
         if (respuesta.length == 0) {
-            console.log('3) Begin  SQLEXEC return sin  respuesta')
+            console.warn('3) Begin  SQLEXEC return sin  respuesta')
             return respuesta
         }
 

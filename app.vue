@@ -47,7 +47,7 @@
 
                     <li @click="isMan = !isMan">
                       <span class="links_options">{{ Props.maintenance
-                      }}</span>
+                        }}</span>
                       <nuxt-img class="ico" :src="isMan ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
@@ -461,7 +461,7 @@ const obtMenu = () => {
         link: '#',
         name: 'SQL data diccionary',
         tooltip: 'Setting',
-        icon: '/Iconos/svg/bx-cog.svg',
+        icon: '/Iconos/svg/dictionary.svg',
         path: { path: '/SqlDictionary' },
         target: '', //'_blank',
         type: 'P',

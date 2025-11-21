@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -107,7 +107,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -940,11 +940,11 @@ const lostFocus = async () => {
   }
 
   for (const element of This.Parent.elements) {
-    const comp = element.Name
+    const comp = element.Name.toLowerCase()
 
-    if (comp.trim() != This.prop.Name.trim()) {
+    if (comp.trim() != This.prop.Name.toLowerCase().trim()) {
       if (This.Parent[comp].prop.Status == 'P' && This.Parent.Recno > 0) {
-        console.warn('No esta validado el componente', comp)
+        console.warn('No esta validado el componente', comp, 'prop.Name=', This.prop.Name, 'Parent Status=', This.Parent[comp].prop.Status)
         return
       }
     }
