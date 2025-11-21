@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -408,9 +408,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
+    console.log('1.0) comboBox editText emitValue() Name', props.prop.Name, 'Value=', Valor, 'props.Registro=', props.Registro, 'props.prop.ControlSource=', props.prop.ControlSource)
+
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
       Value.value = Valor
+
+
     }
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
     This.prop.Value = Value.value
@@ -418,7 +422,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       isValid = false
 
     if (!isValid) {
-
+      console.log('1.1) comboBox editText emitValue() Name', props.prop.Name, 'Value=', Valor)
       await This.interactiveChange()
       //This.prop.Valid = false
       inputBuffer = ''
@@ -711,7 +715,7 @@ const validClick = async (num_ren: number) => {
   comboStyle.zIndex = zIndex.value
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  //console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
+  console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
   //  await This.interactiveChange()
   emitValue()
   focusIn = false // Perdio el foco

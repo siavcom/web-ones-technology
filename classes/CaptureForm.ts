@@ -173,7 +173,7 @@ export class captureForm extends FORM {
 
     this.Form.sw_update = false
     const thisComp = Comp.value
-    // console.log('validKeyComponent Este=', thisComp.prop.Name)
+    console.log('validKeyComponent Este=', thisComp.prop.Name)
     //if (!compName) return false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
@@ -223,9 +223,9 @@ export class captureForm extends FORM {
       return false
     }
 
-    //console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
+    // console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
     const data = await use(this.prop.RecordSource, m);
-    console.log('2) validComponent data=', data)
+    // console.log('2) validComponent data=', data)
 
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;

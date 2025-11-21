@@ -1739,6 +1739,7 @@ export const genTabla = async (tabla: string) => {
 
     try {
         const respuesta = await axiosCall(dat_vis);
+        //alert(" Table updated successfully " + tabla)
         MessageBox(" Table updated successfully " + tabla);
     } catch (error) {
         console.error("SQL Server Error", error.response);

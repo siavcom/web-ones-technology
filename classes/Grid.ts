@@ -354,6 +354,7 @@ export class GRID extends COMPONENT {
     );
     if (resultado)  //actualizacion con exito
       MessageBox(this.prop.OkMessage);
+    //alert(this.prop.OkMessage);
 
     else {
 

@@ -55,8 +55,6 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
     this.Form.sw_update = true
     if (this.prop.ReadOnly || !this.prop.updateKey || !this.prop.Capture) {
-      console.log('bt_save Visible=', this.Form.bt_save.prop.Visible)
-
       return true
     }
 
