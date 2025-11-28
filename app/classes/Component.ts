@@ -168,7 +168,7 @@ export class COMPONENT {
   }
 
   captionStyle = {
-    accept: "",
+    accept: "", //"image/png, image/jpeg, image/jpg"
 
     background: "", //transparent
     borderRadius: "1px",
@@ -332,9 +332,11 @@ export class COMPONENT {
 
       // console.log('2)Asignado recno por referencia al padre', Comp)
       // ControlSource contiene el RecordSource de la forma
+
+      // Solo elementos de captura de datos
       if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer'
         && !Comp.prop.updateKey && Comp.prop.ControlSource
-        && (Comp.prop.BaseClass == "editText" || Comp.prop.BaseClass == 'comboBox')
+        && (Comp.prop.BaseClass.toLowerCase() == "editText" || Comp.prop.BaseClass.toLowerCase() == 'comboBox' || Comp.prop.BaseClass.toLowerCase() == 'base64')
         && Comp.prop.ControlSource.length > 0
         && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
         // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))

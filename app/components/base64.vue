@@ -3,19 +3,23 @@
   <span :id="Id + '_component'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
 
-    <img v-if="Value.length > 0 && This.inputStyle.accept != 'application/pdf'" :id="Id + '_img'" class="img"
-      :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
-    <iframe v-if="Value.length > 0 && This.inputStyle.accept == 'application/pdf'" :id="Id + '_pdf'" :src="Value"
-      :width="This.inputStyle.width" :height="This.inputStyle.height" :title="This.prop.Caption"
-      :style="inputStyle"></iframe>
+    <img
+      v-if="Value.length > 0 && (accept.includes('jpg') || accept.includes('jpeg') || accept.includes('png') || accept.includes('gif') || accept.includes('bmp') || accept.includes('svg') || accept.includes('ico'))"
+      :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
+    <iframe v-if="Value.length > 0 && accept == 'application/pdf'" :id="Id + '_pdf'" :src="Value"
+      :width="inputStyle.width" :height="inputStyle.height" :title="This.prop.Caption" :style="inputStyle"></iframe>
 
-    <!--div v-if="!This.prop.Disabled"-->
-    <button style="display:block;width:120px; height:30px;" onclick="document.getElementById('get_file').click()"
-      :disabled="prop.ReadOnly || prop.Disabled">{{ prop.Caption }}</button>
-    <input v-if="!prop.Disabled" :id="Id + '_get_file'" ref="fileInput" type="file" @change="readFile($event)"
-      :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept"
-      src="/Iconos/svg/delete-color.svg" />
-    <img v-if="Value.length > 0" :id="Id + '_bt_deleter'" class="img" src="/Iconos/svg/delete-color.svg"
+    <!--div v-if="!This.prop.Disabled"  
+    @change="readFile($event)"
+    
+    -->
+
+    <button style="display:block;width:120px; height:30px;" :src="prop.Image"
+      :onclick="`document.getElementById('${Id_get_file}').click()`" :disabled="prop.ReadOnly || prop.Disabled">{{
+        prop.Caption }}</button>
+    <input v-if="!prop.Disabled" :id="Id_get_file" ref="fileInput" type="file" @change="readFile($event)"
+      :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept" />
+    <img v-if="Value.length > 0" :id="Id + '_bt_delete'" class="img" src="/Iconos/svg/delete-color.svg"
       :alt="prop.Value" :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;"
       @click.capture="bt_delete()" />
 
@@ -145,12 +149,14 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 
+const accept = computed(() => This.inputStyle.accept.toLowerCase().trim())
 
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
 
 // const Id = This.prop.Name + props.Registro.toString().trim()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+const Id_get_file = Id + '_get_file'
 
 let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
@@ -241,6 +247,7 @@ const readFile = ($event) => {
   const input = $event.target;
 
   // Ensure that you have a file before attempting to read it
+
   if (input.files && input.files[0]) {
     // create a new FileReader to read this image and convert to base64 format
     let reader = new FileReader();
@@ -251,14 +258,16 @@ const readFile = ($event) => {
       // Read image as base64 and set to imageData
       Value.value = e.target.result;
 
-      emitValue(false, true, Value.value)
-
+      emitValue(false, false, Value.value)
     }
 
     // Start the reader job - read file as a data url (base64 format)
     reader.readAsDataURL(input.files[0]);
+
   }
 }
+
+
 
 
 /////////////////////////////////////////////////////////////////////
@@ -292,7 +301,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     }
 
     // Si no hay error
-    This.prop.Valid = true
+    //This.prop.Valid = true
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
 
 
@@ -305,14 +314,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
       emit("update"); // actualiza el valor Value en el componente padre
 
-
-      if (Type == 'spinner' || Type == 'checkbox')
-        await This.interactiveChange()
-
       if (!isValid) {
 
         if (!await This.valid()) {
-
 
           displayError.value = true
           This.prop.ShowError = true
@@ -320,12 +324,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
           // 7/Feb/2024       
           This.Form.prop.Status = 'A'
-          select()
           This.prop.Status = 'A'
           return
         }
-
-
       }
       This.prop.Valid = true
       This.prop.Status = 'A'

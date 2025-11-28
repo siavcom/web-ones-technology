@@ -37,7 +37,7 @@
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col" :style="{
               'background': option.check ? 'rgb(163, 193, 168)' : 'white',
-              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height
+              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': inputStyle.height
             }">
             <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
               :style:="columncaptionStyle" />
@@ -77,7 +77,7 @@
 
             <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
               v-for="(text, col) in option.text" :key="col"
-              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height }">
+              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': inputStyle.height }">
               <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
                 :style:="columncaptionStyle" />
             </div>
@@ -100,11 +100,45 @@
       '--- Invalid Input ---'
       }}</div>
 
-    <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
+    <!-- <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
       v-model:Value="This[compMain].prop.Value" :Registro="This[compMain].Recno" v-bind:prop="This[compMain].prop"
-      v-bind:style="This[compMain].style" v-bind:position="This[compMain].position"> <!--@click.capture="when(true)"-->
-    </component>
+      v-bind:style="This[compMain].style" v-bind:position="This[compMain].position"> 
+    </component-->
+
+    <div class="component_container" :style="containerStyle">
+      <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
+        :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
+        :position="This[compMain].position">
+      </component>
+    </div>
+
+    <!--Compponentes en bloque-->
+    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
+        <div v-for="(component, key) in block.component" :key="key"
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+          <!--v-bind:Component="ref(Ele)"-->
+          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
+            v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
+            :prop="component.prop" :position="component.position">
+            <!--:style="component.style" :inputStyle="component.inputStyle"
+                                               
+                      @click.capture="component.click()"-->
+          </component>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
 
   </span>
   <!--v-bind:inputStyle="This[compMain].inputStyle"

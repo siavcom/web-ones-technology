@@ -91,9 +91,9 @@
 <script setup lang="ts">
 import { version } from 'vue';
 const VueVersion = ref(version)
-const NuxtVersion = ref(3.14)
+const NuxtVersion = ref(4)
 
-console.log('Vue Version', version);
+//console.log('Vue Version', version, nuxtApp.nuxt.version);
 </script>
 
 

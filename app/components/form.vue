@@ -370,7 +370,7 @@ watch(Valid, async (new_val) => {
     const comp = ThisForm.main[i]
     const Componente = ThisForm[comp]
     if (!Componente.prop.Valid && Componente.prop.Capture && !Componente.prop.ReadOnly && Componente.prop.Visible) {
-      console.warn('============ Componente no validado=========> ', comp, Componente.prop.Valid)
+      console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
       //      ThisForm.bt_modify.prop.Visible = false
       ThisForm.bt_delete.prop.Visible = false
 
@@ -391,7 +391,9 @@ watch(Valid, async (new_val) => {
   // if (ThisForm.prop.Status == 'A')
   //ThisForm.bt_save.prop.Visible = true
 
-  ThisForm.bt_saveClick()
+
+  if (ThisForm.prop.autoUpdate)
+    ThisForm.bt_saveClick()
 
 },
   { deep: true }); //, flush: 'post'

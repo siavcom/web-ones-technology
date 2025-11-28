@@ -22,6 +22,7 @@ export class captureForm extends FORM {
     super();
     this.prop.BaseClass = "CaptureForm"
     this.style.width = "-moz-available";
+    this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
     //this.prop.Messages[100] = 'Grabamos datos'
     //this.prop.Messages[101] = 'Borramos los datos'
     // asignamos los Recno de los componentes de main 

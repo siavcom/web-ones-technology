@@ -338,8 +338,9 @@ export class GRID extends COMPONENT {
     */
 
     if (updateType) {
-      if (await MessageBox('', 4, this.prop.UpdateMessage) != 6)
-        return false;
+      if (this.Form.prop.UpdateMessage.length > 0)
+        if (await MessageBox('', 4, this.prop.UpdateMessage) != 6)
+          return false;
     }
     else {
       if (await MessageBox('', 4, this.prop.Messages[1]) != 6)

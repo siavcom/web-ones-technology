@@ -876,7 +876,7 @@ export async function MessageBox(
       width: 'auto', // Set the width to 30% of the screen
       padding: '1em', // Adjust padding for a smaller feel
       showConfirmButton: false, // Hide the confirm button if not needed
-      timer: 1500, // Auto-close after 1.5 seconds
+      timer: !timer ? 750 : timer, // Auto-close after 1.5 seconds
       timerProgressBar: true, // Show a progress bar for the timer
     });
     return;

@@ -3623,19 +3623,6 @@ export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 export function dropView(alias: string) {
     localAlaSql(
         "USE now ; DROP TABLE IF EXISTS now." + alias + ";"
