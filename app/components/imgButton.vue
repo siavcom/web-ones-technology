@@ -10,9 +10,8 @@
           == 0 ? prop.Caption
           : '' }}
       <label :id="Id + '_label_'" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
-        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible" @click.stop="click">{{ prop.Image.length > 0 ?
-          prop.Caption : ''
-        }}</label>
+        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible" @click.stop="click">
+        {{ prop.Image.length > 0 ? prop.Caption : '' }}</label>
     </button>
     <!--/UButton-->
 
@@ -296,6 +295,7 @@ onMounted(async () => {
 
   };
   //  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
+  Styles.inputStyle.width = '100%' //  divStyle.width
   if (This.prop.Image.length > 0) {
     Styles.inputStyle.boxShadow = ''
     Styles.style.height = Styles.inputStyle.height

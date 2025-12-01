@@ -30,11 +30,13 @@ import { promisify } from 'util';
 //import openssl from 'openssl-nodejs'
 
 const execAsync = promisify(exec);
+let intentos = 0
+
 ////////////////////////////////////////////
 
 //import dat_emp from './Empresas.json'
 export default defineEventHandler(async (event) => {
-
+  intentos++
   //const sqlServer = require("./app/siavcom.controllers.js");
 
   const path = '/sistemas/web-ones/public'
@@ -52,19 +54,6 @@ export default defineEventHandler(async (event) => {
       const req = body.sqlReq
       const result = {}
       //data = sqlServer[sqlCall](req, result)
-      return data
-
-    case 'leeEmpresas':
-
-
-      // para funcionar con bun y node al mismo tiempo se utiliza leer con formato "utf-8" 
-      // original
-      // data=fs.readFileSync(path + '/Empresas.json')
-
-      const res = await fs.readFile(path + '/Empresas.json', "utf-8")
-      data = JSON.parse(res)
-
-      body.data = data
       return data
 
     case 'readFile':
@@ -128,9 +117,9 @@ export default defineEventHandler(async (event) => {
       })
 
       break
-    case 'OpenSSL_old':
+    case 'OpenSSL':
 
-
+      console.log('=====================Intentos====================', intentos)
       // Add OpenSSL logic here
       const tempInput = join(tmpdir(), `input_${Date.now()}.der`);
       const tempOutput = join(tmpdir(), `output_${Date.now()}.pem`);
@@ -198,7 +187,7 @@ export default defineEventHandler(async (event) => {
       }
 
       break
-    case 'enc_pal_old':
+    case 'enc_pal':
       // console.log('========================> enc_pal', body.params)
       const pal_enc: string = body.params.pal_enc
 

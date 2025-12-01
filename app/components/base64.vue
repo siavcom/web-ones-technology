@@ -9,14 +9,17 @@
     <iframe v-if="Value.length > 0 && accept == 'application/pdf'" :id="Id + '_pdf'" :src="Value"
       :width="inputStyle.width" :height="inputStyle.height" :title="This.prop.Caption" :style="inputStyle"></iframe>
 
-    <!--div v-if="!This.prop.Disabled"  
-    @change="readFile($event)"
-    
-    -->
+    <!--   -->
 
-    <button style="display:block;width:120px; height:30px;" :src="prop.Image"
-      :onclick="`document.getElementById('${Id_get_file}').click()`" :disabled="prop.ReadOnly || prop.Disabled">{{
-        prop.Caption }}</button>
+    <button :id="Id" :style="captionStyle" :onclick="`document.getElementById('${Id_get_file}').click()`"
+      :disabled="prop.ReadOnly || prop.Disabled">
+      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image"
+        :disabled="prop.ReadOnly || prop.Disabled" :style="inputStyle" />
+      <label :id="Id + '_label_'" v-if="prop.Image.length > 0" :style="captionStyle" word-wrap:
+        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible"
+        :onclick="`document.getElementById('${Id_get_file}').click()`">
+        {{ prop.Image.length > 0 ? prop.Caption : '' }}</label>
+    </button>
     <input v-if="!prop.Disabled" :id="Id_get_file" ref="fileInput" type="file" @change="readFile($event)"
       :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept" />
     <img v-if="Value.length > 0" :id="Id + '_bt_delete'" class="img" src="/Iconos/svg/delete-color.svg"
@@ -715,6 +718,14 @@ const handler = (event) => {
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
   console.log('1) base64 onMounted Name=', This.prop.Name, 'divStyle=', divStyle)
+
+  inputStyle.width = '100%' //  divStyle.width
+  if (This.prop.Image.length > 0) {
+    inputStyle.boxShadow = ''
+    divStyle.height = inputStyle.height
+    divStyles.width = inputStyle.width
+  }
+
 
   //  if (!This.prop.Visible)
   //    divStyle.height = '0%'
