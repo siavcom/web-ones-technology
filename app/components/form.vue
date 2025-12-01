@@ -361,11 +361,12 @@ watch(
 
 watch(Valid, async (new_val) => {
 
-  if (ThisForm.prop.BaseClass !== 'CaptureForm')
+  console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
+  if (ThisForm.prop.BaseClass.toLowerCase() !== 'captureform')
     return
-  if (!ThisForm.bt_save.prop.Visible)
-    return
-  //console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
+  //if (ThisForm.Recno>0 && !ThisForm.bt_save.prop.Visible)
+  //  return
+
   for (const i in ThisForm.main) {
     const comp = ThisForm.main[i]
     const Componente = ThisForm[comp]
@@ -391,9 +392,11 @@ watch(Valid, async (new_val) => {
   // if (ThisForm.prop.Status == 'A')
   //ThisForm.bt_save.prop.Visible = true
 
-
   if (ThisForm.prop.autoUpdate)
     ThisForm.bt_saveClick()
+  else
+    ThisForm.bt_save.prop.Visible = true
+
 
 },
   { deep: true }); //, flush: 'post'

@@ -129,7 +129,6 @@ export class captureForm extends FORM {
     //console.clear()
     for (const comp of this.Form.main) {
 
-
       if (this.Form[comp].prop.Capture) {
         if (!this.Form[comp].prop.updateKey) {
           // this.prop.Status = 'A'

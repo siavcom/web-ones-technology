@@ -55,18 +55,18 @@ export default defineEventHandler(async (event) => {
       const result = {}
       //data = sqlServer[sqlCall](req, result)
       return data
-
-    case 'readFile':
-      nameFile = body.nameFile.trim()
-      try {
-        const contents = await fs.readFile(path + nameFile);
-        body.data = data
-        return data
-      } catch (error) {
-        body.data = null
-      }
-      return
-
+    /*
+        case 'readFile':
+          nameFile = body.nameFile.trim()
+          try {
+            const contents = await fs.readFile(path + nameFile);
+            body.data = data
+            return data
+          } catch (error) {
+            body.data = null
+          }
+          return
+    */
     case 'imgBase64':
 
       nameFile = body.nameFile.trim()

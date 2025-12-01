@@ -338,7 +338,7 @@ export class COMPONENT {
         && (Comp.prop.BaseClass.toLowerCase() == "edittext" || Comp.prop.BaseClass.toLowerCase() == 'comboBox' || Comp.prop.BaseClass.toLowerCase() == 'base64')
         && Comp.prop.ControlSource.length > 0
         && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
-        console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
+        //console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
 
         if (Comp.prop.Capture) {

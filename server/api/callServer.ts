@@ -128,115 +128,117 @@ export default defineEventHandler(async (event) => {
       })
 
       break
-    case 'OpenSSL_old':
-
-
-      // Add OpenSSL logic here
-      const tempInput = join(tmpdir(), `input_${Date.now()}.der`);
-      const tempOutput = join(tmpdir(), `output_${Date.now()}.pem`);
-
-      const par = body.params;
-      // console.log('Parametros para OpenSSL:', par);
-
-      const findPass = par.indexOf('-passin');
-      const pwd_cer = findPass >= 0 ? par[findPass + 1] : ''
-
-      const findIn = par.indexOf('-in');
-
-      if (findIn >= 0) {
-        const base64 = par[findIn + 1]
-        //const certBuffer = Buffer.from(base64, 'base64');
-        const derBuffer = Buffer.from(base64, 'base64');
-        await Fs.writeFile(tempInput, derBuffer);
-        par[findIn + 1] = tempInput
-      }
-
-      let command = 'openssl '
-      for (let i = 0; i < par.length; i++) {
-        switch (par[i]) {
-          case '-in':
-            command = command + par[i] + ` ${tempInput} `
-            i++
-            break;
-          case '-passin':
-            command = command + par[i] + ` pass:${pwd_cer} `
-            i++
-            break;
-
-          default:
-            command = command + par[i] + ' '
-            break;
-        }
-      }
-      // escribimos el resultado
-      command = command + ` -out ${tempOutput}`;
-
-      //        const command = `openssl pkcs8 -passin ${pwd_cer} -inform DER -in ${tempInput} -out ${tempOutput}`;
-
-      // console.log('======== OpenSSL Comando a ejecutar :', command);
-
-      try {
-        const { stdout, stderr } = await execAsync(command);
-        // Leer resultado
-        const sslResult = await Fs.readFile(tempOutput, 'utf8');
-        //console.log('Resultado:', sslResult, tempInput, tempOutput);
-        body.data = sslResult
-        return {
-          success: true, result: sslResult, stdout: stdout,
-          stderr: stderr
-        }
-      }
-      catch (error) {
-        throw createError({
-          statusCode: 500,
-          statusMessage: `OpenSSL error: ${error.message}`
-        });
-      } finally {
-        // Limpiar archivos temporales
-        try { unlinkSync(tempInput); } catch (e) { }
-        try { unlinkSync(tempOutput); } catch (e) { }
-      }
-
-      break
-    case 'enc_pal_old':
-      // console.log('========================> enc_pal', body.params)
-      const pal_enc: string = body.params.pal_enc
-
-      let pos = 0
-
-      let clave = ''							// encripta password
-      let lon_pal = pal_enc.length
-      pos = 1
-
-      for (let j = 1; j <= lon_pal; j++) {
-
-        let Asc = pal_enc.substring(j, j + 1).charCodeAt(0)  // obtiene el codigo ascii
-
-        if (Asc == 32)
-          clave = clave + String.fromCharCode(Asc + pos)
-        else
-          switch (pos) {
-            case 1:
-              clave = clave + String.fromCharCode(Asc + 1)
-              break;
-            case 2:
-              clave = clave + String.fromCharCode(Asc - 2)
-              break;
-            case 3:
-              clave = clave + String.fromCharCode(Asc + 3)
-              break;
-            case 4:
-              clave = clave + String.fromCharCode(Asc - 4)
-              break;
-            default:
-              break;
-          }
-        pos = pos < 4 ? pos + 1 : 1
-
-      }  //Endfor
-      return clave
-
-      break
+    /* case 'OpenSSL_old':
+ 
+ 
+       // Add OpenSSL logic here
+       const tempInput = join(tmpdir(), `input_${Date.now()}.der`);
+       const tempOutput = join(tmpdir(), `output_${Date.now()}.pem`);
+ 
+       const par = body.params;
+       // console.log('Parametros para OpenSSL:', par);
+ 
+       const findPass = par.indexOf('-passin');
+       const pwd_cer = findPass >= 0 ? par[findPass + 1] : ''
+ 
+       const findIn = par.indexOf('-in');
+ 
+       if (findIn >= 0) {
+         const base64 = par[findIn + 1]
+         //const certBuffer = Buffer.from(base64, 'base64');
+         const derBuffer = Buffer.from(base64, 'base64');
+         await Fs.writeFile(tempInput, derBuffer);
+         par[findIn + 1] = tempInput
+       }
+ 
+       let command = 'openssl '
+       for (let i = 0; i < par.length; i++) {
+         switch (par[i]) {
+           case '-in':
+             command = command + par[i] + ` ${tempInput} `
+             i++
+             break;
+           case '-passin':
+             command = command + par[i] + ` pass:${pwd_cer} `
+             i++
+             break;
+ 
+           default:
+             command = command + par[i] + ' '
+             break;
+         }
+       }
+       // escribimos el resultado
+       command = command + ` -out ${tempOutput}`;
+ 
+       //        const command = `openssl pkcs8 -passin ${pwd_cer} -inform DER -in ${tempInput} -out ${tempOutput}`;
+ 
+       // console.log('======== OpenSSL Comando a ejecutar :', command);
+ 
+       try {
+         const { stdout, stderr } = await execAsync(command);
+         // Leer resultado
+         const sslResult = await Fs.readFile(tempOutput, 'utf8');
+         //console.log('Resultado:', sslResult, tempInput, tempOutput);
+         body.data = sslResult
+         return {
+           success: true, result: sslResult, stdout: stdout,
+           stderr: stderr
+         }
+       }
+       catch (error) {
+         throw createError({
+           statusCode: 500,
+           statusMessage: `OpenSSL error: ${error.message}`
+         });
+       } finally {
+         // Limpiar archivos temporales
+         try { unlinkSync(tempInput); } catch (e) { }
+         try { unlinkSync(tempOutput); } catch (e) { }
+       }
+      
+       break
+     */
+    /*
+       case 'enc_pal_old':
+       // console.log('========================> enc_pal', body.params)
+       const pal_enc: string = body.params.pal_enc
+ 
+       let pos = 0
+ 
+       let clave = ''							// encripta password
+       let lon_pal = pal_enc.length
+       pos = 1
+ 
+       for (let j = 1; j <= lon_pal; j++) {
+ 
+         let Asc = pal_enc.substring(j, j + 1).charCodeAt(0)  // obtiene el codigo ascii
+ 
+         if (Asc == 32)
+           clave = clave + String.fromCharCode(Asc + pos)
+         else
+           switch (pos) {
+             case 1:
+               clave = clave + String.fromCharCode(Asc + 1)
+               break;
+             case 2:
+               clave = clave + String.fromCharCode(Asc - 2)
+               break;
+             case 3:
+               clave = clave + String.fromCharCode(Asc + 3)
+               break;
+             case 4:
+               clave = clave + String.fromCharCode(Asc - 4)
+               break;
+             default:
+               break;
+           }
+         pos = pos < 4 ? pos + 1 : 1
+ 
+       }  //Endfor
+       return clave
+ 
+       break*/
 
 
   }
