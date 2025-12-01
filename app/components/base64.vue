@@ -723,7 +723,7 @@ onMounted(async () => {
   if (This.prop.Image.length > 0) {
     inputStyle.boxShadow = ''
     divStyle.height = inputStyle.height
-    divStyles.width = inputStyle.width
+    divStyle.width = inputStyle.width
   }
 
 

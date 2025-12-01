@@ -770,7 +770,7 @@ export const tableUpdate = async (
     const dat_act = await localAlaSql(
         `SELECT * FROM now.${alias} ${where}`
     );
-
+    console.log('Datos a actualizar', dat_act)
     //console.log('Db DataBase definicion '+tab_man,This.value.View[tab_man].val_def)
     const val_def = This.value.View[tab_man].val_def; // estructura de campos
 
@@ -790,9 +790,7 @@ export const tableUpdate = async (
         const m = {}; // valiables en memoria
         dat_vis.dat_act.key_pri = dat_act[row].key_pri;
 
-        // si no es tabla de actualizacion delo diccionario de datos
-
-
+        // si no es tabla de actualizacion del diccionario de datos
         if (tab_man != 'lla1_vis' && tab_man != 'lla1_dat' && tab_man != 'lla1_ind' && tab_man != 'lla1_tab')
             dat_vis.dat_act.timestamp = dat_act[row].timestamp;
 
@@ -872,6 +870,9 @@ export const tableUpdate = async (
             // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
             //    console.log('tab_man', tab_man, 'Campo=', campo, This.value.View[tab_man].est_tabla[campo])
 
+            //       console.log("UPDATE campo=", campo, ' valor=', dat_act[row][campo]);
+
+
             const nom_campo = campo.toLowerCase();
             if (
                 This.value.View[tab_man].est_tabla[campo] &&
@@ -889,8 +890,7 @@ export const tableUpdate = async (
                     ))
             ) {
 
-                const tipo =
-                    This.value.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
+                const tipo = This.value.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
 
                 // console.log("UPDATE fecha campo=", campo, ' tipo=', tipo, ' valor=', dat_act[row][campo]);
 
