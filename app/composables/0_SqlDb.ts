@@ -178,7 +178,7 @@ export const releaseUse = async (alias?: string) => {
 
     if (This.value.View[alias]) {
         // localAlaSql('USE last ; ')
-        await localAlaSql("delete from  last." + alias);
+        await localAlaSql("delete from last." + alias);
         await localAlaSql("delete from now." + alias);
 
         delete This.value.View[alias]
@@ -257,7 +257,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 
         try {
 
-            await localAlaSql("delete from  last." + alias);
+            await localAlaSql("delete from last." + alias);
             await localAlaSql("delete from now." + alias);
             // localAlaSql('USE last ; ')
 
@@ -1490,16 +1490,16 @@ export const deleteLocalSql = async (query?: string, alias?: string) => {
     const recno = This.value.View[alias].recno
 
     if (!query)
-        query = 'DELETE FROM NOw.' + alias + ' WHERE recno=' + recno
+        query = 'DELETE FROM now.' + alias + ' WHERE recno=' + recno
     else {
         if (query.trim() == 'ALL')
-            query = 'DELETE FROM NOw.' + alias
+            query = 'DELETE FROM now.' + alias
         if (query.indexOf('WHILE') >= 0)
-            query = 'DELETE FROM NOw.' + alias + ' WHERE recno>=' + recno + ' AND ' + query.replace('WHILE', '');
+            query = 'DELETE FROM now.' + alias + ' WHERE recno>=' + recno + ' AND ' + query.replace('WHILE', '');
         if (query.indexOf('FOR') >= 0)
-            query = 'DELETE FROM NOw.' + alias + query.replace('WHILE', 'WHERE');
+            query = 'DELETE FROM now.' + alias + query.replace('WHILE', 'WHERE');
         if (query.indexOf('NEXT') >= 0)
-            query = 'DELETE FROM NOw.' + alias + ' WHERE recno>=' + recno + ' AND recno<recno+' + query.replace('NEXT', '');
+            query = 'DELETE FROM now.' + alias + ' WHERE recno>=' + recno + ' AND recno<recno+' + query.replace('NEXT', '');
 
     }
 
@@ -2622,6 +2622,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
 
     do {
         try {
+            console.log('AXIOS ', dat_lla)
             const response = await axios.post(This.value.session.url + "sql", dat_lla, {
                 signal, //: AbortSignal.timeout(300000),  // milisegundos 5 minutos
                 //    headers: { 'Content-type': 'application/json' },
@@ -3600,26 +3601,19 @@ export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     const dat_timbrado = {
-        id_con: This.value.session.id_con,
-        tip_llamada: "TIMBRACFDI",
+        // id_con: This.value.session.id_con,
+        tip_llamada: "GENCFDI",
         tdo_tdo: tdo_tdo,
         ndo_doc: ndo_doc
     };
-    //    console.log("Db JasperReport Llamada", dat_rep);
-    // display contruyendo reporte
 
     try {
-        const response = await axios.post(This.value.session.url + "sql", dat_timbrado, {
-            responseType: "arraybuffer",
-        });
-        //      console.log;
-        return response.data;
+        const response: any = await axiosCall(dat_timbrado);
+        return true;
     } catch (error) {
-        errorAlert("Report Server Error  :" + error.response.statusText);
-        //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
-        return null;
+        errorAlert("Timbra CFDI  :" + error.response.statusText);
+        return false;
     }
-
 }
 
 

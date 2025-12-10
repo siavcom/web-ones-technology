@@ -104,7 +104,7 @@ export class captureForm extends FORM {
       this.Form[button].prop.Visible = valor
       // this.eventos.push(`ThisForm.${button}.prop.Visible=${valor};` + `NextTick('ThisForm.${button}.prop.Visible=${valor}')`)
 
-      console.log('shwoBt ', this[button].prop.Visible)
+      // console.log('shwoBt ', this[button].prop.Visible)
 
       //await nextTick()
 

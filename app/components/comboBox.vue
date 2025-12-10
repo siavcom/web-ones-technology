@@ -59,7 +59,7 @@
     <div :id="Id + '_selectOne'" v-else class="comboBox text" ref="RefCombo" :style='comboStyle'>
       <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled" :readonly="prop.ReadOnly"
         :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false; when()" @focusout="emitValue()" />
+        @focus.prevent="toggle = false; when()" @focusout="focusIn = false; emitValue()" />
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
@@ -835,6 +835,7 @@ const when = async (click?: boolean) => {
   if (focusIn)
     return
 
+
   if (This.Parent.BaseClass == "grid") {
     const grid = This.Parent
 
@@ -847,6 +848,9 @@ const when = async (click?: boolean) => {
       }
     }
   }
+
+  if (This.beforeWhen)
+    await This.beforeWhen()
 
   focusIn = true
 

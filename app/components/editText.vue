@@ -9,12 +9,12 @@
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
-      @focusout="lostFocus" @click.capture="onClick" @focus="onFocus" @keypress="keyPress($event)"
-      v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)"
-      v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
-      @input.self="onInput" @keydown.delete="keyPress($event)">
+      @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
+      v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
+      v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)" @input.self="onInput"
+      @keydown.delete="keyPress($event)">
 
-    <!-- @input.self="onInput"
+    <!-- @input.self="onInput"   @click.capture="onClick"
         
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
@@ -1192,8 +1192,6 @@ const onFocus = async () => {
 
   // const click = Click == true ? true : false
   // Si esta en un grid checa sus estatus de todas las columnas
-  if (This.beforeWhen)
-    await This.beforeWhen()
 
   if (This.Parent && This.Parent.BaseClass == "grid") {
     const grid = This.Parent
@@ -1207,6 +1205,11 @@ const onFocus = async () => {
     }
     This.Parent.prop.Status = 'A'
   }
+
+  if (This.beforeWhen)
+    await This.beforeWhen()
+
+
 
   if (!This.Help)
     This.Help = false
@@ -1832,8 +1835,8 @@ const ChecaEventos = async () => {
   if (Evento == 'when') {
     Evento = ''
     This.prop.ReadOnly = !await This.when()
-    if (!This.prop.ReadOnly)
-      This.click()
+    // if (!This.prop.ReadOnly)
+    //   This.click()
   }
 
   if (Evento == 'click') {

@@ -42,8 +42,10 @@ export class CAPTURECOMPONENT extends COMPONENT {
   override async when() {
     this.prop.Status = 'A'
 
-    if (this.prop.updateKey)
-      this.Recno = 0
+    if (this.prop.updateKey) {
+      this.Form.Recno = 0
+
+    }
     return true
   }
 
