@@ -65,18 +65,20 @@ export class bt_obtener extends IMGBUTTON {
     this.Form.report.displayBrowse.table.isLoading = true;
 
     const query = await this.Form.gen_query();
+    Processing()
     const result = await SQLExec(query, "sqlresult");
 
     this.Form.report.displayBrowse.table.isLoading = false
 
     if (!result || result.length == 0) {
-      MessageBox("No data to show");
+      closeProcessing("No data to show")
       this.Form.block[bloque].prop.Visible = false  // resultado
       this.prop.Visible = true
       await this.Form.report.bt_close.click();
 
       return;
     }
+    closeProcessing()
 
     // console.log("bt_obtener", "Form.block=", this.Form.block);
     // const i = this.Form.block.length - 1

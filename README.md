@@ -729,14 +729,12 @@ this class is used to manipulate a SQL database it's have several methods:
   Select default values in a local SQL table
   Return: Data of current reccord
 
-
 - skip(`<`rowNumbers`>`).
   Skip a reccord number of a local SQL table
 
 - scatter(`<`fieldArray?`>`,`<`alias?`>`).
   Scatter values in a object values of a local SQL table 
   Return: data current row 
-
 
 - scatterBlank(`<`fieldArray`>`,`<`alias?`>`).
   Scatter values with blank values of a local SQL table
@@ -779,7 +777,6 @@ this class is used to manipulate a SQL database it's have several methods:
  `<`resultType`>` type: string.
 
  `<`rowNumbers`>` type: number. Row numbers to skip.
-
 
  `<`SqlUpdate`>` type: boolean.
     Values : true. Delete SQLServer.
@@ -1001,8 +998,8 @@ In this framework use the file directory structure of NUXT . All pages are in pa
 > [!NOTE]
 > This framework is based on a SQL database.
 > If you need suport about installation and use, let me know by mail or Microsoft Teams  siavcom@hotmail.com. 
-> If you have a question, let me know by mail or Skype siavcom@hotmail.com.
-> If you want a new feature or have a sugestion, let me know by mail or SMirosoft Teams siavcom@hotmail.com.
+> If you have a question, let me know by mail or Microsoft Teams siavcom@hotmail.com.
+> If you want a new feature or have a sugestion, let me know by mail or Mirosoft Teams siavcom@hotmail.com.
 > To use this Framework, you have to restore an initial SQL backup an back end server (It is in  https://github.com/siavcom/VFP-NODE)
 > If you are a VFP programmer, clipper, dbase III or IV, this is the right option for programming on the web.
 > I use Linux (Ubuntu 22.04, Ubuntu 24.04) and Windows 10 to make this project.
@@ -1059,8 +1056,6 @@ console.log(m) =
   }
 
   ## Other
-
-
 
 
   Login to the framework

@@ -713,6 +713,8 @@ export const tableUpdate = async (
         return false;
     }
 
+
+
     var recno = This.value.View[alias].recno; // obtenemos el recno a actualizar
     const recCount = This.value.View[alias].recCount; // obtenemos el recCount de la vista
 
@@ -745,6 +747,8 @@ export const tableUpdate = async (
         where = `WHERE recno=${recno}`;
         where_del = ` WHERE Viejo.recno=${recno} and Viejo.key_pri>0`;
     }
+
+    Processing()  // Mensaje de procesamiento
 
     // lee los datos originales haciendo un LEFT OUTER a los datos nuevos
     const data = await localAlaSql(` 
@@ -826,6 +830,8 @@ export const tableUpdate = async (
                     recno,
                     await localAlaSql(` SELECT * FROM last.${alias}; 'USE now;'`)
                 );
+                closeProcessing('Error')
+
                 alasql('USE now;')
                 return false;
             }
@@ -949,6 +955,7 @@ export const tableUpdate = async (
                                 "Valor=",
                                 dat_act[row][campo]
                             );
+                            closeProcessing(error)
                             return false;
                         }
                     //console.log('Db tableUpdate campo=', campo, 'm=', m[campo], 'dat_act', dat_act[row][campo], 'typeof=', typeof dat_act[row][campo])
@@ -985,7 +992,7 @@ export const tableUpdate = async (
                 eval(`dat_vis.where=${where}`);
             } catch (error) {
                 console.error(error);
-
+                closeProcessing(error);
                 return false;
             }
             //console.log("Db tableUpdate dat_vis.where", dat_vis.where);
@@ -1099,6 +1106,7 @@ export const tableUpdate = async (
     */
     // Regenera recnoVal en caso de insercion de datos y solo sea un registro
     alasql('USE now;')
+    closeProcessing('Success')
     return sw_val;
 }; //
 
@@ -3608,14 +3616,16 @@ export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
     };
 
     try {
+        Processing('Timbrando CFDI')
         const response: any = await axiosCall(dat_timbrado);
+        closeProcessing('Timbrado exitoso')
         return true;
     } catch (error) {
         errorAlert("Timbra CFDI  :" + error.response.statusText);
+        closeProcessing('Error al timbrar CFDI')
         return false;
     }
 }
-
 
 export function dropView(alias: string) {
     localAlaSql(

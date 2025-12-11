@@ -851,6 +851,37 @@ export const iif = (condicion: boolean, verdadero: any, falso: any): any => {
 /////////////////////////////////////////////
 // 
 
+/**
+ * Muestra un mensaje de processing
+ * @param texto - Texto a mostrar en la alerta.
+*/
+
+export function Processing(texto?: string) {
+  if (!texto) texto = 'Processing...'
+
+  Swal.fire({
+    title: texto,
+    text: 'Please wait, this may take a moment.',
+    allowOutsideClick: false, // Prevents the user from closing it
+    allowEscapeKey: false,
+    didOpen: () => {
+      Swal.showLoading(); // Shows the built-in loading indicator
+    }
+  });
+
+}
+
+export function closeProcessing(texto?: string) {
+  if (!texto) texto = 'Success'
+  Swal.close(); // Close the processing alert first
+  Swal.fire({
+    icon: 'success',
+    title: texto,
+    text: 'The operation completed successfully.',
+    timer: 750
+  });
+}
+
 
 /**
  * Muestra un mensaje de alerta con una serie de botones y iconos segun el tipo y los parametros pasados.
