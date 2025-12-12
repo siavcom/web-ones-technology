@@ -76,10 +76,9 @@ export class bt_close extends IMGBUTTON {
     if (!this.Form.bt_pdf.prop.Disabled)
       this.Form.bt_pdf.prop.Visible = true
 
-    this.Form.tip_con.interactiveChange()
+    await this.Form.tip_con.interactiveChange()
 
-    if (this.Form.num_pol && this.Form.num_pol >= 0) {
-      this.Form.num_pol++
+    if (this.Form.polImpresion) {
       this.Form.polImpresion()
     }
 

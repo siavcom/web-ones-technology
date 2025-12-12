@@ -143,8 +143,6 @@ const Styles =
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
 
-
-
 const Value = ref(props.prop.Value)
 
 const Text = ref(null)
@@ -156,6 +154,8 @@ const checkValue = ref(false)
 const Type = ref(props.prop.Type.toLowerCase())
 
 let Render = false
+
+let sw_ReadCampo = false
 
 /*
 const captionStyle = reactive(This.captionStyle)
@@ -193,7 +193,12 @@ const emitValue = async () => {
 
   Status.value = 'A'
   emit("update") // emite un update en el componente padre
-  //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
+  console.log('textLabel emit Value ====>', props.prop.Value, props.prop.Status)
+  if (This.onChangeValue) {
+    console.log('textLabel emit onChangeValue ', This.prop.Name, This.prop.Value)
+    await This.onChangeValue(ref(Styles))
+  }
+
   return true;
 };
 
@@ -201,14 +206,13 @@ const emitValue = async () => {
 // Asigna Resultado
 /////////////////////////////////////////////////////
 const asignaResultado = async (valor?: string) => {
-  //console.log('inputStyle asignaResultado ',props.Name,valor)
+  console.log('textLabel asignaResultado ', props.prop.Name, valor)
   // if (props.prop.Status == 'I') return
   // if (props.prop.ColumnCount == 0) return;
 
   //onsole.log('textLabel Name=', props.prop.Name, 'asignaResultado props.prop.RowSource=', props.prop.RowSource, typeof props.prop.RowSource)
 
   // RowSource puede ser array
-
 
   if (Text.value === undefined || Text.value === null) {
     switch (props.prop.Type.toLowerCase()) {
@@ -258,6 +262,9 @@ const asignaResultado = async (valor?: string) => {
   }
 
   valor = Text.value
+
+
+
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
   // recorre todo los renglones en columnas
@@ -525,16 +532,18 @@ const readValue = async (on_Mounted?: boolean) => {
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
     // console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
     const data = await readCampo(props.prop.ControlSource, props.Registro)
-
+    sw_ReadCampo = true
     for (const campo in data) {
-      if (campo != 'key_pri')
+      if (campo != 'key_pri') {
         Text.value = data[campo] != null ? data[campo] : ''
+        This.prop.Value = Text.value
+      }
       // console.log('TextLabel Name=', props.prop.Name, 'Text=', Text.value)
     }
   }
 
   asignaResultado()
-
+  sw_ReadCampo = false
   //console.log('2) readValue This.prop.Name=', This.prop.Name, 'Text.value=', Text.value)
 
   // This.prop.Value = Text.value
@@ -684,10 +693,16 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
 
-    if (new_val == Value.value)
+
+
+    if (sw_ReadCampo || new_val == Value.value)
       return
 
-    //if ((This.Parent.Recno > 0 && This.Parent.Recno != props.Registro && This.BaseClass == 'Column') || This.Parent.Recno != props.Registro)
+
+    console.log('1) textLabel watch value Name=', This.prop.Name, 'Value=', new_val,
+      'Text.value=', Text.value,
+      'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno)
+
 
 
     //if (This.BaseClass == 'Column' && (This.Parent.Recno == 0 || (This.Parent.Recno != props.Registro)))
@@ -700,8 +715,6 @@ watch(
     //    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0)
     //   return
 
-    console.log('1) textLabel watch value Name=', This.prop.Name, 'Value=', new_val,
-      'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno)
 
     Text.value = new_val
     if (props.Registro > 0 && This.prop.ControlSource.length > 2)

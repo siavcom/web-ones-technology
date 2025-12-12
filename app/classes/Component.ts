@@ -335,7 +335,7 @@ export class COMPONENT {
       // Solo elementos de captura de datos
       if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer'
         && !Comp.prop.updateKey && Comp.prop.ControlSource
-        && (Comp.prop.BaseClass.toLowerCase() == "edittext" || Comp.prop.BaseClass.toLowerCase() == 'comboBox' || Comp.prop.BaseClass.toLowerCase() == 'base64')
+        && (Comp.prop.BaseClass.toLowerCase() == "edittext" || Comp.prop.BaseClass.toLowerCase() == 'comboBox' || Comp.prop.BaseClass.toLowerCase() == 'base64' || Comp.prop.BaseClass.toLowerCase() == 'textlabel')
         && Comp.prop.ControlSource.length > 0
         && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
         //console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
