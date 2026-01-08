@@ -1,0 +1,30 @@
+//////////////////////////////////////////////
+// This class COMPONENT was generated automatically by web-ones-technology
+// BaseClass : COLUMN
+// BaseClass : Component
+// Description : Precio total  cotizado por el proveedor
+// Author : El Fer Blocks
+// Creation : 2024-04-02
+// Update Date  : 
+/////////////////////////////////////////////
+///////////////////////////////////////
+// base class
+///////////////////////////////////////
+
+import { COMPONENT } from '@/classes/Component'
+
+export class ptc_cpy extends COMPONENT {
+
+  constructor() {
+    super()
+    this.prop.Caption = 'Precio de compras'
+    this.prop.Type = 'number'
+    this.prop.BaseClass = 'editText'
+    this.prop.ControlSource = 'vi_cap_comecpy.ptc_cpy'
+    this.prop.ToolTipText = 'Precio cotizado por el proveedor sin impuestos'
+    this.prop.Decimals = 5
+    this.inputStyle.width = '92px'
+    this.prop.Disabled = true
+
+  }
+}

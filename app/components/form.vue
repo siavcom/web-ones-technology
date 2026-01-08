@@ -527,9 +527,12 @@ onBeforeMount(async () => {
 
 })
 
-onUnmounted(() => {
-  ThisForm.unload(); // <div>
+
+onUnmounted(async () => {
+
+  if (ThisForm && ThisForm.onUnmounted) await ThisForm.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
 })
+
 
 
 const middleClick = () => {

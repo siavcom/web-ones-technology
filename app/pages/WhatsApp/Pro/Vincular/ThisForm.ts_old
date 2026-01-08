@@ -1,0 +1,103 @@
+//////////////////////////////////////////////
+// This Form was generated automatically by web-ones-technology
+// BaseClass : captureForm
+// Class : manComebpe
+// Description : Capture Form
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : 2024-01-03
+// Update Date  :
+/////////////////////////////////////////////
+
+/////////////////////////////////////////
+// Component import
+//////////////////////////////////////
+
+import { Socket, io } from "socket.io-client";
+import { DISPLAYQR } from "./displayQr";
+import { PHONE } from "./phone";
+import { MESSAGESEND } from "./menssageSend";
+
+///////////////////////////////////////
+// Base class
+///////////////////////////////////////
+
+/// import { FORM } from "@/classes/Form";
+
+export class ThisForm extends FORM {
+  socket;
+  whatsAppQR = ref("           ");
+  sw_QR: boolean = true;
+  ////////////////////////////////////
+  // component imported
+  ////////////////////////////////////
+
+  public displayQr = new DISPLAYQR();
+  public phone = new PHONE()
+  public messageSend = new MESSAGESEND()
+
+  constructor() {
+    super(); // inicializa la clase base
+
+    this.Development = false;
+    this.Name = "Vincular";
+    this.prop.Caption = "Vincular WhatsApp";
+
+    const runtimeConfig = useRuntimeConfig()
+    const whatsAppServer = runtimeConfig.public.whatsAppServer[0] // lee del archivo de configuracion
+    this.socket = io(whatsAppServer, { forceNew: true });
+  
+    this.socket.on("emiteQR", async (res: {}) => {
+      if (this.sw_QR) {  //?  para esperar en caso de que se haya cambiado el QR
+        this.sw_QR = false
+        this.whatsAppQR.value = res.QrCode
+
+      }
+      this.sw_QR = true
+      // this.displayQr.prop.Value = res.QrCode
+    })
+  
+    this.socket.on("message", (res: {}) => {
+      // 0=mensaje sin titulo
+      // 1=Informacion solamente
+      // 2=? pregunta Cancel Abort Retry
+      // 4=? pregunta No Ok
+      MessageBox(res.body, 1, "Mensaje de WhatsApp de " + res.from);
+    })
+
+    this.socket.on("error", (error: {}) => {
+      MessageBox(error, 16, "SQL Error ");
+    })
+
+    this.socket.on("ready", (res: {}) => {
+      console.log('Se contecta al whatsApp server', res)
+
+      if (res.whatsAppReady) {
+        MessageBox('Se vinculo el telefono al whatsApp');
+        this.displayQr.prop.Visible = false
+        this.phone.prop.Disabled = false
+        this.messageSend.prop.Disabled = false
+        console.log('Se vinculo el telefono al whatsApp', this.Form.displayQr.prop.Visible)
+        console.log('Se vinculo el telefono al whatsApp', this.Form.phone.prop.Disabled)
+        console.log('Se vinculo el telefono al whatsApp', this.Form.messageSend.prop.Disabled)
+
+      }
+      return
+    })
+    this.displayQr.prop.Value = ref(this.whatsAppQR) // pasamos por referencia el valor
+
+  }
+
+  async init() {
+    //  const response = await this.Form.socket.emitWithAck("leeQR");
+    //    this.displayQr.prop.Value = +(response.QR)
+    console.log('Init WhatsApp ')
+    this.socket.emit('isReady')
+  }
+
+
+  public unload(): void {
+    this.socket.disconnect(); //socket.off();
+    //socket.destroy();
+    //socket.cache.clear();
+  }
+} // End ThisForm

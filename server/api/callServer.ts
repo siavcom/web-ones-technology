@@ -1,9 +1,16 @@
+/////////////////////////////////////////////
+// Description : Servidor backEnd 
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : 2025-02-12
+// Update Date  :  2025-12-27
+/////////////////////////////////////////////
+
 /*
 ************** Nitro Storage *******************     
 https://click.convertkit-mail.com/lmumr5503gtmhn6n54xt6h83x5400bghn382/25h2h9u337vlm7u8/aHR0cHM6Ly9taWNoYWVsbnRoaWVzc2VuLmNvbS93ZWVrbHktMjM4LW9jdG9iZXItMDg=
 
 Nitro, the server that Nuxt uses, comes with a very powerful key-value storage system:
-const storage = useStorage();
+const storage = useStorage(<storageName>?); // <storageName> is optional
 
 // Save a value
 await storage.setItem('some:key', value);
@@ -11,9 +18,15 @@ await storage.setItem('some:key', value);
 // Retrieve a value
 const item = await storage.getItem('some:key');
 ***********************************************
-
-
 */
+
+
+//const storage = useStorage();
+// Retrieve a value
+//const item = await storage.getItem('some:key');
+/////////////  librerias sql server ///////////////
+import MSSQL from "tedious"  //MSSQL
+import postgres from 'postgres'
 
 //import fs from '@/node_modules/file-system/file-system.js';
 
@@ -25,47 +38,141 @@ import { unlinkSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { promisify } from 'util';
-
-
-//import openssl from 'openssl-nodejs'
+import { log } from "console";
 
 const execAsync = promisify(exec);
 ////////////////////////////////////////////
 
-//import dat_emp from './Empresas.json'
+const config = useRuntimeConfig()
+const path = config.webOnesServer
+const sqlNitro = config.sqlNitro
+
+let empresasJson = {}
+
 export default defineEventHandler(async (event) => {
+  // const sqlServer = require("./app/controllers/siavcom.controllers.js");
 
   //const sqlServer = require("./app/siavcom.controllers.js");
 
-  const path = '/sistemas/web-ones/public'
+
+
+  //const path = '/sistemas/web-ones/public'
   const body = await readBody(event)
 
+  console.log('>>>>>>>>>>>>>>>>callServer body=', body)
   const call = body.call  // obtiene el tipo de llamada
 
   let data: any
   let nameFile = ''
   const Fs = fs
+  let SQLServer = null
+  let dialect = ''
+
+  let result: any
+
 
   switch (call) {
-    case 'sql':
-      const sqlCall = body.sqlCall
-      const req = body.sqlReq
-      const result = {}
-      //data = sqlServer[sqlCall](req, result)
-      return data
-
     case 'leeEmpresas':
-
-
       // para funcionar con bun y node al mismo tiempo se utiliza leer con formato "utf-8" 
       // original
       // data=fs.readFileSync(path + '/Empresas.json')
 
       const res = await fs.readFile(path + '/Empresas.json', "utf-8")
-      data = JSON.parse(res)
+      empresasJson = JSON.parse(res)
 
-      body.data = data
-      return data
+      body.data = empresasJson
+      return empresasJson
+
+    case 'iniEmpresa':
+      //  const config = useRuntimeConfig()
+
+      console.log('>>>>>>>>>>>>>>>>callServer sqlNitro=', sqlNitro)
+      if (sqlNitro) {
+        const empresa = body.empresa
+        const password = body.password
+        const pos = empresa.indexOf('@')
+        let nombreEmpresa = ''
+
+        if (pos >= 0)
+          nombreEmpresa = empresa.substring(0, pos)
+        else
+          nombreEmpresa = empresa
+
+        result = {
+          result: 'Ok',
+          logoEmp: '',
+        }
+
+        try {  // Lee el archivo de configuración ddewl SQLServer de la empresa
+          let leeEmp = await fs.readFile(path + '/' + nombreEmpresa + '/config.json', "utf-8")
+          // console.log('1)  >>>>>>>>>>iniEmp leeEmp=', leeEmp)
+          const sqlConfig = JSON.parse(leeEmp)
+          const mailServer = sqlConfig.mailServer ? sqlConfig.mailServer : '{}'
+          // Save a value
+          //   await storage.setItem(mailServer:mailServer);
+
+          await useStorage().setItem('mail:Server', mailServer)
+          //        console.log('2)  >>>>>>>>>>sqlConfig=', await useStorage().getItem('mail:Server'))
+
+          //const sqlConfig = JSON.parse(leeEmp)
+
+          dialect = sqlConfig.dialect
+          SQLServer = null
+          if (dialect == 'mssql') {
+            sqlConfig.password = password;
+            SQLServer = MSSQL
+            await SQLServer.connect(sqlConfig);
+            //    const result = await MSSQL.query`select TOP 10 * from MyTable`;
+            //    console.dir(result);
+          }
+          if (dialect == 'posgres') {
+            sqlConfig.password = password;
+            SQLServer = await postgres(sqlConfig)
+          }
+
+          console.log('Connected to database:', nombreEmpresa, 'with dialect:', dialect);
+
+          if (empresasJson[empresa] && empresasJson[empresa].logoEmp && empresasJson[empresa].logoEmp.length > 0) {
+            const logoEmp = empresasJson[empresa].logoEmp
+
+            // console.log('1) =========================> Comienza leeArchivo logoEmp=', path + logoEmp)
+            const tipArchivo = logoEmp.trim().slice(-3)
+            try {
+              //const contents = await readFile(path + nameFile, { encoding: 'base64' });
+              const contents = await fs.readFile(path + logoEmp, { encoding: 'base64' });
+              data = `data:image/${tipArchivo};base64,` + contents
+
+              // body.data = data
+              // console.log('2) =========================> Termino leeArchivo body=', body)
+              result.logoEmp = data;
+            } catch (err) {
+              result.error = 'Error reading logo file: ' + err.message;
+            }
+          }
+        } catch (error) {
+          console.log(error)
+          const res = { error: true, message: 'Emmpresa no valida' }
+          return res
+        }
+        return result;
+      }
+      break
+
+    case 'sqlExec':
+      const sqlQuery = body.sqlQuery;
+      // Execute the SQL query using the appropriate database client
+      result = []
+      if (dialect === 'mssql') {
+        result = await SQLServer.query + sqlQuery
+        // SQL Server execution logic here
+        // Example: const result = await SQLServer.query(sqlQuery);
+      } else if (dialect === 'posgres') {
+        result = await SQLServer + sqlQuery;
+        // PostgreSQL execution logic here
+        // Example: const result = await SQLServer(sqlQuery);
+      }
+
+      return result;
 
     case 'readFile':
       nameFile = body.nameFile.trim()
@@ -75,178 +182,67 @@ export default defineEventHandler(async (event) => {
         return data
       } catch (error) {
         body.data = null
+        return error
       }
       return
 
-    case 'imgBase64':
-
-      nameFile = body.nameFile.trim()
-      //console.log('1) =========================> Comienza leeArchivo data=', path + nameFile)
-      const tipArchivo = nameFile.trim().slice(-3)
-
-      try {
-        //const contents = await readFile(path + nameFile, { encoding: 'base64' });
-        const contents = await fs.readFile(path + nameFile, { encoding: 'base64' });
-        data = `data:image/${tipArchivo};base64,` + contents
-        body.data = data
-        // console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
-        return data
-      } catch (error) {
-        body.data = null
-      }
-      return //data
-    case 'print':
-      // Fs.writeFile('/tmp/test.txt', body.data)
-      const datos = body.data
-      //let buffDatos = datos
-      // generamos un archivo temporal a imprimir
-      let buffDatos = ''
-      for (let i = 0; datos.length > i; i++) {
-        for (const dato in datos[i]) {
-          const caracter = String.fromCharCode(datos[i][dato])
-          buffDatos = buffDatos + caracter
-        }
-
-      }
-      //      const file = '/tmp/ticket' + ((Math.random() * 100).toFixed(0)).toString() + '.txt'
-      const file = '/tmp/ticketBascula.txt'
-
-      await Fs.writeFile(file, buffDatos, function (err) {
-        if (err) {
-          return console.log(err);
-        }
-        exec('lp -d Epson-TM-Impact-Receipt ' + file, function (err) {
-          if (err) {
-            return console.log(err);
-          } else {
-            exec('rm ' + file)
-            return
-
-          }
-        }
-        )
-      })
-
-      break
-    /* case 'OpenSSL_old':
+    /*
+       case 'imgBase64':
  
- 
-       // Add OpenSSL logic here
-       const tempInput = join(tmpdir(), `input_${Date.now()}.der`);
-       const tempOutput = join(tmpdir(), `output_${Date.now()}.pem`);
- 
-       const par = body.params;
-       // console.log('Parametros para OpenSSL:', par);
- 
-       const findPass = par.indexOf('-passin');
-       const pwd_cer = findPass >= 0 ? par[findPass + 1] : ''
- 
-       const findIn = par.indexOf('-in');
- 
-       if (findIn >= 0) {
-         const base64 = par[findIn + 1]
-         //const certBuffer = Buffer.from(base64, 'base64');
-         const derBuffer = Buffer.from(base64, 'base64');
-         await Fs.writeFile(tempInput, derBuffer);
-         par[findIn + 1] = tempInput
-       }
- 
-       let command = 'openssl '
-       for (let i = 0; i < par.length; i++) {
-         switch (par[i]) {
-           case '-in':
-             command = command + par[i] + ` ${tempInput} `
-             i++
-             break;
-           case '-passin':
-             command = command + par[i] + ` pass:${pwd_cer} `
-             i++
-             break;
- 
-           default:
-             command = command + par[i] + ' '
-             break;
-         }
-       }
-       // escribimos el resultado
-       command = command + ` -out ${tempOutput}`;
- 
-       //        const command = `openssl pkcs8 -passin ${pwd_cer} -inform DER -in ${tempInput} -out ${tempOutput}`;
- 
-       // console.log('======== OpenSSL Comando a ejecutar :', command);
+       nameFile = body.nameFile.trim()
+       //console.log('1) =========================> Comienza leeArchivo data=', path + nameFile)
+       const tipArchivo = nameFile.trim().slice(-3)
  
        try {
-         const { stdout, stderr } = await execAsync(command);
-         // Leer resultado
-         const sslResult = await Fs.readFile(tempOutput, 'utf8');
-         //console.log('Resultado:', sslResult, tempInput, tempOutput);
-         body.data = sslResult
-         return {
-           success: true, result: sslResult, stdout: stdout,
-           stderr: stderr
+         //const contents = await readFile(path + nameFile, { encoding: 'base64' });
+         const contents = await fs.readFile(path + nameFile, { encoding: 'base64' });
+         data = `data:image/${tipArchivo};base64,` + contents
+         body.data = data
+         // console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
+         return data
+       } catch (error) {
+         body.data = null
+       }
+       return //data
+    
+       case 'print':
+       // Fs.writeFile('/tmp/test.txt', body.data)
+       const datos = body.data
+       //let buffDatos = datos
+       // generamos un archivo temporal a imprimir
+       let buffDatos = ''
+       for (let i = 0; datos.length > i; i++) {
+         for (const dato in datos[i]) {
+           const caracter = String.fromCharCode(datos[i][dato])
+           buffDatos = buffDatos + caracter
          }
+ 
        }
-       catch (error) {
-         throw createError({
-           statusCode: 500,
-           statusMessage: `OpenSSL error: ${error.message}`
-         });
-       } finally {
-         // Limpiar archivos temporales
-         try { unlinkSync(tempInput); } catch (e) { }
-         try { unlinkSync(tempOutput); } catch (e) { }
-       }
-      
-       break
-     */
-    /*
-       case 'enc_pal_old':
-       // console.log('========================> enc_pal', body.params)
-       const pal_enc: string = body.params.pal_enc
+       //      const file = '/tmp/ticket' + ((Math.random() * 100).toFixed(0)).toString() + '.txt'
+       const file = '/tmp/ticketBascula.txt'
  
-       let pos = 0
+       await Fs.writeFile(file, buffDatos, function (err) {
+         if (err) {
+           return console.log(err);
+         }
+         exec('lp -d Epson-TM-Impact-Receipt ' + file, function (err) {
+           if (err) {
+             return console.log(err);
+           } else {
+             exec('rm ' + file)
+             return
  
-       let clave = ''							// encripta password
-       let lon_pal = pal_enc.length
-       pos = 1
- 
-       for (let j = 1; j <= lon_pal; j++) {
- 
-         let Asc = pal_enc.substring(j, j + 1).charCodeAt(0)  // obtiene el codigo ascii
- 
-         if (Asc == 32)
-           clave = clave + String.fromCharCode(Asc + pos)
-         else
-           switch (pos) {
-             case 1:
-               clave = clave + String.fromCharCode(Asc + 1)
-               break;
-             case 2:
-               clave = clave + String.fromCharCode(Asc - 2)
-               break;
-             case 3:
-               clave = clave + String.fromCharCode(Asc + 3)
-               break;
-             case 4:
-               clave = clave + String.fromCharCode(Asc - 4)
-               break;
-             default:
-               break;
            }
-         pos = pos < 4 ? pos + 1 : 1
+         }
+         )
+       })
  
-       }  //Endfor
-       return clave
- 
-       break*/
-
+       break
+       */
 
   }
 
   return null
-
-
-
 
 });
 /*

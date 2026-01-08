@@ -10,7 +10,7 @@ import { COMPONENT } from "@/classes/Component";
 
 export class emp_emp extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
-
+  dat_emp = []
   constructor(Name: string) {
     super();
 
@@ -37,7 +37,7 @@ export class emp_emp extends COMPONENT {
     this.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
   }
 
-  async init() {
+  override async init() {
     // Llamada a la API serevre para obtener las empresas
     const { data } = await useFetch('/api/callServer',
       {
@@ -47,6 +47,7 @@ export class emp_emp extends COMPONENT {
     )
 
     const dat_emp = data.value
+    this.dat_emp = dat_emp;
 
     if (dat_emp == null) {
       this.prop.Visible = false;
@@ -54,28 +55,26 @@ export class emp_emp extends COMPONENT {
     }
     let num_ren = 0;
     for (const nom_emp in dat_emp) {
-      this.prop.RowSource[0][num_ren] = nom_emp; // columna 1,renglon
-      this.prop.RowSource[1][num_ren] = dat_emp[nom_emp].nem_emp; // columna 2,renglon
-      num_ren++;
+
+      if (!dat_emp[nom_emp].invisible) {
+        this.prop.RowSource[0][num_ren] = nom_emp; // columna 1,renglon
+        this.prop.RowSource[1][num_ren] = dat_emp[nom_emp].nem_emp; // columna 2,renglon
+        num_ren++;
+      }
     }
+
 
   }
+  /*
+    public valid = async () => {
+  
+      const ThisForm = this.Form;
+      const This = this.prop; // Hace referencia a las propiedades del componente
+      const m: any = {}; // :  Record<string, never> ;
+      return true;
+    }; // fin metodo valid
+  */
 
-  public valid = async () => {
-    if (this.prop.Value != this.old_value) {
-      /*      const router = useRouter();
-      
-            const rutas = router.getRoutes();
-            for (const ruta of rutas) {
-              console.log('ruta= ', ruta.name, ruta.path);
-              router.removeRoute(ruta.name); // Elimina la ruta del router
-            }
-      */
-    }
 
-    const ThisForm = this.Form;
-    const This = this.prop; // Hace referencia a las propiedades del componente
-    const m: any = {}; // :  Record<string, never> ;
-    return true;
-  }; // fin metodo valid
+
 }

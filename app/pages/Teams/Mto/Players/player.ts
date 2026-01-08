@@ -11,29 +11,29 @@
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from '@/classes/captureComponent'
+//import { captureComponent } from '@/classes/captureComponent'
 
-export class player extends captureComponent {
+export class player extends CAPTURECOMPONENT {
 
     constructor() {
         super()
-   
-       // const nom_ind=renglon[i]['nom_ind']
-         
+
+        // const nom_ind=renglon[i]['nom_ind']
+
         this.prop.textLabel = 'Numero de Jugador'
-        this.prop.Type ='numeric'
+        this.prop.Type = 'numeric'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'index1_players.player'
         this.prop.Placeholder = ''
-        this.prop.ToolTipText =''
-        this.prop.MaxLength=2
-        this.prop.Min="0"
-        this.prop.Max="999"
-        this.prop.Decimals=0
-        this.prop.Capture=true
-        this.prop.updateKey=true
-        
-        
+        this.prop.ToolTipText = ''
+        this.prop.MaxLength = 2
+        this.prop.Min = "0"
+        this.prop.Max = "999"
+        this.prop.Decimals = 0
+        this.prop.Capture = true
+        this.prop.updateKey = true
+
+
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -120,5 +120,5 @@ export class player extends captureComponent {
 
     }
 
-    
+
 }

@@ -1,0 +1,30 @@
+//////////////////////////////////////////////
+// This class component was generated automatically by web-ones-technology
+// BaseClass : COLUMN
+// Class : fma_apy
+// Description : Fecha envio mail
+// Author : El Fer Blocks
+// Creation : 2024-02-12
+// Update Date  : 
+/////////////////////////////////////////////
+///////////////////////////////////////
+// base class
+///////////////////////////////////////
+
+import { COLUMN } from '@/classes/Column'
+
+export class fma_apy extends COLUMN {
+
+  constructor() {
+    super()
+
+    this.prop.ColumnTextLabel = 'Fecha envio mail' // Column Header
+    this.prop.Type = 'date'
+    this.prop.BaseClass = 'editText'
+    this.prop.ControlSource = 'vi_cap_agenda.fma_apy'
+    this.prop.Capture = true
+    this.prop.updateKey = false
+    this.prop.Disabled = true
+    this.style.width = "90px";
+  }
+}

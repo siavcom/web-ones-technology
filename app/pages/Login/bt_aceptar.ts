@@ -80,7 +80,18 @@ export class bt_aceptar extends IMGBUTTON {
     }
 
     const session = Session();
-    const { id_con, pass, user, nom_emp } = storeToRefs(session); //pasa los elementos por referencia al Global
+    const { id_con, url, pass, user, nom_emp } = storeToRefs(session); //pasa los elementos por referencia al Global
+
+
+
+    const dat_emp = this.Form.emp_emp.dat_emp;
+    for (const nom_emp in dat_emp) {
+      if (empresa == nom_emp) {
+        url.value = dat_emp[nom_emp].url;
+        break;
+      }
+    }
+    // console.log('Empresa seleccionada:', this.Form.emp_emp.prop.Value, 'url:', url.value);
 
     id_con.value = "";
     pass.value = "";

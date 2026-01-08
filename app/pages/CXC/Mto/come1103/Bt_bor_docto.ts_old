@@ -1,0 +1,78 @@
+//////////////////////////////////////////////
+// This Form was generated automatically for web-ones-technology
+// BaseClass : imgButton
+// Class : bt_delete
+// Description : Componente bt_delete
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : 24/07/25
+// Update Date  :
+/////////////////////////////////////////////
+// import { IMGBUTTON } from "@/classes/imgButton";
+
+import { IMGBUTTON } from "@/classes/imgButton";
+//imports
+
+export class bt_delete extends IMGBUTTON {
+    //public
+    constructor() {
+        super();
+
+        this.prop.Caption = "Borra documento";
+        this.prop.Disabled = true;
+        this.prop.Image = '/Iconos/svg/eraser.svg';
+        this.prop.ToolTipText = "Borra todo documento";
+        this.style.width = '72px';
+        this.prop.Position = 'footer'; // main, header , footer
+
+
+        //propiedades
+    }
+
+    // Evento   :bt_delete
+    // Objeto  :bt_delete
+    // Tipo   :Bottom
+    // Comentarios :Borra el docuemento
+    override async click() {
+        let m = {}   // inicializamos m
+        await select('vi_cap_comedoc')
+        // seleccionamos el area donde esta la vista
+
+        if (MessageBox("Seguro que desea borrar este documento", 4 + 32) == 6) {
+
+            m = appendM(m, await scatter())// scatter 
+
+            await deleteLocalSql()
+            // borra de la vista
+
+            if (!this.Form.otroClick()) {
+                MessageBox("No se pudo dar de baja")
+                await select('vi_cap_comedoc')
+
+                recall
+            } else {
+
+                MessageBox("Documento dado de baja")
+            } // End If 
+
+        } else {
+
+            this.Form.otroClick
+        } // End If 
+
+    }   // Fin Procedure
+    //!//     IF thisform.tag='P' AND SELECT('lla1_pve')>0  && si es proveedores y esta conectado a contabilidad
+    //!//           SELECT lla1_pvd
+    //!//           REQUERY()
+    //!//           IF RECCOUNT()>0
+    //!//              DELETE
+    //!//              DO tableUpdate()  /*gra_reg()*/
+    //!//           endif
+    //!//        ENDIF
+
+
+    //metodo
+
+
+
+    //metodo
+}

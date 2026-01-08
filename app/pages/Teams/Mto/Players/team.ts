@@ -11,25 +11,24 @@
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from '@/classes/captureComponent'
 
-export class team extends captureComponent {
+export class team extends CAPTURECOMPONENT {
 
     constructor() {
         super()
-   
-       // const nom_ind=renglon[i]['nom_ind']
-         
+
+        // const nom_ind=renglon[i]['nom_ind']
+
         this.prop.textLabel = 'Team'
-        this.prop.Type ='text'
+        this.prop.Type = 'text'
         this.prop.BaseClass = 'comboBox'
         this.prop.ControlSource = 'index1_players.team'
         this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
         this.prop.RowSource = "select Description,team from vi_cap_Teams"
         this.prop.ColumnCount = 2
         this.prop.BoundColumn = 2
-        this.prop.Capture=true
-        this.prop.updateKey=true
+        this.prop.Capture = true
+        this.prop.updateKey = true
 
         // this.RecordSource="" oJo
 

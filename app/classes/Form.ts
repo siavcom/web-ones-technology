@@ -225,9 +225,20 @@ export class FORM extends COMPONENT {
     }
    */
 
-  public unload() {
-    console.log("Form :", this.Name, " unload");
+  /**
+    * @description
+    * Es llamado despues de que el componente es desmontado.
+    * Se utiliza para liberar recursos.
+    * @returns {Promise<void>}
+    */
+  public override onUnmounted() {
+    console.log("Form onUnMounted Form:", this.Name);
+    return
   }
+
+  //  public unload() {
+  //    console.log("Form unload:", this.Name, " unload");
+  //  }
 
 }
 

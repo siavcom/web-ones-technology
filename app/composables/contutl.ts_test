@@ -1,1 +1,425 @@
-/siavcom/desarrollo/desarrolloweb/Vue/sistemas/Composables_siavcom/contutl.ts_test
+
+  // -------------------------- < Inicializa contabilidad >----------------
+
+  //SET CLASSLIB TO siavcont additive
+export async function ini_cont(){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+    if ( Public.value.pct_pct==1){
+  // Ya esta inicializada la contabilidad
+      return 
+
+    } // End If 
+
+    // public m.per_tra 
+
+    // public m.ima_pct , m.aci_pct , m.acf_pct , m.afi_pct , m.aff_pct , m.adi_pct , m.adf_pct , m.pci_pct , m.pcf_pct , m.niv_pct , m.fma_pct 
+
+    // PUBLIC m.pfi_pct , m.pff_pct , m.pdi_pct , m.pdf_pct , m.cai_pct , m.caf_pct , m.rii_pct , m.rif_pct , m.rei_pct , m.ref_pct , m.ori_pct , m.orf_pct , m.TAP_PCT 
+
+    // public niv_cta ( 10 ) , lon_cta ( 10 ) 
+
+    Public.value.pct_pct=1
+    let ins_sql="select max(per_per) as per_tra from man_comeper "
+  // obtenemos el ultimo periodo de trabajo
+    if ( await SQLExec( ins_sql)<0){
+  // si hubo un error
+      =err_sql()
+      return false
+
+    } // End If 
+
+    if ( Public.value.ndb_emp==2){
+      // SQLCOMMIT ( Public.value.num_dbs ) 
+
+    } // End If 
+
+    m=appendM(m, await scatter())// scatter 
+
+    //select(0)
+
+    await use('vi_lla1_pct',m) // use vi_lla1_pct vi_lla1_pct
+
+    m=appendM(m, await scatter())// scatter 
+  // lee variables generales
+
+    m.aci_pct=allTrim(m.aci_pct)
+    m.acf_pct=allTrim(m.acf_pct)
+    m.afi_pct=allTrim(m.afi_pct)
+    m.aff_pct=allTrim(m.aff_pct)
+    m.adi_pct=allTrim(m.adi_pct)
+    m.adf_pct=allTrim(m.adf_pct)
+    m.pci_pct=allTrim(m.pci_pct)
+    m.pcf_pct=allTrim(m.pcf_pct)
+    m.pfi_pct=allTrim(m.pfi_pct)
+    m.pff_pct=allTrim(m.pff_pct)
+    m.pdi_pct=allTrim(m.pdi_pct)
+    m.pdf_pct=allTrim(m.pdf_pct)
+    m.cai_pct=allTrim(m.cai_pct)
+    m.caf_pct=allTrim(m.caf_pct)
+    m.rii_pct=allTrim(m.rii_pct)
+    m.rif_pct=allTrim(m.rif_pct)
+    m.rei_pct=allTrim(m.rei_pct)
+    m.ref_pct=allTrim(m.ref_pct)
+    m.ori_pct=allTrim(m.ori_pct)
+    m.orf_pct=allTrim(m.orf_pct)
+    m.niv_pct=allTrim(m.niv_pct)
+    for (let i=1;i<10;i++) {
+  // inicializa matriz de niveles
+      niv_cta(i)=0      
+      lon_cta(i)=0      
+    } // End For; 
+
+    m.ima_pct=trim(m.ima_pct)
+    let numGuion=occurs('-',m.ima_pct)+1
+    let maxLevel=numGuion
+  // maximo nivel
+    for (i=1;i<numGuion;i++) {
+      let niv_cta=0
+let (=0
+let i=0
+let )=0
+      
+    } // End For; 
+
+    let posi=len(m.ima_pct)
+  // longitud de las ctas.
+    let posiAnt=posi
+    
+    while ( posi>0){
+  // calcula niveles excepto primero
+      if ( substr(m.ima_pct,posi,1)=='-'){
+        niv_cta(numGuion)=len(substr(m.ima_pct,posi,(posiAnt-posi)))
+        numGuion=numGuion-1
+        posi=posi-1
+        posiAnt=posi
+        } else {
+  //  loop
+        
+        posi=posi-1
+      } // End If 
+
+    } // End while 
+
+    posi=at('-',m.ima_pct)
+  // calcula primer nivel
+    niv_cta(1)=len(substr(Public.value.ima_pge,1,posi-1))
+    lon_cta(1)=niv_cta(1)
+    for (i=2;i<10;i++) {
+      lon_cta(i)=lon_cta(i-1)+niv_cta(i)      
+      if ( lon_cta(i)==lon_cta(i-1)){
+        lon_cta(i)=0
+      } // End If 
+      
+    } // End For; 
+
+    return 
+
+  }   // Fin Procedure
+  // --------------------------- < Rellena a ceros las cuentas >-----------
+
+ export async function rel_cer(cta_val){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+    // PRIVATE lon_cta 
+
+    let cta_val=strtran(cta_val,' ','')
+  // Quita los espacios
+    
+  // --- verifica cuenta no en ceros
+    if ( val(rTrim(cta_val))==0){
+  // si esta en blanco
+      let menError="Cuenta invalida"
+      return false
+
+    } // End If 
+
+    cta_val=trim(cta_val)
+  // --- valida niveles, caracteres, fechas, etc.
+    let lon_cta=len(cta_val)
+    for (let a=1;a<lon_cta;a++) {
+  // checa por caracteres validos
+      if (  ! substr(cta_val,a,1)$'1234567890'){
+        menError='Tiene caracteres no validos'
+  //      loop
+  //   else
+        return false
+
+      } // End If 
+      
+    } // End For; 
+
+    let i=1
+  // checa cta. y si necesario rellena el ultimo nivel a ceros
+  // contador de niveles
+    let posIni=1
+  // posicion inicial
+    let ctaPaso=''
+  // subniveles antes de rellenarse a ceros
+    let subCta=''
+  // subcta. analizandose
+    
+    while ( true){
+      subCta=rTrim(substr(cta_val,posIni,niv_cta(i)))
+      if ( len(subCta)<niv_cta(i)){
+        subCta='000000000'+subCta
+        subCta=right(subCta,niv_cta(i))
+      } // End If 
+
+      ctaPaso=ctaPaso+subCta
+      if ( len(ctaPaso)>=lon_cta){
+  // salida de rutina
+        brake
+      } // End If 
+
+      posIni=len(ctaPaso)+1
+      i=i+1
+    } // End while 
+
+    return ctaPaso
+  // restaura cuenta
+
+  }   // Fin Procedure
+  //      rellena a la derecha
+  //!// if CHR(key)="//"  && rellena ceros a la derecha
+  //!//    val_cta=RTRIM(this.Value)
+  //!//    lon_cta=LEN(val_cta)
+  //!//  lon_tot=0
+  //!//  FOR i=1 TO 6
+  //!//    IF lon_cta>lon_tot AND lon_cta<=lon_tot+lon_cta(i)
+  //!//       lon_tot=lon_tot+lon_cta(i)
+  //!//    ENDIF
+  //!//  ENDFOR
+  //!//  this.keypress(0)
+  //!//  keyboard '' clear          && limpia el teclado
+  //!//  this.Value=left(val_cta+'0000000000000000',lon_tot)
+  //!//
+  //!// ENDIF
+  // --------------------------- < Obtiene definicion de cuentas >-----------
+
+ export async function obt_def(cta_val){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+        switch (true) {
+      case cta_val>=m.aci_pct && cta_val<=m.acf_pct:
+            return 'Activo circulante'
+
+      break
+      case cta_val>=m.afi_pct && cta_val<=m.aff_pct:
+            return 'Activo fijo'
+
+      break
+      case cta_val>=m.adi_pct && cta_val<=m.adf_pct:
+            return 'Activo diferifo'
+
+      break
+      case cta_val>=m.pci_pct && cta_val<=m.pcf_pct:
+            return 'Pasivo circulante'
+
+      break
+      case cta_val>=m.pfi_pct && cta_val<=m.pff_pct:
+            return 'Pasivo fijo'
+
+      break
+      case cta_val>=m.pdi_pct && cta_val<=m.pdf_pct:
+            return 'Pasivo diferido'
+
+      break
+      case cta_val>=m.cai_pct && cta_val<=m.caf_pct:
+            return 'Capital'
+
+      break
+      case cta_val>=m.rii_pct && cta_val<=m.rif_pct:
+            return 'Resultados ingresos'
+
+      break
+      case cta_val>=m.rei_pct && cta_val<=m.ref_pct:
+            return 'Resultados egresos'
+
+      break
+      case cta_val>=m.ori_pct && cta_val<=m.orf_pct:
+            return 'Orden'
+
+    } // End case 
+
+    return 'No definido'
+
+  }   // Fin Procedure
+  // ---------------< ObtenciÃ³n de nÃºmero de consecutivo de poliza >---------------------
+
+
+  // llama al procedimiento almacenado del sql
+export async function get_con_pol(dia_pol,per_pol){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+    let are_tra=await select()
+  // obtiene la area de trabajo actual
+
+        switch (true) {
+      case Public.value.ndb_emp==1:
+  // Si es MSSQL7
+            let ins_sql="declare @num_pol int  exec P_get_con_pol '"+dia_pol+"','"+per_pol+"',@num_pol  OUTPUT "+" select @num_pol as num_pol"
+      break
+      case Public.value.ndb_emp==4:
+  // Si es Postgres
+            ins_sql="select P_get_con_pol as num_pol from P_get_con_pol('"+dia_pol+"','"+per_pol+"')"
+    } // End case 
+
+    let a=ins_sql
+    if ( await SQLExec( ins_sql)>0){
+      m=appendM(m, await scatter())// scatter 
+
+      releaseUse() // use 
+
+      await select(are_tra)
+
+      if ( Public.value.ndb_emp==2){
+        // SQLCOMMIT ( Public.value.num_dbs ) 
+
+      } // End If 
+
+      return m.num_pol
+
+    } // End If 
+
+    await select(are_tra)
+
+    return err_sql()
+  // ejecutamos rutina de error
+
+  }   // Fin Procedure
+  // ------------------------< Consulta saldo de una cuenta a una fecha >------------------
+
+ export async function cal_sal_cta(cta_con,fec_con,mon_con){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+    let are_tra=await select()
+  // obtiene la area de trabajo actual
+
+    m.sal_con=0
+    let fec_con1="'"+dtos(fec_con)+"'"
+  // convertimos la fecha a string
+        switch (true) {
+      case Public.value.ndb_emp==1:
+  // Si es MSSQL7
+            let ins_sql=" select dbo.F_con_sal_cta ( '"+cta_con+"',"+fec_con1+","+str(mon_con,1)+") as sal_con"
+      break
+      case Public.value.ndb_emp==4:
+  // Si es PostgreSQL
+            ins_sql=" select F_con_sal_cta ( '"+cta_con+"',"+fec_con1+","+str(mon_con,1)+") as sal_con"
+    } // End case 
+  //!//      fec_con1="'"+dtos(fec_con)+"'"  && convertimos la fecha a string
+  //!//      ins_sql=" declare @sal_con numeric(15,2) "+
+//      " exec P_con_sal_cta  '"+cta_con+"',"+fec_con1+","+STR(mon_con,1)+",@sal_con  OUTPUT "+
+//         " select @sal_con as sal_con"
+
+    let a=ins_sql
+    if ( await SQLExec( ins_sql,'Resultado')>0){
+      if ( await recCount()>0){
+        m=appendM(m, await scatter())// scatter 
+
+      } // End If 
+
+      releaseUse() // use 
+
+      if ( Public.value.ndb_emp==2){
+        // SQLCOMMIT ( Public.value.num_dbs ) 
+
+      } // End If 
+
+      await select(are_tra)
+
+      return m.sal_con
+
+    } // End If 
+
+    return err_sql()
+  // ejecutamos rutina de error
+
+  }   // Fin Procedure
+  // ------------------------< Consulta saldo de una cuenta a una fecha >------------------
+
+ export async function cal_sal_cil(cta_con,fec_con,mon_con){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+    let are_tra=await select()
+  // obtiene la area de trabajo actual
+
+    m.sal_con=0
+    let fec_con1="'"+dtos(fec_con)+"'"
+  // convertimos la fecha a string
+        switch (true) {
+      case Public.value.ndb_emp==1:
+  // Si es MSSQL7
+            let ins_sql=" select  dbo.F_con_sal_cil('"+cta_con+"',"+fec_con1+","+str(mon_con,1)+") as sal_con "
+      break
+  //!//      ins_sql=" declare @sal_con numeric(15,2) "+
+//      " exec P_con_sal_cil  '"+cta_con+"',"+fec_con1+","+STR(mon_con,1)+",@sal_con  OUTPUT "+
+//         " select @sal_con as sal_con"
+      case Public.value.ndb_emp==4:
+  // Si es Postgres
+            ins_sql=" select  F_con_sal_cil('"+cta_con+"',"+fec_con1+","+str(mon_con,1)+") as sal_con"
+    } // End case 
+
+    let a=ins_sql
+    if ( await SQLExec( ins_sql,'Resultado')>0){
+      if ( await recCount()>0){
+        m=appendM(m, await scatter())// scatter 
+
+      } // End If 
+
+      releaseUse() // use 
+
+      if ( Public.value.ndb_emp==2){
+        // SQLCOMMIT ( Public.value.num_dbs ) 
+
+      } // End If 
+
+      await select(are_tra)
+
+      return m.sal_con
+
+    } // End If 
+
+    return err_sql()
+  // ejecutamos rutina de error
+
+  }   // Fin Procedure
+  // ---------------< Ultimo dia delperiodo >---------------------------
+
+
+  // asigna la fecha mas proxima final de cualquier perido
+ export async function udi_per(per_cal){
+     let m={} ;  // Inicializamos m
+    let Alias='';   //Inicializamos Alias
+    let Recno=0;   //Inicializamos Recno
+    let Result=[];   //Inicializamos Result
+    // SET DATE ansi 
+
+    let fec_cal=CTOD(LineSlant(per_cal,4)+'.'+right(per_cal,2)+'.28')
+    let mes_per=motn(fec_cal)
+  // obtenemos su mes
+    
+    while ( motn(fec_cal)==mes_per){
+      fec_cal=fec_cal+1
+  // aumentamos un dia hasta que cambie
+    } // End while 
+
+    fec_cal=fec_cal-1
+  // le quitamos un dia
+    return fec_cal
+
+
+//procedure

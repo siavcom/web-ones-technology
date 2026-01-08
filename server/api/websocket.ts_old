@@ -1,0 +1,472 @@
+import { Connection, Request } from "tedious"  //MSSQL
+
+
+import os from 'os';
+//const path = require('path');
+import fs from 'fs';
+import { join } from 'path';
+//const { unlinkSync } = fs;
+
+
+//const { Server } = require('socket.io'); //from "socket.io";
+//import { nodemailer } from "nodemailer";
+
+import mail from 'nodemailer/lib/nodemailer.js';
+const { nodemailer } = mail
+
+// Se tuvo que importar whatsapp-web.js de esta manera para que funcione
+//import { Client, LocalAuth, MessageMedia } from 'whatsapp-web.js';
+//import pkg from 'file:///Desarrollo/web-ones/web-ones-NUXT-4.2/node_modules/whatsapp-web.js/index.js';
+import pkg from 'whatsapp-web.js/index.js';
+const { Client, LocalAuth, MessageMedia } = pkg;
+
+const whatsApp = new Client({
+
+    puppeteer: {
+        headless: true,  // true para modo sin interfaz, false para ver el navegador el qr 
+        ignoreHTTPSErrors: true,
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-extensions",
+            '--unhandled-rejections=strict' // This helps surface the exact source of the error
+        ],
+    },
+
+    /*    authStrategy: new LocalAuth({  // Guarda las sesiones de WhatsApp
+            dataPath: './.session'  // Folder que contiene los datos sesion
+        }),
+    */
+});
+
+//whatsApp.initialize();
+
+//import { Connection } from 'tedious';
+
+
+let QrCode = ''
+let whatsAppReady = false
+let sw_connection = false
+let webSocketPeer: any = null
+const room = 'ROOM'
+
+/*
+const sqlConfig = {
+    server: 'shelsql.freeddns.org',  //update me
+    user: 'Messages',
+    password: 'webMessages',
+    database: 'ShelPrueba',
+    
+    authentication: {
+        type: 'default',
+        options: {
+            userName: 'Messages', //update me
+            password: 'webMessages'  //update me
+        }
+    },
+    
+    options: {
+        // If you are on Microsoft Azure, you need encryption:
+        port: 1466,
+        database: 'ShelPrueba',
+        trustedConnection: true,
+        encrypt: true,
+        enableArithAbort: true,
+        trustServerCertificate: true,
+    }
+};
+*/
+
+
+/********* Servidor de whatsapp ************/
+
+whatsApp.on('qr', (qr: string) => {
+
+    if (whatsAppReady)
+        return
+    WhatsAppInit = true;
+    QrCode = qr
+    const data = {
+        result: 'QrCode',
+        data: QrCode,
+        mensaje: 'Qr Generado OK'
+    }
+
+    console.log('===========>Genera QrCode  QrCode=', data)
+    webSocketPeer.send(data)
+});
+
+whatsApp.on('ready', () => {
+    //  const res = { whatsAppReady }
+    console.log('Whatsapp Client is ready!');
+    whatsAppReady = true
+    // webSocketPeer.send(JSON.stringify({ result: 'Ready', data: whatsAppReady }));
+    webSocketPeer.send({ result: 'Ready', data: whatsAppReady });
+
+});
+
+whatsApp.on('message_create', (message: any) => {
+    console.log('Mensaje recibido=', message); // todo el objeto del mensaje
+    // message.text
+
+    // si boody es igual a !ping
+    /*
+    
+    if (message.body === 'ping') {
+        // send back "pong" to the chat the message was sent in
+        whatsApp.sendMessage(message.from, '1) pong');
+        message.reply('2) pong');
+    }
+     else
+        Socket.emit('message', message)
+    */
+
+});
+
+
+
+/////////////////  Servidor de WebSockets //////////////////
+let WhatsAppInit = false
+
+export default defineWebSocketHandler({
+    open(wsPeer) {  // peer=par
+        console.log('========>opened WS<========Numero de socket=', wsPeer.id);
+        webSocketPeer = wsPeer;
+        //wsPeer.subscribe(room)
+
+        // wsPeer.publish - enviar mensaje a todos en la sala
+        // wsPeer.publish(room, 'Another user joined the chat')  // Mensaje para todos
+
+    },
+    close(wsPeer) {
+        console.log('close WS', wsPeer)
+    },
+    error(wsPeer, error) {
+        console.log('error on WS=', error)
+
+    },
+    message(wsPeer, message) {
+        console.log('message on WS=', message)
+        processMessage(wsPeer, message)
+    },
+
+
+})
+
+
+/////////////////////// Funciones /////////////////////////
+function genChatId(phoneNumber: string) {
+    let chatId = phoneNumber.replaceAll('+', '')
+    chatId = chatId.replaceAll(' ', '')
+    chatId = chatId.replaceAll('-', '')
+    chatId = chatId.replaceAll('(', '')
+    chatId = chatId.replaceAll(')', '')
+    chatId = chatId.replaceAll('.', '') + "@c.us";
+
+    console.log('chatID=:', chatId)
+    return chatId
+}
+
+
+// Enviar correos
+// @from : remitente
+// @to : destinatario
+// @subject : asunto
+// @text : texto
+// @attachments : {filename: string, path: string, contentType: string}[]
+async function sendMail(from: string, to: string, subject: string, text: string, attachments?: []) {
+    const fileAttachments = []
+    if (attachments) {
+        for (const attach in attachments) {
+
+            let type = attach.type // tipo de archivo (image/png, video/mp4, audio/mp3,'application/pdf' )
+            const fileName = `_mail_${Date.now()}_${attach.fileName}.${type}`
+            const path = join(os.tmpdir(), fileName);
+            const fileB64 = attach.fileB64 ? attach.fileB64 : ''
+            let file = attach.file ? attach.file : ''
+            if (fileB64) {
+                file = atob(file); // Decodificamos de base64
+
+            }
+            if (file > '')
+                fs.writeFileSync(path, file);
+
+            switch (true) {
+                case type === 'pdf':
+                    type = 'application/pdf'
+                    break
+                case type == 'xml':
+                    type = 'application/xml'
+                    break
+                case type == 'png' || type == 'jpg' || type == 'jpeg' || type == 'gif' || type == 'bmp':
+                    type = `ìmage/${type}`
+                    break
+
+            }
+            const fileAttach = {
+                filename: fileName,
+                path: path,
+                contentType: type
+            }
+            fileAttachments.push(fileAttach)
+
+        }
+    }
+    const transporter = nodemailer.createTransport("SMTP", {
+        host: "mail.gova.com.mx",
+        port: 465,
+        secure: true, // true for port 465, false for other ports
+        //service: 'hotmail',
+        auth: {
+            user: "gventerprises@gova.com.mx",
+            pass: "aNe+T4X3oNC}",
+        },
+    });
+
+    const mailOptions = {
+        from: `${from}`, // sender address
+        to: `${to}`, // list of receivers
+        subject: `${subject}`, // Subject line
+        text: `${text}`, // plain text body
+        attachments: fileAttachments
+
+        /* [
+           {
+             filename: 'document.pdf',
+             path: path.join(__dirname, 'path/to/your/document.pdf'), // Use the path module
+             contentType: 'application/pdf' // Optional, but recommended
+           }
+         ]*/
+    }
+
+
+    // send mail with defined transport object
+
+    // 3. Send the email
+    transporter.sendMail(mailOptions, (error: {}, info: {}) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            webSocketPeer.send({
+                result: 'sendMail',
+                data: error
+            })
+
+
+        } else {
+            console.log('Email sent:', info.response);
+            webSocketPeer.send({
+                result: 'sendMail',
+                data: info.response
+            })
+        }
+    })
+
+    // borra attachmets temporales
+    if (fileAttachments.length > 0) {
+        console.log('fileAttachments=', fileAttachments)
+
+        for (let i = 0; i < fileAttachments.length; i++) {
+            const file = fileAttachments[i].file
+            try { fs.unlinkSync(file.path); } catch (e) { }
+        }
+    }
+
+
+    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+}
+
+// Genera una cadena aleatoria de string de longitud n
+function genRandStr(length: number) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+
+
+function processMessage(wsPeer: {}, JSONmessage: string) {
+
+    const message = JSON.parse(JSONmessage)
+
+    if (message.transport === 'whatsapp') {
+        const job = message.job
+        const data = message.data
+        let phone = ''
+
+        console.log('>>>>>>>   message WhatsApp =', job)
+        switch (true) {
+
+            case job == 'init':
+                console.log('>>>>>>>>>>>>>>>Initializing WhatsApp>>>>>>>>>>>>>>');
+                if (!WhatsAppInit) {
+                    whatsApp.initialize();
+                } else {
+                    const data = {
+                        result: 'QrCode',
+                        data: QrCode,
+                        mensaje: 'Qr Generado OK'
+                    }
+
+                    console.log('===========>Genera QrCode  QrCode=', data)
+                    webSocketPeer.send(data)
+                }
+                break;
+
+            case job === 'open':
+                const res = { whatsAppReady }
+
+                if (!WhatsAppInit) {
+                    console.log('WhatsApp Not initialized - res=', res);
+                    wsPeer.send({
+                        result: 'NoReady',
+
+                    })
+
+                    return
+                }
+
+                console.log('WhatsApp initialized res=', res);
+
+                //  wsPeer.send(JSON.stringify({ result: 'Ready' }))
+                wsPeer.send({
+                    result: 'Ready',
+                    data: whatsAppReady
+                })
+
+                if (!whatsAppReady && QrCode >= '           ') {  // Si no esta vinculado WhatsApp manda el QR
+
+                    console.log('res =====>QR Code:', QrCode);
+
+                    //webSocketPeer.send(JSON.stringify({
+                    wsPeer.send({
+                        result: 'QrCode',
+                        data: QrCode
+                    })
+
+                }
+                break;
+            case job === 'sendMessage':
+                console.log('Mensaje a enviar:', data.textMessage)
+                phone = data.phone
+                const textMessage = data.textMessage
+                if (whatsAppReady) {
+                    try {
+                        const chatId = genChatId(phone)
+                        console.log('Mensaje=:', chatId, textMessage)
+                        whatsApp.sendMessage(chatId, textMessage);
+                    }
+                    catch (err) {
+                        console.log('Error:', err)
+                        // Socket.emit('error', err)
+                    }
+                }
+                break;
+            case job === 'sendMedia':
+                // Envia media
+                // phone = numero de telefono
+                // base64Image = imagen en formato base64
+                // type = tipo de archivo (image/png, video/mp4, audio/mp3)
+
+
+                phone = data.phone
+
+                if (whatsAppReady) {
+
+                    for (const attach in data.attachments) {
+
+                        const base64Image = attach.base64Image
+                        const type = attach.type
+
+
+                        try {
+                            const chatId = genChatId(phone)
+                            const media = new MessageMedia(type, base64Image);
+                            whatsApp.sendMessage(chatId, media);
+                        }
+                        catch (err) {
+                            console.log('Error:', err)
+                            // Socket.emit('error', err)
+                        }
+                    }
+                }
+                break;
+            case job === 'sendMediaUrl':
+
+                phone = data.phone
+                const url = data.url
+
+                // Envia media desde una URL
+                // phone = numero de telefono
+                // url = url de la imagen
+                if (whatsAppReady) {
+                    let chatId = genChatId(phone)
+                    try {
+                        //const media = await MessageMedia.fromUrl(url);
+                        const media = MessageMedia.fromUrl(url);
+                        whatsApp.sendMessage(chatId, media);
+                    }
+                    catch (err) {
+                        console.log('Error:', err)
+                        //Socket.emit('error', err)
+                    }
+                }
+                break;
+
+        }
+
+    }
+    if (message.transport === 'mail') {
+
+
+        const data = message.data
+        const from = data.from
+        const to = data.to
+        const subject = data.subject
+        const text = data.text
+        const attachments = data.attachments
+        /*
+        const type = data.type
+        const pdf = data.pdf ? data.pdf : ''
+        const tdo_tdo = data.tdo_tdo ? data.tdo_tdo : ''
+        const ndo_doc = data.ndo_doc ? data.ndo_doc : ''
+        */
+        const dialect = data.dialect ? data.dialect : 'mssql'
+        sendMail(from, to, subject, text, attachments)
+    }
+    // wsPeer.send(`The message was sent by ${message.transport} Ok`)
+
+}
+/*
+async function leeCfdi(dialect: string, tdo_tdo: string, ndo_doc: number) {
+
+    if (dialect === 'mssql') {
+        const sql = `select * from comexml where tdo_tdo = ${tdo_tdo} and ndo_doc = ${ndo_doc}`
+        const result = await executeMSSQL(sql)
+        return result
+    }
+    if (dialect === 'postgres') {
+
+    }
+
+
+}
+
+const executeMSSQL = async (sql) => {
+    let connection = new Connection(config);
+    connection.connect((err) => {
+        if (err)
+            return callback(err, null);
+        const request = new Request(sql, (err, rowCount, rows) => {
+            connection.close();
+            if (err)
+                return callback(err, null);
+            callback(null, { rowCount, rows });
+        });
+
+        connection.execSql(request);
+    });
+};
+*/

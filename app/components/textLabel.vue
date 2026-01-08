@@ -698,17 +698,17 @@ watch(
     if (sw_ReadCampo || new_val == Value.value)
       return
 
-
-    console.log('1) textLabel watch value Name=', This.prop.Name, 'Value=', new_val,
-      'Text.value=', Text.value,
-      'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno)
-
+    /*
+        console.log('1) textLabel watch value Name=', This.prop.Name, 'Value=', new_val,
+          'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno,
+          'This.BaseClass=', This.BaseClass)
+    */
 
 
     //if (This.BaseClass == 'Column' && (This.Parent.Recno == 0 || (This.Parent.Recno != props.Registro)))
     //  return
 
-    if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
+    if (This.BaseClass == 'Column')//&& This.Parent.Recno != props.Registro)
       return
 
 

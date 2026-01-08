@@ -1,0 +1,60 @@
+
+export const unWatch = watch(data, (newData) => {
+
+    console.log('watch NewData=>>>>>', newData)
+
+    if (!newData) return;
+
+    const data = JSON.parse(newData)
+    //const data = newData
+    const result = data.result
+
+    console.log('watch result=', result, ' data=', data.data)
+
+    switch (true) {
+        /*    case result == 'QrCode' && this.displayQr.prop.Visible:
+              console.log('QrCode=', data.data)
+              thisForm.whatsAppQR.value = data.data
+              return
+              break
+        */
+        case result == 'NoReady':
+            console.log('1) WhatsApp Not Ready=', data.data)
+            const router = useRouter();
+            router.push('/WhatsApp/Pro/Vincular');
+            return;
+
+        case result == 'Ready':
+            console.log('1) WhatsApp Ready=', data.data)
+            if (data.data) {
+                whatsappReady = true;
+
+            }
+            return
+
+            break
+
+        case result == "message" && this.displayQr.prop.Visible:
+            console.log('WebSocket message=', data.data)
+            // 0=mensaje sin titulo
+            // 1=Informacion solamente
+            // 2=? pregunta Cancel Abort Retry
+            // 4=? pregunta No Ok
+            MessageBox(data.data, 1, "Message");
+            return
+            break
+
+        case result == 'error':
+            MessageBox(data.data, 16, "Web Socket Error ");
+            return
+            break
+
+        default:
+            console.log('WebSocket default, result=', result, ' data=', data.data)
+            return
+            break
+
+    }
+
+})
+

@@ -1,0 +1,203 @@
+//////////////////////////////////////////////
+// This Form was generated automatically for web-ones-technology
+// BaseClass : imgButton
+// Class : Otro
+// Description : Componente Otro
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : 24/07/25
+// Update Date  :
+/////////////////////////////////////////////
+// import { IMGBUTTON } from "@/classes/imgButton";
+
+import { IMGBUTTON } from "@/classes/imgButton";
+//imports
+
+export class Otro extends IMGBUTTON {
+    //public
+    constructor() {
+        super();
+
+        this.prop.Caption = "Otro";
+        this.style.fontSize = '12px';
+        //   this.prop.Image = '/Iconos/svg/plus_color.svg';
+
+        this.style.width = '60px';
+        this.prop.Position = 'footer'; // main, header , footer
+        //propiedades
+    }
+
+    // Evento   :Click
+    // Objeto  :Otro
+    // Tipo   :Boton
+    // Comentarios :
+    // Parametros   : a) sw_rel  este variable es igual a verdadero que se trata de salir de la form
+    // switch de release
+    override async click(sw_rel) {
+        let m = {}   // inicializamos m
+        if (await recCount('vi_cap_comepag') > 0) {
+            // reviza si tiene abierta la vista de captura de pagos
+            await select('vi_cap_comepag')
+
+            if (await recNo('vi_cap_comepag') < 0) {
+                // si no hay pagos
+                await tableRevert()
+
+            } // End If 
+
+            await select('vi_cap_comepag')
+
+            m = appendM(m, await scatterBlank(m))// scatter 
+
+            this.Form.ap_pagos.prop.RecordSource = ''
+            // pone en nulos el record source
+            await useNodata('vi_cap_comepag') // use vi_cap_comepag vi_cap_comepag Nodata
+            // abre la vista sin datos
+
+        } // End If 
+
+        await select('vcomesal')
+        await localAlaSql('delete from now.vcomesal')
+        await localAlaSql('delete from Last.vcomesal')
+        /*
+        if (await recCount() > 0) {
+            await deleteLocalSql(ALL)
+
+            await tableUpdate()
+               Zap
+            
+        } // End If 
+        */
+        this.Form.Bt_bor_asi_pag.prop.Visble = false
+        await select('vi_cap_comedoc')
+        //on key label CTRL+del     && desactivamos la funcion deborrado
+
+        if (await recCount() > 0 && await !this.Form.grabar(sw_rel)) {
+            // corre rutina de aceptacion de datos
+            MessageBox('La información no fuÃ© grabada')
+            await select('vi_cap_comedoc')
+            // si el registro no es nuevo trae los datos actualizados
+
+            await tableRevert()
+
+
+            //.not. thisform.vi_cap_comedoc.key_pri .and.
+            if (!sw_rel) {
+                // si no es un relase
+                this.Form.ndo_doc.setFocus()
+                //      thisform.refresh
+                return false
+                // regresa a la forma
+
+            } // End If 
+
+
+            // si es un codigo nuevo y no es release
+            if (sw_rel) {
+                // si se llamo del objeto desde release
+                if (!this.Form.ndo_doc.prop.ReadOnly) {
+                    releaseUse() // use 
+
+                    return false
+
+                } // End If 
+
+                let sw_rel = false
+            } // End If 
+
+        } // End If 
+
+        if (await recCount('vi_cap_comedoc') > 0) {
+            await select('vi_cap_comedoc')
+
+            m = appendM(m, await scatter())// scatter 
+
+            await select('vi_cap_cometcd')
+
+            if (await recCount() > 0) {
+                // si hay clasificacio de documentos
+                const cam_arc = afields()
+
+                // Buscamos campo
+                if (ascan(cam_arc, 'PRG_PRG') > 0 && pry_pry == 'S') {
+                    // si es con control de proyectos
+                    m = appendM(m, await scatter())// scatter 
+
+                    if (len(allTrim(m.prg_prg)) > 0) {
+                        // si va a llamar a un progama de asignacion de gasto
+                        let men_err = ''
+                        m.prg_prg = allTrim(m.prg_prg) + ' with ' + m.par_prg
+                        let ins_fox = 'Do Form ' + allTrim(m.prg_prg) + ' To men_err'
+                            & ins_fox
+                        if (len(allTrim(men_err)) > 10) {
+                            MessageBox(men_err, 16, 'Error')
+                        } // End If 
+
+                    } // End If 
+
+                } // End If 
+
+            } // End If 
+
+        } // End If 
+
+        await select('vi_cap_comenom')
+
+        await useNodata('vi_cap_comenom') // use vi_cap_comenom vi_cap_comenom Nodata
+
+        await select('lla1_ven')
+
+        await useNodata('lla1_ven') // use lla1_ven lla1_ven Nodata
+
+        await select('vi_cap_comedoc')
+        // volvemos a traernos la vista sin datos
+
+        await useNodata('vi_cap_comedoc') // use vi_cap_comedoc vi_cap_comedoc Nodata
+
+        if (!sw_rel) {
+            // si no se llamo desde el release
+            this.Form.SetAll('Readonly', true)
+            // Ponemos de solo lectura los controles
+            this.Form.mon_doc.prop.Visble = false
+            // Deshabilitamos la moneda del docto
+            this.Form.d_tot_doc.prop.Value = 0
+            // total por documento
+            this.Form.d_sal_doc.prop.Value = 0
+            // saldo
+            this.Form.d_pap_doc.prop.Value = 0
+            // por aplicar
+            this.Form.tdo_tdo.prop.Visble = true
+            // thisform.refresh      && Repintamos la forma
+            // tipo de documento ponemos en captura
+            this.Form.tdo_tdo.prop.ReadOnly = false
+            // tipo de documento ponemos en captura
+            this.Form.ndo_doc.prop.ReadOnly = false
+            // número de documento ponemos en captura
+            this.Form.Bt_apl_pag.prop.Visble = false
+            // deshabilitamos los bottones de mantenimiento
+            this.Form.bt_delete.prop.Visble = false
+            this.Form.modificar.prop.Visble = false
+            this.Form.block[5].prop.Visible  = false
+            this.Form.captura_xml.prop.Visible = false
+            this.Form.co_apl_pagos.prop.Visible = true
+            this.Form.la_apl_pagos.prop.Visible = true
+            this.Form.ap_pagos.prop.Visible = true
+            this.Form.ap_pagos.prop.Visble = false
+            this.Form.Bt_observaciones.prop.Visble = false
+        } // End If 
+
+        vi_cap_comedoc.key_pri = false
+        this.Form.Do_nopagados.prop.Visble = false
+        // actualiza la tabla en el grid
+        this.Form.tdo_tdo.setFocus()
+        this.Form.Refresh
+        //thisform.tdo_tdo.valid()
+        //thisform.ndo_doc.setFocus()
+        return
+
+    }   // Fin Procedure
+
+
+
+
+    //metodo
+}

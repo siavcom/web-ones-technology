@@ -1,0 +1,34 @@
+//////////////////////////////////////////////
+// This class component was generated automatically by web-ones-technology
+// BaseClass : COLUMN
+// Class : fec_apy
+// Description : Fecha
+// Author : El Fer Blocks
+// Creation : 2024-02-12
+// Update Date  : 
+/////////////////////////////////////////////
+///////////////////////////////////////
+// base class
+///////////////////////////////////////
+
+import { COLUMN } from '@/classes/Column'
+
+export class fec_apy extends COLUMN {
+
+  constructor() {
+    super()
+
+    // const nom_ind=renglon[i]['nom_ind']
+
+    this.prop.ColumnTextLabel = 'Fecha' // Column Header
+    this.prop.Type = 'date'
+    this.prop.BaseClass = 'editText'
+    this.prop.ControlSource = 'vi_cap_agenda.fec_apy'
+    this.prop.Placeholder = 'Fecha'
+    this.prop.ToolTipText = 'Fecha'
+    this.prop.ReadOnly = true
+    this.style.width = "90px";
+
+
+  }
+}

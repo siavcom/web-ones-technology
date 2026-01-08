@@ -36,6 +36,7 @@ export const Session = defineStore(
     const Var = ref();
     const menu = ref([]);
     let socket = false; //: any = ref(null);  //  faltaba ref(null). Queda mejor con false
+    let passStore = ''
     const sockets: never[] = [];
     let socketIo = ref(false);
     let socketId: string;
@@ -100,8 +101,9 @@ export const Session = defineStore(
         return
       });
 
-      socket.on("loginOk", async (res: {}) => {
 
+      // Password correcto, leemos datos de la empresa (logo y otros)
+      socket.on("loginOk", async (res: {}) => {
         // console.log('loginOk========>', res)
         socketId = socket.id;
         //res={ id: name, dialect: options.dialect, fpo_pge }
@@ -110,8 +112,37 @@ export const Session = defineStore(
         fpo_pge.value = await stringToDate(res.fpo_pge);
         dialect.value = res.dialect;
         ////////  leeMenu();
+        //console.log("Socket Connection sucefully id=", id_con.value);
+        const data = await $fetch('/api/callServer',
+          {
+            method: 'post',    // Se necesita para que haga la llamada y retorne los datos
+            body: {
+              call: 'iniEmpresa',
+              empresa: nom_emp.value,
+              user: user.value,
+              password: passStore,
+            },
 
-        console.log("Socket Connection sucefully id=", id_con.value);
+          }
+        )
+        passStore = 'XXXXXXXXXXXXXXXXX'
+
+        if (data && data.error) {
+          MessageBox(data.error.message, 16, "Error");
+          return;
+        }
+
+        logoEmp.value = data.logoEmp;
+        //   console.log("1) Ok >>>>>> Socket Connection sucefully data=", logoEmp.value);
+
+        /*
+        if (data.logoEmp && data.logoemp.length > 10) {
+
+          logoEmp.value = data.logoEmp;
+          console.log("2) Ok >>>>>> Socket Connection sucefully data=", logoEmp.value);
+
+        }
+        */
       });
 
       // Imprime PDF en el navegador
@@ -166,36 +197,35 @@ export const Session = defineStore(
         router.push("/Login");
         return;
       }
-      console.log("open password=", password);
-
-      try {
-
-        console.log("open useFetch Empresas ");
-        const { data } = await useFetch('/api/callServer',
-          {
-            method: 'post',    // Se necesita para que haga la llamada y retorne los datos
-            body: { call: 'leeEmpresas' }
-          }
-        )
-
-        console.log('After open current session url=', url.value, 'data', data.value)
-        const dat_emp = data.value
-        url.value = dat_emp[nom_emp.value].url; // obtenemos el url del servidor node
-
-
-        //  logoEmp.value = dat_emp[nom_emp.value].logoEmp;
-        if (dat_emp[nom_emp.value].logoEmp && dat_emp[nom_emp.value].logoEmp.length > 0)
-          logoEmp.value = await obtLogo(dat_emp[nom_emp.value].logoEmp)
-
-      } catch (error) {
-        console.warn("No existe empresa ", nom_emp.value);
-        MessageBox(
-          "No esta definida la empresa :" + nom_emp.value,
-          16,
-          "SQL Error "
-        );
-      }
-
+      //console.log("open password=", password);
+      /*
+            try {
+      
+              console.log("open useFetch Empresas ");
+              const { data } = await useFetch('/api/callServer',
+                {
+                  method: 'post',    // Se necesita para que haga la llamada y retorne los datos
+                  body: { call: 'leeEmpresas' }
+                }
+              )
+      
+              console.log('After open current session url=', url.value, 'data', data.value)
+              const dat_emp = data.value
+              url.value = dat_emp[nom_emp.value].url; // obtenemos el url del servidor node
+      
+              //  logoEmp.value = dat_emp[nom_emp.value].logoEmp;
+              if (dat_emp[nom_emp.value].logoEmp && dat_emp[nom_emp.value].logoEmp.length > 0)
+                logoEmp.value = await obtLogo(dat_emp[nom_emp.value].logoEmp)
+      
+            } catch (error) {
+              console.warn("No existe empresa ", nom_emp.value);
+              MessageBox(
+                "No esta definida la empresa :" + nom_emp.value,
+                16,
+                "SQL Error "
+              );
+            }
+      */
       //await openSocket();
 
       if (await openSocket()) {
@@ -205,6 +235,8 @@ export const Session = defineStore(
           pass: password,
         };
 
+        passStore = password;
+
         const json = JSON.stringify(def_con);
 
         socket.emit("login", json); // hace login
@@ -212,61 +244,7 @@ export const Session = defineStore(
 
         return;
       }
-      /*
-    try {
-        let response = await axios.get(
-          url.value + "login?json=" + json
-          // { headers: { "Content-type": "application/json" } }
-        );
 
-        if (response.data.fpo_pge)
-          fpo_pge.value = await stringToDate(response.data.fpo_pge);
-
-        dialect.value = response.data.dialect;
-        id_con.value = response.data.id; // asignamos a su conexion de base de datos
-        //fileLogoEmp=response.data.fileLogoEmp
-
-        console.log(
-          "Pinia ID de conexion=",
-          id_con.value,
-          "dialect",
-          dialect.value
-        );
-        if (sw_con) return;
-
-        window.history.back(); // regresa forma anterior
-        //     const router = useRouter()
-        //     router.push('/')
-      } catch (error) {
-        console.warn("Error llamada Axios", error);
-        //const { $MessageBox } = useNuxtApp()
-
-        if (error == "Network Error. Posible Db Server internet fail") {
-          console.log("OpenDb Error SQL===>", error);
-          MessageBox(error, 16, "SQL Error ");
-        }
-
-        // console.log('OpenDb error ===>',error.response.status.toString() + " " + error.response.statusText)
-        if (error) {
-          let menError = "";
-
-          if (error.response) {
-            if (error.response.statusText) menError = error.response.statusText;
-            else menError = error.response;
-
-            MessageBox(menError, 16, "ERROR");
-            console.log("Pinia error ====>>>>>>", error.response);
-            //  MessageBox(error.response.status.toString() + ' ' + error.response.statusText, 16, 'Data SQL Error')
-          } else {
-            MessageBox("Back-end comunication error", 16, "ERROR");
-          }
-        } else {
-          console.warn("BackEnd error", error);
-          MessageBox(error, 16, "ERROR");
-        }
-        pass.value = "";
-      } // Fin de Catch
-    */
     }
 
     /// ////////////////////////////////
@@ -426,8 +404,8 @@ export const Session = defineStore(
                 }
               }
 
-              console.log("2)Pinia Public.value=", Public.value, 'Var.value', Var.value);
-              // console.log("Pinia Var.value=", Var.value);
+              // console.log("2)Pinia Public.value=", Public.value, 'Var.value', Var.value);
+
             }
 
             );
@@ -503,10 +481,11 @@ export const Session = defineStore(
       () => pass.value,
       (new_pass, old_val) => {
 
-        console.log("watch password=", new_pass, old_val);
+        // console.log("watch password=", new_pass, old_val);
         if (new_pass == "") return;
 
         const password = new_pass;
+
         if (
           password.length > 3 &&
           user.value.length > 0 &&

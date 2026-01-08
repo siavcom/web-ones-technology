@@ -11,27 +11,27 @@
 // base class
 ///////////////////////////////////////
 
-import { captureComponent } from '@/classes/captureComponent'
+////import { captureComponent } from '@/classes/captureComponent'
 
-export class birthday extends captureComponent {
+export class birthday extends CAPTURECOMPONENT {
 
 
     constructor() {
         super()
-   
-       // const nom_ind=renglon[i]['nom_ind']
-         
+
+        // const nom_ind=renglon[i]['nom_ind']
+
         this.prop.textLabel = 'Fecha de nacimiento'
-        this.prop.Type ='date'
+        this.prop.Type = 'date'
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'index1_players.birthday'
         this.prop.Placeholder = ''
-        this.prop.ToolTipText =''
-        this.prop.MaxLength=8
-        this.prop.Capture=true
-        this.prop.updateKey=false
-        
-        
+        this.prop.ToolTipText = ''
+        this.prop.MaxLength = 8
+        this.prop.Capture = true
+        this.prop.updateKey = false
+
+
         // this.RecordSource="" oJo
 
         ///////////////////////// 

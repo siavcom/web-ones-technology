@@ -736,7 +736,8 @@ export class COMPONENT {
    * Se utiliza para liberar recursos.
    * @returns {Promise<void>}
    */
-  public async onUnmounted() {
+  public onUnmounted() {
+
     return
   }
 

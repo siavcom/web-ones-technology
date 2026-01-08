@@ -1,0 +1,210 @@
+/*
+************** Nitro Storage *******************     
+https://click.convertkit-mail.com/lmumr5503gtmhn6n54xt6h83x5400bghn382/25h2h9u337vlm7u8/aHR0cHM6Ly9taWNoYWVsbnRoaWVzc2VuLmNvbS93ZWVrbHktMjM4LW9jdG9iZXItMDg=
+
+Nitro, the server that Nuxt uses, comes with a very powerful key-value storage system:
+const storage = useStorage();
+
+// Save a value
+await storage.setItem('some:key', value);
+
+// Retrieve a value
+const item = await storage.getItem('some:key');
+***********************************************
+*/
+
+//import fs from '@/node_modules/file-system/file-system.js';
+
+//import { Connection, Request } from "tedious"  //MSSQL
+//const MSSQLConnection = Connection
+
+
+//import MSSQL from "tedious"  //MSSQL
+//import postgres from 'postgres'
+
+//const { Connection, Request } = MSSQL;
+
+///////// Funciones nativas de NodeJS /////////
+//import fs from 'fs'
+import { exec } from 'child_process'
+import fs from 'fs/promises'; // Use fs.promises for async/await
+import { unlinkSync } from 'fs';
+import { join } from 'path';
+import { tmpdir } from 'os';
+import { promisify } from 'util';
+
+let SQLServer: any;
+
+let empresas = ''
+let dialect = ''
+
+//import openssl from 'openssl-nodejs'
+
+const execAsync = promisify(exec);
+////////////////////////////////////////////
+
+//import dat_emp from './Empresas.json'
+export default defineEventHandler(async (event) => {
+
+  //const sqlServer = require("./app/siavcom.controllers.js");
+
+  const path = '/sistemas/web-ones/public'
+  const body = await readBody(event)
+
+  const call = body.call  // obtiene el tipo de llamada
+
+  let data: any
+  let nameFile = ''
+  const Fs = fs
+
+  switch (call) {
+    /* 
+     case 'iniEmpresa':
+        const empresa = body.empresa
+        const password = body.password
+        const pos = empresa.indexOf('@')
+        let nombreEmpresa = ''
+        if (pos >= 0)
+          nombreEmpresa = empresa.substring(0, pos)
+        else
+          nombreEmpresa = empresa
+  
+        try {
+          const leeEmp = await fs.readFile(path + '/' + nombreEmpresa + '/db.config.js', "utf-8")
+          console.log('leyendo archivo de configuración para empresa:', nombreEmpresa);
+          console.log('contenido del archivo:', leeEmp);
+          const sqlConfig = JSON.parse(leeEmp)
+          dialect = sqlConfig.dialect
+          SQLServer = null
+          if (dialect == 'mssql') {
+            sqlConfig.password = password;
+            SQLServer = MSSQL
+            await MSSQL.connect(sqlConfig);
+            //    const result = await MSSQL.query`select TOP 10 * from MyTable`;
+            //    console.dir(result);
+          }
+          if (dialect == 'posgres') {
+            sqlConfig.password = password;
+            SQLServer = await postgres(sqlConfig) // will use psql environment variables
+          }
+  
+          console.log('Connected to database:', nombreEmpresa, 'with dialect:', dialect, 'SQLServer', SQLServer);
+          return true
+  
+  
+        } catch (error) {
+          console.log(error)
+          const res = { error: true, message: 'Emmpresa no valida' }
+          return res
+        }
+        break
+      case 'sqlExec':
+        const sqlQuery = body.sqlQuery;
+        // Execute the SQL query using the appropriate database client
+        let result = ''
+        if (dialect === 'mssql') {
+          result = await SQLServer.query + sqlQuery
+          // SQL Server execution logic here
+          // Example: const result = await SQLServer.query(sqlQuery);
+        } else if (dialect === 'posgres') {
+          result = await SQLServer + sqlQuery;
+          // PostgreSQL execution logic here
+          // Example: const result = await SQLServer(sqlQuery);
+        }
+  
+        return result;
+  */
+    case 'leeEmpresas':
+      // para funcionar con bun y node al mismo tiempo se utiliza leer con formato "utf-8" 
+      // original
+      // data=fs.readFileSync(path + '/Empresas.json')
+
+      const res = await fs.readFile(path + '/Empresas.json', "utf-8")
+      empresas = JSON.parse(res)
+
+      // body.data = empresas
+      return data
+
+    case 'readFile':
+      nameFile = body.nameFile.trim()
+      try {
+        const contents = await fs.readFile(path + nameFile);
+        //body.data = data
+        return data
+      } catch (error) {
+        console.log(error)
+        return { error: error }
+      }
+      return
+
+    case 'imgBase64':
+
+      nameFile = body.nameFile.trim()
+      //console.log('1) =========================> Comienza leeArchivo data=', path + nameFile)
+      const tipArchivo = nameFile.trim().slice(-3)
+
+      try {
+        //const contents = await readFile(path + nameFile, { encoding: 'base64' });
+        const contents = await fs.readFile(path + nameFile, { encoding: 'base64' });
+        data = `data:image/${tipArchivo};base64,` + contents
+        body.data = data
+        // console.log('2) =========================> Termino leeArchivo data=', path + nameFile, data.slice(0, 50))
+        return data
+      } catch (error) {
+        return { error: error }
+
+      }
+
+    case 'print':
+      // Fs.writeFile('/tmp/test.txt', body.data)
+      const datos = body.data
+      //let buffDatos = datos
+      // generamos un archivo temporal a imprimir
+      let buffDatos = ''
+      for (let i = 0; datos.length > i; i++) {
+        for (const dato in datos[i]) {
+          const caracter = String.fromCharCode(datos[i][dato])
+          buffDatos = buffDatos + caracter
+        }
+
+      }
+      //      const file = '/tmp/ticket' + ((Math.random() * 100).toFixed(0)).toString() + '.txt'
+      const file = '/tmp/ticketBascula.txt'
+
+      await Fs.writeFile(file, buffDatos, function (err) {
+        if (err) {
+          return console.log(err);
+        }
+        exec('lp -d Epson-TM-Impact-Receipt ' + file, function (err) {
+          if (err) {
+            return console.log(err);
+          } else {
+            exec('rm ' + file)
+            return
+
+          }
+        }
+        )
+      })
+
+      break
+  }
+
+  return null
+
+});
+
+/*
+
+<script setup lang="ts">
+ const { data } = await useFetch('/api/callServer',
+      {
+        method: 'post',    // Se necesita para que haga la llamada y retorne los datos
+        body: { call: 'leeEmpresas' }
+      }
+    )
+}
+</script>
+
+
+*/

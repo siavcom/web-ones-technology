@@ -47,13 +47,6 @@ yarn install
 
 ## Build the application for production:
 
-https://nuxt.com/docs/api/commands/build
-nuxy analyze ( pre produccion)
-
-nuxi build (The build command creates a .output directory with all your application, server and dependencies ready for product)
-
-nuxi preview (The preview command starts a server to preview your Nuxt application after running the build command.)
-
 
 ## compile
 
@@ -79,6 +72,13 @@ yarn build
 
 
    Note: Solamente se debe de copiar el directorio .otput al servidor 
+
+https://nuxt.com/docs/api/commands/build
+nuxy analyze ( pre produccion)
+
+nuxi build (The build command creates a .output directory with all your application, server and dependencies ready for product)
+
+nuxi preview (The preview command starts a server to preview your Nuxt application after running the build command.)
 
 
 # after compile Locally preview production build:

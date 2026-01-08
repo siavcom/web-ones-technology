@@ -17,6 +17,7 @@ const item = await storage.getItem('some:key');
 
 //import fs from '@/node_modules/file-system/file-system.js';
 
+
 ///////// Funciones nativas de NodeJS /////////
 //import fs from 'fs'
 import { exec } from 'child_process'
@@ -49,24 +50,7 @@ export default defineEventHandler(async (event) => {
   const Fs = fs
 
   switch (call) {
-    case 'sql':
-      const sqlCall = body.sqlCall
-      const req = body.sqlReq
-      const result = {}
-      //data = sqlServer[sqlCall](req, result)
-      return data
-    /*
-        case 'readFile':
-          nameFile = body.nameFile.trim()
-          try {
-            const contents = await fs.readFile(path + nameFile);
-            body.data = data
-            return data
-          } catch (error) {
-            body.data = null
-          }
-          return
-    */
+
     case 'imgBase64':
 
       nameFile = body.nameFile.trim()

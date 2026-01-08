@@ -1,0 +1,32 @@
+//////////////////////////////////////////////
+// This class component was generated automatically by web-ones-technology
+// BaseClass : COLUMN
+// Class : fce_apy
+// Description : Fecha ultimo cambio de estatus
+// Author : El Fer Blocks
+// Creation : 2024-02-12
+// Update Date  : 
+/////////////////////////////////////////////
+///////////////////////////////////////
+// base class
+///////////////////////////////////////
+
+import { COLUMN } from '@/classes/Column'
+
+export class fce_apy extends COLUMN {
+
+  constructor() {
+    super()
+
+    // const nom_ind=renglon[i]['nom_ind']
+
+    this.prop.ColumnTextLabel = 'Ultimo cambio de estatus' // Column Header
+    this.prop.Type = "datetime"
+    this.prop.BaseClass = 'editText'
+    this.prop.ControlSource = 'vi_cap_agenda.fce_apy'
+    this.prop.Capture = true
+
+    this.prop.Disabled = true
+    this.style.width = "140px";
+  }
+}

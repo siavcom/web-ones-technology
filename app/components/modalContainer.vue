@@ -320,6 +320,7 @@ const handler = (event) => {
 
 .modal-body {
   margin: 20px 0;
+  width: 100%;
 }
 
 .modal-default-button {

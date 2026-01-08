@@ -1,0 +1,422 @@
+/////////////////////////////////////////////
+// Description : Servidor para enviar mensajes de WhatsApp
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : 2025-02-12
+// Update Date  :  2025-02-12
+// Observaciones : Trabajando bien  2025-02-12. Se tuvo que borrar cache whatsApp
+/////////////////////////////////////////////
+
+import { Client, LocalAuth, MessageMedia } from 'whatsapp-web.js';
+//const { Server } = require('socket.io'); //from "socket.io";
+import { Server } from "socket.io";
+import { nodemailer } from "nodemailer";
+
+let QrCode = ''
+let whatsAppReady = false
+let sw_connection = false
+let Socket: any = null
+
+const client = new Client({
+
+    puppeteer: {
+        headless: true,
+        ignoreHTTPSErrors: true,
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-extensions",
+        ],
+    },
+    /*    authStrategy: new LocalAuth({  // Guarda las sesiones de WhatsApp
+            dataPath: './.session'  // Folder que contiene los datos sesion
+        }),
+    */
+});
+
+
+export default defineEventHandler(async (event) => {
+
+    const body = await readBody(event)
+
+    const call = body.call  // obtiene el tipo de llamada
+
+    // const Fs = fs
+
+    /*
+        // origin =* permite llamadas de cualquier dominio
+        const io = new Server(port, {
+            cors: {
+                origin: "*"
+            }
+        })
+    */
+    const io = new Server()
+
+
+    // let Socket = null
+
+    /********** Servidor de sockets *****************/
+
+    io.on('connection', function (socket) {
+        console.log('Inicializado sockets')
+
+        if (QrCode == '')
+            client.initialize();
+
+        console.log('Inicializado WhatsApp')
+
+        // Funcion para generar el chatId
+        // const number = '+584241537550'; // Reemplaza con el número de destino
+        // const message = 'Hola, este es un mensaje enviado desde Node.js!';
+        // Getting chatId from the number.
+        // we have to delete all not numbers characters 
+        /*
+            function genChatId(phoneNumber) {
+                let chatId = phoneNumber.replaceAll('+', '')
+                chatId = chatId.replaceAll(' ', '')
+                chatId = chatId.replaceAll('-', '')
+                chatId = chatId.replaceAll('(', '')
+                chatId = chatId.replaceAll(')', '')
+                chatId = chatId.replaceAll('.', '') + "@c.us";
+        
+                console.log('chatID=:', chatId)
+                return chatId
+            }
+        
+        */
+        //  sendMail(from, to, subject, text)
+        console.log('<<<<<<<<<<<Socket connected >>>>>>>>>>>>');
+        Socket = socket
+
+        const res = { whatsAppReady }
+        socket.emit('ready', res) // Emite si esta inicializado en whatsApp
+
+        if (!whatsAppReady) {  // Si no esta vinculado WhatsApp manda el QR
+            const res = { QrCode }
+            console.log('<<<<<<<<<<<emit Qr=', QrCode, '>>>>>>>>>>>>');
+            socket.emit('emiteQR', res)
+        }
+
+        socket.on('zero', async (callback) => {
+
+            console.log('inicializa whatsApp');
+            callback('ok')
+
+        });
+
+        socket.on("isReady", () => {
+            res = { whatsAppReady }
+            socket.emit('ready', res)
+        });
+
+        // Envia mensaje de texto
+        socket.on("sendMessage", async (phone, textMessage) => {
+            console.log('Mensaje a enviar:', textMessage)
+            if (whatsAppReady) {
+                try {
+                    const chatId = genChatId(phone)
+                    console.log('Mensaje=:', chatId, textMessage)
+                    client.sendMessage(chatId, textMessage);
+                }
+                catch (err) {
+                    console.log('Error:', err)
+                    // Socket.emit('error', err)
+                }
+            }
+
+        });
+
+        // Envia media
+        // phone = numero de telefono
+        // base64Image = imagen en formato base64
+        // type = tipo de archivo (image/png, video/mp4, audio/mp3)
+        socket.on("sendMedia", async (phone, base64Image, type) => {
+            if (whatsAppReady) {
+
+                try {
+                    const chatId = await genChatId(phone)
+                    const media = new MessageMedia(type, base64Image);
+                    client.sendMessage(chatId, media);
+                }
+                catch (err) {
+                    console.log('Error:', err)
+                    // Socket.emit('error', err)
+                }
+            }
+        });
+
+
+        // Envia media desde una URL
+        // phone = numero de telefono
+        // url = url de la imagen
+        socket.on("sendUrl", async (phone, url) => {
+            if (whatsAppReady) {
+                let chatId = genChatId(phone)
+                try {
+                    const media = await MessageMedia.fromUrl(url);
+                    client.sendMessage(chatId, media);
+                }
+                catch (err) {
+                    console.log('Error:', err)
+                    //Socket.emit('error', err)
+                }
+            }
+        });
+
+        socket.on('disconnected', function () {
+            console.log('disconnected');
+        });
+    });
+
+
+    /********* Servidor de whatsapp ************/
+
+    client.on('qr', (qr) => {
+
+        QrCode = qr
+
+        if (Socket != null) {
+            console.log(' Emite QR = ', qr, ' ');
+            const res = { QrCode }
+            Socket.emit('emiteQR', res)
+        }
+    });
+
+    client.on('ready', () => {
+        whatsAppReady = true
+        console.log('Whatapp Client is ready!');
+        const res = { whatsAppReady }
+        Socket.emit('ready', res)
+    });
+
+    client.on('message_create', message => {
+        console.log(message.body); // todo el objeto del mensaje
+
+        // si boody es igual a !ping
+        if (message.body === 'ping') {
+            // send back "pong" to the chat the message was sent in
+            client.sendMessage(message.from, '1) pong');
+            message.reply('2) pong');
+        }
+        /* else
+            Socket.emit('message', message)
+        */
+
+    });
+
+    const { Connection, Request } = require("tedious");
+
+
+
+    //var connection = new Connection(config);
+
+
+    /*
+     
+    const executeSQL = async (sql, callback) => {
+        let connection = new Connection(config);
+        connection.connect((err) => {
+            if (err)
+                return callback(err, null);
+            const request = new Request(sql, (err, rowCount, rows) => {
+                connection.close();
+                if (err)
+                    return callback(err, null);
+                callback(null, { rowCount, rows });
+            });
+            
+            connection.execSql(request);
+        });
+    };
+     
+    */
+    async function main() {
+
+
+
+        const sqlConfig = {
+            server: 'shelsql.freeddns.org',  //update me
+            user: 'Messages',
+            password: 'webMessages',
+            database: 'ShelPrueba',
+            /*
+            authentication: {
+                type: 'default',
+                options: {
+                    userName: 'Messages', //update me
+                    password: 'webMessages'  //update me
+                }
+            },
+            */
+            options: {
+                // If you are on Microsoft Azure, you need encryption:
+                port: 1466,
+                database: 'ShelPrueba',
+                trustedConnection: true,
+                encrypt: true,
+                enableArithAbort: true,
+                trustServerCertificate: true,
+            }
+        };
+
+
+        //  let pool = await sql.connect(sqlConfig)
+        const sql = require('mssql')
+
+
+        // let pool = await sql.connect('Server=shelsql.freeddns.org,1466;Database=ShelPrueba;User Id=Messages;Password=webMessages;Encrypt=true')
+        let pool = await sql.connect(sqlConfig)
+        while (true) {
+            if (whatsAppReady) { // Si esta inicializado el whatApp
+                // Selecciona los mensajes que no han sido enviados
+                const query = 'SELECT cast(car_mess as int) as car_mess ,rtrim(des_mess) as des_mess,rtrim(asu_mess) as asu_mess,rtrim(cast(txt_mess as varchar(max))) as txt_mess,key_pri FROM [dbo].[man_pry_messages] WHERE  tim_mess is null'
+
+                let result = await pool.request().query(query)
+
+                //  console.dir('Resultado 1', result)
+                //console.log('>>>Resultado =', result.recordset.length, result.recordset[0])
+
+                //            for (let i = 0; i < result.recordset.length; i++) {
+                for (let i = 0; i < result.recordset.length; i++) {
+
+                    console.log('Resultado =', i, result.recordset[i])
+                    // Ya compuesto el mensaje, lo trasmite
+                    const car_mess = +result.recordset[i].car_mess
+                    const des_mess = result.recordset[i].des_mess
+                    const txt_mess = result.recordset[i].txt_mess
+                    const asu_mess = result.recordset[i].asu_mess
+                    const key_pri = result.recordset[i].key_pri
+
+                    /////////////////////////////////////////
+
+                    // Envia msn 
+                    if (car_mess == 4) {
+                        console.log('MSN ================================================================')
+                        console.log('Enviara msn telefono=', des_mess, 'Mensaje=', txt_mess)
+
+                    }
+                    // Envia mail 
+                    if (car_mess == 2) {
+                        console.log('MAIL ================================================================')
+                        console.log('Enviara mail =', des_mess)
+                        console.log('Asunto=', asu_mess)
+                        console.log('correo=', txt_mess)
+
+                        //sendMail('sistemas@shel.com',des_mess,asu_mess,txt_mess)
+
+                    }
+
+                    // Envia whatsApp al vendedor
+                    if (car_mess == 1) {
+                        const chatId = genChatId(des_mess, txt_mess)
+                        console.log('WhatsApp ================================================================')
+                        console.log('Enviara WhatsApp =', chatId, 'Mensaje=', txt_mess)
+                        // console.log('Mensaje=:', chatId, txt_mess)
+                        // client.sendMessage(chatId, txt_mess);
+
+                    }
+
+                    /////////////////////////////////////////////
+
+                    const sql = ` UPDATE  man_pry_messages set tim_mess=getdate()   WHERE  key_pri=${key_pri}`
+                    console.log('Update=', await pool.request().query(sql))
+
+
+                }
+
+                console.log('--------------  Nuevo Mensaje  ----------------------------');
+
+
+            }
+            await sleep(5000)  //milisegundos
+            console.log('Termino Esperando 60 segundos');
+        }
+
+    }
+
+    async function sleep(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
+
+
+    function genChatId(phoneNumber) {
+        let chatId = phoneNumber.replaceAll('+', '')
+        chatId = chatId.replaceAll(' ', '')
+        chatId = chatId.replaceAll('-', '')
+        chatId = chatId.replaceAll('(', '')
+        chatId = chatId.replaceAll(')', '')
+        chatId = chatId.replaceAll('.', '') + "@c.us";
+
+        console.log('chatID=:', chatId)
+        return chatId
+    }
+
+    async function sendMail(from, to, subject, text) {
+
+        const transporter = nodemailer.createTransport("SMTP", {
+            host: "mail.gova.com.mx",
+            port: 465,
+            secure: true, // true for port 465, false for other ports
+            //service: 'hotmail',
+            auth: {
+                user: "gventerprises@gova.com.mx",
+                pass: "aNe+T4X3oNC}",
+            },
+        });
+
+        // send mail with defined transport object
+        const info = await transporter.sendMail({
+            from: `${from}`, // sender address
+            to: `${to}`, // list of receivers
+            subject: `${subject}`, // Subject line
+            text: `${text}`, // plain text body
+            // html: "<b>Hello world?</b>", // html body
+        });
+        console.log("Message sent: %s", info.messageId);
+        // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+    }
+
+
+
+    /*
+    
+    const Ready = async () => {
+        while (true) {
+            // Selecciona los mensajes que no han sido enviados
+            if (sw_connection)
+                await executeStatement('SELECT * FROM [dbo].[man_pry_messages] WHERE  tim_mess is null');
+    
+            //        console.log('Esperando conexión de WhatsApp');
+            //        if (whatsAppReady) {
+            //            break
+            //        }
+            console.log('Esperando 5 segundos');
+            await sleep(5000)  //milisegundos
+            console.log('Termino Esperando 5 segundos');
+        }
+    }
+    
+    Ready()
+    
+    */
+    /*
+    client.on('ready', () => {
+        console.log('¡Cliente listo! enviara mensaje');
+        // Envía un mensaje
+        const number = '+584241537550'; // Reemplaza con el número de destino
+        const message = 'Hola, este es un mensaje enviado desde Node.js!';
+        // Getting chatId from the number.
+        // we have to delete "+" from the beginning and add "@c.us" at the end of the number.
+    
+        const chatId = number.substring(1) + "@c.us";
+    
+       // client.sendMessage(chatId, message);
+    });
+    
+    
+    */
+
+    //+584241537550
+})

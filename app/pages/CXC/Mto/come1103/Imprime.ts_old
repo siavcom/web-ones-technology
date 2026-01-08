@@ -1,0 +1,93 @@
+//////////////////////////////////////////////
+// This Form was generated automatically for web-ones-technology
+// BaseClass : imprimeformatos
+// Class : Imprime
+// Description : Componente Imprime
+// Author : El Fer Blocks (Fernando Cuadras)
+// Creation : 24/07/25
+// Update Date  :
+/////////////////////////////////////////////
+// import { IMPRIMEFORMATOS } from "@/classes/imprimeformatos";
+
+import { IMPRIMEFORMATOS } from "@/classes/imprimeformatos";
+//imports
+
+export class Imprime extends IMPRIMEFORMATOS {
+    //public
+    constructor() {
+        super();
+        this.prop.BaseClass = "imprimeformatos";
+        this.prop.Caption = "Imprime";
+        this.prop.Disabled = true;
+
+        this.prop.ToolTipText = "Imprime en un formato predefinido";
+
+        this.style.width = '60px';
+
+        //propiedades
+    }
+
+    // si quedo en proceso de timbrado
+    override async click() {
+        let m = {}   // inicializamos m
+        if (vi_cap_comedoc.sta_doc != 'T' && vi_cap_comedoc.sta_doc != 'X') {
+            await select('vi_cap_comedoc')
+
+            m = appendM(m, await scatter())// scatter 
+
+            switch (true) {
+                case Public.value.ndb_emp == 1 || Public.value.ndb_emp == 3:
+                    // fecha de elaboracion
+                    // Si es MSSQL o Sybase
+                    let ins_sql = 'exec  P_ACT_FEL ?m.tdo_tdo,?m.ndo_doc'
+                    break
+                case Public.value.ndb_emp == 4:
+                    // si es PostgreSQL
+                    ins_sql = 'select P_ACT_FEL(?m.tdo_tdo,?m.ndo_doc)'
+            } // End case 
+
+            if (!await SQLExec(ins_sql)) {
+                let a = ins_sql
+                // err_sql()()()
+                return false
+
+            } // End If 
+
+        } // End If 
+        // IF NOT thisform.grabar()
+        //    RETURN
+        // ENDIF
+
+        super.xml()
+        await select('vi_cap_comedoc')
+
+        await useNodata('vi_cap_comedoc') // use vi_cap_comedoc vi_cap_comedoc NODATA
+
+        vi_cap_comedoc.key_pri = false
+        this.Form.otroClick
+    }   // Fin Procedure
+
+
+
+    // Evento   :When
+    // Objeto  :Imprime
+    // Tipo   :Buttom
+    // Comentarios :
+    override async when() {
+        let m = {}   // inicializamos m
+        if (cometdo.cer_cer > ' ' && cometdo.coa_tdo == 'C') {
+            // tiene certificado digital fiscal no se permite la impresion
+            MessageBox('No se permite imprimir documentos fiscales digitales de cargo por esta opción')
+            return false
+
+        } // End If 
+
+        return true
+
+    }   // Fin Procedure
+
+
+
+
+    //metodo
+}

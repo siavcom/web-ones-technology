@@ -1,0 +1,257 @@
+/**
+ *
+ * @description Boton para timbrar CFDI
+ * @export
+ * @class bt_imprime
+ * @extends {IMGBUTTON}
+ */
+
+const { status, data, send, open, close } = useWebSocket(`ws://${location.host}/api/sendDocto`, {
+  autoReconnect: {
+    retries: 3,
+    delay: 1000,
+    onFailed() {
+      alert('Failed to connect WebSocket after 3 retries')
+    },
+  },
+
+  /*heartbeat: {
+    message: 'ping',
+    interval: 1000,
+    pongTimeout: 1000,
+  },
+*/
+})
+
+let whatsappReady: boolean = false;
+let whatsAppQR = ref("");
+
+export class Bt_whatsApp extends IMGBUTTON {
+  // public data_detail = new data_detail();
+  // public unWatch = unWatch();
+
+
+  private unWatch = watch(data, (newData) => {
+
+    // console.log('watch NewData=>>>>>', newData)
+
+    if (!newData) return;
+
+    const data = JSON.parse(newData)
+    //const data = newData
+    const result = data.result
+
+    console.log('watch result=', result, ' data=', data.data)
+
+    switch (true) {
+
+      case result == 'NoReady':
+        whatsappReady = false
+        console.log('1) WhatsApp Not Ready=', data.data)
+        //   const router = useRouter();
+        //   router.push('/WhatsApp/Pro/Vincular');
+        return;
+
+      case result == 'WhatsAppReady':
+        console.log('1) WhatsApp Ready=', data.data)
+        if (data.data) {
+          whatsappReady = true;
+        }
+        MessageBox('WhatsApp listo', 1, "WhatsApp");
+        this.Form.data_detail.block[0].prop.Visible = false
+        this.Form.data_detail.block[1].prop.Visible = true
+        this.Form.data_detail.block[2].prop.Visible = true
+        return
+
+        break
+
+      case result == "message" && this.displayQr.prop.Visible:
+        console.log('WebSocket message=', data.data)
+        // 0=mensaje sin titulo
+        // 1=Informacion solamente
+        // 2=? pregunta Cancel Abort Retry
+        // 4=? pregunta No Ok
+        MessageBox(data.data, 1, "Message");
+        return
+        break
+
+      case result == 'error':
+        MessageBox(data.data, 16, "Web Socket Error ");
+        return
+        break
+
+      default:
+        console.log('WebSocket default, result=', result, ' data=', data.data)
+        return
+        break
+
+    }
+
+  })
+
+  constructor() {
+    super()
+    this.Index = 1
+    this.prop.Capture = false;
+
+    this.prop.Position = 'footer'
+    this.prop.Image = "/Iconos/svg/WhatsAppColor.svg"        //print-color3.svg";
+    this.prop.Visible = false;
+    this.prop.Caption = 'Envia docuemnto'
+    this.prop.ToolTipText = 'Enviar documento por WhatsApp';
+    this.style.width = '84px'
+
+
+
+  } // Fin constructor
+
+  override async init() {
+    const message = {
+      transport: 'whatsapp',
+      job: 'open',
+    }
+
+    send(JSON.stringify(message))
+  }
+
+
+  override async click() {
+
+    if (!whatsappReady) {
+
+      const message = {
+        transport: 'whatsapp',
+        job: "init",
+
+      }
+
+      // console.log('Sending WhatsApp init status:', status.value, send);
+
+      send(JSON.stringify(message))
+      this.Form.data_detail.block[0].prop.Visible = true
+      this.Form.data_detail.block[1].prop.Visible = false
+      this.Form.data_detail.block[2].prop.Visible = true
+      this.Form.data_detail.open('WhatsApp')
+
+
+      MessageBox("WhatsApp no está listo aún. Vincule WhatsApp desde tu celular.", 1, "Advertencia");
+      //   const router = useRouter();
+      //   router.push('/WhatsApp/Pro/Vincular');
+      return;
+    }
+
+    this.Form.data_detail.block[0].prop.Visible = false
+    this.Form.data_detail.block[1].prop.Visible = true
+    this.Form.data_detail.block[2].prop.Visible = true
+
+
+    this.Form.data_detail.open('WhatsApp')
+    const comedoc = await goto(0, 'vi_cap_comedoc');
+
+    const Json = comedoc.obs_unn && comedoc.obs_unn.trim().length > 10 ? comedoc.obs_unn : '';
+
+    let mailJson = {};
+    try {
+      mailJson = JSON.parse(Json);
+    } catch (error) {
+      mailJson = {};
+    }
+    this.Form.data_detail.open('mail')
+    let messageSend = mailJson.text ? mailJson.text : `Envio de documento <<tdo_tdo>> número <<ndo_doc>>`;
+    messageSend = messageSend.replace('<<des_tdo>>', comedoc.des_tdo).replace('<<ndo_doc>>', comedoc.ndo_doc.toString());
+    this.Form.data_detail.messageSend.prop.Value = messageSend;
+    this.Form.data_detail.email.prop.Value = comedoc.ema_nom;
+    this.Form.data_detail.phone.prop.Value = comedoc.tel_nom;
+
+    return
+
+  }
+
+  // Envio de mensaje por servidor web-sockets sendDocto
+  async send() {
+
+    this.Form.data_detail.close()
+
+    const attachments = await this.Form.attachFiles()
+    let message = {}
+
+    if (this.Form.transport == 'WhatsApps') {
+      message = {
+        transport: 'whatsapp',
+        job: 'sendMedia',
+        data: {
+          phone: this.Form.data_detail.phone.prop.Value,
+          message: this.Form.data_detail.messageSend.prop.Value,
+          attachments
+        }
+      }
+
+    }
+
+    if (this.Form.transport == 'mail') {
+      const comedoc = goto(0, 'comedoc')
+
+      const Json = comedoc.obs_unn && comedoc.obs_unn.trim().length > 10 ? comedoc.obs_unn : '';
+
+      let mailJson = {};
+      let mailFrom = '';
+
+      try {
+        mailJson = JSON.parse(Json);
+        mailFrom = mailJson.from ? mailJson.from : '';
+      } catch (error) {
+        mailJson = {};
+        MessageBox('Error obteniendo datos del del mail ')
+      }
+
+      message = {
+        transport: 'mail',
+        from: mailFrom,
+        to: this.Form.data_detail.email.prop.Value,
+        subject: this.Form.data_detail.subject.prop.Value,
+        text: this.Form.data_detail.messageSend.prop.Value,
+        attachments
+
+      }
+
+    }
+    // El mensaje se enviará a través del boton de  WhatsApp
+    console.log('Sending message via WebSocket:', message);
+    send(JSON.stringify(message));
+    //this.Form.bt_whatsApp.send(message)
+
+  }
+
+  // desconectamos el servidor web-sockets al cerrar
+  override onUnmounted(): void {
+    if (this.unWatch) {
+      this.unWatch();
+    }
+  }
+
+}
+
+/*
+Enviar correo electrónico a: siavcom@hotmail.com  Para cambiar el correo electrónico al cual se le están haciendo llegar las facturas electrónicas y/o envió de comprobantes de pago.
+
+ 
+
+Aviso de confidenciablilidad : Los datos e información de este correo es exclusivo para el uso interno y adminstrativo de Siavcom Software S. de R.L. de C.V.
+
+No nos hacemos responsables de la mal uso que se le de a este correo .
+
+
+Atte.
+
+ Luz Margarita Gonzalez Garcia
+
+Av. Cucba 618-A  45221 Zapopan Jalisco
+
+
+Telefono: (33) 3915-9161, 3620-3930
+
+www.siavcom.com.mx
+
+
+
+*/

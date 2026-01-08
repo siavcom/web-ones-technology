@@ -89,9 +89,9 @@ export class bt_pdf extends IMGBUTTON {
 
     this.Form.report.displayPdf.prop.Source = buffer
     this.Form.report.displayPdf.prop.Visible = true
-
-
     this.Form.report.displayPdf.height = '1200px'
+    this.Form.bt_whatsApp.prop.Visible = true
+    this.Form.bt_email.prop.Visible = true
 
     return
 
