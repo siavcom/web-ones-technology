@@ -9,6 +9,13 @@ import { FORM } from "@/classes/Form";
 import { queryPri } from "@/classes/queryGen/queryPri";
 import { queryUsu } from "@/classes/queryGen/queryUsu";
 import { queryGen } from "@/classes/queryGen/queryGen";
+import { data_detail } from './detail/data_detail'
+//import { unWatch } from './unWatch';
+
+import { Bt_whatsApp } from "./Bt_whatsApp";
+import { Bt_timbra } from "./Bt_timbra";
+import { Bt_email } from "./Bt_email";
+
 import { bt_obtener } from "./bt_obtener";
 
 import { mon_rep } from "./mon_rep";
@@ -46,9 +53,14 @@ export class reportForm extends FORM {
   public for_imp = new for_imp();
   public reportFields = new reportFields();
 
+  public bt_whatsApp = new Bt_whatsApp()
+  public bt_timbra = new Bt_timbra()
+  public bt_email = new Bt_email()
+
   public bt_obtener = new bt_obtener();
   public bt_pdf = new bt_pdf();
   public report = new report();
+  public data_detail = new data_detail()
 
   public des_fec = new des_fec();
   public has_fec = new has_fec();
@@ -66,7 +78,7 @@ export class reportForm extends FORM {
 
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
 
-
+  data_detailBlock: number = 0;
   constructor(num_blocks: number) {
     super();
 
@@ -163,6 +175,17 @@ export class reportForm extends FORM {
 
     this.block[i].title = 'Resultado'
     this.block[i].prop.Visible = false
+
+    i++
+    this.data_detailBlock = i
+    this.block[i] = structuredClone(this.container)
+    this.block[i].component = {
+      [0]: this.data_detail,
+    }
+
+    this.block[i].title = 'Datos envio'
+    this.block[i].prop.Visible = false
+
 
   }
 

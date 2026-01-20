@@ -32,29 +32,28 @@
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
       :step="This.prop.Step" :readonly="This.prop.ReadOnly" :tabindex="prop.TabIndex" @keypress="keyPress($event)"
-      @click.capture="onClick" @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()"
-      v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
-      v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)">
-    <!--v-on:keyup.enter="clickReturn()" -->
+      @focus="onFocus" @input="emitValue(false)" v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)"
+      v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)"
+      v-on:keyup.up="keyPress($event)">
+    <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
     <!--textArea -->
     <div :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle>
       <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style=Styles.inputStyle
         v-model="Value" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :placeholder="prop.Placeholder"
         :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows" :cols='Styles.inputStyle.cols'
-        @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus" @focusout="lostFocus"
-        v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
-        v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
-        @keydown.delete="keyPress($event)"></textarea>
+        @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus" v-on:keyup.13="keyPress($event)"
+        v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)"
+        v-on:keyup.up="keyPress($event)" @keydown.delete="keyPress($event)"></textarea>
     </div>
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly"
-      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @click.capture="onClick" @focus="onFocus"
-      @focusout="lostFocus" v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)"
-      v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)"
-      v-on:keyup.up="keyPress($event)" @keydown.delete="keyPress($event)">
+      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
+      v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)"
+      v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
+      @keydown.delete="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()" -->
     <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
@@ -92,10 +91,10 @@
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus"
-      @click.capture="onClick" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska" @maska="onMaska"
-      @keypress="keyPress($event)" @keypress.backspace="keyPress($event)" @keypress.delete="keyPress($event)"
-      @keypress.down="keyPress($event)" @keypress.up="keyPress($event)" @keydown.delete="keyPress($event)">
-    <!--v-on:keyup.enter="clickReturn()" @click.capture="onClick"-->
+      @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska" @maska="onMaska" @keypress="keyPress($event)"
+      @keypress.backspace="keyPress($event)" @keypress.delete="keyPress($event)" @keypress.down="keyPress($event)"
+      @keypress.up="keyPress($event)" @keydown.delete="keyPress($event)">
+    <!--v-on:keyup.enter="clickReturn()" se quita ya que onFocus es que lo substituye @click.capture="onClick"-->
 
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
@@ -338,6 +337,7 @@ const checkValue = ref(false)
 
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
+let sw_emitValue = false
 
 
 
@@ -543,22 +543,30 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //2/Sep/2025 emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
       // Si no viene del watch This.prop.Value
-      if (!newValor)
-        newValor = This.prop.Value  // Si viene del watch This.prop.Value
-
+      if (!newValor) {
+        //  console.log('-----------0) editText emitValue() !readCam Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+        newValor = Value.value
+        //newValor = This.prop.Value  // Si viene del watch This.prop.Value
+      }
     }
 
-    console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
       await updateCampo(newValor, props.prop.ControlSource, Recno)
+      //console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor)
       // Value.value = Valor
     }
     //console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
-      console.log('isValid', isValid, '2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
-      Value.value = newValor
+      if (Value.value != newValor) {
+        Value.value = newValor
+      }
+      if (Value.value != This.prop.Value) {
+        This.prop.Value = Value.value
+      }
+      console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
 
       // console.log('----------------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'newValor=', newValor, 'This.prop.Value = ', This.prop.Value)
       // if (Value.value != This.prop.Value)  // 14/Mar/2025
@@ -634,7 +642,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   }
   else {  // Si hay lectura de campo
-    //console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
+    console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
     //    This.prop.Valid = true
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
@@ -672,8 +680,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
         //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
         const Recno = props.Registro
+
         const data = await This.Form.db.readCampo(ControlSource, Recno)
-        //  console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'data=', data)
+        console.log('>>>>>2.0.0)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'data=', data)
+        // console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno)
 
         for (const campo in data) {
 
@@ -684,7 +694,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
             //  This.Recno = props.Registro
 
             //This.prop.Valid = true// ya se capturo algo , se apaga Valid
-            Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
+            if (Type == 'number')
+              Value.value = +data[campo] // se regresaraq el valor con emi al v-model:Value
+            else
+              Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
 
             //  This.prop.Value=Value.value
 
@@ -701,7 +714,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
               This.prop.Valid = false
           }
         }
-
+        console.log('>>>>>2.0.1)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'Value', Value.value)
 
       }
       if (!sw_dat && pos > 1) { // No encontro dato
@@ -737,7 +750,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       await This.onChangeValue(ref(Styles))
     }
   */
-  //  console.log('2.2.0) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+  console.log('>>>>>2.2.5) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value, 'Recno=', props.Registro)
   switch (Type) {
     case 'number':
       if (Value.value == null)
@@ -764,7 +777,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //  checkValue.value = Value.value == 1 ? true : false
       //await This.interactiveChange()
       compJson.value = []
-      console.log('editText Json Name', props.prop.Name, 'Value=', Value.value)
+      // console.log('editText Json Name', props.prop.Name, 'Value=', Value.value)
       if (Value.value != null && Value.value.trim().length > 5) {
         try {
           currentJson.value = JSON.parse(Value.value)
@@ -807,7 +820,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //  console.log('editText emitValue() Time Name ', props.prop.ControlSource, 'Valor=', Valor, 'Value=', Value.value)
       if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01T00:00:00'
-
+      console.log('datetime editText emitValue() Time Name ', props.prop.Name, 'Value=', Value.value)
       Value.value = Value.value.slice(0, 16)
 
       displayDate.value = new Date(Value.value)
@@ -833,17 +846,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     This.prop.Status = 'A'
 
 
-  /////////////////////////////////////////
-  // nextTick(function () {
-
-  //console.log('2.3)editText emitValue readCampo Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
-
-  // 11/Marzo/2025 se agrego el siguiente if
-  //if (Value.value != This.prop.Value)
-  //  Value.value = This.prop.Value
-
-  //  console.log('Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
-
+  console.log('<<<========================== Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
+  sw_emitValue = true
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update") // emite un update en el componente padre
 
@@ -851,8 +855,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     //  console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
     await This.onChangeValue(ref(Styles))
   }
-
-
 
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
@@ -959,8 +961,6 @@ const lostFocus = async () => {
 
   await asignaValue()
 
-  // await emitValue(false, false, Value.value) //se puso await
-  //console.log('editText onInput lostFocus() Name', props.prop.Name, 'Type=', propType.value, 'Value=', Value.value, 'currentValue.value=', currentValue.value[0])
 
   if (This.prop.Valid)
     focusIn.value = 0 // Perdio el foco
@@ -969,7 +969,7 @@ const lostFocus = async () => {
 }
 
 
-const asignaValue = async () => {
+const asignaValue = async (new_val?: any) => {
   const Type = propType.value
 
   if (Type == 'number') {
@@ -1037,8 +1037,12 @@ const asignaValue = async () => {
       Value.value = Value.value.toLowerCase()
   }
 
-  This.prop.Value = Value.value
-  await emitValue() ///se puso await
+  // This.prop.Value = Value.value
+
+  if (new_val)
+    await emitValue(false, true, new_val)
+  else
+    await emitValue() ///se puso await
   return
 
 };
@@ -1175,13 +1179,13 @@ const nextElement = async () => {  //clickReturn
  * Agrega el evento click al array de eventos del form
  * @return {void}
  */
-
+/*
 const onClick = () => {
   onFocus()
   //This.Form.eventos.push(This.prop.Map + '.click()')
 
 }
-
+*/
 ////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -1208,8 +1212,6 @@ const onFocus = async () => {
 
   if (This.beforeWhen)
     await This.beforeWhen()
-
-
 
   if (!This.Help)
     This.Help = false
@@ -1239,7 +1241,7 @@ const onFocus = async () => {
   // Si es la primera vez que se hace foco
   //  let sw_when = false
   if (focusIn.value == 0) {
-    await emitValue(true)
+    // await emitValue(true)
     //   sw_when = true
     focusIn.value = 1
     //Asignamos  el background del input originañ
@@ -1309,7 +1311,8 @@ const onFocus = async () => {
 
   }
 
-
+  sw_emitValue = false
+  console.warn('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<editText Fin onFocus() sw_emitValue', sw_emitValue, ' This.prop.Name', This.prop.Name, 'This.prop.Value', This.prop.Value)
   //nextTick(function () {
 
   // const element = document.getElementById(Id);
@@ -1476,7 +1479,14 @@ watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
   (new_val: any, old_val: any) => {
 
-    // console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
+    if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
+      console.log('EditText watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
+      return
+    }
+
+
+
+    console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
     if (new_val != old_val)
       emitValue(true)
   },
@@ -1491,7 +1501,13 @@ watch(
 watch(
   () => This.Recno, //props.Registro,
   async () => {
-    //    console.log('EditText Watch prop.Registro Name=', This.prop.Name)
+    console.log('EditText Watch prop.Registro Name=', This.prop.Name)
+    if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
+      console.log('watch This.Recno editText Name=', This.prop.Name)
+      return
+    }
+
+
     await emitValue(true)
     //29/Oct/2025 -- Se quita, daba problema en el grid
     //This.Recno = props.Registro
@@ -1577,7 +1593,6 @@ watch(
 
   async (new_val: any, old_val: any) => {
 
-    console.log('editText Name=', This.prop.Name, 'new_val=', new_val, 'Value.value=', old_val)
 
     if (new_val == Value.value) {
 
@@ -1585,9 +1600,10 @@ watch(
 
       return
     }
-    if (watchPropValue) // Si se cambio desde el emitValue se ignora
+    if (watchPropValue || sw_emitValue) { // Si se cambio desde el emitValue se ignora
+      console.log('watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
       return
-
+    }
     const Type = This.prop.Type.toLowerCase()
     //console.log('>>> EditText Watch This.prop.Value Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'TYPE=', Type)
 
@@ -1756,7 +1772,14 @@ watch(
     // Si el valor nuevo es diferente al anterior
     // if (new_val != Value.value) {
     // console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, 'new_val', new_val, 'Status=', This.prop.Status)
+
+
+    // 19/Ene/2026 se pruebacambia a asignaValue 
+    // await asignaValue(new_val)
+
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
+
+
     watchPropValue = false
     if (This.prop.Valid && This.onChangeValue) {
       // console.log('2) watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
@@ -1991,9 +2014,20 @@ const handler = (event) => {
 //const init = async () => {
 //await callOnce(async () => {
 
+// Estaba repetido el codigo de onMounted 14/Enero 2026
+//onMounted(async () => {
+//  if (This.onMounted) await This.onMounted()
+//})
+
+
 onMounted(async () => {
+  if (This.onMounted)
+    await This.onMounted()
 
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
+
+  // const Element = useTemplateRef('Ref')   // Podemos Obtener el id de este componente en el DOM por medio del ref <input ref="Ref"/>
+  // thisElement=Element.value
 
   styleAssing()
 
@@ -2027,7 +2061,7 @@ onMounted(async () => {
   if (!This.prop.RefValue == null)
     Value.value = This.prop.RefValue.value
 
-  const result = await emitValue(true)
+  await emitValue(true)
 
 
   This.Recno = props.Registro
@@ -2057,7 +2091,7 @@ onMounted(async () => {
 
   This.afterMounted()
 
-  await This.recnoChange()
+  // await This.recnoChange()
   This.prop.Status = 'A'
 
   console.log('onMounted Name=', This.prop.Name, 'Valid=', This.prop.Valid)
@@ -2087,10 +2121,6 @@ onBeforeMount(async () => {
   //   await This.init()
 })
 
-
-onMounted(async () => {
-  if (This.onMounted) await This.onMounted()
-})
 
 onUnmounted(async () => {
   if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)

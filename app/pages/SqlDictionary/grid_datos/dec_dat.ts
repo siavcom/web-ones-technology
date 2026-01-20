@@ -18,7 +18,6 @@ export class dec_dat extends COLUMN {
     super()
     this.prop.Order = 3
     this.prop.ColumnTextLabel = 'Decimales'
-
     this.prop.Type = 'number'
     this.prop.Min = '0'
     this.prop.Max = '20'
@@ -34,26 +33,25 @@ export class dec_dat extends COLUMN {
   ////////////////////////////////// 
   // Evento When
   ///////////////////////////////////
-  async when() {
+  override async when() {
+    this.prop.Valid = true
 
-    if (this.Parent.tip_dat.prop.Value != 'N') {
-      this.prop.Value = '0'
-      this.prop.ReadOnly = true
-      this.prop.Valid = true
+    if (this.Parent.tip_dat.prop.Value != 'N' && this.Parent.tip_dat.prop.Value != 'I') {
+      this.prop.Value = 0
+      return false
     }
 
-    if (!this.prop.ReadOnly! && !await this.Parent.cam_dat.when()) {
-      this.prop.ReadOnly = true
+    if (!await this.Parent.cam_dat.when()) {
       this.prop.nextFocus = true
-      this.prop.Valid = true
+      return false
     }
 
 
-    return !this.prop.ReadOnly
+    return true
   }
 
-  async valid() {
-
+  override async valid() {
+    this.prop.Valid = true
     if (this.prop.Value + this.Parent.lon_dat.prop.Value > 38) {
       this.prop.ErrorMessage = 'La suma longitud+decimales no debe exeder 38'
       return false

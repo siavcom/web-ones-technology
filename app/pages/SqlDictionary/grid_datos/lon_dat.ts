@@ -57,9 +57,7 @@ export class lon_dat extends COLUMN {
 
 
     override async valid() {
-        console.log('valid lon_dat=', this.prop.Value)
-
-
+        this.prop.Valid = true
 
         if (this.prop.Value == 0 && this.Parent.tip_dat.prop.Value != 'V') {
             this.prop.ErrorMessage = 'El tamaño debe ser mayor a 0 '
@@ -94,7 +92,7 @@ export class lon_dat extends COLUMN {
         }
 
         if (this.Parent.tip_dat.prop.Value == 'N' &&
-            this.prop.Value + this.Parent.dec_dat.prop.Value > 38) {
+            +this.prop.Value + this.Parent.dec_dat.prop.Value > 38) {
             this.prop.ErrorMessage = 'La suma longitud+decimales no debe exeder 38'
             return false
         }

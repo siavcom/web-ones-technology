@@ -167,141 +167,6 @@ function genChatId(phoneNumber: string) {
 }
 
 
-// Enviar correos
-// @from : remitente
-// @to : destinatario
-// @subject : asunto
-// @text : texto
-// @attachments : {filename: string, path: string, contentType: string}[]
-async function sendMail_old(to: string, subject: string, text: string, attachments?: []) {
-
-    console.log('2) sendDocto SendMail lee mailServer')
-    const mailServer = await useStorage().getItem('mail:Server');
-    console.log('3) sendDocto SendMail====>>> mailServer=', mailServer)
-
-    // Checar en tmp los archivos que se van a enviar
-    const fileAttachments = []
-    if (attachments) {
-        for (const attach in attachments) {
-
-            console.log()
-            let type = attachments[attach].type // tipo de archivo (image/png, video/mp4, audio/mp3,'application/pdf' )
-            //const fileName = `_mail_${new Date().toISOString().slice(0, 10)}_${attachments[attach].fileName}`
-            const fileName = `_mail_${attachments[attach].fileName}`
-            const path = join(os.tmpdir(), fileName);
-            const fileB64 = attachments[attach].fileB64 ? attachments[attach].fileB64 : false
-            let file = attachments[attach].file ? attachments[attach].file : ''
-
-            if (fileB64) {
-                const pos = file.indexOf(';base64')
-                if (pos >= 0)
-                    file = file.slice(pos + 7)
-
-                const Bufer = Buffer.from(file, 'base64'); // convertimos bas64 a buffer
-                fs.writeFileSync(path, Bufer);
-
-                //fs.writeFileSync(path, atob(file));
-            } else
-                fs.writeFileSync(path, file);
-
-            switch (true) {
-                case type === 'pdf':
-                    type = 'application/pdf'
-                    break
-                case type == 'xml':
-                    type = 'application/xml'
-                    break
-                case type == 'png' || type == 'jpg' || type == 'jpeg' || type == 'gif' || type == 'bmp':
-                    type = `ìmage/${type}`
-                    break
-
-            }
-            const fileAttach = {
-                filename: fileName,
-                path: path,
-                contentType: type
-            }
-            fileAttachments.push(fileAttach)
-
-        }
-    }
-
-    // Retrieve a value
-
-    const fromMail = mailServer?.from ? mailServer.from : ''
-    if (mailServer && mailServer['from'])
-        delete mailServer['from']
-
-    //const { transport, nodemailer } = useNodeMailer()
-
-
-    const transporter = nodemailer.createTransport(mailServer)
-
-    /*
-        const transporter = nodemailer.createTransport("SMTP", {
-            host: "mail.gova.com.mx",
-            port: 465,
-            secure: true, // true for port 465, false for other ports
-            //service: 'hotmail',
-            auth: {
-                user: "gventerprises@gova.com.mx",
-                pass: "aNe+T4X3oNC}",
-            },
-        });
-    */
-    const mailOptions = {
-        from: `${fromMail}`, // sender address
-        to: `${to}`, // list of receivers
-        subject: `${subject}`, // Subject line
-        text: `${text}`, // plain text body
-        attachments: fileAttachments
-
-        /* [
-           {
-             filename: 'document.pdf',
-             path: path.join(__dirname, 'path/to/your/document.pdf'), // Use the path module
-             contentType: 'application/pdf' // Optional, but recommended
-           }
-         ]*/
-    }
-
-
-    // send mail with defined transport object
-
-    // 3. Send the email
-    transporter.sendMail(mailOptions, (error: {}, info: {}) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            webSocketPeer.send({
-                result: 'sendMail',
-                data: error
-            })
-
-
-        } else {
-            console.log('Email sent:', info.response);
-            webSocketPeer.send({
-                result: 'sendMail',
-                data: info.response
-            })
-        }
-    })
-
-    // borra attachmets temporales
-    /*
-    if (fileAttachments.length > 0) {
-        console.log('fileAttachments=', fileAttachments)
-
-        for (let i = 0; i < fileAttachments.length; i++) {
-            const file = fileAttachments[i].file
-            try { fs.unlinkSync(file.path); } catch (e) { }
-        }
-    }
-    */
-
-    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
-}
-
 // Genera una cadena aleatoria de string de longitud n
 function genRandStr(length: number) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -338,18 +203,7 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
                     whatsApp.initialize();
                 } else {
                     webSocketPeer.send({ result: 'WhatsAppReady', data: whatsAppReady });
-                    /*
-                    
-                    
-                                        const data = {
-                                            result: 'QrCode',
-                                            data: QrCode,
-                                            mensaje: 'Qr Generado OK'
-                                        }
-                    
-                                        console.log('===========>Genera QrCode  QrCode=', data)
-                                        webSocketPeer.send(data)
-                                     */
+
                 }
                 break;
 
@@ -491,9 +345,6 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
                 phone = data.phone
                 const url = data.url
 
-                // Envia media desde una URL
-                // phone = numero de telefono
-                // url = url de la imagen
                 if (whatsAppReady) {
                     let chatId = genChatId(phone)
                     try {
@@ -620,11 +471,11 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
             */
         }
 
-        // send mail with defined transport object
+
 
         //   (async () => {
 
-        try {
+        try { // send mail with defined transport object
             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
             console.log("Sending mail");
             const info = await transporter.sendMail(mailOptions);
@@ -651,29 +502,6 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
         }
         //     })()
 
-
-
-        /*
-                await transporter.sendMail(mailOptions, (error: {}, info: {}) => {
-                    if (error) {
-                        console.error('Error sending email:', error);
-                        webSocketPeer.send({
-                            result: 'mailError',
-                            data: error
-                        });
-                        deleteFiles(fileAttachments)
-        
-                    } else {
-                        console.log('Email sent:', info);
-                        webSocketPeer.send({
-                            result: 'sentMail',
-                            data: info
-                        });
-                        deleteFiles(fileAttachments)
-                    }
-                })
-                */
-
     }
 
 }
@@ -693,22 +521,7 @@ const deleteFiles = (fileAttachments: []) => {
 
 }
 
-
-
 /*
-
-      for (let i = 0; files.length; i++) {
-            const file = files[i]
-            try {
-                fs.unlinkSync(file);
-            }
-            catch (e) {
-                console.log('Error deleting file:', e)
-            }
-        }
-
-
-
 
 async function leeCfdi(dialect: string, tdo_tdo: string, ndo_doc: number) {
 

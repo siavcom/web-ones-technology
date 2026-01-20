@@ -1,32 +1,31 @@
-﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
-// Description : Documentos de ventas
-// Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2023-09-20
-// Update Date  : 2023-09-29
-/////////////////////////////////////////////
-
-///////////////////////////////////////
-// Base class
-///////////////////////////////////////
+﻿/***************************************************
+* @extends : reportForm
+* @Class : thisForm
+* @Description : Documentos de ventas
+* @Author : El Fer Blocks (Fernando Cuadras)
+* @Creation : 2023-09-20
+* @UpdateDate  : 2023-09-29
+****************************************************/
 
 import { reportVtas } from "@/classes/Siavcom/reports/VTAS/reportVtas";
 import { ndo_doc } from "./ndo_doc";
 
-import { data_detail } from './detail/data_detail'
 //import { unWatch } from './unWatch';
 
-import { Bt_whatsApp } from "./Bt_whatsApp";
-import { Bt_timbra } from "./Bt_timbra";
-import { Bt_email } from "./Bt_email";
+
+//import { data_detail } from './detail/data_detail'
+
+
+//import { Bt_whatsApp } from "./Bt_whatsApp";
+//import { Bt_timbra } from "./Bt_timbra";
+//import { Bt_email } from "./Bt_email";
 export class ThisForm extends reportVtas {
   public ndo_doc = new ndo_doc()
-  public data_detail = new data_detail()
+  // public data_detail = new data_detail()
 
-  public bt_whatsApp = new Bt_whatsApp()
-  public bt_timbra = new Bt_timbra()
-  public bt_email = new Bt_email()
+  //public bt_whatsApp = new Bt_whatsApp()
+  //public bt_timbra = new Bt_timbra()
+  //public bt_email = new Bt_email()
   tdo_tdo = ''
   num_doc = 0
   num_pol = 0
@@ -63,23 +62,26 @@ export class ThisForm extends reportVtas {
     this.block[0].component = {
       [0]: this.op_tdo_tdo,
       [1]: this.ndo_doc,
-      [2]: this.data_detail
+      // [2]: this.data_detail
 
     }
-    this.block[1].component = {
-      [0]: this.data_detail
-    }
+    /*  
+      this.block[1].component = {
+        [0]: this.data_detail
+      }
+  
+      this.block[1].prop.Visible = false
+  */
+
+    // se decrementa el block de 2 a uno
     this.block[1].prop.Visible = false
-
+    this.block[1].prop.Disabled = true
 
     this.block[2].prop.Visible = false
     this.block[2].prop.Disabled = true
 
     this.block[3].prop.Visible = false
     this.block[3].prop.Disabled = true
-
-    this.block[4].prop.Visible = false
-    this.block[4].prop.Disabled = true
 
   }
 

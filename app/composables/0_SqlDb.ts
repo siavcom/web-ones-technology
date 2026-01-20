@@ -350,18 +350,20 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     }
 };
 
-/// /////////////  Vfp USE /////////////////////
-// nom_vis  : Nombre de la vista a utilizar
-// m        :  Varibles de memoria a pasar
-// alias    : Alias
-/// ////////////////////////////////////////////
-//  use = async (obj_vis:any, nom_vis:any , m: {}, alias?:any) => {
+/**
+* Iniciliza una vista remota 
+* @param nom_vis string    : Nombre de la vista a utilizar
+* @param m{}              :  Varibles de memoria a pasar
+* @param alias string      : Alias
+* @param order string      : Orden
+* @returns boolean:  - True si la vista se inicializó correctamente, false en caso contrario
+**/
+
 export const use = async (
     nom_vis: string,
     m?: {},
     alias?: string,
     order?: string) => {
-
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -380,8 +382,6 @@ export const use = async (
     alias = alias.trim();
     //  if (alias == 'vi_cap_cometab')
     //      console.log("1 Db USE ", alias);
-
-
 
     if (This.value.View[alias]) {
 
@@ -546,7 +546,7 @@ export const use = async (
     //console.log('Db  use dat_vis========>', dat_vis)
 
     try {
-        console.log("1 Db Use Axios =====>", dat_vis); // .data
+        //console.log("1 Db Use Axios =====>", dat_vis); // .data
         // This.value.View[alias].m = m; // Variables m para hacer requery
         const data = await axiosCall(dat_vis);
 
@@ -555,7 +555,7 @@ export const use = async (
         if (data.length) {
             // No hubo error
             const response = await genera_tabla(data, alias)
-            console.log("4 Db Use Axios data=", data, "=====>response=", response); // .data
+            console.log("Db Use Axios data=", data, "=====>response=", response); // .data
             return response;
         }
         else return []; //   { return [] }
@@ -2159,9 +2159,19 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
     alias = alias.trim();
     This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
 
-    // borra las tablas en ALA
-    await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
-    await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
+    // borra las tablas localALASql
+    // 19/Ene/2026 se substituye
+    //    await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
+    //    await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
+
+    /*
+    try {
+          await localAlaSql("delete from last." + alias + ";");
+          await localAlaSql("delete from now." + alias + ";");
+    } catch (error) {
+          console.error("Error al eliminar tablas:", error);
+    }
+    */
 
     if (!This.value.View[alias]) {
         // console.log("Db geneta_tabla ", alias);
@@ -2237,8 +2247,11 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         This.value.View[alias].est_tabla = respuesta.est_tabla; // estructura de la tabla
 
+        //  if (alias === 'vi_cap_comedat')
+        //      console.log('Db Estructura vista===>>', alias, respuesta.est_tabla)
+
         // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
-        let des_tab = " CREATE TABLE " + alias + " (recno INT PRIMARY KEY";
+        let des_tab = " CREATE TABLE " + alias + " (recno INT "; //PRIMARY KEY
 
         for (const nom_ele in respuesta.est_tabla) {
             // genera la descripcion de la tabla para generarla en alasql
@@ -2248,33 +2261,35 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             if (respuesta.est_tabla[nom_ele].tip_cam == "STRING")
                 des_tab = des_tab + "(" + respuesta.est_tabla[nom_ele].lon_dat + ")";
 
+            // cuando es fecha o tiempo generamos el campo como string 
+            if (respuesta.est_tabla[nom_ele].tip_cam == "DATE")
+                des_tab = des_tab.replace('DATE', 'STRING') + "( 10 )";
+
+            if (respuesta.est_tabla[nom_ele].tip_cam == "DATETIME" || respuesta.est_tabla[nom_ele].tip_cam == "TIME")
+                des_tab = des_tab.replace('DATETIME', 'STRING').replace('TIME', 'STRING'), + "( 16 )";
+
+
             const val_def = respuesta.est_tabla[nom_ele].val_def;
             // const val_def=respuesta.est_tabla[nom_ele].replace('undefined','null')
 
             This.value.View[alias].val_def[nom_ele] = val_def;
 
-            //  This.value.View[alias]["val_def"] = val_def.replace('undefined','null')    ; // valores default
-
-            //        val_def = val_def + nom_ele + ':' + respuesta.est_tabla[nom_ele].val_def + ','
-
-            /*  Indexed Local Data base
-            This.value.newTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
-            This.value.oldTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
-            */
         }
-        // console.log('Db Estructura View respuesta===>', alias, respuesta)
+        //  console.log('Db Estructura View respuesta===>', alias, respuesta)
         // console.log('Db Estructura View ===>', alias, This.value.View[alias].val_def)
 
         des_tab = des_tab + ")";
         // console.log('Db Valores default=====>',alias,This.value.View[alias].val_def)
 
         // console.log('Db ALASQL Estructura ===>',des_tab)
-        // Creamos la tablas
-
-        //console.log("Db ins_sql=", des_tab);
+        // Creamos la tablas en last y now
 
         try {
             //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + '; ')
+
+            // 19/Ene/2026
+            await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
+            await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
             await localAlaSql("USE last ;" + des_tab);
             await localAlaSql("USE now ;" + des_tab);
 
@@ -2301,7 +2316,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
     // console.log('Db Genera_tabla final==>',This.value.View[alias],alias)
 
     if (noData) {
-        //  console.log("Db genera_tabla View creada", alias, This.value.View[alias]);
+
         return await localAlaSql(`select * from ${alias} limit 0`);
     }
 
@@ -2330,22 +2345,30 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
         This.value.View[alias].data = respuesta[respuesta.length - 1]; // asignamos el valor del ultimo registro
 
         await select(alias);
-        //  console.log("5 Db genera_tabla"); // .data
-
+        //   console.log("5 Db genera_tabla", alias, 'Respuesta=', respuesta); // .data
         try {
-            await localAlaSql(
-                "USE now; CREATE TABLE now." +
-                alias +
-                " ; \
-          SELECT * INTO now." +
+
+            // 19/Ene/2026 se substituye ya que la tabla ya estaba creada
+            /* await localAlaSql(
+                 "USE now; CREATE TABLE now." +
+                 alias +
+                 " ; \
+                 */
+
+            await localAlaSql(" delete from now." + alias + "; \
+            SELECT * INTO now." +
                 alias +
                 "  FROM ?",
                 [respuesta]
             );
-            await localAlaSql(
-                "USE last; CREATE TABLE last." +
-                alias +
-                " ; \
+            /*
+             await localAlaSql(
+                 "USE last; CREATE TABLE last." +
+                 alias +
+                 " ; \
+            */
+
+            await localAlaSql("delete from last." + alias + "; \
           SELECT * INTO last." +
                 alias +
                 "  FROM ?",
@@ -2357,6 +2380,14 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             return null;
         }
         alasql('USE now;')
+        /*
+                if (alias == 'vi_cap_comedat') {
+                    var structure = await alasql('SHOW create TABLE ' + alias);
+                    console.log('>>>>> Db genera_tabla Estructura ===>', structure, 'respuesta',await alasql('select * from now.' + alias))
+                }
+        
+        */
+
         // console.log("5 Db genera_tabla"); // .data
         This.value.View[alias].recnoVal = [...recnoVal]; // utilizamos el spread Operator
 
@@ -3122,7 +3153,9 @@ export const goto = async (despla: string | number, area?: string, lastDatabase?
     if (recno == 0)
         recno = This.value.View[alias].recno;
 
-    data = await localAlaSql(` SELECT * FROM ${table}  where recno=?`, recno);
+    data = await localAlaSql(`SELECT * FROM ${table}  where recno=?`, recno);
+    //console.log('sql goto alias=', alias, ' recno=', recno, 'data=', data)
+
     await alasql('USE now;')
     if (data.length == 0) {
 
@@ -3196,7 +3229,12 @@ export const bof = async (alias?: string) => {
 export const oldValue = async (field: string, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias) {
-        alias = This.value.are_tra[This.value.num_are - 1];
+        const punto = field.indexOf('.')
+        if (punto > -1) {
+            alias = field.slice(0, punto)
+
+        } else
+            alias = This.value.are_tra[This.value.num_are - 1];
     }
 
     const recno = This.value.View[alias].recno
@@ -3217,16 +3255,26 @@ export const oldValue = async (field: string, alias?: string) => {
 
 export const currentValue = async (field: string, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
+
     if (!alias) {
         alias = This.value.are_tra[This.value.num_are - 1];
     }
 
-    const recno = This.value.View[alias].recno
-    const data = await localAlaSql(`select now.${field} from ${alias} where recno=${recno}`)
-    alasql('USE now;')
-    if (data.length > 0)
-        return data[0][field]
-    return false
+    let data = await goto(0, alias)
+    if (field == '*')
+        return data
+
+    let result = {}
+
+    if (!Array.isArray(field))
+        fields.push(field)
+    else
+        fields = field
+
+    for (let i = 0; i < fields.length; i++)
+        result[fields[i]] = data[fields[i]]
+
+    return result
 }
 
 
@@ -3315,12 +3363,13 @@ export const scatter = async (aliasFields?: [], alias?: string) => {
         }
         alias = This.value.are_tra[This.value.num_are - 1];
     }
-    console.log('sccater fields', aliasFields, alias)
 
     const res = await goto(0, alias); // lee los datos actuales
-    if (!aliasFields)
-        return res
 
+    if (!aliasFields) {
+        console.log('sccater alias=', alias, ' res=', res,)
+        return res
+    }
 
     const resultado = {};
     for (const ele of aliasFields) {
@@ -3329,7 +3378,7 @@ export const scatter = async (aliasFields?: [], alias?: string) => {
 
 
     }
-
+    console.log('sccater alias=', alias, ' AliasFields=', aliasFields, ' resultado=', resultado)
     // console.log('scatter res=', resultado)
     return resultado
 

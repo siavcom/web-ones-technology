@@ -85,28 +85,38 @@ export class ndo_doc extends CAPTURECOMPONENT {
         // lee la seguridad
         //if (await recCount('lla1_seg') == 0 || lla1_seg.tdo_tdo != m.tdo_tdo) {
         // asignamos la seguridad por tipo de documento
-        await use('lla1_seg', m) // use lla1_seg lla1_seg
 
-        if (await recCount('lla1_seg') > 0) {
-            m = appendM(m, await scatter())// scatter 
-        } else {
-            m.per_seg = space(120)
-        } // End If 
+        m.log_usu = Public.value.log_usu
+        m.gru_gru = Public.value.gru_gru
+
+        //log_usu: "ADMIN      
+        if (m.log_usu.trim().toUpperCase() != "ADMIN") {
+            const result = await use('lla1_seg', m) // use lla1_seg lla1_seg
+            if (await recCount('lla1_seg') > 0) {
+                m = appendM(m, await scatter())// scatter 
+            } else {
+                m.per_seg = space(120)
+            } // End If 
+        }
+
         const nom_obj = JSON.parse('{"' + Public.value.cmp_seg.replaceAll(',', '":0,"') + '":0}')
         let i = 0
         for (const objeto in nom_obj) {
-            nom_obj[objeto] = m.per_seg.slice(i, i + 1)
+
+            if (m.log_usu.trim().toUpperCase() != "ADMIN")
+                nom_obj[objeto] = m.per_seg.slice(i, i + 1)
+            else
+                nom_obj[objeto] = '3'
+
             i++
         } // End For; 
         this.Form.nom_obj = nom_obj
-
         // saldo del documento
         this.Form.d_sal_doc.prop.Value = 0
         // total del documento
         this.Form.d_tot_doc.prop.Value = 0
         // saldo por pagar
         this.Form.d_pap_doc.prop.Value = 0
-
         this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
 
         return !this.prop.ReadOnly
