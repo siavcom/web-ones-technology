@@ -17,7 +17,7 @@ export class zon_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = "Zona o ruta";
-        this.prop.ControlSource = "lla1_ven.zon_ven";
+        this.prop.ControlSource = "vi_cap_comeven.zon_ven";
         this.prop.Capture = true
         this.inputStyle.width = "64px";
     }

@@ -18,7 +18,7 @@ export class cpo_ven extends CAPTURECOMPONENT {
         super();
 
         this.prop.Caption = 'Codigo Postal';
-        this.prop.ControlSource = "lla1_ven.cpo_ven";
+        this.prop.ControlSource = "vi_cap_comeven.cpo_ven";
         this.prop.Capture = true
         this.inputStyle.width = "38px";
 

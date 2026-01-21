@@ -27,9 +27,6 @@ export class CAPTURECOMPONENT extends COMPONENT {
   public async init(): Promise<void> {
     if (this.prop.updateKey == true)
       this.prop.ReadOnly = false;
-    else
-      this.prop.ReadOnly = true;
-
 
   }
 
@@ -79,7 +76,10 @@ export class CAPTURECOMPONENT extends COMPONENT {
 
     } // End If 
 
-    return this.Form.bt_saveClick()
+    if (this.Form.bt_save.prop.Visible)
+      return this.Form.bt_saveClick()
+
+    return
   }   // Fin Procedure
 
 }

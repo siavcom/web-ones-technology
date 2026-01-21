@@ -18,7 +18,7 @@ export class pco_ven extends CAPTURECOMPONENT {
     super();
     this.prop.Caption = '% de comisión'
     this.prop.Type = 'number';
-    this.prop.ControlSource = "lla1_ven.pco_ven";
+    this.prop.ControlSource = "vi_cap_comeven.pco_ven";
     this.prop.Capture = true
     this.prop.Decimals = 2
     this.inputStyle.width = "48px";

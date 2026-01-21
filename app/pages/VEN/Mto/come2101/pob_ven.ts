@@ -17,7 +17,7 @@ export class pob_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = "Poblacion";
-        this.prop.ControlSource = "lla1_ven.pob_ven";
+        this.prop.ControlSource = "vi_cap_comeven.pob_ven";
         this.prop.Capture = true
         this.inputStyle.width = "512px";
     }

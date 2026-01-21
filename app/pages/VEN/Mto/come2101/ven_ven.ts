@@ -20,13 +20,13 @@ export class ven_ven extends CAPTURECOMPONENT {
     super();
     this.prop.Caption = "Vendedor";
     this.prop.Type = 'number'
-    this.prop.ControlSource = "lla1_ven.ven_ven";
+    this.prop.ControlSource = "vi_cap_comeven.ven_ven";
     this.prop.ToolTipText = "Número de vendedor";
     this.prop.Value = 0
     this.prop.Min = "0"
     this.prop.Max = "99999"
     this.prop.Decimals = 0
-    this.prop.Capture = true
+
     this.prop.updateKey = true
     this.prop.Help = true;
     this.inputStyle.width = "64px";
@@ -34,6 +34,16 @@ export class ven_ven extends CAPTURECOMPONENT {
     this.prop.First = true
     //    this.prop.Help = true;
   }
+
+  override async valid() {
+    if (this.prop.Value == 0) {
+
+      return false
+
+    }
+    return super.valid()
+  }
+
 
   //metodo
 }

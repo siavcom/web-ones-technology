@@ -17,7 +17,7 @@ export class nom_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = 'Nombre'
-        this.prop.ControlSource = "lla1_ven.nom_ven";
+        this.prop.ControlSource = "vi_cap_comeven.nom_ven";
         this.prop.Capture = true
         this.inputStyle.width = "400px";
         this.prop.ErrorMessage = 'Nombre no válido'

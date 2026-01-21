@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -83,13 +83,12 @@
     <!--   CHECKBOX   -->
 
     <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
-      ref="Ref" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled || This.prop.ReadOnly"
-      :tabindex="prop.TabIndex" v-model="checkValue" @click="clickCheckBox()" @focus="onFocus"
-      @keypress="keyPress($event)">
+      ref="Ref" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :tabindex="prop.TabIndex"
+      v-model="checkValue" @click="clickCheckBox()" @focus="onFocus" @keypress="keyPress($event)">
 
     <!--  TEXT   -->
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
-      v-model.trim="Value" :readonly="prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
+      v-model.trim="Value" :readonly="This.prop.ReadOnly" :disabled="This.prop.Disabled" :maxlength="MaxLength"
       :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus"
       @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska" @maska="onMaska" @keypress="keyPress($event)"
       @keypress.backspace="keyPress($event)" @keypress.delete="keyPress($event)" @keypress.down="keyPress($event)"
@@ -99,13 +98,13 @@
     <!--/span-->
     <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
     <img :id="Id + '_help'"
-      v-if="!prop.This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
-      class='help_icon' src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
+      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
+      src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
     <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ This.prop.ErrorMessage.toString().length >= 1 ?
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -272,20 +271,7 @@ const invalidInputStyle = reactive({ ...This.invalidInputStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 let Evento = ''
 
-//console.log('EditText readOnlyInputStyle=', readOnlyInputStyle)
-
-/*
-const captionStyle = reactive({ ...Este.captionStyle })
-const inputStyle = reactive({ ...Este.inputStyle })
-
-const divStyle = reactive({ ...Este.style })
-const containerStyle = reactive({ ...Este.containerStyle })
-
-const invalidInputStyle = reactive({ ...Este.invalidInputStyle })
-const readOnlyInputStyle = reactive({ ...Este.readOnlyInputStyle })
-
-*/
-
+let RecNumber = 0
 const Styles = reactive(
   {
     captionStyle: captionStyle,
@@ -308,8 +294,6 @@ if (props.prop.Help)
   containerStyle.paddingLeft = "2px"
 
 
-//const divStyle = reactive(props.style)
-
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
@@ -319,9 +303,7 @@ let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
 
 const Value = ref(props.prop.Value)
-//const Valor = toRef(This.prop, "Value")
-//const Valid = ref(props.prop.Valid)
-//Valid.value = true
+
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 // let Help = false
 
@@ -338,7 +320,6 @@ const checkValue = ref(false)
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
 let sw_emitValue = false
-
 
 
 if (Styles.style.zIndex == 0)
@@ -470,8 +451,7 @@ const onInput = ({ target }) => {
     currentValue.value[1] = oldVal
     return
   }
-  //const len = TargetValue.length
-  //Value.value = parseInt(TargetValue);
+
 
   let valorNumerico = parseFloat(TargetValue) // valor numerico   
 
@@ -530,7 +510,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   //outFocus.value = true
   // let Valor = ''
   let readValid = false
-  console.log('0) editText emitValue() Name=', props.prop.Name, 'Valor=', 'ReadCam=', readCam, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+  // console.log('0) editText emitValue() Name=', props.prop.Name, 'Valor=', 'ReadCam=', readCam, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
 
   if (!readCam) { // En valor viene el valor actual capturado
 
@@ -566,7 +546,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (Value.value != This.prop.Value) {
         This.prop.Value = Value.value
       }
-      console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+      //console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
 
       // console.log('----------------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'newValor=', newValor, 'This.prop.Value = ', This.prop.Value)
       // if (Value.value != This.prop.Value)  // 14/Mar/2025
@@ -642,7 +622,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   }
   else {  // Si hay lectura de campo
-    console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
+    //  console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
     //    This.prop.Valid = true
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
@@ -714,7 +694,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
               This.prop.Valid = false
           }
         }
-        console.log('>>>>>2.0.1)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'Value', Value.value)
+        //  console.log('>>>>>2.0.1)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'Value', Value.value)
 
       }
       if (!sw_dat && pos > 1) { // No encontro dato
@@ -750,7 +730,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       await This.onChangeValue(ref(Styles))
     }
   */
-  console.log('>>>>>2.2.5) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value, 'Recno=', props.Registro)
+  //console.log('>>>>>2.2.5) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value, 'Recno=', props.Registro)
   switch (Type) {
     case 'number':
       if (Value.value == null)
@@ -820,7 +800,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //  console.log('editText emitValue() Time Name ', props.prop.ControlSource, 'Valor=', Valor, 'Value=', Value.value)
       if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01T00:00:00'
-      console.log('datetime editText emitValue() Time Name ', props.prop.Name, 'Value=', Value.value)
+      // console.log('datetime editText emitValue() Time Name ', props.prop.Name, 'Value=', Value.value)
       Value.value = Value.value.slice(0, 16)
 
       displayDate.value = new Date(Value.value)
@@ -846,10 +826,14 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     This.prop.Status = 'A'
 
 
-  console.log('<<<========================== Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
-  sw_emitValue = true
+  console.warn('<<<========================== Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', 'sw_emitValue= ', !This.prop.ReadOnly && !This.prop.Disabled)
+  if (!This.prop.ReadOnly && !This.prop.Disabled)
+    sw_emitValue = true
+  else
+    sw_emitValue = false
+
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  emit("update") // emite un update en el componente padre
+  //  emit("update") // emite un update en el componente padre
 
   if (This.onChangeValue) {
     //  console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
@@ -1210,6 +1194,15 @@ const onFocus = async () => {
     This.Parent.prop.Status = 'A'
   }
 
+  if (This.prop.ReadOnly) { //  10/Octubre/2025
+    //await nextTick()
+    //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+    // Evento = 'when'
+    //ChecaEventos()
+
+    return
+  }
+
   if (This.beforeWhen)
     await This.beforeWhen()
 
@@ -1240,6 +1233,13 @@ const onFocus = async () => {
   // textValue[0]  perdio foco, textValue[1] obtiene el foco
   // Si es la primera vez que se hace foco
   //  let sw_when = false
+
+
+
+
+
+
+
   if (focusIn.value == 0) {
     // await emitValue(true)
     //   sw_when = true
@@ -1249,14 +1249,6 @@ const onFocus = async () => {
 
   focusIn.value = 1  // cambia el valor en el input number 
 
-  if (This.prop.ReadOnly) { //  10/Octubre/2025
-    //await nextTick()
-    //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
-    Evento = 'when'
-    ChecaEventos()
-
-    return
-  }
 
   This.prop.Focus = false
   This.prop.First = false
@@ -1478,14 +1470,12 @@ watch(
 watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
   (new_val: any, old_val: any) => {
-
-    if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
-      console.log('EditText watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
-      return
-    }
-
-
-
+    /*
+        if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
+          console.log('EditText watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
+          return
+        }
+    */
     console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
     if (new_val != old_val)
       emitValue(true)
@@ -1500,14 +1490,13 @@ watch(
 ///////////////////////////////////////
 watch(
   () => This.Recno, //props.Registro,
-  async () => {
-    console.log('EditText Watch prop.Registro Name=', This.prop.Name)
-    if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
-      console.log('watch This.Recno editText Name=', This.prop.Name)
-      return
-    }
-
-
+  async (new_val) => {
+    console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
+    /*    if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
+          console.log('watch This.Recno editText Name=', This.prop.Name)
+          return
+        }
+    */
     await emitValue(true)
     //29/Oct/2025 -- Se quita, daba problema en el grid
     //This.Recno = props.Registro
@@ -1604,6 +1593,7 @@ watch(
       console.log('watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
       return
     }
+
     const Type = This.prop.Type.toLowerCase()
     //console.log('>>> EditText Watch This.prop.Value Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'TYPE=', Type)
 
@@ -1854,9 +1844,12 @@ const ChecaEventos = async () => {
   }
 
   // console.log('comboBox Name=', This.prop.Name, 'Ejecutara Evento =', Evento)
+  if (This.prop.ReadOnly)
+    return
 
   if (Evento == 'when') {
     Evento = ''
+    console.log('1) checaEventos Name=', This.prop.Name)
     This.prop.ReadOnly = !await This.when()
     // if (!This.prop.ReadOnly)
     //   This.click()

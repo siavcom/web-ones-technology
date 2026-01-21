@@ -1,24 +1,15 @@
-﻿//////////////////////////////////////////////
-// This Form was generated automatically for web-ones-technology
-// BaseClass : captureForm
-// Class : come2101
-// Description : Forma de captura
-// Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 05/05/25
-// Update Date  :
-/////////////////////////////////////////////
-
-// ---------------------------------------------------------------------------------------------- 
-//              Siavcom Software S. de R.L. de C.V. 
-// ---------------------------------------------------------------------------------------------- 
-// Autor     : Ing. Fernando Cuadras Angulo 
-// Sistema   : Siavcom         Version : 6.0  Windows 
-// Programa  : Mantenimiento a vendedores  Mnemo   : come2101.scx 
-// Ult. mod. : Fernando Cuadras      Fecha   : 24/08/98 
-// Evento  : Init 
-// Objeto  : come2101 
-// Tipo   : Form 
-// ---------------------------------------------------------------------------------------------- 
+﻿/* ---------------------------------------------------------------------------------------------- 
+*              Siavcom Software S. de R.L. de C.V. 
+* ---------------------------------------------------------------------------------------------- 
+* Autor     : Ing. Fernando Cuadras Angulo 
+* Sistema   : Siavcom         Version : 6.0  Windows 
+* Programa  : Mantenimiento a vendedores  Mnemo   : come2101.scx 
+* Ult. mod. : Fernando Cuadras      Fecha   : 24/08/98 
+* Evento  : Init 
+* Objeto  : come2101 
+* Tipo   : Form 
+* ---------------------------------------------------------------------------------------------- 
+*/
 
 ///////////////////////////////////////
 // Base class
@@ -55,7 +46,7 @@ export class ThisForm extends captureForm {
   constructor() {
     super();
     this.prop.Caption = "Mantenimiento a vendedores";
-    this.prop.RecordSource = 'lla1_ven'
+    this.prop.RecordSource = 'vi_cap_comeven'
     this.asignaRecno()
   }
 

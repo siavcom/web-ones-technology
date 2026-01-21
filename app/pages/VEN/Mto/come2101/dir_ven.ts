@@ -17,7 +17,7 @@ export class dir_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = 'Dirección'
-        this.prop.ControlSource = "lla1_ven.dir_ven";
+        this.prop.ControlSource = "vi_cap_comeven.dir_ven";
         this.prop.Capture = true
         this.inputStyle.width = "600px"
 

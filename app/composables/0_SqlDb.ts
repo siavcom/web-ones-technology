@@ -550,12 +550,13 @@ export const use = async (
         // This.value.View[alias].m = m; // Variables m para hacer requery
         const data = await axiosCall(dat_vis);
 
-        //console.log("5 Db Use Axios Ok response =====>", dat_vis, data); // .data
+
 
         if (data.length) {
             // No hubo error
             const response = await genera_tabla(data, alias)
-            console.log("Db Use Axios data=", data, "=====>response=", response); // .data
+            console.log("1) Db Use Axios data=", data, "=====>response=", response); // .data
+
             return response;
         }
         else return []; //   { return [] }
@@ -599,13 +600,8 @@ export const requery = async (alias?: string, currentRow?: boolean) => {
         return resultado
     }
 
-    console.log('1) requery alias=', alias, 'm=', m)
-    console.log('2) requery vcomesal', await localAlaSql(`select * from vcomesal`))
-
-
 
     const resultado = await use(alias, m)
-    console.log('3) requery vcomesal, await localAlaSql(`select * from vcomesal`)', await localAlaSql(`select * from vcomesal`))
 
     return resultado
 }
@@ -713,8 +709,6 @@ export const tableUpdate = async (
         return false;
     }
 
-
-
     var recno = This.value.View[alias].recno; // obtenemos el recno a actualizar
     const recCount = This.value.View[alias].recCount; // obtenemos el recCount de la vista
 
@@ -810,9 +804,6 @@ export const tableUpdate = async (
         //console.log('Db tableUpdate dat_act[row]', dat_act[row])
 
         if (dat_act[row].key_pri > 0) {
-            // dat_vis.dat_act.key_pri = dat_act[row].key_pri;
-
-            // dat_vis.dat_act.timestamp = dat_act[row].timestamp;
 
             dat_vis.tip_llamada = "UPDATE";
 
@@ -855,10 +846,6 @@ export const tableUpdate = async (
 
         for (const campo in This.value.View[tab_man].val_def) {
             // for (const campo in dat_act[row]) {
-            /*
-               if (campo.trim() == 'json_tap')
-                   console.log('1) Db tableUpdate', typeof dat_act[row][campo], 'campo=', campo, 'Old=', old_dat[campo], 'New=', dat_act[row][campo])
-                */
 
             if (dat_act[row][campo] == null)
                 dat_act[row][campo] = "";
@@ -871,7 +858,6 @@ export const tableUpdate = async (
                     old_dat[campo] = old_dat[campo]   //.trim();
             }
 
-            //        console.log('Db tableUpdate campo=', campo,'Old=', old_dat[campo],'New=',dat_act[row][campo] )
 
             // Si el campo nuevo o es diferente al viejo, aumentamos en los datos a actualizar
             //    console.log('tab_man', tab_man, 'Campo=', campo, This.value.View[tab_man].est_tabla[campo])
@@ -890,15 +876,15 @@ export const tableUpdate = async (
                 //          nom_campo != "key_pri" &&
                 nom_campo != "timestamp" &&
                 (dat_vis.tip_llamada == "INSERT" || old_dat[campo] == null ||
-                    old_dat[campo] !== dat_act[row][campo] || (
-                        typeof dat_act[row][campo] == "string" &&
-                        dat_act[row][campo].trim().length != old_dat[campo].trim().length
-                    ))
+                    (typeof dat_act[row][campo] == "number" && old_dat[campo] !== dat_act[row][campo]) ||
+                    (typeof dat_act[row][campo] == "string" && old_dat[campo].trim() !== dat_act[row][campo].trim()) ||
+                    ((typeof dat_act[row][campo] != "string" && typeof dat_act[row][campo] != "number") && old_dat[campo] !== dat_act[row][campo])
+                )
             ) {
 
                 const tipo = This.value.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
 
-                // console.log("UPDATE fecha campo=", campo, ' tipo=', tipo, ' valor=', dat_act[row][campo]);
+                console.log("tableUpdate UPDATE campo=", campo, ' valor actual=', dat_act[row][campo], ' valor viejo=', old_dat[campo]);
 
                 switch (true) {
                     // switch (typeof dat_act[row][campo]) {
@@ -1006,7 +992,7 @@ export const tableUpdate = async (
         // Tratara 2 veces en caso de que haya un force
         for (let num_int = 0; num_int < 2 && sw_update; num_int++) {
             // tratara 3 veces de actualiar el dato
-            console.log("Db TableUpdate dat_vis", dat_vis, 'Intentos =', num_int);
+
             // llama el backEnd a grabar los datos
             const response = await axiosCall(dat_vis);
 
@@ -2221,7 +2207,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
             try {
                 const estructura = await axiosCall(dat_est);
-                console.log('genera_tabla axios GETDEF estructura ===>>', estructura, 'Llamada axios', dat_est)
+                // console.log('genera_tabla axios GETDEF estructura ===>>', estructura, 'Llamada axios', dat_est)
                 if (estructura == null) return null;
 
                 respuesta.est_tabla = estructura;
@@ -2268,6 +2254,8 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             if (respuesta.est_tabla[nom_ele].tip_cam == "DATETIME" || respuesta.est_tabla[nom_ele].tip_cam == "TIME")
                 des_tab = des_tab.replace('DATETIME', 'STRING').replace('TIME', 'STRING'), + "( 16 )";
 
+            if (respuesta.est_tabla[nom_ele].des_cam == "timestamp")
+                des_tab = des_tab.replace('TEXT', 'JSON');
 
             const val_def = respuesta.est_tabla[nom_ele].val_def;
             // const val_def=respuesta.est_tabla[nom_ele].replace('undefined','null')
@@ -2275,10 +2263,11 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             This.value.View[alias].val_def[nom_ele] = val_def;
 
         }
-        //  console.log('Db Estructura View respuesta===>', alias, respuesta)
+
         // console.log('Db Estructura View ===>', alias, This.value.View[alias].val_def)
 
         des_tab = des_tab + ")";
+
         // console.log('Db Valores default=====>',alias,This.value.View[alias].val_def)
 
         // console.log('Db ALASQL Estructura ===>',des_tab)
@@ -2361,6 +2350,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
                 "  FROM ?",
                 [respuesta]
             );
+
             /*
              await localAlaSql(
                  "USE last; CREATE TABLE last." +
@@ -2369,11 +2359,18 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             */
 
             await localAlaSql("delete from last." + alias + "; \
-          SELECT * INTO last." +
+           SELECT * INTO last." +
                 alias +
                 "  FROM ?",
                 [respuesta]
             );
+            // console.log("6.0  Db genera_tabla localAlaSql Table", await alasql(`SHOW CREATE TABLE last.${alias}`));
+            // console.log("6.5  Db genera_tabla localAlaSql Table", await alasql(`SHOW CREATE TABLE now.${alias}`));
+
+            //  console.log("6.15  Db genera_tabla localAlaSql Table", await alasql(`select * from last.${alias}`));
+            //  console.log("6.10  Db genera_tabla localAlaSql Table", await alasql(`select * from now.${alias}`));
+
+
         } catch (error) {
             console.error("Error al generar Vis_captura" + alias, error);
             alasql('USE now;')
@@ -2408,7 +2405,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
                 componente[comp][i].value = recnoVal[comp]; // asignamos el valor a c/componente del form
             }
         }
-        // console.log("6 Db genera_tabla"); // .data
+        //  console.log("6 Db genera_tabla Respuesta", respuesta, 'localAlaSql', await alasql('select * from now.' + alias)); // .data
         return respuesta;
     } else {
         // console.log("7 Db genera_tabla"); // .data

@@ -359,11 +359,18 @@ watch(
   { deep: true }
 );
 
+
+// Checa todas las validaciones que tienen todos los componentes el form 
+
 watch(Valid, async (new_val) => {
 
   console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
   if (ThisForm.prop.BaseClass.toLowerCase() !== 'captureform')
     return
+
+  if (ThisForm.bt_modify.prop.Visible)
+    return
+
   //if (ThisForm.Recno>0 && !ThisForm.bt_save.prop.Visible)
   //  return
 

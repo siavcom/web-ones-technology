@@ -17,7 +17,7 @@ export class rfc_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = "RFC";
-        this.prop.ControlSource = "lla1_ven.rfc_ven";
+        this.prop.ControlSource = "vi_cap_comeven.rfc_ven";
         this.prop.Capture = true
         this.inputStyle.width = "112px";
 

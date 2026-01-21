@@ -17,7 +17,7 @@ export class col_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = 'Colonia'
-        this.prop.ControlSource = "lla1_ven.col_ven";
+        this.prop.ControlSource = "vi_cap_comeven.col_ven";
         this.prop.Capture = true
         this.inputStyle.width = "512px";
 

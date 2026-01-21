@@ -126,34 +126,34 @@ export class captureForm extends FORM {
     if (this.Recno != 0)
       this.Recno = 0
 
-    //console.clear()
-    for (const comp of this.Form.main) {
+    console.clear()
+    for (const comp of this.main) {
 
-      if (this.Form[comp].prop.Capture) {
-        if (!this.Form[comp].prop.updateKey) {
-          // this.prop.Status = 'A'
-          this.Form[comp].prop.ReadOnly = true
+      const Comp = this[comp]
+      if (Comp.prop.First)
+        this.First = Comp
 
-          if (typeof this.Form[comp].prop.Value == 'string')
-            if (this.Form[comp].prop.Value != '')
-              this.Form[comp].prop.Value = ''
-            else
-              if (this.Form[comp].prop.Value != 0)
-                this.Form[comp].prop.Value = 0
+      if (Comp.prop.Capture && !Comp.prop.updateKey) {
+        console.log('Componente>>>>>>>>>=', Comp.prop.Name, Comp.prop.Capture, 'Key=', Comp.prop.updateKey)
+        Comp.prop.ReadOnly = true
 
-          //    console.log('When Capture Form comp=', comp, this.Form[comp].prop.ReadOnly, this.Form[comp].prop.ShowError)
-        }
+        if (typeof Comp.prop.Value == 'string')
+          if (Comp.prop.Value != '')
+            Comp.prop.Value = ''
+          else
+            if (Comp.prop.Value != 0)
+              Comp.prop.Value = 0
 
-        //     this.Form[comp].prop.Valid = false
       }
 
     }
     //  thisComp.prop.Valid = false
-    // this.Form.bt_save.prop.Visible = false;
+    if (this.First == null)
+      this.First = this.main.length > 0 ? this[this.main[0]] : null
 
-    console.log('beforeWhen  apagamos botones')
     this.bt_delete.prop.Visible = false;
     this.bt_modify.prop.Visible = false;
+    this.bt_save.prop.Visible = false;
     //  this.bt_save.prop.Visible = false;
 
   }
@@ -171,7 +171,7 @@ export class captureForm extends FORM {
     if (this.sw_update && this.bt_save.prop.Visible)
       await this.bt_save.click()
 
-    this.Form.sw_update = false
+    this.sw_update = false
     const thisComp = Comp.value
     console.log('validKeyComponent Este=', thisComp.prop.Name)
     //if (!compName) return false;
@@ -183,30 +183,29 @@ export class captureForm extends FORM {
     const m = this.Form.mPublic
 
 
-    if (this.First == null)
-      this.First = this.main.length > 0 ? this[this.main[0]] : null
 
     const sw_val = true
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
-      if (this[comp].prop.Capture && this[comp].prop.UpdateKey) {
-
-        if ((this[comp].prop.name != ThisComp.prop.Name && !this[comp].prop.Valid) ||
-          (typeof this[comp].prop.Value == "string" && this[comp].prop.Value.trim().length == 0) ||
-          (typeof this[comp].prop.Value == "number" && this[comp].prop.Value == 0)
-        ) {
-
-          this[comp].prop.ErrorMessage = "Dato no permitido";
-          this[comp].prop.Valid = false;
-          this[comp].prop.Focus = true
-          console.log('1) validKeyComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
-          return this[comp].prop.Valid
+      /*  if (this[comp].prop.Capture && this[comp].prop.UpdateKey) {
+  
+          if ((this[comp].prop.name != ThisComp.prop.Name && !this[comp].prop.Valid) ||
+            (typeof this[comp].prop.Value == "string" && this[comp].prop.Value.trim().length == 0) ||
+            (typeof this[comp].prop.Value == "number" && this[comp].prop.Value == 0)
+          ) {
+  
+            this[comp].prop.ErrorMessage = "Dato no permitido";
+            this[comp].prop.Valid = false;
+            this[comp].prop.Focus = true
+            console.log('1) validKeyComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
+            return this[comp].prop.Valid
+          }
+  
         }
-
-      }
+    */
       if (this[comp].prop.Capture) {
-        if (this[comp].prop.First)
-          this.First = this[comp]
+        //          if (this[comp].prop.First)
+        //            this.First = this[comp]
         if (this[comp].prop.Type == "number")
           m[comp] = +this[comp].prop.Value;
         else
@@ -215,7 +214,7 @@ export class captureForm extends FORM {
     }
 
     // Termino la validacion de llaves principales
-    thisComp.prop.Valid = true;
+    //  thisComp.prop.Valid = true;
 
     // Leemos datos de la tabla de actualizacion
     if (this.prop.RecordSource.length < 2) {
@@ -282,18 +281,23 @@ export class captureForm extends FORM {
     this.Recno = data[0].recno;
     this.prop.Status = 'P'
     for (const comp of this.main) {
-      const Comp = this[comp]
-      Comp.prop.ShowError = false
-      Comp.prop.Valid = true
+      const CompCap = this[comp]
+
+      CompCap.prop.ShowError = false
+      CompCap.prop.Valid = true
+      if (!CompCap.prop.updateKey)
+        CompCap.prop.ReadOnly = true
+
     }
     this.prop.Status = 'A'
-    console.log('validComponent Con datos ')
+
     await nextTick(() => {
 
       this.bt_modify.prop.Visible = true;
       this.bt_delete.prop.Visible = true;
-      this.bt_modify.prop.Focus = true;
+      //this.bt_modify.prop.Focus = true;
     })
+
     return true
   } // Fin Metodo Valid
 
@@ -394,7 +398,7 @@ export class captureForm extends FORM {
     constructor() {
       super();
       // this.prop.Name = "bt_save";
-      this.prop.Caption = "Grabar";
+      this.prop.Caption = "Grabar Datos";
       this.prop.Position = "footer";
       this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";

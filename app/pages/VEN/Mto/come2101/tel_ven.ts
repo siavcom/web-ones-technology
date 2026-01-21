@@ -17,7 +17,7 @@ export class tel_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = 'Teléfono ';
-        this.prop.ControlSource = "lla1_ven.tel_ven";
+        this.prop.ControlSource = "vi_cap_comeven.tel_ven";
         this.prop.Capture = true
         this.inputStyle.width = "200px";
     }

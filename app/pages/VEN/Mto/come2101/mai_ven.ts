@@ -17,7 +17,7 @@ export class mai_ven extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = 'Mail'
-        this.prop.ControlSource = "lla1_ven.mai_ven";
+        this.prop.ControlSource = "vi_cap_comeven.mai_ven";
         this.prop.Capture = true
         this.inputStyle.width = '360px'
     }
