@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : report
+// @baseClass  : reportForm
+// @class : report
 // Description : Agenda de actividades
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-01-19
 // Update Date  : 
 /////////////////////////////////////////////

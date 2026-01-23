@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : tip_sta
+// @baseClass  : optionGroup
+// @class : tip_sta
 // Description : Componente tipo de estatus (kardex, no procesados, procesados)
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-08-08
 // Update Date  :
 /////////////////////////////////////////////

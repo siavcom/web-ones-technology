@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : log_usu
+// @baseClass  : COLUMN
+// @class : log_usu
 // Description : usuario que mantiene el proyecto
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-26
 // Update Date  : 15/Feb/2024
 /////////////////////////////////////////////

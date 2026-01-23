@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Insumos por surtir
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-25
 // Update Date  : 2025-06-25
 /////////////////////////////////////////////

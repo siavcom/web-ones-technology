@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : dis_cpy
+// @baseClass  : component
+// @class : dis_cpy
 // Description : Datos Json delo isnumo segun proveedor
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-02-03
 // Update Date  :
 /////////////////////////////////////////////

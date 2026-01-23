@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : cla_fam
+// @baseClass  : COLUMN
+// @class : cla_fam
 // Description : Calve de famila
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-06-29
 // Update Date  :
 /////////////////////////////////////////////

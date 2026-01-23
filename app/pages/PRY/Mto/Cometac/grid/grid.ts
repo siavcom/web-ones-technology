@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : Grid
-// Class : vi_cap_cometac                                                  
+// @baseClass  : Grid
+// @class : vi_cap_cometac                                                  
 // Description : Capture Grid
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-06-29
 // Update Date  : 
 /////////////////////////////////////////////

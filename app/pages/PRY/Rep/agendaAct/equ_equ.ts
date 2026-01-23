@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : equ_equ
+// @baseClass  : component
+// @class : equ_equ
 // Description : Equipos de trabajo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-08
 // Update Date  :
 /////////////////////////////////////////////

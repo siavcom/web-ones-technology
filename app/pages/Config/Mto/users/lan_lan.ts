@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : lan_lan
+// @baseClass  : component
+// @class : lan_lan
 // Description : Language
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-03-11
 // Update Date  : 
 /////////////////////////////////////////////

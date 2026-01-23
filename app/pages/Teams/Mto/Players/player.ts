@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : player
+// @baseClass  : component
+// @class : player
 // Description : Numero de Jugador
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-02-20
 // Update Date  : 
 /////////////////////////////////////////////

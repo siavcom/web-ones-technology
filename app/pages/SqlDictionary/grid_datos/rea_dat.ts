@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : rea_dat
 // Descripcion : Es de lectura el campo 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
 /////////////////////////////////////////////

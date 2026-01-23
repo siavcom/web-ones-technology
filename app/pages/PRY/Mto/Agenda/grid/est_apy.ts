@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : est_apy
+// @baseClass  : COLUMN
+// @class : est_apy
 // Description : Estatus de la actividad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 4/Mar/2024
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Estadistica general de ventas/compras
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-07-09
 // Update Date  : 
 /////////////////////////////////////////////

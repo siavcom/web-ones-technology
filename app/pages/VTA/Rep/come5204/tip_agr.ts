@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_agr
+// @baseClass  : component
+// @class : tip_agr
 // Description : Tipo de agrupador
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-16
 // Update Date  :
 /////////////////////////////////////////////

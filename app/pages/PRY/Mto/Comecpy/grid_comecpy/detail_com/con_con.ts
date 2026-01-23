@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : con_con
+// @baseClass  : Component
+// @class : con_con
 // Description : Consigantario del proveedor que surte el insumo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-10-14
 // Update Date  : 
 /////////////////////////////////////////////

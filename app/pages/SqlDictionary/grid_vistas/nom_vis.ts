@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : nom_vis
 // Descripcion : Nombre de la vista remotaindice
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  05/Septiembre /2022
 /////////////////////////////////////////////

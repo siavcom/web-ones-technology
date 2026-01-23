@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : cla_isu
+// @baseClass  : Component
+// @class : cla_isu
 // Description : CLAVE DEL INSUMO en detalle de compra
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

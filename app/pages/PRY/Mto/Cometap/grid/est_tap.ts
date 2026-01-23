@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : est_tap
+// @baseClass  : COLUMN
+// @class : est_tap
 // Description : Tipos de estatus
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-10
 // Update Date  :
 /////////////////////////////////////////////

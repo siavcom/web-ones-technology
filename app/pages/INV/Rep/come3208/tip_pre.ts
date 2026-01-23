@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_pre
+// @baseClass  : component
+// @class : tip_pre
 // Description : Tipo de lista de precios
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-09-20
 // Update Date  :
 /////////////////////////////////////////////

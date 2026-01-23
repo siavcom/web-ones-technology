@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : captureForm
-// Class : manComeequ
+// @baseClass  : captureForm
+// @class : manComeequ
 // Description : Capture Form para equipos de trabajo
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-10-27
 // Update Date  :
 /////////////////////////////////////////////

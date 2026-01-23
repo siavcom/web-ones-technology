@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : cop_nom
+// @baseClass  : component
+// @class : cop_nom
 // Description : C=CLIENTE P=PROVEEDOR N=NO AFECTA
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-20
 // Update Date  :
 /////////////////////////////////////////////

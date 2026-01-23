@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_imp
+// @baseClass  : component
+// @class : tip_imp
 // Description : Tipo de reporte 
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/07
 // Update Date  :
 /////////////////////////////////////////////

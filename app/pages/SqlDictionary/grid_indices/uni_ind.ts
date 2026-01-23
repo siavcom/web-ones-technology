@@ -2,7 +2,7 @@
 // Clase : uni_ind
 // Descripcion : Indice Unico
 // Obs:
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  23/Enero/2023
 /////////////////////////////////////////////

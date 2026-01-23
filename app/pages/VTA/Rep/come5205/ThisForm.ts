@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : General de ventas
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 2025-06-18
 /////////////////////////////////////////////

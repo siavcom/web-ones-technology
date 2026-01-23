@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Análisis de insumos
-// Author : El Fer Blocks (2025/03/07)
+// @author: El Fer Blocks (2025/03/07)
 // Update Date  : 
 /////////////////////////////////////////////
 

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : nom_ind
 // Descripcion : Nombre del indice a utilizar para la actualizacion de la tabla
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
 // Ult.Mod  : 13/Febrero/2023
 /////////////////////////////////////////////

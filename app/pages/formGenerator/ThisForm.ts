@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : formGenerator
 // Clase base : ThisForm
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 18/Octubre/2022
 // Ult.Mod  :
 /////////////////////////////////////////////

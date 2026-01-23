@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : header
-// Class : c_des_tdo
+// @baseClass  : header
+// @class : c_des_tdo
 // Description : Componente c_des_tdo
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////

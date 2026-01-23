@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : Component
-// Class : hrs_doc
+// @baseClass  : Component
+// @class : hrs_doc
 // Description : Componente hrs_doc
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Form Base
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
 // Ult.Mod  : 18/Noviembre/2022
 /////////////////////////////////////////////

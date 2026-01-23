@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : dia_dos
+// @baseClass  : spinner
+// @class : dia_dos
 // Description : dias vencidos segundo rango
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 
 /////////////////////////////////////////////
@@ -18,7 +18,7 @@ export class dia_dos extends COMPONENT {
     this.prop.Caption = "Días vencidos ";
     this.prop.Value = 14;
     this.prop.Min = 0;
-     this.prop.Visible = true;
+    this.prop.Visible = true;
     this.prop.Disabled = false;
 
     this.inputStyle.width = "40px";

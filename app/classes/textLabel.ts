@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 1/Julio/2025
 // Ult.Mod  : 1/Julio/2023
 // Descripcion : Clase para el componente textLabel

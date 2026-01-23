@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : fco_tpy
+// @baseClass  : COLUMN
+// @class : fco_tpy
 // Description : FORMATO DE IMPRESION DE LA COTIZACION
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-06-29
 // Update Date  : 
 /////////////////////////////////////////////

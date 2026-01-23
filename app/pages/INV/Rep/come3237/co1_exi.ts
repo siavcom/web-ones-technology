@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : co1_exi
+// @baseClass  : component
+// @class : co1_exi
 // Description : + Existencia corporativo GDL
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

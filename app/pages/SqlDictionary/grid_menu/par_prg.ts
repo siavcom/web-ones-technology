@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : par_prg
 // Descripcion : Parametros a pasar al correr el programa
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  07/Septiembre /2022
 /////////////////////////////////////////////

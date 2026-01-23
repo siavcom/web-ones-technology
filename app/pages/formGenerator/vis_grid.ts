@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : vis_grid
 // Descripcion : Nombre de la vista de captura a utilizar de la tabla
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
 // Ult.Mod  : 13/Febrero/2023
 /////////////////////////////////////////////

@@ -412,14 +412,14 @@ watch(Valid, async (new_val) => {
 ////////////////////// Functions //////////////////////////
 
 const ejeEventos = async () => {
-  console.log('Form ejeEventos ===>>> ', ThisForm.eventos)
+  //console.log('Form ejeEventos ===>>> ', ThisForm.eventos)
   if (ThisForm.eventos[0] != 'XXXXX' && ThisForm.eventos[0] > '') {
     const evento = ThisForm.eventos[0]
     //  ThisForm.eventos[0] = 'XXXXX'
     ThisForm.eventos = []
-    console.log('ejeEventos ejecutara===>>> ', evento)
+    //console.log('ejeEventos ejecutara===>>> ', evento)
     await waitEval(evento)  // ejecuta evento de la lista
-    console.log('Borrara evento watch ThisForm.eventos===>>> ', evento)
+    //console.log('Borrara evento watch ThisForm.eventos===>>> ', evento)
 
     // borramos el evento
     const new_arr = []
@@ -430,14 +430,13 @@ const ejeEventos = async () => {
         if (ThisForm.eventos[i] != 'XXXXX' && ThisForm.eventos[i].length > 0) {
           new_arr[num_eve] = ThisForm.eventos[i]
           num_eve++
-          console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
+          //console.log('borramos eventos. Anexamos Evento ', ThisForm.eventos[i], ThisForm.eventos[i].length)
 
         }
       }
     }
     ThisForm.eventos = [...new_arr]
     console.log('############Evento terminado ############ Evento ejecutado==>>> ', evento, 'ThisForm.prop.Status=', ThisForm.prop.Status, 'Eventos restantes=', ThisForm.eventos.length, 'Eventos', ThisForm.eventos)
-
     //await eje_eve(evento)
 
   }

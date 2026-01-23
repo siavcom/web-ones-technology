@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : vue_dat
 // Descripcion : Valor incial en typescript incertarse el registro nuevo en VUE
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
 /////////////////////////////////////////////

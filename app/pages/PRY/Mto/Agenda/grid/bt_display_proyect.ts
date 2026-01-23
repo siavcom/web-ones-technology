@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : bt_display_proyect
+// @baseClass  : COLUMN
+// @class : bt_display_proyect
 // Description : Despliega todas las actividades del proyecto donde se hace click
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-12-02
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,7 +1,7 @@
 /////////////////////////////////////////////
 // Clase : uni_que
 // Descripcion : Union logica
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 // Ult.Mod  28/Abril/2023
 /////////////////////////////////////////////

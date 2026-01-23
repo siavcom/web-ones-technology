@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : imp_exi
+// @baseClass  : component
+// @class : imp_exi
 // Description : Si se considere solo productos con existencia
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025/06/20
 // Update Date  : 
 /////////////////////////////////////////////

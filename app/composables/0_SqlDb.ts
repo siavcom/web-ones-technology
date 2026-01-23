@@ -1,7 +1,7 @@
 /// ///////////////////////////////////////////
 // Clase : DataBase
 // Descripcion : Conecta con un servidor backend que esta sirviendo los servicios de la base de datos
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Enero/2021
 // Ult.Mod  : 15/Jul/2021.- Se implementa jsStore para el manejo indexedDb donde quedara guardara los datos
 //                           recuperados de la base de datos
@@ -2891,27 +2891,19 @@ export const selectInto = async (ins_sql: string, alias?: string, filename?: str
 /// /////////////////////////////////////////////////
 // Lee Value de la tabla local
 /// //////////////////////////////////////
-export const readCampo = async (
-    ControlSource: string,
-    recno: number,
-    DataBase?: string
-) => {
+export const readCampo = async (ControlSource: string, recno: number, DataBase?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-    if (ControlSource == "") {
+    if (ControlSource == "")
         return;
-    } // No  hay ControlSource
 
-    if (!DataBase) {
+    if (!DataBase)
         DataBase = "now";
-    }
 
-    if (DataBase.toUpperCase() == "NEW" || DataBase.toUpperCase() == "NOW") {
+    if (DataBase.toUpperCase() == "NEW" || DataBase.toUpperCase() == "NOW")
         DataBase = "now";
-    }
 
-    if (DataBase.toUpperCase() == "OLD" || DataBase.toUpperCase() == "LAST") {
+    if (DataBase.toUpperCase() == "OLD" || DataBase.toUpperCase() == "LAST")
         DataBase = "last";
-    }
 
     const pos = ControlSource.indexOf(".") + 1;
     if (pos == 1) {
@@ -2921,26 +2913,54 @@ export const readCampo = async (
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
     //  console.log('Db readCampo=', tabla, campo, recno)
+    const data = await localAlaSql("USE " +
+        DataBase +
+        " ; SELECT " +
+        campo +
+        ",key_pri  FROM " +
+        tabla +
+        " WHERE recno=? ;",
+        recno
+    );
 
-    const data = await readValue(tabla, campo, recno, DataBase);
+    alasql('USE now ;')
+    if (data.length > 1) {
+        for (const campo in data[1][0]) {
+            if (typeof data[1][0][campo] === "string") {
+                data[1][0][campo] = data[1][0][campo].trim();
+            }
+        }
+        This.value.View[tabla].Recno = recno // actualizamos el recno de la vista
+        console.warn('readCampo no data =====>', tabla, campo, recno, data)
+
+        return data[1][0]; // todos los campos
+    }
+    console.warn('Sql.readCampo no data =====>', tabla, campo, recno, data)
+
+    return [];
+
+    /*
+    
+    const data = await readValues(tabla, campo, recno, DataBase);
     // console.log('Db Read renglon ',data[0])
 
     //    return data[0][campo]
     alasql('USE now ;')
     return data[0];
+    */
 };
 
 /// /////////////////////////////////////////////////
 // Lee Valor de un campo
 /// //////////////////////////////////////
-export const readValue = async (
+/*
+export const readValues = async (
     tabla: string,
     campos: string,
     recno: number,
     DataBase: string
 ) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-
     const data = await localAlaSql(
         "USE " +
         DataBase +
@@ -2960,13 +2980,12 @@ export const readValue = async (
             }
         }
         This.value.View[tabla].Recno = recno // actualizamos el recno de la vista
-
         return data[1]; // todos los campos
     } else
         console.warn('Sql.readValue no data =====>', tabla, campos, recno, data)
 
     return [];
-};
+};*/
 
 /// /////////////////////////////////////////////////
 // Graba Value de la tabla local

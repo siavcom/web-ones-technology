@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : num_pry
+// @baseClass  : component
+// @class : num_pry
 // Description : Número
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-20
 // Update Date  :
 /////////////////////////////////////////////

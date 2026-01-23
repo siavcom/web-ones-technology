@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : ico_prg
 // Descripcion : path del icono a aparecer
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Notas  : Los iconos los toma de public/Iconos
 // Creacion : Mayo/2022
 // Ult.Mod  07/Septiembre /2022

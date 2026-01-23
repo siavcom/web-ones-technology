@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editBox
-// Class : has_cla
+// @baseClass  : editBox
+// @class : has_cla
 // Description : Componente has_cla
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 29/05/25
 // Update Date  :
 /////////////////////////////////////////////

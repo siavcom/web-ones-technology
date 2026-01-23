@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : per_apy
+// @baseClass  : COLUMN
+// @class : per_apy
 // Description : Orden de la actividad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-11-17
 // Update Date  : 
 /////////////////////////////////////////////

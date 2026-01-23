@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : Container
-// Class : modal_vta
+// @baseClass  : Container
+// @class : modal_vta
 // Description : Capture Grid
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////
@@ -60,7 +60,6 @@ import { fvi_prv } from '../detail_com/fvi_prv'
 
 
 import { nop_cpy } from "../detail_com/nop_cpy";
-import { fvc_cpy } from "../detail_com/fvc_cpy";
 import { ted_cpy } from "../detail_com/ted_cpy";
 import { pec_cpy } from "../detail_com/pec_cpy";
 import { pac_cpy } from "../detail_com/pac_cpy";
@@ -110,7 +109,6 @@ export class modal_vta extends CONTAINER {
   public mop_prv = new mop_prv()
   public fvi_prv = new fvi_prv()
   public nop_cpy = new nop_cpy()
-  public fvc_cpy = new fvc_cpy()
   public ted_cpy = new ted_cpy()  // tiempo de entrega en dias
 
 
@@ -216,7 +214,7 @@ export class modal_vta extends CONTAINER {
       [1]: this.dis_cpy,   // Datos Insumo
       [2]: this.img_cpy, // imagen
       [3]: this.nop_cpy, // Nombre del proveedor
-      [4]: this.fvc_cpy, // Fecha de vigencia
+      [4]: this.fvi_prv, // Fecha de vigencia
       // garantia
       [5]: this.ted_cpy, // tiempo de entrega en dias
       [6]: this.pec_cpy, // Precio del proceedor

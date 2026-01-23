@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : des_per
+// @baseClass  : component
+// @class : des_per
 // Description : desde que periodo se calculan los puntos de venta
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/01/30
 // Update Date  :
 /////////////////////////////////////////////

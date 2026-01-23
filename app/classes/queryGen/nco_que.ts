@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : nco_que
+// @baseClass  : component
+// @class : nco_que
 // Description : Numero de Condicion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-03-13
 // Update Date  :
 /////////////////////////////////////////////

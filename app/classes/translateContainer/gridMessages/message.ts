@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : message
 // Descripcion : Texto del Mensaje
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  04/Marzo/2025
 /////////////////////////////////////////////

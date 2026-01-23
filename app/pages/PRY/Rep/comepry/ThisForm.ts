@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisform
+// @baseClass  : reportForm
+// @class : thisform
 // Description : Reporte de proyectos
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-03-17
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Existencia por lote o serie de producto
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2025/mzo/05
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editBox
-// Class : ave_tda
+// @baseClass  : editBox
+// @class : ave_tda
 // Description : Componente ave_tda
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 15/05/25
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Puntos de reorden con detalle de ped.cte,ped.pve y merc.tránsito
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-10-25
 // Update Date  : 
 /////////////////////////////////////////////

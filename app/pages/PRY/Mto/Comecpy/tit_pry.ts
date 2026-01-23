@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : tit_pry
+// @baseClass  : component
+// @class : tit_pry
 // Description : Titulo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-20
 // Update Date  :
 /////////////////////////////////////////////

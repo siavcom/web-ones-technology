@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : for_imp
+// @baseClass  : component
+// @class : for_imp
 // Description : formsto de impresion a utilizar en el reporte
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-25-5
 // Update Date  : 
 /////////////////////////////////////////////

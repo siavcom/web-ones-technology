@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_doc
+// @baseClass  : component
+// @class : tip_doc
 // Description : Tipo de documento cargo o abono
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-10
 // Update Date  :
 /////////////////////////////////////////////

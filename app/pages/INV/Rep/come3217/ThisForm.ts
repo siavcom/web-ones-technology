@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Captura de inventario fisico
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2025/mzo/06
 // Update Date  : 
 /////////////////////////////////////////////

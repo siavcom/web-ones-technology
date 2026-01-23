@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : ini_sem
+// @baseClass  : optionGroup
+// @class : ini_sem
 // Description : En que inicia la semana (LMMJVSD) 
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-07-16
 // Update Date  :
 /////////////////////////////////////////////

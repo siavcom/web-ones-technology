@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : in_tdo_tdo
+// @baseClass  : component
+// @class : in_tdo_tdo
 // Description : Tip de documento
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-09-20
 // Update Date  :
 /////////////////////////////////////////////

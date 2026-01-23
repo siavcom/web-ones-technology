@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : imgButton
-// Class : bt_graba_pve
+// @baseClass  : imgButton
+// @class : bt_graba_pve
 // Description : Componente bt_graba_pve
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////

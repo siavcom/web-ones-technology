@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : cli_pry
+// @baseClass  : component
+// @class : cli_pry
 // Description : Datos Json cuando es un cliente nuevo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-12-13
 // Update Date  :
 /////////////////////////////////////////////

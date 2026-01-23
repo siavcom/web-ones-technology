@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : dip_hoj
+// @baseClass  : component
+// @class : dip_hoj
 // Description :Dia por hoja si/no
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-06-03
 // Update Date  : 
 /////////////////////////////////////////////

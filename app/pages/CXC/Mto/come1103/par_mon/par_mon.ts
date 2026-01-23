@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : par_mon
+// @baseClass  : component
+// @class : par_mon
 // Description : Paridad de monedas
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-10-30
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : alm_tda
+// @baseClass  : COLUMN
+// @class : alm_tda
 // Description : Insumos por almacen
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-28
 // Update Date  :
 /////////////////////////////////////////////

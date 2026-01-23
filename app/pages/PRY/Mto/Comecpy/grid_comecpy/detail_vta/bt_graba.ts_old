@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : bt_save
+// @baseClass  : component
+// @class : bt_save
 // Description : Graba datos de la tabla
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-04-16
 // Update Date  :
 /////////////////////////////////////////////

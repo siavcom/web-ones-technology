@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : equ_usu
+// @baseClass  : COLUMN
+// @class : equ_usu
 // Description : Descripción del equipo de trabajo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-26
 // Update Date  :
 /////////////////////////////////////////////

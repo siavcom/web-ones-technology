@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : num_fam
+// @baseClass  : component
+// @class : num_fam
 // Description : numero de familia
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-11
 // Update Date  :
 /////////////////////////////////////////////

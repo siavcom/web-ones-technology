@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : ord_isu
+// @baseClass  : optionGroup
+// @class : ord_isu
 // Description : opciones de orden del cla_isu
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-06-19
 // Update Date  :
 /////////////////////////////////////////////

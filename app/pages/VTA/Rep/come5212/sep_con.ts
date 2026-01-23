@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : sep_con
+// @baseClass  : component
+// @class : sep_con
 // Description : Se separa por consignatarios
-// Author :MGSR
+// @author:MGSR
 // Creation : 2025/07/09
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 ﻿﻿//////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editText
-// Class : num_cer
+// @baseClass  : editText
+// @class : num_cer
 // Description : Componente num_cer
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 20/11/25
 // Update Date  :
 /////////////////////////////////////////////

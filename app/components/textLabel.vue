@@ -125,7 +125,7 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
-let noRegistro = ref(0)
+//23/Enero/2026 - let noRegistro = ref(0)
 
 // 30/Oct/2025
 const Recno = props.Registro
@@ -165,26 +165,6 @@ const refInputStyle = toRef(This.inputStyle)
 
 
 
-// el width y maxWidth de 99% fue lo mejor para los grid de columnas  
-// con 97% se desalinea horizontalmente en el grid de columnas
-
-
-/*
-let medida = ''
-
-if (inputStyle.width.search("px") > 0)
-  medida = 'px'
-if (inputStyle.width.search("%") > 0)
-  medida = '%'
-
-const textWidth = +inputStyle.width.replaceAll(medida, '') - 5
-inputStyle.width = textWidth.toString() + medida
-*/
-
-
-
-//const zIndex = ref(props.style.zIndex)
-//const inputWidth = ref('auto')
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
@@ -193,9 +173,9 @@ const emitValue = async () => {
 
   Status.value = 'A'
   emit("update") // emite un update en el componente padre
-  console.log('textLabel emit Value ====>', props.prop.Value, props.prop.Status)
+  // console.log('textLabel emit Value ====>', props.prop.Value, props.prop.Status)
   if (This.onChangeValue) {
-    console.log('textLabel emit onChangeValue ', This.prop.Name, This.prop.Value)
+    //  console.log('textLabel emit onChangeValue ', This.prop.Name, This.prop.Value)
     await This.onChangeValue(ref(Styles))
   }
 
@@ -206,7 +186,7 @@ const emitValue = async () => {
 // Asigna Resultado
 /////////////////////////////////////////////////////
 const asignaResultado = async (valor?: string) => {
-  console.log('textLabel asignaResultado ', props.prop.Name, valor)
+  // console.log('textLabel asignaResultado ', props.prop.Name, valor)
   // if (props.prop.Status == 'I') return
   // if (props.prop.ColumnCount == 0) return;
 
@@ -253,7 +233,7 @@ const asignaResultado = async (valor?: string) => {
         checkValue.value = check
       }
       emit("update:checkValue", checkValue)
-      console.log('checkBox TextLabel Name=', This.prop.Name, 'checkValue=', checkValue.value)
+      // console.log('checkBox TextLabel Name=', This.prop.Name, 'checkValue=', checkValue.value)
       break;
   }
   if (props.prop.RowSourceType == 0 ||
@@ -518,6 +498,13 @@ const renderComboBox = async () => {
 
 }
 
+
+
+
+
+// Leemos el valor segun el recno
+
+
 const readValue = async (on_Mounted?: boolean) => {
 
   //  if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
@@ -530,7 +517,7 @@ const readValue = async (on_Mounted?: boolean) => {
 
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
-    // console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
+    console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
     const data = await readCampo(props.prop.ControlSource, props.Registro)
     sw_ReadCampo = true
     for (const campo in data) {
@@ -542,82 +529,26 @@ const readValue = async (on_Mounted?: boolean) => {
     }
   }
 
-  asignaResultado()
+  await asignaResultado()
   sw_ReadCampo = false
-  //console.log('2) readValue This.prop.Name=', This.prop.Name, 'Text.value=', Text.value)
 
-  // This.prop.Value = Text.value
-  //This.Recno = props.Registro
   return
-  if (This.onChangeValue) {
-    await This.onChangeValue(ref(Styles))
-  }
 
-  if (props.prop.Type == 'number') {
-    //Text.value = toNumberStr(Text.value);
-    Text.value = await numberFormat(+Text.value, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-
-  }
-  if (props.prop.Type == 'date' && Text.value != null) {
-    //Text.value = toNumberStr(Text.value);
-    Text.value = Text.value.slice(0, 10)
-  }
-  if (props.prop.Type == 'datetime' && Text.value != null) {
-    //Text.value = toNumberStr(Text.value);
-    Text.value = Text.value.slice(0, 16)
-  }
-
-  if (props.prop.Type == 'checkBox') {
-    //checkValue.value = Text.value == 1 ? true : false
-    let check = Text.value == 0 ? false : true
-    if (checkValue.value != check) {
-      checkValue.value = check
-    }
-    emit("update:checkValue", checkValue)
-
-  }
-
-  if (typeof Text.value == 'string')
-    Text.value = Text.value.trim()
-
-  //if (props.prop.Type == 'text' || props.prop.Type == 'textArea') {
-  //  Text.value = Text.value.trim()
-  await renderComboBox()
-  This.recnoChange()
 }
 
-/*
-//////////////////////////
-//Si se cambia de afuera el valor del inputStyle
-///////////////////////////////////////
-watch(
-  () => refInputStyle.value, //This.inputStyle
-  (new_val: any, old_val: any) => {
-    //  if (This.Recno != props.Registro)
-    //    return
-    console.log(Id, This.Recno, props.Registro, 'watch inputStyle name est_cpy ', 'Text=', Text.value, 'Old=', InputStyle.color, 'New=', new_val.color)
-
-    if (This.Recno == props.Registro) {
-      for (const prop in new_val) {
-        if (new_val[prop] != InputStyle[prop]) {
-          InputStyle[prop] = new_val[prop]
-        }
-
-      }
-    }
-  },
-  { deep: true }
-);
-
-*/
 
 watch(
   () => This.prop.RowSource,
   async (new_val, old_val) => {
+
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-    renderComboBox()
-    await asignaResultado()
+
+    console.log('=========================1) textLabel watch RowSource Name=', This.prop.Name)
+
+    // renderComboBox()
+    await readValue()
+    //await asignaResultado()
   },
   { deep: false }
 )
@@ -625,9 +556,10 @@ watch(
 watch(
   () => This.prop.RowSourceType,
   async (new_val, old_val) => {
+    console.log('=========================1) textLabel watch RowSourceType ControlSource Name=', This.prop.Name)
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-    renderComboBox()
+    //renderComboBox()
     await asignaResultado()
   },
   { deep: false }
@@ -639,7 +571,7 @@ watch(
   async (new_val, old_val) => {
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-    console.log('watch Registro TextLabel Name=', This.prop.Name, 'watch Registro', old_val, new_val)
+    console.log('===================== textLabelwatch Registro TextLabel Name=', This.prop.Name, 'watch Registro', old_val, new_val)
 
     if (old_val != new_val && new_val > 0) {
       await readValue()
@@ -656,36 +588,14 @@ watch(
   async (new_val, old_val) => {
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-
+    console.log('====================1) textLabel watch ControlSource Name=', This.prop.Name)
     //  console.log('watch controlSource', new_val, old_val)
-    if (new_val != old_val && new_val.length > 2) {
-      const pos = new_val.indexOf(".") + 1;
-      if (pos == 1)
-        return;
-
-      const tabla = new_val.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-      // noRegistro = toRefs(View[tabla].recno)
-      noRegistro = toRef(This.Sql.View[tabla], 'recno')
-    }
-
+    await readValue()
 
   },
   { deep: false }
 )
-/*
-watch(
-  () => noRegistro,
-  async (new_val, old_val) => {
-    console.log('watch noRegistro', new_val, old_val)
-   if (new_val != old_val)
-    This.Recno = new_val
-    await readCampo()
 
-  },
-  { deep: true }
-)
-*/
 ////////////////////////////////////////
 // Si se cambia This.prop.Value desde afuera del componente 
 ///////////////////////////////////////
@@ -693,87 +603,23 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
 
-
-
     if (sw_ReadCampo || new_val == Value.value)
       return
-
-    /*
-        console.log('1) textLabel watch value Name=', This.prop.Name, 'Value=', new_val,
-          'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno,
-          'This.BaseClass=', This.BaseClass)
-    */
-
-
-    //if (This.BaseClass == 'Column' && (This.Parent.Recno == 0 || (This.Parent.Recno != props.Registro)))
-    //  return
+    console.log('==========================1) watch This.prop.Value textLabel  Name=', This.prop.Name, 'Value=', new_val,
+      'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno,
+      'This.BaseClass=', This.BaseClass)
 
     if (This.BaseClass == 'Column')//&& This.Parent.Recno != props.Registro)
       return
 
-
-    //    if (props.prop.RowSourceType > 0 || props.prop.RowSource.length > 0 || props.prop.ControlSource.length > 0)
-    //   return
-
-
+    // si se cambia el valor desde afuera del componente, actualiza su valor interno y el campo en la base de datos
     Text.value = new_val
-    if (props.Registro > 0 && This.prop.ControlSource.length > 2)
-      updateCampo(new_val, This.prop.ControlSource, props.Registro)
+    if (props.Registro > 0 && props.prop.ControlSource.length > 2)
+      await updateCampo(new_val, props.prop.ControlSource, props.Registro)
 
 
-    await asignaResultado()
-
-
+    asignaResultado()
     return
-    if (new_val === undefined || new_val === null) {
-      switch (props.prop.Type) {
-        case 'number':
-          new_val = 0
-          break;
-        case 'checkbox':
-          new_val = 0
-          break;
-        case 'date':
-          new_val = '1900-01-01' //T00:00:00'
-          break;
-        case 'datetime':
-          new_val = '1900-01-01T00:00:00'
-          break;
-        default:
-          new_val = ''
-      }
-
-    }
-
-    switch (props.prop.Type) {
-      case 'number':
-        Text.value = await numberFormat(+new_val, props.prop.Currency, props.prop.MaxLength, props.prop.Decimals)
-        break;
-      case 'date':
-        Text.value = new_val.slice(0, 10)
-        break;
-      case 'datetime':
-        //Text.value = toNumberStr(Text.value);
-        Text.value = new_val.slice(0, 16)
-        break;
-      case 'checkbox':
-        let check = new_val == 0 ? false : true
-        if (checkValue.value != check) {
-          checkValue.value = check
-        }
-        emit("update:checkValue", checkValue)
-        break;
-      default:
-        Text.value = new_val
-    }
-
-    await asignaResultado()
-
-
-    if (This.onChangeValue) {
-      await This.onChangeValue(ref(Styles))
-    }
-
   },
   { deep: true }
 );
@@ -846,51 +692,32 @@ onMounted(async () => {
     Type.value = 'imgButton'
 
 
-  await renderComboBox()
+  //await renderComboBox()
 
-  console.log('onMounted 1) textLabel Name=', This.prop.Name, 'columns=', columnas)
+  console.log('onMounted 1) textLabel Name=', This?.prop?.Name, 'props.Registro=', props.Registro)
 
   await readValue(true)
-
-  if (This.prop.ControlSource.length > 2) {
-    const pos = This.prop.ControlSource.indexOf(".") + 1;
-    if (pos > 1) {
-
-      const tabla = This.prop.ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-      // noRegistro = toRefs(View[tabla].recno)
-      //    console.log('init  textLabel tabla', tabla, 'View', This.Sql.View[tabla])
-
-
-      // noRegistro = ref(View[tabla].recno)
-      noRegistro = toRef(This.Sql.View[tabla], 'recno')
-      // console.log('noRegistro', tabla, noRegistro)
-
+  /*
+    if (This.prop.ControlSource.length > 2) {
+      const pos = This.prop.ControlSource.indexOf(".") + 1;
+      if (pos > 1) {
+  
+        const tabla = This.prop.ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+  
+     
+        //23/Enero/2026 noRegistro = toRef(This.Sql.View[tabla], 'recno')
+        
+  
+      }
     }
-  }
-
-
+  
+  */
   await This.afterMounted()
 
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
 })
-
-const middleClick = () => {
-  // console.log('middleClick')
-  if (This.Form && This.Form.translateContainer)
-    This.Form.translateContainer.open(ref(This))
-}
-
-
-const handler = (event) => {
-  if (event.which === 1) {
-    //if (This.Form)
-    //  This.Form.translateContainer.open(ref(This))
-  }
-  event.preventDefault();
-}
 
 
 </script>

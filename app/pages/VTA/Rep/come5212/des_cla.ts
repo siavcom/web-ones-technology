@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : des_cla
+// @baseClass  : component
+// @class : des_cla
 // Description : desde que insumo
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/jul/09
 // Update Date  :
 /////////////////////////////////////////////

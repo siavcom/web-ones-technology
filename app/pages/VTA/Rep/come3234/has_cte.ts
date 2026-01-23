@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : has_ven
+// @baseClass  : component
+// @class : has_ven
 // Description : Hasta que cliente
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/jul/16
 // Update Date  :
 /////////////////////////////////////////////

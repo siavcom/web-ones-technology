@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : tpy_tpy
+// @baseClass  : component
+// @class : tpy_tpy
 // Description : Tipo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-20
 // Update Date  :
 /////////////////////////////////////////////

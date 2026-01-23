@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : ver_cot
+// @baseClass  : component
+// @class : ver_cot
 // Description : Version de cotizacion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-10-04
 // Update Date  :
 /////////////////////////////////////////////

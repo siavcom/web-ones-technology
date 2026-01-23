@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Forma para generar reportes
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 // Ult.Mod  : 25/Mayo/2023
 /////////////////////////////////////////////

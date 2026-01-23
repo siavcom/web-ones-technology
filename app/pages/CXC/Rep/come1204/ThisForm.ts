@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Análisis de antigüedad de saldos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2023-09-20
 // Update Date  : 2023-09-29
 /////////////////////////////////////////////

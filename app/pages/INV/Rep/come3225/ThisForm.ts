@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Rotación de inventarios
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/03/21
 // Update Date  : 
 /////////////////////////////////////////////

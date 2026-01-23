@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : alm_afe
+// @baseClass  : component
+// @class : alm_afe
 // Description : Almacenes del sistema para afectación puntos de reorden
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/01/30
 // Update Date  :
 /////////////////////////////////////////////

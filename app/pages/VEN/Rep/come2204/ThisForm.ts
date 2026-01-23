@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Análisis de ventas por vendedor
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/15
 // Update Date  : 
 /////////////////////////////////////////////

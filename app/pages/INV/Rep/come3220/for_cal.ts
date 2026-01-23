@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : for_cal
+// @baseClass  : component
+// @class : for_cal
 // Description : Texto para digitar una formula
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/07
 // Update Date  :
 /////////////////////////////////////////////

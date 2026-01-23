@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : Container
-// Class : modal_com
+// @baseClass  : Container
+// @class : modal_com
 // Description : Capture Grid
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////
@@ -60,13 +60,12 @@ import { mop_prv } from "./mop_prv" //
 import { fvi_prv } from "./fvi_prv"
 
 import { fco_cpy } from "./fco_cpy" //
-import { fvc_cpy } from "./fvc_cpy" //
 import { ppa_prv } from "./ppa_prv" //
 
 import { pga_cpy } from "./pga_cpy" //
 
 import { ave_cpy } from "./ave_cpy"
-import { esc_cpy } from "./esc_cpy" //
+import { ect_prv } from "./ect_prv" //
 import { est_cpy } from "./est_cpy"
 import { uco_cpy } from "./uco_cpy"
 //import { bt_save } from "./bt_save"
@@ -99,7 +98,7 @@ export class modal_com extends CONTAINER {
 
   public obc_cpy = new obc_cpy()
   public uco_cpy = new uco_cpy()
-  public esc_cpy = new esc_cpy()
+  public ect_prv = new ect_prv()
 
   // Datos proveedor interno
 
@@ -117,7 +116,6 @@ export class modal_com extends CONTAINER {
 
 
   public fco_cpy = new fco_cpy()
-  public fvc_cpy = new fvc_cpy()
   // public uni_mov = new uni_mov()
   // public mon_cpy = new mon_cpy()
 
@@ -132,15 +130,9 @@ export class modal_com extends CONTAINER {
   constructor() {
     super()
 
-    // this.prop.ColumnTextLabel = 'Insumo a cotizar en compras'
     this.prop.BaseClass = 'modalContainer'   //'modalContainer'
     this.prop.Visible = false
-    //  this.prop.Disabled = true
-    //this.style.width = "80%";
-    //this.style.maxWidth = "920px";
-    //this.style.height = "80%";
-    //this.style.maxHeight = "600px";
-    //  this.style.maxHeight = "800px";
+    this.asignaRecno()
 
     // =======================<Bloque 0 >===============
 
@@ -191,7 +183,7 @@ export class modal_com extends CONTAINER {
 
       [7]: this.ctz_cpy,// Cotizacion 
       [8]: this.fco_cpy, // Fecha de cotizacion
-      [9]: this.fvc_cpy, // Fecha de vigencia
+      [9]: this.fvi_prv, // Fecha de vigencia
       // garantia
       [10]: this.ted_cpy, // tiempo de entrega en dias
       [12]: this.pec_cpy, // Precio de cotizacion
@@ -203,7 +195,7 @@ export class modal_com extends CONTAINER {
       [17]: this.ubi_cpy,  // ubicacion
       [18]: this.cpa_cpy,  // condiciones de pago
       [19]: this.obc_cpy, // Observaciones
-      [20]: this.esc_cpy  // Estatus del proveedor
+      [20]: this.ect_prv  // Estatus del proveedor
     }
     this.block[2].prop.Visible = false
     this.block[2].title = 'Compras. Proveedor interno'
@@ -223,7 +215,7 @@ export class modal_com extends CONTAINER {
 
       [6]: this.ctz_cpy,// Cotizacion 
       [7]: this.fco_cpy, // Fecha de cotizacion
-      [8]: this.fvc_cpy, // Fecha de vigencia
+      [8]: this.fvi_prv, // Fecha de vigencia
       // garantia
       [9]: this.ted_cpy, // tiempo de entrega en dias
       [10]: this.ifl_cpy,  // incluye flete
@@ -234,7 +226,7 @@ export class modal_com extends CONTAINER {
       [16]: this.moc_cpy, // Moneda de cotizacion
       [17]: this.pac_cpy, // Paridad de cotizacion
       [18]: this.obc_cpy, // Observaciones
-      [19]: this.esc_cpy, // Estatus de la cotizacion de compra
+      [19]: this.ect_prv, // Estatus de la cotizacion de compra
       [20]: this.uco_cpy, // Usuario de compra
     }
     this.block[3].prop.Visible = false
@@ -263,39 +255,13 @@ export class modal_com extends CONTAINER {
 
   }
 
-  /*
-  async open(visible: boolean) {
-    this.prop.Visible = true
-    await this.isi_cpy.interactiveChange()
-  
-  }
-
-
-  */
   async graba() {
-    /*
-    if ((await MessageBox('Grabamos', 4, "")) != 6) return false;
-  
-    this.Form.prop.Visible = false;
-    
-        const resultado = await  tableUpdate(
-          1,
-          false,
-          this.prop.RecordSource
-        );
-    
-    */
 
   }
   async close() {
     this.prop.Visible = false
-
-
-
   }
 
 
 }
 
-/*
-*/

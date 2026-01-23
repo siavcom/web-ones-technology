@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : prg_prg
 // Descripcion : NOMBRE Y UBICACION DEL PROGRAMA
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  :5/Octubre/2022
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : has_cod
+// @baseClass  : component
+// @class : has_cod
 // Description : Hasta que codigo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-11-22
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : POS 3M Reporte especial de shel
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-08-12
 // Update Date  : 
 /////////////////////////////////////////////

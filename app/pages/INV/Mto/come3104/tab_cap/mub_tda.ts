@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editBox
-// Class : mub_tda
+// @baseClass  : editBox
+// @class : mub_tda
 // Description : Componente mub_tda
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 15/05/25
 // Update Date  :
 /////////////////////////////////////////////

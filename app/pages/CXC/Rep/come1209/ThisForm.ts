@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Relación de IVA por pagar / acreditar
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-05
 // Update Date  : 2025-06-06
 /////////////////////////////////////////////

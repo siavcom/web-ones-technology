@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : op_has_isu
+// @baseClass  : component
+// @class : op_has_isu
 // Description : Hasta que insumo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-11
 // Update Date  :
 /////////////////////////////////////////////

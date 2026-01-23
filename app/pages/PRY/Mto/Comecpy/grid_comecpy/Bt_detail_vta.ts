@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Details
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 26/Ags/2024
 // Description : Mustra el detalle para el departamento de ventas
 // Update Date  :26/Ags/2024
@@ -10,7 +10,7 @@ import { COLUMN } from '@/classes/Column'
 import { modal_vta } from './detail_vta/modal_vta'
 
 export class detail_vta extends COLUMN {
-    public modal_vta = new modal_vta()
+    //public modal_vta = new modal_vta()
     constructor() {
         super()
         this.prop.ColumnTextLabel = 'Detalle ventas'

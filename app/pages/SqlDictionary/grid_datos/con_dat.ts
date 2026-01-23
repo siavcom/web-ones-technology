@@ -2,7 +2,7 @@
 // Clase : con_dat
 // Descripcion : Consecutivo 
 // Obs: es la primer columna 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  22/Junio/2022
 /////////////////////////////////////////////

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : reportCXC
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 // Ult.Mod  : 18/OCT/2023
 /////////////////////////////////////////////

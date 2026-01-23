@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : captureForm
-// Class : manCometpy
+// @baseClass  : captureForm
+// @class : manCometpy
 // Description : Mantenimiento a tipos de proyecto
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-06-29
 // Update Date  : 
 /////////////////////////////////////////////

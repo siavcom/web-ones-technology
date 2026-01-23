@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisform
+// @baseClass  : reportForm
+// @class : thisform
 // Description : Valorización de inventario
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-01-10
 // Update Date  : 
 /////////////////////////////////////////////

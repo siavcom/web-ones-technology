@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : vac_vis
 // Descripcion : Vista remota de actualizaciònOrden de la vista remota
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  03/Octubre/2022
 /////////////////////////////////////////////

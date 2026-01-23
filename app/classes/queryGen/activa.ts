@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : activa
+// @baseClass  : component
+// @class : activa
 // Description : Condicion Activa
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-03-13
 // Update Date  : 8/Mayo/2023
 /////////////////////////////////////////////

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_imprime 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 25/May/2023
 // Ultima Modificacion : 
 /////////////////////////////////////////////

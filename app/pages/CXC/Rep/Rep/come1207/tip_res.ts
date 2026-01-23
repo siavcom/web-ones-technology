@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_res
+// @baseClass  : component
+// @class : tip_res
 // Description : Tipo de documentos saldados, no saldados o todos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-09
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : csf_pry
+// @baseClass  : component
+// @class : csf_pry
 // Description : Constacia de situacion fiscal SAT
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-10-31
 // Update Date  :
 /////////////////////////////////////////////

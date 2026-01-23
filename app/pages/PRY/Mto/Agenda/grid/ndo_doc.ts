@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ndo_doc
+// @baseClass  : COLUMN
+// @class : ndo_doc
 // Description : Numero de documento generado
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 
 /////////////////////////////////////////////

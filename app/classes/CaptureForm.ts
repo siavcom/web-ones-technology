@@ -1,6 +1,6 @@
 /// ///////////////////////////////////////////
 // Clase : Forma de captura tabla sencilla
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 16/Noviembre/2022
 // Ult.Mod  : 28/Agosto/2025
 /////////////////////////////////////////////
@@ -126,7 +126,7 @@ export class captureForm extends FORM {
     if (this.Recno != 0)
       this.Recno = 0
 
-    console.clear()
+
     for (const comp of this.main) {
 
       const Comp = this[comp]
@@ -134,7 +134,7 @@ export class captureForm extends FORM {
         this.First = Comp
 
       if (Comp.prop.Capture && !Comp.prop.updateKey) {
-        console.log('Componente>>>>>>>>>=', Comp.prop.Name, Comp.prop.Capture, 'Key=', Comp.prop.updateKey)
+        // console.log('Componente>>>>>>>>>=', Comp.prop.Name, Comp.prop.Capture, 'Key=', Comp.prop.updateKey)
         Comp.prop.ReadOnly = true
 
         if (typeof Comp.prop.Value == 'string')

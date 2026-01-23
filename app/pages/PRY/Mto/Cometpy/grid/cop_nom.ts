@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : cop_nom
+// @baseClass  : COLUMN
+// @class : cop_nom
 // Description : CLIENTE/PROVEEDOR
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-06-29
 // Update Date  :
 /////////////////////////////////////////////

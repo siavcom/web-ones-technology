@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ave_dpy
+// @baseClass  : COLUMN
+// @class : ave_dpy
 // Description : USUARIO QUE AUTORIZA precio de VENTA
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : tip_det
+// @baseClass  : optionGroup
+// @class : tip_det
 // Description : tipo de reporte POS 3M o detallado especial SHEL)
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-08-12
 // Update Date  :
 /////////////////////////////////////////////

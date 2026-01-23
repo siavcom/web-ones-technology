@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : fvi_tca
+// @baseClass  : Component
+// @class : fvi_tca
 // Description : FECHA DE COTIZACION DE PROVEEDOR
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

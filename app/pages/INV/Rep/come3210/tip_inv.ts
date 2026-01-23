@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_inv
+// @baseClass  : component
+// @class : tip_inv
 // Description : Tipo de inventario 
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/07
 // Update Date  :
 /////////////////////////////////////////////

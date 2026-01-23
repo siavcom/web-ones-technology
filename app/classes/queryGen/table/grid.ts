@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : Grid
-// Class : table
+// @baseClass  : Grid
+// @class : table
 // Description : Equipo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-03-13
 // Update Date  : 9/Julio/2023
 /////////////////////////////////////////////

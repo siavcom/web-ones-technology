@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : sep_fam
+// @baseClass  : component
+// @class : sep_fam
 // Description : Existencia menor a minímo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

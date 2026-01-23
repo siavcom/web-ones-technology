@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : captureForm
-// Class : agenda
+// @baseClass  : captureForm
+// @class : agenda
 // Description : Agenda de actividades por usuario
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-02-12
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : carr_mess
+// @baseClass  : COLUMN
+// @class : carr_mess
 // Description : Carrier del mensaje  
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-01-27
 // Update Date  :
 /////////////////////////////////////////////

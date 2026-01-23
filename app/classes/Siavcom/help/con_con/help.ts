@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : help
-// Class : help
+// @baseClass  : help
+// @class : help
 // Description : Help para consignatarios
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-04-29
 // Update Date  : 
 /////////////////////////////////////////////

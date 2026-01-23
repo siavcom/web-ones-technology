@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tpy_tpy
+// @baseClass  : component
+// @class : tpy_tpy
 // Description : Tipo de proyectos
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-08
 // Update Date  :
 /////////////////////////////////////////////

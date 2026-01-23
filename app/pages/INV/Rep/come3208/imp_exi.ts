@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : imp_exi
+// @baseClass  : component
+// @class : imp_exi
 // Description : Indica si va con existencia
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-01-23
 // Update Date  : 
 /////////////////////////////////////////////

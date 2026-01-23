@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Diario de movimientos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-05
 // Update Date  : 2025-06-06
 /////////////////////////////////////////////

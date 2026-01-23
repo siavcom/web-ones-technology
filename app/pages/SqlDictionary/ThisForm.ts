@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Page: SqlDictionary
 // Clase base : ThisForm
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
 // Ult.Mod  : Enero/2025
 /////////////////////////////////////////////

@@ -110,6 +110,7 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const style = reactive({ ...Este.style })
+let inFocus = false
 /*
 const style.pointerEvents=This.prop.ReadOnly ? 'none' : 'auto'
 const styel.opacity=!This.prop.ReadOnly ? '1' : '0.5'
@@ -146,6 +147,7 @@ const ToolTipText = ref(true)
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
   ToolTipText.value = true  // Activamos el ToolTipText
+  inFocus = false
 };
 /*
 const showVisible = async (visible: boolean) => {
@@ -179,10 +181,12 @@ const click = async () => {
 }
 
 const onFocus = async () => {
+  if (inFocus)
+    return
   // Si esta en un grid checa sus estatus de todas las columnas
   if (!await checkGrid())
     return
-
+  inFocus = true
   ToolTipText.value = false  // Desactivamos el ToolTipText
   if (!This.prop.Disabled) {
     This.Form.eventos.push(This.prop.Map + '.when()')
@@ -227,23 +231,7 @@ watch(
   },
   { deep: true }
 );
-/*
-////////////////////////////////////////
-// Hacer el set focus 
-///////////////////////////////////////
-watch(
-  () => This.prop.Focus, //props.prop.Focus,
-  (new_val: any, old_val: any) => {
-    if (!new_val) {
-      return
-    }
-    This.click()
-    return
-  },
-  { deep: false }
-)
 
-*/
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
@@ -252,7 +240,6 @@ watch(
 watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
-    console.log('1)imgButton Watch Focus Name=', This.prop.Name, 'New Val', new_val)
     if (!new_val) {
       return
     }

@@ -2,7 +2,7 @@
 //////////////////////////////////////////////
 // Clase : grid_tablas
 // Descripcion : Tablas que contiene el servidor SQL
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre /2022
 // Ult.Mod  : 07/Septiembre/2022
 /////////////////////////////////////////////
@@ -35,7 +35,7 @@ export class grid_tablas extends GRID {
     this.prop.Visible = false
     this.prop.ReadOnly = false
     this.prop.autoLoad = false
-    this.prop.MaxLength = 3
+
   }
 
 

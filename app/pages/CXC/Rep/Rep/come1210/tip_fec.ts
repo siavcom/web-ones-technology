@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_fec
+// @baseClass  : component
+// @class : tip_fec
 // Description : Fecha para validar el vencimiento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-09
 // Update Date  :
 /////////////////////////////////////////////

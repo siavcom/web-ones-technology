@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : cam_dat
 // Descripcion : Nombre del campo
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 16/Octubre
 // Ult.Mod  18/Octubre/2022
 /////////////////////////////////////////////

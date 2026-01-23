@@ -2,7 +2,7 @@
 //////////////////////////////////////////////
 // Clase : grid
 // Descripcion :Grid de mensajes que tiene la forma
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Ult.Mod  : 4/Marzo/2025
 /////////////////////////////////////////////
 

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : t_textbox
-// Class : c_ubi_alm
+// @baseClass  : t_textbox
+// @class : c_ubi_alm
 // Description : Componente c_ubi_alm
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 03/06/25
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : de1_mov
+// @baseClass  : Component
+// @class : de1_mov
 // Description : DESCUENTO 1
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

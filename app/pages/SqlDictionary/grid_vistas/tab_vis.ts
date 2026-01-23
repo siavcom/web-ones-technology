@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : tab_vis
 // Descripcion : relaciión de tablas que compone la vista
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  05/Septiembre /2022
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Relación de productos importados
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-03-07
 // Update Date  : 
 /////////////////////////////////////////////

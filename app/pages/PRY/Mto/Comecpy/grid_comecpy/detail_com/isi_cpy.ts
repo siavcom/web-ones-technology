@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : isi_cpy
 // Descripcion : Insumo en ERP Siavcom
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 26/Abril/2024
 // Ult.Mod  : 12/Ags/2024
 // Nota : Es es en el detalle de compra

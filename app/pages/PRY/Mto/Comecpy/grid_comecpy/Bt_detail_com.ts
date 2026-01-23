@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Details
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 02/Mayo/2024
 // Description : Mustra el detalle para el departamento de compras
 // Update Date  :12/Ags/2024
@@ -11,32 +11,41 @@ import { modal_com } from './detail_com/modal_com'
 
 export class detail_com extends COLUMN {
     public modal_com = new modal_com()
+    inFocus = false
     constructor() {
         super()
         this.prop.ColumnTextLabel = 'Detalle compras'
-
         this.prop.BaseClass = 'imgButton'
         this.prop.Image = "/Iconos/svg/accept.svg"
-        this.prop.Position = 'main'
         this.style.width = '24px'
         this.style.height = '24px'
-
         this.prop.Capture = false
-
+        this.asignaRecno()
     }
 
-    async when() {
-
-        this.prop.ReadOnly = ! await this.Parent.whenCompra()
-        if (!this.prop.ReadOnly)
-            this.click()
-        return !this.prop.ReadOnly
+    override async init() {
+        await super.init()
+        //  this.modal_com.prop.Visible = false
     }
 
-    async click() {
-        // Cotizacion del proyecto
 
+    override async when() {
 
+        if (await this.Parent.whenCompra())
+            return false
+
+        //  if (!this.inFocus) {
+        //      this.click()
+        //      return true
+        //  }
+
+        //   this.inFocus = false
+        return true
+    }
+
+    override async click() {
+
+        // this.inFocus = true
         this.modal_com.prop.Visible = true
 
         const eco_tpy = this.Form.eco_tpy.trim() // equipo de compras
@@ -46,7 +55,6 @@ export class detail_com extends COLUMN {
 
         let sw_com = 0
         let sw_aut = 0
-
 
         let data = await this.Sql.localAlaSql(`select equ_equ as equ_com from equipos where rtrim(equ_equ)='${eco_tpy}'`)
         if (data.length > 0)
@@ -87,14 +95,11 @@ export class detail_com extends COLUMN {
 
             this.modal_com.dea_prv.prop.Disabled = false
         }
-
-
         // El equipo que autoriza es el equipo que esta capturando
         if (sw_aut = 1) {
             this.modal_com.block[4].prop.Visible = true // Autorizacion
         }
 
         return true
-
     }
 }

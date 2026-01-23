@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : editBox
-// Class : cla_isu
+// @baseClass  : editBox
+// @class : cla_isu
 // Description : Componente cla_isu
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 29/05/25
 // Update Date  :
 /////////////////////////////////////////////

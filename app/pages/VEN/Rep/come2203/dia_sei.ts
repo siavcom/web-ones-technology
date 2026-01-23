@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : dia_sei
+// @baseClass  : spinner
+// @class : dia_sei
 // Description : dias vencidos sexto rango
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18// Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////

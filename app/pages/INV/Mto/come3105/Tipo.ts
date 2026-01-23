@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : Tipo
+// @baseClass  : optionGroup
+// @class : Tipo
 // Description : Componente Tipo
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 29/05/25
 // Update Date  :
 /////////////////////////////////////////////

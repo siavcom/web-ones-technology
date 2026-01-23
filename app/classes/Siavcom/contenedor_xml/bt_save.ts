@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : json
-// Class : dat_xml
+// @baseClass  : json
+// @class : dat_xml
 // Description : Componente tab_xml
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 21/08/25
 // Update Date  : 
 /////////////////////////////////////////////

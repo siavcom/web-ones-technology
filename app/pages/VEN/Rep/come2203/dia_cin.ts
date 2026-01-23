@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : dia_cin
+// @baseClass  : spinner
+// @class : dia_cin
 // Description : dias vencidos quinto rango
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18// Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////
@@ -15,7 +15,7 @@ export class dia_cin extends COMPONENT {
 
     this.prop.Type = "spinner";
     this.prop.Caption = "Días vencidos ";
-    this.prop.Value =35;
+    this.prop.Value = 35;
     this.prop.Min = 0;
     this.prop.Visible = true;
     this.prop.Disabled = false;

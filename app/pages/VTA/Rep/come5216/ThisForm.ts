@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Reporte de claves alternas
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-07-10
 // Update Date  : 2025-07-10
 /////////////////////////////////////////////

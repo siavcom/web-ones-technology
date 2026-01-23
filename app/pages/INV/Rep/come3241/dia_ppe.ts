@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : dia_ppe
+// @baseClass  : component
+// @class : dia_ppe
 // Description : dias por cada periodo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-25
 // Update Date  : 
 /////////////////////////////////////////////

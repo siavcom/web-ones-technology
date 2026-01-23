@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : tpr_prg
 // Descripcion : TIPO DE PROGRAMA M=MANTENIMIENTO; R=REPORTE; P=PROCESO
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  07/Septiembre/2022
 /////////////////////////////////////////////

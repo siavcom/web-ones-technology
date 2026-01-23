@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : cla_prv
+// @baseClass  : Component
+// @class : cla_prv
 // Description : CLAVE DEL INSUMO tabla de claves alternas
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : per_min
+// @baseClass  : component
+// @class : per_min
 // Description : numero de periodo minimos de venta a considerar
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/01/30
 // Update Date  :
 /////////////////////////////////////////////

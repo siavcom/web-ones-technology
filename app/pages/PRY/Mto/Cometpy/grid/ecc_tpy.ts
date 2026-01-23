@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ecc_tpy
+// @baseClass  : COLUMN
+// @class : ecc_tpy
 // Description : equipo de control de calidad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-08-27
 // Update Date  :
 /////////////////////////////////////////////

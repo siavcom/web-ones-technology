@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : des_tab
 // Descripcion : Descripcion de la tabla
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  07/Septiembre/2022
 /////////////////////////////////////////////

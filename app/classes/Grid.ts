@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Grid
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Febrero/2022
 // Ult.Mod  :  10/Julio/2023
 /////////////////////////////////////////////
@@ -230,17 +230,7 @@ export class GRID extends COMPONENT {
   //const asignaRenglon = (newEvento: string) => {
   public async asignaRenglon_new(Row: number, ColumnName: string) {
     ColumnName = ColumnName.trim();
-    if (this.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
-      //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
-      /*
-            for (const columna of this.elements) {
-      
-              if (!this[columna.Name].prop.Valid)
-                return this[columna.Name].setFocus() // Se posiciona el cursor en el componente no validado
-            }
-      */
 
-    }
     this.Row = Row;
     this.Column = ColumnName
     this[ColumnName].prop.Focus = true; // Establece el foco en la columna seleccionada

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : pre_cer
+// @baseClass  : component
+// @class : pre_cer
 // Description : Indicador para insumos con precio 0
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-01-23
 // Update Date  : 
 /////////////////////////////////////////////

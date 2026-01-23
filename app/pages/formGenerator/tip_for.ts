@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : tip_for
 // Descripcion : tipo de forma de mantenimiento
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Diciembre/2021
 // Ult.Mod  : 4/Julio /2023
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : comboBox
+// @baseClass  : component
+// @class : comboBox
 // Description : Fecha para el analisis de antigüedad de saldos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-05-29
 // Update Date  :
 /////////////////////////////////////////////

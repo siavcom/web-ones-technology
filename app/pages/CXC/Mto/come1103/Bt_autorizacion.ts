@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : imgButton
-// Class : Bt_autorizacion
+// @baseClass  : imgButton
+// @class : Bt_autorizacion
 // Description : Componente Bt_autorizacion
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : imgButton
-// Class : Bt_dre_doc
+// @baseClass  : imgButton
+// @class : Bt_dre_doc
 // Description : Componente Bt_dre_doc
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////

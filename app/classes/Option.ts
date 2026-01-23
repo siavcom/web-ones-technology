@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Optin de un OptionGroup
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2025
 // Ult.Mod  : Junio/2023
 /////////////////////////////////////////////

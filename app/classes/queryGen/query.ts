@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : query
+// @baseClass  : component
+// @class : query
 // Description : Equipo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-03-13
 // Update Date  : 
 /////////////////////////////////////////////

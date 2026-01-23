@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : ven_ven
+// @baseClass  : component
+// @class : ven_ven
 // Description : Vendedores
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-08
 // Update Date  :
 /////////////////////////////////////////////

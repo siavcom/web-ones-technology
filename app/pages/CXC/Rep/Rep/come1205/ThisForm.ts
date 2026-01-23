@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Estado de cuenta de clientes
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-09-20
 // Update Date  : 2023-09-29
 /////////////////////////////////////////////

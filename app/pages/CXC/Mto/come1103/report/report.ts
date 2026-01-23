@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : report
+// @baseClass  : component
+// @class : report
 // Description : Muestra el resultado
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-05-25
 // Update Date  : 
 /////////////////////////////////////////////

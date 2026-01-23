@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : OPTIONGROUP
-// Class : tip_det
+// @baseClass  : OPTIONGROUP
+// @class : tip_det
 // Description : reporte detallado por cliente,cte/consignatario
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-07-16
 // Update Date  :
 /////////////////////////////////////////////

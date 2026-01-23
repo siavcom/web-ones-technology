@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : con_con
+// @baseClass  : component
+// @class : con_con
 // Description : Consigantario
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-20
 // Update Date  : 
 /////////////////////////////////////////////

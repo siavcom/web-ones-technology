@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Reporte de toma de inventario fisico
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/06
 // Update Date  : 
 /////////////////////////////////////////////

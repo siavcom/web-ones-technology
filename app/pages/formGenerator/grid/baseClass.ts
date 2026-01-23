@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : tip_dat
 // Descripcion : Tipo de dato
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  16/Junio/2022
 /////////////////////////////////////////////

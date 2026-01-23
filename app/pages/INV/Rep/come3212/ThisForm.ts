@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Existencia por pedimento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/21
 // Update Date  : 
 /////////////////////////////////////////////

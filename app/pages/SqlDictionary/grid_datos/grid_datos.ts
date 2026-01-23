@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : grid
 // Descripcion : Mantenimiento al diccionario de datos
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Diciembre/2021
 // Ult.Mod  : 23/Septiembre/2022
 /////////////////////////////////////////////

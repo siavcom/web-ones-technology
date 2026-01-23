@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : tpy_tpy
+// @baseClass  : COLUMN
+// @class : tpy_tpy
 // Description : Tipo de proyecto
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 15/Feb/2024
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 ﻿﻿//////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editText
-// Class : cpo_ven
+// @baseClass  : editText
+// @class : cpo_ven
 // Description : Componente cpo_ven
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 05/05/25
 // Update Date  :
 /////////////////////////////////////////////

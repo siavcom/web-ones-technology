@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : num_fam
+// @baseClass  : COLUMN
+// @class : num_fam
 // Description : Numero de familia num_fam=0 es por clave de producto
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-06-29
 // Update Date  :
 /////////////////////////////////////////////

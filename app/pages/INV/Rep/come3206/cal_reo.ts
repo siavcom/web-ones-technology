@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : cal_reo
+// @baseClass  : component
+// @class : cal_reo
 // Description : Calculo de puntos de reorden
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/01/30
 // Update Date  : 
 /////////////////////////////////////////////

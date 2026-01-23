@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : fot_isu
+// @baseClass  : component
+// @class : fot_isu
 // Description : Imagen del producto en siavcom
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-10-31
 // Update Date  :
 /////////////////////////////////////////////

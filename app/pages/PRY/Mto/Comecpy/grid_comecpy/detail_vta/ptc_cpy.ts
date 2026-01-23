@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// BaseClass : Component
+// @baseClass  : COLUMN
+// @baseClass  : Component
 // Description : Precio total  cotizado por el proveedor
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-04-02
 // Update Date  : 
 /////////////////////////////////////////////

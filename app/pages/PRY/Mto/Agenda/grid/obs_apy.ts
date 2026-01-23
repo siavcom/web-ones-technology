@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : obs_apy
+// @baseClass  : COLUMN
+// @class : obs_apy
 // Description : Observaciones
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 
 /////////////////////////////////////////////

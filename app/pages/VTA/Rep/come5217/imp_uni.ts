@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : OPTIONGROUP
-// Class : imp_uni
+// @baseClass  : OPTIONGROUP
+// @class : imp_uni
 // Description : reporte en importes o unidades
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-07-07
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : co2_exi
+// @baseClass  : component
+// @class : co2_exi
 // Description : + Existencia corporativo AGS
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

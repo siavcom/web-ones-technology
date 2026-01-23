@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tcb_act
+// @baseClass  : component
+// @class : tcb_act
 // Description : Tipo de cambio al ultimo dia del mes actual
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-12
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : displayQr
+// @baseClass  : component
+// @class : displayQr
 // Description : despliga el valor QR para vincular el whatApp
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-18-Enero
 // Update Date  :
 /////////////////////////////////////////////

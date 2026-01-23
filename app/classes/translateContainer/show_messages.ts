@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : bt_messages
+// @baseClass  : component
+// @class : bt_messages
 // Description : Muestra traduccion de mensajes
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Update Date  : 2025-03-03
 /////////////////////////////////////////////
 import { IMGBUTTON } from "@/classes/imgButton";

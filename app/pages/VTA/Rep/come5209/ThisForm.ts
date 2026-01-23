@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Programación de entregas
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-27
 // Update Date  : 2025-06-27
 /////////////////////////////////////////////

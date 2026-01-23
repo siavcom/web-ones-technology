@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : in_tcd_tcd
+// @baseClass  : component
+// @class : in_tcd_tcd
 // Description : Clasificacion de documento
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-09-20
 // Update Date  :
 /////////////////////////////////////////////

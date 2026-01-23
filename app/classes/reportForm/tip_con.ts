@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : tip_con
 // Descripcion : TIPO DE CONDICION
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod 23/abril/2'24
 /////////////////////////////////////////////

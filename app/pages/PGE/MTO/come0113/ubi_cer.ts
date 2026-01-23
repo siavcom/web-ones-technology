@@ -1,9 +1,9 @@
 ﻿﻿//////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editText
-// Class : ubi_cer
+// @baseClass  : editText
+// @class : ubi_cer
 // Description : Componente ubi_cer
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 20/11/2025
 // Update Date  :
 /////////////////////////////////////////////

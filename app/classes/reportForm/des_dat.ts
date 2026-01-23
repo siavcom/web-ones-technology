@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : des_dat
+// @baseClass  : component
+// @class : des_dat
 // Description : desde que insumo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-06-07
 // Update Date  :
 /////////////////////////////////////////////

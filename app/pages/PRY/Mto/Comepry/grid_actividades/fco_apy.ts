@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : des_tap
+// @baseClass  : COLUMN
+// @class : des_tap
 // Description : fecha de conclusion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-10
 // Update Date  :
 /////////////////////////////////////////////

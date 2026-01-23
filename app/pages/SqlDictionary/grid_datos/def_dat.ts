@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : def_dat
 // Descripcion : Valor default de la columna en  SQL Server 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
 /////////////////////////////////////////////

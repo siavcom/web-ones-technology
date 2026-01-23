@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisform
+// @baseClass  : reportForm
+// @class : thisform
 // Description : Insumos por documento ventas/compras gova
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/06/30
 // Update Date  : 
 /////////////////////////////////////////////

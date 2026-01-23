@@ -1,7 +1,7 @@
 /////////////////////////////////////////////
 // Clase : header_report
 // Descripcion : Header de la columna
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Octubre/2023
 // Ult.Mod  16/Octubre/2023
 /////////////////////////////////////////////

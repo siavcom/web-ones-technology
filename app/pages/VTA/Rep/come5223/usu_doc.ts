@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : usu_doc
+// @baseClass  : component
+// @class : usu_doc
 // Description : Usuarios
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/08/08
 // Update Date  :
 /////////////////////////////////////////////

@@ -12,10 +12,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : captureForm
-// Class : num_fam
+// @baseClass  : captureForm
+// @class : num_fam
 // Description : Forma de captura
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 15/05/25
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : captureComponent
+// @baseClass  : component
+// @class : captureComponent
 // Description : Componete de captura de un Form
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-08-31
 // Update Date  :
 /////////////////////////////////////////////

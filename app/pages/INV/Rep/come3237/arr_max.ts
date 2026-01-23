@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : arr_max
+// @baseClass  : component
+// @class : arr_max
 // Description : Existencia mayor al máximo
-// Author : mgsr
+// @author: mgsr
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

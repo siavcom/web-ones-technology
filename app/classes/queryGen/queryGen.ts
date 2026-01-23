@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : queryGenerator
+// @baseClass  : component
+// @class : queryGenerator
 // Description : Genera un Query para SQL
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-03-13
 // Update Date  : 
 /////////////////////////////////////////////

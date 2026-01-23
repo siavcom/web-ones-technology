@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_edit
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 /////////////////////////////////////////////
 import { COMPONENT } from '@/classes/Component'

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : per_apy
+// @baseClass  : component
+// @class : per_apy
 // Description : Numero actividad periodo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-05
 // Update Date  :
 /////////////////////////////////////////////

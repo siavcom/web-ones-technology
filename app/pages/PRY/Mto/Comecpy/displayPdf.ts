@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : embed
 // Descripcion : Despliega el reporte en PDF
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 06/Junio/2023
 // Ult.Mod  : 09/Junio/2023
 /////////////////////////////////////////////

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : vis_tab
 // Descripcion : Where en la vista de mantenimiento
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  7/Septiembre /2022
 /////////////////////////////////////////////

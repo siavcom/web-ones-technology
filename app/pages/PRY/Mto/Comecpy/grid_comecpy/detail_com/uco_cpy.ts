@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : uco_dpy
+// @baseClass  : COLUMN
+// @class : uco_dpy
 // Description : USUARIO QUE COTIZO CON EL PROVEEDOR
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : amu_tap
+// @baseClass  : COLUMN
+// @class : amu_tap
 // Description : Actividad multiple
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-10
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : obc_cpy
+// @baseClass  : Component
+// @class : obc_cpy
 // Description : Condiciones de pago
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-07-30
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Cálculo de fluctuación
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-12
 // Update Date  : 2025-06-10
 /////////////////////////////////////////////

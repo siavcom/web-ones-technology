@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : por_inc
+// @baseClass  : spinner
+// @class : por_inc
 // Description : porcentaje de incremento 
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-30
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : dia_uno
+// @baseClass  : spinner
+// @class : dia_uno
 // Description : dias vencidos primer rango
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18// Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////

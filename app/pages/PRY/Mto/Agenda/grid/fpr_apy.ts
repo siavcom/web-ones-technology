@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : fpr_apy
+// @baseClass  : COLUMN
+// @class : fpr_apy
 // Description : Fecha de programacion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 
 /////////////////////////////////////////////

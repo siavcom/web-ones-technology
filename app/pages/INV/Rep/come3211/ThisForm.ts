@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Capas de existencia de productos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/21
 // Update Date  : 
 /////////////////////////////////////////////

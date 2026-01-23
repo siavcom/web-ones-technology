@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : Teams
+// @baseClass  : reportForm
+// @class : Teams
 // Description : Reporte de existencias
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-03-17
 // Update Date  : 
 /////////////////////////////////////////////

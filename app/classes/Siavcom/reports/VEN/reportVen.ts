@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Forma para generar reportes de vendedores
-// Author : MGSR
+// @author: MGSR
 // Creacion : 14/mayo/2025
 // Ult.Mod  : 30/junio/2025
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : est_tap
+// @baseClass  : component
+// @class : est_tap
 // Description : Estatus de las actividadesS
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-08
 // Update Date  :
 /////////////////////////////////////////////

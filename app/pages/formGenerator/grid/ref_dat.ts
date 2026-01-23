@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : ref_dat
 // Descripcion : Descripcion del campo
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 16/Octubre/2022
 // Ult.Mod  : 22/Octubre/2022
 /////////////////////////////////////////////

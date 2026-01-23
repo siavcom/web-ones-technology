@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Pedidos contra inventario
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-20
 // Update Date  : 2025-06-20
 /////////////////////////////////////////////

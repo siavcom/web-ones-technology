@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : Component
-// Class : ndo_doc
+// @baseClass  : Component
+// @class : ndo_doc
 // Description : Componente ndo_doc
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////
@@ -174,12 +174,12 @@ export class ndo_doc extends CAPTURECOMPONENT {
               } // End If 
       
       */
-
-        if (!await super.valid()) {
-
+        if (this.prop.Value == 0) {
             return false
         }
-
+        if (!await super.valid()) {
+            return false
+        }
 
         let Alias = ''
         let Recno = 0

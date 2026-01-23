@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : cod_nom
+// @baseClass  : component
+// @class : cod_nom
 // Description : Código
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-20
 // Update Date  :2024-04-23
 /////////////////////////////////////////////

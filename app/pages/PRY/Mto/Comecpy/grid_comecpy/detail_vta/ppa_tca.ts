@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// BaseClass : Component
+// @baseClass  : COLUMN
+// @baseClass  : Component
 // Description : PRECIO COTIZADO POR EL PROVEEDOR
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_aceptar
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Agosto/2021
 // Ult.Mod : 10/Julio/2023
 /////////////////////////////////////////////

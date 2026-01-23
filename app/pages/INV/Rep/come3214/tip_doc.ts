@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : comboBox
+// @baseClass  : component
+// @class : comboBox
 // Description : Tipo de documento de entrada o salida
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-01-09
 // Update Date  :
 /////////////////////////////////////////////

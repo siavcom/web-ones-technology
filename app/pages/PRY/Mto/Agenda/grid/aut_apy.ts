@@ -2,7 +2,7 @@
 // Clase : aut_apy
 // Descripcion : Actividad autorizada
 // Obs:
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  23/Enero/2023
 /////////////////////////////////////////////

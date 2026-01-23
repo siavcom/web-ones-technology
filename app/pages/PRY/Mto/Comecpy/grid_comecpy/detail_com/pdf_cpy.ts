@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : bt_save
+// @baseClass  : component
+// @class : bt_save
 // Description : Obtiene el pdf de la cotizacion del proveedor
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-10-16
 // Update Date  :
 /////////////////////////////////////////////

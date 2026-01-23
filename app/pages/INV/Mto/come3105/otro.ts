@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : imgButton
-// Class : otro
+// @baseClass  : imgButton
+// @class : otro
 // Description : Componente otro
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 29/05/25
 // Update Date  :
 /////////////////////////////////////////////

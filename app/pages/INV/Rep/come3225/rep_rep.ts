@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : rep_rep
+// @baseClass  : component
+// @class : rep_rep
 // Description : Tipo de reporte
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/03/21
 // Update Date  :
 /////////////////////////////////////////////

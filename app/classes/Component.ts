@@ -38,7 +38,7 @@ export class COMPONENT {
   textLabel = ""
   sw_translate = true
   Id = ''
-  Value: string | number | boolean | Date | null = ''
+  Value: string | number | boolean | Date | null | [] | {} = ''
   prop = {
     autoLoad: false,
     Autofocus: false,

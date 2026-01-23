@@ -1,9 +1,9 @@
 ﻿﻿//////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editText
-// Class : con_pwd
+// @baseClass  : editText
+// @class : con_pwd
 // Description : Componente con_pas
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 20/11/2025
 // Update Date  :
 /////////////////////////////////////////////

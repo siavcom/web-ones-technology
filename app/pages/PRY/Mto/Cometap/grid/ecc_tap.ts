@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ecc_tap
+// @baseClass  : COLUMN
+// @class : ecc_tap
 // Description : Equipo de control de calidad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-26
 // Update Date  :
 /////////////////////////////////////////////

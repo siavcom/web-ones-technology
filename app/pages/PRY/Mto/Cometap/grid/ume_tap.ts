@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ume_tap
+// @baseClass  : COLUMN
+// @class : ume_tap
 // Description : Unidad de medicion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 4/Mar/2024
 /////////////////////////////////////////////

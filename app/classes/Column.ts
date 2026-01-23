@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Celda de un gridd
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Noviembre/2021
 // Ult.Mod  : Agosto/2025
 /////////////////////////////////////////////

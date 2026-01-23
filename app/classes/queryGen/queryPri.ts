@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : queryGen
+// @baseClass  : component
+// @class : queryGen
 // Description : Genera un Query principal
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-03-13
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : placeHorder
 // Descripcion : Tool Tip Text
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
 /////////////////////////////////////////////

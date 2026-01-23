@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_excel
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 25/Mayo/2023
 // Ult.Mod. : 10/Agosto/2023
 /////////////////////////////////////////////

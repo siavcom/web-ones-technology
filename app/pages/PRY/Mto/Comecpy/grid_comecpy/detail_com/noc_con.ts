@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : noc_con
+// @baseClass  : component
+// @class : noc_con
 // Description : Nombre del consignatario
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-08-18
 // Update Date  : 
 /////////////////////////////////////////////

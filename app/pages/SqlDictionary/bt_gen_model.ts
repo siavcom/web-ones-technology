@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_gen_tabla
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Sep/2022
 // Ult. Mod: 15/Mayo/2023
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_nof
+// @baseClass  : component
+// @class : tip_nof
 // Description : reporte con datos fiscales o no
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025/03/25
 // Update Date  : 
 /////////////////////////////////////////////

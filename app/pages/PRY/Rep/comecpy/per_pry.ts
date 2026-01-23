@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : per_pry
+// @baseClass  : component
+// @class : per_pry
 // Description : Tipos de periodos de los proyectos
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-08
 // Update Date  :
 /////////////////////////////////////////////

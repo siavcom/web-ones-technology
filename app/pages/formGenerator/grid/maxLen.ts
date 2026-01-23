@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : maxLen
 // Descripcion : Valor max p longitud
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
 /////////////////////////////////////////////

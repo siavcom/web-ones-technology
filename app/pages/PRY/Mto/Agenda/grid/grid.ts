@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : Grid
-// Class : vi_cap_agenda
+// @baseClass  : Grid
+// @class : vi_cap_agenda
 // Description : Capture Grid
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-02-12
 // Update Date  : 
 /////////////////////////////////////////////

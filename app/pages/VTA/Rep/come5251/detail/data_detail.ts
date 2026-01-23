@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : Container
-// Class : data_detail
+// @baseClass  : Container
+// @class : data_detail
 // Description : Contenedor de datos de Mail y WhatsApp para enviar documentos
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2025-12-15
 // Update Date  : 2026-01-05
 /////////////////////////////////////////////

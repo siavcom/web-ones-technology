@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Pedidos de clientes o proveedores 
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-19
 // Update Date  : 
 /////////////////////////////////////////////

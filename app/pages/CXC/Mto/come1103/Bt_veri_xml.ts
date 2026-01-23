@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : imgButton
-// Class : Bt_veri_xml
+// @baseClass  : imgButton
+// @class : Bt_veri_xml
 // Description : Componente Bt_veri_xml
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////

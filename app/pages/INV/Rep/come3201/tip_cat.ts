@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_cat
+// @baseClass  : component
+// @class : tip_cat
 // Description : Tipo de catalogo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024/10/30
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 ﻿﻿//////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : editText
-// Class : tel_ven
+// @baseClass  : editText
+// @class : tel_ven
 // Description : Componente tel_ven
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 05/05/25
 // Update Date  :
 /////////////////////////////////////////////

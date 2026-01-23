@@ -1,7 +1,7 @@
 /////////////////////////////////////////////
 // Clase : cam_que
 // Descripcion : Campo
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Marzo/2023
 // Ult.Mod  13/Marzo/2023
 /////////////////////////////////////////////

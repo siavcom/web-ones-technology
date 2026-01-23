@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : Init
 // Descripcion : inicializa solo async
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Octubre/2021
 // Ult.Mod  : 30/May/2022
 /////////////////////////////////////////////

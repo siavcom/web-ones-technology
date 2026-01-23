@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : men_env
+// @baseClass  : component
+// @class : men_env
 // Description : Envia mensaje al whatsapp
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-18-Enero
 // Update Date  :
 /////////////////////////////////////////////

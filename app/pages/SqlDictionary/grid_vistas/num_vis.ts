@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : num_vis
 // Descripcion : Número de de vista (orden al momento de creacion)
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  22/Junio/2022
 /////////////////////////////////////////////

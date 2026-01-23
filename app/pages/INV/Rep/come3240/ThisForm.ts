@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : Teams
+// @baseClass  : reportForm
+// @class : Teams
 // Description : Reporte de existencias con detalle de integracion
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/07
 // Update Date  : 
 /////////////////////////////////////////////

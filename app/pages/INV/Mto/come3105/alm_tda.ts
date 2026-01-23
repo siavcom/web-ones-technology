@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : comboBox
-// Class : alm_tda
+// @baseClass  : comboBox
+// @class : alm_tda
 // Description : Componente alm_tda
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 29/05/25
 // Update Date  :
 /////////////////////////////////////////////

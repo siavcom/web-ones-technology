@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : whe_vis
 // Descripcion : Condicion where en el servidor de SQL de la vista
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : febrero/2024
 // Ult.Mod  14/Febrero /2024
 /////////////////////////////////////////////

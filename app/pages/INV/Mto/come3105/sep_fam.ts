@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : sep_fam
+// @baseClass  : optionGroup
+// @class : sep_fam
 // Description : Componente sep_fam
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 03/06/25
 // Update Date  :
 /////////////////////////////////////////////

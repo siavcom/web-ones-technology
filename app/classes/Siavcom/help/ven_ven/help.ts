@@ -1,10 +1,10 @@
 
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : help
-// Class : help
+// @baseClass  : help
+// @class : help
 // Description : Help de ayuda de vendedores
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : por_sei
+// @baseClass  : spinner
+// @class : por_sei
 // Description : porcentaje de comision para sexto rango de días vencidos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 
 // Update Date  : 

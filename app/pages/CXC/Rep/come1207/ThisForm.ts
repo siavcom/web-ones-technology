@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Relación de documentos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-10
 // Update Date  : 2025-06-10
 /////////////////////////////////////////////

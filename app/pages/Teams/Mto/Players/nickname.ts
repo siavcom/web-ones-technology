@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : nickname
+// @baseClass  : component
+// @class : nickname
 // Description : Apodo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-02-20
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_gen_forma
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 22/Noviembre/2022
 // Ult.Modificacion : 15/Febrero/2023
 /////////////////////////////////////////////

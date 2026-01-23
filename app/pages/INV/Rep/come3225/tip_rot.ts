@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_rot
+// @baseClass  : component
+// @class : tip_rot
 // Description : Tipo de rotacion
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/03/21
 // Update Date  :
 /////////////////////////////////////////////

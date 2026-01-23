@@ -2,7 +2,7 @@
 //////////////////////////////////////////////
 // Clase : grid
 // Descripcion : Mantenimiento de indices del diccionario de datos
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre /2022
 // Ult.Mod  : 5/Septiembre/2022
 /////////////////////////////////////////////

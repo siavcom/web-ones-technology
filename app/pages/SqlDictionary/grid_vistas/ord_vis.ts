@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : ord_vis
 // Descripcion : Orden de la vista remota
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  05/Septiembre /2022
 /////////////////////////////////////////////

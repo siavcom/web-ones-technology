@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : des_cpy
+// @baseClass  : component
+// @class : des_cpy
 // Description : DESCRIPCION DE LA PARTIDA A COTIZAR
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////
@@ -24,8 +24,8 @@ export class des_cpy extends COMPONENT {
     this.prop.MaxLength = 1024
     this.prop.Capture = true
     this.prop.Disabled = true
-    this.prop.ToolTipText = "Descripción de la partida a cotizar",
-      this.inputStyle.width = "654px"
+    this.prop.ToolTipText = "Descripción de la partida a cotizar"
+    this.inputStyle.width = "654px"
     this.inputStyle.height = "auto"
 
   }

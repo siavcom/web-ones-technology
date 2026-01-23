@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ord_tap
+// @baseClass  : COLUMN
+// @class : ord_tap
 // Description : Consecutivo de la actividad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-07-10
 // Update Date  :
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : dia_ven
+// @baseClass  : component
+// @class : dia_ven
 // Description : días vencidos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-09
 // Update Date  :
 /////////////////////////////////////////////

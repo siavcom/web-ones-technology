@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : nom_ind
+// @baseClass  : component
+// @class : nom_ind
 // Description : Nobre del indice
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-04-15
 // Update Date  :
 /////////////////////////////////////////////

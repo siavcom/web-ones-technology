@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : est_dpy
+// @baseClass  : Component
+// @class : est_dpy
 // Destription : Estatus de la partida de cotizacion A=Autorizado,B=Bloqueado
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

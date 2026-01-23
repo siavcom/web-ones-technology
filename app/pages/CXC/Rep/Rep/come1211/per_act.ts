@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : per_act
+// @baseClass  : component
+// @class : per_act
 // Description : Importe menor o igual que
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-09
 // Update Date  : 
 /////////////////////////////////////////////

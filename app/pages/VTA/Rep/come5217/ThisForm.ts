@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : comparativo de ventas/compras mensuales
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-07-11
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : dia_tre
+// @baseClass  : spinner
+// @class : dia_tre
 // Description : dias vencidos tercer rango
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18// Update Date  : 
 /////////////////////////////////////////////
 ///////////////////////////////////////

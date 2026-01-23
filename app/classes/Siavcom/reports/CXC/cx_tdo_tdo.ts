@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : cx_tdo_tdo
+// @baseClass  : component
+// @class : cx_tdo_tdo
 // Description : Tip de documento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-10
 // Update Date  :
 /////////////////////////////////////////////

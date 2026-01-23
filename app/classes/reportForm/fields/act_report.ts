@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : act_report
 // Descripcion : Actualizable
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Octubre/2023
 // Ult.Mod  : 23/Octubre/2023
 /////////////////////////////////////////////

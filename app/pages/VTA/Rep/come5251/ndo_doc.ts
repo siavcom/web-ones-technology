@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : ndo_doc
+// @baseClass  : component
+// @class : ndo_doc
 // Description : numero de documento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/jul/09
 // Update Date  :
 /////////////////////////////////////////////

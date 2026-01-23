@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_cos
+// @baseClass  : component
+// @class : tip_cos
 // Description : Tipo de costo
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/07
 // Update Date  :
 /////////////////////////////////////////////

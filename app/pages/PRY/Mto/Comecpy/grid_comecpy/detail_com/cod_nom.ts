@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : cod_nom
+// @baseClass  : Component
+// @class : cod_nom
 // Description : Código del proveedor que surte el insumo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-21
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : des_cte
+// @baseClass  : component
+// @class : des_cte
 // Description : desde que vendedor
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/jul/16
 // Update Date  :
 /////////////////////////////////////////////

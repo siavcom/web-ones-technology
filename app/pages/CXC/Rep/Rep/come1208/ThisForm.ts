@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : ThisForm
+// @baseClass  : reportForm
+// @class : ThisForm
 // Description : Análisis de Cobranza
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-09
 // Update Date  : 
 /////////////////////////////////////////////

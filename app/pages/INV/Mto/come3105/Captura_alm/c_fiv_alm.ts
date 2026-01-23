@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
-// BaseClass : header
-// Class : c_fiv_alm
+// @baseClass  : header
+// @class : c_fiv_alm
 // Description : Componente c_fiv_alm
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 03/06/25
 // Update Date  :
 /////////////////////////////////////////////

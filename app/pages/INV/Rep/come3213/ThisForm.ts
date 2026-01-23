@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : reportInv
+// @baseClass  : reportForm
+// @class : reportInv
 // Description : Historial de porductos por pedimento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/03/03
 // Update Date  : 
 /////////////////////////////////////////////

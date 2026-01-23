@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : grid_menu
 // Descripcion : Mantenimiento del menu del sistema
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre /2022
 // Ult.Mod  : 8/Septiembre/2022
 /////////////////////////////////////////////

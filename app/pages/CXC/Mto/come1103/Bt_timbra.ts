@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : bt_timbra
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 19/Nov/2025
 // Ultima Modificacion : 
 /////////////////////////////////////////////

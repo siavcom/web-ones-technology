@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisform
+// @baseClass  : reportForm
+// @class : thisform
 // Description : Insumos por documento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/07
 // Update Date  : 
 /////////////////////////////////////////////

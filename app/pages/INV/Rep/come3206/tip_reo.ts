@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_rep
+// @baseClass  : component
+// @class : tip_rep
 // Description : Solo los de puntos de reorden
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-11
 // Update Date  : 
 /////////////////////////////////////////////

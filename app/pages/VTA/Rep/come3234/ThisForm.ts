@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Estadistica de insumos por documento
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-07-16
 // Update Date  : 
 /////////////////////////////////////////////

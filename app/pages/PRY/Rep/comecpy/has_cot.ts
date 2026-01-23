@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : des_fam
+// @baseClass  : component
+// @class : des_fam
 // Description : Almacenes
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-11
 // Update Date  :
 /////////////////////////////////////////////

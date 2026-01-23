@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : has_cla
+// @baseClass  : component
+// @class : has_cla
 // Description : Hasta que insumo
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/jul/09
 // Update Date  :
 /////////////////////////////////////////////

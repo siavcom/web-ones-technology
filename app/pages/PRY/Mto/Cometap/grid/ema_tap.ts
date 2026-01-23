@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ema_tap
+// @baseClass  : COLUMN
+// @class : ema_tap
 // Description : Equipo de trabajo que se mandara msm
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-26
 // Update Date  :
 /////////////////////////////////////////////

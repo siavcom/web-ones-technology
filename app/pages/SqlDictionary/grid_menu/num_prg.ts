@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : num_prg
 // Descripcion : Orden del programa
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  5/Octubre /2022
 /////////////////////////////////////////////

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : dap_cpy
+// @baseClass  : Component
+// @class : dap_cpy
 // Description : Datos del proveedor externo
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-07-30
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : por_tre
+// @baseClass  : spinner
+// @class : por_tre
 // Description : porcentaje de comision para tercer rango de días vencidos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 
 /////////////////////////////////////////////

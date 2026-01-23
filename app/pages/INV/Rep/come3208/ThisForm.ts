@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisform
+// @baseClass  : reportForm
+// @class : thisform
 // Description : Lista de precios
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-01-23
 // Update Date  : 
 /////////////////////////////////////////////

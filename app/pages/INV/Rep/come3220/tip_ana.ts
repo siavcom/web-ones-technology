@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_ana
+// @baseClass  : component
+// @class : tip_ana
 // Description : Tipo de análisis
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/03/07
 // Update Date  :
 /////////////////////////////////////////////

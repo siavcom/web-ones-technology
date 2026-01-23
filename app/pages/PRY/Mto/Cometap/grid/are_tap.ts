@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : are_tap
+// @baseClass  : COLUMN
+// @class : are_tap
 // Description : Actividad en caso de reporgramar
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-12-10
 // Update Date  :
 /////////////////////////////////////////////

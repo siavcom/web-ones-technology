@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Details
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
 // Ult.Mod  : 16/Marzo/2023
 /////////////////////////////////////////////

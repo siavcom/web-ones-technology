@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class COMPONENT was generated automatically by web-ones-technology
-// BaseClass : Component
-// Class : ace_cpy
+// @baseClass  : Component
+// @class : ace_cpy
 // Destription : Aceptacion del cliente A=Aceptada E=Espera,C=Cancelada
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025-02-23
 // Update Date  : 
 /////////////////////////////////////////////

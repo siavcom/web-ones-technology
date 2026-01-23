@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : tip_ped
+// @baseClass  : optionGroup
+// @class : tip_ped
 // Description : Componente tip_ped
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-06-19
 // Update Date  :
 /////////////////////////////////////////////

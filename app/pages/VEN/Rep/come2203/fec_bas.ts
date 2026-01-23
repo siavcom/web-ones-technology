@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : comboBox
+// @baseClass  : component
+// @class : comboBox
 // Description : Fecha base 
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-05-15
 // Update Date  :
 /////////////////////////////////////////////

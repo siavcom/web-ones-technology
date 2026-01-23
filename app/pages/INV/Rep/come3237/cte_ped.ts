@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : cte_ped
+// @baseClass  : component
+// @class : cte_ped
 // Description : - Pedidos clientes
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

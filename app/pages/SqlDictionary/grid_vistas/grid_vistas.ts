@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : grid_vistas
 // Descripcion : Mantenimiento de vistas remotas del diccionario de datos
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre /2022
 // Ult.Mod  : 8/Septiembre/2022
 /////////////////////////////////////////////

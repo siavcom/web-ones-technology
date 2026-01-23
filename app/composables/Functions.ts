@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : Funciones Generales
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Julio /2022
 // Ult.Mod  :
 /////////////////////////////////////////////
@@ -529,9 +529,9 @@ export const stringToDate = (texto?: string): string => {
   let date = texto
   if (date.length >= 10)
     date = date.slice(0, 10) + 'Z';
-  //  console.log('1) stringToDate date=', date)
-  //  console.log('2) stringToDate date=', new Date(date).toISOString())
-  //  console.log('3) stringToDate date=', new Date(date).toISOString().substring(0, 10))
+  // console.log('1) stringToDate date=', date)
+  // console.log('2) stringToDate date=', new Date(date).toISOString())
+  // console.log('3) stringToDate date=', new Date(date).toISOString().substring(0, 10))
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'
 };
 
@@ -845,7 +845,7 @@ export const iif = (condicion: boolean, verdadero: any, falso: any): any => {
 
 //////////////////////////////////////////////
 // Clase : MessageBox
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Julio /2022
 // Ult.Mod  : 15/Enero/2023
 /////////////////////////////////////////////
@@ -1153,7 +1153,7 @@ export async function MessageBox(
 
 //////////////////////////////////////////////
 // Clase : delay
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Julio /2022
 // Ult.Mod  : 15/Enero/2023
 /////////////////////////////////////////////
@@ -1173,7 +1173,7 @@ export async function Delay(
 
 //////////////////////////////////////////////
 // Clase : Dime2DArray
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Julio /2024
 // Ult.Mod  : 24/Julio/2024
 // Descripcion: Crea un array de dos dimensiones
@@ -1198,7 +1198,7 @@ export async function Dime2D(rows: number): Array<any> {
 
 //////////////////////////////////////////////
 // Clase : objetToLowercase
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion :Septiembre /2024
 // Descripcion: recorre un objeto y pasa sus nombres a lowercase Crea un array de dos dimensiones
 /////////////////////////////////////////////
@@ -1317,7 +1317,7 @@ export function impComponent(name: string): object {
 }
 //////////////////////////////////////////////
 // Clase : consoleLog
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Julio /2022
 // Ult.Mod  : 15/Enero/2023
 /////////////////////////////////////////////

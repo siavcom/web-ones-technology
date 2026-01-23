@@ -1,8 +1,8 @@
 ﻿//////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisForm
+// @baseClass  : reportForm
+// @class : thisForm
 // Description : Ventas por familia
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-08-08
 // Update Date  : 
 /////////////////////////////////////////////

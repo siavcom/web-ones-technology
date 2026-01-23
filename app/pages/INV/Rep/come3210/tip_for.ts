@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_for
+// @baseClass  : component
+// @class : tip_for
 // Description : Tipo de formula
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/02/07
 // Update Date  :
 /////////////////////////////////////////////

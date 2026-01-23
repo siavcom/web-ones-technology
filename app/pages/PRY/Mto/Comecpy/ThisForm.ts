@@ -1,13 +1,21 @@
-//////////////////////////////////////////////
-// This Form was generated automatically by web-ones-technology
-// BaseClass : captureForm
-// Class : Comecpy
-// Description : Capture Form
-// Author : El Fer Blocks (Fernando Cuadras)
-// Creation : 2024-04-09
-// Update Date  :
-/////////////////////////////////////////////
+/**
+* This Form was generated automatically by web-ones-technology
+* @baseClass  : captureForm
+* @class : Comecpy
+* @description : Capture Form
+* @author: El Fer Blocks (Fernando Cuadras)
+* @creation : 2024-04-09
+* @updateDate  :
+////////////////////////////////////////////*/
 
+/*
+@class (o @constructor): Indica que una función es una clase constructor.
+@extends (o @augments): Indica que una clase hereda de otra.
+@implements: Indica que una clase implementa una interfaz.
+@readonly: Indica que una propiedad de un objeto no debe ser modificada.
+@public, @private, @protected: Define la visibilidad de un miembro de la clase. 
+
+*/
 ///////////////////////////////////////
 // Base class
 ///////////////////////////////////////
@@ -37,7 +45,7 @@ import { des_equ } from "./des_equ";
 import { bt_clonar } from "./bt_clonar";
 import { bt_cotizacion } from "./bt_cotizacion";
 import { bt_pdf } from "./bt_pdf";
-import { grid_comecpy } from "./grid_comecpy/grid"
+import { grid_comecpy } from "./grid_comecpy/grid_comecpy"
 import { displayPdf } from "./displayPdf";
 
 //import { consoleLog } from "../../../../composables/Functions";

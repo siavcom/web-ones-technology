@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : imp_men
+// @baseClass  : component
+// @class : imp_men
 // Description : Importe menor o igual que
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-09
 // Update Date  : 
 /////////////////////////////////////////////

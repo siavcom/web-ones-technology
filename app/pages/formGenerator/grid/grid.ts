@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : formGenerator
 // Descripcion : Generador de formas de mantenimiento
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
 // Ult.Mod  : 19/Octubre/2022
 /////////////////////////////////////////////

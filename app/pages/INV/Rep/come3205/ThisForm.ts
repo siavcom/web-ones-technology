@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : Teams
+// @baseClass  : reportForm
+// @class : Teams
 // Description : Inventario o Kardex
-// Author : MGSR
+// @author: MGSR
 // Creation : 2024-01-15
 // Update Date  : 
 /////////////////////////////////////////////

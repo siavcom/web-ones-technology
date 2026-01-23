@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : des_cod
+// @baseClass  : component
+// @class : des_cod
 // Description : desde que codigo de cliente
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-11-22
 // Update Date  : 
 /////////////////////////////////////////////

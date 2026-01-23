@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : dic_dat
 // Descripcion : tipo de mantenimiento del diccionario de datos
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Diciembre/2021
 // Ult.Mod  : 6/Septiembre/2022
 /////////////////////////////////////////////

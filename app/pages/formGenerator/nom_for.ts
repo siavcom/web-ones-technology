@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : nom_for
 // Descripcion : Nombre de la vista Vue a generar 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
 // Ult.Mod  : 
 /////////////////////////////////////////////

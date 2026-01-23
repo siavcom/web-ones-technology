@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : ifl_cpy
 // Descripcion : Insumo en ERP Siavcom
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 26/Abril/2024
 // Ult.Mod  :
 /////////////////////////////////////////////

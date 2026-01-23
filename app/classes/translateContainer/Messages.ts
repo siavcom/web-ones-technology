@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
+// @baseClass  : component
 // Class :Messages
 // Description :Valor del textLabel
 // Creation : 2023-07-20

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tra_exi
+// @baseClass  : component
+// @class : tra_exi
 // Description : se incluye + Existencia almacén en tránsito
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

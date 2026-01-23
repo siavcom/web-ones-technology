@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : nom_tab
 // Descripcion : Tablas del servidor SQL Server
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Diciembre/2020
 // Ult.Mod  : 18/Octubre /2021
 /////////////////////////////////////////////

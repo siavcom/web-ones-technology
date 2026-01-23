@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : reportFields
+// @baseClass  : component
+// @class : reportFields
 // Description : Muestra los campos del reporte por pantalla
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-16
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_afe
+// @baseClass  : component
+// @class : tip_afe
 // Description : Se hace afectacion definitiva en tablas
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/01/30
 // Update Date  : 
 /////////////////////////////////////////////

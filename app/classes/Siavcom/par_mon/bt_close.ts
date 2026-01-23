@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : bt_cancelas
+// @baseClass  : component
+// @class : bt_cancelas
 // Description : Acepta
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-04-16
 // Update Date  :
 /////////////////////////////////////////////

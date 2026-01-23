@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : bt_add_activity
+// @baseClass  : COLUMN
+// @class : bt_add_activity
 // Description : boton para agregar actividad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-03-8
 // Update Date  : 
 /////////////////////////////////////////////

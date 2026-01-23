@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : por_uno
+// @baseClass  : spinner
+// @class : por_uno
 // Description : porcentaje de comision para primer rango de días vencidos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 
 /////////////////////////////////////////////

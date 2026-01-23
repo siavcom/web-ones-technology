@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -104,7 +104,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -505,7 +505,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   // false,false,Value
   // console.log('editText emitValue() readCam=', readCam, 'isValid=', isValid, 'Valor=', Valor, 'Value.value=', Value.value)
   const ControlSource = props.prop.ControlSource
-  const pos = ControlSource.indexOf(".") + 1;
+  const isControlSource = ControlSource.indexOf(".") + 1;
 
   //outFocus.value = true
   // let Valor = ''
@@ -656,14 +656,17 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
       let sw_dat = false
 
-      if (pos > 1) {  // hay controlSource
+      if (isControlSource > 1) {  // hay controlSource
 
         //console.log('editText readCampo ',props.prop.ControlSource,'Registro=',props.Registro,'Value=',Value.value,currentValue.value[1])
         const Recno = props.Registro
 
-        const data = await This.Form.db.readCampo(ControlSource, Recno)
-        console.log('>>>>>2.0.0)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'data=', data)
-        // console.log('2.0)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno)
+        if (Recno == 0)
+          return
+
+        const data = await readCampo(ControlSource, Recno)
+
+
 
         for (const campo in data) {
 
@@ -678,6 +681,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
               Value.value = +data[campo] // se regresaraq el valor con emi al v-model:Value
             else
               Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
+
+            if (props.prop.Name == 'des_cpy')
+              console.log('2.0)  editText emitValue() Name=', props.prop.Name, ' readCampo() ControlSource=', ControlSource, 'recno=', Recno, 'Value=', Value.value)
+
 
             //  This.prop.Value=Value.value
 
@@ -697,7 +704,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         //  console.log('>>>>>2.0.1)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'Value', Value.value)
 
       }
-      if (!sw_dat && pos > 1) { // No encontro dato
+      if (!sw_dat && isControlSource > 1) { // No encontro dato
 
         switch (Type) {
           case 'number':
@@ -775,17 +782,15 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       break;
 
     case 'date':
-      //console.log('editText emitValue() Name D', props.prop.ControlSource, 'Valor=',Valor,'Value=',Value.value)
+      // console.log('1)**** editTexteditText emitValue() Name D', props.prop.ControlSource, 'Value=', Value.value)
       if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01'
       // console.log('editText emitValue() Date Name ', props.prop.Name, 'Value=', Value.value)
       if (Value.value.length > 10)
         Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
-      //   currentValue.value[1] = await stringToDate(Value.value)
-      //   currentValue.value[0] = new Date(Value.value).toDateString()
 
       displayDate.value = new Date(Value.value).toDateString()
-
+      // console.log('2)**** editText emitValue() Date Name ', props.prop.Name, 'displayDate.value=', displayDate.value)
       currentDate.value = await stringToDate(Value.value)
       // console.log('editText emitValue() Date Name ', props.prop.Name, 'CurrentDAte=', currentDate.value, 'Value=', Value.value)
 
@@ -825,16 +830,21 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   if (This.prop.Valid)
     This.prop.Status = 'A'
 
+  if (props.prop.Name == 'des_cpy') {
+    console.log('AlaSql vi_cap_comecpy=', await localAlaSql('select * from vi_cap_comecpy'))
+    console.warn('<<<===== Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Recno=', This.Recno, 'ReadCampo', readCam)
+  }
 
-  console.warn('<<<========================== Fin EditText emit Value Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', 'sw_emitValue= ', !This.prop.ReadOnly && !This.prop.Disabled)
   if (!This.prop.ReadOnly && !This.prop.Disabled)
     sw_emitValue = true
   else
     sw_emitValue = false
 
-  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  //  emit("update") // emite un update en el componente padre
 
+  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+  //emit("update") // No quitarlo emite un update en el componente padre
+
+  //    sw_emitValue = false
   if (This.onChangeValue) {
     //  console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
     await This.onChangeValue(ref(Styles))
@@ -1180,10 +1190,10 @@ const onFocus = async () => {
 
   // const click = Click == true ? true : false
   // Si esta en un grid checa sus estatus de todas las columnas
-
+  ToolTipText.value = false
   if (This.Parent && This.Parent.BaseClass == "grid") {
     const grid = This.Parent
-    //console.log('EditText onFocus Grid Name', This.prop.Name)
+
     for (const comp in grid.elements) {
       const compName = grid.elements[comp].Name
       // 24/Dic/2024 .- Se aumenta que sea componente Capture
@@ -1194,12 +1204,9 @@ const onFocus = async () => {
     This.Parent.prop.Status = 'A'
   }
 
-  if (This.prop.ReadOnly) { //  10/Octubre/2025
-    //await nextTick()
-    //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
-    // Evento = 'when'
-    //ChecaEventos()
-
+  if (This.prop.Disabled || This.prop.ReadOnly) {
+    This.prop.Valid = true
+    This.prop.Status = 'A'
     return
   }
 
@@ -1215,46 +1222,11 @@ const onFocus = async () => {
   // al hacer el appendRow pone los ReadOnly en false en todos los componentes del grid
 
 
-  if (This.prop.Disabled) {
-    This.prop.Valid = true
-    This.prop.Status = 'A'
-    return
-  }
-  /*
-    if (Styles.inputStyle.background != This.inputStyle.background)
-      Styles.inputStyle.background = This.inputStyle.background
-  */
-  //  if (Styles.inputStyle.background != inputStyle.background)
-
-  // Styles.inputStyle.background = inputStyle.background
-
-  //  KeyPressed = false
-
-  // textValue[0]  perdio foco, textValue[1] obtiene el foco
-  // Si es la primera vez que se hace foco
-  //  let sw_when = false
-
-
-
-
-
-
-
-  if (focusIn.value == 0) {
-    // await emitValue(true)
-    //   sw_when = true
-    focusIn.value = 1
-    //Asignamos  el background del input originañ
-  }
-
-  focusIn.value = 1  // cambia el valor en el input number 
-
-
   This.prop.Focus = false
   This.prop.First = false
 
   const Type = propType.value.toLowerCase()
-  ToolTipText.value = false
+
   //  displayError.value = false
 
   const ControlSource = props.prop.ControlSource
@@ -1268,14 +1240,14 @@ const onFocus = async () => {
 
 
     let lon_campo = This.prop.Value.length
-    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
+    if (View[tabla] && This.Sql.View[tabla].est_tabla) {
 
-      if (!This.Sql.View[tabla].est_tabla[campo]) {
+      if (!View[tabla].est_tabla[campo]) {
         console.error('editText onFocus() Error: No se encontro el campo', campo, 'en la vista', tabla)
         return
       }
       lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
-      if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
+      if (View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
 
         MaxLength.value = lon_campo
       }
@@ -1289,21 +1261,15 @@ const onFocus = async () => {
       This.prop.ShowError = false
   }
 
-  emit("update:Value", Value.value)
-
-  if (focusIn.value == 1) { // sw_when 11/Ags/2025
-
-    // await nextTick()
-
-    // This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
-    Evento = 'when'
-    await ChecaEventos()
-    //   })
-    // select() // 8/Ags/2025 Se quito 
-
-  }
-
+  // emit("update:Value", Value.value)
   sw_emitValue = false
+  //  if (focusIn.value == 1) { // 22/Enero/2026
+  This.prop.Valid = true
+  // await nextTick()
+  // This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
+  await ChecaEventos('when')
+  // }
+
   console.warn('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<editText Fin onFocus() sw_emitValue', sw_emitValue, ' This.prop.Name', This.prop.Name, 'This.prop.Value', This.prop.Value)
   //nextTick(function () {
 
@@ -1360,14 +1326,6 @@ const select = async () => {
 //                la vista a la propiedad de Value de la propiedad
 // Notas : Si se tiene en props, se tiene que vigilar el cambio de props.prop.Value
 
-
-/////////////////////////////////////////////////////////
-// watch Value
-//  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
-//          Componente
-//////////////////////////////////////////
-
-
 /////////////////////////////////////////////////////////////////////
 // change This.prop.ShowError
 /////////////////////////////////////////////////////////////////
@@ -1410,10 +1368,11 @@ watch(
 watch(
   () => This.prop.nextFocus,
   () => {
-    console.log('NextFocus', This.prop.Name, This.prop.nextFocus)
+    console.log('editText watch prop.NextFocus', This.prop.Name, This.prop.nextFocus)
     if (This.prop.nextFocus) {
-      nextElement()
       This.prop.nextFocus = false
+      nextElement()
+
     }
   },
   { deep: false }
@@ -1445,31 +1404,17 @@ watch(
   { deep: false }
 );
 
-////////////////////////////////////////
-// This.prop.Visible 
-///////////////////////////////////////
-/*
-watch(
-  () => This.prop.Visible,
-  (new_val: any, old_val: any) => {
- 
- 
-    if (!new_val)
-      Styles.style.height = '0%'
-    else
-      Styles.style.height = This.style.height
- 
-  },
-  { deep: false }
-);
- 
-*/
+
 ////////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
 watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
   (new_val: any, old_val: any) => {
+
+    if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
+      return
+
     /*
         if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
           console.log('EditText watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
@@ -1491,6 +1436,10 @@ watch(
 watch(
   () => This.Recno, //props.Registro,
   async (new_val) => {
+
+    if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
+      return
+
     console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
     /*    if (sw_emitValue) { // Si se cambio desde el emitValue se ignora
           console.log('watch This.Recno editText Name=', This.prop.Name)
@@ -1539,40 +1488,11 @@ watch(
 
     }, 0);
 
-
-
-    /*  Se cambio 4/Sep/2025
-        if (thisElement != null && document.activeElement != thisElement)
-          return thisElement.focus();
-    
-        select()
-    */
     return
   },
   { deep: false }
 )
 
-/*13/Marzo/2025
-////////////////////////////////////////
-//
-///////////////////////////////////////
-watch(
-  () => Valor,
-  (new_val: any, old_val: any) => {
-
-    if (propType.value.slice(0, 4) == 'date')
-      console.log('>>>  RefValue EditText Watch Name=', This.prop.Name, 'Value=', This.prop.Value, 'Value.value=', Value.value)
-    console.log(' EditText Watch Valor Name=', This.prop.Name, 'Value=', This.prop.Value, Value.value, 'Valid=', This.prop.Valid, This.prop.Status)
-
-
-    Value.value = This.prop.RefValue.value
-
-    return
-
-  },
-  { deep: false }
-)
-*/
 
 ////////////////////////////////////////
 // Si se cambia This.prop.Value desde afuera del componente 
@@ -1582,6 +1502,11 @@ watch(
 
   async (new_val: any, old_val: any) => {
 
+    if (focusIn.value == 1 || sw_emitValue) {// Si tiene el foco deshabilita el watch
+      sw_emitValue = false
+      return
+    }
+    console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
 
     if (new_val == Value.value) {
 
@@ -1589,8 +1514,8 @@ watch(
 
       return
     }
-    if (watchPropValue || sw_emitValue) { // Si se cambio desde el emitValue se ignora
-      console.log('watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
+    if (watchPropValue) { // Si se cambio desde el emitValue se ignora
+      console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
       return
     }
 
@@ -1664,15 +1589,9 @@ watch(
           if (new_val.length > 10)
             new_val = new_val.slice(0, 10) //+ 'T00:00:00'
           displayDate.value = new Date(new_val).toDateString()
-
+          console.log('2) >>> EditText Watch This.prop.Value date Name=', This.prop.Name, 'new_val=', new_val, 'displayDate.value=', displayDate.value)
           currentDate.value = await stringToDate(new_val)
-          /*
-                    nextTick(function () {
-                      emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
-                      emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
-          
-                    })
-          */
+
           break;
 
         case 'datetime':
@@ -1685,83 +1604,10 @@ watch(
           currentDate.value = await stringToTime(new_val)
           break;
 
-
       }
-
-
-      /*  Modificado 24/Marzo/2025  
-          Value.value = This.prop.Value
-          switch (This.prop.Type) {
-            case 'number':
-    
-              if (Value.value == null)
-                Value.value = 0
-    
-              currentValue.value[1] = +Value.value //.toString().trim() // Captura
-              currentValue.value[0] = await numberFormat(Value.value, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
-    
-              //          emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
-              break;
-            case 'checkbox':
-              let check = Value.value == 0 ? false : true
-              if (checkValue.value != check) {
-                checkValue.value = check
-                //            emit("update:checkValue", checkValue)
-              }
-              break;
-    
-            case 'json':
-              compJson.value = []
-              if (Value.value.trim().length > 5) {
-                try {
-                  currentJson.value = JSON.parse(Value.value)
-                } catch (error) {
-                  await MessageBox('Error Invalid Json  :' + Value.value, 'Error')
-                  currentJson.value = []
-                }
-              }
-    
-              for (const comp in currentJson.value)
-                compJson.value.push(currentJson.value[comp])
-    
-              break;
-    
-            case 'date':
-              if (Value.value == '' || Value.value == null)
-                Value.value = '1900-01-01'
-              if (Value.value.length > 10)
-                Value.value = Value.value.slice(0, 10) //+ 'T00:00:00'
-              displayDate.value = new Date(Value.value).toDateString()
-    
-              currentDate.value = await stringToDate(Value.value)
-            
-              break;
-    
-            case 'datetime':
-              if (Value.value == '' || Value.value == null)
-                Value.value = '1900-01-01T00:00:00'
-    
-              Value.value = Value.value.slice(0, 16)
-    
-              displayDate.value = new Date(Value.value)
-              currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
-    
-              break;
-            default:
-              if (Value.value == null)
-                Value.value = ''
-    
-          }
-    
-    */
 
     }
 
-    //  if (This.prop.Valid) return
-
-    // Si el valor nuevo es diferente al anterior
-    // if (new_val != Value.value) {
-    // console.log('--------Fin 1) EditText Watch This.prop.Value Name=', This.prop.Name, 'Value=', This.prop.Value, 'new_val', new_val, 'Status=', This.prop.Status)
 
 
     // 19/Ene/2026 se pruebacambia a asignaValue 
@@ -1834,7 +1680,10 @@ watch(
   }, { deep: true }
 );
 
-const ChecaEventos = async () => {
+
+
+// Ejecuta los eventos when y otros eventos
+const ChecaEventos = async (Evento?: string) => {
 
   for (const comp in This.Form.estatus) {
     if (This.Form.estatus[comp] != 'A') {
@@ -1849,17 +1698,20 @@ const ChecaEventos = async () => {
 
   if (Evento == 'when') {
     Evento = ''
-    console.log('1) checaEventos Name=', This.prop.Name)
     This.prop.ReadOnly = !await This.when()
-    // if (!This.prop.ReadOnly)
-    //   This.click()
+    if (!This.prop.ReadOnly)
+      focusIn.value = 1  // cambia el valor en el input number 
+    else
+      This.prop.nextFocus = true
+
+    return
   }
 
-  if (Evento == 'click') {
+  if (Evento) {
     Evento = ''
-    This.click()
+    This[Evento]()
   }
-
+  return
 }
 
 
@@ -1930,14 +1782,13 @@ const ReadOnly = () => {
 
 
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
-  console.log('onMaska=',
-    {
-      //masked: event.detail.masked,
-      // unmasked: event.detail.unmasked,
-      // completed: event.detail.completed
-    }
-
-  )
+  /* console.log('onMaska=',
+     {
+     masked: event.detail.masked,
+      unmasked: event.detail.unmasked,
+      completed: event.detail.completed
+     }
+   )*/
 }
 
 const styleAssing = async () => {
@@ -1981,17 +1832,19 @@ const styleAssing = async () => {
   }
 
 }
-/**
- * Handler for right click event on the component
- *
- * @param {MouseEvent} event - the event
- */
+
 const middleClick = () => {
   console.log('middleClick')
   if (This.Form && This.Form.translateContainer)
     This.Form.translateContainer.open(ref(This))
 }
 
+/**
+ * Handler for right click event on the component
+ *
+ * @param {MouseEvent} event - the event
+ */
+/*
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
@@ -2000,27 +1853,17 @@ const handler = (event) => {
   }
   event.preventDefault();
 }
+
+*/
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
-
-//const init = async () => {
-//await callOnce(async () => {
-
-// Estaba repetido el codigo de onMounted 14/Enero 2026
-//onMounted(async () => {
-//  if (This.onMounted) await This.onMounted()
-//})
-
 
 onMounted(async () => {
   if (This.onMounted)
     await This.onMounted()
 
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-
-  // const Element = useTemplateRef('Ref')   // Podemos Obtener el id de este componente en el DOM por medio del ref <input ref="Ref"/>
-  // thisElement=Element.value
 
   styleAssing()
 
@@ -2054,7 +1897,7 @@ onMounted(async () => {
   if (!This.prop.RefValue == null)
     Value.value = This.prop.RefValue.value
 
-  await emitValue(true)
+  // await emitValue(true)
 
 
   This.Recno = props.Registro
@@ -2064,23 +1907,6 @@ onMounted(async () => {
   else
     oldVal = Value.value   // asignamos el valor viejo
 
-  const ControlSource = props.prop.ControlSource
-  const pos = ControlSource.indexOf(".") + 1;
-
-  if (pos > 2) {
-    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
-    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-    /*
-    if (This.Sql.View[tabla]) {
-      const Recno = toRef(This.Sql.View[tabla].recno)
-      console.log('xxxxxx editText init Name=', This.prop.Name, 'campo:', campo, 'tabla:', tabla, 'recno:', This.Recno)
- 
-    }
-     */
-  }
-
-  // console.log('1) editText onMounted Name=', This.prop.Name, 'Value=', Value.value)
 
   This.afterMounted()
 
@@ -2093,50 +1919,22 @@ onMounted(async () => {
     // This.prop.First = false
     This.prop.Focus = false
     This.prop.Focus = true
-    // props.prop.First = false
-    // props.prop.Focus = false
-    // props.prop.Focus = true
-
-    // select()
-    //    onFocus()
     return
   }
 
   Valid()
 
-
 })
 
 onBeforeMount(async () => {
-
   // console.log('2) editText onBeforeMount Name=', This.prop.Name)
   // if (This.init)
   //   await This.init()
 })
 
-
 onUnmounted(async () => {
   if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
 })
-
-
-
-
-
-/*
-onUnmounted(() => {
-  console.log('EditText Desmontado onUnMounted', This.prop.Name)
-
-});
-
-
-
-onMounted(() => {
-  console.log('EditText Montado onMounted', This.prop.Name)
-  init() // Ejecuta el init
-});
-*/
-
 
 </script>
 <style scoped>

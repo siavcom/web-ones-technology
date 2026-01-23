@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : por_dos
+// @baseClass  : spinner
+// @class : por_dos
 // Description : porcentaje de comision para segundo rango de días vencidos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 
 /////////////////////////////////////////////

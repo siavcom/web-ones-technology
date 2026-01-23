@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : path_prg
 // Descripcion : PATH Page 
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  :24/Julio/2023
 /////////////////////////////////////////////

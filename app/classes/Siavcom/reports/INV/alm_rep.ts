@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : alm_rep
+// @baseClass  : component
+// @class : alm_rep
 // Description : Almacenes
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-09-20
 // Update Date  :
 /////////////////////////////////////////////

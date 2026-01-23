@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : cum_tap
+// @baseClass  : COLUMN
+// @class : cum_tap
 // Description : Costo unidad de medicion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-26
 // Update Date  :
 /////////////////////////////////////////////

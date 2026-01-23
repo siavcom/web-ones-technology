@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : mainTextLabel
+// @baseClass  : component
+// @class : mainTextLabel
 // Description :Valor del textLabel
 // Creation : 2023-07-20
 // Update Date  :

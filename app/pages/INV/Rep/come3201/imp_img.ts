@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : imp_img
+// @baseClass  : component
+// @class : imp_img
 // Description : Se imprime imagen del producto
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-10-29
 // Update Date  :
 /////////////////////////////////////////////

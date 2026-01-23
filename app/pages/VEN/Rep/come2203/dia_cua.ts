@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : dia_cua
+// @baseClass  : spinner
+// @class : dia_cua
 // Description : dias vencidos cuarto rango
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 
 /////////////////////////////////////////////

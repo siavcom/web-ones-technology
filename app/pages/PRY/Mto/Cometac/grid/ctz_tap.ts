@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : ctz_tap
+// @baseClass  : COLUMN
+// @class : ctz_tap
 // Description : Es cotizacion
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-08-12
 // Update Date  :
 /////////////////////////////////////////////

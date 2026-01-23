@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : thisform
+// @baseClass  : reportForm
+// @class : thisform
 // Description : Valorización del inventario (costo promedio de solo compras)
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-05-09
 // Update Date  : 
 /////////////////////////////////////////////

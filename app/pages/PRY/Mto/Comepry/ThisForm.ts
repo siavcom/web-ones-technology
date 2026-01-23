@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
-// BaseClass : captureForm
-// Class : manComepry
+// @baseClass  : captureForm
+// @class : manComepry
 // Description : Capture Form
-// Author : El Fer Blocks (Fernando Cuadras)
+// @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 2023-07-20
 // Update Date  :
 /////////////////////////////////////////////

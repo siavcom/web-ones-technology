@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : psi_cpy
 // Descripcion : Proveedor en ERP Siavcom
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 14/Ags/2024
 // Ult.Mod  : 14/Ags/2024
 /////////////////////////////////////////////

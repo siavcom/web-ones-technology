@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : tip_opc
+// @baseClass  : component
+// @class : tip_opc
 // Description : modificados por el usuario elegido (si/no)
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/08/08
 // Update Date  : 
 /////////////////////////////////////////////

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : sep_fam
+// @baseClass  : component
+// @class : sep_fam
 // Description : Se separa por familias
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-10-11
 // Update Date  :
 /////////////////////////////////////////////

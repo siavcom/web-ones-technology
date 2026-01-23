@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : tip_rep
 // Descripcion : Si es =1 reporte detallado
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 14/Sep/2023
 // Ult.Mod  :
 /////////////////////////////////////////////

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : des_prg
 // Descripcion : Descripcion del programa
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  05/Septiembre/2022
 /////////////////////////////////////////////

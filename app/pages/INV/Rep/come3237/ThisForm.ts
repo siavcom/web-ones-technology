@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : reportForm
-// Class : Teams
+// @baseClass  : reportForm
+// @class : Teams
 // Description : Puntos de reorden considerando almacén en tránsito
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

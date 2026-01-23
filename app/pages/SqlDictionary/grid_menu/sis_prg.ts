@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : sis_sis
 // Descripcion : Sistema a cual pertenece el programa
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  07/Septiembre /2022
 /////////////////////////////////////////////

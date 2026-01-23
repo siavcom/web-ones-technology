@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : des_report
 // Descripcion : Descripcion
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Octubre/2023
 // Ult.Mod  : 20/Octubre/2023
 /////////////////////////////////////////////

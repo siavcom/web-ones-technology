@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : sou_dat
 // Descripcion : RowSource para ComboBox en VFP
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Mayo/2022
 // Ult.Mod  02/Mayo /2022
 /////////////////////////////////////////////

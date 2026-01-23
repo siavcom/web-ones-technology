@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : sis_sis
 // Descripcion : Sistema a dar mantenimiento
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 4/Octubre /2022
 // Ult.Mod  : 4/Octubre /2022
 /////////////////////////////////////////////

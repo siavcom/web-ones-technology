@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : ini_exi
+// @baseClass  : component
+// @class : ini_exi
 // Description : + Existencia física
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

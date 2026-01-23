@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : spinner
-// Class : por_cin
+// @baseClass  : spinner
+// @class : por_cin
 // Description : porcentaje de comision para quinto rango de días vencidos
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025-06-18
 // Update Date  : 
 /////////////////////////////////////////////

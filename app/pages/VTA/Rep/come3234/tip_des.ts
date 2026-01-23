@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : tip_des
+// @baseClass  : optionGroup
+// @class : tip_des
 // Description : Tipo de reporte día,mensual,semanal,anual 
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-07-16
 // Update Date  :
 /////////////////////////////////////////////

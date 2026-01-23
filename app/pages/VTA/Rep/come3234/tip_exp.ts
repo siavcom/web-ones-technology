@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : OPTIONGROUP
-// Class : tip_exp
+// @baseClass  : OPTIONGROUP
+// @class : tip_exp
 // Description : reporte en importes o unidades
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-07-16
 // Update Date  :
 /////////////////////////////////////////////

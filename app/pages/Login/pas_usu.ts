@@ -1,6 +1,6 @@
 //////////////////////////////////////////////
 // Clase : pas_usu
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : Septiembre/2021
 // Ult.Mod  : 01/Noviembre /2021
 /////////////////////////////////////////////

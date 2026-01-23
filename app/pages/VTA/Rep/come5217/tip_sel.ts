@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // this Form was generated automatically for web-ones-technology
-// BaseClass : optionGroup
-// Class : tip_sel
+// @baseClass  : optionGroup
+// @class : tip_sel
 // Description : Componente tipo de reporte 
-// Author : MGSR
+// @author: MGSR
 // Creation :2025-07-11
 // Update Date  :
 /////////////////////////////////////////////

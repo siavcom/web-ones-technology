@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : has_fec
+// @baseClass  : component
+// @class : has_fec
 // Description : desde que fecha
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-09-27
 // Update Date  : 
 /////////////////////////////////////////////

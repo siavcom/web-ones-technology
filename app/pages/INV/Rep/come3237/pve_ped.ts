@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-// BaseClass : component
-// Class : pve_ped
+// @baseClass  : component
+// @class : pve_ped
 // Description : se incluye  Pedidos proveedores
-// Author : MGSR
+// @author: MGSR
 // Creation : 2025/05/05
 // Update Date  : 
 /////////////////////////////////////////////

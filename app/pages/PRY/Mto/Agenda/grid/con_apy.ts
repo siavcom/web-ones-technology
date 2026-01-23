@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : COLUMN
-// Class : con_apy
+// @baseClass  : COLUMN
+// @class : con_apy
 // Description : Consecutivo la actividad
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2024-02-12
 // Update Date  : 
 /////////////////////////////////////////////

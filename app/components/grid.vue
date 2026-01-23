@@ -62,12 +62,6 @@
                   @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
                 </textLabel>
 
-                <!--textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
-                  v-bind:Registro="item.id != This.Row ? item.recno > 0 ? item.recno : 0 : 0" v-bind:Id="item.id"
-                  v-bind:prop="This[col.Name].prop" v-bind:position="This[col.Name].position"
-                  v-bind:style="This[col.Name].style"
-                  @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
-                </textLabel-->
 
                 <!--   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
                 <!--/Transition-->
@@ -443,32 +437,6 @@ watch(
     }
   }, { deep: true }
 );
-/* Se quito 17/Dic/2024
-//////////////////////////////////////////////
-// Revisa la pila de eventos de procesos a ejecutar.
-//  Cuando ya no hay procesos a ejecutar y hay carga de datos, 
-// carga los datos de la pagina
-/////////////////////////////////////////////////
-watch(
-  () => This.Form.eventos,
-  () => {
-    // console.log('=====watch thisform.eventos =======', eventos, load_data)
-
-
-    if (!load_data) return
-    if (This.Form.eventos.length == 0) {
-      if (This.Form.prop.Status != 'A')
-        return
-      console.log('=====watch thisform.eventos loadData()=======')
-      //  4/Dic/2024   .- Se quito el loadData
-      // loadData()
-
-    }
-  },
-  { deep: false }
-);
-
-*/
 
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
@@ -611,21 +579,9 @@ watch(
   { deep: false }
 );
 
-/*
-Si es read only , desactiva todos losm elementos del grid ambiando el css pointerEvents
 
-watch(
-  () => This.prop.ReadOnly,
-  async (new_val, old_val) => {
-    console.log('1) Grid watch Name=', This.prop.Name, ' ReadOnly=', new_val)
-    divStyle.pointerEvents = new_val ? 'none' : 'auto'
-
-  },
-  { deep: false }
-);
-*/
 //////////////////////////////////////////////
-// This.Row
+// Cuanmdo se asigna el valor del renglon activo This.Row
 /////////////////////////////////////////////////
 watch(
   () => This.Row,
@@ -640,30 +596,13 @@ watch(
 
     // console.log('1) Grid watch Row = ', This.Row)
 
-    if (This.Row == -1) {  // Recarga datos
-      //console.log('2) dele row Grid watch Row = ', This.Row)
-
-      //load_data = true
-
-      await last() // carga el ultimo renglon
-      //await loadData()
-      // console.log('3) dele row Grid watch Row = ', This.Row)
-      //restableceStatus()
-
-      //if (scroll.dataPage.length > 0)
-      //  This.Row = 0
-
-
-      return
-    }
+    if (This.Row == -1)   // Recarga datos
+      return await last() // carga el ultimo renglon
 
     if (This.Row <= -10) { // hubo insercion de renglon
 
       if (RowInsert)
         return
-      // console.log('2) Insert Grid watch Row = ', This.Row)
-
-      //await loadData()
 
       await last(true)
       RowInsert = true  // para cuando loadData()
@@ -675,13 +614,7 @@ watch(
         await asignaRenglon(Row, firstElement)
       }
 
-      //RowInsert = false
-
-      //This.Row = scroll.dataPage[rows].id
-
       return
-
-
     } else {
       const alias = This.prop.RecordSource
       This.Sql.View[alias].recno = This.Row + 1
@@ -697,14 +630,11 @@ watch(
       for (let i = 0; i < This.main.length; i++) {
         const comp = This.main[i]
         This[comp].prop.ReadOnly = false;
-        // This[comp].prop.Valid = !RowInsert
+        //            This[comp].prop.Focus = false
 
         if (Column.value > '' && comp == Column.value) {
-          //     Aqui mero   . Checar que ya este montaDOM EL COMPONENTE PARA HACER EL FOCO
-          //   console.log('2) Grid watch Row Focus = ', This.Row)
-          if (!This[comp].prop.Focus) {
+          if (This[comp].prop.BaseClass.toLowerCase() == 'edittext' || This[comp].prop.BaseClass.toLowerCase() == 'combobox') {
             This[comp].prop.Focus = true
-            //21 Octubre 2025 Column.value = ''
           }
         }
       }
@@ -728,39 +658,33 @@ watch(
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
   console.log('1)asignaRenglon ColumnName=', ColumnName, ' This.Row=', This.Row, 'ReadOnly', This.prop.ReadOnly)
+  //console.log('2)asignaRenglon AlaSql vi_cap_comecpy=', await localAlaSql('select * from vi_cap_comecpy'))
 
 
   if (This.prop.ReadOnly) return
 
   if (This[ColumnName].prop.Type == 'textLabel') {
-    console.log('asignaRenglon ColumnName=', ColumnName, ' This.Row=', This.Row, 'Column.value=', Column.value)
-    This.prop.Valid = true
 
+    This.prop.Valid = true
     return
   }
-  // console.log('asignaRenglon Row=', Row, ' ColumnName=', ColumnName, ' This.Row=', This.Row, 'Column.value=', Column.value)
-  // This.Form.eventos.push(This.prop.Map + `.asignaRenglon(${Row},'${ColumnName}' )`)
-  // return
-
 
   if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
     //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
     for (const columna of This.elements) {
-
-      if (!This[columna.Name].prop.Valid)
+      if (This[columna.Name].prop.BaseClass == 'edittext' && !This[columna.Name].prop.ReadOnly && !This[columna.Name].prop.Valid)
         return This[columna.Name].setFocus() // Se posiciona el cursor en el componente no validado
     }
   }
 
-
   if (This.Row == Row)
     return
+
   This.prop.Valid = false
   This.prop.Status = 'P'
 
   This.Row = Row;
-  Column.value = ColumnName
-  console.log('3.3 asignaRenglon Row=', Row, ' This.Row=', This.Row, 'ColumnName=', Column.value)
+  Column.value = ColumnName // Asigna el nombre de la columna activa
 
   // busca el ID del Row
   if (Row >= 0) {
@@ -768,8 +692,9 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
     const Recno = res.recno
 
     // actualiza el row
-    goto(Recno, RecordSource)
+    await goto(Recno, RecordSource)
     This.Recno = Recno
+    console.log('3.3 asignaRenglon This.Row=', This.Row, 'ColumnName=', Column.value, 'This.Recno=', This.Recno)
   }
   // View[This.prop.RecordSource].recno = Recno
   //  console.log('asignaRenglon Row=', Row, 'RecordSource=', This.prop.RecordSource, 'View=', View[This.prop.RecordSource].recno)

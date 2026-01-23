@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// BaseClass : component
-// Class : jerseyno
+// @baseClass  : component
+// @class : jerseyno
 // Description : No Jersey/Playera
-// Author : El Fer Blocks
+// @author: El Fer Blocks
 // Creation : 2023-02-20
 // Update Date  : 
 /////////////////////////////////////////////

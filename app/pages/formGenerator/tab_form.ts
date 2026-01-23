@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // Clase : nom_tab
 // Descripcion : Nombre de la tabla base para generar la forma de captura
-// Author : Fernando Cuadras Angulo
+// @author: Fernando Cuadras Angulo
 // Creacion : 17/Octubre/2022
 // Ult.Mod  : 04/Julio/2023
 /////////////////////////////////////////////
