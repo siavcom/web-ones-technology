@@ -7,10 +7,12 @@
 /////////////////////////////////////////////
 
 import { COLUMN } from '@/classes/Column'
-import { modal_com } from './detail_com/modal_com'
+//import { modal_com } from './detail_com/modal_com'
 
 export class detail_com extends COLUMN {
-    public modal_com = new modal_com()
+    //  public modal_com = new modal_com()
+
+    modal_com: {} | undefined
     inFocus = false
     constructor() {
         super()
@@ -25,6 +27,7 @@ export class detail_com extends COLUMN {
 
     override async init() {
         await super.init()
+        this.modal_com = this.Form.modal_com
         //  this.modal_com.prop.Visible = false
     }
 
@@ -45,11 +48,12 @@ export class detail_com extends COLUMN {
 
     override async click() {
 
-        // this.inFocus = true
-        this.modal_com.prop.Visible = true
-
         const eco_tpy = this.Form.eco_tpy.trim() // equipo de compras
         const eqa_tap = this.Form.eqa_tap.trim() // equipo que autoriza
+        console.log('detail_com.click This.Recno', this.Recno, this.modal_com)
+
+        this.modal_com.prop.Visible = true
+        this.modal_com.Recno = this.Recno
 
         //        const esu_tpy = this.Form.esu_tpy // equipo que supervisa
 

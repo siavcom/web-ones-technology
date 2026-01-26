@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -104,7 +104,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1894,8 +1894,11 @@ onMounted(async () => {
   if (!This.prop.Visible)
     Styles.style.height = '0%'
 
-  if (!This.prop.RefValue == null)
-    Value.value = This.prop.RefValue.value
+  /*
+if (!This.prop.RefValue == null)
+  Value.value = This.prop.RefValue.value
+*/
+
 
   // await emitValue(true)
 

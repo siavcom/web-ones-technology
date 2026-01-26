@@ -71,6 +71,9 @@ export class num_pry extends COMPONENT {
   }
 
   override async when() {
+    this.Form.grid_comecpy.prop.RecordSource = ""
+    this.Form.block[1].prop.Visible = false
+
     this.Form.ver_cpy.prop.Disabled = true
     this.Form.est_pry.prop.Disabled = true
     this.Form.bt_clonar.prop.Visible = false

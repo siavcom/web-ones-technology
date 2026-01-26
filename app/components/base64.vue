@@ -3,28 +3,36 @@
   <span :id="Id + '_component'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
 
-    <img
-      v-if="Value.length > 0 && (accept.includes('jpg') || accept.includes('jpeg') || accept.includes('png') || accept.includes('gif') || accept.includes('bmp') || accept.includes('svg') || accept.includes('ico'))"
-      :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
-    <iframe v-if="Value.length > 0 && accept == 'application/pdf'" :id="Id + '_pdf'" :src="Value"
-      :width="inputStyle.width" :height="inputStyle.height" :title="This.prop.Caption" :style="inputStyle"></iframe>
 
+    <!-- The actual file input element, hidden from view -->
+    <input type="file" ref="fileInput" @change="handleFileChange" :accept="inputStyle.accept" hidden />
+
+    <!--input v-if="!prop.Disabled" :id="Id_get_file" ref="fileInput" type="file" @change="readFile($event)"
+      :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept" /-->
+    <img
+      v-if="Value.length > 0 && (accept.includes('png') || accept.includes('jpg') || accept.includes('jpeg') || accept.includes('ico') || accept.includes('bmp') || accept.includes('gif') || accept.includes('svg'))"
+      :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
+    <iframe v-if="Value.length > 0 && accept.includes('pdf')" :id="Id + '_pdf'" :src="Value" :width="inputStyle.width"
+      :height="inputStyle.height" :title="This.prop.Caption" :style="inputStyle"></iframe>
     <!--   -->
 
-    <button :id="Id" :style="captionStyle" :onclick="`document.getElementById('${Id_get_file}').click()`"
+    <!--button :id="Id" :style="captionStyle" :onclick="`document.getElementById('${Id_get_file}').click()`"
       :disabled="prop.ReadOnly || prop.Disabled">
-      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image"
-        :disabled="prop.ReadOnly || prop.Disabled" :style="inputStyle" />
-      <label :id="Id + '_label_'" v-if="prop.Image.length > 0" :style="captionStyle" word-wrap:
-        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible"
-        :onclick="`document.getElementById('${Id_get_file}').click()`">
-        {{ prop.Image.length > 0 ? prop.Caption : '' }}</label>
-    </button>
-    <input v-if="!prop.Disabled" :id="Id_get_file" ref="fileInput" type="file" @change="readFile($event)"
-      :disabled="prop.ReadOnly" :tabindex="prop.TabIndex" style="display:none" :accept="inputStyle.accept" />
+      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" />
+      <label :id="Id + '_label_'" word-wrap: :onclick="`document.getElementById('${Id_get_file}').click()`">
+        {{ prop.Caption.length > 0 ? prop.Caption : 'Load file' }}</label>
+    </button-->
+
+    <!-- Carga archivo -->
+
+    <img v-if="Value.length > 0" :id="Id + '_bt_load'" class="img" src='/Iconos/svg/upload.svg' :alt="prop.Value"
+      :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;" @click="triggerFileInput"
+      title="Load file" />
+    <!-- Elimina archivo -->
+
     <img v-if="Value.length > 0" :id="Id + '_bt_delete'" class="img" src="/Iconos/svg/delete-color.svg"
       :alt="prop.Value" :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;"
-      @click.capture="bt_delete()" />
+      @click.capture="bt_delete()" title="Delete file" />
 
   </span>
 </template>
@@ -37,9 +45,7 @@
 //////////////////////////////////////
 
 const emit = defineEmits(["update", "update:Value",
-  "input:currentValue",  // "input:currentValue[1]",
-  "input:currentDate", "input:displayDate",
-  "update:checkValue", "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
+  "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -59,6 +65,7 @@ const props = defineProps<{
 
     Autofocus: false;
     BaseClass: "base64";
+    Caption: string;
     Capture: true;
 
     ControlSource: string;
@@ -82,6 +89,7 @@ const props = defineProps<{
     htmlId: string;
 
     InputMask: "";
+    Image: string;
 
     Key: string;
 
@@ -142,8 +150,6 @@ const props = defineProps<{
 }>();
 
 
-
-
 const Component = toRef(() => props.prop.This)
 //console.log('base64 Component=', Component.value)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
@@ -159,7 +165,9 @@ const propType = computed(() => This.prop.Type.toLowerCase().trim())
 // const Id = This.prop.Name + props.Registro.toString().trim()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
-const Id_get_file = Id + '_get_file'
+// const Id_get_file = Id + '_get_file'
+//console.log('Id_get_file ====>', Id_get_file)
+
 
 let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
@@ -168,22 +176,20 @@ const Value = ref(props.prop.Value)
 const Valor = toRef(This.prop, "Value")
 const Valid = ref(props.prop.Valid)
 Valid.value = true
+
+
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 let Help = false
 
 const Status = ref(props.prop.Status);
 const ToolTipText = ref(true)
 Status.value = 'I'
-const Key = ref(props.prop.Key)
 
 var oldVal = Value.value
 const displayError = ref(false) // Se utiliza esta variable para mostrar el error y sea reactiva
-const checkValue = ref(false)
 
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
-
-
 
 if (divStyle.zIndex == 0)
   divStyle.zIndex = 100 - This.prop.TabIndex
@@ -204,45 +210,60 @@ inputStyle.zIndex = zIndex
 const toolTipTextStyle = { zIndex: zIndex + 20 }
 const focusIn = ref(0)
 
-const currentValue = ref('') // Arreglo de valor para capturar
-const currentBase64 = ref('')
+// const currentBase64 = ref('')
 
 
+// 1. Create a ref for the input element to access it programmatically
+const fileInput = ref(null);
 
+// const uploadedImageUrl = ref(null);
+
+// 2. Function to trigger the hidden file input's click event
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+// 3. Handle the file selection and load the image for preview
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  // if (file && file.type.startsWith('image/')) {
+  // Use the FileReader API to read the file and create a data URL for preview
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    Value.value = e.target.result;
+    emitValue(false, false, Value.value)  // actuliza el valor Value en localAlaSql
+    //uploadedImageUrl.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+
+  // You can also use URL.createObjectURL(file) for a simpler preview URL
+  // uploadedImageUrl.value = URL.createObjectURL(file);
+  // } else {
+  //   uploadedImageUrl.value = null;
+  //   alert('Please select an image file.');
+  // }
+};
+
+/*
 const fileInput = ref<HTMLInputElement | null>(null)
 const files = ref()
 
 function handleFileChange() {
   files.value = fileInput.value?.files
 }
-
-const readFile_2 = () => {
-
-  console.log('<<<< readFile >>>>')
-  //Value.value= fileInput.value?.files
-
-  console.log('base64 fileInput=', fileInput, fileInput.value.value)
-  const files = fileInput.value?.files //.files[0];
-  console.log('base64 files[0]=', files[0])
-  const name = files[0].name
-  const type = files[0].type
-  console.log('base64 file=', name, type)
-  Value.value = 'data:' + type + ';base64,' + btoa(fileInput.value.value)
-  console.log('base64 Value.value=', Value.value)
-
-  // Value.value=Ref.value.file.files[0];
-
-}
+*/
 
 const bt_delete = async () => {
 
-  // if (await MessageBox('¿Desea eliminar la imagen?', 4, '') != 6)
-  //   return
+  //if (await MessageBox('Delete ?', 4, '') != 6)
+  //  return
 
   Value.value = ''
+  console.log('bt_delete Value.value', Value.value)
   emitValue(false, true, Value.value)
 }
 
+/*
 const readFile = ($event) => {
   // Reference to the DOM input element
   if (This.prop.ReadOnly)
@@ -270,7 +291,7 @@ const readFile = ($event) => {
   }
 }
 
-
+*/
 
 
 /////////////////////////////////////////////////////////////////////
@@ -279,7 +300,6 @@ const readFile = ($event) => {
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) => {
 
-  const Type = propType.value
   const ControlSource = props.prop.ControlSource
   const pos = ControlSource.indexOf(".") + 1;
 
@@ -300,22 +320,19 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
-      await This.Form.db.updateCampo(Valor, props.prop.ControlSource, Recno)
+      await updateCampo(Valor, props.prop.ControlSource, Recno)
     }
 
     // Si no hay error
     //This.prop.Valid = true
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
 
-
       if (Value.value != Valor)
         Value.value = Valor
-
-
       This.prop.Value = Value.value
 
       emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-      emit("update"); // actualiza el valor Value en el componente padre
+      //      emit("update"); // actualiza el valor Value en el componente padre
 
       if (!isValid) {
 
@@ -360,8 +377,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
       let sw_dat = false
 
       if (pos > 1) {
-        const Recno = props.Registro
-        const data = await This.Form.db.readCampo(ControlSource, Recno)
+        const Recno = This.Recno
+        const data = await readCampo(This.prop.ControlSource, Recno)
+
 
         for (const campo in data) {
 
@@ -419,159 +437,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   return
 }
 
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
-const focusOut = async () => {
-  if (This.prop.ReadOnly || This.prop.Disabled) {
-
-    return
-  }
-
-
-  if (displayError.value) {
-    displayError.value = false
-    if (This.prop.ShowError)
-      This.prop.ShowError = false
-  }
-
-
-  focusIn.value = 0 // Perdio el foco
-
-  let sw_error = false
-  const Type = propType.value
-
-  //const contents = fs.readFileSync(path + nameFile, { encoding: 'base64' });
-  //data = `data:image/${tipArchivo};base64,` + contents
-
-  if (Type == 'base64') {
-    Value.value = await JSON.stringify(currentBase64.value)
-  }
-
-
-  if (sw_error) {
-    select()
-    return
-  }
-
-
-  await emitValue(false, false, Value.value) //se puso await
-
-  // emitValue() ///se puso await
-  return
-
-};
-
-
-const click = () => {
-  This.Form.eventos.push(This.prop.Map + '.click()')
-
-}
-
-/////////////////////////////////////////////////////////////////////
-// onFocus
-// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
-//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
-// Obs: el when() se llama desde el coponente parent 
-/////////////////////////////////////////////////////////////////
-const onFocus = async () => {
-  // No se permite el focus si es solo lectura
-  if (This.prop.ReadOnly) {
-    if (!This.prop.Disabled) {
-      This.prop.Disabled = true
-      setTimeout(function () {
-        This.prop.Disabled = false
-
-      }, 100);
-    }
-    //thisElement.next(':input').focus();
-    return
-  }
-
-  if (focusIn.value == 0) { //!This.prop.First && !This.prop.Focus && 
-    This.Form.eventos.push(This.prop.Map + '.when()')
-  }
-
-
-  // currentValue[0]  perdio foco, currentValue[1] obtiene el foco
-  focusIn.value = 1  // cambia el valor en el input number 
-  This.prop.Focus = false
-  This.prop.First = false
-
-  const Type = propType.value
-  ToolTipText.value = false
-  //  displayError.value = false
-
-  const ControlSource = props.prop.ControlSource
-  const pos = ControlSource.indexOf(".") + 1;
-
-  // Calcula la longitud maxima
-  if (pos > 1 && !sw_MaxLength) {
-    sw_MaxLength = true
-    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
-    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-
-    let lon_campo = This.prop.Value.length
-    if (This.Sql.View[tabla] && This.Sql.View[tabla].est_tabla) {
-
-      if (!This.Sql.View[tabla].est_tabla[campo]) {
-        console.error('base64 onFocus() Error: No se encontro el campo', campo, 'en la vista', tabla)
-        return
-      }
-      lon_campo = This.Sql.View[tabla].est_tabla[campo].lon_dat
-      if (This.Sql.View[tabla].est_tabla[campo].tip_cam == 'STRING' && lon_campo < MaxLength.value) {
-
-        MaxLength.value = lon_campo
-      }
-    }
-  }
-
-  // El displayError se apaga en el keyPress cuando es un input text, number o date 
-  if ((Type == 'json' || Type == 'checkbox') && displayError.value) {
-    displayError.value = false
-    if (This.prop.ShowError)
-      This.prop.ShowError = false
-  }
-
-
-  emit("update:Value", Value.value)
-  //nextTick(function () {
-
-  // const element = document.getElementById(Id);
-  // select()   // 4 Julio 2024
-
-  return
-}
-
-const select = async () => {
-  // console.log('base64 select Name=', This.prop.Name, 'thisElement=', thisElement)
-  This.prop.Focus = false
-
-  if (document.activeElement != thisElement) {
-    // Ref.value.focus();
-    // Ref.value.select();
-
-    thisElement.focus({ focusVisible: true });
-    // thisElement.select();
-
-    setTimeout(function () {
-      //thisElement.focus({ focusVisible: true });
-      if (thisElement.select)
-        thisElement.select();
-
-    }, 300);
-
-
-
-  }
-  //})
-  return
-
-}
-
-
 
 ////////////////////////////////////////
 // Watchers : Triggers de templates
@@ -619,12 +484,10 @@ watch(
 //       Se utiliza para el manejo de grid
 ///////////////////////////////////////
 watch(
-  () => props.Registro,
+  () => This.Recno,
   async () => {
-
     // console.log('base64 Watch Registro Name=', This.prop.Name, 'new_val =', props.Registro)
     emitValue(true)
-    This.Recno = props.Registro
     This.recnoChange()
   },
   { deep: true }
@@ -644,25 +507,6 @@ watch(
     console.log('Focus base64 Watch Name=', This.prop.Name)
     select()
     //onFocus()
-    return
-
-  },
-  { deep: false }
-)
-
-
-////////////////////////////////////////
-//
-///////////////////////////////////////
-watch(
-  () => Valor, //props.prop.Focus,
-  (new_val: any, old_val: any) => {
-
-    if (propType.slice(0, 4) == 'date')
-      console.log('>>>  RefValue base64 Watch Name=', This.prop.Name, 'Value=', This.prop.Value, 'Value.value=', Value.value)
-
-    Value.value = This.prop.RefValue.value
-
     return
 
   },
@@ -711,13 +555,10 @@ const handler = (event) => {
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
-
-//const init = async () => {
 //await callOnce(async () => {
-
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
-  console.log('1) base64 onMounted Name=', This.prop.Name, 'divStyle=', divStyle)
+  // console.log('1) base64 onMounted Name=', This.prop.Name, 'divStyle=', divStyle)
 
   inputStyle.width = '100%' //  divStyle.width
   if (This.prop.Image.length > 0) {
@@ -726,26 +567,11 @@ onMounted(async () => {
     divStyle.width = inputStyle.width
   }
 
-
-  //  if (!This.prop.Visible)
-  //    divStyle.height = '0%'
-
-  if (!This.prop.RefValue == null)
-    Value.value = This.prop.RefValue.value
-
   const result = await emitValue(true)
   This.Recno = props.Registro
 
   oldVal = Value.value   // asignamos el valor viejo
 
-  const ControlSource = props.prop.ControlSource
-  const pos = ControlSource.indexOf(".") + 1;
-
-  if (pos > 2) {
-    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
-    const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-  }
   await This.recnoChange()
 
   // si es el primer elemento a posicionarse
@@ -755,10 +581,8 @@ onMounted(async () => {
     //    onFocus()
     return
   }
-  // console.log('init base64 Name=', props.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[1], currentValue.value[0])
+
 })
-
-
 
 
 </script>

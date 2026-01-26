@@ -130,7 +130,10 @@ export class modal_vta extends CONTAINER {
 
     // this.prop.ColumnTextLabel = 'Insumo a cotizar en compras'
     this.prop.BaseClass = 'modalContainer'   //'modalContainer'
+    this.prop.Caption = 'Insumo a cotizar '
     this.prop.Visible = false
+    this.prop.RecordSource = 'vi_cap_comecpy'  // RecordSource de la forma para asignar el recno
+
     // this.style.width = "80%";
     //this.style.height = "80%";
     this.est_cpy.prop.Disabled = true
@@ -139,6 +142,8 @@ export class modal_vta extends CONTAINER {
     this.img_cpy.prop.Disabled = true
 
     this.des_isu.inputStyle.width = "690px"
+
+    this.asignaRecno()
 
     // =======================<Bloque 0 >===============
 

@@ -42,6 +42,10 @@ import { est_pry } from "./est_pry";
 
 import { ver_cpy } from "./ver_cpy"
 import { des_equ } from "./des_equ";
+
+import { modal_vta } from "./grid_comecpy/detail_vta/modal_vta";
+import { modal_com } from "./grid_comecpy/detail_com/modal_com";
+
 import { bt_clonar } from "./bt_clonar";
 import { bt_cotizacion } from "./bt_cotizacion";
 import { bt_pdf } from "./bt_pdf";
@@ -59,11 +63,8 @@ export class ThisForm extends FORM {
   public num_pry = new num_pry();
   public fec_pry = new fec_pry();
   public ven_ven = new ven_ven();
-
   public cod_nom = new cod_nom();
-  // public nom_nom = new nom_nom();
   public noc_con = new noc_con();
-
   public des_tdn = new des_tdn();
   public nom_ven = new nom_ven();
   public tit_pry = new tit_pry();
@@ -72,10 +73,15 @@ export class ThisForm extends FORM {
   public des_equ = new des_equ();
   public est_pry = new est_pry();
 
+  public grid_comecpy = new grid_comecpy();
+
+  public modal_vta = new modal_vta();
+  public modal_com = new modal_com();
+
   public bt_clonar = new bt_clonar();
   public bt_cotizacion = new bt_cotizacion();
   public bt_pdf = new bt_pdf();
-  public grid_comecpy = new grid_comecpy(); // Tabla de actividates
+
   public displayPdf = new displayPdf();
 
   equ_equ: string = ''; // equipo de pertenece el usuario
@@ -101,6 +107,51 @@ export class ThisForm extends FORM {
     this.cod_nom.asignaRecno()
     this.ven_ven.asignaRecno()
 
+    this.block[0] = structuredClone(this.container)
+    this.block[0].prop.Visible = true
+    this.block[0].title = 'Generales'
+    this.block[0].style.width = 'auto'
+    this.block[0].component = {
+      [0]: this.tpy_tpy,
+      [1]: this.num_pry,
+      [2]: this.fec_pry,
+      [3]: this.ven_ven,
+      [4]: this.cod_nom,
+      [5]: this.noc_con,
+      [6]: this.des_tdn,
+      [7]: this.tit_pry,
+      [8]: this.des_pry,
+      [9]: this.ver_cpy,
+      [10]: this.des_equ,
+      [11]: this.est_pry,
+    }
+
+    this.block[1] = structuredClone(this.container)
+    this.block[1].prop.Visible = false
+    this.block[1].title = 'Producos y servicios'
+    this.block[1].style.width = 'auto'
+    this.block[1].component = {
+      [0]: this.grid_comecpy,
+      [1]: this.modal_vta,
+      [2]: this.modal_com,
+    }
+    /*
+        this.block[2] = structuredClone(this.container)
+        this.block[2].prop.Visible = false
+        this.block[2].title = 'Detalle ventas'
+        this.block[2].style.width = 'auto'
+        this.block[2].component = {
+          [0]: this.modal_vta,
+        }
+    
+        this.block[3] = structuredClone(this.container)
+        this.block[3].prop.Visible = false
+        this.block[3].title = 'Detalle ventas'
+        this.block[3].style.width = 'auto'
+        this.block[3].component = {
+          [0]: this.modal_com,
+        }
+    */
   }
 
   override async init() {
@@ -116,11 +167,11 @@ export class ThisForm extends FORM {
     await useNodata("vi_cap_cometap"); // Tabla de actividates por proyecto
 
     await SQLExec('select equ_equ,max(des_equ) as des_equ,max(log_usu) as log_usu,max(nom_usu) as nom_usu from vi_cap_db_equusu GROUP by equ_equ', 'equipos') //'equusu'
-
-    this.tpy_tpy.prop.TabIndex = 1;
-    this.num_pry.prop.TabIndex = 2;
-    this.ver_cpy.prop.TabIndex = 3;
-
+    /*
+        this.tpy_tpy.prop.TabIndex = 1;
+        this.num_pry.prop.TabIndex = 2;
+        this.ver_cpy.prop.TabIndex = 3;
+    */
   }
 
   async obtInsumo(d_cla_isu: string) {

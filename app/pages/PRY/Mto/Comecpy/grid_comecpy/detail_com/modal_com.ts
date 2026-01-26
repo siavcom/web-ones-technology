@@ -131,7 +131,9 @@ export class modal_com extends CONTAINER {
     super()
 
     this.prop.BaseClass = 'modalContainer'   //'modalContainer'
+    this.prop.Caption = 'Insumo a cotizar en compras '
     this.prop.Visible = false
+    this.prop.RecordSource = 'vi_cap_comecpy'  // RecordSource de la forma para asignar el recno
     this.asignaRecno()
 
     // =======================<Bloque 0 >===============

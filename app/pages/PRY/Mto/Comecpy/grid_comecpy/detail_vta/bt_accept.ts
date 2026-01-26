@@ -23,7 +23,7 @@ export class bt_accept extends IMGBUTTON {
   }
 
   async click() {
-
+    this.Parent.Recno = 0// resetea el recno
     this.Parent.close()
 
     this.Form.grid_comecpy.saveTable()

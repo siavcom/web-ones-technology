@@ -49,6 +49,9 @@ export class bt_cotizacion extends IMGBUTTON {
 
     if (!this.Form.bt_pdf.prop.Disabled)
       this.Form.bt_pdf.prop.Visible = true
+
+    this.Form.block[1].prop.Visible = true
+
     // 
   }
 }

@@ -21,6 +21,7 @@ export class fot_isu extends COMPONENT {
     this.prop.ToolTipText = 'Imagen del producto'
     this.prop.Capture = false;
     this.prop.Disabled = true
+    this.prop.Image = '/Iconos/svg/upload.svg'
 
 
     this.style.float = "right"
@@ -28,10 +29,19 @@ export class fot_isu extends COMPONENT {
     this.style.marginLeft = '10px'
     this.style.color = 'black'
 
+    this.captionStyle.float = "right"
+    this.captionStyle.fontSize = '8px'
+    this.captionStyle.width = '64px'
+
+    //    this.captionStyle.borderRadius = '8px'
+    //    this.captionStyle.marginLeft = '10px'
+    //    this.captionStyle.color = 'black'
+
     this.inputStyle.borderRadius = '8px'
     this.inputStyle.marginBlockStart = 'auto'
-    this.inputStyle.width = '124px'
-    this.inputStyle.height = '124px'
-  }
+    this.inputStyle.width = '64px'
 
+    this.inputStyle.accept = "image/png, image/jpeg, image/jpg, image/ico, image/bmp, image/gif, image/svg"
+
+  }
 }

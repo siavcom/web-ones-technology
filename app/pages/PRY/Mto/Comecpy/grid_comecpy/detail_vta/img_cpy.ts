@@ -16,10 +16,11 @@ export class img_cpy extends COMPONENT {
     // this.prop.Value = "Close";
     this.prop.Capture = false;
     this.prop.BaseClass = "base64";
-    this.prop.Caption = 'Cargar Imagen'
+    this.prop.Caption = 'Cargar imagen'
 
     this.prop.ControlSource = 'vi_cap_comecpy.img_cpy'
     this.prop.ToolTipText = 'Imagen del producto'
+    this.prop.Image = '/Iconos/svg/upload.svg'
 
     //this.style.float = "right"
     this.style.borderRadius = '8px'
@@ -28,7 +29,7 @@ export class img_cpy extends COMPONENT {
     this.style.width = '152px'
 
     this.inputStyle.borderRadius = '8px'
-    this.inputStyle.accept = "image/png, image/jpeg, image/jpg"
+    this.inputStyle.accept = "image/png, image/jpeg, image/jpg, image/ico, image/bmp, image/gif, image/svg"
     this.inputStyle.marginBlockStart = 'auto'
     this.inputStyle.width = '124px'
     //this.inputStyle.height = '124px'

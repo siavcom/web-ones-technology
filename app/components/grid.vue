@@ -633,9 +633,13 @@ watch(
         //            This[comp].prop.Focus = false
 
         if (Column.value > '' && comp == Column.value) {
-          if (This[comp].prop.BaseClass.toLowerCase() == 'edittext' || This[comp].prop.BaseClass.toLowerCase() == 'combobox') {
+          if (This[comp].prop.BaseClass.toLowerCase() == 'edittext' || This[comp].prop.BaseClass.toLowerCase() == 'combobox')
             This[comp].prop.Focus = true
-          }
+
+          if (This[comp].prop.BaseClass.toLowerCase() == 'imgbutton')
+            This[comp].click()
+
+
         }
       }
       if (RowInsert) {

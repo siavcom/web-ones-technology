@@ -66,7 +66,7 @@ export class bt_pdf extends IMGBUTTON {
 
     const query = `select * from vi_rep_comecpy where tpy_tpy='${m.tpy_tpy}' and num_pry=${m.num_pry} and ver_cpy=${m.ver_cpy}`
 
-    const buffer = await this.Sql.jasperReport(query, 'cotizacion')
+    const buffer = await jasperReport(query, 'cotizacion_vtas')
 
     if (buffer == null) {
       return
