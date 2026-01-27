@@ -38,6 +38,8 @@ export class COMPONENT {
   textLabel = ""
   sw_translate = true
   Id = ''
+  containerId: string = ''
+
   Value: string | number | boolean | Date | null | [] | {} = ''
   prop = {
     autoLoad: false,

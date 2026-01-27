@@ -114,8 +114,8 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 //const Id = This.prop.Name + props.Registro.toString().trim()
-const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
-
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
+This.Id = Id
 
 
 divStyle.width = '95%'

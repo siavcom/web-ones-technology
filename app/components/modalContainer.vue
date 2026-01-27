@@ -1,11 +1,10 @@
 <template>
   <ClientOnly>
 
-    <Teleport to="#teleports">
+    <Teleport to="body">
       <!--UContainer Dio problemas . Cambio la toda la apariencia--> <!--Transition-->
 
       <div :id="Id + '_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
-
         <div :id="Id + '_modal_container'" class="modal-container" :style="This.style"
           @click.middle.stop="middleClick()">
 
@@ -172,7 +171,8 @@ const inputStyle = reactive({ ...Este.inputStyle })
 
 //const Id = This.Name + props.Registro.toString()
 
-const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
+This.Id = Id
 
 
 //console.log('10 modalContainer Name=', This.prop.Name, 'divStyle=', divStyle, 'Id=', Id)
@@ -261,6 +261,17 @@ const impComp = ((name: string, pos?: string) => {
 
 
 //init();
+
+onMounted(async () => {
+  This.containerId = document.getElementById(Id + '_modal_container')
+})
+
+onUnmounted(async () => {
+
+  if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
+
+})
+
 const middleClick = () => {
   // console.log('middleClick')
   if (This.Form && This.Form.translateContainer)

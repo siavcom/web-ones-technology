@@ -315,8 +315,6 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
         const response: any = await axiosCall(dat_vis);
         //    console.log("2).2 Db useNodata nom_vis==> ");
 
-
-
         if (response == null) {
             console.error("==== . No existe la tabla===>", alias);
             return false;
@@ -2211,7 +2209,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
                 if (estructura == null) return null;
 
                 respuesta.est_tabla = estructura;
-                // console.log('Db Estructura vista===>>', respuesta)
+                console.log('Db Estructura vista===>>', respuesta)
             } catch (error) {
                 console.error("SQL Error", error);
                 errorAlert(
@@ -2238,29 +2236,37 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
         let des_tab = " CREATE TABLE " + alias + " (recno INT "; //PRIMARY KEY
+        console.log('genera_tabla Db ALASQL est_tabla', respuesta.est_tabla)
 
-        for (const nom_ele in respuesta.est_tabla) {
+        for (const nom_cam in respuesta.est_tabla) {
             // genera la descripcion de la tabla para generarla en alasql
+            let tip_cam = respuesta.est_tabla[nom_cam].tip_cam;
+            let campo = nom_cam
+
+            switch (true) {
+                case tip_cam == "STRING":
+                    campo = campo + " STRING" + "(" + respuesta.est_tabla[nom_cam].lon_dat + ")";
+                    break;
+                case tip_cam == "DATE":
+                    campo = campo + ' STRING(10)';
+                    break;
+                case tip_cam == "DATETIME" || tip_cam == "TIME":
+                    campo = campo + ' STRING(16)';
+                    break;
+                case campo == "timestamp":
+                    campo = campo + ' JSON';
+                    break;
+                default:
+                    campo = campo + ' ' + tip_cam;
+                    break;
+            }
+
             des_tab =
-                des_tab + "," + nom_ele + " " + respuesta.est_tabla[nom_ele].tip_cam;
-
-            if (respuesta.est_tabla[nom_ele].tip_cam == "STRING")
-                des_tab = des_tab + "(" + respuesta.est_tabla[nom_ele].lon_dat + ")";
-
-            // cuando es fecha o tiempo generamos el campo como string 
-            if (respuesta.est_tabla[nom_ele].tip_cam == "DATE")
-                des_tab = des_tab.replace('DATE', 'STRING') + "( 10 )";
-
-            if (respuesta.est_tabla[nom_ele].tip_cam == "DATETIME" || respuesta.est_tabla[nom_ele].tip_cam == "TIME")
-                des_tab = des_tab.replace('DATETIME', 'STRING').replace('TIME', 'STRING'), + "( 16 )";
-
-            if (respuesta.est_tabla[nom_ele].des_cam == "timestamp")
-                des_tab = des_tab.replace('TEXT', 'JSON');
-
-            const val_def = respuesta.est_tabla[nom_ele].val_def;
+                des_tab + "," + campo
+            const val_def = respuesta.est_tabla[nom_cam].val_def;
             // const val_def=respuesta.est_tabla[nom_ele].replace('undefined','null')
 
-            This.value.View[alias].val_def[nom_ele] = val_def;
+            This.value.View[alias].val_def[nom_cam] = val_def;
 
         }
 
@@ -2270,9 +2276,8 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         // console.log('Db Valores default=====>',alias,This.value.View[alias].val_def)
 
-        // console.log('Db ALASQL Estructura ===>',des_tab)
+        console.log('Db ALASQL Estructura ===>', des_tab)
         // Creamos la tablas en last y now
-
         try {
             //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + '; ')
 
@@ -2281,7 +2286,6 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
             await localAlaSql("USE last ;" + des_tab);
             await localAlaSql("USE now ;" + des_tab);
-
             //  await localAlaSql('USE last ; DROP TABLE IF EXISTS last.' + alias + '; ')
         } catch (error) {
             console.warn("Db ala error", error, des_tab);

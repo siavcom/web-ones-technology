@@ -19,7 +19,7 @@ export class ctz_tap extends COLUMN {
 
     // const nom_ind=renglon[i]['nom_ind']
 
-    this.prop.ColumnTextLabel = "Corización"; // Column Header
+    this.prop.ColumnTextLabel = "Cotización"; // Column Header
     this.prop.Caption = 'Si='
     this.prop.Type = "checkBox";
     this.prop.BaseClass = "editText";

@@ -46,10 +46,12 @@ export class tdo_tdo extends CAPTURECOMPONENT {
     }   // Fin Procedure
 
     override async when() {
+
+        MessageBox("Open  Form ...", 0, "Processing");
+
         await super.when()
         //this.Form.Recno=0
         useNodata('vi_cap_comepag')
-
         this.Form.ap_pagos.prop.ReadOnly = true
         this.Form.block[3].prop.Visible = false // Documentos no pagados
         this.Form.block[4].prop.Visible = false // Aplica a documentos

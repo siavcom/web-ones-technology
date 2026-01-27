@@ -33,6 +33,7 @@
     <img v-if="Value.length > 0" :id="Id + '_bt_delete'" class="img" src="/Iconos/svg/delete-color.svg"
       :alt="prop.Value" :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;"
       @click.capture="bt_delete()" title="Delete file" />
+    <div :id="'swal-container' + Id"></div>
 
   </span>
 </template>
@@ -47,13 +48,7 @@
 const emit = defineEmits(["update", "update:Value",
   "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
 
-///////////////////////////////////////
-// Propiedades del componente reactivas
-// Notas : 
-//  Registro se necesita porque cuando se tiene un  grid con 
-//  muchos componentes, c/componente Vue tiene su propio registro,
-//  el Recno pertenece al los componentes  de captura  del ThisForm  
-////////////////////////////////////
+
 const props = defineProps<{
   //Recno: number;
   //Component: any;
@@ -151,7 +146,7 @@ const props = defineProps<{
 
 
 const Component = toRef(() => props.prop.This)
-//console.log('base64 Component=', Component.value)
+
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
 const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
@@ -160,14 +155,8 @@ const divStyle = reactive({ ...Este.style })
 
 const accept = computed(() => This.inputStyle.accept.toLowerCase().trim())
 
-const propType = computed(() => This.prop.Type.toLowerCase().trim())
-
-// const Id = This.prop.Name + props.Registro.toString().trim()
-
-const Id = This.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
-// const Id_get_file = Id + '_get_file'
-//console.log('Id_get_file ====>', Id_get_file)
-
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
+let containerId = null
 
 let thisElement: Element | null    //Elemento DOM
 This.prop.htmlId = Id
@@ -176,7 +165,6 @@ const Value = ref(props.prop.Value)
 const Valor = toRef(This.prop, "Value")
 const Valid = ref(props.prop.Valid)
 Valid.value = true
-
 
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 let Help = false
@@ -209,21 +197,22 @@ inputStyle.zIndex = zIndex
 
 const toolTipTextStyle = { zIndex: zIndex + 20 }
 const focusIn = ref(0)
-
-// const currentBase64 = ref('')
-
-
 // 1. Create a ref for the input element to access it programmatically
+// <input type="file" ref="fileInput" @change="handleFileChange" 
+
 const fileInput = ref(null);
 
 // const uploadedImageUrl = ref(null);
 
 // 2. Function to trigger the hidden file input's click event
+// este trigger esta en un <img> que llama a @click="triggerFileInput" 
+// y llama por medio del valor fileInput.value.click() , es el ref del <input type"file"
 const triggerFileInput = () => {
   fileInput.value.click();
 };
 
 // 3. Handle the file selection and load the image for preview
+
 const handleFileChange = (event) => {
   const file = event.target.files[0];
   // if (file && file.type.startsWith('image/')) {
@@ -254,9 +243,12 @@ function handleFileChange() {
 */
 
 const bt_delete = async () => {
-
-  //if (await MessageBox('Delete ?', 4, '') != 6)
-  //  return
+  // No funciona en componentes modales 
+  //This.Form.containerId = document.getElementById(Id + '_component')
+  This.Form.containerId = containerId // document.getElementById('swal-container' + Id)
+  //console.log('bt_delete containerID', , 'swal-container ID=', 'swal-container' + Id, document.getElementById('swal-container' + Id))
+  if (await MessageBox('Delete ?', 4, '') != 6)
+    return
 
   Value.value = ''
   console.log('bt_delete Value.value', Value.value)
@@ -558,6 +550,7 @@ const handler = (event) => {
 //await callOnce(async () => {
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
+  containerId = document.getElementById('swal-container' + Id)
   // console.log('1) base64 onMounted Name=', This.prop.Name, 'divStyle=', divStyle)
 
   inputStyle.width = '100%' //  divStyle.width

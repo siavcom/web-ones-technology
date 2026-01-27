@@ -714,8 +714,6 @@ export const getDay = (dateString: string): number => {
   return currentDate.getDay();
 }
 
-
-
 ///////////////////////////////////////////////
 // Funciones para arreglos de objetos
 ///////////////////////////////////////////////
@@ -898,6 +896,12 @@ export async function MessageBox(
   timer?: number
 ) {
 
+  const thisForm = ThisForm.value
+  const container = thisForm.containerId
+  console.log('container==', container, 'thisForm.containerID', thisForm.containerId, 'ThisForm=', ThisForm.value)
+  const target = container ? container : null
+
+
   if (!tipo) {
     Swal.fire({
       title: texto,
@@ -910,12 +914,10 @@ export async function MessageBox(
       timer: !timer ? 750 : timer, // Auto-close after 1.5 seconds
       timerProgressBar: true, // Show a progress bar for the timer
     });
+    ThisForm.value.containerId = ''
+
     return;
   }
-
-
-
-
 
   //function sweetAlert(texto: string, tipo?: number, title?: string, timer?: number) {
   /// ////////////////////////////
@@ -1111,6 +1113,7 @@ export async function MessageBox(
   //const { $swal } = useNuxtApp()
   //await $swal.fire({
   await Swal.fire({
+    target,
     title,
     text: texto,
     timer,
@@ -1147,6 +1150,7 @@ export async function MessageBox(
     }
   })
   //     console.log('MessageBox por aqui salio')
+  ThisForm.value.containerId = ''
   return resultado
 }
 

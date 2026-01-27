@@ -248,7 +248,10 @@ const Estatus = ref(ThisForm.estatus)
 const Valid = reactive(ThisForm.Valid)
 //const Id = ThisForm.prop.Name
 
-const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 10000000).toString() //props.Registro.toString().trim()
+const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
+ThisForm.Id = Id
+
+
 // Datos forma por forma . En app.vue esta useHead
 useSeoMeta({
   title: ThisForm.prop.Name,

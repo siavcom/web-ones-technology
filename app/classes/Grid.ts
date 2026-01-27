@@ -43,7 +43,7 @@ export class GRID extends COMPONENT {
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
     this.prop.UpdateMessage = "Grabamos la tabla";
     this.prop.DeleteMessage = "Borramos renglon";
-    this.prop.ErrorMessage = 'Datos no actualizados'
+    this.prop.ErrorMessage = 'Datos no actualizados '
     this.prop.OkMessage = 'Actualización exitosa'
     this.prop.headerHeight = "30px";
     this.prop.Rows = 10;   // renglones de la grid por defecto
