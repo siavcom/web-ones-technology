@@ -51,6 +51,7 @@ Form
 ├── EditText2
 ├── EditText3
 └── ComboBox1
+
 Database Operations (VFP-like Syntax)
 typescript
 // Familiar VFP database commands

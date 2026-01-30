@@ -565,6 +565,7 @@ pages/clientForm/component1.ts  // Component 1
 pages/clientForm/component2.ts  // Component 2
 ...
 pages/clientForm/componentN.ts  // Component N
+
 index.vue (always has this content)
 
 <template>
@@ -582,7 +583,7 @@ const Form = reactive(new ThisForm) // no quitar el new
 </script>
 
 ThisForm.ts
-
+typescript
 //////////////////////////////////////////////
 // Page: SqlDictionary
 // Clase base: ThisForm
@@ -645,7 +646,6 @@ export class ThisForm extends FORM {
     this.style.position = "center"
   }
 }
-
 
 
 
