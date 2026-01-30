@@ -2935,11 +2935,11 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
             }
         }
         This.value.View[tabla].Recno = recno // actualizamos el recno de la vista
-        console.warn('readCampo no data =====>', tabla, campo, recno, data)
+        // console.warn('readCampo no data =====>', tabla, campo, recno, data)
 
         return data[1][0]; // todos los campos
     }
-    console.warn('Sql.readCampo no data =====>', tabla, campo, recno, data)
+    // console.warn('Sql.readCampo no data =====>', tabla, campo, recno, data)
 
     return [];
 

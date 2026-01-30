@@ -40,31 +40,34 @@ export class num_pry extends CAPTURECOMPONENT {
   ///////////////////////////////////
 
   override async when() {
+
     await super.when()
-    await this.Form.tpy_tpy.when();
+
+    await this.Form.tpy_tpy.when(); // apaga y prende componentes
 
     // obtiene el ultimo numero de proyecto
     const data = await SQLExec(`         
            select max(num_pry)+1 as num_pry from man_comepry where tpy_tpy='${this.Form.tpy_tpy.prop.Value}'`);
-
+    console.log('num_pry when data=', data);
     if (data[0]) {
       //  console.log("1 num_pry when data=", data[0], this.prop.Value);
 
       this.prop.Valid = true; // se pone en Verdadero para que no llame rutina validacion
       //this.sw_when = true;
-      if (data[0].num_pry == null) this.prop.Value = 1;
-      else this.prop.Value = +data[0].num_pry;
+      if (data[0].num_pry == null)
+        this.prop.Value = 1;
+      else
+        this.prop.Value = +data[0].num_pry;
     }
 
-    if (this.prop.Value == 0) this.prop.Value = 1;
+    if (this.prop.Value == 0)
+      this.prop.Value = 1;
 
-    this.setFocus()
+    //this.setFocus()
     return true;
   }
 
   override async valid(): Promise<boolean> {
-
-    console.log('num_pry valid', this.prop.Value)
 
     if (this.prop.Value == 0) {
       return false;

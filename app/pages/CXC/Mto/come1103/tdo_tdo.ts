@@ -47,8 +47,6 @@ export class tdo_tdo extends CAPTURECOMPONENT {
 
     override async when() {
 
-        MessageBox("Open  Form ...", 0, "Processing");
-
         await super.when()
         //this.Form.Recno=0
         useNodata('vi_cap_comepag')

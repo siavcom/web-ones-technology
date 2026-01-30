@@ -74,6 +74,7 @@ export class bt_actividades extends IMGBUTTON {
 
     this.Form.grid_actividades.tap_tap.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql Remote,4-Sql local 5-Array
     this.Form.grid_actividades.prop.Visible = true;
-
+    this.Form.grid_actividades.prop.ReadOnly = false;
+    console.log('bt_actividades grid_actividades ReadOnly=', this.Form.grid_actividades.prop.ReadOnly)
   }
 }

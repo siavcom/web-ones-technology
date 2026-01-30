@@ -83,9 +83,6 @@ export class FORM extends COMPONENT {
 
   }
 
-
-
-
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
   constructor() {

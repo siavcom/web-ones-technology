@@ -898,9 +898,7 @@ export async function MessageBox(
 
   const thisForm = ThisForm.value
   const container = thisForm.containerId
-  console.log('container==', container, 'thisForm.containerID', thisForm.containerId, 'ThisForm=', ThisForm.value)
   const target = container ? container : null
-
 
   if (!tipo) {
     Swal.fire({

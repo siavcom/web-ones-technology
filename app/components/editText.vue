@@ -269,7 +269,6 @@ const containerStyle = reactive({ ...This.containerStyle })
 
 const invalidInputStyle = reactive({ ...This.invalidInputStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
-let Evento = ''
 
 let RecNumber = 0
 const Styles = reactive(
@@ -571,7 +570,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
         const newValue = This.prop.Value
 
-        // Aqui me quede 30/Ags/2025
+
         //This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
           if (This.prop.Valid)
@@ -1191,6 +1190,9 @@ const onFocus = async () => {
   // const click = Click == true ? true : false
   // Si esta en un grid checa sus estatus de todas las columnas
   ToolTipText.value = false
+  if (!await ChecaEventos())
+    return
+
   if (This.Parent && This.Parent.BaseClass == "grid") {
     const grid = This.Parent
 
@@ -1267,21 +1269,24 @@ const onFocus = async () => {
   This.prop.Valid = true
   // await nextTick()
   // This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
-  await ChecaEventos('when')
-  // }
+
+  if (This.prop.ReadOnly)
+    return
+
+  This.prop.ReadOnly = !await This.when()
+  if (!This.prop.ReadOnly)
+    focusIn.value = 1  // cambia el valor en el input number 
+  else {
+    This.prop.nextFocus = true
+    return
+  }
 
   console.warn('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<editText Fin onFocus() sw_emitValue', sw_emitValue, ' This.prop.Name', This.prop.Name, 'This.prop.Value', This.prop.Value)
-  //nextTick(function () {
-
-  // const element = document.getElementById(Id);
-  // select()   // 4 Julio 2024
-
   return
 }
 
 
 const clickHelp = async () => {
-
   if (focusIn.value == 0)
     await onFocus()
 
@@ -1368,7 +1373,7 @@ watch(
 watch(
   () => This.prop.nextFocus,
   () => {
-    console.log('editText watch prop.NextFocus', This.prop.Name, This.prop.nextFocus)
+    //console.log('editText watch prop.NextFocus', This.prop.Name, This.prop.nextFocus)
     if (This.prop.nextFocus) {
       This.prop.nextFocus = false
       nextElement()
@@ -1675,45 +1680,24 @@ watch(
 watch(
   () => This.Form.estatus,
   async () => {
-    if (Evento.length > 2)
-      ChecaEventos()
+    // console.log('EditText watch Form.estatus', This.Form.estatus)
+    // ChecaEventos() 29/Ene/2026
   }, { deep: true }
 );
 
-
-
 // Ejecuta los eventos when y otros eventos
 const ChecaEventos = async (Evento?: string) => {
+  // console.log('ChecaEventos Evento=', Evento)
 
   for (const comp in This.Form.estatus) {
-    if (This.Form.estatus[comp] != 'A') {
-      //    console.warn('1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
-      return
+    if (comp != This.prop.Name && This.Form.estatus[comp] != 'A') {
+      console.warn(This.prop.Name, '1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
+      return false
     }
   }
 
-  // console.log('comboBox Name=', This.prop.Name, 'Ejecutara Evento =', Evento)
-  if (This.prop.ReadOnly)
-    return
-
-  if (Evento == 'when') {
-    Evento = ''
-    This.prop.ReadOnly = !await This.when()
-    if (!This.prop.ReadOnly)
-      focusIn.value = 1  // cambia el valor en el input number 
-    else
-      This.prop.nextFocus = true
-
-    return
-  }
-
-  if (Evento) {
-    Evento = ''
-    This[Evento]()
-  }
-  return
+  return true
 }
-
 
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers
