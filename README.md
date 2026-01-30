@@ -65,33 +65,50 @@ The framework uses a main form (like ThisForm in VFP) made only in TypeScript, w
 
 
 ├── Form/
+
 │    ├── component1/          
 │    ├── component2/          
 │    ├── component3/          
 │    ├── component4/          
 │    │   ├── when()
+
 │    │   ├── inti()
+
 │    │   ├── valid()
+
 │    │   ├── click()
+
 │    │   ├── onChangeValue()
+
 │    │   ├── afterMounted()
+
 │    │   ├── recnoChange()
+
 │    │   └── ...          # Other Methods
+
 │    ├── component....../ # Other Components      
 
 Some components contain other components:
 
 ├── Container/
+
 │    ├── component1/           # Static assets
+
 │    ├── component2/           # Static assets
+
 │    ├── component3/           # Static assets
+
 │    ├── component4/          # TypeScript base classes
 
 
 ├── grid/
+
 │    ├── column1/           # Static assets
+
 │    ├── column2/           # Static assets
+
 │    ├── column3/           # Static assets
+
 │    ├── column4/          # TypeScript base classes
 
 
@@ -220,7 +237,7 @@ textLabel - Text label
 TypeScript components are written in TypeScript and exist within container components (Form, container, etc.) except Form components which can't be inside another Form component.
 
 Example Component
-typescript
+
 // Clase: dic_dat
 // Descripcion: tipo de mantenimiento del diccionario de datos
 // Author: Fernando Cuadras Angulo
@@ -300,6 +317,7 @@ export class dic_dat extends COMPONENT {
         return !this.prop.ReadOnly;
     }
 }
+
 📋 TypeScript Component Types
 Browse - Table display
 
@@ -537,14 +555,18 @@ Each page folder is minimally composed of two files: index.vue and ThisForm.ts
 Sample: For a web page called clientForm, in a pages directory:
 
 text
+
 pages/clientForm/index.vue      // Only file of the form (content never changes)
+
 pages/clientForm/ThisForm.ts    // Principal form
+
 pages/clientForm/component1.ts  // Component 1
+
 pages/clientForm/component2.ts  // Component 2
 ...
 pages/clientForm/componentN.ts  // Component N
 index.vue (always has this content)
-vue
+
 <template>
   <VueForm v-bind:ThisForm="Form">
     <template #header />
@@ -558,8 +580,9 @@ import VueForm from "@/components/form.vue";
 import { ThisForm } from './ThisForm'
 const Form = reactive(new ThisForm) // no quitar el new
 </script>
+
 ThisForm.ts
-typescript
+
 //////////////////////////////////////////////
 // Page: SqlDictionary
 // Clase base: ThisForm
@@ -622,6 +645,10 @@ export class ThisForm extends FORM {
     this.style.position = "center"
   }
 }
+
+
+
+
 [!NOTE]
 To see complete Form example, look in pages/SqlDictionary
 
@@ -677,8 +704,11 @@ m = {
   newcustomer: true,
 }
 
-  deleteRow(<recno to delete>?: number)
+ deleteRow(<recno to delete>?: number)
   If recno to delete is omitted, delete the grid row positioned
+
+
+
 
 📋 Column Component
 Each column component has a label for the header and another TypeScript component (editText, imgButton, etc., except Form container).
@@ -698,12 +728,12 @@ For complete example, look in page directory. Each directory is a Vue View Page.
 Component containing one or more container blocks.
 
 Default Styles
-typescript
+
 this.containerStyle.display = 'flex'
 this.containerStyle.flexWrap = 'wrap'
 this.style.maxWidth = '600px'
 Block Definition
-typescript
+
 // =======================<Bloque 0>===============
 const container = this.container
 this.block[0] = structuredClone(container)
@@ -713,8 +743,8 @@ this.block[0].component = {
 }
 this.block[0].title = 'Cliente Nuevo'
 this.block[0].style.width = '95%'
-Container Methods
-typescript
+
+// Container Methods
 async open() {
   this.prop.Visible = true
 }
@@ -914,9 +944,8 @@ console.log(m) = {
 
 
 📁 Project Structure NUXT 4
-text
-web-ones-technology/
 
+web-ones-technology/
 ├── app/
 │    ├── assets/           # Static assets
 │    ├── classes/          # TypeScript base classes
@@ -955,7 +984,6 @@ web-ones-technology/
 ├── public/           # Public files
 │    └── ...          # Other public files
 └── app.vue           # Root component
-
 
 🛠️ Installation Guide
 Prerequisites
