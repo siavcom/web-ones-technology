@@ -567,7 +567,7 @@ pages/clientForm/component2.ts  // Component 2
 pages/clientForm/componentN.ts  // Component N
 
 index.vue (always has this content)
-
+vue
 <template>
   <VueForm v-bind:ThisForm="Form">
     <template #header />
@@ -581,7 +581,6 @@ import VueForm from "@/components/form.vue";
 import { ThisForm } from './ThisForm'
 const Form = reactive(new ThisForm) // no quitar el new
 </script>
-
 ThisForm.ts
 typescript
 //////////////////////////////////////////////
@@ -646,7 +645,6 @@ export class ThisForm extends FORM {
     this.style.position = "center"
   }
 }
-
 
 
 [!NOTE]
@@ -944,7 +942,6 @@ console.log(m) = {
 
 
 📁 Project Structure NUXT 4
-
 web-ones-technology/
 ├── app/
 │    ├── assets/           # Static assets
