@@ -1,23 +1,120 @@
-PostgreSQL (Recommended)
+Web-Ones Technology: Complete SQL Web Development Platform
+Migrate Visual FoxPro Applications to Modern Web with TypeScript
 
-Microsoft SQL Server (12 or newer)
+https://deepwiki.com/badge.svg
 
-🚀 Technologies Used
-Vue 3 with SFC
 
-Nuxt 3
 
-Native HTML components
+🎯 Overview
+Web-Ones is a comprehensive framework for building SQL-based web applications using TypeScript (class-based) without requiring expertise in HTML, CSS, or Vue. It enables developers to migrate decades of Visual FoxPro (VFP) applications to modern web technology while preserving the familiar VFP programming paradigm.
 
-TypeScript (class-based)
+✨ Why Web-Ones?
+For VFP Developers
+Continue programming with VFP-like syntax while targeting modern web browsers. I've been developing Fox systems since 1987 (FoxPlus, FoxPro Unix, VFP 5-9) and created this framework to migrate millions of lines of VFP code working with Postgres and MSSQL.
 
-🎯 Objective
-Make simple SQL web data capture programs in TypeScript (class-based) without knowledge of web programming (HTML, CSS, Vue).
+Key Advantages
+Zero Web Programming Required: Build applications using only TypeScript classes
+
+Legacy Migration: Convert VFP code to TypeScript with our built-in translator
+
+Enterprise Ready: Full ERP system compatibility
+
+No User Retraining: Identical UI/UX to VFP applications
+
+Cross-Browser: Works on Chrome, Firefox, Safari, Edge
+
+🏗️ Architecture (Three-Layer Design)
+Frontend (Vue 3 / Nuxt 3)
+VFP-like functions and instructions in TypeScript
+
+Menu maintenance system
+
+Visual components: EditBox, ComboBox, Grid, Container, etc.
+
+Backend (Node.js + Express)
+RESTful web services via VFP-NODE
+
+Database connectivity and business logic
+
+Real-time communication support
+
+Database Layer
+
+PostgreSQL  (12+)
+
+Microsoft SQL Server (2017+)
+
+SQL database dictionary management
+
+Menu maintenance system
+
+
+🚀 Key Features
+VFP-Style Programming Model
+typescript
+// Program like VFP, deploy as web app
+this.Form.customerName.prop.Value = 'Acme Corp';
+this.Form.gridOrders.prop.RecordSource = 'vw_orders';
+await this.SQLExecute("SELECT * FROM customers");
+Visual Component Tree
+
 
 📐 Component Tree Architecture
 The framework uses a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own visual HTML components and methods:
 
+
+
+├── Form/
+│    ├── component1/          
+│    ├── component2/          
+│    ├── component3/          
+│    ├── component4/          
+│    │   ├── when()
+│    │   ├── inti()
+│    │   ├── valid()
+│    │   ├── click()
+│    │   ├── onChangeValue()
+│    │   ├── afterMounted()
+│    │   ├── recnoChange()
+│    │   └── ...          # Other Methods
+│    ├── component....../ # Other Components      
+
+Some components contain other components:
+
+├── Container/
+│    ├── component1/           # Static assets
+│    ├── component2/           # Static assets
+│    ├── component3/           # Static assets
+│    ├── component4/          # TypeScript base classes
+
+
+├── grid/
+│    ├── column1/           # Static assets
+│    ├── column2/           # Static assets
+│    ├── column3/           # Static assets
+│    ├── column4/          # TypeScript base classes
+
+
+
+
 text
+               container
+            /     |      \
+           /      |       \
+          /       |        \
+         /        |         \
+        Component1 Component2 Component..n
+
+                grid
+            /     |       \
+           /      |        \
+          /       |         \
+         /        |          \
+        Column1 Column2 Column..n
+
+
+text
+
                      Form
                  /     |      \
                 /      |       \
@@ -44,13 +141,15 @@ text
           /       |         \
          /        |          \
         Column1 Column2 Column..n
+
+
 🎨 Component Properties and Methods
 Component Properties
 Basic props - Core component properties
 
 Style props - Visual styling properties
 
-Position props - Layout positioning
+Position props - Layout positioning (deprecated)
 
 Component Methods
 click() - Called when component is clicked
@@ -89,6 +188,9 @@ this.Form.style.width = '800px'
 // Calling methods
 this.Form.component4.click()
 this.Parent.component1.component2.click()
+
+
+
 🖥️ Web Components (Vue/Nuxt Components)
 base64 - Load and display base64 images
 
@@ -96,7 +198,7 @@ browse - Display table
 
 checkBox - Check Box input
 
-comboBox - Combo Box input
+comboBox - Combo List Box input
 
 container - Component container
 
@@ -226,186 +328,191 @@ Base Properties
 typescript
 this.prop.<Name of property> = <Value>
 
-// BaseClass: <webComponent>
-// Type: string
-// Values: 'Form', 'editText', 'textLabel', 'comboBox', 'checkBox', 'optionGroup', 'grid', 'base64', 'container'
+ BaseClass: <webComponent>
+ Type: string
+ Values: 'Form', 'editText', 'textLabel', 'comboBox', 'checkBox', 'optionGroup', 'grid', 'base64', 'container'
 
-// Caption: <Title of component> || <Text label showing before input>
-// Type: string
+ Caption: <Title of component> || <Text label showing before input>
+ Type: string
 
-// Disabled: <true when component is disabled>
-// Type: boolean
+ Disabled: <true when component is disabled>
+ Type: boolean
 
-// ErrorMessage: <Error message if component is not valid>
-// Type: string
+ ErrorMessage: <Error message if component is not valid>
+ Type: string
 
-// First: <true. Component that receives focus when new record is inserted>
-// Type: boolean
+ First: <true. Component that receives focus when new record is inserted>
+ Type: boolean
 
-// Format: <> (future version)
-// Type: string
+ Format: <> (future version)
+ Type: string
 
-// Image: <Component background image path>
-// Type: string
+ Image: <Component background image path>
+ Type: string
 
-// InputMask: <> (future version)
-// Type: string
+ InputMask: <> (future version)
+ Type: string
 
-// Max: <Maximum value for number>
-// Type: number
+ Max: <Maximum value for number>
+ Type: number
 
-// MaxLength: <Maximum character length>
-// Type: number
+ MaxLength: <Maximum character length>
+ Type: number
 
-// Min: <Minimum value for number>
-// Type: number
+ Min: <Minimum value for number>
+ Type: number
 
-// Name: <Name of component>
-// Type: string
+ Name: <Name of component>
+ Type: string
 
-// Placeholder: <label inside input blurred>
-// Type: string
+ Placeholder: <label inside input blurred>
+ Type: string
 
-// Position: <position in a form>
-// Type: string
-// Values: 'header', 'main', 'footer'
+ Position: <position in a form>
+ Type: string
+ Values: 'header', 'main', 'footer'
 
-// ReadOnly: <true when component is read only>
-// Type: boolean
+  ReadOnly: <true when component is read only>
+  Type: boolean
 
-// TabIndex: <Component tab index in form component>
-// Type: number
+  TabIndex: <Component tab index in form component>
+  Type: number
 
-// ToolTipText: <Component tool tip text>
-// Type: string
+  ToolTipText: <Component tool tip text>
+  Type: string
 
-// Type: <Data types when BaseClass="editText">
-// Type: string
-// Values: 'number', 'text', 'date', 'dateTime', 'spinner', 'checkBox', 'json'
+  Type: <Data types when BaseClass="editText">
+  Type: string
+  Values: 'number', 'text', 'date', 'dateTime', 'spinner', 'checkBox', 'json'
 
-// Valid: <true when component is valid>
-// Type: boolean
+  Valid: <true when component is valid>
+  Type: boolean
 
-// Value: <Value of component>
-// Type: string, date, number, boolean, json
+  Value: <Value of component>
+  Type: string, date, number, boolean, json
 
-// Visible: <true when component is visible>
-// Type: boolean
+  Visible: <true when component is visible>
+  Type: boolean
+
+
 Database Component Properties
-typescript
-// ControlSource: <Name of SQL field>
-// Type: string
-// Example value: 'localTable.field'
 
-// RecordSource: <local or remote table name>
-// Type: string
-// Example value: 'viewTableName'
+  ControlSource: <Name of SQL field>
+  Type: string
+  Example value: 'localTable.field'
 
-// SqlUpdate: <True when component loses focus, update field component. When false, update field component using tableUpdate method>
-// Type: boolean
-Behavior Properties
-typescript
-// Capture: <When capture is true, can't lose focus until Validate or esc>
-// Type: boolean
+  RecordSource: <local or remote table name>
+  Type: string
+  Example value: 'viewTableName'
 
-// First: <In Form or grid component it has to be true the first capture component> false
-// Type: boolean
+  SqlUpdate: <True when component loses focus, update field component. When false, update field component using tableUpdate method>
+  Type: boolean
+  Behavior Properties
+  Capture: <When capture is true, can't lose focus until Validate or esc>
+  Type: boolean
 
-// Focus: <When set to true, this component takes focus>
-// Type: boolean
+  First: <In Form or grid component it has to be true the first capture component> false
+  Type: boolean
 
-// Map: <Show structure map of this component>
-// Type: string
-// Example: "this.Form.componentName"
+  Focus: <When set to true, this component takes focus>
+  Type: boolean
 
-// Status: <Status of component>
-// Type: string
-// Values: P=Process, A=Active, I=Initialization
+  Map: <Show structure map of this component>
+  Type: string
+  Example: "this.Form.componentName"
 
-// Valid: <True when component value is good>
-// Type: boolean
+  Status: <Status of component>
+  Type: string
+  Values: P=Process, A=Active, I=Initialization
 
-// Recno: <Record Number for localSql field value>
+  Valid: <True when component value is good>
+  Type: boolean
+
+  Recno: <Record Number for localSql field value>
 Numeric Component Properties
 typescript
-// Currency: <Currency to display>
-// Type: string
-// Example: 'USD', 'EUR', 'MXN'
+  Currency: <Currency to display>
+  Type: string
+  Example: 'USD', 'EUR', 'MXN'
 
-// CurrencyDisplay: 'code' // To use ISO currency code
-// Type: string
+  CurrencyDisplay: 'code' // To use ISO currency code
+  Type: string
 
-// Decimals: <Decimals to show and capture>
-// Type: number
+  Decimals: <Decimals to show and capture>
+  Type: number
 
-// Max: <Maximum value in this component>
-// Type: number
+  Max: <Maximum value in this component>
+  Type: number
 
-// Min: <Minimum value in this component>
-// Type: number
+  Min: <Minimum value in this component>
+  Type: number
 
-// Step: <When spinner component number step>
-// Type: number
+  Step: <When spinner component number step>
+  Type: number
 ComboBox Properties
 typescript
-// Style: <Type of combo box>
-// Type: number
-// Values: 0=DropDown, 2=DropDown List
+  Style: <Type of combo box>
+  Type: number
+  Values: 0=DropDown, 2=DropDown List
 
-// BoundColumn: <The value is attached to the column>
-// Type: number
+  BoundColumn: <The value is attached to the column>
+  Type: number
 
-// ColumnCount: <Total column numbers in comboBox>
-// Type: number
+  ColumnCount: <Total column numbers in comboBox>
+  Type: number
 
-// ColumnWidths: <Width of each column>
-// Type: string
-// Example: '80%', '20%'
+  ColumnWidths: <Width of each column>
+  Type: string
+  Example: '80%', '20%'
 
-// MultiSelect: <Can multiple select>
-// Type: boolean
+  MultiSelect: <Can multiple select>
+  Type: boolean
 
-// List: <List array result when MultiSelect is true>
-// Type: array
+  List: <List array result when MultiSelect is true>
+  Type: array
 
-// RowSource: <Sql query or table.field>
-// Type: string
-// Examples:
-//   - when RowSourceType=2: 'tablename.field1,field2'
-//   - when RowSourceType=3 or 4: 'SELECT column1,column2 FROM tablefield'
+  RowSource: <Sql query or table.field>
+  Type: string
+  Examples:
+    - when RowSourceType=2: 'tablename.field1,field2'
+    - when RowSourceType=3 or 4: 'SELECT column1,column2 FROM tablefield'
 
-// RowSourceType: <How to fill comboBox>
-// Type: number
-// Values:
-//   1-Value
-//     Example: RowSourceType=1, ColumnCount=2
-//     RowSource="House,H,Building,B,Department,D"
-//
-//   2-Alias
-//     Example: RowSourceType=2, ColumnCount=3
-//     RowSource="tablename.House,Building,Department"
-//
-//   3-Query SQL Server
-//     Example: RowSourceType=3, ColumnCount=2
-//     RowSource='SELECT column1,column2 FROM servertable'
-//
-//   4-Local SQL
-//     Example: RowSourceType=4, ColumnCount=2
-//     RowSource='SELECT column1,column2 FROM localtable'
-//     Note: You already have a local table SQL
-//
-//   5-Array
-//     Example: RowSourceType=5, ColumnCount=2
-//     RowSource=[['column1','column2'],['value1','value2']]
+  RowSourceType: <How to fill comboBox>
+  Type: number
+  Values:
+    1-Value
+      Example: RowSourceType=1, ColumnCount=2
+      RowSource="House,H,Building,B,Department,D"
+ 
+    2-Alias
+      Example: RowSourceType=2, ColumnCount=3
+      RowSource="tablename.House,Building,Department"
+ 
+    3-Query SQL Server
+      Example: RowSourceType=3, ColumnCount=2
+      RowSource='SELECT column1,column2 FROM servertable'
+ 
+    4-Local SQL
+      Example: RowSourceType=4, ColumnCount=2
+      RowSource='SELECT column1,column2 FROM localtable'
+      Note: You already have a local table SQL
+ 
+    5-Array
+      Example: RowSourceType=5, ColumnCount=2
+     RowSource=[['column1','column2'],['value1','value2']]
+
+
 🎨 Style Properties
 All Components
-typescript
+
 this.style.<name of property> = <Value>
+
 Input Component
 typescript
 this.inputStyle.<name of property> = <Value>
 Caption Component
-typescript
+
+Caption Component
 this.captionStyle.<name of property> = <Value>
 Example Styles
 typescript
@@ -419,8 +526,10 @@ fontFamily: "Arial"
 fontSize: "13px"
 textAlign: "left"
 // ... several CSS style properties
+
 📄 Form (Main Web Form Container)
 The principal main form (SPA). A complete system is made of several Forms, each located in a page directory of the NUXT structure.
+
 
 [!IMPORTANT]
 Each page folder is minimally composed of two files: index.vue and ThisForm.ts
@@ -520,47 +629,47 @@ To see complete Form example, look in pages/SqlDictionary
 Grid component for local SQL table capture. Contains several column components.
 
 Grid Properties
-typescript
-// textLabel = <Grid title>
-// Type: string
 
-// ControlSource: <Name of localSQL table>
-// Type: string
-// Example value: 'capture_view_items'
+  textLabel = <Grid title>
+  Type: string
 
-// SqlUpdate: <Automatic update>
-// Type: boolean
-// Value = true enable automatic update
-// Value = false disable automatic update
+  ControlSource: <Name of localSQL table>
+  Type: string
+  Example value: 'capture_view_items'
 
-// showAddButton = <Show add button>
-// Type: boolean
-// Value = true to show add button
-// Value = false to hide add button
+  SqlUpdate: <Automatic update>
+  Type: boolean
+  Value = true enable automatic update
+  Value = false disable automatic update
 
-// showSaveButton = <Show save button>
-// Type: boolean
-// Value = true to show save button
-// Value = false to hide save button
+  showAddButton = <Show add button>
+  Type: boolean
+  Value = true to show add button
+  Value = false to hide add button
 
-// showDeleteButton = <Show delete button>
-// Type: boolean
-// Value = true to show delete button
-// Value = false to hide delete button
+  showSaveButton = <Show save button>
+  Type: boolean
+  Value = true to show save button
+  Value = false to hide save button
 
-// insertButton = <Show insert button>
-// Type: boolean
-// Value = true to show insert button
-// Value = false to hide insert button
+  showDeleteButton = <Show delete button>
+  Type: boolean
+  Value = true to show delete button
+  Value = false to hide delete button
 
-// autoUpdate = <Auto update>
-// Type: boolean
-// Value = true update data when all row is valid
-// Value = false disable auto update
+  insertButton = <Show insert button>
+  Type: boolean
+  Value = true to show insert button
+  Value = false to hide insert button
+
+  autoUpdate = <Auto update>
+  Type: boolean
+  Value = true update data when all row is valid
+  Value = false disable auto update
 Grid Methods
 typescript
-// appendRow(<memoryVariables>: {})
-// Append a row where memoryVariables is object containing values defined in SqlDictionary table design
+  appendRow(<memoryVariables>: {})
+  Append a row where memoryVariables is object containing values defined in SqlDictionary table design
 // Example:
 m = {
   firstName: this.Form.name,
@@ -568,16 +677,17 @@ m = {
   newcustomer: true,
 }
 
-// deleteRow(<recno to delete>?: number)
-// If recno to delete is omitted, delete the grid row positioned
+  deleteRow(<recno to delete>?: number)
+  If recno to delete is omitted, delete the grid row positioned
+
 📋 Column Component
 Each column component has a label for the header and another TypeScript component (editText, imgButton, etc., except Form container).
 
 Column Properties
-typescript
-// ControlSource = <localSqltable.field>
-// Type: string
-// Value = local Sql Table + field
+
+  ControlSource = <localSqltable.field>
+  Type: string
+  Value = local Sql Table + field
 
 // Example:
 this.prop.columnLabel = 'Header 1'
@@ -612,10 +722,13 @@ async open() {
 async close() {
   this.prop.Visible = false
 }
+
+
 🗄️ SQL Database Class (VFP SQL Instructions)
 Class for manipulating SQL databases with VFP-like methods.
 
 Database Methods
+
 appendBlank(<alias>, <memoryObject>) - Append row in local SQL table with default TypeScript values
 
 bof(<alias?>) - After locate, skip or goto, returns true if at last row
@@ -658,7 +771,8 @@ use(<table>, <memoryObject>, <alias?>) - Prepare local SQL table with data (clon
 
 useNodata(<table>, <alias?>) - Prepare local SQL table without data (clone of SQL-Server view)
 
-Parameter Types
+Parameter Types:
+
 <area> - VFP Area number (type: number)
 
 <alias> - Local SQL table alias (type: string)
@@ -710,7 +824,8 @@ false: Only local SQL
 2: Update all records (continues on error)
 
 🔧 Web-Ones Functions
-String Functions
+
+String Functions :
 addMonth(<date>, <month>) - Add months to date
 
 addYear(<date>, <year>) - Add years to date
@@ -749,7 +864,8 @@ substr(<string>, <first>, <length?>) - Extract substring
 
 strtran(<string>, <oldString>, <newString>) - Replace substring
 
-Date Functions
+Date Functions :
+
 dateToSql(<date>) - Convert date to YYYYMMDD format
 
 dateToString(<date>) - Convert date to YYYY-MM-DD format
@@ -779,8 +895,9 @@ roundTo(<n>, <digits?>) - Round number to decimal places
 
 appendM(m, additionalObject) - Append data to m object
 
-appendM Example
-typescript
+appendM Example :
+
+
 const m = { 
   name: 'John',
   phone: '(312) 123-1234'
@@ -794,6 +911,52 @@ console.log(m) = {
   phone: '(312) 123-1234',
   zipCode: '23455'
 }
+
+
+📁 Project Structure NUXT 4
+text
+web-ones-technology/
+
+├── app/
+│    ├── assets/           # Static assets
+│    ├── classes/          # TypeScript base classes
+│    │   ├── Component.ts # Base component
+│    │   ├── Form.ts      # Base form
+│    │   └── ...          # Other classes
+│    ├── components/       # Vue components
+│    │   ├── form.vue     # Main form component
+│    │   ├── editText.vue # Text input
+│    │   └── ...          # Other components
+│    ├── composables/      # Composable functions
+│    │   ├── composables.ts
+│    │   └── ...          # Other composables
+│    ├── layouts/          # Layouts
+│    │   ├── layout.vue
+│    │   └── ...          # Other layouts
+│    ├── middleware/       # Middleware
+│    │   ├── middleware.ts
+│    │   └── ...          # Other middleware
+│    ├── pages/            # Application pages
+│    │   ├── SqlDictionary/  # Database dictionary
+│    │   │   ├── ThisForm.ts
+│    │   │   ├── dic_dat.ts
+│    │   │   └── index.vue
+│    │   ├── customers/      # Customer maintenance
+│    │   └── ...            # Other pages
+│    ├── plugins/          # Plugins
+│    │   ├── plugins.ts
+│    │   └── ...          # Other plugins
+│    ├── stores/           # Pinia stores
+│    │   ├── stores.ts
+│    │   └── ...          # Other stores
+├── server/           # Server files (nitro)
+│    ├── server.ts
+│    └── ...          # Other server files
+├── public/           # Public files
+│    └── ...          # Other public files
+└── app.vue           # Root component
+
+
 🛠️ Installation Guide
 Prerequisites
 VSCode recommended
@@ -806,6 +969,8 @@ Prettier Eslint
 Vue Official
 
 📋 How to Use This Framework
+
+
 1. Install SQL-Server Database and Backend
 Download backend from https://github.com/siavcom/VFP-NODE
 
@@ -888,7 +1053,9 @@ Format: <user>@<business nickname>
 <business nickname>: SQL database name
 
 📊 Beginning to Work
+
 Design SQL Tables (First Step)
+
 Create new SQL table:
 
 Go to SQL data dictionary in menu
@@ -957,7 +1124,7 @@ Fill data (except VFP data)
 Frontend
 Vue 3 SFC
 
-Nuxt 3
+Nuxt 4
 
 @nuxtjs/axios
 
@@ -986,9 +1153,10 @@ maska
 Backend
 https://github.com/siavcom/VFP-NODE
 
-SQL Server (MSSQL, Postgres soon)
+SQL Server (MSSQL, Postgres )
 
 🧠 Required Knowledge
+
 Object class programming
 
 TypeScript
@@ -1005,7 +1173,7 @@ Framework is SQL database based
 
 For installation/use support: siavcom@hotmail.com or Microsoft Teams
 
-For questions/suggestions: siavcom@hotmail.com
+For questions/suggestions/feature requests: siavcom@hotmail.com
 
 Requires initial SQL backup and backend server from https://github.com/siavcom/VFP-NODE
 
