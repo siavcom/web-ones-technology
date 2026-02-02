@@ -218,11 +218,12 @@ TypeScript components are written in TypeScript and exist within container compo
 
 Example Component
 
-// Clase: dic_dat
-// Descripcion: tipo de mantenimiento del diccionario de datos
-// Author: Fernando Cuadras Angulo
-// Creacion: Diciembre/2021
-// Ult.Mod: 6/Septiembre/2022
+```typescript
+// Clase: dic_dat  
+// Descripcion: tipo de mantenimiento del diccionario de datos  
+// Author: Fernando Cuadras Angulo  
+// Creacion: Diciembre/2021  
+// Ult.Mod: 6/Septiembre/2022  
 
 import { COMPONENT } from "@/classes/Component";
 
@@ -297,6 +298,7 @@ export class dic_dat extends COMPONENT {
         return !this.prop.ReadOnly;
     }
 }
+```
 
 📋 TypeScript Component Types
 Browse - Table display
@@ -549,7 +551,8 @@ pages/clientForm/component2.ts  // Component 2
 pages/clientForm/componentN.ts  // Component N
 
 index.vue (always has this content)
-vue
+
+```typescript
 <template>
   <VueForm v-bind:ThisForm="Form">
     <template #header />
@@ -557,14 +560,17 @@ vue
     <template #footer />
   </VueForm>
 </template>
-
 <script lang="ts" setup>
 import VueForm from "@/components/form.vue";
 import { ThisForm } from './ThisForm'
-const Form = reactive(new ThisForm) // no quitar el new
+const Form = reactive(new ThisForm) //no quitar el new 
 </script>
-ThisForm.ts
-typescript
+```
+
+and the principal form (ThisForm.ts) has this content:
+
+```typescript
+
 //////////////////////////////////////////////
 // Page: SqlDictionary
 // Clase base: ThisForm
@@ -627,7 +633,7 @@ export class ThisForm extends FORM {
     this.style.position = "center"
   }
 }
-
+```
 
 [!NOTE]
 To see complete Form example, look in pages/SqlDictionary
@@ -687,9 +693,6 @@ m = {
  deleteRow(<recno to delete>?: number)
   If recno to delete is omitted, delete the grid row positioned
 
-
-
-
 📋 Column Component
 Each column component has a label for the header and another TypeScript component (editText, imgButton, etc., except Form container).
 
@@ -708,6 +711,8 @@ For complete example, look in page directory. Each directory is a Vue View Page.
 Component containing one or more container blocks.
 
 Default Styles
+
+```typescript
 
 this.containerStyle.display = 'flex'
 this.containerStyle.flexWrap = 'wrap'
@@ -732,6 +737,7 @@ async open() {
 async close() {
   this.prop.Visible = false
 }
+```
 
 
 🗄️ SQL Database Class (VFP SQL Instructions)
@@ -907,7 +913,7 @@ appendM(m, additionalObject) - Append data to m object
 
 appendM Example :
 
-
+```typescript
 const m = { 
   name: 'John',
   phone: '(312) 123-1234'
@@ -921,7 +927,7 @@ console.log(m) = {
   phone: '(312) 123-1234',
   zipCode: '23455'
 }
-
+```
 
 📁 Project Structure NUXT 4
 
@@ -1021,7 +1027,8 @@ Windows (project on C:): C:\systems
 Place web-ones.zip in this directory and unzip. This creates web-ones directory with public folder containing Empresas.json.
 
 6. Empresas.json Configuration
-json
+
+```json
 "arcor": {
   "url": "http://<ip back-end server>:<ip port>/",
   "nem_emp": "<Company name>",
@@ -1029,6 +1036,8 @@ json
   "path": { "name": "Menu" },
   "logoEmp": "/logos/YourLogo.bmp"
 }
+```
+
 Configuration fields:
 
 "url": Backend server location (e.g., "http://192.168.154.1:38080/")
@@ -1050,16 +1059,17 @@ Editable fields:
 Logos are in logos directory within web-ones directory.
 
 7. Start Development
-bash
-npm run dev
-Access at: http://localhost:3000
+bash  
+npm run dev  
+Access at: http://localhost:3000  
 
 🔑 Login
-Format: <user>@<business nickname>
 
-<user>: Personal login
+Format: <user>@<business nickname> 
 
-<business nickname>: SQL database name
+<user>: Personal login 
+
+<business nickname>: SQL database name 
 
 📊 Beginning to Work
 
@@ -1129,35 +1139,41 @@ Choose system
 
 Fill data (except VFP data)
 
-📦 Technologies Used
-Frontend
-Vue 3 SFC
+📦 Technologies Used (The libraries are intended to be Open Source)
 
-Nuxt 4
+Frontend:
+Vue 3 SFC  
+Nuxt 4  
+zip.js,  
+alasql,  
+axios,  
+file-saver,  
+pinia,  
+vue-sweetalert2,  
+vue3-table-lite,  
+maska,  
+xlsx,  
+whatsapp-web.js 
 
-@nuxtjs/axios
+Backend:
+NODE/Express,  
+sequelize,  
+Socket.IO,  
+Jasper reports library,  
+axios,  
+body-parser,  
+cors,  
+crypto-js,  
+he,  
+npm,  
+pg,  
+pg-hstore,  
+sequelize,  
+socket.io,  
+tedious,  
+uuid,  
+xml2json  
 
-@pinia/nuxt
-
-pinia-plugin-persistedstate
-
-@zip.js/zip.js
-
-alasql
-
-buffer
-
-file-saver
-
-socket.io-client
-
-vue-sweetalert2
-
-xlsx
-
-@nuxt/image
-
-maska
 
 Backend
 https://github.com/siavcom/VFP-NODE
@@ -1180,20 +1196,23 @@ SQL Server skills (MSSQL or PostgreSQL)
 
 Framework is SQL database based
 
-For installation/use support: siavcom@hotmail.com or Microsoft Teams
+For installation/use support: siavcom@hotmail.com by mail or Microsoft Teams
 
-For questions/suggestions/feature requests: siavcom@hotmail.com
+For questions/suggestions/feature requests: siavcom@hotmail.com by mail or Microsoft Teams
 
-Requires initial SQL backup and backend server from https://github.com/siavcom/VFP-NODE
+Requires initial SQL backup and backend server from https://github.com/siavcom/VFP-NODE  
 
-Ideal for VFP, Clipper, dBase III/IV programmers
+Ideal for VFP, Clipper, dBase III/IV programmers  
 
-Developed on Linux (Ubuntu 22.04, 24.04) and Windows 10
+Developed on Linux (Ubuntu 22.04, 24.04) and Windows 10  
 
-Node requirements: See Nuxt documentation https://nuxt.com/docs/getting-started/installation
+Node requirements: See Nuxt documentation https://nuxt.com/docs/getting-started/installation  
 
 👨‍💻 About
-I'm an experienced Fox programmer (since 1981) with extensive experience designing and programming using VFP, MSSQL, and PostgreSQL databases.
+I'm an experienced Fox programmer (since 1981) with extensive experience designing and programming using VFP, MSSQL, and PostgreSQL databases.  
+I'm old but I'm not lazy.  
+I am young in my heart and in my thinking  
+I'm a human being.  
 
 Author
 El Fer Blocks - Principal design, programming, and project director
@@ -1208,11 +1227,11 @@ Lupita Sotelo - Reports and SQL design
 Raul Castro - HTML and CSS design
 
 Resources
-Website: http://www.web-ones.technology.xyz (soon)
+Website: http://www.web-ones.technology.xyz
 
 Documentation: https://deepwiki.com/siavcom/web-ones-technology
 
-My ERP: http://siavcom.com.mx
+My ERP: http://siavcom.com.mx (soon in this year using this technology)
 
 New ERP using web-ones-technology: http://killo-technology.xyz (soon)
 
