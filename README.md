@@ -64,54 +64,35 @@ The framework uses a main form (like ThisForm in VFP) made only in TypeScript, w
 
 
 
-├── Form/
-
-│    ├── component1/          
+├── Form/  
+│    ├── component1/            
 │    ├── component2/          
 │    ├── component3/          
 │    ├── component4/          
-│    │   ├── when()
-
-│    │   ├── inti()
-
-│    │   ├── valid()
-
-│    │   ├── click()
-
-│    │   ├── onChangeValue()
-
-│    │   ├── afterMounted()
-
-│    │   ├── recnoChange()
-
-│    │   └── ...          # Other Methods
-
-│    ├── component....../ # Other Components      
+│    │   ├── when()  
+│    │   ├── inti()  
+│    │   ├── valid()  
+│    │   ├── click()  
+│    │   ├── onChangeValue()  
+│    │   ├── afterMounted()  
+│    │   ├── recnoChange()  
+│    │   └── ...          # Other Methods  
+│    ├── component....../ # Other Components     
 
 Some components contain other components:
 
-├── Container/
-
-│    ├── component1/           # Static assets
-
-│    ├── component2/           # Static assets
-
-│    ├── component3/           # Static assets
-
-│    ├── component4/          # TypeScript base classes
+├── Container/  
+│    ├── component1/  
+│    ├── component2/  
+│    ├── component3/  
+│    ├── component4/  
 
 
 ├── grid/
-
-│    ├── column1/           # Static assets
-
-│    ├── column2/           # Static assets
-
-│    ├── column3/           # Static assets
-
-│    ├── column4/          # TypeScript base classes
-
-
+│    ├── column1/  
+│    ├── column2/  
+│    ├── column3/  
+│    ├── column4/  
 
 
 text
@@ -187,7 +168,7 @@ recnoChange() - Called when recno changes
 
 valid() - Called when component loses focus (returns true/false)
 
-when() - Called when component gets focus
+when() - Called when component gets focus (returns true/false. Is false the componet is ReadOnly )
 
 🔧 Setting Properties and Styles
 Property References
@@ -205,7 +186,6 @@ this.Form.style.width = '800px'
 // Calling methods
 this.Form.component4.click()
 this.Parent.component1.component2.click()
-
 
 
 🖥️ Web Components (Vue/Nuxt Components)
@@ -346,204 +326,206 @@ Base Properties
 typescript
 this.prop.<Name of property> = <Value>
 
- BaseClass: <webComponent>
- Type: string
- Values: 'Form', 'editText', 'textLabel', 'comboBox', 'checkBox', 'optionGroup', 'grid', 'base64', 'container'
+ BaseClass: <webComponent>  
+ Type: string  
+ Values: 'Form', 'editText', 'textLabel', 'comboBox', 'checkBox', 'optionGroup', 'grid', 'base64', 'container' 
 
- Caption: <Title of component> || <Text label showing before input>
- Type: string
+ Caption: <Title of component> || <Text label showing before input>  
+ Type: string  
 
- Disabled: <true when component is disabled>
- Type: boolean
+ Disabled: <true when component is disabled>  
+ Type: boolean  
 
- ErrorMessage: <Error message if component is not valid>
- Type: string
+ ErrorMessage: <Error message if component is not valid>  
+ Type: string  
 
- First: <true. Component that receives focus when new record is inserted>
- Type: boolean
+ First: <true. Component that receives focus when new record is inserted>  
+ Type: boolean  
 
- Format: <> (future version)
- Type: string
+ Focus: <When set to true, this component takes focus>  
+ Type: boolean  
 
- Image: <Component background image path>
- Type: string
+ Format: <> (future version)  
+ Type: string  
 
- InputMask: <> (future version)
- Type: string
+ Image: <Component background image path>  
+ Type: string  
 
- Max: <Maximum value for number>
- Type: number
+ InputMask: <> (future version)  
+ Type: string  
 
- MaxLength: <Maximum character length>
- Type: number
+Map: <Show structure map of this component>  
+  Type: string  
+  Example: "this.Form.componentName"  
 
- Min: <Minimum value for number>
- Type: number
+ Max: <Maximum value for number>  
+ Type: number  
 
- Name: <Name of component>
- Type: string
+ MaxLength: <Maximum character length>  
+ Type: number  
 
- Placeholder: <label inside input blurred>
- Type: string
+ Min: <Minimum value for number>  
+ Type: number  
 
- Position: <position in a form>
- Type: string
- Values: 'header', 'main', 'footer'
+ Name: <Name of component>  
+ Type: string  
 
-  ReadOnly: <true when component is read only>
-  Type: boolean
+ Placeholder: <label inside input blurred>  
+ Type: string  
 
-  TabIndex: <Component tab index in form component>
-  Type: number
+ Position: <position in a form>  
+ Type: string  
+ Values: 'header', 'main', 'footer' 
 
-  ToolTipText: <Component tool tip text>
-  Type: string
+  ReadOnly: <true when component is read only>  
+  Type: boolean  
 
-  Type: <Data types when BaseClass="editText">
-  Type: string
-  Values: 'number', 'text', 'date', 'dateTime', 'spinner', 'checkBox', 'json'
+ Status: <Status of component>  
+  Type: string  
+  Values: P=Process, A=Active, I=Initialization  
 
-  Valid: <true when component is valid>
-  Type: boolean
+  TabIndex: <Component tab index in form component>  
+  Type: number  
 
-  Value: <Value of component>
-  Type: string, date, number, boolean, json
+  ToolTipText: <Component tool tip text>  
+  Type: string  
 
-  Visible: <true when component is visible>
-  Type: boolean
+  Type: <Data input type when BaseClass="editText">  
+  Type: string  
+  Values: 'number', 'text', 'date', 'dateTime', 'spinner', 'checkBox', 'json'  
 
+  Valid: <true when component is valid>  
+  Type: boolean  
+
+  Value: <Value of component>  
+  Type: string, date, number, boolean, json  
+
+  Visible: <true when component is visible>  
+  Type: boolean  
 
 Database Component Properties
 
-  ControlSource: <Name of SQL field>
-  Type: string
+  ControlSource: <Name of SQL field>  
+  Type: string  
   Example value: 'localTable.field'
 
-  RecordSource: <local or remote table name>
-  Type: string
+  RecordSource: <local or remote table name>  
+  Type: string  
   Example value: 'viewTableName'
 
-  SqlUpdate: <True when component loses focus, update field component. When false, update field component using tableUpdate method>
-  Type: boolean
+  SqlUpdate: <True when component loses focus, update field component. When false, update field component using tableUpdate method>  
+  Type: boolean  
+
   Behavior Properties
-  Capture: <When capture is true, can't lose focus until Validate or esc>
-  Type: boolean
+  Capture: <When capture is true, can't lose focus until Validate or esc>  
+  Type: boolean  
 
-  First: <In Form or grid component it has to be true the first capture component> false
-  Type: boolean
 
-  Focus: <When set to true, this component takes focus>
-  Type: boolean
+  Recno: <Record Number for localSql field value>  
+  Type: number  
 
-  Map: <Show structure map of this component>
-  Type: string
-  Example: "this.Form.componentName"
-
-  Status: <Status of component>
-  Type: string
-  Values: P=Process, A=Active, I=Initialization
-
-  Valid: <True when component value is good>
-  Type: boolean
-
-  Recno: <Record Number for localSql field value>
+  
 Numeric Component Properties
-typescript
-  Currency: <Currency to display>
-  Type: string
-  Example: 'USD', 'EUR', 'MXN'
 
-  CurrencyDisplay: 'code' // To use ISO currency code
-  Type: string
+typescript  
+  Currency: <Currency to display>  
+  Type: string  
+  Example: 'USD', 'EUR', 'MXN'  
 
-  Decimals: <Decimals to show and capture>
-  Type: number
+  CurrencyDisplay: 'code' // To use ISO currency code  
+  Type: string  
 
-  Max: <Maximum value in this component>
-  Type: number
+  Decimals: <Decimals to show and capture>  
+  Type: number  
 
-  Min: <Minimum value in this component>
-  Type: number
+  Max: <Maximum value in this component>  
+  Type: number  
 
-  Step: <When spinner component number step>
-  Type: number
-ComboBox Properties
-typescript
-  Style: <Type of combo box>
-  Type: number
-  Values: 0=DropDown, 2=DropDown List
+  Min: <Minimum value in this component>  
+  Type: number  
 
-  BoundColumn: <The value is attached to the column>
-  Type: number
+  Step: <When spinner component number step>  
+  Type: number  
 
-  ColumnCount: <Total column numbers in comboBox>
-  Type: number
+ComboBox Properties  
 
-  ColumnWidths: <Width of each column>
-  Type: string
-  Example: '80%', '20%'
+typescript  
+  Style: <Type of combo box>  
+  Type: number  
+  Values: 0=DropDown, 2=DropDown List  
 
-  MultiSelect: <Can multiple select>
-  Type: boolean
+  BoundColumn: <The value is attached to the column>  
+  Type: number  
 
-  List: <List array result when MultiSelect is true>
-  Type: array
+  ColumnCount: <Total column numbers in comboBox>  
+  Type: number  
 
-  RowSource: <Sql query or table.field>
-  Type: string
+  ColumnWidths: <Width of each column>  
+  Type: string  
+  Example: '80%', '20%'  
+
+  MultiSelect: <Can multiple select>  
+  Type: boolean  
+
+  List: <List array result when MultiSelect is true>  
+  Type: array  
+
+  RowSource: <Sql query or table.field>  
+  Type: string  
   Examples:
-    - when RowSourceType=2: 'tablename.field1,field2'
-    - when RowSourceType=3 or 4: 'SELECT column1,column2 FROM tablefield'
+    - when RowSourceType=2: 'tablename.field1,field2'  
+    - when RowSourceType=3 or 4: 'SELECT column1,column2 FROM tablefield'  
 
-  RowSourceType: <How to fill comboBox>
-  Type: number
-  Values:
-    1-Value
-      Example: RowSourceType=1, ColumnCount=2
-      RowSource="House,H,Building,B,Department,D"
+  RowSourceType: <How to fill comboBox>  
+  Type: number  
+  Values:  
+    1-Value   
+      Example: RowSourceType=1, ColumnCount=2  
+      RowSource="House,H,Building,B,Department,D"  
  
-    2-Alias
-      Example: RowSourceType=2, ColumnCount=3
-      RowSource="tablename.House,Building,Department"
+    2-Alias  
+      Example: RowSourceType=2, ColumnCount=3  
+      RowSource="tablename.House,Building,Department"  
  
-    3-Query SQL Server
-      Example: RowSourceType=3, ColumnCount=2
+    3-Query SQL Server  
+      Example: RowSourceType=3, ColumnCount=2  
       RowSource='SELECT column1,column2 FROM servertable'
  
-    4-Local SQL
-      Example: RowSourceType=4, ColumnCount=2
-      RowSource='SELECT column1,column2 FROM localtable'
-      Note: You already have a local table SQL
+    4-Local SQL  
+      Example: RowSourceType=4, ColumnCount=2  
+      RowSource='SELECT column1,column2 FROM localtable'  
+      Note: You already have a local table SQL  
  
-    5-Array
-      Example: RowSourceType=5, ColumnCount=2
-     RowSource=[['column1','column2'],['value1','value2']]
+    5-Array  
+      Example: RowSourceType=5, ColumnCount=2  
+      RowSource=[['column1','column2'],['value1','value2']]  
 
 
 🎨 Style Properties
+
 All Components
 
-this.style.<name of property> = <Value>
+this.style.<name of property> = <Value>  
 
-Input Component
-typescript
-this.inputStyle.<name of property> = <Value>
-Caption Component
+Input Component  
 
-Caption Component
-this.captionStyle.<name of property> = <Value>
-Example Styles
-typescript
-background: "white"
-color: "#b94295"
-width: "64px"
-height: "auto"
-maxHeight: '13px'
-maxWidth: 'auto'
-fontFamily: "Arial"
-fontSize: "13px"
-textAlign: "left"
-// ... several CSS style properties
+this.inputStyle.<name of property> = <Value>  
+Caption Component  
+
+Caption Component  
+this.captionStyle.<name of property> = <Value>  
+Example Styles  
+typescript  
+background: "white"  
+color: "#b94295"  
+width: "64px"  
+height: "auto"  
+maxHeight: '13px'  
+maxWidth: 'auto'  
+fontFamily: "Arial"  
+fontSize: "13px"  
+textAlign: "left"  
+// ... several CSS style properties  
 
 📄 Form (Main Web Form Container)
 The principal main form (SPA). A complete system is made of several Forms, each located in a page directory of the NUXT structure.
@@ -942,45 +924,47 @@ console.log(m) = {
 
 
 📁 Project Structure NUXT 4
-web-ones-technology/
-├── app/
-│    ├── assets/           # Static assets
-│    ├── classes/          # TypeScript base classes
-│    │   ├── Component.ts # Base component
-│    │   ├── Form.ts      # Base form
-│    │   └── ...          # Other classes
-│    ├── components/       # Vue components
-│    │   ├── form.vue     # Main form component
-│    │   ├── editText.vue # Text input
+
+
+web-ones-technology/  
+├── app/  
+│    ├── assets/           # Static assets  
+│    ├── classes/          # TypeScript base classes  
+│    │   ├── Component.ts # Base component  
+│    │   ├── Form.ts      # Base form  
+│    │   └── ...          # Other classes  
+│    ├── components/       # Vue components  
+│    │   ├── form.vue     # Main form component  
+│    │   ├── editText.vue # Text input  
 │    │   └── ...          # Other components
 │    ├── composables/      # Composable functions
-│    │   ├── composables.ts
-│    │   └── ...          # Other composables
-│    ├── layouts/          # Layouts
-│    │   ├── layout.vue
-│    │   └── ...          # Other layouts
-│    ├── middleware/       # Middleware
-│    │   ├── middleware.ts
-│    │   └── ...          # Other middleware
-│    ├── pages/            # Application pages
-│    │   ├── SqlDictionary/  # Database dictionary
-│    │   │   ├── ThisForm.ts
-│    │   │   ├── dic_dat.ts
-│    │   │   └── index.vue
-│    │   ├── customers/      # Customer maintenance
-│    │   └── ...            # Other pages
+│    │   ├── composables.ts  
+│    │   └── ...          # Other composables  
+│    ├── layouts/          # Layouts  
+│    │   ├── layout.vue  
+│    │   └── ...          # Other layouts  
+│    ├── middleware/       # Middleware  
+│    │   ├── middleware.ts  
+│    │   └── ...          # Other middleware  
+│    ├── pages/            # Application pages  
+│    │   ├── SqlDictionary/  # Database dictionary  
+│    │   │   ├── ThisForm.ts  
+│    │   │   ├── dic_dat.ts  
+│    │   │   └── index.vue  
+│    │   ├── customers/      # Customer maintenance  
+│    │   └── ...            # Other pages  
 │    ├── plugins/          # Plugins
-│    │   ├── plugins.ts
+│    │   ├── plugins.ts  
 │    │   └── ...          # Other plugins
-│    ├── stores/           # Pinia stores
-│    │   ├── stores.ts
-│    │   └── ...          # Other stores
-├── server/           # Server files (nitro)
-│    ├── server.ts
-│    └── ...          # Other server files
-├── public/           # Public files
-│    └── ...          # Other public files
-└── app.vue           # Root component
+│    ├── stores/           # Pinia stores  
+│    │   ├── stores.ts  
+│    │   └── ...          # Other stores  
+├── server/           # Server files (nitro)  
+│    ├── server.ts  
+│    └── ...          # Other server files  
+├── public/           # Public files  
+│    └── ...          # Other public files  
+└── app.vue           # Root component  
 
 🛠️ Installation Guide
 Prerequisites
