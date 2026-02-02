@@ -942,7 +942,7 @@ web-ones-technology/
 │    ├── components/       # Vue components  
 │    │   ├── form.vue     # Main form component  
 │    │   ├── editText.vue # Text input  
-│    │   └── ...          # Other components
+│    │   └── ...          # Other components  
 │    ├── composables/      # Composable functions
 │    │   ├── composables.ts  
 │    │   └── ...          # Other composables  
@@ -956,21 +956,29 @@ web-ones-technology/
 │    │   ├── SqlDictionary/  # Database dictionary  
 │    │   │   ├── ThisForm.ts  
 │    │   │   ├── dic_dat.ts  
+│    │   │   ├── ...  
 │    │   │   └── index.vue  
 │    │   ├── customers/      # Customer maintenance  
 │    │   └── ...            # Other pages  
 │    ├── plugins/          # Plugins
 │    │   ├── plugins.ts  
-│    │   └── ...          # Other plugins
+│    │   └── ...          # Other plugins  
 │    ├── stores/           # Pinia stores  
 │    │   ├── stores.ts  
 │    │   └── ...          # Other stores  
+│    ├── app.vue/          #  Main vue page  
+│    └── error.vue/        # Error vue page  
 ├── server/           # Server files (nitro)  
-│    ├── server.ts  
-│    └── ...          # Other server files  
+│    ├── api/          # API files  
+│    │   ├── server.ts # server calls
+│    │   └── ...          # Other server calls  
+│    └── plugins/          # Other server files  
 ├── public/           # Public files  
+│    ├── icons/          # Icons  
 │    └── ...          # Other public files  
-└── app.vue           # Root component  
+├── nuxt.config.ts/           # Configuration files  
+│   
+   
 
 🛠️ Installation Guide
 Prerequisites
