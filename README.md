@@ -484,6 +484,8 @@ typescript
 
   RowSourceType: <How to fill comboBox>  
   Type: number  
+
+  ´´´text
   Values:  
     1-Value   
       Example: RowSourceType=1, ColumnCount=2  
@@ -505,6 +507,7 @@ typescript
     5-Array  
       Example: RowSourceType=5, ColumnCount=2  
       RowSource=[['column1','column2'],['value1','value2']]  
+```
 
 
 🎨 Style Properties
@@ -520,8 +523,9 @@ Caption Component
 
 Caption Component  
 this.captionStyle.<name of property> = <Value>  
-Example Styles  
-typescript  
+
+Example Styles  :
+
 background: "white"  
 color: "#b94295"  
 width: "64px"  
@@ -1254,10 +1258,12 @@ position
 
 estatus
 
-🚀 Development Commands
-bash
-npx nuxi dev --port=3000
-npm run dev
+🚀 Development Commands  
+bash  
+npx nuxi dev --port=3000  
+npm run dev  
+
+
 💡 Tips
 [!TIP]
 Helpful advice for doing things better or more easily.
