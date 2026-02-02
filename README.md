@@ -1,12 +1,12 @@
 Web-Ones Technology: Complete SQL Web Development Platform
 Migrate Visual FoxPro Applications to Modern Web with TypeScript
 
-https://deepwiki.com/badge.svg
 
+Technical documentation : https://deepwiki.com/badge.svg
 
 
 🎯 Overview
-Web-Ones is a comprehensive framework for building SQL-based web applications using TypeScript (class-based) without requiring expertise in HTML, CSS, or Vue. It enables developers to migrate decades of Visual FoxPro (VFP) applications to modern web technology while preserving the familiar VFP programming paradigm.
+Web-Ones is a comprehensive framework for building SQL-based web applications using TypeScript (class-based) without requiring expertise in HTML, CSS, or Vue. It enables developers to migrate decades of Visual FoxPro (VFP),cliper , delphi and other Visual programing languages to modern web technology while preserving the familiar VFP programming paradigm.
 
 ✨ Why Web-Ones?
 For VFP Developers
@@ -31,12 +31,14 @@ Menu maintenance system
 
 Visual components: EditBox, ComboBox, Grid, Container, etc.
 
+
 Backend (Node.js + Express)
 RESTful web services via VFP-NODE
 
 Database connectivity and business logic
 
 Real-time communication support
+
 
 Database Layer
 
@@ -172,7 +174,8 @@ when() - Called when component gets focus (returns true/false. Is false the comp
 
 🔧 Setting Properties and Styles
 Property References
-typescript
+
+```typescript
 // Properties
 this.Form.component1.prop.Type = 'editText'
 this.Form.component2.prop.Value = 'Customer name 1'
@@ -186,6 +189,7 @@ this.Form.style.width = '800px'
 // Calling methods
 this.Form.component4.click()
 this.Parent.component1.component2.click()
+```
 
 
 🖥️ Web Components (Vue/Nuxt Components)
