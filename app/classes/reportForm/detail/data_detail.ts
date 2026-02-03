@@ -1,12 +1,11 @@
-//////////////////////////////////////////////
-// This Form was generated automatically by web-ones-technology
+/***************************************************
 // @baseClass  : Container
 // @class : data_detail
-// Description : Contenedor de datos de Mail y WhatsApp para enviar documentos
+// @Description : Contenedor de datos de Mail y WhatsApp para enviar documentos
 // @author: El Fer Blocks (Fernando Cuadras)
-// Creation : 2025-12-15
-// Update Date  : 2026-01-05
-/////////////////////////////////////////////
+// @Creation : 2025-12-15
+// @Update Date  : 2026-02-03
+****************************************************/
 
 /////////////////// Server WebSocket /////////////////////
 
@@ -50,6 +49,7 @@ import { EMAIL } from "./email";
 import { Bt_send } from "./Bt_send";
 import { Bt_close } from "./Bt_close";
 import { DISPLAYQR } from "./displayQr";
+import { attachFiles } from "../attachFiles";
 
 export class data_detail extends CONTAINER {
   transport = ''
@@ -228,39 +228,43 @@ export class data_detail extends CONTAINER {
       this.Form.data_detail.email.prop.Visible = true;
     }
 
-    const comedoc = await goto(0, 'vi_cap_comedoc');
-    const Json = comedoc.obs_unn && comedoc.obs_unn.trim().length > 10 ? comedoc.obs_unn : '';
-    let mailJson = {};
-    try {
-      mailJson = JSON.parse(Json);
-    } catch (error) {
-      mailJson = {};
+    if (View.vi_cap_comedoc) {
+      const comedoc = await goto(0, 'vi_cap_comedoc');
+      const Json = comedoc.obs_unn && comedoc.obs_unn.trim().length > 10 ? comedoc.obs_unn : '';
+      let mailJson = {};
+      try {
+        mailJson = JSON.parse(Json);
+      } catch (error) {
+        mailJson = {};
+      }
+
+
+      //this.Form.data_detail.block[1].prop.Visible = true
+      //this.Form.data_detail.block[2].prop.Visible = true
+      let tipo = ''
+      // Ingreso, Egreso o Traslado
+      if (comedoc.tip_cfd == 'I' || comedoc.tip_cfd == 'E' || comedoc.tip_cfd == 'T') {
+        switch (true) {
+          case comedoc.tip_cfd == 'I' || comedoc.tip_cfd == 'E':
+            tipo = 'CFDI'
+            break
+          case comedoc.tip_cfd == 'I':
+            tipo = 'Complemento de pago'
+            break
+          case comedoc.tip_cfd == 'T':
+            tipo = 'Carta porte/Traslado'
+            break
+        }
+
+      }
+      this.Form.data_detail.subject.prop.Value = `Envio de ${tipo} ${comedoc.tdo_tdo} número ${comedoc.ndo_doc}  de ${Public.value.nem_pge.trim()}. Ref: ${comedoc.ref_doc.trim()}  `;
+      let messageSend = mailJson.text ? mailJson.text : this.Form.data_detail.subject.prop.Value
+      messageSend = messageSend.replace('<<des_tdo>>', comedoc.des_tdo).replace('<<ndo_doc>>', comedoc.ndo_doc.toString());
+      this.Form.data_detail.messageSend.prop.Value = messageSend;
+      this.Form.data_detail.email.prop.Value = this.Form.data_detail.email.prop.Value > ' ' ? this.Form.data_detail.email.prop.Value : comedoc.ema_nom;
+      this.Form.data_detail.phone.prop.Value = this.Form.data_detail.phone.prop.Value > ' ' ? this.Form.data_detail.phone.prop.Value : comedoc.tco_nom;
+
     }
-
-
-    //this.Form.data_detail.block[1].prop.Visible = true
-    //this.Form.data_detail.block[2].prop.Visible = true
-    let tipo = ''
-
-    switch (true) {
-      case comedoc.tip_cfd == 'I' || comedoc.tip_cfd == 'E':
-        tipo = 'CFDI'
-        break
-      case comedoc.tip_cfd == 'I':
-        tipo = 'Complemento de pago'
-        break
-      case comedoc.tip_cfd == 'T':
-        tipo = 'Carta porte/Traslado'
-        break
-    }
-
-    this.Form.data_detail.subject.prop.Value = `Envio de ${tipo} ${comedoc.tdo_tdo} número ${comedoc.ndo_doc}  de ${Public.value.nem_pge.trim()}. Ref: ${comedoc.ref_doc.trim()}  `;
-    let messageSend = mailJson.text ? mailJson.text : this.Form.data_detail.subject.prop.Value
-    messageSend = messageSend.replace('<<des_tdo>>', comedoc.des_tdo).replace('<<ndo_doc>>', comedoc.ndo_doc.toString());
-    this.Form.data_detail.messageSend.prop.Value = messageSend;
-    this.Form.data_detail.email.prop.Value = this.Form.data_detail.email.prop.Value > ' ' ? this.Form.data_detail.email.prop.Value : comedoc.ema_nom;
-    this.Form.data_detail.phone.prop.Value = this.Form.data_detail.phone.prop.Value > ' ' ? this.Form.data_detail.phone.prop.Value : comedoc.tco_nom;
-
     //const mailFrom = mailJson.from ? mailJson.from : ''
 
     this.Form.block[this.Form.data_detailBlock].prop.Visible = true; // Mostrar el bloque de entrada de datos
@@ -307,7 +311,9 @@ export class data_detail extends CONTAINER {
 
     this.Form.data_detail.close()
 
-    const attachments = await this.Form.attachFiles()
+    console.log('data_detail sendData this=', this)
+    //console.log('data_detail sendData attachments=', attachFiles)
+    const attachments = await attachFiles(this.Form)
     let message = {}
 
     if (transport.value == 'whatsapp') {
@@ -347,21 +353,24 @@ export class data_detail extends CONTAINER {
     }
 
     if (transport.value == 'mail') {
-      const comedoc = goto(0, 'comedoc')
+      /*
+      if (View.vi_cap_comedoc) {
+        const comedoc = goto(0, 'comedoc')
 
-      const Json = comedoc.obs_unn && comedoc.obs_unn.trim().length > 10 ? comedoc.obs_unn : '';
+        const Json = comedoc.obs_unn && comedoc.obs_unn.trim().length > 10 ? comedoc.obs_unn : '';
 
-      let mailJson = {};
-      let mailFrom = '';
+        let mailJson = {};
+        let mailFrom = '';
 
-      try {
-        mailJson = JSON.parse(Json);
-        // mailFrom = mailJson.from ? mailJson.from : '';
-      } catch (error) {
-        mailJson = {};
-        // MessageBox('Error obteniendo datos del del mail ')
+        try {
+          mailJson = JSON.parse(Json);
+          // mailFrom = mailJson.from ? mailJson.from : '';
+        } catch (error) {
+          mailJson = {};
+          // MessageBox('Error obteniendo datos del del mail ')
+        }
       }
-
+      */
       message = {
         transport: 'mail',
         //  from: mailFrom,
@@ -386,7 +395,5 @@ export class data_detail extends CONTAINER {
       this.unWatch();
     }
   }
-
-
 
 }

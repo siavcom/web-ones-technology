@@ -15,7 +15,7 @@ export class Bt_email extends IMGBUTTON {
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/email.svg"        //print-color3.svg";
     this.prop.Visible = false;
-    this.prop.Caption = 'Envia documento ';
+    this.prop.Caption = 'Enviar email  ';
     this.prop.ToolTipText = 'Enviar documento por correo electrónico';
     this.style.width = '84px'
 
@@ -23,12 +23,6 @@ export class Bt_email extends IMGBUTTON {
   override async click() {
     //this.Form.data_detail.open('mail')
     this.Form.data_detail.open('mail')
-
-
-
   }   // Fin Procedure
 
 }
-
-
-

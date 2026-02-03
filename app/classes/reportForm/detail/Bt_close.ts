@@ -32,6 +32,8 @@ export class Bt_close extends IMGBUTTON {
 
   override async click() {
     this.Form.data_detail.close();
+    this.Form.bt_whatsApp.prop.Visible = true
+    this.Form.bt_email.prop.Visible = true
   }
 
 }

@@ -18,8 +18,8 @@ export class Bt_whatsApp extends IMGBUTTON {
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/WhatsAppColor.svg"        //print-color3.svg";
     this.prop.Visible = false;
-    this.prop.Caption = 'Envia docuemnto'
-    this.prop.ToolTipText = 'Enviar documento por WhatsApp';
+    this.prop.Caption = 'Enviar whatsapp'
+    this.prop.ToolTipText = 'Enviar por WhatsApp';
     this.style.width = '84px'
 
 

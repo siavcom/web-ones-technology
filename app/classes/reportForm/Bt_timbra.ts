@@ -14,8 +14,10 @@ export class Bt_timbra extends IMGBUTTON {
 
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/bell.svg"        //print-color3.svg";
-
     this.prop.Caption = 'Timbra CFDI'
+    this.prop.Visible = false
+    this.prop.ToolTipText = 'Timbra CFDI'
+
     this.style.width = '84px'
 
   } // Fin constructor

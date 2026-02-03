@@ -3657,18 +3657,27 @@ export const jasperReport = async (query: string, for_rep: string, dataView?: st
     };
     //    console.log("Db JasperReport Llamada", dat_rep);
     // display contruyendo reporte
+    Processing()
+
+
 
     try {
         const response = await axios.post(This.value.session.url + "sql", dat_rep, {
             responseType: "arraybuffer",
         });
         //      console.log;
+        closeProcessing()
+
         return response.data;
     } catch (error) {
         errorAlert("Report Server Error  :" + error.response.statusText);
         //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
-        return null;
     }
+
+    closeProcessing()
+    return null;
+
+
 
     //   const buffer=await axiosCall(dat_rep)
     //   return buffer

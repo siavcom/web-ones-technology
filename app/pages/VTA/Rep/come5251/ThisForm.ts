@@ -193,7 +193,6 @@ export class ThisForm extends reportVtas {
               this.bt_email.click()
             return
 
-            break;
           case nom_fim == "WHATSAPP":
             if (this.Form.report.displayPdf.prop.Visible)
               this.bt_whatsApp.click()
@@ -310,67 +309,6 @@ export class ThisForm extends reportVtas {
 
     }  // fin de politicas de impresion
     window.history.back()
-
-  }
-
-
-  async attachFiles() {
-    //this.Form.report.displayPdf.prop.Value.length <= 10
-    if (!this.Form.report.displayPdf.prop.Visible)
-      return
-    const m = {
-      tdo_tdo: this.Form.op_tdo_tdo.prop.Value,
-      ndo_doc: this.Form.ndo_doc.prop.Value
-    }
-
-    const attachments = []
-
-    //const nodeBuffer = Buffer.from(this.Form.report.displayPdf.prop.Source);
-    // Convert the Buffer to a Base64 string
-    const nodeBuffer = this.Form.report.displayPdf.prop.Source
-
-
-    const bytes = new Uint8Array(nodeBuffer);
-    // Convert the Uint8Array to a binary string
-    const binaryString = String.fromCharCode(...bytes);
-    // Encode the binary string to Base64
-    const base64String = btoa(binaryString);
-
-    attachments.push({
-      fileName: `cfdi_${m.tdo_tdo}_${m.ndo_doc}.pdf`,
-      type: 'pdf',
-      fileB64: true,
-      file: base64String
-    })
-
-    //console.log('attachFiles=', attachments);
-
-    const data = await localAlaSql(`select cop_nom,cod_nom,tdo_tdo,ndo_doc from vi_cap_comedoc `)
-    if (data.length > 0) {
-      m.cop_nom = data[0].cop_nom;
-      m.cod_nom = data[0].cod_nom;
-      m.tdo_tdo = data[0].tdo_tdo;
-      m.ndo_doc = data[0].ndo_doc;
-
-
-
-      const res = await SQLExec(`select cfd_xml from vi_cap_comexml where tdo_tdo='${m.tdo_tdo}' 
-          and ndo_doc=${m.ndo_doc}`)
-
-      if (res.length > 0 && res[0].cfd_xml.length > 10) {
-        attachments.push({
-          fileName: `cfdi_${m.tdo_tdo}_${m.ndo_doc}.xml`,
-          type: 'xml',
-          fileB64: false,
-          file: res[0].cfd_xml
-        })
-
-        //  console.log('attachFiles=', attachments);
-      }
-
-    }
-
-    return attachments
 
   }
 

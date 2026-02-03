@@ -1,9 +1,10 @@
-//////////////////////////////////////////////
-// Clase : Forma para generar reportes
+/****************************************
+// @Clase : Forma para generar reportes
 // @author: Fernando Cuadras Angulo
-// Creacion : Marzo/2023
-// Ult.Mod  : 25/Mayo/2023
-/////////////////////////////////////////////
+// @Creation : Marzo/2023
+// @Update Date  : 25/Mayo/2023
+****************************************/
+
 //import { COMPONENT } from './Component'
 import { FORM } from "@/classes/Form";
 import { queryPri } from "@/classes/queryGen/queryPri";
@@ -32,6 +33,7 @@ import { has_fec } from "./has_fec";
 import { des_dat } from './des_dat'
 import { has_dat } from './has_dat'
 import { tip_con } from './tip_con'
+
 //import { cam_dat } from './cam_dat'
 
 export class reportForm extends FORM {
@@ -64,7 +66,6 @@ export class reportForm extends FORM {
 
   public des_fec = new des_fec();
   public has_fec = new has_fec();
-
 
   tab_ord: string = ""; // tabla para indicar el orden del reporte
   vis_rep: string = ""; // nombre de la vista sql a utilizar en el reporte
@@ -590,6 +591,9 @@ export class reportForm extends FORM {
     // await this.var_ord.interactiveChange()
 
   }
+
+
+
 
 
 

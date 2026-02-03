@@ -1,7 +1,7 @@
 <template>
   <ClientOnly>
 
-    <Teleport to="body">
+    <Teleport to="#teleports">
       <!--UContainer Dio problemas . Cambio la toda la apariencia--> <!--Transition-->
 
       <div :id="Id + '_modal_mask'" class="modal-mask" v-if="This.prop.Visible">
