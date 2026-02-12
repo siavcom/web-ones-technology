@@ -897,7 +897,7 @@ export async function MessageBox(
 ) {
 
   const thisForm = ThisForm.value
-  const container = thisForm.containerId
+  const container = ThisForm.value == null ? null : thisForm.containerId
   const target = container ? container : null
 
   if (!tipo) {
@@ -1148,7 +1148,8 @@ export async function MessageBox(
     }
   })
   //     console.log('MessageBox por aqui salio')
-  ThisForm.value.containerId = ''
+  if (ThisForm.value) ThisForm.value.containerId = ''
+
   return resultado
 }
 

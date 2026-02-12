@@ -21,6 +21,10 @@ export class d_nom_ven extends COMPONENT {
         this.prop.ControlSource = "vi_cap_comedoc.nom_ven";
         this.inputStyle.width = '290px';
 
+        this.prop.Disabled = true;
+        this.inputStyle.color = 'black';
+
+
         //propiedades
     }
     //metodo

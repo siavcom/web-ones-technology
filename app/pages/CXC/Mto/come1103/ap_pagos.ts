@@ -289,7 +289,7 @@ export class ap_pagos extends GRID {
         await use('vi_cap_comedoc', vi_cap_comedoc)
         vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
 
-        this.Form.d_tot_doc.prop.Value = vi_cap_comedoc.imp_doc + vi_cap_comedoc.im0_doc + vi_cap_comedoc.im1_doc + vi_cap_comedoc.im2_doc + vi_cap_comedoc.im3_doc + vi_cap_comedoc.im4_doc + vi_cap_comedoc.im5_doc
+        // this.Form.d_tot_doc.prop.Value = vi_cap_comedoc.imp_doc + vi_cap_comedoc.im0_doc + vi_cap_comedoc.im1_doc + vi_cap_comedoc.im2_doc + vi_cap_comedoc.im3_doc + vi_cap_comedoc.im4_doc + vi_cap_comedoc.im5_doc
         this.Form.d_pap_doc.prop.Value = this.Form.d_tot_doc.prop.Value - vi_cap_comedoc.sal_doc
         this.Form.d_sal_doc.prop.Value = this.Form.d_tot_doc.prop.Value - this.Form.d_pap_doc.prop.Value
 

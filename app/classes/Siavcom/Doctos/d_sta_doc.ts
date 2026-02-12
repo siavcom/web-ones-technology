@@ -28,8 +28,12 @@ export class d_sta_doc extends COMPONENT {
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
         this.prop.ColumnWidths = "250px,25px";
-
         this.inputStyle.width = '124px';
+
+        this.prop.Disabled = true;
+        this.inputStyle.color = 'black';
+
+
         this.prop.Messages[0][0] = 'El documento se convirtió al documento :'
         this.prop.Messages[0][1] = 'Advertencia'
         this.prop.Messages[1] = 'El documento quedo en proceso de timbrado, pero no hubo respuesta del timbrador '

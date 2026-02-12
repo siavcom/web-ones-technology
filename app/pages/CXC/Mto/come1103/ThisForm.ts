@@ -34,65 +34,66 @@
 
 import { captureForm } from "@/classes/CaptureForm";
 
-import { ap_pagos } from './ap_pagos';
-import { Bt_autorizacion } from './Bt_autorizacion';
-import { Bt_dre_doc } from './Bt_dre_doc';
+import { tdo_tdo } from '@/classes/Siavcom/Doctos/tdo_tdo';
+import { ndo_doc } from '@/classes/Siavcom/Doctos/ndo_doc';
+import { tcd_tcd } from '@/classes/Siavcom/Doctos/tcd_tcd';
+import { ref_doc } from '@/classes/Siavcom/Doctos/ref_doc';
 
-//import { par_mon } from './par_mon/par_mon';
-//import { Bt_par_doc } from './Bt_par_doc';
-//import { bt_delete } from './bt_delete';
-import { Bt_can_docto } from './Bt_can_docto';
-import { captura_xml } from './captura_xml';
-import { Bt_carga_xml } from './Bt_carga_xml';
+
+import { fec_doc } from '@/classes/Siavcom/Doctos/fec_doc';
+import { d_fel_doc } from '~/classes/Siavcom/Doctos/d_fel_doc';
+import { fve_doc } from '@/classes/Siavcom/Doctos/fve_doc';
+
+import { ven_ven } from '@/classes/Siavcom/Doctos/ven_ven';
+import { com_doc } from '@/classes/Siavcom/Doctos/com_doc';
+
 import { cba_cba } from './cba_cba';
 import { che_doc } from './che_doc';
 
 //import { co_xml } from './co_xml';
 import { cod_nom } from './cod_nom';
-import { com_doc } from './com_doc';
 import { rfc_pve } from "./rfc_pve";
 
 //import { Bt_apl_pag } from './Bt_apl_pag';
-import { d_coa_tdo } from './d_coa_tdo';
+import { d_coa_tdo } from '@/classes/Siavcom/Doctos/d_coa_tdo';
+import { d_sta_doc } from '@/classes/Siavcom/Doctos/d_sta_doc';
+
 import { d_pap_doc } from './d_pap_doc';
 //import { Bt_doc_por_pagar } from './Bt_doc_por_pagar';
 import { d_sal_cta } from './d_sal_cta';
 import { d_sal_doc } from './d_sal_doc';
-import { d_sta_doc } from './d_sta_doc';
 
-import { d_tot_doc } from './d_tot_doc';
 import { Do_nopagados } from './Do_nopagados';
-import { fec_doc } from './fec_doc';
-import { fel_doc } from './fel_doc';
-import { fve_doc } from './fve_doc';
 
 import { hrs_doc } from './hrs_doc';
-import { im0_doc } from './im0_doc';
-import { im1_doc } from './im1_doc';
-import { im2_doc } from './im2_doc';
-import { im3_doc } from './im3_doc';
-import { im4_doc } from './im4_doc';
-import { im5_doc } from './im5_doc';
-import { imp_doc } from './imp_doc';
+
+import { imp_doc } from '@/classes/Siavcom/Doctos/imp_doc';
+import { im0_doc } from '@/classes/Siavcom/Doctos/im0_doc';
+import { im1_doc } from '@/classes/Siavcom/Doctos/im1_doc';
+import { im2_doc } from '@/classes/Siavcom/Doctos/im2_doc';
+import { im3_doc } from '@/classes/Siavcom/Doctos/im3_doc';
+import { im4_doc } from '@/classes/Siavcom/Doctos/im4_doc';
+import { im5_doc } from '@/classes/Siavcom/Doctos/im5_doc';
+import { d_tot_doc } from '@/classes/Siavcom/Doctos/d_tot_doc';
+import { d_total } from '@/classes/Siavcom/Doctos/d_total';
+
 //import { Imprime } from './Imprime';
 
 
 //import { Modificar } from './Modificar';
-import { mon_doc } from './mon_doc';
-import { ndo_doc } from './ndo_doc';
-import { tpy_tpy } from "./tpy_tpy";
-import { num_pry } from './num_pry';
+import { mon_doc } from '@/classes/Siavcom/Doctos/mon_doc';
+
+import { tpy_tpy } from "@/classes/Siavcom/Doctos/tpy_tpy";
+import { num_pry } from '@/classes/Siavcom/Doctos/num_pry';
 import { Bt_observaciones } from './Bt_observaciones';
 //import { Otro } from './Otro';
-import { ref_doc } from './ref_doc';
-import { suc_pge } from './suc_pge';
-import { tcd_tcd } from './tcd_tcd';
-import { tdo_tdo } from './tdo_tdo';
+
+import { suc_pge } from '@/classes/Siavcom/Doctos/suc_pge';
 import { top_nom } from './top_nom';
 
-import { ven_ven } from './ven_ven';
+
 //import { Bt_veri_xml } from './Bt_veri_xml';
-import { vmo_doc } from './vmo_doc';
+import { vmo_doc } from '../../../../classes/Siavcom/Doctos/vmo_doc';
 import { Bt_campos_xml } from './Bt_campos_xml';
 
 import { Bt_imprime } from "./Bt_imprime";
@@ -100,22 +101,68 @@ import { Bt_timbra } from "./Bt_timbra";
 
 import { report } from "./report/report";
 
+import { ap_pagos } from './ap_pagos';
+import { Bt_autorizacion } from './Bt_autorizacion';
+import { Bt_dre_doc } from './Bt_dre_doc';
+
+
+import { Bt_can_docto } from './Bt_can_docto';
+import { captura_xml } from './captura_xml';
+import { Bt_carga_xml } from './Bt_carga_xml';
+
+
+let thisForm = ref()
+
+const tot_doc = computed(() => {
+
+	// utilizamos todas los valores de los importes para calcular el total
+	// como son variables reactivas, se actualizan automaticamente
+	const total = thisForm.value.imp_doc.prop.Value +
+		thisForm.value.im0_doc.prop.Value +
+		thisForm.value.im1_doc.prop.Value +
+		thisForm.value.im2_doc.prop.Value +
+		thisForm.value.im3_doc.prop.Value +
+		thisForm.value.im4_doc.prop.Value +
+		thisForm.value.im5_doc.prop.Value
+	pap_doc(total)
+
+	//if (thisForm.value.Recno == 0) 
+	//	return 0
+
+	return 0
+})
+
+const pap_doc = (total: number) => {
+	if (thisForm.value.Recno == 0) {
+		nextTick(() => {
+			thisForm.value.d_pap_doc.prop.Value = 0
+			thisForm.value.d_tot_doc.prop.Value = 0
+		})
+		return
+	}
+	nextTick(() => {
+		thisForm.value.d_pap_doc.prop.Value = total - thisForm.value.d_sal_doc.prop.Value
+		thisForm.value.d_tot_doc.prop.Value = total
+	})
+	return
+}
 
 export class ThisForm extends captureForm {
 	public tdo_tdo = new tdo_tdo()
 	public ndo_doc = new ndo_doc()
-
 	public tcd_tcd = new tcd_tcd()
+
 	public d_coa_tdo = new d_coa_tdo()
 	public d_sta_doc = new d_sta_doc()
 
+	public ref_doc = new ref_doc()
 	public cod_nom = new cod_nom()
 
 	public cba_cba = new cba_cba()
-	public ref_doc = new ref_doc()
+
 	public che_doc = new che_doc()
 	public d_sal_cta = new d_sal_cta()
-	public fel_doc = new fel_doc()
+	public d_fel_doc = new d_fel_doc()
 	public fec_doc = new fec_doc()
 	public hrs_doc = new hrs_doc()
 	public fve_doc = new fve_doc()
@@ -139,6 +186,7 @@ export class ThisForm extends captureForm {
 	public im4_doc = new im4_doc()
 	public im5_doc = new im5_doc()
 	public d_tot_doc = new d_tot_doc()
+	public d_total = new d_total()
 
 	// Proveedor
 	public rfc_pve = new rfc_pve()
@@ -178,32 +226,38 @@ export class ThisForm extends captureForm {
 
 
 	// propiedades 
+	aut_cap: boolean // Switch de autorizacion
 	cod_cap: string // Código de captura
 	con_vcomesal: string // Condicion del vcomesal
-	dca_pag: string // Decimales de captura para pagos
+	dca_pag: number // Decimales de captura para pagos
 
 	lim_inf_sal: string // Limite inferior para mostrar documentos no pagados
-	num_mov: string // Numero de movimeintos que tiene el documento
-	sw_ctb: string // Sw indicando si se tiene la contabilidad en linea
+	num_mov: number // Numero de movimeintos que tiene el documento
+	sw_ctb: boolean // Sw indicando si se tiene la contabilidad en linea
 	//sw_imp: string // Switch de Impuestos
-	sw_pga: string // Switch de presupuesto de gasto
+	sw_pga: boolean // Switch de presupuesto de gasto
 
 	val_che_doc: string // Valida cheque de documento
-	nom_obj = {}// objetos de validacion
+
 	top_con = ''
 	tip_cap = 'C'
 
+
+	//this.Form.d_tot_doc.prop.Value = vi_cap_comedoc.imp_doc + vi_cap_comedoc.im0_doc + vi_cap_comedoc.im1_doc + vi_cap_comedoc.im2_doc + vi_cap_comedoc.im3_doc + vi_cap_comedoc.im4_doc + vi_cap_comedoc.im5_doc
+	//imp_doc = ref(0)
+	//totalDoc = ref(0)
+
 	constructor() {
 		super();
-		this.prop.Name = 'come1103';
+		this.Name = 'come1103';
 		this.prop.RecordSource = 'vi_cap_comedoc'
 		this.aut_cap = false;
 		this.prop.Caption = "Cargos y abonos";
-		this.cod_cap = ('');
-		this.con_vcomesal = ('');
+		this.cod_cap = '';
+		this.con_vcomesal = '';
 		this.dca_pag = 5;
 		this.prop.Help_url = "/Archivos/Ctas%20x%20cobrar/Mantenimiento/cargos%20y%20abonos/CARGOS%20Y%20ABONOS.html"
-		this.lim_inf_sal = ('0.00999');
+		this.lim_inf_sal = '0.00999';
 		this.num_mov = 0;
 		this.sw_ctb = false;
 		//this.Public.value.sw_imp = false;
@@ -211,6 +265,12 @@ export class ThisForm extends captureForm {
 		this.val_che_doc = '0';
 		this.bt_delete.prop.Caption = "Borra documento";
 		this.bt_save.prop.Caption = "Graba documento";
+		thisForm.value = this;
+
+		//this.d_tot_doc.prop.Value = tot_doc
+		this.d_total.prop.Value = tot_doc
+		//this.Form.d_pap_doc.prop.Value = pap_doc
+		//	this.totalDoc.value = tot_doc
 
 
 		//this.style.display = 'flex'
@@ -226,7 +286,7 @@ export class ThisForm extends captureForm {
 		this.prop.Messages[0] = "Saldo caja chica"
 		this.prop.Messages[1] = 'Cargos y abonos a vendedores'
 		this.prop.Messages[2] = 'Cargos y abonos de clientes'
-		this.prop.Messages[3] = 'Clientes'
+		this.prop.Messages[3] = 'Cliente'
 		this.prop.Messages[4] = 'Gastos CEDIS'
 		this.prop.Messages[5] = 'Cargos y abonos de proveedores'
 		this.prop.Messages[6] = 'Proveedor'
@@ -251,13 +311,14 @@ export class ThisForm extends captureForm {
 			[2]: this.tcd_tcd,
 			[3]: this.d_coa_tdo,
 			[4]: this.d_sta_doc,
-			[5]: this.cod_nom,
-			[6]: this.ref_doc,
+			[5]: this.ref_doc,
+			[6]: this.cod_nom,
+
 			[7]: this.rfc_pve,
 			[8]: this.cba_cba,
 			[9]: this.d_sal_cta,
 			[10]: this.che_doc,
-			[11]: this.fel_doc,
+			[11]: this.d_fel_doc,
 			[12]: this.fec_doc,
 			[13]: this.hrs_doc,
 			[14]: this.fve_doc,
@@ -267,9 +328,11 @@ export class ThisForm extends captureForm {
 			[19]: this.com_doc,
 			[20]: this.mon_doc,
 			[21]: this.vmo_doc,
-			[22]: this.Bt_par_doc,
-			[23]: this.par_mon,
-			[24]: this.suc_pge
+			//[22]: this.Bt_par_doc,
+			//	[23]: this.par_mon,
+			[22]: this.suc_pge,
+			[23]: this.d_total
+
 
 		}
 
@@ -338,7 +401,6 @@ export class ThisForm extends captureForm {
 
 	// tipo de captura, sistema de captura
 	override async init() {
-
 		let tip_cap = this.Params[0]
 		let cod_nom = this.Params[1]
 		this.tip_cap = tip_cap
@@ -535,20 +597,22 @@ export class ThisForm extends captureForm {
 
 		//this.d_coa_tdo.prop.Value = iif(cometdo.coa_tdo == 'C', this.prop.Messages[9], this.prop.Messages[7])
 		await useNodata('lla1_xml') // use lla1_xml lla1_xml Nodata
-
-
 		m.cam_sat = 'FPA_SAT'
 		m.par_sat = '  '
 		await use('vi_comesat', m, 'formas_pago') // use vi_comesat vi_comesat
+
 		m.cam_sat = 'MPA_SAT'
 		m.par_sat = '  '
 		await use('vi_comesat', m, 'metodos_pago') // use vi_comesat vi_comesat
+
 		m.cam_sat = 'USO_SAT'
 		m.par_sat = '  '
 		await use('vi_comesat', m, 'uso_sat') // use vi_comesat vi_comesat
+
 		m.cam_sat = 'TRE_SAT'
 		m.par_sat = '  '
 		await use('vi_comesat', m, 'tipo_relacion') // use vi_comesat vi_comesat
+
 		await useNodata('vi_cap_cometcd') // use vi_cap_cometcd vi_cap_cometcd Nodata
 
 		const cam_arc = afields('vi_cap_cometcd')
@@ -643,7 +707,7 @@ export class ThisForm extends captureForm {
 		} // End If 
 
 		this.ap_pagos.c_mon_pag.prop.InputMask = '99,999,999.' + replicateString('9', this.dca_pag)
-
+		this.ap_pagos.c_mon_pag.prop.Decimals = this.dca_pag
 		/*		
 				let nom_cur = 'pgexml'
 				//// obtenemos datos xml de comepge
@@ -862,7 +926,7 @@ export class ThisForm extends captureForm {
 
 		this.Bt_observaciones.prop.Visble = true
 		// llama al programa de gastos
-		await select('vi_cap_cometcd')
+
 		return true
 	}   // Fin Procedure
 
@@ -1095,9 +1159,7 @@ export class ThisForm extends captureForm {
 
 			m = appendM(m, await scatter())// scatter 
 
-			await select('vi_cap_cometcd')
-
-			if (await recCount() > 0) {
+			if (await recCount('vi_cap_cometcd') > 0) {
 				// si hay clasificacio de documentos
 				const cam_arc = afields()
 
@@ -1143,14 +1205,12 @@ export class ThisForm extends captureForm {
 			// Ponemos de solo lectura los controles
 			this.mon_doc.prop.Visble = false
 			// Deshabilitamos la moneda del docto
-			this.d_tot_doc.prop.Value = 0
-			// total por documento
-			this.d_sal_doc.prop.Value = 0
-			// saldo
-			this.d_pap_doc.prop.Value = 0
-			// por aplicar
-			this.tdo_tdo.prop.Visble = true
-			// thisform.refresh      && Repintamos la forma
+			//	this.d_tot_doc.prop.Value = 0 // total por documento
+
+			this.d_sal_doc.prop.Value = 0 	// saldo
+			// this.d_pap_doc.prop.Value = 0 // por aplicar
+
+
 			// tipo de documento ponemos en captura
 			this.tdo_tdo.prop.ReadOnly = false
 			// tipo de documento ponemos en captura
@@ -1160,6 +1220,7 @@ export class ThisForm extends captureForm {
 			// deshabilitamos los bottones de mantenimiento
 			this.bt_delete.prop.Visble = false
 			//this.modificar.prop.Visble = false
+
 			this.block[5].prop.Visible = false
 			// this.captura_xml.prop.Visible = false
 			// this.co_apl_pagos.prop.Visible = true

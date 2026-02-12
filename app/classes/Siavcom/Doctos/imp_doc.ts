@@ -13,6 +13,7 @@ import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
 
 export class imp_doc extends CAPTURECOMPONENT {
     //public
+
     constructor() {
         super();
         this.prop.Type = 'number';
@@ -22,7 +23,6 @@ export class imp_doc extends CAPTURECOMPONENT {
         this.inputStyle.width = '105px';
         this.prop.Caption = "Importe";
         this.captionStyle.width = '100px';
-
         //propiedades
     }
 

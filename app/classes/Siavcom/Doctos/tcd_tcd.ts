@@ -18,7 +18,8 @@ export class tcd_tcd extends CAPTURECOMPONENT {
         this.prop.BaseClass = "comboBox";
         this.prop.Caption = "Clasif. docto.";
         this.prop.ControlSource = "vi_cap_comedoc.tcd_tcd";
-        this.prop.Value = 0;
+        this.prop.Value = ''
+        this.prop.Visible = false
         this.prop.RowSource = "vi_cap_cometcd.des_tcd,tcd_tcd";
         this.prop.RowSourceType = 2;
         this.prop.BoundColumn = 2;
@@ -122,10 +123,10 @@ export class tcd_tcd extends CAPTURECOMPONENT {
     // Tipo   :ComboBox
     // Comentarios :si tiene clasificación de documentos permite escojer clasificación de documentos
     override async when() {
-        let m = {}   // inicializamos m
 
-        const cometdo = await goto(0, 'cometdo')
-        //const Recno = await scatter(['Recno'], vi_cap_comedoc)
+
+        let m = {}   // inicializamos m
+        const cometdo = await currentValue('*', 'cometdo')
         const vi_cap_comedoc = await scatter(['Recno', 'key_pri'], 'vi_cap_comedoc')
         const Recno = vi_cap_comedoc.Recno
         this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)

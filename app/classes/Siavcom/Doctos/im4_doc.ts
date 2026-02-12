@@ -22,7 +22,7 @@ export class im4_doc extends CAPTURECOMPONENT {
         this.style.width = '256px';
         this.inputStyle.width = '105px';
         this.captionStyle.width = '100px';
-        this.asignaRecno()    //propiedades
+
     }
 
 

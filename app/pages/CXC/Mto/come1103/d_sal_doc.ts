@@ -20,17 +20,14 @@ export class d_sal_doc extends COMPONENT {
         this.prop.BaseClass = 'textLabel'
         this.prop.Type = 'number';
         this.prop.ControlSource = "vi_cap_comedoc.sal_doc";
-        this.style.DisabledBackColor = 'rgb(128, 255, 255)'
-        this.prop.InputMask = "###,###,###.#####";
-
-        this.prop.Decimals = 5;
-        this.prop.Value = 0;
         this.inputStyle.width = '125px'
         this.style.fontSize = '17px';
 
         this.captionStyle.width = '75px';
         this.captionStyle.fontSize = '15px';
 
+        this.prop.Disabled = true;
+        this.inputStyle.color = 'black';
         //propiedades
     }
 

@@ -65,7 +65,6 @@ Visual Component Tree
 The framework uses a main form (like ThisForm in VFP) made only in TypeScript, where each form has its own visual HTML components and methods:
 
 
-
 ├── Form/  
 │    ├── component1/            
 │    ├── component2/          
@@ -97,23 +96,22 @@ Some components contain other components:
 │    ├── column4/  
 
 
-text
-               container
-            /     |      \
-           /      |       \
-          /       |        \
-         /        |         \
-        Component1 Component2 Component..n
 
-                grid
-            /     |       \
-           /      |        \
-          /       |         \
-         /        |          \
-        Column1 Column2 Column..n
+               container  
+            /     |      \  
+           /      |       \  
+          /       |        \  
+         /        |         \  
+        Component1 Component2 Component..n  
+
+                grid  
+            /     |       \  
+           /      |        \  
+          /       |         \  
+         /        |          \  
+        Column1 Column2 Column..n  
 
 
-text
 
                      Form
                  /     |      \
@@ -127,21 +125,7 @@ text
                click() when()  valid()...etc()
 Some components contain other components:
 
-text
-               container
-            /     |      \
-           /      |       \
-          /       |        \
-         /        |         \
-        Component1 Component2 Component..n
-
-                grid
-            /     |       \
-           /      |        \
-          /       |         \
-         /        |          \
-        Column1 Column2 Column..n
-
+ 
 
 🎨 Component Properties and Methods
 Component Properties
@@ -757,6 +741,8 @@ appendBlank(<alias>, <memoryObject>) - Append row in local SQL table with defaul
 
 bof(<alias?>) - After locate, skip or goto, returns true if at last row
 
+currentValue(<fieldArray>, <alias?>) - Scatter values into object from local SQL table
+
 deleteSqlRow(<alias?>, <key_pri?>) - Delete current row in local SQL table
 
 deleteSql(<recno>, <alias>, <SqlUpdate>) - Delete row with recno in local SQL table
@@ -801,13 +787,11 @@ Parameter Types:
 
 <alias> - Local SQL table alias (type: string)
 
-<fieldArray> - Array with field and value of SQL table (type: Array)
+<fieldArray> - Array with field and value of SQL table (type: Array). '*' for all fields
 
-<force> - Force update (type: boolean)
-
-false: If update fails because another user changed data first, return false
-
-true: If update fails because another user changed data first
+<force> - Force update (type: boolean):  
+   false: If update fails because another user changed data first, return false.  
+   true: If update fails because another user changed data first.
 
 <key_pri> - Table key_pri(id) number in SQLServer (type: number)
 
@@ -823,29 +807,23 @@ true: If update fails because another user changed data first
 
 <rowNumbers> - Row numbers to skip (type: number)
 
-<SqlUpdate> - SQL update flag (type: boolean)
-
-true: Delete SQLServer
-
-false: Only local SQL
+<SqlUpdate> - SQL update flag (type: boolean):  
+   true: Delete SQLServer.  
+   false: Only local SQL.  
 
 <sqlQuery> - SQL Server query to execute (type: string)
 
 <table> - SQL Server remote view name (type: string)
 
-<type> - Type parameter (type: string)
+<type> - Type parameter (type: string):  
+   'MEMVAR': Return object with all field values.  
+   'FIELDS': Return object with specific field values.  
 
-'MEMVAR': Return object with all field values
+<updateType> - Update type (type: number):  
+   0: Update only current record  
+   1: Update all records (fails at first error)  
+   2: Update all records (continues on error)  
 
-'FIELDS': Return object with specific field values
-
-<updateType> - Update type (type: number)
-
-0: Update only current record
-
-1: Update all records (fails at first error)
-
-2: Update all records (continues on error)
 
 🔧 Web-Ones Functions
 

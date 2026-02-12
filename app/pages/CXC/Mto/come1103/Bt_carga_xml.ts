@@ -542,7 +542,7 @@ export class Bt_carga_xml extends IMGBUTTON {
         // obtiene total antes de impuestos
         dat_sal = ''
         dat_sal = obt_cam_xml(m.xml_sat, precfd + "Comprobante", dat_bus)
-        this.Form.d_tot_doc.prop.Value = val(dat_sal)
+        //   this.Form.d_tot_doc.prop.Value = val(dat_sal)
         let d_tot = val(dat_sal)
         let n_etq = 0
         let im_sal = 0

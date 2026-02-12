@@ -26,6 +26,8 @@ export class d_coa_tdo extends COMPONENT {
     this.prop.ColumnWidths = "64px,0px";
 
     this.inputStyle.width = '47px';
+    this.prop.Disabled = true;
+    this.inputStyle.color = 'black';
 
     //propiedades
   }

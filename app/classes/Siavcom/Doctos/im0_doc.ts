@@ -18,7 +18,7 @@ export class im0_doc extends CAPTURECOMPONENT {
         this.prop.Type = 'number';
 
         this.prop.ControlSource = "vi_cap_comedoc.im0_doc";
-        this.prop.Disabled = false;
+
         this.prop.InputMask = ('99,999,999.99999');
         this.style.width = '256px';
         this.inputStyle.width = '105px';

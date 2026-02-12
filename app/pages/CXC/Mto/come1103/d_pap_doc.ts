@@ -7,9 +7,6 @@
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////
-// import { COMPONENT } from "@/classes/Component";
-
-//imports
 
 export class d_pap_doc extends COMPONENT {
     //public
@@ -17,19 +14,15 @@ export class d_pap_doc extends COMPONENT {
         super();
         this.prop.BaseClass = 'textLabel'
         this.prop.Type = 'number';
-        this.prop.Decimals = 5;
         this.prop.Caption = "Por Aplicar";
-        this.prop.Decimals = 5;
-        this.prop.Value = 0;
+        //        this.prop.Value = 0;
 
-        this.inputStyle.width = '125px'
         this.style.fontSize = '17px';
-
+        this.inputStyle.width = '125px'
         this.captionStyle.width = '75px';
         this.captionStyle.fontSize = '15px';
-
-
-        //propiedades
+        this.prop.Disabled = true;
+        this.inputStyle.color = 'black';
     }
 
     public override async init() {

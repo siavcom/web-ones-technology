@@ -19,10 +19,8 @@ export class fec_doc extends CAPTURECOMPONENT {
         this.prop.Caption = "Fecha del Documento";
         this.prop.ControlSource = "vi_cap_comedoc.fec_doc";
         this.prop.ErrorMessage = "Fecha invalida";
-
         //propiedades
     }
-
 
     // Evento   :Valid
     // Objeto  :fec_doc

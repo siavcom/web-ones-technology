@@ -21,6 +21,8 @@ export class d_sal_cta extends COMPONENT {
         this.prop.Decimals = 2;
 
         this.inputStyle.width = '128px';
+        this.prop.Disabled = true;
+        this.inputStyle.color = 'black';
 
         //propiedades
     }

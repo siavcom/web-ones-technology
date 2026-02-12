@@ -103,6 +103,7 @@ export class COMPONENT {
     InputProp: { Enabled: true, Visible: true },
 
     Key: 0,
+    //KeyId: 0,
 
     Map: "", // Nos indica el mapSource del componente
     MaxLength: 254,  // Maxima longitud del componente

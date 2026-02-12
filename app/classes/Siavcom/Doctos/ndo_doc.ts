@@ -18,13 +18,12 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
         this.prop.Type = 'number';
         this.prop.ControlSource = "vi_cap_comedoc.ndo_doc";
-        this.prop.InputMask = "999,999,999";
         this.prop.Min = '1';
         this.prop.Max = '999999999';
         this.prop.Decimals = 0;
         this.prop.Value = 0;
         this.prop.updateKey = true
-        this.style.DisabledBackColor = 'rgb(234, 234, 234)'
+
         this.style.fontSize = '17px';
         this.inputStyle.fontSize = '17px'
         this.inputStyle.fontWeight = "bold";
@@ -33,57 +32,59 @@ export class ndo_doc extends CAPTURECOMPONENT {
         this.prop.Messages[1] = 'No hay documentos por pagar'
     }
 
-    // Inicializamos datoa de captura
-    override async beforeWhen(): Promise<void> {
-        await this.Form.tdo_tdo.beforeWhen()
-        this.Form.tdo_tdo.prop.Valid = true
-    }
-
     // Evento   :When
     // Objeto  :ndo_doc
     // Tipo   :ComboBox
     // Comentarios :Lee la segutidad
     override async when() {
+        await super.when()
         await this.Form.tdo_tdo.when()
-        let m = {}   // inicializamos m
-        m.tdo_tdo = this.Form.tdo_tdo.prop.Value
 
+
+        let m = { tdo_tdo: this.Form.tdo_tdo.prop.Value }   // inicializamos m
         // debugger
         const res = await locateFor(`tdo_tdo='${m.tdo_tdo}'`, 'cometdo')
         const cometdo = res[0]
-        const vi_cap_cometcd = await goto(0, 'vi_cap_cometcd')
+        const vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')
 
-        if (vi_cap_cometcd.tdo_tdo != m.tdo_tdo) {
+        this.Form.tcd_tcd.prop.Visible = false
+        this.Form.tcd_tcd.prop.Value = '  '
+        // refresca tabla de clasificacion de documentos
 
-            // refresca tabla de clasificacion de documentos
+        if (vi_cap_cometcd.tdo_tdo != m.tdo_tdo)
             await use('vi_cap_cometcd', m)
-            const vi_cap_cometcd = await goto(0, 'vi_cap_cometcd')
-            if (await recCount('vi_cap_cometcd') > 0) {
 
-                this.Form.tcd_tcd.prop.Vsible = true
-                this.Form.tcd_tcd.requery()  // Refrescamos comboBox
-                this.Form.tcd_tcd.prop.Value = vi_cap_cometcd.tcd_tcd
-            }
-            else {
-                this.Form.tcd_tcd.prop.Visible = false
-                this.Form.tcd_tcd.prop.Value = 0
-            }
-
+        if (await recCount('vi_cap_cometcd') > 0) {
+            const vi_cap_cometcd = await currentValue('tcd_tcd', 'vi_cap_cometcd')
+            this.Form.tcd_tcd.prop.Value = vi_cap_cometcd.tcd_tcd
+            this.Form.tcd_tcd.prop.Visible = true
+            // this.Form.tcd_tcd.requery()  // Refrescamos comboBox
         }
 
         // se apaga swith de documento nuevo
 
         // this.Form.d_coa_tdo.prop.Value = iif(cometdo.coa_tdo == 'C', 'Cargo', 'Abono')
-        if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' || cometdo.cop_nom + cometdo.coa_tdo == 'PC') {
-            this.Form.d_sal_doc.prop.Caption = 'Aplicado'
-        } else {
 
-            this.Form.d_sal_doc.prop.Caption = 'Pagado'
-        } // End If 
+        if (this.Form.Name === 'come1103') { // Cargos y Abonos
+            if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' || cometdo.cop_nom + cometdo.coa_tdo == 'PC') {
+                this.Form.d_sal_doc.prop.Caption = 'Aplicado'
+            } else {
+
+                this.Form.d_sal_doc.prop.Caption = 'Pagado'
+            } // End If 
+            // saldo del documento
+            //  this.Form.d_sal_doc.prop.Value = 0
+            // saldo por pagar
+            //this.Form.d_pap_doc.prop.Value = 0
+
+        }
+
+        // total del documento
+        //        this.Form.d_tot_doc.prop.Value = 0
 
         // si no ha leido seguridad o cambio el tipo de docto
         // lee la seguridad
-        //if (await recCount('lla1_seg') == 0 || lla1_seg.tdo_tdo != m.tdo_tdo) {
+
         // asignamos la seguridad por tipo de documento
 
         m.log_usu = Public.value.log_usu
@@ -91,7 +92,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
         //log_usu: "ADMIN      
         if (m.log_usu.trim().toUpperCase() != "ADMIN") {
-            const result = await use('lla1_seg', m) // use lla1_seg lla1_seg
+            await use('lla1_seg', m) // use lla1_seg lla1_seg
             if (await recCount('lla1_seg') > 0) {
                 m = appendM(m, await scatter())// scatter 
             } else {
@@ -111,15 +112,10 @@ export class ndo_doc extends CAPTURECOMPONENT {
             i++
         } // End For; 
         this.Form.nom_obj = nom_obj
-        // saldo del documento
-        this.Form.d_sal_doc.prop.Value = 0
-        // total del documento
-        this.Form.d_tot_doc.prop.Value = 0
-        // saldo por pagar
-        this.Form.d_pap_doc.prop.Value = 0
-        this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
 
-        return !this.prop.ReadOnly
+        this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
+        console.log('ndo_doc when rev_per ')
+        return await this.Form.rev_per('ndo_doc')
 
     }   // Fin Procedure
 
@@ -127,21 +123,13 @@ export class ndo_doc extends CAPTURECOMPONENT {
     // Objeto  :ndo_doc
     // Tipo   :Cuadro de texto
     // Comentarios :Es la validación de la llave principal
-    override async gotFocus() {
+    override async gotFocus_old() {
 
         let m = {}   // inicializamos m
-        if (!this.prop.ReadOnly) {
-            // busca el consecutivo del documento
-            this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
+        // busca el consecutivo del documento
+        this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
 
-            // obtenemos el consecutivo del      //this.Form.modificar.prop.Visble = false
-            //            this.Form.bt_delete.prop.Visble = false
-            //this.Form.Bt_apl_pag.prop.Visible = false
-            //  this.Form.Bt_doc_por_pagar.prop.Visble = false
 
-            this.prop.Valid = false
-
-        } // End If 
     }   // Fin Procedure
 
     // Evento   :Valid
@@ -174,6 +162,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
               } // End If 
       
       */
+
         if (this.prop.Value == 0) {
             return false
         }
@@ -181,26 +170,10 @@ export class ndo_doc extends CAPTURECOMPONENT {
             return false
         }
 
-        let Alias = ''
-        let Recno = 0
         const cometdo = await goto(0, 'cometdo')
 
         const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
         let m = vi_cap_comedoc   // inicializamos m
-        /*
-                if (Public.value.log_usu == ('ADMIN') || await this.Form.rev_per('IPR')) {
-                    // si encuentra el campo
-                    this.Form.Bt_imprime.prop.Visble = true
-                    if (cometdo.tip_cfd == 'P' && vi_cap_comedoc.sta_doc != 'T' && vi_cap_comedoc.sta_doc != 'X' )
-                        this.Form.Bt_timbra.prop.Visble = true
-                    // (pos>0 and thisform.nom_obj[pos+1)>='1' ) && si permite imprimir
-                } else {
-        
-                    this.Form.Bt_imprime.prop.Visble = false
-                    this.Form.Bt_timbra.prop.Visble = false
-        
-                } // End If 
-        */
 
         //pos=ascan(nom_obj,'BDO')  && revizamos seguridad de borrado
         if (vi_cap_comedoc.key_pri && (Public.value.log_usu.trim() == 'ADMIN' || await this.Form.rev_per('BDO'))) {
@@ -212,7 +185,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
             this.Form.bt_delete.prop.Visble = false
         } // End If 
 
-        this.Form.fel_doc.prop.Valid = true
+        this.Form.d_fel_doc.prop.Valid = true
         if (!vi_cap_comedoc.key_pri) {
 
             m.hrs_doc = '12:00:00'
@@ -287,7 +260,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
             this.Form.fec_doc.prop.Value = Public.value.fpo_pge
 
             //            this.Form.Bt_doc_por_pagar.prop.Visble = false
-            this.Form.d_pap_doc.prop.Value = 0
+            // this.Form.d_pap_doc.prop.Value = 0
             // por aplicar
             // bloque de documentos por pagar [3] 
             //this.Form.block[3].prop.Visible = false
@@ -328,7 +301,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
             }
 
 
-            this.Form.tcd_tcd.prop.Visble = true
+
             try {
                 await this.Form.num_pry.valid()
                 // validamos el número de proyecto
@@ -351,9 +324,11 @@ export class ndo_doc extends CAPTURECOMPONENT {
             // asignamos el importe del documento dato anterior
             this.Form.im0_doc.valid()
             // no vamos a validar para obtener totales
-            this.Form.d_tot_doc.prop.Value = vi_cap_comedoc.imp_doc + vi_cap_comedoc.im0_doc + vi_cap_comedoc.im1_doc + vi_cap_comedoc.im2_doc + vi_cap_comedoc.im3_doc + vi_cap_comedoc.im4_doc + vi_cap_comedoc.im5_doc
-            //    thisform.d_sal_doc.Refresh
-            this.Form.d_pap_doc.prop.Value = this.Form.d_tot_doc.prop.Value - vi_cap_comedoc.sal_doc
+
+            //   this.Form.d_tot_doc.prop.Value = vi_cap_comedoc.imp_doc + vi_cap_comedoc.im0_doc + vi_cap_comedoc.im1_doc + vi_cap_comedoc.im2_doc + vi_cap_comedoc.im3_doc + vi_cap_comedoc.im4_doc + vi_cap_comedoc.im5_doc
+
+            //     this.Form.d_pap_doc.prop.Value = this.Form.d_tot_doc.prop.Value - vi_cap_comedoc.sal_doc
+
             /*
                         let num_obj = 1
                         if (!this.Form.im0_doc.prop.Visible) {
@@ -400,11 +375,6 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
         } // End If 
 
-        if (await recCount('vi_cap_cometcd') == 0) {
-            // si no hay tabla de clasificacion de documentos
-            this.Form.tcd_tcd.prop.Value = '  '
-            this.Form.tcd_tcd.prop.ReadOnly = true
-        } // End If 
 
         // calcula saldo de la cuenta de cheques
         if (Public.value.pct_pct == 1 && this.Form.prop.tip_cap == 'P') {

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////
 // This class component was generated automatically by web-ones-technology
-// @baseClass  : component
-// @class : tdo_tdo
+// BaseClass : component
+// Class : tdo_tdo
 // Description : Tip de documento
-// @author: El Fer Blocks
+// Author : El Fer Blocks
 // Creation : 2023-09-20
 // Update Date  :
 /////////////////////////////////////////////
@@ -20,22 +20,18 @@ export class op_tdo_tdo extends COMPONENT {
       this.prop.RowSourceType = 4; //Tipo de combo Box (Similar a VFP)1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
       this.prop.ColumnCount = 3; // = VFP
       this.prop.BoundColumn = 2; // = VFP
-      this.prop.ColumnWidths = "75%,25%"; // Puede ser en puntos 60px,30px
+      this.prop.ColumnWidths = "55%,25%,20%"; // Puede ser en puntos 60px,30px
       this.prop.Value = "?? ";
       this.style.maxHeight = "200px";
       this.inputStyle.width = "300px";
       this.prop.MultiSelect = false;
       this.style.width = "auto";
-      this.style.fontSize = '17px';
-      this.inputStyle.fontSize = '17px'
-      this.inputStyle.fontWeight = "bold";
-
       this.prop.ErrorMessage = "No hay documento seleccionado"
 
       //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
    }
    override async init() {
-      const data = await SQLExec(`select des_tdo,tdo_tdo,coa_tdo,cop_nom,inv_tdo,nmo_tdo,tip_cfd,cer_cer from man_cometdo where cop_nom in ('C','P') `, 'loc_cometdo')
+      const data = await SQLExec(`select des_tdo,tdo_tdo,coa_tdo,cop_nom,inv_tdo,nmo_tdo,tip_cfd,cer_cer,for_tdo from man_cometdo where cop_nom in ('C','P') `, 'loc_cometdo')
       var tip_cop = 'VE'
       if (this.Form.Params[0] && typeof this.Form.Params[0] == 'string')
          tip_cop = this.Form.Params[0].replaceAll("´", "")
@@ -109,7 +105,8 @@ export class op_tdo_tdo extends COMPONENT {
             }
          case 'come5251':	//& CFDI'S
             {
-               this.prop.RowSource = ` select des_tdo,tdo_tdo,tip_cfd from now.loc_cometdo where cop_nom='C' and tip_cfd in ('T ','I ','E ','P ')  and cer_cer <>' ' order by tip_cfd,des_tdo `
+               // this.prop.RowSource = ` select des_tdo,tdo_tdo,tip_cfd from now.loc_cometdo where cop_nom='C' and tip_cfd in ('T ','I ','E ','P ')  and cer_cer <>' ' order by tip_cfd,des_tdo `
+               this.prop.RowSource = ` select des_tdo,tdo_tdo,tip_cfd from now.loc_cometdo order by cop_nom,tip_cfd,des_tdo `
                break;
             }
 

@@ -7,21 +7,22 @@
 
 
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
-      :style=Styles.inputStyle :checked="checkValue" readonly="true" />
+      :style=Styles.inputStyle :checked="checkValue" readonly="true" :disabled=This.prop.Disabled />
 
     <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
-      readonly="true" />
+      readonly="true" :disabled=This.prop.disabled />
     <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="Styles.inputStyle"
-      readonly="true" v-model="Text" />
+      readonly="true" :disabled=This.prop.disabled v-model="Text" />
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
-      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" v-model="Text" />
+      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" :disabled=This.prop.Disabled
+      v-model="Text" />
     <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="Styles.inputStyle">
       <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text != null && Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
     </button>
     <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
-      readonly="true" v-model="Text" />
+      readonly="true" :disabled=This.prop.Disabled v-model="Text" />
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '">
       <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
@@ -34,8 +35,6 @@
       :style="This[compMain].style" :position="This[compMain].position">
 
     </textLabel>
-
-
 
   </div>
 </template>
@@ -143,6 +142,9 @@ const Styles =
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
+
+//const key = ref(0)
+
 const Value = ref(props.prop.Value)
 
 const Text = ref(null)
@@ -543,9 +545,6 @@ watch(
 
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-
-    console.log('=========================1) textLabel watch RowSource Name=', This.prop.Name)
-
     // renderComboBox()
     await readValue()
     //await asignaResultado()
@@ -556,7 +555,7 @@ watch(
 watch(
   () => This.prop.RowSourceType,
   async (new_val, old_val) => {
-    console.log('=========================1) textLabel watch RowSourceType ControlSource Name=', This.prop.Name)
+
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
     //renderComboBox()
@@ -571,7 +570,7 @@ watch(
   async (new_val, old_val) => {
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-    console.log('===================== textLabelwatch Registro TextLabel Name=', This.prop.Name, 'watch Registro', old_val, new_val)
+
 
     if (old_val != new_val && new_val > 0) {
       await readValue()
@@ -588,7 +587,7 @@ watch(
   async (new_val, old_val) => {
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-    console.log('====================1) textLabel watch ControlSource Name=', This.prop.Name)
+    // console.log('====================1) textLabel watch ControlSource Name=', This.prop.Name)
     //  console.log('watch controlSource', new_val, old_val)
     await readValue()
 
@@ -603,21 +602,19 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
 
-    if (sw_ReadCampo || new_val == Value.value)
+
+    if (sw_ReadCampo) // || new_val == Value.value)
       return
-    console.log('==========================1) watch This.prop.Value textLabel  Name=', This.prop.Name, 'Value=', new_val,
-      'Recno=', Recno, 'props.Registro=', props.Registro, 'This.Parent.Recno=', This.Parent.Recno,
-      'This.BaseClass=', This.BaseClass)
 
     if (This.BaseClass == 'Column')//&& This.Parent.Recno != props.Registro)
       return
 
     // si se cambia el valor desde afuera del componente, actualiza su valor interno y el campo en la base de datos
+    //  key.value++
     Text.value = new_val
     if (props.Registro > 0 && props.prop.ControlSource.length > 2)
       await updateCampo(new_val, props.prop.ControlSource, props.Registro)
-
-
+    //  key.value--
     asignaResultado()
     return
   },

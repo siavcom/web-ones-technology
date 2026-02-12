@@ -11,21 +11,19 @@
 //import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
 //imports
 
-export class fel_doc extends COMPONENT {
+export class d_fel_doc extends COMPONENT {
     //public
     constructor() {
         super();
-
         this.prop.Caption = "Elaboración";
-
+        this.prop.BaseClass = 'textLabel';
         this.prop.Type = 'date';
         this.prop.ControlSource = "vi_cap_comedoc.fel_doc";
         this.prop.Capture = false;
-        //      this.style.DisabledBackColor = 'rgb(234, 234, 234)'
         this.prop.Disabled = true;
+        this.prop.Disabled = true;
+        this.inputStyle.color = 'black';
         //propiedades
     }
-
-
     //metodo
 }
