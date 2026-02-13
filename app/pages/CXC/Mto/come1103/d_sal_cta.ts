@@ -15,9 +15,10 @@ export class d_sal_cta extends COMPONENT {
     //public
     constructor() {
         super();
-        this.prop.Caption = "Saldo ";
+
         this.prop.BaseClass = 'textLabel'
         this.prop.Type = 'number';
+        this.prop.Caption = "Saldo ";
         this.prop.Decimals = 2;
 
         this.inputStyle.width = '128px';

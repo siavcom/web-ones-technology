@@ -832,34 +832,31 @@ const validList = async () => {
 // Obs: el when() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
 const when = async (click?: boolean) => {
+  // No se permite el focus si es solo lectura
 
   if (focusIn)
     return
 
+  if (This.prop.ReadOnly || This.prop.Disabled) {
+    const Disabled = This.prop.Disabled
+    This.prop.Status = 'A'
+    This.prop.Disabled = true
+    await Delay(200)
+    This.prop.Disabled = Disabled ? true : false
+    return
+  }
 
-  if (This.Parent.BaseClass == "grid") {
-    const grid = This.Parent
+  console.log('when comboBox =', This.prop.Name)
 
-    for (const comp in grid.elements) {
-      const compName = grid.elements[comp].Name
-      // 24/Dic/2024 .- Se aumenta que sea componente Capture
-      if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-        // console.log('comboBox onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
-        return
-      }
-    }
+  ToolTipText.value = false
+  if (!await ChecaEventos()) {
+    return
   }
 
   if (This.beforeWhen)
     await This.beforeWhen()
 
   focusIn = true
-
-  // No se permite el focus si es solo lectura
-  if (This.prop.ReadOnly || This.prop.Disabled) {
-    This.prop.Status = 'A'
-    return
-  }
 
   //console.log('2) comboBox onFocus Grid Name', This.prop.Name)
 
@@ -871,11 +868,21 @@ const when = async (click?: boolean) => {
   // await nextTick()
   //This.Form.eventos.push(This.prop.Map + '.when()')
   //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
-  console.log('when comboBox =', This.prop.Name)
-  Evento = 'when'
-  ChecaEventos()
-  //if (click)
-  //  This.Form.eventos.push(This.prop.Map + '.click()')
+
+  This.prop.ReadOnly = !await This.when()
+
+  if (This.prop.ReadOnly)
+    This.prop.nextFocus = true
+  return
+
+
+  if (!This.prop.ReadOnly)
+    This.click()
+
+
+
+
+
 
 }
 
@@ -1194,54 +1201,51 @@ const ColumnWidth = (columnas: string) => {
 
 }
 
+
+/////////////////////////////////////////////
+// Busca el siguiente elemento a seleccionar
+/////////////////////////////////////////////
 const nextElement = async () => {  //clickReturn
 
   const TabIndex = This.prop.TabIndex
   let lastIndex = 9999999
   let nextFocus = ''
 
-  if (This.Parent != null)
-    if (This.Parent) {
-      //console.clear()
 
+  if (This.Parent && This.Parent.BaseClass == "grid") {
+    const grid = This.Parent
 
-      for (const element in This.Parent) { //.main
+    for (const element in grid.elements) {
+      const Tab = This.Form[element].prop.TabIndex
+      if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+        //nextFocus = This.Parent[element].prop.htmlId
+        console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+        This.Parent[element].prop.Focus = true
+        return
 
-        if (This.Parent[element] != undefined && This.Parent[element].prop
-          && !This.Parent[element].prop.Disabled
-          && !This.Parent[element].prop.ReadOnly
-          && This.Parent[element].prop.Visible) {
-          const Tab = This.Parent[element].prop.TabIndex
-          //          console.log('EditText nextElement element=====>', element, This.Parent[element].prop.Name,
-          //            'TabIndex=', Tab, TabIndex, lastIndex)
-
-          if (
-            This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
-            lastIndex = Tab
-            nextFocus = This.Parent[element].prop.htmlId
-            console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
-            break
-          }
-        }
       }
     }
-  if (nextFocus == '') { // No encontro siguiente elemento
-    console.log('No encontro siguiente elemento', This.prop.Name)
     return
   }
-  //  console.log('nextElement editText Name', This.prop.Name, 'TabIndex=', This.prop.TabIndex)
-  // $event.preventDefault();
-  // Obtienee elemento a hacer el focus
-  const nextElement = document.getElementById(nextFocus);
-  // console.log('EditText keyPres Name',this.prop.Name=', setElement)
-  if (nextElement) {
-    //  console.log('clickReturn nextFocus =', nextFocus)
-    nextElement.focus()
-    //  nextElement.focus()
+  if (This.Form == null)
+    return
 
-    //$event.keycode = 9;
-    return // $event.keycode;
+  for (const element in This.Form.estatus) {
+    const Tab = This.Form[element].prop.TabIndex
+    //          console.log('EditText nextElement element=====>', element, This.Parent[element].prop.Name,
+    //            'TabIndex=', Tab, TabIndex, lastIndex)
+
+    if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+      lastIndex = Tab
+      //nextFocus = This.Parent[element].prop.htmlId
+      console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+      This.Form[element].prop.Focus = true
+      return
+
+    }
+
   }
+  return
 
 }
 
@@ -1641,12 +1645,48 @@ watch(
 watch(
   () => This.Form.estatus,
   async () => {
-    if (Evento.length > 2)
-      ChecaEventos()
+    // if (Evento.length > 2)  ChecaEventos()
   }, { deep: true }
 );
 
-const ChecaEventos = async () => {
+// Ejecuta los eventos when y otros eventos
+const ChecaEventos = async (Evento?: string) => {
+  // console.log('ChecaEventos Evento=', Evento)
+  // Si esta en un contenedor grid
+  if (This.Parent && This.Parent.BaseClass == "grid") {
+    const grid = This.Parent
+
+    for (const comp in grid.elements) {
+      const compName = grid.elements[comp].Name
+      // 24/Dic/2024 .- Se aumenta que sea componente Capture
+      if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
+        This.prop.Disabled = true
+        await Delay(200)
+        This.prop.Disabled = false
+        return false
+      }
+    }
+    return true
+  }
+
+  for (const comp in This.Form.estatus) {
+    if (comp != This.prop.Name && This.Form.estatus[comp] != 'A') {
+      console.warn(This.prop.Name, '1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
+      This.prop.Disabled = true
+      await Delay(200)
+      This.prop.Disabled = false
+      return false
+    }
+  }
+
+  return true
+}
+
+
+
+
+
+const ChecaEventos_old = async () => {
 
   for (const comp in This.Form.estatus) {
     if (This.Form.estatus[comp] != 'A') {

@@ -16,21 +16,22 @@ export class ref_doc extends CAPTURECOMPONENT {
     constructor() {
         super();
         this.prop.Caption = "Referencia";
-        this.prop.Type = 'text';
         this.prop.ControlSource = "vi_cap_comedoc.ref_doc";
         this.inputStyle.width = '300px';
         //propiedades
     }
 
     override async when() {
-
         let m = {}   // inicializamos m
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
+        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per('ref_doc')
         if (this.prop.ReadOnly) {
             this.prop.Valid = true
             this.prop.nextFocus = true
+
             return false
         } // End If 
+        return true
+
 
         const vi_cap_comedoc = await scatter([`${this.prop.Name}`], 'vi_cap_comedoc')
 

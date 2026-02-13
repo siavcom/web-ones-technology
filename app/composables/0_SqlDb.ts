@@ -2916,7 +2916,9 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
 
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-    console.log('Db readCampo=', tabla, campo, recno)
+
+
+    // console.log('Db readCampo=', tabla, campo, recno)
     const data = await localAlaSql("USE " +
         DataBase +
         " ; SELECT " +

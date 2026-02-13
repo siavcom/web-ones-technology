@@ -51,7 +51,7 @@ export class HELP extends CONTAINER {
     this.prop.Visible = false
     this.prop.Disabled = true
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
-    this.style.height = 'auto'
+    this.style.height = 'fit-content'
     this.style.width = 'auto'
 
     this.block[0] = {
@@ -167,17 +167,20 @@ export class HELP extends CONTAINER {
 
     // regresa el valor al campo principal
     this.Parent.prop.ReadOnly = false
-    if (this.browse.prop.Value > '   ') {
-      console.log("help close browse.prop.Value=", this.browse.prop.Value, 'typeof=', typeof this.browse.prop.Value)
-      if (typeof this.Parent.prop.Value == "number")
+    if ((typeof this.browse.prop.Value == "number" && this.browse.prop.Value > 0) || this.browse.prop.Value > '   ') {
+      if (this.Parent.prop.Type == "number")
         this.Parent.prop.Value = +this.browse.prop.Value
       else
-        this.Parent.prop.Value = this.browse.prop.Value
+        if (typeof this.browse.prop.Value == "number")
+          this.Parent.prop.Value = this.browse.prop.Value.toString()
+        else
+          this.Parent.prop.Value = this.browse.prop.Value
 
-      this.Parent.valid()
-      this.Parent.prop.nextFocus = true
 
-      this.Parent.Help = false
+      // await this.Parent.valid()
+      //this.Parent.prop.nextFocus = true
+      this.Parent.Help = false  //Aqui me quede
+      console.log("1) help close this.Parent.prop.Type=", this.Parent.prop.Type, 'Value=', this.Form.cod_nom.prop.Value)
       this.Parent.setFocus()
 
     }

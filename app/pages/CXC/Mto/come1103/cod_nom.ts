@@ -42,6 +42,8 @@ export class cod_nom extends CAPTURECOMPONENT {
     override async when() {
         let m = {}   // inicializamos m
 
+        console.log('when cod_nom Value=', this.prop.Value)
+
         this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
         if (this.prop.ReadOnly) {
             this.prop.Valid = true
@@ -51,7 +53,7 @@ export class cod_nom extends CAPTURECOMPONENT {
         const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
         if (vi_cap_comedoc.key_pri) { // Documento existente
             const vi_cap_comepag = await localAlaSql('select count(key_pri) as key_pri from vi_cap_comepag where key_pri<>0')
-            console.log('valid cod_nom vi_cap_comepag recno=', await recCount('vi_cap_comepag'))
+
             if (vi_cap_comepag[0].key_pri > 0) {
                 // Wait windows Nowait 'Tiene pagos asignados'
                 MessageBox(this.prop.Messages[0], 16, 'Advertencia', 3000)
@@ -80,12 +82,16 @@ export class cod_nom extends CAPTURECOMPONENT {
     // Comentarios :Es la validación de codigo del cliente o proveedor
     override async valid(sw_rel?: boolean) {
         let m = {}   // inicializamos m
-
-        if (this.prop.Value.trim().length == 0)
-            return false
-
         if (this.Form.prop.key == 27)
             return true
+
+        console.log('cod_nom valid', this.prop.Value, typeof this.prop.Value)
+        if (this.prop.Value == null)
+            this.prop.Value = '          '
+
+        if (this.prop.Value.trim().length === 0)
+            return false
+
 
 
         const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')

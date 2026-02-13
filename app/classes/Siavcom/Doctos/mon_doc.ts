@@ -50,7 +50,7 @@ export class mon_doc extends CAPTURECOMPONENT {
         const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
         // si cambio de moneda o es un documento nuevo
         console.log('valid mon_doc Value=', this.prop.Value)
-        const vmo_doc = [0, vi_cap_comedoc.vm1_doc, vi_cap_comedoc.vm2_doc, vi_cap_comedoc.vm3_doc, vi_cap_comedoc.vm4_doc, vi_cap_comedoc.vm5_doc]
+        const vmo_doc = [1, vi_cap_comedoc.vm1_doc, vi_cap_comedoc.vm2_doc, vi_cap_comedoc.vm3_doc, vi_cap_comedoc.vm4_doc, vi_cap_comedoc.vm5_doc]
         this.Form.vmo_doc.prop.Value = vmo_doc[this.prop.Value]
         return true
     }   // Fin Procedure

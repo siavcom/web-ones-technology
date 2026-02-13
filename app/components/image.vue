@@ -214,9 +214,6 @@ const onFocus = async () => {
   if (This.beforeWhen)
     await This.beforeWhen()
 
-  if (!This.Help)
-    This.Help = false
-
   This.prop.Focus = false
   This.prop.First = false
 

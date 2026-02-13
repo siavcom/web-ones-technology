@@ -1166,12 +1166,8 @@ export async function MessageBox(
  * @param {number} ms - The number of milliseconds to delay.
  * @returns {Promise<void>} - A promise that resolves after the given number of milliseconds has passed.
  */
-export async function Delay(
-  ms: number
-): Promise<void> {
+export async function Delay(ms: number): Promise<void> {
   await new Promise(f => setTimeout(f, ms));
-
-
 }
 
 //////////////////////////////////////////////

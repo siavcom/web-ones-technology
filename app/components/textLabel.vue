@@ -7,22 +7,21 @@
 
 
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
-      :style=Styles.inputStyle :checked="checkValue" readonly="true" :disabled=This.prop.Disabled />
+      :style=Styles.inputStyle :checked="checkValue" readonly="true" @focus="nextElement()" />
 
     <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
-      readonly="true" :disabled=This.prop.disabled />
+      readonly="true" @focus="nextElement()" />
     <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="Styles.inputStyle"
-      readonly="true" :disabled=This.prop.disabled v-model="Text" />
+      readonly="true" @focus="nextElement()" v-model="Text" />
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
-      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" :disabled=This.prop.Disabled
-      v-model="Text" />
+      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
     <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="Styles.inputStyle">
       <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text != null && Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
     </button>
     <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
-      readonly="true" :disabled=This.prop.Disabled v-model="Text" />
+      readonly="true" @focus="nextElement()" v-model="Text" />
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '">
       <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
@@ -159,14 +158,50 @@ let Render = false
 
 let sw_ReadCampo = false
 
-/*
-const captionStyle = reactive(This.captionStyle)
-const InputStyle = reactive({ ...props.inputStyle })
-const refInputStyle = toRef(This.inputStyle)
-*/
+/////////////////////////////////////////////
+// Busca el siguiente elemento a seleccionar
+/////////////////////////////////////////////
+const nextElement = async () => {  //clickReturn
 
+  if (This.Form == null)
+    return
 
+  const TabIndex = This.prop.TabIndex
+  let lastIndex = 9999999
 
+  if (This.Parent && This.Parent.BaseClass == "grid") {
+    const grid = This.Parent
+
+    for (const element in grid.elements) {
+      const Tab = This.Form[element].prop.TabIndex
+      if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+        //nextFocus = This.Parent[element].prop.htmlId
+        console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+        This.Parent[element].prop.Focus = true
+        return
+
+      }
+    }
+    return
+  }
+
+  for (const element in This.Form.estatus) {
+    const Tab = This.Form[element].prop.TabIndex
+    //          console.log('EditText nextElement element=====>', element, This.Parent[element].prop.Name,
+    //            'TabIndex=', Tab, TabIndex, lastIndex)
+
+    if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+      lastIndex = Tab
+      //nextFocus = This.Parent[element].prop.htmlId
+      console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+      This.Form[element].prop.Focus = true
+      return
+
+    }
+
+  }
+
+}
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
@@ -519,7 +554,7 @@ const readValue = async (on_Mounted?: boolean) => {
 
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
-    console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
+    //    console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
     const data = await readCampo(props.prop.ControlSource, props.Registro)
     sw_ReadCampo = true
     for (const campo in data) {

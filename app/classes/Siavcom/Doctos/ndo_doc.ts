@@ -114,23 +114,12 @@ export class ndo_doc extends CAPTURECOMPONENT {
         this.Form.nom_obj = nom_obj
 
         this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
-        console.log('ndo_doc when rev_per ')
+        console.log('ndo_doc when  ', 'This.prop.Value=', this.prop.Value)
+
         return await this.Form.rev_per('ndo_doc')
 
     }   // Fin Procedure
 
-    // Evento   :GotFocus
-    // Objeto  :ndo_doc
-    // Tipo   :Cuadro de texto
-    // Comentarios :Es la validación de la llave principal
-    override async gotFocus_old() {
-
-        let m = {}   // inicializamos m
-        // busca el consecutivo del documento
-        this.prop.Value = await get_con_doc(this.Form.tdo_tdo.prop.Value)
-
-
-    }   // Fin Procedure
 
     // Evento   :Valid
     // Objeto  :ndo_doc
@@ -252,22 +241,10 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
             } // End For; 
 
-            // habilitamos moneda del documento
-
-            // asignamos el valor de la moneda
             // asignamos fecha contable
 
             this.Form.fec_doc.prop.Value = Public.value.fpo_pge
 
-            //            this.Form.Bt_doc_por_pagar.prop.Visble = false
-            // this.Form.d_pap_doc.prop.Value = 0
-            // por aplicar
-            // bloque de documentos por pagar [3] 
-            //this.Form.block[3].prop.Visible = false
-            // bloque de documentos pagados [4]
-            //this.Form.block[4].prop.Visible = false
-
-            // thisform.busqueda.enabled=.t.  && habilita la busqueda
             m.tdo_tdo = vi_cap_comedoc.tdo_tdo
 
             // Tabla de clasificacion de documentos
@@ -410,10 +387,9 @@ export class ndo_doc extends CAPTURECOMPONENT {
             // elemento nuevo
         } // End If 
 
-        if (vi_cap_comedoc.key_pri) {
-            return true
+        //        if (!this.Form.tcd_tcd.prop.Visible)
+        //            this.Form.ref_doc.setFocus()
 
-        } // End If 
         return true
 
     }   // Fin Procedure

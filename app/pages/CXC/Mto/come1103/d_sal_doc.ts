@@ -15,10 +15,9 @@ export class d_sal_doc extends COMPONENT {
     //public
     constructor() {
         super();
-
-        this.prop.Caption = "Aplicado";
         this.prop.BaseClass = 'textLabel'
         this.prop.Type = 'number';
+        this.prop.Caption = "Aplicado";
         this.prop.ControlSource = "vi_cap_comedoc.sal_doc";
         this.inputStyle.width = '125px'
         this.style.fontSize = '17px';
@@ -33,6 +32,7 @@ export class d_sal_doc extends COMPONENT {
 
     public override async init() {
         this.prop.Decimals = Public.value.dcp_pge
+        this.prop.Value = 0
     }
     //metodo
 }

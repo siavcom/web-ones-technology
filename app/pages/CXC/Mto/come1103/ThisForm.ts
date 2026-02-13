@@ -41,7 +41,7 @@ import { ref_doc } from '@/classes/Siavcom/Doctos/ref_doc';
 
 
 import { fec_doc } from '@/classes/Siavcom/Doctos/fec_doc';
-import { d_fel_doc } from '~/classes/Siavcom/Doctos/d_fel_doc';
+import { d_fel_doc } from '@/classes/Siavcom/Doctos/d_fel_doc';
 import { fve_doc } from '@/classes/Siavcom/Doctos/fve_doc';
 
 import { ven_ven } from '@/classes/Siavcom/Doctos/ven_ven';
@@ -77,10 +77,6 @@ import { im5_doc } from '@/classes/Siavcom/Doctos/im5_doc';
 import { d_tot_doc } from '@/classes/Siavcom/Doctos/d_tot_doc';
 import { d_total } from '@/classes/Siavcom/Doctos/d_total';
 
-//import { Imprime } from './Imprime';
-
-
-//import { Modificar } from './Modificar';
 import { mon_doc } from '@/classes/Siavcom/Doctos/mon_doc';
 
 import { tpy_tpy } from "@/classes/Siavcom/Doctos/tpy_tpy";
@@ -93,8 +89,8 @@ import { top_nom } from './top_nom';
 
 
 //import { Bt_veri_xml } from './Bt_veri_xml';
-import { vmo_doc } from '../../../../classes/Siavcom/Doctos/vmo_doc';
-import { Bt_campos_xml } from './Bt_campos_xml';
+import { vmo_doc } from '@/classes/Siavcom/Doctos/vmo_doc';
+import { Bt_campos_xml } from '@/classes/Siavcom/Doctos/Bt_campos_xml';
 
 import { Bt_imprime } from "./Bt_imprime";
 import { Bt_timbra } from "./Bt_timbra";
@@ -102,11 +98,11 @@ import { Bt_timbra } from "./Bt_timbra";
 import { report } from "./report/report";
 
 import { ap_pagos } from './ap_pagos';
-import { Bt_autorizacion } from './Bt_autorizacion';
-import { Bt_dre_doc } from './Bt_dre_doc';
+import { Bt_autorizacion } from '@/classes/Siavcom/Doctos/Bt_autorizacion';
+import { Bt_dre_doc } from '@/classes/Siavcom/Doctos/Bt_dre_doc';
 
 
-import { Bt_can_docto } from './Bt_can_docto';
+import { Bt_can_docto } from '@/classes/Siavcom/Doctos/Bt_can_docto';
 import { captura_xml } from './captura_xml';
 import { Bt_carga_xml } from './Bt_carga_xml';
 
@@ -553,6 +549,7 @@ export class ThisForm extends captureForm {
 
 		// vista de documentos para darle mantenimiento
 		await useNodata('vi_cap_comedoc')
+
 		// tabla de tipos de documentos a pagar
 		await SQLExec(`select tdo_tdo , des_tdo From vi_cap_cometdo Where cop_nom='${tip_cap}' AND ( cop_nom + coa_tdo = 'CC' OR cop_nom + coa_tdo = 'PA' ) Order By des_tdo`, 'doc_ppagar')
 		// vista de documentos para darle mantenimiento
