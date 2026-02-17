@@ -477,6 +477,15 @@ const nextFocus = async ($event) => {
 const Init = new INIT();  // solo se puso para evitar de errores que tenia 
 
 const mounted = ref(false)
+
+
+
+
+/**
+ * Despues ede montar la forma, asigna los estatus de los componentes
+ * 
+ */
+
 onBeforeMount(async () => {
 
   //onMounted(async () => {

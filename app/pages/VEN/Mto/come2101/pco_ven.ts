@@ -20,7 +20,8 @@ export class pco_ven extends CAPTURECOMPONENT {
     this.prop.Type = 'number';
     this.prop.ControlSource = "vi_cap_comeven.pco_ven";
     this.prop.Capture = true
-    this.prop.Decimals = 2
+    this.prop.Decimals = 3
+    this.prop.Min = '0'
     this.inputStyle.width = "48px";
   }
   //metodo

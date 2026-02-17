@@ -5,7 +5,6 @@
  Autor    	: ElFerBlocks
  Sistema  	: Web-Ones  							Version : 1.0  VUE
  Programa 	: comboBox    		Mnemo   : comboBox.vue
- Ult.Mod :   13/Marzo/2025 se agrego el siguiente if
  Objeto		: VUE
  Comentarios	: 
  ----------------------------------------------------------------------------------------------
@@ -57,9 +56,10 @@
 
     <!--         ComboBox NOT MultiSelect      -->
     <div :id="Id + '_selectOne'" v-else class="comboBox text" ref="RefCombo" :style='comboStyle'>
-      <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled" :readonly="prop.ReadOnly"
-        :value="displayText" :tabindex="prop.TabIndex" ref="Ref" @keypress="keyPress($event)"
-        @focus.prevent="toggle = false; when()" @focusout="focusIn = false; emitValue()" />
+      <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled"
+        :readonly="prop.ReadOnly || onlyRead" :value="displayText" :tabindex="prop.TabIndex" ref="Ref"
+        @keypress="keyPress($event)" @focus.prevent="toggle = false; onFocus()"
+        @focusout="focusIn = false; emitValue()" />
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
@@ -87,7 +87,7 @@
       </div>
       <!--toggle click.prevent -->
       <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" :style="toggleStyle"
-        v-if="!This.prop.ReadOnly && !This.prop.Disabled"
+        v-if="!This.prop.ReadOnly && !This.prop.Disabled && !onlyRead"
         :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       <!--/div-->
@@ -132,14 +132,6 @@
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
   </span>
   <!--v-bind:inputStyle="This[compMain].inputStyle"
   span v-if="prop.ShowValue">{{ prop.Value }}</span-->
@@ -148,7 +140,6 @@
 </template>
 
 <script setup lang="ts">
-
 
 // "update:Key", "update:Focus"
 
@@ -270,8 +261,9 @@ const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
-//let First = false
-//let Focus = false
+let firstFocus = false
+
+let onlyRead = ref(false)
 let focusIn = false
 let Evento = ''
 const MultiSelect = ref(props.prop.MultiSelect)
@@ -315,18 +307,10 @@ const Status = ref(props.prop.Status);
 // Status.value = 'I'
 const toggle = ref(false)
 
-
 const hover = ref(false)
-//const Focus = ref(props.prop.Focus)
-//const First = ref(props.prop.First)
-
-
 
 const displayError = ref(false)
 const sw_focus = ref(false)
-// Focus.value = false
-
-
 
 if (MultiSelect.value) {
   if (!Styles.style.borderStyle)
@@ -342,12 +326,6 @@ if (MultiSelect.value) {
 
 if (Styles.style.width == 'auto')
   Styles.style.width = 'fit-content'
-
-//if (Styles.style.height == 'auto')
-//  Styles.style.height = '18px'
-
-//Styles.style.zIndex = 100 - This.prop.TabIndex
-
 
 const zIndex = ref(Styles.style.zIndex) //ref(This.style.zIndex)
 
@@ -368,7 +346,6 @@ const toggleZIndex = comboStyle.zIndex + 1
 
 const inputWidth = ref('auto')
 
-
 const columncaptionStyle = {
   width: 'auto', //inputWidth.value,
   border: "1px solid rgb(0, 5, 2)",
@@ -378,8 +355,6 @@ const columncaptionStyle = {
   position: "relative",
   zIndex: comboStyle.zIndex + 1
 }
-
-//const columnStyle={ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': divStyle.height }
 
 
 const List = ref(This.prop.ListCount)
@@ -615,14 +590,6 @@ const asignaValor = async () => {
   }
   swInit = false
 
-  /*
-   
-   if (swInit && props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-       swInit = false
-       await This.Form.db.updateCampo(Value.value, props.prop.ControlSource, props.Registro)
-      
-      }
-  */
 
 }
 
@@ -631,7 +598,7 @@ const toggleClick = async () => {
   if (!toggle.value) {
     // if (!sw_focus.value)
     if (!focusIn)
-      await when()   // 18/Junio/2025
+      await onFocus()   // 18/Junio/2025
 
   }
   if (!This.prop.ReadOnly)
@@ -719,33 +686,13 @@ const focusOut = async () => {  // se puede perder el foco si no es un renglon v
   return
 }
 
-/////////////////////////////////////////////////////////////////////
-// focusOut
-// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
-/////////////////////////////////////////////////////////////////
 
-/*
-const focusOut = async () => {
-  emitValue()
-  return
-};
- 
-*/
 /////////////////////////////////////////////////////////////////////
 // Valid
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const validClick = async (num_ren: number) => {
-  /*
-    for (const element of This.Parent.elements) {
-      const comp = element.Name
-      console.log('ComboBox validClick componente=', comp)
-      if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name) {
-        return
-      }
-    }
-  */
   toggle.value = false
   comboStyle.zIndex = zIndex.value
 
@@ -754,8 +701,6 @@ const validClick = async (num_ren: number) => {
   //  await This.interactiveChange()
   emitValue()
   focusIn = false // Perdio el foco
-
-
   return
 
 };
@@ -815,12 +760,6 @@ const validList = async () => {
   focusIn = false // Perdio el foco
 
 
-
-  //toggle.value = false
-
-  // console.log('ComboBox validList', This.prop.Name, 'Value=', Value.value)
-  //emitValue()
-
   return
 
 };
@@ -829,29 +768,41 @@ const validList = async () => {
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
-// Obs: el when() se llama desde el coponente parent 
+// Obs: el onFocus() se llama desde el coponente parent 
 /////////////////////////////////////////////////////////////////
-const when = async (click?: boolean) => {
+const onFocus = async (click?: boolean) => {
   // No se permite el focus si es solo lectura
+
+  ToolTipText.value = false  // apaga tooltip
+  //console.log('1) onFocus', This.prop.Name, focusIn.value)
+  // Es su primer focus
+
+  if (!firstFocus) {  // Primer focus
+    onlyRead.value = true // No permite captura de datos
+    if (!await ChecaStatus()) {
+      firstFocus = true
+      return
+    }
+
+  }
+
+  firstFocus = false
+  if (This.prop.ReadOnly || This.prop.Disabled)
+    return nextElement()
 
   if (focusIn)
     return
+  /*
+    if (This.prop.ReadOnly || This.prop.Disabled) {
+      const Disabled = This.prop.Disabled
+      This.prop.Status = 'A'
+      This.prop.Disabled = true
+      await Delay(200)
+      This.prop.Disabled = Disabled ? true : false
+      return
+    }
+  */
 
-  if (This.prop.ReadOnly || This.prop.Disabled) {
-    const Disabled = This.prop.Disabled
-    This.prop.Status = 'A'
-    This.prop.Disabled = true
-    await Delay(200)
-    This.prop.Disabled = Disabled ? true : false
-    return
-  }
-
-  console.log('when comboBox =', This.prop.Name)
-
-  ToolTipText.value = false
-  if (!await ChecaEventos()) {
-    return
-  }
 
   if (This.beforeWhen)
     await This.beforeWhen()
@@ -865,52 +816,27 @@ const when = async (click?: boolean) => {
     //    This.Form.eventos.push(This.prop.Map + '.when()')
   }
 
-  // await nextTick()
-  //This.Form.eventos.push(This.prop.Map + '.when()')
-  //This.Form.eventos.push(This.prop.Map + '.prop.ReadOnly=!' + This.prop.Map + '.when()')
 
   This.prop.ReadOnly = !await This.when()
+  onlyRead.value = false // Permitimos captura
 
   if (This.prop.ReadOnly)
-    This.prop.nextFocus = true
-  return
+    nextElement()
 
+  return
 
   if (!This.prop.ReadOnly)
     This.click()
 
-
-
-
-
-
 }
 
 /////////////////////////////////////////////////////////////////////
-// onFocus
+// toggleFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
-const onFocus = async () => {
+const toggleFocus = async () => {
 
-  if (This.Parent.BaseClass == "grid") {
-    const grid = This.Parent
-    //console.log('EditText onFocus Grid Name', This.prop.Name)
-    for (const comp in grid.elements) {
-      const compName = grid.elements[comp].Name
-      // 24/Dic/2024 .- Se aumenta que sea componente Capture
-      if (grid[compName].prop.Status != 'A' && grid[compName].prop.Capture && !grid[compName].prop.Valid) {
-        // console.log('EditText onFocus Grid Status comp=', compName, 'Estatus=', grid[compName].prop.Status)
-        return
-      }
-    }
-  }
-
-  // No se permite el focus si es solo lectura
-  if (This.prop.ReadOnly || This.prop.Disabled) {
-    This.prop.Estatus = 'A'
-    return
-  }
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     if (Recno.value > 0) {
@@ -937,11 +863,11 @@ const onFocus = async () => {
     Valid.value = true
   }
   //ReadOnly.value=await !This.when()
-  //console.log('Onfocus comboBox prop.Name=', props.prop.Name, 'Value=', Value.value)
+  //console.log('toggleFocus comboBox prop.Name=', props.prop.Name, 'Value=', Value.value)
 
   emit("update:Valid", true)
 
-  //  console.log('3) comboBox onFocus Name', This.prop.Name, 'Focus=', This.prop.Focus)
+  //  console.log('3) comboBox toggleFocus Name', This.prop.Name, 'Focus=', This.prop.Focus)
   if (!This.prop.Focus)// 13 Junio 2025
     return
 
@@ -963,11 +889,43 @@ const onFocus = async () => {
 
 
   }, 0);
-  // This.when()
-  // This.Form.eventos.push(This.prop.Map + '.when()')
-
 
 }
+
+/**
+ @Description: Checa Status si los demas componentes no estan en proceso
+*/
+
+const ChecaStatus = async () => {
+
+  // Si esta en un contenedor grid
+  /*  if (This.Parent && This.Parent.prop.BaseClass == "grid") {
+  
+      for (const comp in This.Parent.estatus) {
+        if (comp != This.prop.Name && This.Parent.estatus[comp] != 'A') {
+          console.warn(This.prop.Name, '1) Grid checa Estatus Componente en proceso=', comp, 'Estatus=', This.Parent.estatus)
+          return false
+        }
+  
+      }
+      return true
+    }
+  */
+  // Si es componente de un form
+  for (const comp in This.Parent.estatus) {
+    if (comp != This.prop.Name && This.Parent.estatus[comp] != 'A') {
+      console.warn(This.prop.Name, '1) Form Checa Estatus Componente en proceso=', comp, 'Estatus=', This.Parent.estatus)
+      return false
+    }
+  }
+
+  return true
+}
+
+
+
+
+
 
 
 //////////////////////////////////////////////////////
@@ -1207,48 +1165,59 @@ const ColumnWidth = (columnas: string) => {
 /////////////////////////////////////////////
 const nextElement = async () => {  //clickReturn
 
+  if (Object.keys(This.Parent).length === 0)
+    return
+
+  This.prop.Status = 'A'
+  await Delay(200)
+
   const TabIndex = This.prop.TabIndex
   let lastIndex = 9999999
-  let nextFocus = ''
-
-
-  if (This.Parent && This.Parent.BaseClass == "grid") {
-    const grid = This.Parent
-
-    for (const element in grid.elements) {
-      const Tab = This.Form[element].prop.TabIndex
-      if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
-        //nextFocus = This.Parent[element].prop.htmlId
-        console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
-        This.Parent[element].prop.Focus = true
-        return
-
+  /*
+    if (This.Parent.BaseClass == "grid") {
+      const grid = This.Parent
+  
+      for (const element in grid.elements) {
+        const Tab = This.Form[element].prop.TabIndex
+        if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex
+          && !This.Parent[element].prop.ReadOnly && !This.Parent[element].prop.Disabled
+        ) {
+          lastIndex = Tab
+          //nextFocus = This.Parent[element].prop.htmlId
+          console.log('Grid Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+  
+          This.Parent[element].prop.Focus = true
+          return
+  
+        }
       }
+  
+      return
     }
-    return
-  }
-  if (This.Form == null)
-    return
+  */
 
-  for (const element in This.Form.estatus) {
-    const Tab = This.Form[element].prop.TabIndex
-    //          console.log('EditText nextElement element=====>', element, This.Parent[element].prop.Name,
+  for (const element in This.Parent.estatus) {
+    const Tab = This.Parent[element].prop.TabIndex
+
     //            'TabIndex=', Tab, TabIndex, lastIndex)
 
-    if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
+    if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex
+      && !This.Parent[element].prop.ReadOnly && !This.Parent[element].prop.Disabled) {
       lastIndex = Tab
       //nextFocus = This.Parent[element].prop.htmlId
-      console.log('Siguiente elemento', This.prop.Name, 'nextFocus=', element)
-      This.Form[element].prop.Focus = true
+      console.log('Parent Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+      //   This.prop.Disabled = Disabled
+
+      This.Parent[element].prop.Focus = true
       return
 
     }
 
   }
+  // This.prop.Disabled = Disabled
   return
 
 }
-
 
 
 ////////////////////////////////////////////////////////////////
@@ -1338,56 +1307,27 @@ watch(
   { deep: false }
 );
 */
-watch(
-  () => This.prop.Focus, //props.prop.Focus,
-  (new_val: any, old_val: any) => {
-    if (!new_val) {
-      return
-    }
 
-    onFocus()
-    return
 
-  },
-  { deep: false }
-)
 
-/*
-////////////////////////////////////////
+///////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
- 
- 
+
+
 watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
-    //console.log('1)EditText Watch Focus Name=', This.prop.Name, This.prop.Focus)
+
     if (!new_val) {
       return
     }
- 
- 
-    // Se pidio desde afuera el setFocus
- 
-    if (document.activeElement != thisElement) {
-      if (thisElement.select)
-        thisElement.select();
- 
-    }
-    setTimeout(function () {
-      if (thisElement.select) {
-        thisElement.focus({ focusVisible: true });
-        thisElement.select();
-      }
- 
-    }, 0);
+    This.prop.Focus = false
+    select()
     return
   },
   { deep: false }
 )
- 
-*/
-
 
 ////////////////////////////////////////
 // Da click para renderizar 
@@ -1403,7 +1343,7 @@ watch(
 
 
     //console.log('watch toggle.value', props.Name, old_val, new_val)
-    if (!old_val && new_val) onFocus()
+    if (!old_val && new_val) toggleFocus()
   },
   { deep: true }
 );
@@ -1642,10 +1582,21 @@ watch(
   { deep: false }
 );
 
+
+
+/** 
+ Checa los cambio de estuatusn de todos los componentes
+ y si alguno esta en modo edicion, no permite que este componente tome el foco
+*/
+
 watch(
-  () => This.Form.estatus,
+  () => This.Parent.estatus,
   async () => {
-    // if (Evento.length > 2)  ChecaEventos()
+
+    // console.log('EditText watch Form.estatus', This.Form.estatus)
+    if (firstFocus && await ChecaStatus()) { //16/Feb/2026  Si ya habia tenido el foco
+      onFocus() // Continua tomando el foco
+    }
   }, { deep: true }
 );
 
@@ -1681,32 +1632,6 @@ const ChecaEventos = async (Evento?: string) => {
 
   return true
 }
-
-
-
-
-
-const ChecaEventos_old = async () => {
-
-  for (const comp in This.Form.estatus) {
-    if (This.Form.estatus[comp] != 'A') {
-      //    console.warn('1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
-      return
-    }
-  }
-
-  // console.log('comboBox Name=', This.prop.Name, 'Ejecutara Evento =', Evento)
-
-  if (Evento == 'when') {
-    Evento = ''
-    This.prop.ReadOnly = !await This.when()
-    if (!This.prop.ReadOnly)
-      This.click()
-  }
-
-}
-
-
 
 
 
@@ -1864,23 +1789,7 @@ onMounted(async () => {
 
 })
 
-/*
-onMounted(() => {
-  
-  init() // Ejecuta el init
-});
-*/
-/*
-onMounted(async () => {
-  if (This.onMounted)
-    await This.when()
- 
-  //await This.onMounted()
-  console.log(' comboBox onMounted Name=', This.prop.Name)
- 
-})
- 
-*/
+
 onBeforeMount(async () => {
   //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
   //    if (This.init)

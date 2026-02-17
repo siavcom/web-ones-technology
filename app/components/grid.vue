@@ -274,7 +274,9 @@ console.log(This.prop.Name, 'Grid divStyle=', divStyle, 'This.prop.ReadOnly=', T
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
-const compStatus = reactive({})
+//const compStatus = reactive({})
+const compStatus = ref(This.estatus)
+
 const compValid = reactive({})      // Arreglo de validacion de los componentes
 var load_data = false //Verdadero cuando se debe cargar datos a la pagina
 var RowInsert = false // Verdadero cuando ocurrio una insercion de renglon
@@ -413,11 +415,11 @@ watch(
   () => eventos,
   (new_val, old_val) => {
 
-    for (const comp in compStatus) {
+    for (const comp in compStatus.value) {
       //console.log('Watch estatus ===>', comp, compStatus[comp])
 
-      if (compStatus[comp] != 'A' && Status.value == 'A') {
-        console.log('Grid watch eventos eventos=', new_val, ' comp=', comp, 'Status=', compStatus[comp])
+      if (compStatus.value[comp] != 'A' && Status.value == 'A') {
+        //console.log('Grid watch eventos eventos=', new_val, ' comp=', comp, 'Status=', compStatus[comp])
         //   Status.value = 'P';  // Cambia el estatus del grid a Proceso
         //   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -443,15 +445,14 @@ watch(
 // Cabia el estatus del grid a Activo si todo ya no esta en proceso
 //////////////////////////////////////////////
 watch(
-  () => compStatus,
+  () => compStatus.value,
   (new_val, old_val) => {
 
+    for (const comp in compStatus.value) { // Recorre todos los estatus del grid
 
-    for (const comp in compStatus) { // Recorre todos los estatus del grid
-
-      if (compStatus[comp] != 'A' && Status.value == 'A' && !This[comp].prop.Disabled && This[comp].prop.Visible) { // Si alguno no esta activo
+      if (compStatus.value[comp] != 'A' && Status.value == 'A' && !This[comp].prop.Disabled && This[comp].prop.Visible) { // Si alguno no esta activo
         //Status.value = 'P';  // Cambia el estatus del grid a Proceso
-        console.log('-- Grid watch estatus Name=', This.Name, ' comp = ', comp, 'Status=', compStatus[comp], 'This.Row = ', This.Row)
+        // console.log('-- Grid watch estatus Name=', This.Name, ' comp = ', comp, 'Status=', compStatus.value[comp], 'This.Row = ', This.Row)
 
         //   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
@@ -461,25 +462,18 @@ watch(
     Status.value = 'A';  // Todos los componentes del grid esta Activo
     emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
     return
-    /*
-      if (eventos.length == 0) return
-      for (let i = 0; i < eventos.length; i++)
-        This.Form.eventos.push(eventos[i])
-  
-      eventos.length = 0 // borramos los eventos
-  */
+
   },
   { deep: true }
 );
 
 //////////////////////////////////////////////
 // revisa las validaciones de todos los componentes
+// Sirve para hacer autoUpdate cuando todos los componentes estan validos
 //////////////////////////////////////////////
 watch(
   () => compValid,
   async (new_val, old_val) => {
-    if (!This.prop.autoUpdate) return
-
     //  console.log('2).0 3.3 -- Grid watch compValid', 'Row=', This.Row)
     if (This.Row < 0) return
     for (const comp in compValid) { // Recorre todos los estatus del grid
@@ -522,24 +516,6 @@ watch(
         This[ColumnActive].prop.ShowError = true
       }
     }
-    /*
-    
-    
-        const Now = await localAlaSql(`select * from now.${This.prop.RecordSource} where recno=${Recno}`)
-        const Last = await localAlaSql(`select * from last.${This.prop.RecordSource} where recno=${Recno}`)
-        if (now.length == 0 || last.length == 0) return
-        const Campos = View[This.prop.RecordSource].est_tabla
-    
-        for (const campo in Campos) {
-          if (Now[0][campo] !== Last[0][campo]) {
-            console.log('3) 3.3 saveRow Grid watch compValid Status=', This.prop.Status, 'This.prop.Valid=', This.prop.Valid)
-            This.saveRow()
-            return;
-          }
-        }
-    
-    
-    */
 
     //   This.prop.Valid = true
     //console.log('------>>>>>>  Grid watch compValid Vaid=', This.prop.Valid, 'Row=', This.Row,)
@@ -676,8 +652,10 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
   if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
     //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
     for (const columna of This.elements) {
-      if (This[columna.Name].prop.BaseClass == 'edittext' && !This[columna.Name].prop.ReadOnly && !This[columna.Name].prop.Valid)
-        return This[columna.Name].setFocus() // Se posiciona el cursor en el componente no validado
+      if (This[columna.Name].prop.BaseClass == 'edittext' && !This[columna.Name].prop.ReadOnly && !This[columna.Name].prop.Valid) {
+        This[columna.Name].prop.Focus = true // Se posiciona el cursor en el componente no validado
+        return
+      }
     }
   }
 
@@ -833,8 +811,8 @@ const loadData = async (Pos?: number) => {
 }
 
 const restableceStatus = async () => {
-  for (const comp in compStatus)
-    compStatus[comp] == 'A'
+  for (const comp in compStatus.value)
+    compStatus.value[comp] == 'A'
 }
 
 
@@ -976,49 +954,10 @@ const borraRenglon = async (recno?: number) => {
 
   eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
 
-  /*
-  if (await MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
-    This.prop.Status = 'A'
-    await restableceStatus()
-    eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
-    This.Row = -1 // Quitamos la posicion del renglon
-    load_data = true
-
-  }
-*/
-
 
 }
 
-/*
-const saveRow = async (recno?: number) => {
-  scroll.controls = false
-  if (!recno) {
-    //console.log('borraRenglon data Page====>',This.Row,scroll.dataPage)
 
-    // if (This.Row < 0) return
-    // busca a cual recno pertenece el This.Row
-    for (let i = 0; scroll.dataPage.length - 1; i++) {
-
-      if (scroll.dataPage[i].id == This.Row) {
-        recno = scroll.dataPage[i].recno
-        break
-      }
-    }
-    if (!recno) return
-
-  }
-  //const { $MessageBox } = useNuxtApp()
-  if (await MessageBox(`Borramos renglon ${recno}`, 4, '') == 6) {
-    eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
-
-    This.Row = -1 // Quitamos la posicion del renglon
-    console.log('delete borramos load_data', load_data)
-    load_data = true
-
-  }
-}
-*/
 
 const saveTable = async () => {
 
@@ -1080,6 +1019,7 @@ onMounted(async () => {
 
   //  for (const comp in This.elements) {
 
+  // todas las columnas estanb en el arreglo main 
   for (let i = 0; i < This.main.length; i++) {
     const comp = This.main[i]
     if (i == 0)
@@ -1096,8 +1036,9 @@ onMounted(async () => {
 
       //  compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
       This[comp].prop.Valid = true
-      compStatus[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
-      compValid[comp] = toRef(This[comp].prop, "Valid"); // stack de estatus de componentes
+      compStatus.value[comp] = toRef(This[comp].prop, "Status"); // stack de estatus de componentes
+      if (This.prop.autoUpdate) // Solo asighna componentes si es autoUpdate
+        compValid[comp] = toRef(This[comp].prop, "Valid"); // stack de validacion de componentes
 
     }
 

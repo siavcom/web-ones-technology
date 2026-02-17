@@ -22,22 +22,7 @@ export class ref_doc extends CAPTURECOMPONENT {
     }
 
     override async when() {
-        let m = {}   // inicializamos m
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per('ref_doc')
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
-            this.prop.nextFocus = true
-
-            return false
-        } // End If 
-        return true
-
-
-        const vi_cap_comedoc = await scatter([`${this.prop.Name}`], 'vi_cap_comedoc')
-
-
-        this.prop.MaxLength = vi_cap_comedoc.ref_doc.length
-        return true
+        return await this.Form.rev_per('ref_doc')
     }   // Fin Procedure
 
     //metodo

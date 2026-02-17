@@ -32,19 +32,8 @@ export class ref_dat extends COLUMN {
     // Evento When
     ///////////////////////////////////
     override async when() {
-        this.prop.Valid = true
-        this.prop.ReadOnly = false
-
-        if (!await this.Parent.cam_dat.when()) {
-
-            //            this.prop.ReadOnly = true
-            this.prop.Valid = true
-        }
-        console.log('=========>3) when ref_dat ReadOnly=', this.prop.ReadOnly)
-        return !this.prop.ReadOnly
-
+        return await this.Parent.cam_dat.when()
     }
-
 
 
 }
