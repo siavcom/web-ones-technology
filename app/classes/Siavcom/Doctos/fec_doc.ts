@@ -62,20 +62,8 @@ export class fec_doc extends CAPTURECOMPONENT {
     }   // Fin Procedure
 
     override async when() {
-        let m = {}   // inicializamos m
-
-
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
-            this.prop.nextFocus = true
-            return false
-        } // End If 
-        return true
+        return await this.Form.rev_per(this.prop.Name)
     }   // Fin Procedure
-
-
-
 
     //metodo
 }

@@ -46,12 +46,11 @@ export class mon_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Es la validación de la moneda del documento
     override async valid(sw_rel?: boolean) {
-        let m = {}   // inicializamos m
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const m = await currentValue(['vm2_doc', 'vm3_doc', 'vm4_doc', 'vm5_doc'], 'vi_cap_comedoc')
         // si cambio de moneda o es un documento nuevo
-        console.log('valid mon_doc Value=', this.prop.Value)
-        const vmo_doc = [1, vi_cap_comedoc.vm1_doc, vi_cap_comedoc.vm2_doc, vi_cap_comedoc.vm3_doc, vi_cap_comedoc.vm4_doc, vi_cap_comedoc.vm5_doc]
+        const vmo_doc = [0, 1, m.vm2_doc, m.vm3_doc, m.vm4_doc, m.vm5_doc]
         this.Form.vmo_doc.prop.Value = vmo_doc[this.prop.Value]
+        console.log('valid mon_doc vmo_doc=', this.Form.vmo_doc.prop.Value)
         return true
     }   // Fin Procedure
 
@@ -64,20 +63,11 @@ export class mon_doc extends CAPTURECOMPONENT {
 
         const vi_cap_cometcd = await scatter(['cba_cba'], 'vi_cap_cometcd')
         const cometdo = await scatter(['tip_cfd'], 'cometdo')
-        if (await recCount('vi_cap_comepag') > 0)
-            this.prop.ReadOnly = true
 
         if ((cometdo.tip_cfd == 'P' && vi_cap_cometcd.cba_cba > 0) || await recCount('vi_cap_comepag') > 0)
-            this.prop.ReadOnly = true
-
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : !this.Form.rev_per(this.prop.Name)
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
-            this.prop.nextFocus = true
             return false
-        } // End If 
 
-        return true
+        return await this.Form.rev_per(this.prop.Name)
 
     }   // Fin Procedure
 

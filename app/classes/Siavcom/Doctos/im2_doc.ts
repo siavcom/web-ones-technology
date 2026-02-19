@@ -49,17 +49,7 @@ export class im2_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Se preguntarÃ¡ el impuesto segun el tipo de cliente o proveedor
     override async when() {
-        let m = {}   // inicializamos m
-
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per('imp_doc')
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
-            this.prop.nextFocus = true
-            return false
-        } // End If 
-
-
-        return true
+        return await this.Form.rev_per('imp_doc')
 
     }   // Fin Procedure
 

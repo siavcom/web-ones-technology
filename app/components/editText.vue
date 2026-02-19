@@ -260,7 +260,7 @@ const props = defineProps<{
 const Component = toRef(() => props.prop.This)
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
 
-const Este = props.prop.This
+//const Este = props.prop.This
 
 const captionStyle = reactive({ ...This.captionStyle })
 const inputStyle = reactive({ ...This.inputStyle })
@@ -271,7 +271,7 @@ const containerStyle = reactive({ ...This.containerStyle })
 const invalidInputStyle = reactive({ ...This.invalidInputStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 
-let RecNumber = 0
+//let RecNumber = 0
 const Styles = reactive(
   {
     captionStyle: captionStyle,
@@ -305,6 +305,8 @@ This.prop.htmlId = Id
 const Value = ref(props.prop.Value)
 
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
+let swHelp = false
+
 // let Help = false
 
 
@@ -319,7 +321,7 @@ const checkValue = ref(false)
 
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
-let sw_emitValue = false
+//let sw_emitValue = false
 
 
 if (Styles.style.zIndex == 0)
@@ -524,19 +526,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     // 24/Dic/2024  if (This.Form.prop)
     // 24/Dic/2024   This.Form.prop.Status = 'P'
 
-    if (!watchPropValue) {
+    if (!watchPropValue) { // Solo se cambia a proceso si no se cambio el valor desde el watch This.prop.Value
       This.prop.Status = 'P'
-      //2/Sep/2025 Status.value = 'P'
-      //2/Sep/2025 emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
 
       // Si no viene del watch This.prop.Value
       if (!newValor) {
-        //  console.log('-----------0) editText emitValue() !readCam Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+        console.log('-----------0) editText emitValue() !readCam Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
         newValor = Value.value
         //newValor = This.prop.Value  // Si viene del watch This.prop.Value
       }
     }
-
 
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
@@ -545,7 +544,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor)
       // Value.value = Valor
     }
-    //console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
+    console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'NewValue=', newValor, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       if (Value.value != newValor) {
         Value.value = newValor
@@ -553,33 +552,28 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (Value.value != This.prop.Value) {
         This.prop.Value = Value.value
       }
-      //console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+      console.log('--------2.1) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'NewValue=', newValor, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
 
-      // console.log('----------------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'newValor=', newValor, 'This.prop.Value = ', This.prop.Value)
       // if (Value.value != This.prop.Value)  // 14/Mar/2025
       //   This.prop.Value = Value.value // 14/Mar/2025
 
-      //  console.log('2) editText emitValue()  update localSQL Name=', props.prop.Name,'Value=',Value.value ,'This.prop.Value=',This.prop.Value)
-
       emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
       emit("update"); // actualiza el valor Value en el componente padre
-
-
       if (Type == 'spinner' || Type == 'checkbox')
         await This.interactiveChange()
+
+      console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
 
       if (isValid == undefined)
         isValid = false
 
       if (!isValid) {
-        //  console.log('3.3.0.1) editText emitValue() Valid=', This.prop.Valid)
+
         //console.clear()
         //console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
         const newValue = This.prop.Value
 
-
-        //This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
           if (This.prop.Valid)
             This.prop.Valid = false
@@ -638,7 +632,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       let defaultValue = ''
       if (ControlSource.length > 0 || props.prop.Value == null) {
 
-
         switch (Type) {
           case 'number':
             Value.value = 0
@@ -665,7 +658,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     else {
       // leemos valor 
 
-
       // console.log('1.1) editText emitValue !RaedName=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
       let sw_dat = false
@@ -685,17 +677,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           if (campo != 'key_pri') {
             sw_dat = true
 
-            //if (props.Registro && This.Recno != props.Registro)
-            //  This.Recno = props.Registro
-
-            //This.prop.Valid = true// ya se capturo algo , se apaga Valid
             if (Type == 'number')
               Value.value = +data[campo] // se regresaraq el valor con emi al v-model:Value
             else
               Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
-
-
-            //  This.prop.Value=Value.value
 
             //console.log('2.1) editText emitValue writeCampo Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
@@ -740,12 +725,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
   }
 
-  /* antes 15/Sep/2025 esbaba actualizado el valor this.prop.Value 
-    if (This.onChangeValue) {
-      console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
-      await This.onChangeValue(ref(Styles))
-    }
-  */
   //console.log('>>>>>2.2.5) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value, 'Recno=', props.Registro)
   switch (Type) {
     case 'number':
@@ -839,34 +818,22 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   if (This.prop.Valid)
     This.prop.Status = 'A'
 
-
-  if (!This.prop.ReadOnly && !This.prop.Disabled)
-    sw_emitValue = true
-  else
-    sw_emitValue = false
-
-
+  /* 18/Feb/2026 se prueba sw_emitValue=false
+    if (!This.prop.ReadOnly && !This.prop.Disabled)
+      sw_emitValue = true
+    else
+      sw_emitValue = false
+  */
+  //No quitarlo emite un update en el componente padre
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  //emit("update") // No quitarlo emite un update en el componente padre
 
-  //    sw_emitValue = false
-  if (This.onChangeValue) {
-    //  console.log('1) onChange ', props.prop.Name, This.prop.Value, Value.value)
+  if (This.onChangeValue) { // emite el evento cuando cambia de valor
+
     await This.onChangeValue(ref(Styles))
   }
 
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
-  /* 
-   console.log('editText emitValue() Name', props.prop.Name, 'Type=', Type,
-    'This.prop.Value=', This.prop.Value,
-    'currentValue.value=', currentValue.value[0], currentValue.value[1],
-    'currentDate.value=', currentDate.value, displayDate.value,
-    //    'checkValue=', checkValue.value,
-    'ValidOnRead=', This.prop.ValidOnRead,
-    'readValid', readValid,
-    'First Focus=', This.prop.First || This.prop.Focus)
-  */
 
   // Se comento 27 Febrero 2025
   /*
@@ -887,7 +854,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     oldVal = This.prop.Value.toString()
   } else
     oldVal = This.prop.Value
-
   return
 }
 
@@ -934,13 +900,12 @@ const lostFocus = async (fromReturn: number) => {
   //console.log('1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
 
   firstFocus = false
-  if (This.prop.ReadOnly || This.prop.Disabled) {
+  if (This.prop.ReadOnly) {
     return
   }
 
-
   await asignaValue()
-  sw_emitValue = false
+  // sw_emitValue = false 19/Feb/2026
   if (This.prop.Valid)
     focusIn.value = 0 // Perdio el foco
 
@@ -958,6 +923,7 @@ const asignaValue = async (new_val?: any) => {
   This.prop.Status = 'P'
   if (Type == 'number') {
     typeNumber.value = 'text';
+    console.log('asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
 
     const valor = +currentValue.value[1]  // 13/Ene/2024
     if (isNaN(valor))
@@ -1022,9 +988,7 @@ const asignaValue = async (new_val?: any) => {
   }
 
   // This.prop.Value = Value.value
-
-  console.log('1.1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
-
+  // console.log('1.1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
 
   if (new_val)
     await emitValue(false, true, new_val)
@@ -1123,7 +1087,7 @@ const nextElement = async () => {  //clickReturn
     return
 
   This.prop.Status = 'A'
-  await Delay(200)
+  await Delay(10)
 
   const TabIndex = This.prop.TabIndex
   let lastIndex = 9999999
@@ -1165,7 +1129,13 @@ const nextElement = async () => {  //clickReturn
     }
 
   }
-  // This.prop.Disabled = Disabled
+  /*
+  const Disabled = This.prop.Disabled
+
+  This.prop.Disabled = true
+  Delay(10)
+  This.prop.Disabled = Disabled
+*/
   return
 
 }
@@ -1187,6 +1157,7 @@ const onClick = () => {
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 // Obs: el when() se llama desde el coponente parent 
+// Params: Si se utiliza un parametro, el parametro es el objeto html que lo emitio
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
 
@@ -1203,25 +1174,31 @@ const onFocus = async () => {
   }
 
   firstFocus = false
-  if (This.prop.ReadOnly) {
-    //    await Delay(200)
-    //  if (This.prop.ReadOnly)
+  /*
+    if (swHelp) {  // se llamo desde el help
+      focusIn.value = 0
+      This.prop.ReadOnly = !await This.when()
+      onlyRead.value = false // Permitimos captura
+      if (This.prop.ReadOnly)
+        nextElement()
+      return
+    }
+  */
+  if (This.prop.ReadOnly)
     return nextElement()
-  }
 
   if (This.beforeWhen)
     await This.beforeWhen()
 
+
   console.log('2) onFocus', This.prop.Name)
 
-
-  if (This.prop.Type.toLowerCase() != 'checkbox')
+  const Type = propType.value
+  if (Type != 'checkbox')
     Styles.inputStyle.background = This.inputStyle.background
 
   This.prop.Focus = false
   This.prop.First = false
-
-  const Type = propType.value.toLowerCase()
 
   //  displayError.value = false
 
@@ -1258,7 +1235,7 @@ const onFocus = async () => {
   }
 
   // emit("update:Value", Value.value)
-  sw_emitValue = false
+  // sw_emitValue = false 19/Feb/2026
   This.prop.Valid = true
 
   This.prop.ReadOnly = !await This.when()
@@ -1269,22 +1246,36 @@ const onFocus = async () => {
     nextElement()
     return
   }
+
   focusIn.value = 1  // cambia el valor en el input number 
-  console.log('7) Fin ======>editText onFocus Name=', This.prop.Name)
+  console.log('7-fin) Fin ======>editText onFocus Name=', This.prop.Name)
 
 }
 
-
-
+//////////////////////////////////////////////////////////////////////
+// clickHelp : Se pide ayuda del usuario para encontrar un valor
+//////////////////////////////////////////////////////////////////////
 const clickHelp = async () => {
-  if (focusIn.value == 0) {
-    await onFocus()
-    if (This.prop.ReadOnly)
-      return
-  }
-  await This.help.open()
+
+  if (!await ChecaStatus())
+    return
+
+  This.prop.ReadOnly = !await This.when()
+  if (This.prop.ReadOnly)
+    return nextElement()
+  //This.prop.Valid = true
+  displayError.value = false
+  This.prop.ShowError = false
+
+  This.help.open()
+  focusIn.value = 0
 
 }
+
+//////////////////////////////////////////////////////////////////////
+// select : Se hace el foco y se selecciona el input
+// Obs: se llama desde el template
+//////////////////////////////////////////////////////////////////////
 const select = async () => {
   // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
   This.prop.Focus = false
@@ -1305,7 +1296,6 @@ const select = async () => {
   return
 
 }
-
 
 
 ////////////////////////////////////////
@@ -1420,12 +1410,8 @@ watch(
 
     if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
       return
-
     //console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
-
-
     await emitValue(true)
-
     //29/Oct/2025 -- Se quita, daba problema en el grid
     //This.Recno = props.Registro
     This.recnoChange()
@@ -1437,8 +1423,6 @@ watch(
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
-
-
 watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
@@ -1463,31 +1447,25 @@ watch(
   async (new_val: any, old_val: any) => {
 
     //if (This.prop.Name == 'cod_non')
-    //  console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue, focusIn.value)
+    console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
 
-    if (focusIn.value == 1 || sw_emitValue) {// Si tiene el foco deshabilita el watch
-      sw_emitValue = false
+    //if (focusIn.value == 1) || sw_emitValue) {// Si tiene el foco deshabilita el watch 19/Feb/2026
+    if (focusIn.value == 1) {// Si tiene el foco deshabilita el watch
+      //sw_emitValue = false 19/Feb/2026
       return
     }
     //if (This.prop.Name == 'cod_non')
-    //  console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'Value.value=', Value.value, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
+    // console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'Value.value=', Value.value, 'new_val=', new_val)
 
-    if (new_val == Value.value) {
-
-      //  await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
-
-      return
-    }
 
     //if (This.prop.Name == 'cod_non')
-    //  console.log('3) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
+    console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val,)
 
     if (watchPropValue) { // Si se cambio desde el emitValue se ignora
-      //  console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, 'sw_emitValue=', sw_emitValue)
       return
     }
 
-    const Type = This.prop.Type.toLowerCase()
+    const Type = propType.value
     //console.log('>>> EditText Watch This.prop.Value Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'TYPE=', Type)
 
     if (new_val === undefined || new_val === null) {
@@ -1511,14 +1489,13 @@ watch(
 
     }
 
-    watchPropValue = true
 
     //console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
 
     if (This.prop.Status == 'P') {// No se ha salido del componente
 
       ///////////  24/Marzo2025     Se cambia compara Value.value por new_val
-      switch (This.prop.Type.toLowerCase()) {
+      switch (Type) {
         case 'number':
           currentValue.value[1] = +new_val //.toString().trim() // Captura
           currentValue.value[0] = await numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
@@ -1580,11 +1557,10 @@ watch(
 
     // 19/Ene/2026 se pruebacambia a asignaValue 
     // await asignaValue(new_val)
-
+    watchPropValue = true
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
-
-
     watchPropValue = false
+
     if (This.prop.Valid && This.onChangeValue) {
       // console.log('2) watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
       if (This.onChangeValue) {
@@ -1702,13 +1678,14 @@ const ValidStyle = (forReadOnly?: boolean) => {
   if (This.prop.ReadOnly) {
     return
   }
-  if (This.prop.Type.toLowerCase() != 'checkbox') {
+  const Type = propType.value
+  if (Type != 'checkbox') {
     Styles.inputStyle.background = estilo.background
     Styles.inputStyle.opacity = estilo.opacity
   }
   if (This.prop.Valid) {
     // console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
-    if (This.prop.Type.toLowerCase() != 'checkbox') {
+    if (Type != 'checkbox') {
       Styles.inputStyle.border = estilo.border
       Styles.inputStyle.background = estilo.background
     }
@@ -1717,7 +1694,7 @@ const ValidStyle = (forReadOnly?: boolean) => {
 
   } else {
 
-    if (This.prop.Type.toLowerCase() != 'checkbox') {
+    if (Type != 'checkbox') {
       Styles.inputStyle.border = invalid.border
       Styles.inputStyle.background = invalid.background
     }
@@ -1731,9 +1708,10 @@ const ValidStyle = (forReadOnly?: boolean) => {
 // Cambia el estilo del input segun si es de solo lectura
 ////////////////////////////////////////////////////////
 const ReadOnlyStyle = () => {
+  const Type = propType.value
   if (This.prop.ReadOnly) {
     //      Styles.inputStyle = { ...This.readOnlyInputStyle }
-    if (This.prop.Type.toLowerCase() != 'checkbox') {
+    if (Type != 'checkbox') {
       Styles.inputStyle.background = readOnlyInputStyle.background
       Styles.inputStyle.opacity = readOnlyInputStyle.opacity
     }
@@ -1744,7 +1722,7 @@ const ReadOnlyStyle = () => {
   }
   else {
     //Styles.inputStyle = { ...This.inputStyle }
-    if (This.prop.Type.toLowerCase() != 'checkbox') {
+    if (Type != 'checkbox') {
       Styles.inputStyle.background = This.inputStyle.background
       Styles.inputStyle.opacity = This.inputStyle.opacity
     }
@@ -1768,7 +1746,7 @@ const onMaska = (event: CustomEvent<MaskaDetail>) => {
 
 const styleAssing = async () => {
 
-  const Type = propType.value.toLowerCase()
+  const Type = propType.value
 
   if (Type == 'date') {
     Styles.inputStyle.width = '120px'

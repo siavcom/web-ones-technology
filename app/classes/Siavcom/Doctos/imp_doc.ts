@@ -44,14 +44,8 @@ export class imp_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Se preguntara el importe si no tiene movimientos
     override async when() {
-        let m = {}   // inicializamos m
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per('imp_doc')
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
-            this.prop.nextFocus = true
-            return false
-        } // End If 
-        return true
+        return await this.Form.rev_per('imp_doc')
+
     }   // Fin Procedure
     //metodo
 }

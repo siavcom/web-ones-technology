@@ -54,6 +54,7 @@ export class PAR_MON extends CONTAINER {
     this.prop.Visible = false
     this.prop.Messages[0] = ' Paridad'
     this.prop.Messages[1] = 'Protección '
+    this.prop.Messages[3] = 'Paridad de monedas al '
 
     this.vm1_pge.prop.Name = 'vm1_pge'
     this.pr1_pge.prop.Name = 'pr1_pge'
@@ -74,7 +75,7 @@ export class PAR_MON extends CONTAINER {
     this.vm5_pge.prop.Name = 'vm5_pge'
     this.pr5_pge.prop.Name = 'pr5_pge'
     this.dm5_pge.prop.Name = 'dm5_pge'
-    this.prop.Messages[0] = 'Paridad de monedas al '
+
 
     // this.style.width = '400px'
     // this.style.maxHeight = '400px'
@@ -105,6 +106,7 @@ export class PAR_MON extends CONTAINER {
       [12]: this.vm5_pge,
       [13]: this.pr5_pge,
       [14]: this.dm5_pge,
+      [15]: this.bt_close
     }
 
     this.block[0].title = this.prop.Messages[0] + new Date(Public.value.fpo_pge).toLocaleDateString()
@@ -120,20 +122,19 @@ export class PAR_MON extends CONTAINER {
       display: 'flex',
       flexWrap: 'wrap'
     }
-
-
-    this.block[1] = structuredClone(container)
-    this.block[1].component = {
-      [0]: this.bt_close
-    }
-    this.block[1].style = {
-
-    }
-
+    /*
+        this.block[1] = structuredClone(container)
+        this.block[1].component = {
+          [0]: this.bt_close
+        }
+        this.block[1].style = {
+    */
   }
 
+
+
   override  async init() {
-    this.vm1_pge.prop.Caption = Public.value.de1_pge + this.prop.Messages[0]
+    this.vm1_pge.prop.Caption = Public.value.de1_pge //+ this.prop.Messages[0]
     this.vm1_pge.prop.Type = 'number'
     this.vm1_pge.prop.Value = 1
     this.vm1_pge.prop.Decimals = 5
@@ -148,7 +149,7 @@ export class PAR_MON extends CONTAINER {
     }
 
 
-    this.vm2_pge.prop.Caption = Public.value.de2_pge + this.prop.Messages[0]
+    this.vm2_pge.prop.Caption = Public.value.de2_pge //+ this.prop.Messages[0]
     this.vm2_pge.prop.Type = 'number'
     this.vm2_pge.prop.Value = this.Form.mPublic.va2_pge // Public.value.va2_pge
     this.vm2_pge.prop.Decimals = 5
@@ -156,13 +157,13 @@ export class PAR_MON extends CONTAINER {
     this.vm2_pge.style.width = 'suto'
 
     if (this.pr2_pge) {
-      this.pr2_pge.prop.Caption = this.prop.Messages[1] + Public.value.pr2_pge
+      this.pr2_pge.prop.Caption = this.prop.Messages[1] // + Public.value.pr2_pge
       this.pr2_pge.prop.Value = this.Form.mPublic.pr2_pge // Public.value.pr2_pge
       this.pr2_pge.inputStyle.width = '260px'
       this.pr2_pge.style.width = 'auto'
     }
 
-    this.vm3_pge.prop.Caption = Public.value.de3_pge + this.prop.Messages[0]
+    this.vm3_pge.prop.Caption = Public.value.de3_pge //+ this.prop.Messages[0]
     this.vm3_pge.prop.Type = 'number'
     this.vm3_pge.prop.Value = this.Form.mPublic.va3_pge // Public.value.va3_pge
     this.vm3_pge.prop.Decimals = 5
@@ -176,7 +177,7 @@ export class PAR_MON extends CONTAINER {
       this.pr3_pge.style.width = 'auto'
     }
 
-    this.vm4_pge.prop.Caption = Public.value.de4_pge + this.prop.Messages[0]
+    this.vm4_pge.prop.Caption = Public.value.de4_pge //+ this.prop.Messages[0]
     this.vm4_pge.prop.Type = 'number'
     this.vm4_pge.prop.Value = this.Form.mPublic.va4_pge // Public.value.va4_pge
     this.vm4_pge.prop.Decimals = 5
@@ -190,7 +191,7 @@ export class PAR_MON extends CONTAINER {
       this.pr4_pge.style.width = 'auto'
     }
 
-    this.vm5_pge.prop.Caption = Public.value.de5_pge + this.prop.Messages[0]
+    this.vm5_pge.prop.Caption = Public.value.de5_pge //+ this.prop.Messages[0]
     this.vm5_pge.prop.Type = 'number'
     this.vm5_pge.prop.Value = this.Form.mPublic.va5_pge // Public.value.va5_pge
     this.vm5_pge.prop.Decimals = 5

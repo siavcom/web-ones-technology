@@ -9,7 +9,6 @@
 /////////////////////////////////////////////
 // import { COMPONENT } from "@/classes/Component";
 
-
 import { help } from '@/classes/Siavcom/help/cod_nom/help'
 import { d_nom_nom } from './d_nom_nom'
 
@@ -41,9 +40,6 @@ export class cod_nom extends CAPTURECOMPONENT {
     // Comentarios :Si es un documento de Ingreso o Egresos no permite cambiar su código
     override async when() {
         let m = {}   // inicializamos m
-
-        console.log('when cod_nom Value=', this.prop.Value)
-
         this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
         if (this.prop.ReadOnly) {
             this.prop.Valid = true

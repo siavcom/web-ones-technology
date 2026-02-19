@@ -37,9 +37,6 @@ export class bt_aceptar extends IMGBUTTON {
    */
   override async click() {
 
-
-    console.log('<==================help click=============>')
-
     this.Parent.browse.prop.RowSource = ''
 
     // if (!await this.Parent.des_dat.valid())

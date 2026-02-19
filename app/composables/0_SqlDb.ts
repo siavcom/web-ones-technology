@@ -3268,9 +3268,8 @@ export const oldValue = async (field: string, alias?: string) => {
 }
 
 /**
- * Retrieves the current value of a remote view for the current record number.
- *
- * @param field - The name of the field to retrieve the value for.
+ * @description Retrieves the current value of a remote view for the current record number.
+ * @param field - The name of the field to retrieve the value for, or an array of field names.
  * @param alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
  * @returns The value of the specified field if it exists, otherwise returns false.
  */

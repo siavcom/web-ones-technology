@@ -36,14 +36,10 @@ export class ven_ven extends CAPTURECOMPONENT {
   }
 
   override async valid() {
-    if (this.prop.Value == 0) {
-
+    console.log('validating ven_ven', this.prop.Value)
+    if (this.prop.Value == 0)
       return false
-
-    }
     return super.valid()
   }
-
-
   //metodo
 }

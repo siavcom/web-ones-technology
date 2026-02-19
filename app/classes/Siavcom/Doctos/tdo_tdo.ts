@@ -37,8 +37,17 @@ export class tdo_tdo extends CAPTURECOMPONENT {
     // Comentarios :
     override async valid(sw_rel?: boolean) {
         // cambiar locate
-        const res = await localAlaSql(`select recno from cometdo where tdo_tdo='${this.prop.Value}'`)
-        await goto(res[0]?.recno || 0, 'cometdo')
+        const cometdo = await locateFor(`tdo_tdo='${this.prop.Value}'`, 'cometdo')
+
+        if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' ||
+            cometdo.cop_nom + cometdo.coa_tdo == 'PA' ||
+            cometdo.cop_nom + cometdo.coa_tdo == 'CN' ||
+            cometdo.cop_nom + cometdo.coa_tdo == 'PN' ||
+            cometdo.inv_tdo == 'P')
+            this.Form.fve_doc.prop.Visible = true
+        else
+            this.Form.fve_doc.prop.Visible = false
+
         return true
     }   // Fin Procedure
 

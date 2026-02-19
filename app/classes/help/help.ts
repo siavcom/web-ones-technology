@@ -180,10 +180,12 @@ export class HELP extends CONTAINER {
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
       this.Parent.Help = false  //Aqui me quede
-      console.log("1) help close this.Parent.prop.Type=", this.Parent.prop.Type, 'Value=', this.Form.cod_nom.prop.Value)
-      this.Parent.setFocus()
+
+      await this.Parent.valid()
+      //this.Parent.prop.Focus = true
 
     }
+    this.Parent.prop.Focus = true
 
     //this.browse.super.close()
   }

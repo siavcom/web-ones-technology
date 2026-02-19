@@ -48,16 +48,8 @@ export class im5_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Se preguntarÃ¡ el impuesto segun el tipo de cliente o proveedor
     override async when() {
-        let m = {}   // inicializamos m
-        console.log('when im5_doc this.prop.ReadOnly', this.prop.ReadOnly)
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per('imp_doc')
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
+        return await this.Form.rev_per('imp_doc')
 
-            return false
-        } // End If 
-
-        return true
 
     }   // Fin Procedure
 

@@ -1,10 +1,13 @@
 <template>
   <div :id="Id + '_component'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
 
-    <div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
+    <!--div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
       :style="captionStyle">{{ prop.Caption +
-        " " }}</div>
+        " " }}</div>-->
 
+    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && prop.Caption"
+      :style="Styles.captionStyle">{{ prop.Caption
+      }}</span>
 
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
       :style=Styles.inputStyle :checked="checkValue" readonly="true" @focus="nextElement()" />
@@ -636,8 +639,6 @@ watch(
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
-
-
     if (sw_ReadCampo) // || new_val == Value.value)
       return
 

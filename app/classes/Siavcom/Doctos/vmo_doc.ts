@@ -62,21 +62,10 @@ export class vmo_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Solo se preguntarÃ¡ el valor de la moneda si es diferente a la principal
     override async when() {
-
-
         if (this.Form.mon_doc.prop.Value == 1 || await recCount('vi_cap_comepag') > 0)
-            this.prop.ReadOnly = true
-
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
-        if (this.prop.ReadOnly) {
-
-            this.prop.Valid = true
-            this.prop.nextFocus = true
             return false
-        } // End If 
 
-        return true
-
+        return await this.Form.rev_per(this.prop.Name)
     }   // Fin Procedure
 
     //metodo

@@ -9,11 +9,13 @@
 /////////////////////////////////////////////
 // import { COMPONENT } from "@/classes/Component";
 import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
+import { help } from '@/classes/Siavcom/help/ven_ven/help'
 import { d_nom_ven } from "./d_nom_ven";
 //imports
 
 export class ven_ven extends CAPTURECOMPONENT {
     //public
+    public help = new help()
     public d_nom_ven: d_nom_ven = new d_nom_ven();
     constructor() {
         super();
@@ -23,13 +25,13 @@ export class ven_ven extends CAPTURECOMPONENT {
         this.prop.ControlSource = "vi_cap_comedoc.ven_ven";
         this.prop.Min = '0'
         this.prop.Max = '999999'
+        this.prop.Help = true;
         this.inputStyle.width = '64px';
         this.prop.ErrorMessage = 'No existe el vendedor'
         this.asignaRecno()
 
         //propiedades
     }
-
 
     // Evento   :Valid
     // Objeto  :ven_ven
@@ -68,15 +70,13 @@ export class ven_ven extends CAPTURECOMPONENT {
         return true
 
     }   // Fin Procedure
-    override async when() {
-        let m = {}   // inicializamos m
 
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
+
+    override async when() {
+        const ReadOnly = await !this.Form.rev_per(this.prop.Name)
+        if (ReadOnly) {
             this.Form.com_doc.prop.ReadOnly = true
             this.Form.com_doc.prop.Valid = true
-            this.prop.nextFocus = true
             return false
         } // End If 
         return true

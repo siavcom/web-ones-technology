@@ -44,27 +44,7 @@ export class fve_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Cuando se permi la captura de la fecha de vencimiento
     override async when() {
-
-        this.prop.ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
-        if (this.prop.ReadOnly) {
-            this.prop.Valid = true
-            this.prop.nextFocus = true
-            return false
-        } // End If 
-        const cometdo = await goto(0, 'cometdo')
-        if (cometdo.cop_nom + cometdo.coa_tdo == 'CC' || cometdo.cop_nom + cometdo.coa_tdo == 'PA') {
-            this.Form.fve_doc.prop.Valid = false
-            this.Form.fve_doc.prop.ReadOnly = false
-            return true
-        } // End If 
-
-        this.prop.Value = this.Form.fec_doc.prop.Value
-        this.prop.Valid = true
-        this.prop.ReadOnly = true
-
-
-        return false
-
+        return await this.Form.rev_per(this.prop.Name)
     }   // Fin Procedure
 
 
