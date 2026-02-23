@@ -4,9 +4,10 @@
  ----------------------------------------------------------------------------------------------
  Autor    	: ElFerBlocks
  Sistema  	: Web-Ones  							Version : 1.0  VUE
- Programa 	: comboBox    		Mnemo   : comboBox.vue
+ Programa 	: EditBox    		Mnemo   : editText.vue
+ Ult.Mod :   11/Marzo/2025 se agrego el siguiente if
  Objeto		: VUE
- Comentarios	: 
+ Comentarios	: Componente de edicion de texto
  ----------------------------------------------------------------------------------------------
 -->
 <template>
@@ -1219,6 +1220,30 @@ const nextElement = async () => {  //clickReturn
 
 }
 
+//////////////////////////////////////////////////////////////////////
+// select : Se hace el foco y se selecciona el input
+// Obs: se llama desde el template
+//////////////////////////////////////////////////////////////////////
+const select = async () => {
+  console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
+  This.prop.Focus = false
+  console.log('select', This.prop.Name)
+  if (thisElement.focus)
+    thisElement.focus();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+
+  //thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+  /*
+    setTimeout(function () {
+      //thisElement.focus({ focusVisible: true });
+      if (thisElement.select)
+        thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+    }, 100);
+  */
+  //})
+  return
+
+}
+
 
 ////////////////////////////////////////////////////////////////
 //                          Watchers                          //
@@ -1309,22 +1334,15 @@ watch(
 */
 
 
-
 ///////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
-
-
 watch(
   () => This.prop.Focus, //props.prop.Focus,
-  (new_val: any, old_val: any) => {
-
-    if (!new_val) {
+  (new_val: any) => {
+    if (!new_val)
       return
-    }
-    This.prop.Focus = false
     select()
-    return
   },
   { deep: false }
 )

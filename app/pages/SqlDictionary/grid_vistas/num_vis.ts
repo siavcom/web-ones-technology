@@ -15,10 +15,10 @@ export class num_vis extends COLUMN {
         super()
         this.prop.Order = 1
         this.prop.ColumnTextLabel = 'Numero'
-        this.prop.BaseClass = 'editText'
+
         this.prop.Type = 'number'
         this.prop.Min = '0'
-        this.prop.Max = '32'
+        this.prop.Max = '64'
         this.prop.Decimals = 0
         this.prop.ControlSource = 'vi_cap_comevis.num_vis'
         this.prop.Placeholder = "Numero"

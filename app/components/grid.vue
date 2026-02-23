@@ -56,19 +56,19 @@
                 :key="item.recno.toString() + col.Name"
                 :style='{ height: This[col.Name].style.height, padding: 0, textAlign: "-webkit-center" }'
                 :headers="col.Name">
+
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.recno" v-bind:Id="item.id" v-bind:prop="This[col.Name].prop"
                   v-bind:position="This[col.Name].position" v-bind:style="This[col.Name].style"
                   @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
                 </textLabel>
 
-
                 <!--   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
                 <!--/Transition-->
-                <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno" v-else
-                  :is="impComponent(This[col.Name].prop.BaseClass)" v-model:Value="This[col.Name].prop.Value"
-                  v-model:Key="This[col.Name].prop.Key"
-                  v-bind:Registro="item.recno > 0 || item.recno != null ? item.recno : 0"
+                <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno"
+                  v-else-if="item.recno != null && item.recno > 0" :is="impComponent(This[col.Name].prop.BaseClass)"
+                  v-model:Value="This[col.Name].prop.Value" v-model:Key="This[col.Name].prop.Key"
+                  v-bind:Registro="item.recno != null && item.recno > 0 ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   v-bind:position="This[col.Name].position"
                   :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 3 }">
@@ -594,8 +594,8 @@ watch(
     } else {
       const alias = This.prop.RecordSource
       This.Sql.View[alias].recno = This.Row + 1
-      await This.Sql.bof(alias)
-      await This.Sql.eof(alias)
+      await bof(alias)
+      await eof(alias)
     }
 
     // ponemos todos los campos de captura en ReadOnly=false
@@ -637,18 +637,22 @@ watch(
 /////////////////////////////////
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
-  console.log('1)asignaRenglon ColumnName=', ColumnName, ' This.Row=', This.Row, 'ReadOnly', This.prop.ReadOnly)
+  console.log('1) grid asignaRenglon ColumnName=', ColumnName, ' Row=', Row, 'ReadOnly', This.prop.ReadOnly)
   //console.log('2)asignaRenglon AlaSql vi_cap_comecpy=', await localAlaSql('select * from vi_cap_comecpy'))
-
 
   if (This.prop.ReadOnly) return
 
-  if (This[ColumnName].prop.Type == 'textLabel') {
-
-    This.prop.Valid = true
+  if (This.Row == Row)
     return
-  }
 
+
+  /*
+    if (This[ColumnName].prop.Type == 'textLabel') {
+  
+      This.prop.Valid = true
+      return
+    }
+  */
   if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
     //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
     for (const columna of This.elements) {
@@ -659,24 +663,27 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
     }
   }
 
-  if (This.Row == Row)
-    return
 
   This.prop.Valid = false
-  This.prop.Status = 'P'
+  // This.prop.Status = 'P'
 
-  This.Row = Row;
+  //This.Row = Row;
   Column.value = ColumnName // Asigna el nombre de la columna activa
 
   // busca el ID del Row
   if (Row >= 0) {
+    This.Row = -100
     const res = scroll.dataPage.find((ele) => ele.id == Row);
-    const Recno = res.recno
-
+    This.Recno = res.recno
+    console.log('1.2 grid asignaRenglon res=', This.Recno, RecordSource)
     // actualiza el row
-    await goto(Recno, RecordSource)
-    This.Recno = Recno
-    console.log('3.3 asignaRenglon This.Row=', This.Row, 'ColumnName=', Column.value, 'This.Recno=', This.Recno)
+    await goto(This.Recno, This.prop.RecordSource)
+
+    nextTick(() => {
+      console.log('1.3 grid asignaRenglon This.Row=', This.Row, 'ColumnName=', Column.value, 'This.Recno=', This.Recno)
+      This.Row = Row;
+    })
+
   }
   // View[This.prop.RecordSource].recno = Recno
   //  console.log('asignaRenglon Row=', Row, 'RecordSource=', This.prop.RecordSource, 'View=', View[This.prop.RecordSource].recno)
@@ -777,7 +784,7 @@ const loadData = async (Pos?: number) => {
       else {  // borra los elementos que ya no existen
         //    scroll.dataPage.slice(i, Rows - 1 - i)
         if (i == 0) { // No hay datos, le asigna el ultimo elemento
-          scroll.dataPage[i] = Sql.View[props.prop.RecordSource].recnoVal[elementNo - 1]
+          scroll.dataPage[i] = View[props.prop.RecordSource].recnoVal[elementNo - 1]
           scroll.dataPage.length = 1 // Solo dejamos  el ultimo elemento
 
         } else {
@@ -954,10 +961,7 @@ const borraRenglon = async (recno?: number) => {
 
   eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
 
-
 }
-
-
 
 const saveTable = async () => {
 
@@ -966,7 +970,10 @@ const saveTable = async () => {
     for (let i = 0; i < This.main.length; i++) {
 
       // Si es campo de captura
-      if (This[This.main[i]].prop.Capture == true && !This[This.main[i]].prop.Valid) {
+      if (This[This.main[i]].prop.Capture == true && This[This.main[i]].prop.Status != 'A')
+        return
+
+      if (This[This.main[i]].prop.Capture == true && This[This.main[i]].prop.Status != 'A' && !This[This.main[i]].prop.Valid) {
 
         console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
         This[This.main[i]].prop.Focus = true
@@ -975,15 +982,14 @@ const saveTable = async () => {
       }
 
     }
+    scroll.controls = false
+    await This.saveTable()
+
   }
-  //if (This.Row < 0) return
-  scroll.controls = false
-  //const { $MessageBox } = useNuxtApp()
-  // console.log('Grid SaveTable', This.prop.Name, 'Map=', This.prop.Map)
 
-  eventos.push(This.prop.Map + '.saveTable()')
 
-  //load_data = true
+  // eventos.push(This.prop.Map + '.saveTable()')
+
 }
 
 
@@ -1027,6 +1033,7 @@ onMounted(async () => {
     if (This[comp].sw_translate)
       This[comp].translate()
 
+    This[comp].Recno = 0
 
     if (This[comp].prop.Capture == true)  // Si es componete de captura
     {
@@ -1067,7 +1074,7 @@ onMounted(async () => {
   This.prop.Valid = true // Asignamos el valor de validacion del grid
   scroll.controls = true
   This.Recno = 0
-
+  This.Row = -100
 })
 
 

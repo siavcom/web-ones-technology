@@ -305,6 +305,9 @@ export class GRID extends COMPONENT {
   /////////////////////////////////
   async saveTable(oneRow?: boolean) {
 
+    this.Row = -1
+
+
     if (oneRow == undefined)
       oneRow = false
 
@@ -315,17 +318,6 @@ export class GRID extends COMPONENT {
       updateType = 0;  // actualiza solo el renglon actual
     }
 
-    /*
-        for (let i = 0; i < this.main.length; i++) { // Recorre todos los estatus del grid
-    
-          if (this[this.main[i]].prop.Capure && !this[this.main[i]].prop.Valid) { // Si alguno no esta Validado
-            this[this.main[i]].prop.ShowError = true
-    
-            this[This.main[i]].setFocus()
-            return
-          }
-        }
-    */
 
     if (updateType) {
       if (this.Form.prop.UpdateMessage.length > 0)
@@ -337,23 +329,22 @@ export class GRID extends COMPONENT {
         return false;
     }
 
-    this.Form.prop.Visible = false;
+    this.prop.ReadOnly = true
+
     resultado = await tableUpdate(
       updateType,
       false,
       this.prop.RecordSource
     );
+    this.prop.ReadOnly = false
+
     if (resultado)  //actualizacion con exito
       MessageBox(this.prop.OkMessage);
-    //alert(this.prop.OkMessage);
-
     else {
-
       MessageBox(this.prop.ErrorMessage + this.prop.RecordSource, 16, "ERROR");
-
       return false;
     }
-    this.Row = -1
+    // this.Row = -1
     return resultado;
   }
 

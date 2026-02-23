@@ -106,9 +106,11 @@ export class bt_aceptar extends IMGBUTTON {
         (await this.Form.db.recCount("vi_cap_comedat")) > 4
       ) {
         data = true;
+        /*
         this.Form.grid_datos.prop.Disabled = true;
         this.Form.grid_indices.prop.Disabled = true;
         this.Form.grid_vistas.prop.Disabled = true;
+        */
         this.Form.bt_gen_model.prop.Visible = false;
         this.Form.bt_gen_indices.prop.Visible = false;
         this.Form.bt_gen_vistas.prop.Visible = false;
@@ -171,17 +173,19 @@ export class bt_aceptar extends IMGBUTTON {
         this.Form.grid_datos.prop.Visible = false;
         this.Form.grid_indices.prop.Visible = false;
         this.Form.grid_vistas.prop.Visible = false;
-        this.Form.grid_datos.prop.Disabled = false;
-        this.Form.grid_indices.prop.Disabled = false;
-        this.Form.grid_vistas.prop.Disabled = false;
-
-        this.Form.grid_datos.prop.RecordSource =
-          this.Form.grid_datos.prop.RecordSource;
-        this.Form.grid_indices.prop.RecordSource =
-          this.Form.grid_indices.prop.RecordSource;
-        this.Form.grid_vistas.prop.RecordSource =
-          this.Form.grid_vistas.prop.RecordSource;
-
+        /*
+                this.Form.grid_datos.prop.Disabled = false;
+                this.Form.grid_indices.prop.Disabled = false;
+                this.Form.grid_vistas.prop.Disabled = false;
+        
+        
+                this.Form.grid_datos.prop.RecordSource =
+                  this.Form.grid_datos.prop.RecordSource;
+                this.Form.grid_indices.prop.RecordSource =
+                  this.Form.grid_indices.prop.RecordSource;
+                this.Form.grid_vistas.prop.RecordSource =
+                  this.Form.grid_vistas.prop.RecordSource;
+        */
         this.prop.Visible = true;
         return;
       }
@@ -241,6 +245,8 @@ export class bt_aceptar extends IMGBUTTON {
             };
             await this.Form.grid_vistas.appendRow(m);
           }
+          this.Form.grid_vistas.prop.RecordSource = 'vi_cap_comevis';
+
           this.Form.grid_vistas.prop.Visible = true;
           this.Form.bt_gen_vistas.prop.Visible = true;
 

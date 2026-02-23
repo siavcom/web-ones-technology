@@ -45,24 +45,27 @@ export class ndo_doc extends CAPTURECOMPONENT {
         // debugger
         const res = await locateFor(`tdo_tdo='${m.tdo_tdo}'`, 'cometdo')
         const cometdo = res[0]
-        const vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')
+
+        // refresca tabla de clasificacion de documentos
 
         this.Form.tcd_tcd.prop.Visible = false
         this.Form.tcd_tcd.prop.Value = '  '
-        // refresca tabla de clasificacion de documentos
+        this.Form.tcd_tcd.prop.RowSourceType = 0
+
+        const vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')
 
         if (vi_cap_cometcd.tdo_tdo != m.tdo_tdo)
             await use('vi_cap_cometcd', m)
 
         if (await recCount('vi_cap_cometcd') > 0) {
-            const vi_cap_cometcd = await currentValue('tcd_tcd', 'vi_cap_cometcd')
-            this.Form.tcd_tcd.prop.Value = vi_cap_cometcd.tcd_tcd
+            const cometcd = await currentValue('tcd_tcd', 'vi_cap_cometcd')
+            this.Form.tcd_tcd.prop.Value = cometcd.tcd_tcd
+            this.Form.tcd_tcd.prop.RowSourceType = 2
             this.Form.tcd_tcd.prop.Visible = true
             // this.Form.tcd_tcd.requery()  // Refrescamos comboBox
         }
 
         // se apaga swith de documento nuevo
-
         // this.Form.d_coa_tdo.prop.Value = iif(cometdo.coa_tdo == 'C', 'Cargo', 'Abono')
 
         if (this.Form.Name === 'come1103') { // Cargos y Abonos
@@ -72,10 +75,6 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
                 this.Form.d_sal_doc.prop.Caption = 'Pagado'
             } // End If 
-            // saldo del documento
-            //  this.Form.d_sal_doc.prop.Value = 0
-            // saldo por pagar
-            //this.Form.d_pap_doc.prop.Value = 0
 
         }
 

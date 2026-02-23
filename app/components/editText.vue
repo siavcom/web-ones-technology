@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -37,15 +37,14 @@
       v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)">
     <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
     <!--textArea -->
-    <div :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle>
-      <textarea :id="Id + '_textarea'" class="textArea" ref="Ref" spellcheck="false" :style=Styles.inputStyle
-        v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
-        :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows"
-        :cols='Styles.inputStyle.cols' @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
-        v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
-        v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
-        @keydown.delete="keyPress($event)"></textarea>
-    </div>
+    <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
+    <textarea :id="Id + '_textarea'" class="textArea" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
+      :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
+      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows"
+      :cols='Styles.inputStyle.cols' @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
+      v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
+      v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)" @keydown.delete="keyPress($event)"></textarea>
+    <!--/spam-->
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
@@ -97,7 +96,7 @@
     <!--v-on:keyup.enter="clickReturn()" se quita ya que onFocus es que lo substituye @click.capture="onClick"-->
 
     <!--/span-->
-    <!--div v-if="propType == 'number'">CurrentValue ={{ currentValue[focusIn] }} focusIn{{ focusIn }}</div-->
+
     <img :id="Id + '_help'"
       v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
       src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
@@ -105,7 +104,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1087,7 +1086,7 @@ const nextElement = async () => {  //clickReturn
     return
 
   This.prop.Status = 'A'
-  await Delay(10)
+  await Delay(40)
 
   const TabIndex = This.prop.TabIndex
   let lastIndex = 9999999
@@ -1119,7 +1118,6 @@ const nextElement = async () => {  //clickReturn
 
     if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
       lastIndex = Tab
-      //nextFocus = This.Parent[element].prop.htmlId
       console.log('Parent Siguiente elemento', This.prop.Name, 'nextFocus=', element)
       //   This.prop.Disabled = Disabled
 
@@ -1281,8 +1279,10 @@ const select = async () => {
   This.prop.Focus = false
 
   console.log('select', This.prop.Name)
-  if (thisElement.focus)
+  if (thisElement?.focus)
     thisElement.focus();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+  else
+    thisElement?.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
 
   //thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   /*
@@ -1419,6 +1419,22 @@ watch(
   { deep: true }
 );
 
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+watch(
+  () => props.Registro, //props.Registro,
+  async (new_val) => {
+
+    console.log('grid editText watch Registro', This.prop.Name, 'new_val=', new_val)
+
+    // This.Recno = props.Registro
+  },
+  { deep: true }
+);
+
 
 ////////////////////////////////////////
 // Hacer el set focus 
@@ -1498,7 +1514,7 @@ watch(
       switch (Type) {
         case 'number':
           currentValue.value[1] = +new_val //.toString().trim() // Captura
-          currentValue.value[0] = await numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
+          currentValue.value[0] = numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
 
           //          emit("input:currentValue")   //, currentValue.value[0]); // actualiza el valor Value en el componente padre
           break;
@@ -1813,12 +1829,20 @@ const handler = (event) => {
 /////////////////////////////////////////
 
 onMounted(async () => {
+
+
+  focusIn.value = 0
   if (This.onMounted)
     await This.onMounted()
 
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
 
   styleAssing()
+
+  if (propType.value == 'number') {
+    currentValue.value[1] = +This.prop.Value
+    currentValue.value[0] = numberFormat(+This.prop.Value, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
+  }
 
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
     Styles.inputStyle.maxHeight = Styles.style.fontSize
