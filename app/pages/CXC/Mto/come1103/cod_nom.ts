@@ -109,11 +109,13 @@ export class cod_nom extends CAPTURECOMPONENT {
             // actualiza el tipo de cliente en comedoc
             await updateCampo(vi_cap_comenom.tip_tdn, 'vi_cap_comedoc.tip_tdn', vi_cap_comedoc.recno)
 
-            await this.lee_tdn({
+            await this.lee_tdn() // lee tipo de cliente
+/*
+{
                 cop_nom: vi_cap_comenom.cop_nom,
                 tip_tdn: vi_cap_comenom.tip_tdn
-            }) // lee tipo de cliente
-            const cometdo = await goto(0, 'cometdo')
+            }
+  */          const cometdo = await goto(0, 'cometdo')
             this.d_nom_nom.prop.Value = vi_cap_comenom.nom_nom
             // asignamos fecha de vencimiento del documento
 
@@ -140,7 +142,7 @@ export class cod_nom extends CAPTURECOMPONENT {
 
             //  console.log('vi_cap_comenom', vi_cap_comenom, 'monedas', Public.value.val_mon1)
             if (!vi_cap_comedoc.key_pri) {
-                if (cometdo.tip_cfd != 'P') {
+                if (cometdo.tip_cfd.trim() != 'P') {
                     // si es un documento nuevo
                     this.Form.mon_doc.prop.Value = vi_cap_comenom.mcr_nom
                     const vmo_doc = Public.value.val_mon1[vi_cap_comenom.mcr_nom]
@@ -190,13 +192,16 @@ export class cod_nom extends CAPTURECOMPONENT {
 
     }   // Fin Procedure
 
+    // Lee el tipo de cliente paea ver que impuestos tiene asignado
     async lee_tdn() {
+
         const m = await scatter(['cop_nom', 'tip_tdn'], 'vi_cap_comedoc')
         console.log('lee_tdn', m)
-        let lla1_tdn = await goto(0, 'lla1_tdn')
+        let lla1_tdn = await currentValue('*', 'lla1_tdn')
+
         if (lla1_tdn == null || lla1_tdn.length == 0 || lla1_tdn.tip_tdn != m.tip_tdn) {
             await use('lla1_tdn', m) // use lla1_tdn lla1_tdn
-            lla1_tdn = await goto(0, 'lla1_tdn')
+            lla1_tdn = await currentValue('*', 'lla1_tdn')
         }
 
         if (lla1_tdn.ai0_tdn == 0) {

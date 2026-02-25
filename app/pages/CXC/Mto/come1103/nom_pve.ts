@@ -25,10 +25,6 @@ export class nom_pve extends COMPONENT {
         //propiedades
     }
 
-    override async gotFocus() {
-
-        this.prop.MaxLength = len(this.prop.Value)
-    }   // Fin Procedure
 
 
     override async when() {

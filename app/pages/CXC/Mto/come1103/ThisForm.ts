@@ -625,27 +625,15 @@ export class ThisForm extends captureForm {
 
 			let res = await localAlaSql("INSERT INTO comedia select dia_dia , mon_dia From vi_cap_dia")
 			//    * USE vi_cap_dia ALIAS comedia
-			await select('comedia')
-			await goto('TOP')
-			await goto('BOTTOM')
 			await useNodata('lla1_pvd') // use lla1_pvd lla1_pvd Nodata
-			// proveedores que estan en contabilidad
-
 			// provvedores varios en contabilidad
-			this.d_sal_cta.prop.Visible = true
-			//    cursorsetprop("Buffering",5)   && Bloqueo optimista por tabla
 			this.d_sal_cta.prop.Visible = true
 
 
 		} else {
-
-			this.d_sal_cta.prop.Visible = false
+			// quita los objetos que no se utilizan en Cuentas por cobrar
 			this.d_sal_cta.prop.Visible = false
 			this.RemoveObject('rfc_pve')
-			// quita los objetos que no se utilizan en Cuentas por cobrar
-
-			let sw_rmv = true
-			// WAIT windows 'abriendo vistas' TIMEOUT 1
 		} // End If 
 		await localAlaSql('CREATE TABLE IF NOT EXISTS now.vcomesal (tdo_tdo CHAR(3),des_tdo CHAR(16),ndo_doc NUMERIC(8),ref_doc CHAR(40),fec_doc DATE (8),fve_doc DATE (8),sal_doc NUMERIC(19,5),dmo_doc CHAR(3),pag_doc NUMERIC(19,5))')
 
@@ -655,7 +643,7 @@ export class ThisForm extends captureForm {
 
 		if (await recCount() > 0) {
 			// VFP LOCATE For var_dxm='lim_inf_sal'
-			result = await locateFor(` var_dxm='lim_inf_sal'`)
+			let result = await locateFor(` var_dxm='lim_inf_sal'`)
 
 			if (result.length > 0) {
 				this.lim_inf_sal = result[0].val_dxm
@@ -667,7 +655,7 @@ export class ThisForm extends captureForm {
 			result = await locateFor(` lower(var_dxm)='top_con'`)
 
 			if (result.length > 0) {
-				this.top_con = result.val_dxm
+				this.top_con = result[0].val_dxm
 			} // End If 
 
 			// VFP LOCATE For lower(var_dxm)='val_che_doc'
@@ -675,7 +663,7 @@ export class ThisForm extends captureForm {
 			result = await locateFor(` lower(var_dxm)='val_che_doc'`)
 
 			if (result.length > 0) {
-				this.val_che_doc = result.val_dxm
+				this.val_che_doc = result[0].val_dxm
 			} // End If 
 
 			// VFP LOCATE For var_dxm='con_vcomesal'
@@ -683,7 +671,7 @@ export class ThisForm extends captureForm {
 			result = await locateFor(` var_dxm='con_vcomesal'`)
 
 			if (result.length > 0) {
-				this.con_vcomesal = result.val_dxm
+				this.con_vcomesal = result[0].val_dxm
 			} // End If 
 
 		} // End If 
@@ -695,32 +683,19 @@ export class ThisForm extends captureForm {
 		if (await recCount() > 0) {
 			// VFP LOCATE For upper(var_dxm)='DCA_PAG'
 			// decimales de captura para pagos
-			let records = await locateFor(` upper(var_dxm)='DCA_PAG'`)
+			const records = await locateFor(` upper(var_dxm)='DCA_PAG'`)
 
 			if (found()) {
-				this.dca_pag = val(val_dxm)
+				this.dca_pag = Number(records[0].val_dxm)
 			} // End If 
 
 		} // End If 
 
 		this.ap_pagos.c_mon_pag.prop.InputMask = '99,999,999.' + replicateString('9', this.dca_pag)
 		this.ap_pagos.c_mon_pag.prop.Decimals = this.dca_pag
-		/*		
-				let nom_cur = 'pgexml'
-				//// obtenemos datos xml de comepge
-				m.nom_tab = 'comepge'
-				m.key_xmd = 1
-		
-				const comexmd = await use('lla1_xmd', m)
-		
-				if (comexmd && comexmd.length > 0 && allTrim(comexmd[0].xml_xmd) > ' ') {
-					xmlToCursor(comexmd[0].xml_xmd, nom_cur)
-				}
-		   */
+
 		await super.init()
 	}   // Fin Procedure
-	//RETURN DODEFAULT('comenom')
-
 
 	// Evento  :grabar
 	// Objeto  :come1103
@@ -943,12 +918,21 @@ export class ThisForm extends captureForm {
 			vi_cap_comedoc.im5_doc == 0) {
 
 			MessageBox(this.prop.Messages[13], 48, 'Error', 3000)
-			return
+			return false
 		}
 
 		if (!await super.bt_saveClick()) // no se grabaron los datos
-			return
-		this.Form.ndo_ndo.valid()
+			return false
+		//const m = await currentValue('*', 'vi_cap_comedoc')
+		//await use('vi_cap_comedoc', m) // se trae datos actualizados
+		const cometdo = await currentValue('*', 'cometdo')
+		if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' || cometdo.cop_nom + cometdo.coa_tdo == 'PC') {
+			await this.Form.Do_nopagados.open()
+			await this.Form.ap_pagos.open(true)
+		} // End If 
+		this.bt_modifyClick(true)
+
+		return true
 
 	}   // Fin Procedure
 
@@ -1033,7 +1017,7 @@ export class ThisForm extends captureForm {
 	// Objeto  :bt_modify
 	// Tipo   :Button
 	// Comentarios :Se cambia del original y permite captura de datos segun los datos del documento
-	override async bt_modifyClick(swm?: boolean) {
+	override async bt_modifyClick(sw_save?: boolean) {
 		this.Form.Bt_campos_xml.prop.Visible = true
 		let m = {}
 		m = await goto(0, 'vi_cap_comedoc')
@@ -1042,11 +1026,11 @@ export class ThisForm extends captureForm {
 		const res = await SQLExec(`select CAST(count(man_comemov.key_pri) as int) as num_mov,max(sta_doc) as sta_doc from man_comedoc 
 			 left outer join man_comemov on man_comemov.tdo_tdo=man_comedoc.tdo_tdo and man_comemov.ndo_doc=man_comedoc.ndo_doc where man_comedoc.tdo_tdo='${m.tdo_tdo}' and man_comedoc.ndo_doc=${m.ndo_doc}`)
 
-		if (!res[0]) {
+		if (!sw_save && !res[0]) {
 			this.Form.ndo_doc.setFocus()
 			return
 		}
-		// si es un documento con movimietos o esta timbrado, cancelado o en proiceso de timbrado
+		// si es un documento con movimietos o esta timbrado, cancelado o en proceso de timbrado
 
 		if (res[0] && (res[0].num_mov > 0 ||
 			res[0].sta_doc == 'T' ||
@@ -1061,8 +1045,6 @@ export class ThisForm extends captureForm {
 		}
 		this.num_mov = res[0].num_mov
 		await super.bt_modifyClick()
-		const cometdo = await goto(0, 'cometdo')
-
 		// Datos XML
 		this.block[5].prop.Visible = false
 
@@ -1070,174 +1052,153 @@ export class ThisForm extends captureForm {
 		this.ap_pagos.prop.ReadOnly = false
 		this.bt_delete.prop.Visible = true;
 		this.bt_save.prop.Visible = true
-		const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
 
-		this.cod_nom.lee_tdn()
+		if (!sw_save)
+			this.cod_nom.lee_tdn()
 
 	}   // Fin Procedure
 
-
-	async otroClick(sw_rel) {
-		let m = {}   // inicializamos m
-		if (await recCount('vi_cap_comepag') > 0) {
-			// reviza si tiene abierta la vista de captura de pagos
-			await select('vi_cap_comepag')
-
-			if (await recNo('vi_cap_comepag') < 0) {
-				// si no hay pagos
-				await tableRevert()
-
-			} // End If 
-
-			await select('vi_cap_comepag')
-
-			m = appendM(m, await scatterBlank(m))// scatter 
-
-			this.ap_pagos.prop.RecordSource = ''
-			// pone en nulos el record source
-			await useNodata('vi_cap_comepag') // use vi_cap_comepag vi_cap_comepag Nodata
-			// abre la vista sin datos
-
-		} // End If 
-
-		await select('vcomesal')
-		await localAlaSql('delete from now.vcomesal')
-		await localAlaSql('delete from Last.vcomesal')
-		/*
-		if (await recCount() > 0) {
-			await deleteLocalSql(ALL)
+	/*
+		async otroClick_old(sw_rel) {
+			let m = {}   // inicializamos m
+			if (await recCount('vi_cap_comepag') > 0) {
+				// reviza si tiene abierta la vista de captura de pagos
+				await select('vi_cap_comepag')
 	
-			await tableUpdate()
-			   Zap
-		    
-		} // End If 
-		*/
-
-		await select('vi_cap_comedoc')
-		//on key label CTRL+del     && desactivamos la funcion deborrado
-
-		if (await recCount() > 0 && await !this.grabar(sw_rel)) {
-			// corre rutina de aceptacion de datos
-			MessageBox('La información no fuÃ© grabada')
-			await select('vi_cap_comedoc')
-			// si el registro no es nuevo trae los datos actualizados
-
-			await tableRevert()
-
-
-			//.not. thisform.vi_cap_comedoc.key_pri .and.
-			if (!sw_rel) {
-				// si no es un relase
-				this.ndo_doc.setFocus()
-				//      thisform.refresh
-				return false
-				// regresa a la forma
-
+				if (await recNo('vi_cap_comepag') < 0) {
+					// si no hay pagos
+					await tableRevert()
+	
+				} // End If 
+	
+				await select('vi_cap_comepag')
+	
+				m = appendM(m, await scatterBlank(m))// scatter 
+	
+				this.ap_pagos.prop.RecordSource = ''
+				// pone en nulos el record source
+				await useNodata('vi_cap_comepag') // use vi_cap_comepag vi_cap_comepag Nodata
+				// abre la vista sin datos
+	
 			} // End If 
-
-
-			// si es un codigo nuevo y no es release
-			if (sw_rel) {
-				// si se llamo del objeto desde release
-				if (!this.ndo_doc.prop.ReadOnly) {
-					releaseUse() // use 
-
+	
+	
+			await localAlaSql('delete from now.vcomesal')
+			await localAlaSql('delete from Last.vcomesal')
+	
+			if (await recCount('vi_cap_comedoc') > 0 && await !this.grabar(sw_rel)) {// corre rutina de aceptacion de datos
+				MessageBox('La información no fué grabada')
+				await tableRevert('vi_cap_comedoc')
+	
+				if (!sw_rel) {
+					// si no es un relase
+					this.ndo_doc.setFocus()
 					return false
-
+	
 				} // End If 
-
-				let sw_rel = false
-			} // End If 
-
-		} // End If 
-
-		if (await recCount('vi_cap_comedoc') > 0) {
-			await select('vi_cap_comedoc')
-
-			m = appendM(m, await scatter())// scatter 
-
-			if (await recCount('vi_cap_cometcd') > 0) {
-				// si hay clasificacio de documentos
-				const cam_arc = afields()
-
-				// Buscamos campo
-				if (ascan(cam_arc, 'PRG_PRG') > 0 && pry_pry == 'S') {
-					// si es con control de proyectos
-					m = appendM(m, await scatter())// scatter 
-
-					if (len(allTrim(m.prg_prg)) > 0) {
-						// si va a llamar a un progama de asignacion de gasto
-						let men_err = ''
-						m.prg_prg = allTrim(m.prg_prg) + ' with ' + m.par_prg
-						let ins_fox = 'Do Form ' + allTrim(m.prg_prg) + ' To men_err'
-							& ins_fox
-						if (len(allTrim(men_err)) > 10) {
-							MessageBox(men_err, 16, 'Error')
-						} // End If 
-
+	
+				// si es un codigo nuevo y no es release
+				if (sw_rel) {
+					// si se llamo del objeto desde release
+					if (!this.ndo_doc.prop.ReadOnly) {
+						releaseUse() // use 
+	
+						return false
+	
 					} // End If 
-
+	
+					let sw_rel = false
 				} // End If 
-
+	
 			} // End If 
-
-		} // End If 
-
-		await select('vi_cap_comenom')
-
-		await useNodata('vi_cap_comenom') // use vi_cap_comenom vi_cap_comenom Nodata
-
-		await select('lla1_ven')
-
-		await useNodata('lla1_ven') // use lla1_ven lla1_ven Nodata
-
-		await select('vi_cap_comedoc')
-		// volvemos a traernos la vista sin datos
-
-		await useNodata('vi_cap_comedoc') // use vi_cap_comedoc vi_cap_comedoc Nodata
-
-		if (!sw_rel) {
-			// si no se llamo desde el release
-			this.SetAll('Readonly', true)
-			// Ponemos de solo lectura los controles
-			this.mon_doc.prop.Visble = false
-			// Deshabilitamos la moneda del docto
-			//	this.d_tot_doc.prop.Value = 0 // total por documento
-
-			this.d_sal_doc.prop.Value = 0 	// saldo
-			// this.d_pap_doc.prop.Value = 0 // por aplicar
-
-
-			// tipo de documento ponemos en captura
-			this.tdo_tdo.prop.ReadOnly = false
-			// tipo de documento ponemos en captura
-			this.ndo_doc.prop.ReadOnly = false
-			// número de documento ponemos en captura
-			// this.Bt_apl_pag.prop.Visble = false
-			// deshabilitamos los bottones de mantenimiento
-			this.bt_delete.prop.Visble = false
-			//this.modificar.prop.Visble = false
-
-			this.block[5].prop.Visible = false
-			// this.captura_xml.prop.Visible = false
-			// this.co_apl_pagos.prop.Visible = true
-			// this.block[4].prop.Visible = true
-			//this.la_apl_pagos.prop.Visible = true
-			this.ap_pagos.prop.Visible = true
-			this.ap_pagos.prop.Visble = false
-			this.Bt_observaciones.prop.Visble = false
-		} // End If 
-
-
-		// actualiza la tabla en el grid
-		this.tdo_tdo.setFocus()
-		this.Refresh
-		//thisform.tdo_tdo.valid()
-		//thisform.ndo_doc.setFocus()
-		return
-
-	}   // Fin Procedure
-
+	
+			if (await recCount('vi_cap_comedoc') > 0) {
+				await select('vi_cap_comedoc')
+	
+				m = appendM(m, await scatter())// scatter 
+	
+				if (await recCount('vi_cap_cometcd') > 0) {
+					// si hay clasificacio de documentos
+					const cam_arc = afields()
+	
+					// Buscamos campo
+					if (ascan(cam_arc, 'PRG_PRG') > 0 && pry_pry == 'S') {
+						// si es con control de proyectos
+						m = appendM(m, await scatter())// scatter 
+	
+						if (len(allTrim(m.prg_prg)) > 0) {
+							// si va a llamar a un progama de asignacion de gasto
+							let men_err = ''
+							m.prg_prg = allTrim(m.prg_prg) + ' with ' + m.par_prg
+							let ins_fox = 'Do Form ' + allTrim(m.prg_prg) + ' To men_err'
+								& ins_fox
+							if (len(allTrim(men_err)) > 10) {
+								MessageBox(men_err, 16, 'Error')
+							} // End If 
+	
+						} // End If 
+	
+					} // End If 
+	
+				} // End If 
+	
+			} // End If 
+	
+			await select('vi_cap_comenom')
+	
+			await useNodata('vi_cap_comenom') // use vi_cap_comenom vi_cap_comenom Nodata
+	
+			await select('lla1_ven')
+	
+			await useNodata('lla1_ven') // use lla1_ven lla1_ven Nodata
+	
+			await select('vi_cap_comedoc')
+			// volvemos a traernos la vista sin datos
+	
+			await useNodata('vi_cap_comedoc') // use vi_cap_comedoc vi_cap_comedoc Nodata
+	
+			if (!sw_rel) {
+				// si no se llamo desde el release
+				this.SetAll('Readonly', true)
+				// Ponemos de solo lectura los controles
+				this.mon_doc.prop.Visble = false
+				// Deshabilitamos la moneda del docto
+				//	this.d_tot_doc.prop.Value = 0 // total por documento
+	
+				this.d_sal_doc.prop.Value = 0 	// saldo
+				// this.d_pap_doc.prop.Value = 0 // por aplicar
+	
+	
+				// tipo de documento ponemos en captura
+				this.tdo_tdo.prop.ReadOnly = false
+				// tipo de documento ponemos en captura
+				this.ndo_doc.prop.ReadOnly = false
+				// número de documento ponemos en captura
+				// this.Bt_apl_pag.prop.Visble = false
+				// deshabilitamos los bottones de mantenimiento
+				this.bt_delete.prop.Visble = false
+				//this.modificar.prop.Visble = false
+	
+				this.block[5].prop.Visible = false
+				// this.captura_xml.prop.Visible = false
+				// this.co_apl_pagos.prop.Visible = true
+				// this.block[4].prop.Visible = true
+				//this.la_apl_pagos.prop.Visible = true
+				this.ap_pagos.prop.Visible = true
+				this.ap_pagos.prop.Visble = false
+				this.Bt_observaciones.prop.Visble = false
+			} // End If 
+	
+	
+			// actualiza la tabla en el grid
+			this.tdo_tdo.setFocus()
+			this.Refresh
+			//thisform.tdo_tdo.valid()
+			//thisform.ndo_doc.setFocus()
+			return
+	
+		}   // Fin Procedure
+	*/
 
 	/*
 		public Salir = class {

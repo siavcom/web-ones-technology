@@ -16,18 +16,11 @@ export class tte_nom extends COMPONENT {
     constructor() {
         super();
         this.prop.Caption = "SAT Tipo de Tercero";
-
         this.prop.ControlSource = "lla1_pve.tte_pve"; // "TTE_PVE";
         this.style.width = '32px';
 
         //propiedades
     }
-
-
-    override async gotFocus() {
-        let m = {}   // inicializamos m
-        this.prop.MaxLength = len(this.prop.Value)
-    }   // Fin Procedure
 
     override async when() {
 

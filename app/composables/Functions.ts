@@ -875,7 +875,7 @@ export function closeProcessing(texto?: string) {
   Swal.fire({
     icon: 'success',
     title: texto,
-    text: 'The operation completed successfully.',
+    text: texto.toLowerCase() == 'success' ? 'The operation completed successfully' : 'The operation completed with errors',
     timer: 750
   });
 }

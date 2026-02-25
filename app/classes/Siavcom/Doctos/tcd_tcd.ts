@@ -18,13 +18,13 @@ export class tcd_tcd extends CAPTURECOMPONENT {
         this.prop.BaseClass = "comboBox";
         this.prop.Caption = "Clasif. docto.";
         this.prop.ControlSource = "vi_cap_comedoc.tcd_tcd";
-        this.prop.Value = ''
         this.prop.Visible = false
         this.prop.RowSource = "vi_cap_cometcd.des_tcd,tcd_tcd";
         this.prop.RowSourceType = 0;
         this.prop.BoundColumn = 2;
         this.prop.ColumnCount = 2;
         this.prop.ColumnWidths = "200px,20px";
+        this.prop.Value = '  '
 
         this.prop.Messages[0] = 'No tiene definida la moneda la cuenta bancaria'
         this.prop.Messages[1] = 'Adverencia'
@@ -37,13 +37,17 @@ export class tcd_tcd extends CAPTURECOMPONENT {
     // Comentarios :si tiene clasificación de documentos permite escojer clasificación de documentos
     override async when() {
         let m = {}   // inicializamos m
+        console.log('tcd_tcd when() this.Recno=', this.Recno)
+        if (recCount('vi_cap_cometcd') == 0) { // No hay tabla de clasificacion de documentos
+            this.prop.Valid = true
+            return false
+        }
+        await goto('Top', 'vi_cap_cometcd')
         const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
-        const cometdo = await currentValue('*', 'cometdo')
         const vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')
 
+
         const ReadOnly = this.prop.ReadOnly ? this.prop.ReadOnly : await !this.Form.rev_per(this.prop.Name)
-        if (ReadOnly)
-            await this.prop.Valid()
 
         /**********************
                if (this.prop.ReadOnly) {
@@ -111,7 +115,7 @@ export class tcd_tcd extends CAPTURECOMPONENT {
 
 *******************/
 
-        this.prop.Valid = true
+
         /*******************
         
                 if (Public.value.pct_pct == 1 && this.Form.prop.tip_cap == 'P') { // Si tiene contabilidad  y es proveedor, calcula saldo de chequera
@@ -197,15 +201,19 @@ export class tcd_tcd extends CAPTURECOMPONENT {
         
           **********/
 
-
-        if (vi_cap_comedoc.key_pri == 0)
+        if (vi_cap_comedoc.key_pri == 0) {
             this.prop.Value = vi_cap_cometcd.tcd_tcd
+            console.log('tcd_tcd when vi_cap_cometcd', vi_cap_cometcd)
+        }
 
         this.Form.cba_cba.prop.Valid = true
         this.Form.cba_cba.prop.ReadOnly = true
 
         this.Form.che_doc.prop.Valid = true
         this.Form.che_doc.prop.ReadOnly = true
+
+        if (ReadOnly)
+            this.prop.Valid = await this.Valid()
 
         return !ReadOnly
 
@@ -214,11 +222,27 @@ export class tcd_tcd extends CAPTURECOMPONENT {
 
     // Evento   :Valid
     override async valid(sw_rel?: boolean) {
+        //  debugger
         let m = {}   // inicializamos m
+        console.log('valid tcd_tcd=', this.prop.Value)
+        if (this.prop.Value.trim() == '')
+            return true
+        this.prop.Value = this.prop.Value.trim()
         const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
-        const data = await locateFor(`tcd_tcd="${this.prop.Value}"`, 'vi_cap_cometcd')
-        const cometcd = data[0]
-        this.Form.mon_doc.prop.Value = cometcd.mon_doc
+        const data = await locateFor(`trim(tcd_tcd)='${this.prop.Value}'`, 'vi_cap_cometcd')
+        if (data.length > 0) {
+            console.log('valid tcd_tcd this.prop.Value=', this.prop.Value, 'data=', data, 'vi_cap_cometcd=', await localAlaSql('select * from vi_cap_cometcd'))
+            if (!data[0].mon_doc) {
+                this.Form.mon_doc.prop.Value = 1
+                return true
+            }
+            this.Form.mon_doc.prop.Value = data[0].mon_doc
+        } else {
+            this.prop.Value = '  '
+            return true
+        }
+
+
 
         const cometdo = await goto(0, 'cometdo')
 
@@ -247,16 +271,17 @@ export class tcd_tcd extends CAPTURECOMPONENT {
         } // End If 
 
         if (cometdo.tip_cfd.trim() == 'P' && (vi_cap_comedoc.key_pri == 0 || this.prop.Value != await oldValue('tcd_tcd', 'vi_cap_comedoc'))) {
-            debugger
-            m = { ...vi_cap_comedoc }// scatter 
-            m.cop_nom = 'N'
-            m.cod_nom = space(12)
 
-            m = { ...m, ...await currentValue('*', 'vi_cap_cometcd') }// scatter 
+            //  m = { ...vi_cap_comedoc }// scatter 
+            //  m.cop_nom = 'N'
+            //  m.cod_nom = space(12)
+
+            m = { ...await currentValue('*', 'vi_cap_cometcd') }// scatter 
 
             if (m.cba_cba > 0) {  // si  hay cuenta bancaria
+                this.Form.mon_doc.prop.Value = m.mon_cba
 
-                await use('vi_cap_comecba', m) // use lla1_cba lla1_cba
+                /*              await use('vi_cap_comecba', m) // use lla1_cba lla1_cba
                 const lla1_cba = await currentValue('*', 'vi_cap_comecba')
 
                 if (lla1_cba.key_pri && lla1_cba.key_pri > 0) {
@@ -265,6 +290,7 @@ export class tcd_tcd extends CAPTURECOMPONENT {
                     MessageBox(this.prop.Messages[0], 16, 'Error', 5000)
                     return false
                 } // End If 
+*/
 
             } else { // Moneda principal
                 this.Form.mon_doc.prop.Value = 1
@@ -275,8 +301,7 @@ export class tcd_tcd extends CAPTURECOMPONENT {
         } // End If 
 
         if (this.Form.sw_pga && await recNo('vi_cap_cometcd') > 0) { // Presupuesto de gasto
-            const vi_cap_cometcd = await goto(0, 'vi_cap_cometcd')
-
+            const vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')
             await updateCampo(vi_cap_cometcd.pga_pga, 'vi_cap_comedoc.pga_pga', vi_cap_comedoc.recno)
             //await localAlaSql(`update vi_cap_comedoc set pga_pga=?  where recno=${vi_cap_comedoc.recno} `, [vi_cap_cometcd.pga_pga])
         } // End If 

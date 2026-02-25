@@ -456,6 +456,7 @@ export class captureForm extends FORM {
         this.prop.RecordSource
       );
 
+      console.log('bt_save result', result)
       if (result) {
         MessageBox("Datos actualizados");
         resultado = true

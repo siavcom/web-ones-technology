@@ -244,7 +244,7 @@ export class CONTENEDOR_XML extends CONTAINER {
 
   async borra_xml() {
     const xmd = await goto(0, this.nom_tab)
-    if (xmd.key_pri > 0) {
+    if (xmd.key_pri != null && xmd.key_pri > 0) {
       await SQLExec(`delete from man_comexmd where nom_tab='${this.nom_tab}' and key_xmd=${xmd.key_pri}`)
 
     }

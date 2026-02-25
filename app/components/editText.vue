@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -104,7 +104,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -530,7 +530,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
       // Si no viene del watch This.prop.Value
       if (!newValor) {
-        console.log('-----------0) editText emitValue() !readCam Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
+        // console.log('-----------0) editText emitValue() !readCam Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
         newValor = Value.value
         //newValor = This.prop.Value  // Si viene del watch This.prop.Value
       }
@@ -543,7 +543,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor)
       // Value.value = Valor
     }
-    console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'NewValue=', newValor, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
+    //console.log('1.0) editText emitValue() Name', props.prop.Name, 'Value=', newValor, 'props.Registro=', props.Registro, 'props.prop.ControlSource=', props.prop.ControlSource)
+    // console.log('--------2) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'NewValue=', newValor, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
     if (!This.prop.ReadOnly && !This.prop.Disabled) {
       if (Value.value != newValor) {
         Value.value = newValor
@@ -551,7 +552,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (Value.value != This.prop.Value) {
         This.prop.Value = Value.value
       }
-      console.log('--------2.1) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'NewValue=', newValor, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
+      //  console.log('--------2.1) editText emitValue() Valid=true update localSQL Name=', props.prop.Name, 'NewValue=', newValor, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
 
       // if (Value.value != This.prop.Value)  // 14/Mar/2025
       //   This.prop.Value = Value.value // 14/Mar/2025
@@ -561,7 +562,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (Type == 'spinner' || Type == 'checkbox')
         await This.interactiveChange()
 
-      console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+      // console.log('-----------2) editText emitValue() !readCam Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
 
       if (isValid == undefined)
         isValid = false
@@ -687,11 +688,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
               readValid = true
             }
           } else {
+            /*  se quito 23/Feb/2026
+                        if (data.key_pri > 0)
+                          This.prop.Valid = true
+                        else
+                          This.prop.Valid = false
+                        */
 
-            if (data.key_pri > 0)
-              This.prop.Valid = true
-            else
-              This.prop.Valid = false
           }
         }
         //  console.log('>>>>>2.0.1)  editText emitValue() readCam Name=', props.prop.Name, 'recno=', Recno, 'Value', Value.value)
@@ -993,10 +996,6 @@ const asignaValue = async (new_val?: any) => {
     await emitValue(false, true, new_val)
   else
     await emitValue() ///se puso await
-  console.log('1.2) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
-
-
-
 
 };
 
@@ -1419,22 +1418,6 @@ watch(
   { deep: true }
 );
 
-////////////////////////////////////////
-// Registro
-// Nota: Lee de la base de datos local segun el valor de Registro
-//       Se utiliza para el manejo de grid
-///////////////////////////////////////
-watch(
-  () => props.Registro, //props.Registro,
-  async (new_val) => {
-
-    console.log('grid editText watch Registro', This.prop.Name, 'new_val=', new_val)
-
-    // This.Recno = props.Registro
-  },
-  { deep: true }
-);
-
 
 ////////////////////////////////////////
 // Hacer el set focus 
@@ -1463,19 +1446,16 @@ watch(
   async (new_val: any, old_val: any) => {
 
     //if (This.prop.Name == 'cod_non')
-    console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
+    // console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
 
     //if (focusIn.value == 1) || sw_emitValue) {// Si tiene el foco deshabilita el watch 19/Feb/2026
     if (focusIn.value == 1) {// Si tiene el foco deshabilita el watch
       //sw_emitValue = false 19/Feb/2026
       return
     }
-    //if (This.prop.Name == 'cod_non')
-    // console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'Value.value=', Value.value, 'new_val=', new_val)
-
 
     //if (This.prop.Name == 'cod_non')
-    console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val,)
+    // console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val,)
 
     if (watchPropValue) { // Si se cambio desde el emitValue se ignora
       return
@@ -1893,7 +1873,7 @@ if (!This.prop.RefValue == null)
   // await This.recnoChange()
   This.prop.Status = 'A'
 
-  console.log('onMounted Name=', This.prop.Name, 'Valid=', This.prop.Valid)
+  // console.log('onMounted Name=', This.prop.Name, 'Valid=', This.prop.Valid)
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
     // This.prop.First = false

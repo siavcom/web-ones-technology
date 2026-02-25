@@ -727,7 +727,7 @@ onMounted(async () => {
 
   //await renderComboBox()
 
-  console.log('onMounted 1) textLabel Name=', This?.prop?.Name, 'props.Registro=', props.Registro)
+  // console.log('onMounted 1) textLabel Name=', This?.prop?.Name, 'props.Registro=', props.Registro)
 
   await readValue(true)
   /*

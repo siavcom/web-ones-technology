@@ -253,7 +253,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 
-const Component = ref(props.prop.This)
+//const Component = ref(props.prop.This)
+const Component = toRef(() => props.prop.This)
 const This = Component.value
 
 const Este = props.prop.This
@@ -267,6 +268,9 @@ let firstFocus = false
 let onlyRead = ref(false)
 let focusIn = false
 let Evento = ''
+
+let watchPropValue = false
+
 const MultiSelect = ref(props.prop.MultiSelect)
 const Styles = reactive(
   {
@@ -419,21 +423,19 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    console.log('1.0) comboBox editText emitValue() Name', props.prop.Name, 'Value=', Valor, 'props.Registro=', props.Registro, 'props.prop.ControlSource=', props.prop.ControlSource)
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-      await This.Form.db.updateCampo(Valor, props.prop.ControlSource, props.Registro)
-      Value.value = Valor
-
-
+      await updateCampo(Valor, props.prop.ControlSource, props.Registro)
     }
+
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
     This.prop.Value = Value.value
+
     if (isValid == undefined)
       isValid = false
 
     if (!isValid) {
-      console.log('1.1) comboBox editText emitValue() Name', props.prop.Name, 'Value=', Valor)
+      //   console.log('1.1) comboBox emitValue() Name', props.prop.Name, 'Value=', Valor)
       await This.interactiveChange()
       //This.prop.Valid = false
       inputBuffer = ''
@@ -495,12 +497,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
           }
         }
         else {
-
-          if (data.key_pri > 0)
-            This.prop.Valid = true
-          else
-            This.prop.Valid = false
-
+          /* se quito 23/Feb/2026
+                    if (data.key_pri > 0)
+                      This.prop.Valid = true
+                    else
+                      This.prop.Valid = false
+          */
         }
 
       }
@@ -732,7 +734,7 @@ const validCheck = async (num_ren: number) => {
     coma = ','
   }
   Value.value = ValResultante
-  //console.log('comboBox evalidCheck ', 'Value=', Value.value)
+  console.log('comboBox evalidCheck ', 'Value=', Value.value)
   // This.prop.Value = Value.value
   This.prop.Valid = false
   emitValue()
@@ -1283,6 +1285,34 @@ watch(
 );
 
 
+
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+watch(
+  () => This.Recno, //props.Registro,
+  async (new_val) => {
+
+
+    if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
+      return
+    //console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
+    await emitValue(true)
+    //29/Oct/2025 -- Se quita, daba problema en el grid
+    //This.Recno = props.Registro
+    This.recnoChange()
+  },
+  { deep: true }
+);
+
+
+
+
+
+
+/*
 ////////////////////////////////////////
 // Registro
 // Nota: Lee de la base de datos local segun el valor de Registro
@@ -1292,7 +1322,7 @@ watch(
   () => This.Recno, //props.Registro,
   async (new_val, old_val) => {
     if (new_val != old_val) {
-      //console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
+      // console.log('ComboBox Watch Registro Name=', This.prop.Name, 'new_val =', new_val, old_val)
       This.Recno = props.Registro
       emitValue(true, true)
       //This.Recno = props.Registro
@@ -1300,7 +1330,7 @@ watch(
   },
   { deep: false }
 );
-
+*/
 /////////////////////////////////////////////////////////////////////
 // change This.prop.displayError
 /////////////////////////////////////////////////////////////////
@@ -1374,12 +1404,20 @@ watch(
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
+    if (watchPropValue) return
+    if (focusIn == true) {// Si tiene el foco deshabilita el watch
+      //sw_emitValue = false 19/Feb/2026
+      return
+    }
 
     // console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
     //   if (This.prop.Value != old_val) {
     if (This.prop.Value != Value.value) {
       Value.value = This.prop.Value
+
+      watchPropValue = true
       await emitValue(false)
+      watchPropValue = false
       if (This.prop.Valid && This.onChangeValue) {
         //console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
         if (This.onChangeValue) {
@@ -1400,6 +1438,7 @@ watch(
   (new_val, old_val) => {
 
     if (new_val != old_val) {
+      //  console.log('ComboBox Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val, old_val)
       emitValue(true, true)
     }
 
@@ -1640,7 +1679,7 @@ const ChecaEventos = async (Evento?: string) => {
 
   for (const comp in This.Form.estatus) {
     if (comp != This.prop.Name && This.Form.estatus[comp] != 'A') {
-      console.warn(This.prop.Name, '1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
+      //  console.warn(This.prop.Name, '1) comboBox Watch  Eventos Componente en proceso=', comp, 'Eventos=', This.Form.eventos)
       This.prop.Disabled = true
       await Delay(200)
       This.prop.Disabled = false

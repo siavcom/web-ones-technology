@@ -21,10 +21,6 @@ export class obs_pve extends COMPONENT {
 
         //propiedades
     }
-    override async gotFocus() {
-        let m = {}   // inicializamos m
-        this.prop.MaxLength = len(this.prop.Value)
-    }   // Fin Procedure
 
 
     override async when() {

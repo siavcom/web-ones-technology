@@ -196,8 +196,8 @@ export class ap_pagos extends GRID {
 
         this.prop.RecordSource = ''
         let m = {}
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
-        const cometdo = await goto(0, 'cometdo')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
+        const cometdo = await currentValue('*', 'cometdo')
 
         if (Public.value.log_usu.trim() == 'ADMIN' || await this.Form.rev_per('IPR')) {
             // si encuentra el campo

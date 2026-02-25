@@ -55,8 +55,9 @@ export class cam_dat extends COLUMN {
     if (!this.prop.When) return true;
     if (this.prop.Value.trim().length == 0) return false;
 
-    this.prop.Value = this.prop.Value.toLowerCase();
-    const valor = this.prop.Value.trim();
+    this.prop.Value = this.prop.Value.toLowerCase().replaceAll(' ', '');
+
+    const valor = this.prop.Value.trim()
     const recno = this.Recno;
     const data = await this.Form.db.localSql(
       `select count(key_pri) as existe from vi_cap_comedat where trim(lower(cam_dat))="${valor}" and recno<>${recno}`

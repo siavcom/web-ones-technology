@@ -26,13 +26,6 @@ export class iva_pve extends COMPONENT {
     }
 
 
-
-    override async gotFocus() {
-        let m = {}   // inicializamos m
-    }   // Fin Procedure
-
-
-
     override async when() {
         let m = {}   // inicializamos m
         if (await recNo('lla1_pve') > 0 && vi_cap_comenom.rfc_nom == lla1_pve.rfc_pve) {

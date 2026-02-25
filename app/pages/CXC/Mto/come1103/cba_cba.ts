@@ -27,7 +27,7 @@ export class cba_cba extends CAPTURECOMPONENT {
         //propiedades
     }
 
-    // Evento   :GotFocus
+    // Evento   :leeChequera
     // Objeto  :cba_cba
     // Tipo   : Combo Box
     // Comentarios :
@@ -35,8 +35,8 @@ export class cba_cba extends CAPTURECOMPONENT {
 
         this.prop.Valid = true
         // let vi_cap_comecba = await goto(0, 'vi_cap_comecba')
-        const m = await scatter(['cop_nom', 'cod_nom'], 'vi_cap_comedoc')
-        const vi_cap_comecba = await goto(0, 'vi_cap_comecba')
+        const m = await currentValue(['cop_nom', 'cod_nom'], 'vi_cap_comedoc')
+        const vi_cap_comecba = await currentValue('*', 'vi_cap_comecba')
         // noi hay tabla abierta o es diferente el codigo
 
         if (vi_cap_comecba == null || vi_cap_comecba.cod_nom != m.cod_nom) {
@@ -49,7 +49,7 @@ export class cba_cba extends CAPTURECOMPONENT {
         } // End If 
 
 
-        if (await recCount('vi_cap_comecba') <= 1)
+        if (await recCount('vi_cap_comecba') == 0)
             return false
 
         /*

@@ -819,7 +819,7 @@ export const tableUpdate = async (
                     recno,
                     await localAlaSql(` SELECT * FROM last.${alias}; 'USE now;'`)
                 );
-                closeProcessing('Error')
+                closeProcessing('Table update error')
 
                 alasql('USE now;')
                 return false;
@@ -1090,7 +1090,11 @@ export const tableUpdate = async (
     */
     // Regenera recnoVal en caso de insercion de datos y solo sea un registro
     alasql('USE now;')
-    closeProcessing('Success')
+    if (sw_val)
+        closeProcessing()
+    //    else
+    //        closeProcessing('Error')
+
     return sw_val;
 }; //
 
@@ -1681,7 +1685,30 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         let resp = await localAlaSql(
             ` DROP TABLE IF EXISTS last.${alias} ; DROP TABLE IF EXISTS now.${alias} ; `
         );
-        resp = await localAlaSql(` CREATE TABLE now.${alias} ;`);
+
+
+        let ins_sql = ` CREATE TABLE now.${alias} ( `
+        let coma = ''
+        for (const campo in respuesta[0]) {
+            console.log('Campo:', campo);
+            let tipo = 'string'
+            const tip_dat = typeof respuesta[0][campo];
+            switch (tip_dat) {
+                case 'number':
+                    tipo = 'number'
+                    break;
+                case 'boolean':
+                    tipo = 'boolean'
+                    break;
+            }
+
+            ins_sql = ins_sql + `${coma} ${campo} ${tipo}`
+            coma = ','
+        }
+        ins_sql = ins_sql + ') ;'
+        //  console.log('Db SQLExec =====>', ins_sql)
+        //resp = await localAlaSql(` CREATE TABLE now.${alias} ;`);
+        resp = await localAlaSql(ins_sql);
         resp = await localAlaSql(` SELECT * INTO now.${alias} FROM ? ; USE now ;`, [
             respuesta,
         ]);
@@ -2276,7 +2303,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         // console.log('Db Valores default=====>',alias,This.value.View[alias].val_def)
 
-        console.log('Db ALASQL Estructura ===>', des_tab)
+        //console.log('Db ALASQL Estructura ===>', des_tab)
         // Creamos la tablas en last y now
         try {
             //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + '; ')
@@ -2919,28 +2946,45 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
 
 
     // console.log('Db readCampo=', tabla, campo, recno)
-    const data = await localAlaSql("USE " +
-        DataBase +
-        " ; SELECT " +
-        campo +
-        ",key_pri  FROM " +
-        tabla +
-        " WHERE recno=? ;",
-        recno
-    );
-
+    // revizar si existe el key_pri
+    /*
+        const all_data = await localAlaSql("USE " +
+            DataBase +
+            " ; SELECT * FROM " +
+            tabla +
+            " WHERE recno=? ;",
+            recno
+        );
+        */
+    const all_data = await localAlaSql(`USE ${DataBase} ; SELECT ${campo} FROM ${tabla}  WHERE recno=${recno}`);
     alasql('USE now ;')
-    if (data.length > 1) {
-        for (const campo in data[1][0]) {
-            if (typeof data[1][0][campo] === "string") {
-                data[1][0][campo] = data[1][0][campo].trim();
-            }
-        }
-        This.value.View[tabla].Recno = recno // actualizamos el recno de la vista
-        // console.warn('readCampo no data =====>', tabla, campo, recno, data)
+    // probar  
+    //  console.log('readCampo all_data=', data, 'Recno:', recno)
 
-        return data[1][0]; // todos los campos
+    if (all_data.length > 1 && all_data[1].length > 0) {
+        const data = {}
+        console.log('readCampo all_data=', all_data[1][0])
+        data[campo] = all_data[1][0][campo]
+
+        if (typeof data[campo] === "string")
+            data[campo] = data[campo].trim();
+        //data.key_pri = all_data[1][0].key_pri ? all_data[1][0].key_pri : null
+        return data
     }
+
+    /*
+      if (data.length > 1) {
+          for (const campo in data[1][0]) {
+              if (typeof data[1][0][campo] === "string") {
+                  data[1][0][campo] = data[1][0][campo].trim();
+              }
+          }
+          This.value.View[tabla].Recno = recno // actualizamos el recno de la vista
+          // console.warn('readCampo no data =====>', tabla, campo, recno, data)
+  
+          return data[1][0]; // todos los campos
+      }
+    */
     // console.warn('Sql.readCampo no data =====>', tabla, campo, recno, data)
 
     return [];
@@ -3697,7 +3741,7 @@ export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
     try {
         Processing('Timbrando CFDI')
         const response: any = await axiosCall(dat_timbrado);
-        closeProcessing('Timbrado exitoso')
+        closeProcessing()
         return true;
     } catch (error) {
         errorAlert("Timbra CFDI  :" + error.response.statusText);
