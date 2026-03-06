@@ -18,7 +18,7 @@ export class ctb_fam extends COLUMN {
         super();
         this.prop.BaseClass = "editBox";
         this.prop.ColumnTextLabel = "Cuenta contable";
-        this.prop.ControlSource = "vi_cap_fam.ctb_fam";
+        this.prop.ControlSource = "vi_cap_comefam.ctb_fam";
         this.prop.Format = "";
         this.prop.Name = "ctb_fam";
         //propiedades

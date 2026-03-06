@@ -58,10 +58,6 @@ export class ThisForm extends reportCXC {
     this.block[0].prop.Disabled = false
     this.block[0].title = 'Generales'
 
-    this.Form.ini_sem.prop.Value = getDay(PublicVar.fps_pge);
-    if (this.Form.ini_sem.prop.Value == 0)
-      this.Form.ini_sem.prop.Value = this.Form.ini_sem.prop.Value + 7
-    console.log('PublicVar.fps_pge=', PublicVar.fps_pge, 'ini_sem=', getDay(PublicVar.fps_pge))
   }
 
   public override async init() {

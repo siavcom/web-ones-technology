@@ -20,7 +20,7 @@ export class cos_tda extends COLUMN {
     this.prop.ColumnTextLabel = "Max. costo de almacen cliente";
     this.prop.Type = 'number';
     this.prop.Decimals = 2;
-    this.prop.ControlSource = "vi_cap_tda.cos_tda";
+    this.prop.ControlSource = "vi_cap_cometda.cos_tda";
     this.prop.InputMask = "999,999,999.99";
     this.prop.Name = "cos_tda";
     this.style.width = "124px";

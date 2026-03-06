@@ -18,7 +18,7 @@ export class cla_fam extends COLUMN {
     super();
     this.prop.BaseClass = "editBox";
     this.prop.ColumnTextLabel = "Clave";
-    this.prop.ControlSource = "vi_cap_fam.cla_fam";
+    this.prop.ControlSource = "vi_cap_comefam.cla_fam";
     this.prop.Name = "cla_fam";
     this.prop.Capture = true;
     this.prop.updateKey = true;

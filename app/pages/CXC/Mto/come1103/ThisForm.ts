@@ -284,7 +284,7 @@ export class ThisForm extends captureForm {
 		this.prop.Messages[2] = 'Cargos y abonos de clientes'
 		this.prop.Messages[3] = 'Cliente'
 		this.prop.Messages[4] = 'Gastos CEDIS'
-		this.prop.Messages[5] = 'Cargos y abonos de proveedores'
+		this.prop.Messages[5] = 'Abonos y cargos de proveedores'
 		this.prop.Messages[6] = 'Proveedor'
 		this.prop.Messages[7] = 'Abono'
 		this.prop.Messages[8] = 'No afecta'
@@ -583,7 +583,7 @@ export class ThisForm extends captureForm {
 		await useNodata('vi_cap_comepag') // use vi_cap_comepag vi_cap_comepag Nodata
 		// vista de lectura y tabla de pagos
 
-		await useNodata('lla1_pag', 'tabla') // use lla1_pag lla1_pag Nodata Alias
+		//	await useNodata('lla1_pag', 'tabla') // use lla1_pag lla1_pag Nodata Alias
 		// vista de pagos
 		await useNodata('lla1_tdo') // use lla1_tdo lla1_tdo Nodata
 		// vista de tipos de documentos
@@ -594,6 +594,7 @@ export class ThisForm extends captureForm {
 
 		//this.d_coa_tdo.prop.Value = iif(cometdo.coa_tdo == 'C', this.prop.Messages[9], this.prop.Messages[7])
 		await useNodata('lla1_xml') // use lla1_xml lla1_xml Nodata
+
 		m.cam_sat = 'FPA_SAT'
 		m.par_sat = '  '
 		await use('vi_comesat', m, 'formas_pago') // use vi_comesat vi_comesat

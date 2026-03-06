@@ -20,7 +20,7 @@ export class alc_tda extends COLUMN {
     this.prop.ColumnTextLabel = "Alm. de cliente";
     this.prop.Type = 'checkBox';
     this.prop.Caption = "Si";
-    this.prop.ControlSource = "vi_cap_tda.alc_tda";
+    this.prop.ControlSource = "vi_cap_cometda.alc_tda";
     this.prop.Name = "alc_tda";
 
     //propiedades

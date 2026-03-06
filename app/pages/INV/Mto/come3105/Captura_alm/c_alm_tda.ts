@@ -19,8 +19,8 @@ export class c_alm_tda extends COLUMN {
   constructor() {
     super();
     this.prop.BaseClass = "comboBox";
-    this.prop.ControlSource = "vi_cap_alm.alm_tda";
-    this.prop.RowSource = "SELECT des_tda,alm_tda from vi_cap_tda ORDER BY des_tda";
+    this.prop.ControlSource = "vi_cap_comealm.alm_tda";
+    this.prop.RowSource = "SELECT des_tda,alm_tda from vi_cap_cometda ORDER BY des_tda";
     this.prop.BoundColumn = 2;
     this.prop.ColumnCount = 2;
     this.prop.RowSourceType = 4; // 4-localAlaSQL
@@ -36,7 +36,7 @@ export class c_alm_tda extends COLUMN {
 
   public override async interactiveChange() {
 
-    const data = await localAlaSql(`SELECT alm_tda from vi_cap_alm  where '${this.prop.Value.trim()}'=trim(alm_tda)`)
+    const data = await localAlaSql(`SELECT alm_tda from vi_cap_comealm  where '${this.prop.Value.trim()}'=trim(alm_tda)`)
 
     if (data.length > 1) {  // ya existe el almacen
       this.prop.Value = this.old_value
@@ -56,14 +56,14 @@ export class c_alm_tda extends COLUMN {
     let Valor = this.prop.Value.trim()
     console.log("1.0) c_alm_tda when this.Recno=", this.Recno, ',Valor=', Valor)
 
-    let data = await localAlaSql(`SELECT alm_tda,recno from vi_cap_alm  where  recno<>${this.Recno} and trim(alm_tda)='${Valor}' `)
+    let data = await localAlaSql(`SELECT alm_tda,recno from vi_cap_comealm  where  recno<>${this.Recno} and trim(alm_tda)='${Valor}' `)
 
     console.log("1.1) c_alm_tda when this.Recno=", this.Recno, ',Valor=', Valor, 'data=', data)
 
     if (data.length > 0) {  // ya existe el almacen
 
       const des_tda = data[0].des_tda
-      data = await localAlaSql(`SELECT alm_tda,des_tda from  vi_cap_tda where trim(alm_tda)<>'${Valor}' and not exists(select recno from vi_cap_alm where trim(vi_cap_alm.alm_tda)=trim(vi_cap_tda.alm_tda)) order by des_tda LIMIT 1`)
+      data = await localAlaSql(`SELECT alm_tda,des_tda from  vi_cap_cometda where trim(alm_tda)<>'${Valor}' and not exists(select recno from vi_cap_comealm where trim(vi_cap_comealm.alm_tda)=trim(vi_cap_cometda.alm_tda)) order by des_tda LIMIT 1`)
 
       if (data.length == 0) {
         this.prop.Valid = false
@@ -80,7 +80,7 @@ export class c_alm_tda extends COLUMN {
   
         for (let i = 0; i < data.length; i++) {
           Valor = data[i].alm_tda.trim()
-          data = await localAlaSql(`SELECT alm_tda from vi_cap_alm where trim(alm_tda)='${Valor}'  limit 1 `)
+          data = await localAlaSql(`SELECT alm_tda from vi_cap_comealm where trim(alm_tda)='${Valor}'  limit 1 `)
           if (data.length == 0) {   // no hay mas registros
             this.prop.Value = Valor
             found = true // Encontro uno libre

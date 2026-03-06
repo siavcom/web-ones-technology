@@ -35,10 +35,10 @@ export class bt_aceptar extends IMGBUTTON {
     m.has_cla = this.Form.has_cla.prop.Value
     m.alm_tda = this.Form.alm_tda.prop.Value
 
-    const data = await use('vi_cap_alm_cla', m, 'vi_cap_alm') // use vi_cap_alm_cla vi_cap_alm_cla ALIAS  // esta vista es para la captura de almacenes 
-    console.log('=======>bt_aceptar', data, View.vi_cap_alm)
+    const data = await use('vi_cap_comealm_cla', m, 'vi_cap_comealm') // use vi_cap_comealm_cla vi_cap_comealm_cla ALIAS  // esta vista es para la captura de almacenes 
+    console.log('=======>bt_aceptar', data, View.vi_cap_comealm)
 
-    this.Form.Captura_alm.prop.RecordSource = 'vi_cap_alm'  // actualiza la tabla en el grid 
+    this.Form.Captura_alm.prop.RecordSource = 'vi_cap_comealm'  // actualiza la tabla en el grid 
 
     return
 

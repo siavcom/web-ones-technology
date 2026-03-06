@@ -17,7 +17,7 @@ export class c_fiv_alm extends COLUMN {
     constructor() {
         super();
         this.prop.Type = "number";
-        this.prop.ControlSource = "vi_cap_alm.fiv_alm";
+        this.prop.ControlSource = "vi_cap_comealm.fiv_alm";
         this.prop.Decimals = 3
         //this.prop.MaxLength = 6
         this.prop.Min = '0.01'

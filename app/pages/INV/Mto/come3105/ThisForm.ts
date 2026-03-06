@@ -68,11 +68,11 @@ export class ThisForm extends FORM {
 
   override async init() {
     const m = {}   // inicializamos m
-    await useNodata('vi_cap_alm') // use vi_cap_alm vi_cap_alm nodata  // tabla de captura movimientos 
-    await use('vi_cap_tda') // Tabla de descripcion de almacenes
+    await useNodata('vi_cap_comealm') // use vi_cap_comealm vi_cap_comealm nodata  // tabla de captura movimientos 
+    await use('vi_cap_cometda') // Tabla de descripcion de almacenes
 
     //  await useNodata('vi_cap_comeisu') 
-    //  await useNodata('vi_cap_fam') // use vi_cap_fam vi_cap_fam nodata
+    //  await useNodata('vi_cap_comefam') // use vi_cap_comefam vi_cap_comefam nodata
 
     //    await useNodata('lla1_alm') // use lla1_alm lla1_alm nodata alias  // tabla de actualizaciÃ³n de movimientos 
 

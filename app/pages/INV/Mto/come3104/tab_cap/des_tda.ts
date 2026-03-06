@@ -19,7 +19,7 @@ export class des_tda extends COLUMN {
     this.prop.BaseClass = "editBox";
     this.prop.ColumnTextLabel = "Descripción";
     this.prop.Type = 'text';
-    this.prop.ControlSource = "vi_cap_tda.des_tda";
+    this.prop.ControlSource = "vi_cap_cometda.des_tda";
     this.prop.Name = "des_tda";
     this.style.width = "300px";
 

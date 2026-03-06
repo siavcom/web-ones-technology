@@ -79,8 +79,8 @@ export class cla_isu extends COMPONENT {
 
     this.des_isu.prop.Value = data[0].des_isu
 
-    await use('vi_cap_alm', m) // use vi_cap_alm vi_cap_alm
-    this.Form.Captura_alm.prop.RecordSource = 'vi_cap_alm'  // actualiza la tabla en el grid 
+    await use('vi_cap_comealm', m) // use vi_cap_comealm vi_cap_comealm
+    this.Form.Captura_alm.prop.RecordSource = 'vi_cap_comealm'  // actualiza la tabla en el grid 
 
     return true
   }   // Fin Procedure

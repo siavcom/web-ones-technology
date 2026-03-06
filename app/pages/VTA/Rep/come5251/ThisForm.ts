@@ -11,21 +11,11 @@ import { reportVtas } from "@/classes/Siavcom/reports/VTAS/reportVtas";
 import { ndo_doc } from "./ndo_doc";
 
 //import { unWatch } from './unWatch';
-
-
 //import { data_detail } from './detail/data_detail'
-
-
-//import { Bt_whatsApp } from "./Bt_whatsApp";
-//import { Bt_timbra } from "./Bt_timbra";
-//import { Bt_email } from "./Bt_email";
 export class ThisForm extends reportVtas {
   public ndo_doc = new ndo_doc()
   // public data_detail = new data_detail()
 
-  //public bt_whatsApp = new Bt_whatsApp()
-  //public bt_timbra = new Bt_timbra()
-  //public bt_email = new Bt_email()
   tdo_tdo = ''
   num_doc = 0
   num_pol = 0
@@ -37,13 +27,13 @@ export class ThisForm extends reportVtas {
   constructor() {
     super(2); // inicializa la clase base
 
-    this.tab_ord = "vi_cfdi_ver40";
+    this.tab_ord = "vi_documentos";
     this.prop.Name = "come5251";
     this.prop.Caption = "Impresión de CFDI'S";
     this.prop.Status = "A";
     this.prop.Development = true;
-    this.vis_rep = "vi_cfdi_ver40"; // nombre de la vista sql a utilizar en el reporte
-    this.for_imp.prop.Value = "cfdi_ver40_web"; // no incluir extencion jasper o jrxml
+    this.vis_rep = "vi_documentos"; // nombre de la vista sql a utilizar en el reporte
+    // this.for_imp.prop.Value = "cfdi_ver40_web"; // no incluir extencion jasper o jrxml
     this.op_tcd_tcd.prop.Visible = false
     this.op_tcd_tcd.prop.Disabled = true
     this.mon_rep.prop.Visible = false
@@ -116,12 +106,8 @@ export class ThisForm extends reportVtas {
       await use('vi_cap_comedoc', m)
       const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
       if (vi_cap_comedoc.for_tdo > '         ')
-        this.Form.for_imp.prop.Value = vi_cap_comedoc.for_tdo // asigna forma de impresion
+        this.Form.for_imp.prop.Value = vi_cap_comedoc.for_tdo.trim() // asigna forma de impresion
       else {
-        const ins_sql = `select num_fim,nom_fim,fim_fim,tpo_fim,dge_fim,cim_fim,mco_fim,des_tdo,tip_cfd from man_comefim 
-                          join man_cometdo on man_cometdo.tdo_tdo = man_comefim.tdo_tdo where man_comefim.tdo_tdo='${m.tdo_tdo}' order by num_fim`
-        await SQLExec(ins_sql, 'comefim')
-
         this.polImpresion(m)
         return
       }
@@ -147,11 +133,22 @@ export class ThisForm extends reportVtas {
 
   }
 
+  /**
+   * @description :Imprime segun politica de impresión
+   * @param m 
+   * @returns 
+   */
+
+
   public async polImpresion(m: {}) {
 
     if (!m)
       m = { ndo_doc: 0, tdo_tdo: '' }
 
+    await use('vi_cap_comefim', m, 'comefim')
+    //const ins_sql = `select num_fim,nom_fim,fim_fim,tpo_fim,dge_fim,cim_fim,mco_fim,des_tdo,tip_cfd from man_comefim 
+    //                  join man_cometdo on man_cometdo.tdo_tdo = man_comefim.tdo_tdo where man_comefim.tdo_tdo='${m.tdo_tdo}' order by num_fim`
+    //await SQLExec(ins_sql, 'comefim')
     const data = await localAlaSql('select * from comefim order by num_fim')
 
     if (this.num_doc > 0 && m.ndo_doc == 0) {
@@ -178,13 +175,13 @@ export class ThisForm extends reportVtas {
       this.op_tdo_tdo.prop.Value = m.tdo_tdo
       this.ndo_doc.prop.Value = m.ndo_doc
 
-      this.Form.for_imp.prop.Value = data[i].fim_fim // asigna forma de impresion
+      this.Form.for_imp.prop.Value = data[i].fim_fim.trim() // asigna forma de impresion
       const nom_fim = data[i].nom_fim.trim().toUpperCase()
 
       if (this.sw_imp) {
         this.sw_imp = false
         switch (true) {
-          case nom_fim == 'MODI' || nom_fim == '' || nom_fim == 'PDF' || nom_fim == 'FOXY' || nom_fim == 'PANTALLA':
+          case nom_fim == 'MODI' || nom_fim == '' || nom_fim == 'PDF' || nom_fim.slice(0, 4) == 'FOXY' || nom_fim == 'PANTALLA':
             this.bt_pdf.click()
             return
 
@@ -327,21 +324,21 @@ export class ThisForm extends reportVtas {
     const tdo_tdo = data[0].tdo_tdo.trim()
 
     if (tip_cfd == 'I' || tip_cfd == 'E') {
-      this.for_imp.prop.Value = 'jr_cfdi_factura'
-      this.vis_rep = 'vi_cfdi_factura'
+      //   this.for_imp.prop.Value = 'jr_cfdi_factura'
+      //   this.vis_rep = 'vi_cfdi_factura'
       ins_sql = ` 
            exec p_gen_vis_fac_web '${tdo_tdo}',${this.ndo_doc.prop.Value} `
 
     }
     if (tip_cfd == 'P') {
-      this.for_imp.prop.Value = 'jr_cfdi_pago'
-      this.vis_rep = 'vi_cfdi_general'
+      // this.for_imp.prop.Value = 'jr_cfdi_pago'
+      // this.vis_rep = 'vi_cfdi_general'
       ins_sql = `
      exec p_gen_vis_pag_web '${tdo_tdo}',${this.ndo_doc.prop.Value}
      `
     }
     if (tip_cfd == 'T') {
-      this.for_imp.prop.Value = 'jr_cfdi_factura'
+      //  this.for_imp.prop.Value = 'jr_cfdi_factura'
       this.vis_rep = 'vi_cfdi_traslados'
       ins_sql = `select * from ${this.vis_rep} WHERE ${localWhere} order by mov_mov `
     }

@@ -630,7 +630,7 @@ export class captureForm extends FORM {
     // si es el adminstrador o se dio password de autorización
 
     if (Public.value.log_usu.trim() == 'ADMIN' || this.Form.sw_aut) {
-      console.log('Revisa permisos: ADMIN o sw_aut=true')
+      //console.log('Revisa permisos: ADMIN o sw_aut=true')
       return true
     }
     // si es un documento que es anterior al cierre y no es una impresión
@@ -643,21 +643,28 @@ export class captureForm extends FORM {
     if (!sw_mov)
       sw_mov = false
 
-
-
     // busca el nombre del objeto en el arreglo nom_cam
-    const pos = ascan(this.nom_obj, upper(left(nom_cam, 3)))
-    if (pos > 0) {									// si encuentra el campo
-      if (this.nom_obj[pos + 1] == '1' || this.nom_obj[pos + 1] == '3')	// permite Modifica o Captura y modifica
+
+    nom_cam = nom_cam.toUpperCase().slice(0, 3)
+    console.log('rev_per nom_obj', this.nom_obj, 'nom_cam', nom_cam)
+
+    //const pos = ascan(this.nom_obj, nom_cam)
+
+    if (this.Form.nom_obj[nom_cam]) {  // Si existe el objeto
+      const obj_seg = this.Form.nom_obj[nom_cam]
+
+      if (obj_seg == '1' || obj_seg == '3')	// permite Modifica o Captura y modifica
         return true
       // reviza si se permite la captura
-      if (this.nom_obj[pos + 1] >= '2' && ((!sw_mov && this.Form.sw_update) || (sw_mov && this.Form.num_mov == 0)))
+      if (obj_seg >= '2' && ((!sw_mov && this.Form.sw_update) || (sw_mov && this.Form.num_mov == 0)))
         return true
 
       // si permite la captura es impresión pero no se a impreso ni timbrado
-      if (this.nom_obj[pos + 1] == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
+      if (obj_seg == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
         return true
     }
+
+
     return false
 
   }

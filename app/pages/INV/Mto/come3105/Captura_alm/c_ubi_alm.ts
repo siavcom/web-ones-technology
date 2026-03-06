@@ -20,7 +20,7 @@ export class c_ubi_alm extends COLUMN {
 
     this.prop.ColumnTextLabel = "Ubicación en el almácen";
     this.prop.Name = "c_ubi_alm";
-    this.prop.ControlSource = "vi_cap_alm.ubi_alm";
+    this.prop.ControlSource = "vi_cap_comealm.ubi_alm";
     this.style.width = "256px"
 
     //propiedades

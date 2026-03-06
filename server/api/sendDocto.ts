@@ -477,7 +477,7 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
 
         try { // send mail with defined transport object
             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-            console.log("Sending mail");
+            console.log("Sending mail mailOptions:", mailOptions.to);
             const info = await transporter.sendMail(mailOptions);
             console.log("Message sent: %s", info.messageId);
             // Preview URL is only available when using an Ethereal test account

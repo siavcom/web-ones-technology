@@ -19,7 +19,7 @@ export class c_dst_alm extends COLUMN {
 
 
     this.prop.Type = 'text';
-    this.prop.ControlSource = "vi_cap_alm.dst_alm";
+    this.prop.ControlSource = "vi_cap_comealm.dst_alm";
     this.prop.Name = "c_dst_alm";
     this.prop.ColumnTextLabel = "Mensaje de advertencia en la captura";
     this.style.width = "300px";

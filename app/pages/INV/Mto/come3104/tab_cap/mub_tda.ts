@@ -19,7 +19,7 @@ export class mub_tda extends COLUMN {
         this.prop.ColumnTextLabel = "Control de posiciónes";
         this.prop.Type = 'checkBox';
         this.prop.Caption = "Si";
-        this.prop.ControlSource = "vi_cap_tda.mub_tda";
+        this.prop.ControlSource = "vi_cap_cometda.mub_tda";
         this.style.width = "64px";
 
         //propiedades

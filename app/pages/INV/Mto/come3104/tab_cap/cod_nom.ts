@@ -19,7 +19,7 @@ export class cod_nom extends COLUMN {
     this.prop.BaseClass = "editBox";
     this.prop.ColumnTextLabel = "Cliente";
     this.prop.Type = 'text';
-    this.prop.ControlSource = "vi_cap_tda.cod_nom";
+    this.prop.ControlSource = "vi_cap_cometda.cod_nom";
     this.position.Left = 34;
     this.prop.Name = "cod_nom";
 

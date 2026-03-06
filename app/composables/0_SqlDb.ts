@@ -317,6 +317,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 
         if (response == null) {
             console.error("==== . No existe la tabla===>", alias);
+            console.trace('======ERROR====== ');
             return false;
         }
 
@@ -325,11 +326,17 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             return false;
         //  console.log("2).3 Db useNodata nom_vis==> ");
         // abre  la tabla de mantenimiento
-        //console.log( "Db useNodata VIEW despues de generar_tabla==> ", alias,"response=", response        );
+        // console.log("Db useNodata VIEW despues de generar_tabla==> ", alias, "VIEW=", This.value.View[alias]);
         if (This.value.View[alias] && This.value.View[alias].tip_obj.trim() == "VIEW") {
 
+            if (This.value.View[alias].tablaSql == null) {
+                console.error('UseNodata. Bad definition error in alias', nom_vis);
+                console.trace('======ERROR====== ');
+                return false;
+            }
+
             alias = This.value.View[alias].tablaSql.trim();
-            //  console.log("3) Db useNodata alias==> ", alias);
+            // console.log("3) Db useNodata alias==> ", alias);
             if (alias.trim() > '  ') { // si es de lectura no inicializa la tabla de actualizacion
                 await useNodata(alias);
 
@@ -341,7 +348,8 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 
 
     } catch (error) {
-        console.error(error);
+        console.error('UseNodata alias=', nom_vis, 'error: ', error);
+        console.trace('======ERROR====== ');
 
         return false;
         //  This.value.errorSql(error)
@@ -438,6 +446,7 @@ export const use = async (
 
     if (!This.value.View[alias].tip_obj) {
         console.error("DataBase class .-No existe el tip_obj para el alias " + alias, This.value.View[alias]);
+        console.trace('======ERROR====== ');
 
         await MessageBox('DataBase class .-No existe el tip_obj para el alias ' + alias, 16, 'Front End Error')
         return false
@@ -462,6 +471,7 @@ export const use = async (
                     "USE " + alias + " exp_ind=",
                     This.value.View[alias].exp_indice.trim()
                 );
+                console.trace('======ERROR====== ');
 
                 return false;
             }
@@ -487,6 +497,7 @@ export const use = async (
                 //console.log("Db use eval where ", val_eval, m, 'exp_whe=', exp_whe);
             } catch (error) {
                 console.error("eval =", val_eval, error);
+                console.trace('======ERROR====== ');
                 return false;
             }
 
@@ -532,6 +543,7 @@ export const use = async (
             eval("dat_vis.where=" + val_eval);
         } catch (error) {
             console.error(error);
+            console.trace('======ERROR====== ');
 
             return false;
         }
@@ -560,6 +572,7 @@ export const use = async (
         else return []; //   { return [] }
     } catch (error) {
         console.error("Axios error :", dat_vis, error);
+        console.trace('======ERROR====== ');
 
         errorAlert(
             "SQL Error :" +
@@ -819,6 +832,7 @@ export const tableUpdate = async (
                     recno,
                     await localAlaSql(` SELECT * FROM last.${alias}; 'USE now;'`)
                 );
+                console.trace('======ERROR====== ');
                 closeProcessing('Table update error')
 
                 alasql('USE now;')
@@ -939,6 +953,7 @@ export const tableUpdate = async (
                                 "Valor=",
                                 dat_act[row][campo]
                             );
+                            console.trace('======ERROR====== ');
                             closeProcessing(error)
                             return false;
                         }
@@ -976,6 +991,7 @@ export const tableUpdate = async (
                 eval(`dat_vis.where=${where}`);
             } catch (error) {
                 console.error(error);
+                console.trace('======ERROR====== ');
                 closeProcessing(error);
                 return false;
             }
@@ -1031,6 +1047,7 @@ export const tableUpdate = async (
                     "No se pudo actualizar el registro en tabla " + alias,
                     dat_vis, 'LocalSQL', await localAlaSql(`select * from now.${alias} `)
                 );
+                console.trace('======ERROR====== ');
                 /*
                 errorAlert(
                     "SQL Error: No se pudo actualizar el registro en tabla " +
@@ -1186,7 +1203,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
                     " Error=" +
                     error
                 );
-
+                console.trace('======ERROR====== ');
                 return false;
             }
             valores[campo] = val_defa;
@@ -1315,6 +1332,7 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
                 error.response.statusText);
 
             console.error("DELETE SQL Server Error", error);
+            console.trace('======ERROR====== ');
             return false;
         }
 
@@ -1730,6 +1748,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         return respuesta;
     } catch (error) {
         console.error("SQL Server Error", query, error);
+        console.trace('======ERROR====== ');
         if (error.response) {
             errorAlert(
                 "SQL Server Error :" +
@@ -1762,6 +1781,7 @@ export const genTabla = async (tabla: string) => {
         MessageBox(" Table updated successfully " + tabla);
     } catch (error) {
         console.error("SQL Server Error", error.response);
+        console.trace('======ERROR====== ');
         errorAlert(
             "SQL Server Error :" +
             error.response.status.toString() +
@@ -1800,6 +1820,7 @@ export const genIndices = async (tabla: string, nom_ind: string) => {
         }
     } catch (error) {
         console.error("SQL Server Error", error);
+        console.trace('======ERROR====== ');
         errorAlert(
             "SQL Server Error :" +
             error.response.status.toString() +
@@ -1838,6 +1859,7 @@ export const genVistasSql = async (tabla: string, nom_vis?: string) => {
         }
     } catch (error) {
         console.error("SQL Server Error", error);
+        console.trace('======ERROR====== ');
         errorAlert(
             "SQL Server Error :" +
             error.response.status.toString() +
@@ -1882,6 +1904,7 @@ export const genModel = async (tabla: string) => {
         return true;
     } catch (error) {
         console.error("SQL Server Error", error);
+        console.trace('======ERROR====== ');
         errorAlert(
             "SQL Server Error :" +
             error.response.status.toString() +
@@ -1961,6 +1984,7 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
         // MessageBox( error.response.status.toString() + " " + error.response.statusText,16,"SQL Error " );
 
         console.error("SQL Server Error", error);
+        console.trace('======ERROR====== ');
 
         return false;
     }
@@ -1988,6 +2012,7 @@ const vista_captura = async (m: any, nom_vis: string, alias?: string) => {
         );
 
         console.error("SQL Server Error", error);
+        console.trace('======ERROR====== ');
         // MessageBox(error.response.status.toString() + " " + error.response.statusText, 16, "SQL Error "      );
     }
 };
@@ -2140,6 +2165,7 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
 
                     .catch(function (error) {
                         console.error("Error al generar Vis_captura" + alias, error);
+                        console.trace('======ERROR====== ');
                     });
             });
 
@@ -2239,6 +2265,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
                 console.log('Db Estructura vista===>>', respuesta)
             } catch (error) {
                 console.error("SQL Error", error);
+                console.trace('======ERROR====== ');
                 errorAlert(
                     "SQL Error :" +
                     error.response.status.toString() +
@@ -2404,6 +2431,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         } catch (error) {
             console.error("Error al generar Vis_captura" + alias, error);
+            console.trace('======ERROR====== ');
             alasql('USE now;')
             return null;
         }
@@ -2711,7 +2739,10 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
             */
             return respuesta;
         } catch (error) {
+
             console.error("Axios error datos de llamada =====>>", dat_lla, 'Error= ', error);
+            console.trace('======ERROR====== ');
+
             if (error.message == "Network Error") {
 
                 errorAlert("Network Error");
@@ -2824,6 +2855,7 @@ export const localSql = async (ins_sql: string, DataBase?: string) => {
         return resultado[1];
     } catch (error) {
         console.error("localSql error==>", error);
+        console.trace('======ERROR====== ');
     }
 }
 
@@ -2848,6 +2880,7 @@ export const localAlaSql = async (ins_sql: string, datos?: any) => {
         return data;
     } catch (error) {
         console.error("localAlaSql error==>", error, ins_sql);
+        console.trace('======ERROR====== ');
         errorAlert("local SQL error :" + ins_sql);
         alasql('USE now ;')
         return false;
@@ -2890,6 +2923,7 @@ export const selectInto = async (ins_sql: string, alias?: string, filename?: str
                 })
                 .catch(function (err) {
                     console.error("select Into Error:", err);
+                    console.trace('======ERROR====== ');
                 });
         } else {
             await localAlaSql("DROP TABLE IF EXISTS " + alias + "; ");
@@ -2914,6 +2948,7 @@ export const selectInto = async (ins_sql: string, alias?: string, filename?: str
         return resultado;
     } catch (error) {
         console.error("SelectInto error==>", error);
+        console.trace('======ERROR====== ');
     }
 }
 
@@ -2963,7 +2998,7 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
 
     if (all_data.length > 1 && all_data[1].length > 0) {
         const data = {}
-        console.log('readCampo all_data=', all_data[1][0])
+        //        console.log('readCampo all_data=', all_data[1][0])
         data[campo] = all_data[1][0][campo]
 
         if (typeof data[campo] === "string")
@@ -3088,6 +3123,7 @@ export const updateCampo = async (Value: any, ControlSource: string, recno: numb
         }
     } catch (error) {
         console.error("AlaSql error==>", error);
+        console.trace('======ERROR====== ');
     }
     alasql('USE now ;')
     return true;

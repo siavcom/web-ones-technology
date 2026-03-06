@@ -18,7 +18,7 @@ export class des_isu extends COLUMN {
 
   constructor() {
     super()
-    this.prop.ControlSource = 'vi_cap_alm.des_isu'
+    this.prop.ControlSource = 'vi_cap_comealm.des_isu'
     this.prop.Disabled = true
     this.prop.Type = 'textArea'
     this.style.width = "256px"

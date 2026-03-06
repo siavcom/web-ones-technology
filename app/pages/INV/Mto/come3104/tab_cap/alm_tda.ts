@@ -18,7 +18,7 @@ export class alm_tda extends COLUMN {
     super();
     this.prop.BaseClass = "editBox";
     this.prop.ColumnTextLabel = "Almacen";
-    this.prop.ControlSource = "vi_cap_tda.alm_tda";
+    this.prop.ControlSource = "vi_cap_cometda.alm_tda";
     this.prop.MaxLength = 3
     this.prop.updateKey = true
     this.style.width = "100px";

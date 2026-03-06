@@ -3,7 +3,7 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -80,11 +80,15 @@
       <!--/TransitionGroup-->
     </div>
 
-    <!--   CHECKBOX   -->
+    <!--   CHECKBOX  
+         Disabled se debe activar cuando el checkValue y checkValueParent esten activados 
+         checkValue automaticamente cambia de valor cuando se selecciona y con el washer cambiamos el valor This.prop.Value 
+         -->
 
     <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
-      ref="Ref" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled" :tabindex="prop.TabIndex"
-      v-model="checkValue" @click="clickCheckBox()" @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)">
+      ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
+      :disabled="This.prop.Disabled || (checkValue && checkValueParent)" :tabindex="prop.TabIndex" v-model="checkValue"
+      @focusout="lostFocus" @keypress="keyPress($event)">
 
     <!--  TEXT   -->
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
@@ -104,7 +108,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -317,6 +321,7 @@ const Key = ref(props.prop.Key)
 var oldVal = ''
 const displayError = ref(false) // Se utiliza esta variable para mostrar el error y sea reactiva
 const checkValue = ref(false)
+const checkValueParent = ref(This.Parent.options && This.Parent.options.length > 0)
 
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
@@ -589,6 +594,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           //}
 
           //          This.prop.Focus = true
+          if (Type == 'checkbox')
+            checkValue.value = This.prop.Value == 1 ? true : false
           This.prop.Status = 'A'
           return
         }
@@ -913,7 +920,7 @@ const lostFocus = async (fromReturn: number) => {
 
 
   if (fromReturn && fromReturn > 0) {
-    console.log('2) lostFocus fromReturn', This.prop.Name)
+    //  console.log('2) lostFocus fromReturn', This.prop.Name)
     return nextElement() //clickReturn()
   }
 }
@@ -1000,6 +1007,9 @@ const asignaValue = async (new_val?: any) => {
 };
 
 const clickCheckBox = () => {
+
+  if (This.prop.ReadOnly == true)
+    return
 
   This.prop.Value = checkValue.value ? 0 : 1
   // console.log('clickCheckBox editText Name', This.prop.Name, 'Value=', This.prop.Value)
@@ -1188,7 +1198,7 @@ const onFocus = async () => {
     await This.beforeWhen()
 
 
-  console.log('2) onFocus', This.prop.Name)
+  //console.log('2) onFocus', This.prop.Name)
 
   const Type = propType.value
   if (Type != 'checkbox')
@@ -1364,10 +1374,13 @@ watch(
   async (new_val: any, old_val: any) => {
     if (watchPropValue)
       return
-    // console.log('watch checkValue checkbox editText Name', This.Parent.prop.Name + "." + This.prop.Name, 'CheckValue', new_val, 'OldVal=', old_val)
+
     if (new_val != old_val) {
 
-      This.prop.Value = new_val ? 1 : 0
+      This.prop.Value = new_val == true ? 1 : 0
+      This.click()
+
+
       /*      if (!checkValue.value) {
               Styles.inputStyle.backgroundColor = '#f2f2f2'
               Styles.inputStyle.background = 'radial - gradient(circle at center, #f2f2f2 50 %, transparent 50 %)'
@@ -1446,7 +1459,7 @@ watch(
   async (new_val: any, old_val: any) => {
 
     //if (This.prop.Name == 'cod_non')
-    // console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
+    console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
 
     //if (focusIn.value == 1) || sw_emitValue) {// Si tiene el foco deshabilita el watch 19/Feb/2026
     if (focusIn.value == 1) {// Si tiene el foco deshabilita el watch
@@ -1455,7 +1468,7 @@ watch(
     }
 
     //if (This.prop.Name == 'cod_non')
-    // console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val,)
+    console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val,)
 
     if (watchPropValue) { // Si se cambio desde el emitValue se ignora
       return
@@ -1486,7 +1499,7 @@ watch(
     }
 
 
-    //console.log('1) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value, 'watchPropValue=', watchPropValue, This.prop.Status)
+    console.log('3) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value)
 
     if (This.prop.Status == 'P') {// No se ha salido del componente
 
@@ -1500,12 +1513,14 @@ watch(
           break;
         case 'checkbox':
           const check = new_val == 0 ? false : true
+
           if (checkValue.value != check) {
             checkValue.value = check
             //console.log('2) >>> EditText Watch This.prop.Value checkbox Name=', This.prop.Name, 'new_val=', new_val, 'checkValue.value=', checkValue.value)
 
             //            emit("update:checkValue", checkValue)
           }
+
           break;
 
         case 'json':
@@ -1553,6 +1568,7 @@ watch(
 
     // 19/Ene/2026 se pruebacambia a asignaValue 
     // await asignaValue(new_val)
+    console.log('2) watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
     watchPropValue = true
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
     watchPropValue = false
@@ -1829,18 +1845,16 @@ onMounted(async () => {
   if (propType.value == 'number')
     Styles.inputStyle.textAlign = 'right'
 
-  if (propType.value.toLowerCase == 'checkbox') {
+  if (propType.value.toLowerCase() == 'checkbox') {
+    //console.log('checkbox Name=', This.prop.Name, 'This.prop.Value=', This.prop.Value, 'checkValue=', checkValue.value)
+    let check = This.prop.Value == 0 ? false : true
+    if (checkValue.value != check) {
+      checkValue.value = check
+      // console.log('emitValue editText checkbox Name', props.prop.Name, 'Value=', Value.value, 'checkValue=', checkValue.value)
+      emit("update:checkValue", checkValue)
+    }
 
-    // Styles.inputStyle.padding = '5px';
-    // Styles.inputStyle.marginRight = '5px';
-    //Styles.inputStyle.border = '1px solid #D6D6D6';
-    //  Styles.inputStyle.borderRadius = '50%';
-    //  Styles.inputStyle.cursor = 'pointer';
-    //   Styles.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
-    //   Styles.inputStyle.backgroundRepeat = 'no-repeat';
-    //   Styles.inputStyle.backgroundPosition = 'center';
-    //   Styles.inputStyle.backgroundSize = '5px 5px';
-    //   Styles.inputStyle.width = '5px';
+
 
   }
 
@@ -1857,7 +1871,7 @@ if (!This.prop.RefValue == null)
 */
 
 
-  // await emitValue(true)
+  await emitValue(true)
 
 
   This.Recno = props.Registro

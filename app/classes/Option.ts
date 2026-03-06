@@ -31,12 +31,35 @@ export class option extends COMPONENT {
     this.Parent.options[this.prop.OptionNumber] = this
 
     // actualioza el valor del optionGroup Padre en caso que este sea el seleccionado
+    if (this.prop.Value == 1)
+      this.prop.ReadOnly = true
+
     if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
       this.Parent.prop.Value = this.prop.OptionNumber
   }
-  override async click() {
+
+  ///////////////////////////////////////////
+  // Evento : click
+  ///////////////////////////////////////////
+
+  override async click() { // Pone en el valor del padre el numero de opcion seleccionado
+
     if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
       this.Parent.prop.Value = this.prop.OptionNumber
+
+    this.prop.ReadOnly = true
+    const thisForm = this.Parent
+
+
+    for (let i = 1; i < thisForm.options.length; i++) {   // apaga los demas checkbox
+      const item = thisForm.options[i]
+      if (item.prop.OptionNumber != this.prop.OptionNumber) {
+        item.prop.Value = 0;  // marca el seleccionado     
+        item.prop.ReadOnly = false
+        //      item.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
+      }
+    }
+
   }
 
 }

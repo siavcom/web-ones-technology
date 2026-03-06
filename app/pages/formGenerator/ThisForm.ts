@@ -63,7 +63,7 @@ export class ThisForm extends FORM {
     this.grid_columns.prop.Caption = "Componentes del grid";
   }
 
-  async init() {
+  override async init() {
     try {
       await this.Form.db.use("vi_cap_comeind");
     } catch (error) {

@@ -19,7 +19,7 @@ export class esw_fam extends COLUMN {
         this.prop.ColumnTextLabel = "Estatus Web";
         this.prop.Type = 'checkBox';
         this.prop.Caption = "Si";
-        this.prop.ControlSource = "vi_cap_fam.esw_fam";
+        this.prop.ControlSource = "vi_cap_comefam.esw_fam";
         this.prop.Name = "esw_fam";
 
         //propiedades

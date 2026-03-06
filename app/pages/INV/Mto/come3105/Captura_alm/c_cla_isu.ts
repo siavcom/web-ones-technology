@@ -22,7 +22,7 @@ export class c_cla_isu extends COLUMN {
     super();
 
     this.prop.Type = 'text';
-    this.prop.ControlSource = "vi_cap_alm.cla_isu";
+    this.prop.ControlSource = "vi_cap_comealm.cla_isu";
     this.prop.Name = "c_cla_isu";
     this.prop.ColumnTextLabel = "Clave";
     this.prop.Help = true;

@@ -107,12 +107,12 @@ export class Do_nopagados extends GRID {
         let ins_sql = "select " + iif(Public.value.ndb_emp < 4, this.Form.top_con, '') + " *,0 as sal_doc from vcomesal where (cop_nom='" + this.Form.prop.tip_cap + "' and cod_nom='" + vi_cap_comedoc.cod_nom + "'" + " and pag_doc>" + this.Form.lim_inf_sal + ') ' + this.Form.con_vcomesal + " order by fec_doc,tdo_tdo,ndo_doc " + iif(Public.value.ndb_emp == 4, this.Form.top_con, '')
 
         const res = await SQLExec(ins_sql, 'vcomesal')
-        console.log('do_nopagadosres=', res)
+        //console.log('do_nopagadosres=', res)
 
         if (vi_cap_comedoc.tdo_tdo != this.Form.tdo_tdo.prop.Value || vi_cap_comedoc.ndo_doc != this.Form.ndo_doc.prop.Value)
             return
 
-        console.log('Bt_doc_por_pagar res=', res, 'mon_doc=', vi_cap_comedoc.mon_doc, 'val_mon=', val_mon)
+        // console.log('Bt_doc_por_pagar res=', res, 'mon_doc=', vi_cap_comedoc.mon_doc, 'val_mon=', val_mon)
         const mon_doc = vi_cap_comedoc.mon_doc
 
         // await goto('TOP', sqlresult)
@@ -132,7 +132,7 @@ export class Do_nopagados extends GRID {
 
 
             await localAlaSql(ins_sql)
-            console.log('ins_sql=', ins_sql)
+            //            console.log('ins_sql=', ins_sql)
 
             this.Form.Do_nopagados.prop.RecordSource = 'vcomesal'
             this.Form.block[3].prop.Visible = true

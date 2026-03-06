@@ -20,7 +20,7 @@ export class ubi_tda extends COLUMN {
     this.prop.ColumnTextLabel = "Localizacón /Ubicación geográfica";
     this.prop.WordWrap = true;
     this.prop.Type = 'text';
-    this.prop.ControlSource = "vi_cap_tda.ubi_tda";
+    this.prop.ControlSource = "vi_cap_cometda.ubi_tda";
     this.position.Left = 73;
     this.prop.Name = "ubi_tda";
 

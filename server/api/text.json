@@ -1,0 +1,62 @@
+{
+    "sqlConfig": {
+        "server": "shelsql.freeddns.org",
+        "database": "SHEL",
+        "dialect": "mssql",
+        "port": 1466,
+        "dialectOptions": {
+            "options": {
+                "requestTimeout": 300000,
+                "useUTC": true
+            },
+            "timezone": "-01:00",
+            "pool": {
+                "max": 20,
+                "min": 0,
+                "acquire": 6000,
+                "idle": 36000
+            }
+        }
+    },
+    "mailServer": {
+        "from": "facturacion.web@gova.com.mx",
+        "reply_to": "facturacion.web@gova.com.mx",
+        "host": "mail.gova.com.mx",
+        "port": 465,
+        "secure": true,
+        "auth": {
+            "user": "facturacion.web@gova.com.mx",
+            "pass": "WebFact23.1$"
+        },
+        "tls": {
+            "rejectUnauthorized": false
+        },
+        "headers": {
+            "X-Priority": "3",
+            "X-MSMail-Priority": "Normal",
+            "X-Mailer": "Nodemailer"
+        },
+        "logger": true
+    },
+    "siavcom_mailServer": {
+        "from": "no-reply@siavcom.com.mx",
+        "reply_to": "siavcom@hotmail.com",
+        "cco": "siavcom@hotmail.com",
+        "host": "pro.turbo-smtp.com",
+        "port": 465,
+        "secure": true,
+        "auth": {
+            "user": "9cb6f2fcaf526806c607",
+            "pass": "hTiNY1WUqGn0g9yIS4ku"
+        },
+        "dkim": {
+            "domainName": "siavcom.com.mx",
+            "keySelector": "turbo-smtp",
+            "privateKey": "-----BEGIN RSA PRIVATE KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDT3MWLni6so1q9eQggRYBCLHFjohZkCnYHH8gZNDBm6zRrodRVpWpJQW7x3cWWiuBhS1X0IfBB80l5tqFa+yc+mVgnk8tkUzOHFbPQPp4fi7egTpMtsQW/ZMrxw73SItNvPr72qvJTYZNPxarMx+ULjEWybcfEdXHPY8jslGcpCwIDAQAB-----END RSA PRIVATE KEY-----"
+        },
+        "tls": {
+            "rejectUnauthorized": false
+        },
+        "logger": true
+    }
+}

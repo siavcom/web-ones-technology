@@ -33,7 +33,7 @@ export class tab_cap extends GRID {
   constructor() {
     super();
 
-    this.prop.RecordSource = "vi_cap_tda";
+    this.prop.RecordSource = "vi_cap_cometda";
     this.prop.Name = "tab_cap";
     this.prop.Visible = true
     this.prop.ReadOnly = false

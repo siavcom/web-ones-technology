@@ -25,14 +25,14 @@ export class bt_obtener extends IMGBUTTON {
     this.style.width = "78px";
   } // Fin constructor
 
-  async click() {
+  override async click() {
     this.prop.Visible = false;
 
     let bloque = 0
     for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
       this.Form.block[bloque].prop.Visible = false
 
-    bloque = this.Form.block.length - 1
+    bloque = this.Form.block.length - 2
 
     this.Form.block[bloque].prop.Visible = true  // resultado
 
@@ -85,7 +85,7 @@ export class bt_obtener extends IMGBUTTON {
 
 
 
-    this.Form.report.displayBrowse.prop.RowSource = "now.sqlresult";
+    this.Form.report.displayBrowse.prop.RowSource = "sqlresult";
     this.Form.report.displayBrowse.prop.Visible = true;
 
     // console.log('bt_obtener asigno RowSource',this.Parent.report)

@@ -20,12 +20,32 @@ Pasos de creacion de archivos Shel
 
 10.- pry_messages
 
+Regererar tabla
+
+comedoc
+comecer
+comecfd
 
 Crear vistas SQL 
+
+ Vistas de captura Vue 
+  vi_cap_<tabla>
+   ejemplo : vi_cap_comedoc
+            vi_cap_comepga
+generar  vi_comesat
+grant select on vi_comesat to siavcom
+grant select on vi_documentos to siavcom
+grant select on vi_cap_comexml to siavcom
+
 
 - vi_dat_isu
 - vcomeprg
 - PublicVar
+- vi_cfdi_general
+- vi_cfdi_factura
+- vi_cfdi_traslados
+- vi_cfdi_ver40
+- vi_cfdi_timbrado
 
  Vistas de Reportes del CRM
 
@@ -44,11 +64,19 @@ Actualizar procedimientos
 Falta :
 
 - P_gen_doc_pry
+- f_proteccion
 
 
 *********************************************************************
+
+
+
+
 En la diccionaro de datos
 
 -Actualizar la tabla comealm, en el campo num_fam , en el valor default poner ThisForm.num_fam.prop.Value
 
 -Actualizar la tabla comealm, en el campo cla_isu , en el valor default poner ThisForm.cla_isu.prop.Value
+
+-
+

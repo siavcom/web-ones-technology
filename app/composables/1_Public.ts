@@ -64,11 +64,12 @@ const publico = reactive({
     num_err: 0, // número de error
 
     // Meses
-    mes: [
+    mes: ["",
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     ],
-
+    month: ["", "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"],
     // Otros
     help_url: "", servidor_url: "", sw_imp: false, //,sw_impuesto
     lan_lan: "", // Lenguaje del frontend
@@ -86,7 +87,7 @@ export const Public_3 = computed(() => {
     const { PUBLIC } = toRefs(publico) // toRefs(publico)
     return PUBLIC.value
 })
-
+ 
 export const Public_2 = computed(() => {
     console.log("1)COMPOSABLE PUBLIC=", PUBLIC)
     if (PUBLIC.value == undefined)

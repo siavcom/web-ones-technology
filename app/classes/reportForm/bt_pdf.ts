@@ -59,9 +59,13 @@ export class bt_pdf extends IMGBUTTON {
     // this.Form.report.displayBrowse.table.isLoading = true; // indicadorm de caqrga
     const query = await this.Form.gen_query()
 
-    console.log("bt_pdf buffer=", query, this.Form.for_imp.prop.Value, this.Form.data)
-    const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
+    console.log("bt_pdf query=", query)
+    console.log("bt_pdf for_imp=", this.Form.for_imp.prop.Value)
+    console.log("bt_pdf for_imp=", this.Form.data)
 
+
+    const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
+    console.log("bt_pdf buffer=", query, this.Form.for_imp.prop.Value, this.Form.data)
 
     // this.Form.report.displayBrowse.table.isLoading = false
     if (buffer == null) {

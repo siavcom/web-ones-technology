@@ -451,7 +451,6 @@ const obtMenu = () => {
   while (Items.length > 2)
     Items.pop()
 
-
   // console.log('menu items====>',Items,user.value)
   isLoggedIn.value = true
   if (user.value.trim() == 'sa' || user.value.slice(0, 3) == 'sa@') {
@@ -493,7 +492,7 @@ const obtMenu = () => {
 
   }
 
-  console.log('usrMenu.value[i].prg_prg', usrMenu.value)
+  // console.log('usrMenu.value[i].prg_prg', usrMenu.value)
   for (let i = 0; usrMenu.value.length > 0 && usrMenu.value.length > i; i++) {
     // solo agrega menu principal
     if (usrMenu.value[i].tpr_prg === 'S') {
@@ -656,28 +655,32 @@ watch(
 watch(
   () => usrMenu.value,
   (menu_new, old_val) => {
-    console.log('watch menu', menu_new)
-    if (menu_new.length > 0) {
+
+    //  console.log('3) app.vue watch menu', menu_new)
+    if (id_con.value > '' && menu_new.length > 0) {
       obtMenu()
+      return
     }
+
+    while (Items.length > 2)
+      Items.pop()
+
   },
   { deep: true }
 )
 
+/*
 watch(
   () => id_con.value,
   (id_new, id_val) => {
-
     console.log('watch id', id_new, Items)
-
-    if (Items.length < 3) {
-
+    if (Items.length < 3)
       obtMenu()
-    }
+
   },
   { deep: false }
 )
-
+*/
 //////////////////////////////////////////////////
 // Init
 /////////////////////////////////////////////////

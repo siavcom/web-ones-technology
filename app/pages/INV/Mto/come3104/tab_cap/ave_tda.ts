@@ -20,7 +20,7 @@ export class ave_tda extends COLUMN {
     this.prop.ColumnTextLabel = "Alm. en México";
     this.prop.Type = 'checkBox';
     this.prop.Caption = "Si";
-    this.prop.ControlSource = "vi_cap_tda.ave_tda";
+    this.prop.ControlSource = "vi_cap_cometda.ave_tda";
     this.prop.Name = "ave_tda";
 
     //propiedades

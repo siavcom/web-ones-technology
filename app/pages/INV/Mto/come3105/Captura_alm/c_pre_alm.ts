@@ -18,7 +18,7 @@ export class c_pre_alm extends COLUMN {
     super();
     this.prop.Type = "number";
     this.prop.ColumnTextLabel = "Punto de reorden";
-    this.prop.ControlSource = "vi_cap_alm.pre_alm";
+    this.prop.ControlSource = "vi_cap_comealm.pre_alm";
     this.prop.Decimals = 3
     this.prop.MaxLength = 12
     this.prop.Min = '0.01'

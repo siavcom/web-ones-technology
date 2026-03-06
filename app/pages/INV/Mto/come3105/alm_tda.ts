@@ -23,7 +23,7 @@ export class alm_tda extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.RowSourceType = 4;  // 4-LocalAlaSql
 
-    this.prop.RowSource = "SELECT des_tda,alm_tda from vi_cap_tda ORDER BY des_tda";
+    this.prop.RowSource = "SELECT des_tda,alm_tda from vi_cap_cometda ORDER BY des_tda";
     this.prop.ColumnWidths = "160px,30px";
 
 
@@ -51,7 +51,7 @@ export class alm_tda extends COMPONENT {
         m.has_cla = this.Form.has_cla.prop.Value
         m.alm_tda = this.prop.Value
     
-        const data1 = await use('vi_cap_alm', m) // use vi_cap_alm_cla vi_cap_alm_cla ALIAS  // esta vista es para la captura de almacenes 
+        const data1 = await use('vi_cap_comealm', m) // use vi_cap_comealm_cla vi_cap_comealm_cla ALIAS  // esta vista es para la captura de almacenes 
     
         if (this.Form.sep_fam.prop.Value == 2) {  // si hay separacion por familias 
     
@@ -73,7 +73,7 @@ export class alm_tda extends COMPONENT {
         this.Form.Captura_alm.sw_ins = false  // inicializamos el switch de insercion 
         this.Form.prop.key = 0  // inicializamos en 0 la ultima tecla 
     
-        this.Form.Captura_alm.prop.RecordSource = 'vi_cap_alm'  // actualiza la tabla en el grid 
+        this.Form.Captura_alm.prop.RecordSource = 'vi_cap_comealm'  // actualiza la tabla en el grid 
     */
     return true
 

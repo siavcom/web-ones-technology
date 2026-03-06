@@ -38,35 +38,35 @@ export class OPTIONGROUP extends COMPONENT {
       }
     }
   }
-
-  override async onChangeValue() {
-
-    for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
-      const item = this.options[i]
-
-      if (item.prop.OptionNumber == this.prop.Value) {
-        if (item.prop.Value == 0)
-          item.prop.Value = 1
-
-        item.prop.ReadOnly = true
-        //        item.inputStyle.background = 'radial-gradient(circle at center, black 50%, transparent 50%);'
-
+  /*
+    override async onChangeValue_old() {
+  
+      for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
+        const item = this.options[i]
+  
+        if (item.prop.OptionNumber == this.prop.Value) {
+          if (item.prop.Value == 0)
+            item.prop.Value = 1
+  
+          item.prop.ReadOnly = true
+          //        item.inputStyle.background = 'radial-gradient(circle at center, black 50%, transparent 50%);'
+  
+        }
+        else {
+          if (item.prop.Value == 1)
+            item.prop.Value = 0;  // marca el seleccionado     
+  
+          item.prop.ReadOnly = false
+  
+          //      item.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
+  
+  
+        }
       }
-      else {
-        if (item.prop.Value == 1)
-          item.prop.Value = 0;  // marca el seleccionado     
-
-        item.prop.ReadOnly = false
-
-        //      item.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
-
-
-      }
+      // console.log('onChangeValue checkBox ', this.Parent.prop.Name + "." + this.prop.Name, 'Value=', this.prop.Value)
+      return;
     }
-    // console.log('onChangeValue checkBox ', this.Parent.prop.Name + "." + this.prop.Name, 'Value=', this.prop.Value)
-    return;
-  }
-
+  */
   public override async afterMounted() {
 
 

@@ -19,7 +19,7 @@ export class c_max_alm extends COLUMN {
     this.prop.Type = "number";
     this.prop.ColumnTextLabel = "Máximo";
     this.prop.Name = "c_max_alm";
-    this.prop.ControlSource = "vi_cap_alm.max_alm";
+    this.prop.ControlSource = "vi_cap_comealm.max_alm";
     this.prop.Decimals = 3
     this.prop.MaxLength = 12
     this.prop.Min = '0.01'

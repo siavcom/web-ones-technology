@@ -38,15 +38,15 @@ export class otro extends IMGBUTTON {
     let m = {}   // inicializamos m
 
 
-    if (recCount('vi_cap_alm') > 0) {  // reviza si tiene abierta la vista de captura de pagos 
+    if (recCount('vi_cap_comealm') > 0) {  // reviza si tiene abierta la vista de captura de pagos 
 
-      await select('vi_cap_alm')
+      await select('vi_cap_comealm')
 
       m = appendM(m, await scatterBlank())
 
       this.Form.Captura_alm.prop.RecordSource = ''  // pone en nulos el record source 
 
-      await useNodata('vi_cap_alm') // use vi_cap_alm vi_cap_alm nodata  // abre la vista sin datos 
+      await useNodata('vi_cap_comealm') // use vi_cap_comealm vi_cap_comealm nodata  // abre la vista sin datos 
 
 
     } // End If 

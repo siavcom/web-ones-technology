@@ -140,7 +140,7 @@ export class ThisForm extends reportVtas {
 
     this.block[3].prop.Visible = false
     this.block[3].prop.Disabled = true
-    //    console.log('PublicVar.fps_pge=', PublicVar.fps_pge, 'ini_sem=', getDay(PublicVar.fps_pge))
+
 
   }
   public async init() {

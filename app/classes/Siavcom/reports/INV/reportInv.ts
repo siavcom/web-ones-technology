@@ -73,14 +73,17 @@ export class reportInv extends reportForm {
     */
   }
 
-  async init_ant(sw_detallado?: boolean) {
+  override async init(sw_detallado?: boolean) {
     await super.init()
+    console.log('repInv Public=', Public.value)
+
+    console.log('1) repInv des_fec', this.des_fec.prop.Value, 'has_fec', this.has_fec.prop.Value)
+    console.trace('1) repInv This.Form')
     if (!sw_detallado) {
-      this.has_fec.prop.Value = this.Form.mPublic.fpo_pge;
-      this.des_fec.prop.Value = await addDay(this.Form.mPublic.fpo_pge, -1); // resta un mes
+      this.Form.has_fec.prop.Value = Public.value.fpo_pge;
+      this.Form.des_fec.prop.Value = await addDay(Public.value.fpo_pge, -1); // resta un mes
     }
+    //    console.log('2) repInv des_fec', this.des_fec.Value, 'has_fec', this.has_fec.Value)
   }
-
   //  console.log("ThisForm des_fec=",this.des_fec.prop.Value,' has_fec', this.has_fec.prop.Value);
-
 }

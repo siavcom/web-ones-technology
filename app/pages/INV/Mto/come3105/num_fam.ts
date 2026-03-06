@@ -34,9 +34,9 @@ export class num_fam extends COMPONENT {
   override async valid() {
     let m = {}   // inicializamos m
     m.num_fam = this.prop.Value
-    await select('vi_cap_fam')
+    await select('vi_cap_comefam')
 
-    const data = await use('vi_cap_fam', m) // use vi_cap_fam vi_cap_fam
+    const data = await use('vi_cap_comefam', m) // use vi_cap_comefam vi_cap_comefam
     return true
   }   // Fin Procedure
 

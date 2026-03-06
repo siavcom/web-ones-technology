@@ -72,6 +72,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
         m.gru_gru = Public.value.gru_gru
 
         //log_usu: "ADMIN      
+
         if (m.log_usu.trim().toUpperCase() != "ADMIN") {
             await use('lla1_seg', m) // use lla1_seg lla1_seg
             if (await recCount('lla1_seg') > 0) {
@@ -81,8 +82,10 @@ export class ndo_doc extends CAPTURECOMPONENT {
             } // End If 
         }
 
+
         const nom_obj = JSON.parse('{"' + Public.value.cmp_seg.replaceAll(',', '":0,"') + '":0}')
         let i = 0
+        console.log('ndo_doc when m.per_seg=', m.per_seg)
         for (const objeto in nom_obj) {
 
             if (m.log_usu.trim().toUpperCase() != "ADMIN")
@@ -142,11 +145,12 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
         } // End If 
 
-
-
+        console.log('valid ndo_doc select vi_cap_comedoc=', await localAlaSql('select * from vi_cap_comedoc'))
 
         let vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
+        console.log('valid ndo_doc vi_cap_comedoc=', vi_cap_comedoc)
         let m = { ...vi_cap_comedoc }   // inicializamos m
+
         // Tabla de clasificacion de documentos
         let vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')
 
@@ -154,22 +158,21 @@ export class ndo_doc extends CAPTURECOMPONENT {
             await use('vi_cap_cometcd', m)
         }
 
-
         // se apaga swith de documento nuevo
         // this.Form.d_coa_tdo.prop.Value = iif(cometdo.coa_tdo == 'C', 'Cargo', 'Abono')
 
         //pos=ascan(nom_obj,'BDO')  && revizamos seguridad de borrado
-        if (vi_cap_comedoc.key_pri > 0 && (Public.value.log_usu.trim() == 'ADMIN' || await this.Form.rev_per('BDO'))) { // si encuentra el campo
+        if (m.key_pri > 0 && (Public.value.log_usu.trim() == 'ADMIN' || await this.Form.rev_per('BDO'))) { // si encuentra el campo
             this.Form.bt_delete.prop.Visble = true
 
         } else
             this.Form.bt_delete.prop.Visble = false
 
+        //        this.Form.d_fel_doc.prop.Valid = true
 
-        this.Form.d_fel_doc.prop.Valid = true
-        if (vi_cap_comedoc.key_pri == 0) { // Documento nuevo
+        if (m.key_pri == 0) { // Documento nuevo
 
-            if (await recCount('vi_cap_cometcd') > 0) {
+            if (await recCount('vi_cap_cometcd') > 0) { // Hay tabla de clasificacion de documentos
                 vi_cap_cometcd = await goto('top', 'vi_cap_cometcd')
                 this.Form.tcd_tcd.prop.Value = vi_cap_cometcd.tcd_tcd
                 this.Form.tcd_tcd.prop.RowSourceType = 2
@@ -199,6 +202,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
                 this.Form.cod_nom.valid()
             } // End If 
 
+            // leemos datos actualizados
             vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
 
             // seguridad por sucursales
@@ -241,10 +245,16 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
             this.Form.fec_doc.prop.Value = Public.value.fpo_pge
 
-            m.tdo_tdo = vi_cap_comedoc.tdo_tdo
-
-
         } else {  // si no es nuevo
+
+            console.log('valid ndo_doc m=', m)
+
+
+            if (await recCount('vi_cap_cometcd') > 0) { // Hay tabla de clasificacion de documentos
+                this.Form.tcd_tcd.prop.RowSourceType = 2
+                this.Form.tcd_tcd.prop.Visible = true
+
+            }
 
             // Si es un cfdi, busca su estatus en tabla CFDI XML
             if (cometdo.tip_cfd != '  ' && cometdo.tip_cfd != 'NA') {

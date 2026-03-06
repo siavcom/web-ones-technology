@@ -192,7 +192,6 @@ export class reportForm extends FORM {
 
   public override async init() {
 
-
     // this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
     // this.var_ord.prop.RowSourceType = 3;
 
@@ -218,7 +217,7 @@ export class reportForm extends FORM {
     );
 
 
-    if (!this.Sql.View.camposView || this.Sql.View.camposView.recCount == 0) {
+    if (!View.camposView || View.camposView.recCount == 0) {
       MessageBox("No existe la vista Sql :" + vis_rep, 16, "Error  ");
 
       return;

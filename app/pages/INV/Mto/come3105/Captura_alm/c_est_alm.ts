@@ -17,7 +17,7 @@ export class c_est_alm extends COLUMN {
   constructor() {
     super();
     this.prop.BaseClass = "comboBox";
-    this.prop.ControlSource = "vi_cap_alm.est_alm";
+    this.prop.ControlSource = "vi_cap_comealm.est_alm";
     this.prop.RowSource = [
       ['Activo', 'Bloqueado', 'Promoción', 'Mantenimiento', 'Desactivo'],
       ['A', 'B', 'P', 'M', 'D']];

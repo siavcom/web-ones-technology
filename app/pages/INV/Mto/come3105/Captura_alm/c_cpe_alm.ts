@@ -18,7 +18,7 @@ export class c_cpe_alm extends COLUMN {
     super();
 
     this.prop.Type = 'number';
-    this.prop.ControlSource = "vi_cap_alm.cpe_alm";
+    this.prop.ControlSource = "vi_cap_comealm.cpe_alm";
     this.prop.InputMask = "9,999,999";
     this.prop.Decimals = Public.value.dci_pge
     this.prop.MaxLength = 12

@@ -22,8 +22,11 @@ export class has_fec extends COMPONENT {
         this.prop.ErrorMessage = 'Fecha inválida'
     }
     override async init() {
-        this.prop.Value = this.Form.mPublic.fpo_pge;
+        this.prop.Value = Public.value.fpo_pge;
+        console.log('has_fec init', this.prop.Value)
     }
+
+
     override async valid() {
         if (this.Parent.des_fec.prop.Visible == true) {
             console.log('VALID VALUE=', this.prop.Value, 'Desde=', dateToString(this.Parent.des_fec.prop.Value))
@@ -34,6 +37,7 @@ export class has_fec extends COMPONENT {
             else
                 return true
         }
-        else return true
+        else
+            return true
     }
 }

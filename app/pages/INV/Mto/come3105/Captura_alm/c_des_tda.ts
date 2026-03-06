@@ -16,7 +16,7 @@ export class c_des_tda extends COMPONENT {
   constructor() {
     super();
     this.prop.Type = 'text';
-    this.prop.ControlSource = "vi_cap_alm.des_tda";
+    this.prop.ControlSource = "vi_cap_comealm.des_tda";
     this.prop.Name = "c_des_tda";
     this.prop.ReadOnly = true;
 

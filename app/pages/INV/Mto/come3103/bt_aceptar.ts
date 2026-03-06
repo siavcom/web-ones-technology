@@ -30,11 +30,11 @@ export class bt_aceptar extends IMGBUTTON {
 
     this.Form.captura_fami.prop.RecordSource = ''
     const m = { num_fam: this.Parent.num_fam.prop.Value }
-    await use('vi_cap_fam', m);
-    if (recCount('vi_cap_fam') == 0)
+    await use('vi_cap_comefam', m);
+    if (recCount('vi_cap_comefam') == 0)
       return
 
-    this.Form.captura_fami.prop.RecordSource = ('vi_cap_fam')
+    this.Form.captura_fami.prop.RecordSource = ('vi_cap_comefam')
     this.Form.captura_fami.prop.Visible = true
     return true
   }   // 

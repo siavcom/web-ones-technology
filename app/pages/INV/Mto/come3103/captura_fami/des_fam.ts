@@ -17,7 +17,7 @@ export class des_fam extends COLUMN {
     constructor() {
         super();
         this.prop.ColumnTextLabel = "Descripción";
-        this.prop.ControlSource = "vi_cap_fam.des_fam";
+        this.prop.ControlSource = "vi_cap_comefam.des_fam";
         this.prop.InputMask = "XXXXXXXXXXXXXXXXXXXX";
         this.style.width = "192px";
 

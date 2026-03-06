@@ -19,7 +19,7 @@ export class c_min_alm extends COLUMN {
     this.prop.Type = "number";
     this.prop.ColumnTextLabel = "Minimo";
     this.prop.Name = "c_min_alm";
-    this.prop.ControlSource = "vi_cap_alm.min_alm";
+    this.prop.ControlSource = "vi_cap_comealm.min_alm";
     this.prop.Decimals = 3
     this.prop.MaxLength = 12
     this.prop.Min = '0.0'

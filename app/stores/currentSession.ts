@@ -127,8 +127,9 @@ export const Session = defineStore(
         )
         passStore = 'XXXXXXXXXXXXXXXXX'
 
-        if (data && data.error) {
-          MessageBox(data.error.message, 16, "Error");
+        if (data.error) {
+          console.error(" Nitro Server Error: ", data.message)
+          MessageBox(data.message, 16, "Nitro Server Error");
           return;
         }
 
@@ -156,7 +157,8 @@ export const Session = defineStore(
       });
 
       socket.on("error", (error) => {
-        MessageBox(error, 16, "-- SQL Error --");
+        console.error('2)Open socket error: ' + error)
+        MessageBox('2)Open socket error: ' + error, 16, "-- SQL Error --");
         if (error == "Timeout or connection error") {
           const router = useRouter();
           router.push("/Login");
@@ -253,6 +255,9 @@ export const Session = defineStore(
     /// ////////////////////////////////////////
     async function leeMenu() {
       //  sin no se ha inicilizado la conexion aborta todo
+      menu.value = []  // vaciamos el menú
+
+      // console.log('2) leeMenu ')
 
       if (id_con.value == "") {
         const router = useRouter();
@@ -356,13 +361,7 @@ export const Session = defineStore(
                 Public.value.des_mon1[3] = Var.value.de3_pge
                 Public.value.des_mon1[4] = Var.value.de4_pge
                 Public.value.des_mon1[5] = Var.value.de5_pge
-                /*
-                                Var.value.des_mon1[1] = Var.value.de1_pge
-                                Var.value.des_mon1[2] = Var.value.de2_pge
-                                Var.value.des_mon1[3] = Var.value.de3_pge
-                                Var.value.des_mon1[4] = Var.value.de4_pge
-                                Var.value.des_mon1[5] = Var.value.de5_pge
-                */
+
                 Public.value.pro_mon1[1] = Var.value.pr1_pge
                 Public.value.pro_mon1[2] = Var.value.pr2_pge
                 Public.value.pro_mon1[3] = Var.value.pr3_pge
@@ -463,13 +462,19 @@ export const Session = defineStore(
         { deep: false }
       );
   */
+    /**
+     * @definition : Si hay id_con (id de conexion ) y nombre de empresa lee meu de empresa
+     * 
+     * 
+     */
+
     watch(
       () => id_con.value,
       (new_id, old_val) => {
 
         if (new_id != old_val) {
           if (new_id.length > 9 && nom_emp.value.length > 2) {
-            console.log("currentSesion watch id_con", new_id, old_val);
+            //console.log("1) currentSesion watch id_con", new_id, old_val);
             leeMenu();
           } else menu.value = [];
         }
