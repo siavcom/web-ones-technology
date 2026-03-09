@@ -151,7 +151,7 @@
             'padding': '5px',
             'pointerEvents': (This.Row >= 0 && This.prop.Valid && !This.prop.ReadOnly) ? 'auto' : 'none',
             'opacity': (This.Row >= 0 && This.prop.Valid && !This.prop.ReadOnly) ? '1' : '0.4'
-          }" @click.stop="borraRenglon()">
+          }" @click.stop="deleteRow()">
           <nuxt-img :id="Id + '_botton_controles_delete_row_img'" src="/Iconos/svg/delete-color.svg" width="40" />
         </span>
 
@@ -823,7 +823,23 @@ const restableceStatus = async () => {
 }
 
 
+
+///////////////  Controles de navegación ///////////////
+
+/**
+ * @function first
+ * @description Navega al primer registro del grid
+ * @returns {Promise<void>}
+ */
+
 const first = async () => {
+
+  if (This.Row >= 0) {
+    if (!await ChecaStatus()) {
+      return
+    }
+  }
+
   scroll.controls = false
   if (scroll.top) return
   scroll.page = 0
@@ -831,7 +847,17 @@ const first = async () => {
 }
 
 
+/**
+ * @function previous
+ * @description Navega al registro anterior del grid
+ * @returns {Promise<void>}
+ */
 const previous = async () => {
+  if (This.Row >= 0) {
+    if (!await ChecaStatus()) {
+      return
+    }
+  }
   scroll.controls = false
   if (scroll.top) return
   scroll.page--
@@ -839,7 +865,19 @@ const previous = async () => {
 
 }
 
+/**
+ * @function next
+ * @description Navega al siguiente registro del grid
+ * @returns {Promise<void>}
+ */
 const next = async () => {
+
+  if (This.Row >= 0) {
+    if (!await ChecaStatus()) {
+      return
+    }
+  }
+
   scroll.controls = false
   if (scroll.bottom) return
   scroll.page++
@@ -847,7 +885,19 @@ const next = async () => {
 
 }
 
-const last = async (insert?: boolean) => {
+/**
+ * @function last
+ * @description Navega al último registro del grid
+ * @param {boolean} insert - Si true, inserta un nuevo registro antes de navegar
+ * @returns {Promise<void>}
+ */
+const last = async (insert?: boolean): Promise<void> => {
+
+  if (This.Row >= 0) {
+    if (!await ChecaStatus()) {
+      return
+    }
+  }
 
 
   if (This.prop.RecordSource.length < 2 || View[props.prop.RecordSource].recnoVal.length == 0) {
@@ -874,20 +924,16 @@ const last = async (insert?: boolean) => {
 
 
   // await asignaRenglon(scroll.dataPage[rows].id, First)
-
   /*
     nextTick(() => {
-  
       for (let i = 0; i < This.main.length; i++) {
         const comp = This.main[i]
         This[comp].prop.Valid = false;
       }
       return
     })
-  
+ 
   */
-
-
 
   /*
   if (insert) {
@@ -909,7 +955,18 @@ const last = async (insert?: boolean) => {
 
 }
 
+/**
+ * @function appendRow
+ * @description Agrega un nuevo registro al final del grid
+ * @returns {Promise<void>}
+ */
 const appendRow = async () => {
+
+  if (This.Row >= 0) {
+    if (!await ChecaStatus()) {
+      return
+    }
+  }
 
   await last()
   scroll.controls = false
@@ -939,17 +996,22 @@ const appendRow = async () => {
 }
 
 //  await last(true) 
-
-const borraRenglon = async (recno?: number) => {
+/**
+ * @function deleteRow
+ * @description Elimina el registro actual del grid
+ * @param {number} recno - Número de registro a eliminar
+ * @returns {Promise<void>}
+ */
+const deleteRow = async (recno?: number) => {
   scroll.controls = false
   if (!recno) {
 
     if (This.Row < 0) return
     // busca a cual recno pertenece el This.Row
-    //  console.log('borraRenglon data Page====>', This.Row, scroll.dataPage)
+    //  console.log('deleteRow data Page====>', This.Row, scroll.dataPage)
 
     for (let i = 0; i < scroll.dataPage.length; i++) {
-      //  console.log('Grid.vue borraRenglon This.row=', This.Row, ' scroll.dataPage=', scroll.dataPage[i])
+      //  console.log('Grid.vue deleteRow This.row=', This.Row, ' scroll.dataPage=', scroll.dataPage[i])
       if (scroll.dataPage[i].id == This.Row) {
         recno = scroll.dataPage[i].recno
         break
@@ -965,31 +1027,51 @@ const borraRenglon = async (recno?: number) => {
 
 const saveTable = async () => {
 
+  // Checa si estan validadas todas las columnas
   if (This.Row >= 0) {
-    // Checa si estan validadas todas las columnas
-    for (let i = 0; i < This.main.length; i++) {
-
-      // Si es campo de captura
-      if (This[This.main[i]].prop.Capture == true && This[This.main[i]].prop.Status != 'A')
-        return
-
-      if (This[This.main[i]].prop.Capture == true && This[This.main[i]].prop.Status != 'A' && !This[This.main[i]].prop.Valid) {
-
-        console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
-        This[This.main[i]].prop.Focus = true
-        return
-
-      }
-
+    if (!await ChecaStatus()) {
+      return
     }
-    scroll.controls = false
-    await This.saveTable()
+  }
+
+  /* for (let i = 0; i < This.main.length; i++) {
+     // Si es campo de captura
+     if (This[This.main[i]].prop.Capture == true && This[This.main[i]].prop.Status != 'A')
+       return
+
+     if (This[This.main[i]].prop.Capture == true && This[This.main[i]].prop.Status != 'A' && !This[This.main[i]].prop.Valid) {
+
+       console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
+       This[This.main[i]].prop.Focus = true
+       return
+     }
+   }
+   */
+  scroll.controls = false
+  await This.saveTable()
+
+}
+// eventos.push(This.prop.Map + '.saveTable()')
+
+/**
+ * @function ChecaStatus
+ * @description Verifica el estado de los campos del grid
+ * @returns {Promise<boolean>} True si todos los campos están validados, false en caso contrario
+ */
+const ChecaStatus = async () => {
+  // Si es componente de un form
+  for (let i = 0; i < This.main.length; i++) {
+    // Si es campo de captura
+
+    if (This[This.main[i]].prop.Capture == true && (This[This.main[i]].prop.Status != 'A' || !This[This.main[i]].prop.Valid)) {
+      console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
+      This[This.main[i]].prop.Focus = true
+      return false
+    }
 
   }
 
-
-  // eventos.push(This.prop.Map + '.saveTable()')
-
+  return true
 }
 
 
@@ -1010,14 +1092,13 @@ const autoLoad = async (RecordSource: string) => {
 }
 */
 
-/////////////////////////////////////////
-// Metodo init Vfp
-// Aqui debemos de asignar todos los Valores inciales del componente
-// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
-// Se tiene que emitir para que cambie el Valor en el template
-/////////////////////////////////////////
-
-
+/*********************************************
+ * @function onMounted
+ * @description Metodo init Vfp
+ * @description Aqui debemos de asignar todos los Valores inciales del componente
+ * @description A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
+ * @description Se tiene que emitir para que cambie el Valor en el template
+ *********************************************/
 onMounted(async () => {
   //  console.log('1) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
 

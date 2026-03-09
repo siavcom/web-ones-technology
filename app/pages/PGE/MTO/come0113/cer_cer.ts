@@ -53,6 +53,12 @@ export class cer_cer extends CAPTURECOMPONENT {
       this.prop.ControlSource = "vi_cap_comecer.cer_cer";
 
     }
+
+    this.Parent.con_pwd.prop.ReadOnly = true
+    this.Parent.pwd_cer.prop.ReadOnly = true
+    this.Parent.key_cer.prop.Visible = false
+    this.Parent.pem_cer.prop.Visible = false
+
     this.prop.RowSourceType = 0
     super.when()
     await SQLExec("select num_cer,cer_cer from vi_cap_comecer union select 'CERTIFICADO NUEVO','XXXXXXXXX' ", 'comecer')
@@ -67,23 +73,28 @@ export class cer_cer extends CAPTURECOMPONENT {
 
   override async valid(cer_cer?: string) {
 
-    //  console.log('cer_cer=', this.prop.Value)
+    console.trace('cer_cer=', this.prop.Value)
 
-    if (cer_cer || this.prop.Value != 'XXXXXXXXX') {
+    if (this.Recno < 100 && cer_cer || this.prop.Value != 'XXXXXXXXX') {
+
 
       if (cer_cer)
         this.prop.Value = cer_cer
       await updateCampo(cer_cer, "vi_cap_comecer.cer_cer", this.Recno)
       return super.valid()
+
     }
+
     //  debugger
     if (this.prop.Value == 'XXXXXXXXX') {
       this.prop.Visible = false
       this.prop.RowSourceType = 0;
-
+      this.Parent.con_pwd.prop.ReadOnly = false
+      this.Parent.pwd_cer.prop.ReadOnly = false
       this.Parent.num_cer.prop.Value = this.prop.Value
       this.Parent.num_cer.prop.Visible = true
       this.Parent.num_cer.prop.Focus = true
+      this.Parent.pem_cer.prop.Visible = true
     }
 
     return true

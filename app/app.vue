@@ -327,6 +327,9 @@ const session = Session()
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
+
+
+
 /*
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
@@ -340,6 +343,7 @@ console.log('session logoEmp=', logoEmp)
 const usrMenu = menu
 //const Prop = ref(props)
 const Items = reactive(Props.menuItems)  // son los que aparecen en el html
+
 const itemLength = Items.length
 let subItemsMan = reactive([])
 let subItemsRep = reactive([])
@@ -492,7 +496,7 @@ const obtMenu = () => {
 
   }
 
-  // console.log('usrMenu.value[i].prg_prg', usrMenu.value)
+
   for (let i = 0; usrMenu.value.length > 0 && usrMenu.value.length > i; i++) {
     // solo agrega menu principal
     if (usrMenu.value[i].tpr_prg === 'S') {
@@ -555,6 +559,8 @@ const obtMenu = () => {
       Items.push(item) // anexamos al menu
     }
   }
+
+  console.log('Fin obtMenu Items=', Items)
 }
 /// //////////////////////////////////////
 // Obten subMenu
@@ -576,7 +582,7 @@ const obtSubMenu = (system: string) => {
   const Pro = []
   //const menu = session.menu
 
-  console.log('usrMenu.value[i].prg_prg', usrMenu.value)
+  // console.log('usrMenu.value[i].prg_prg', usrMenu.value)
   for (let i = 0; usrMenu.value.length > 0 && usrMenu.value.length > i; i++) {
     // solo agrega menu principal
 
@@ -596,7 +602,7 @@ const obtSubMenu = (system: string) => {
       const system = usrMenu.value[i].sis_sis
       const urlVue = ' '
 
-      console.log('usrMenu.value[i].prg_prg', usrMenu.value[i])
+      // console.log('usrMenu.value[i].prg_prg', usrMenu.value[i])
       if (usrMenu.value[i].prg_prg != null && usrMenu.value[i].prg_prg.trim() > ' ') {
         link = urlVue + '/' + usrMenu.value[i].prg_prg.trim()
         path.path = '/' + usrMenu.value[i].prg_prg.trim()
@@ -653,11 +659,10 @@ watch(
 )
 
 watch(
-  () => usrMenu.value,
-  (menu_new, old_val) => {
+  () => menu.value, // usrMenu.value,
+  (menu_new) => {
 
-    //  console.log('3) app.vue watch menu', menu_new)
-    if (id_con.value > '' && menu_new.length > 0) {
+    if (id_con.value > '' && menu.value.length > 0) {
       obtMenu()
       return
     }
@@ -684,10 +689,13 @@ watch(
 //////////////////////////////////////////////////
 // Init
 /////////////////////////////////////////////////
-if (id_con.value > '' && Items.length < 3)
-  obtMenu()
 
+onMounted(async () => {
 
+  //console.log('onMounted app.vue init obtMenu', id_con.value, menu.value)
+  //if (id_con.value > '')// && Items.length < 3)
+  //  obtMenu()
+})
 
 </script>
 

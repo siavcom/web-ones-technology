@@ -30,7 +30,8 @@ export class pwd_cer extends COMPONENT {
 
         if (this.prop.Value != this.Form.con_pwd.prop.Value)
             return false
-        this.Form.key_cer.prop.ReadOnly = false
+        this.Form.pem_cer.prop.ReadOnly = false
+        this.Form.pem_cer.prop.Visible = true
 
         return true
     }

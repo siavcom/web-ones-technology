@@ -13,7 +13,7 @@
 import { cer_cer } from './cer_cer'
 import { num_cer } from "./num_cer"
 import { fve_cer } from './fve_cer'
-import { ubi_cer } from './ubi_cer'
+//import { ubi_cer } from './ubi_cer'
 import { pwd_cer } from './pwd_cer'
 import { con_pwd } from './con_pwd'
 import { pem_cer } from './pem_cer'
@@ -44,9 +44,12 @@ export class ThisForm extends captureForm {
 
   override async bt_modifyClick() {
     await super.bt_modifyClick()
-    this.pem_cer.prop.Visible = true
+
+    //this.pem_cer.prop.Visible = true
+    this.con_pwd.prop.ReadOnly = false
+    this.pwd_cer.prop.ReadOnly = false
     this.key_cer.prop.Visible = true
-    this.key_cer.prop.ReadOnly = true
+    this.key_cer.prop.ReadOnly = false
 
   }
   /*

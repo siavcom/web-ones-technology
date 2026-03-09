@@ -600,8 +600,9 @@ const toggleClick = async () => {
 
   if (!toggle.value) {
     // if (!sw_focus.value)
-    if (!focusIn)
+    if (!focusIn) {
       await onFocus()   // 18/Junio/2025
+    }
 
   }
   if (!This.prop.ReadOnly)

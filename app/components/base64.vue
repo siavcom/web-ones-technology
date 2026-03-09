@@ -1,8 +1,7 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
-  <span :id="Id + '_component'" class="divi imgButton" :title="This.prop.ToolTipText" :style="divStyle"
+  <span :id="Id + '_component'" class="b64Vutton" :title="This.prop.ToolTipText" :style="divStyle"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-
 
     <!-- The actual file input element, hidden from view -->
     <input type="file" ref="fileInput" @change="handleFileChange" :accept="inputStyle.accept" hidden />
@@ -12,20 +11,21 @@
     <img
       v-if="Value.length > 0 && (accept.includes('png') || accept.includes('jpg') || accept.includes('jpeg') || accept.includes('ico') || accept.includes('bmp') || accept.includes('gif') || accept.includes('svg'))"
       :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
+
+    <!-- Button for other file types  -->
+    <button :id="Id" v-else :style="inputStyle" @click="triggerFileInput" :disabled="prop.ReadOnly || prop.Disabled">
+      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :style="inputStyle" />
+      <label :id="Id + '_label_'" word-wrap: @click="triggerFileInput">
+        {{ prop.Caption.length > 0 ? prop.Caption : 'Load file' }}</label>
+    </button>
+
     <iframe v-if="Value.length > 0 && accept.includes('pdf')" :id="Id + '_pdf'" :src="Value" :width="inputStyle.width"
       :height="inputStyle.height" :title="This.prop.Caption" :style="inputStyle"></iframe>
     <!--   -->
 
-    <!--button :id="Id" :style="captionStyle" :onclick="`document.getElementById('${Id_get_file}').click()`"
-      :disabled="prop.ReadOnly || prop.Disabled">
-      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" />
-      <label :id="Id + '_label_'" word-wrap: :onclick="`document.getElementById('${Id_get_file}').click()`">
-        {{ prop.Caption.length > 0 ? prop.Caption : 'Load file' }}</label>
-    </button-->
+    <!-- Carga archivo  v-if="Value.length > 0"-->
 
-    <!-- Carga archivo -->
-
-    <img v-if="Value.length > 0" :id="Id + '_bt_load'" class="img" src='/Iconos/svg/upload.svg' :alt="prop.Value"
+    <img :id="Id + '_bt_load'" class="img" src='/Iconos/svg/upload.svg' :alt="prop.Value"
       :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;" @click="triggerFileInput"
       title="Load file" />
     <!-- Elimina archivo -->
@@ -190,6 +190,7 @@ if (divStyle.display == "inline-flex")
 
 if (divStyle.display == "99%")
   divStyle.width = "auto"
+
 
 const zIndex = divStyle.zIndex
 
@@ -551,16 +552,22 @@ const handler = (event) => {
 onMounted(async () => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
   containerId = document.getElementById('swal-container' + Id)
-  // console.log('1) base64 onMounted Name=', This.prop.Name, 'divStyle=', divStyle)
+  console.log('1) base64 onMounted Name=', This.prop.Name, 'This.prop.Value', This.prop.Value)
 
-  inputStyle.width = '100%' //  divStyle.width
+  // inputStyle.width = '100%' //  divStyle.width
   if (This.prop.Image.length > 0) {
     inputStyle.boxShadow = ''
     divStyle.height = inputStyle.height
     divStyle.width = inputStyle.width
   }
 
-  const result = await emitValue(true)
+  divStyle.display = 'flex-root'
+  divStyle.flexDirection = 'column'
+  divStyle.backgroundColor = 'red'
+
+
+  await emitValue(true)
+
   This.Recno = props.Registro
 
   oldVal = Value.value   // asignamos el valor viejo
@@ -574,6 +581,7 @@ onMounted(async () => {
     //    onFocus()
     return
   }
+  console.log('base64 mounted divStyle', divStyle)
 
 })
 

@@ -37,7 +37,7 @@ export const Session = defineStore(
     const menu = ref([]);
     let socket = false; //: any = ref(null);  //  faltaba ref(null). Queda mejor con false
     let passStore = ''
-    const sockets: never[] = [];
+    const sockets = ref({});
     let socketIo = ref(false);
     let socketId: string;
 
@@ -57,12 +57,12 @@ export const Session = defineStore(
       };
     */
       let force = false;
-      if (sockets[nom_emp.value])
-        sockets[nom_emp.value].connect(urlSocket, {
+      if (sockets.value[nom_emp.value])
+        sockets.value[nom_emp.value].connect(urlSocket, {
           forceNew: true,
         });
       else
-        sockets[nom_emp.value] = io.connect(urlSocket, {
+        sockets.value[nom_emp.value] = io.connect(urlSocket, {
           auth: {
             nom_emp: nom_emp.value,
             user: user.value,
@@ -70,7 +70,7 @@ export const Session = defineStore(
           },
         });
 
-      socket = sockets[nom_emp.value];
+      socket = sockets.value[nom_emp.value];
       /*
       if (!socket || !socketIo.value) {
         console.log(
@@ -104,11 +104,12 @@ export const Session = defineStore(
 
       // Password correcto, leemos datos de la empresa (logo y otros)
       socket.on("loginOk", async (res: {}) => {
-        // console.log('loginOk========>', res)
+        console.log('openSocket loginOk========>', res)
         socketId = socket.id;
         //res={ id: name, dialect: options.dialect, fpo_pge }
         // obtenemos datos de conexión
         id_con.value = res.id;
+
         fpo_pge.value = await stringToDate(res.fpo_pge);
         dialect.value = res.dialect;
         ////////  leeMenu();
@@ -257,7 +258,7 @@ export const Session = defineStore(
       //  sin no se ha inicilizado la conexion aborta todo
       menu.value = []  // vaciamos el menú
 
-      // console.log('2) leeMenu ')
+
 
       if (id_con.value == "") {
         const router = useRouter();
@@ -272,7 +273,14 @@ export const Session = defineStore(
         query: "SELECT * from vcomeprg order by num_prg,sis_sis,tpr_prg",
       };
 
+      socket = sockets.value[nom_emp.value];
+      // console.log('************storage leeMenu sockets=', sockets.value)
+
+
       if (socket) {   // 
+
+
+
         // hay socket
         await socket.emit("sql async", dat_vis, (response) => {
           /*
@@ -310,6 +318,7 @@ export const Session = defineStore(
           }
           //const menu = JSON.stringify(response.data)
           menu.value = data;
+          // console.log('************storage leeMenu *****************************menu=', menu.value)
           /*
           console.log(
             "Pinia ======leeMenu=====",
@@ -474,7 +483,7 @@ export const Session = defineStore(
 
         if (new_id != old_val) {
           if (new_id.length > 9 && nom_emp.value.length > 2) {
-            //console.log("1) currentSesion watch id_con", new_id, old_val);
+            console.log("1) currentSesion watch id_con", new_id, old_val, 'Sockets=', sockets.value);
             leeMenu();
           } else menu.value = [];
         }
@@ -601,6 +610,7 @@ export const Session = defineStore(
       logOut,
       openSocket,
       socket,
+      sockets,
     };
   },
   {
