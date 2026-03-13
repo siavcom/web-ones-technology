@@ -23,7 +23,7 @@ export class emp_emp extends COMPONENT {
     this.prop.Style = 2;
     this.prop.BoundColumn = 1;
     this.prop.RowSource = [[""], [""]];
-    this.prop.ColumnWidths = "200px,300px";
+    this.prop.ColumnWidths = "100px,300px";
     this.prop.TabIndex = 1;
     // this.style.zIndex = 2;
     this.style.width = "auto";
@@ -65,16 +65,5 @@ export class emp_emp extends COMPONENT {
 
 
   }
-  /*
-    public valid = async () => {
-  
-      const ThisForm = this.Form;
-      const This = this.prop; // Hace referencia a las propiedades del componente
-      const m: any = {}; // :  Record<string, never> ;
-      return true;
-    }; // fin metodo valid
-  */
-
-
 
 }

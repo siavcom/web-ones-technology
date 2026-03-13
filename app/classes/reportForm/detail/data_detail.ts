@@ -309,6 +309,13 @@ export class data_detail extends CONTAINER {
   // Envio de mensaje por servidor web-sockets sendDocto
   async sendData() {
 
+    const session = Session()
+    //const { data } = await useAsyncData('id', () => session.id_con)
+
+    const { nom_emp } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
+
+
     this.Form.data_detail.close()
 
     console.log('data_detail sendData this=', this)
@@ -341,6 +348,7 @@ export class data_detail extends CONTAINER {
       }
 
       message = {
+        nom_emp: nom_emp.value,
         transport: 'whatsapp',
         job: 'sendMedia',
         data: {
@@ -372,6 +380,7 @@ export class data_detail extends CONTAINER {
       }
       */
       message = {
+        nom_emp: nom_emp.value,
         transport: 'mail',
         //  from: mailFrom,
         to: this.Form.data_detail.email.prop.Value,

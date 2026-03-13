@@ -546,7 +546,25 @@ export const stringToDate = (texto?: string): string => {
 export const stringToTime = (texto?: string): string => {
   if (!texto || texto == null || texto == "" || texto == undefined) texto = "1900-01-01T00:00";
 
-  let date = texto.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
+  let date = ''
+  if (typeof texto == 'object') { // ya es objeto
+    let fecha = texto //new Date(); // Fecha actual
+    let year = fecha.getFullYear();
+    let month = String(fecha.getMonth() + 1).padStart(2, '0');
+    let day = String(fecha.getDate()).padStart(2, '0');
+    let hours = String(fecha.getHours()).padStart(2, '0');
+    let minutes = String(fecha.getMinutes()).padStart(2, '0');
+    date = `${year}-${month}-${day}T${hours}:${minutes}`;
+    //    date = texto.toISOString().substring(0, 16); // ISOString es formato 'AAAA-MM-DD'
+    return date
+
+    //date = texto.toISOString().substring(0, 16);
+    //date = date.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
+  }
+  else
+    date = texto.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
+
+
   return new Date(date).toISOString().substring(0, 16); // ISOString es formato 'AAAA-MM-DD'
 };
 
@@ -1184,7 +1202,7 @@ export async function Delay(ms: number): Promise<void> {
  * @param {number} rows - La cantidad de filas que se desean en el array
  * @returns {array} - Un array de dos dimensiones con la cantidad de filas especificadas
  */
-export async function Dime2D(rows: number): Array<any> {
+export function Dime2D(rows: number): Array<any> {
   var arr = [];
 
   for (var i = 0; i < rows; i++) {

@@ -203,7 +203,7 @@ export class ap_pagos extends GRID {
             // si encuentra el campo
             this.Form.Bt_imprime.prop.Visible = true
             if (cometdo.tip_cfd == 'P ' && vi_cap_comedoc.sta_doc != 'T' && vi_cap_comedoc.sta_doc != 'X')
-                this.Form.Bt_timbra.prop.Visible = true
+                this.Form.Bt_timbra.prop.Visible = false // true se desactivo
             // (pos>0 and thisform.nom_obj[pos+1)>='1' ) && si permite imprimir
         } // End If 
 

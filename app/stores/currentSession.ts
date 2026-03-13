@@ -122,6 +122,7 @@ export const Session = defineStore(
               empresa: nom_emp.value,
               user: user.value,
               password: passStore,
+              id_con: id_con.value, // ID de la conexión
             },
 
           }

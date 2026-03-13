@@ -802,8 +802,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       //  console.log('editText emitValue() Time Name ', props.prop.ControlSource, 'Valor=', Valor, 'Value=', Value.value)
       if (Value.value == '' || Value.value == null)
         Value.value = '1900-01-01T00:00:00'
+
       // console.log('datetime editText emitValue() Time Name ', props.prop.Name, 'Value=', Value.value)
-      Value.value = Value.value.slice(0, 16)
+      if (typeof Value.value === 'string') {
+        Value.value = Value.value.slice(0, 16)
+      }
 
       displayDate.value = new Date(Value.value)
       currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)

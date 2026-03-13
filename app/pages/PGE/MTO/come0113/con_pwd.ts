@@ -24,9 +24,6 @@ export class con_pwd extends COMPONENT {
     override async valid() {
 
         this.Form.pwd_cer.prop.Valid = false
-        this.Form.key_cer.prop.ReadOnly = true
-        this.Form.key_cer.prop.Valid = false
-
 
         if (this.prop.Value == "")
             return false

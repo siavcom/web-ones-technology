@@ -35,11 +35,11 @@ import postgres from 'postgres'
 //import fs from 'fs'
 import { exec } from 'child_process'
 import fs from 'fs/promises'; // Use fs.promises for async/await
-import { unlinkSync } from 'fs';
-import { join } from 'path';
-import { tmpdir } from 'os';
+//import { unlinkSync } from 'fs';
+//import { join } from 'path';
+//import { tmpdir } from 'os';
 import { promisify } from 'util';
-import { log } from "console";
+//import { log } from "console";
 
 const execAsync = promisify(exec);
 ////////////////////////////////////////////
@@ -51,68 +51,87 @@ const sqlNitro = config.sqlNitro
 let empresasJson = {}
 
 let SQLServer: postgres.Sql<{}> | null
-let dialect = ''
+
 let serverConfig = {}
 let sqlConfig = {}
-const mssqlPool = {}
+const sqlPool: any = {}
+const connections: any = {}
 
 
 export default defineEventHandler(async (event) => {
 
-  let user = ''
+  let user: string = ''
+  let id_con: string = ''
 
-  async function streamData(query: string, user: string) {
+  /**
+   * 
+   * @param query 
+   * @param id_con  ID de la conexión
+   * @returns sql rows
+   */
+  async function streamData(query: string, id_con: string) {
     let rows: any[] = []
-    try {
-      const config = sqlConfig
-      // let pool = await MSSQL.connect(config);
+    if (connections[id_con].dialect == 'mssql') {
 
-      // 1. Crear la solicitud y activar el modo stream
-      //const request = new MSSQL.Request(pool);
-      const request = mssqlPool[user].Request();
-      request.stream = true;
 
-      // 2. Ejecutar la consulta
-      request.query(query);
+      try {
+        const config = sqlConfig
+        // let pool = await MSSQL.connect(config);
 
-      // 3. Manejar eventos
-      request.on('row', row => {
-        console.log('Fila recibida:', row);
-        rows.push[row];
+        // 1. Crear la solicitud y activar el modo stream
+        //const request = new MSSQL.Request(pool);
+        const request = sqlPool[id_con].Request();
+        request.stream = true;
 
-        // Procesar cada fila individualmente aquí
-      });
+        // 2. Ejecutar la consulta
+        request.query(query);
 
-      request.on('error', err => {
-        console.error('Error en stream:', err);
-      });
+        // 3. Manejar eventos
+        request.on('row', row => {
+          console.log('Fila recibida:', row);
+          rows.push[row];
 
-      request.on('done', result => {
-        console.log('Stream finalizado con éxito.');
-        mssqlPool.close();
-        return rows
-      });
+          // Procesar cada fila individualmente aquí
+        });
 
-    } catch (err) {
-      console.error('Error de conexión:', err);
+        request.on('error', err => {
+          console.error('Error en stream:', err);
+        });
+
+        request.on('done', result => {
+          console.log('Stream finalizado con éxito.');
+          sqlPool[id_con].close();
+          return rows
+        });
+
+      } catch (err) {
+        console.error('Error de conexión:', err);
+      }
+
     }
+
   }
 
 
-  async function SqlExec(sqlQuery: string, user: string) {
+  /**
+   * 
+   * @param sqlQuery 
+   * @param id_con  ID de la conexión
+   * @returns sql result
+   */
+  async function SqlExec(sqlQuery: string, id_con: string) {
     let result
-    const config = sqlConfig
 
-    if (dialect == 'mssql') {
+    if (connections[id_con].dialect == 'mssql') {
       //(async () => {
 
       try {
-        //  const request = new mssqlPool.Request(mssqlPool[user]);
+        //  const request = new sqlPool.Request(sqlPool[id_con]);
 
-        const Request = await mssqlPool[user].request()
+        const Request = await sqlPool[id_con].request()
         const result = await Request.query(sqlQuery);
         // Funciona 
-        //const result = await mssqlPool[user].request().query(sqlQuery);
+        //const result = await sqlPool[id_con].request().query(sqlQuery);
 
         // const result = await request.query(sqlQuery);
         // console.log('1) ========================SQLExec ====================== result=', result.recordsets[0][0])
@@ -122,44 +141,21 @@ export default defineEventHandler(async (event) => {
         return err
       }
 
-
-
-      /*
-            MSSQL.connect(config, (err: any, result: any) => {
-              if (err) {
-                console.error(err)
-                return err
-              }
-      
-              const request = new MSSQL.Request()
-              //  const query = `select arc_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=1`
-              request.batch(sqlQuery, (err: any, result: any) => {
-                if (err) {
-                  console.error(err)
-                  return err
-                }
-                //console.log('MSSQL Query Result:', result.recordset) // ... error checks
-                return result.recordset
-              })
-            })
-           */
-
-      //console.log('========================MSSQL Exec ================================')
-      // const res = await MSSQL.query`${sqlQuery}`
-      // console.log('MSSQL Query Result:', res)
-      //  console.dir('Dir Resukt=', res)
-      // return res.recordset
-
-      // })()
-
-      // SQL Server execution logic here
-      // Example: const result = await SQLServer.query(sqlQuery);
-    } else if (dialect === 'posgres') {
-      console.log('========================Postgres Exec ================================')
-      result = SQLServer.query(sqlQuery)
-      // PostgreSQL execution logic here
-      // Example: const result = await SQLServer(sqlQuery);
     }
+
+    if (connections[id_con].dialect === 'posgres') {
+
+      try {
+        result = sqlPool[id_con].query(sqlQuery)
+        // result = sqlPool[id_con]`${sqlQuery}`
+        return result
+        // Example: const result = await SQLServer(sqlQuery);
+      } catch (err) {
+        console.error('Error de conexión:', err);
+        return err
+      }
+    }
+
     console.log('SQLExec result=', result)
     // return result;
   }
@@ -172,14 +168,36 @@ export default defineEventHandler(async (event) => {
   //const path = '/sistemas/web-ones/public'
   const body = await readBody(event)
   const call = body.call  // obtiene el tipo de llamada
+
   if (body.user)
     user = body.user
+
+  if (body.id_con) {
+    id_con = body.id_con
+    const currentTime = new Date()
+
+    // Borramos id_conexion con mas de un dia sin uso
+    const pullConnection = connections
+    for (const idCon in pullConnection) {
+      const difMinutos = Math.abs(currentTime - connections[idCon].time) / (1000 * 60 * 60 * 60);;
+      if (difMinutos > 60 * 24) { // Si tiene un dia sin utilizar
+        delete connections[idCon]
+        //connections.splice(1, 0, idCon);
+        delete sqlPool[idCon]
+
+      }
+    }
+
+    if (connections[id_con])
+      connections[id_con].time = currentTime
+
+  }
+
 
   let data: any
   let nameFile = ''
   const Fs = fs
   //  let SQLServer = null
-  //  let dialect = ''
 
   let result: any
 
@@ -216,61 +234,50 @@ export default defineEventHandler(async (event) => {
           logoEmp: '',
         }
 
-        try {  // Lee el archivo de configuración ddewl SQLServer de la empresa
+        try {  // Lee el archivo de configuración del SQLServer de la empresa
           let leeEmp = await fs.readFile(path + '/' + nombreEmpresa + '/config.json', "utf-8")
 
           serverConfig = JSON.parse(leeEmp)
-
-
           sqlConfig = serverConfig.sqlConfig
           const mailServer = serverConfig.mailServer ? serverConfig.mailServer : '{}'
           // Save a value
           //   await storage.setItem(mailServer:mailServer);
 
-          await useStorage().setItem('mail:Server', mailServer)
+          const mailServerKey = `mail:${nombreEmpresa}`
+          console.log('1)  callServer >>>>>>>>>>   server key=' + mailServerKey, await useStorage().getItem(mailServerKey));
+
+          await useStorage().setItem(mailServerKey, mailServer)
+          //await useStorage().setItem('mail:Server', mailServer)
           //        console.log('2)  >>>>>>>>>>serverConfig=', await useStorage().getItem('mail:Server'))
 
           //const serverConfig = JSON.parse(leeEmp)
 
-          dialect = sqlConfig.dialect
           sqlConfig.user = user.trim()
           sqlConfig.password = body.password
           let data: any = []
 
           //console.log('2)  >>>>>>>>>>iniEmp leeEmp sqlConfig=', sqlConfig)
 
-          if (dialect == 'mssql') {
-            console.log('1)  >>>>>>>>>>iniEmp leeEmp sqlConfig')
-            // mssqlPool[user] = await MSSQL.connect(sqlConfig);
-            mssqlPool[user] = await MSSQL.connect(sqlConfig);
-            /*
-            mssqlPool[user] = new MSSQL.ConnectionPool(sqlConfig)
-            await mssqlPool[user].connect(err=>{
-              if (err) {
-                console.error('Error de conexión:', err);
-              }
-              return false
-            });
-            */
+          if (sqlConfig.dialect == 'mssql') {
+            sqlPool[id_con] = await MSSQL.connect(sqlConfig);
+          }
+          if (sqlConfig.dialect == 'posgres') {
+            sqlPool[id_con] = await postgres(sqlConfig)
+          }
 
-            //   SQLServer = MSSQL
-            //            await SQLServer.connect(sqlConfig);
-            //    console.dir(result);
-          }
-          if (dialect == 'posgres') {
-            SQLServer = await postgres(sqlConfig)
-          }
+          connections[id_con] = { time: new Date(), dialect: sqlConfig.dialect }
+          console.log('1)  >>>>>>>>>>iniEmp leeEmp sqlConfig poolConnections=', connections)
 
           //console.log('Test1====', await SqlExec(" select top 10 nom_doi from man_comedoi where cla_isu='LOGO' ", user))
 
           let query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=1 `
-          data = await SqlExec(query, user)
+          data = await SqlExec(query, id_con)
 
           // console.log('1) data=', data[0][0].nom_doi)
           if (!data[0][0] || !
             data[0][0].arc_doi || data[0][0].arc_doi.length == 0) {
             query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=0 `
-            data = await SqlExec(query, user)
+            data = await SqlExec(query, id_con)
             //  console.log('2) data=', data[0][0].nom_doi)
             // console.log('2) XXXXX  LeeLogo Logo[0][0] 1 =', data[0][0])
           }
@@ -313,21 +320,9 @@ export default defineEventHandler(async (event) => {
 
     case 'sqlExec':
       const sqlQuery = body.sqlQuery;
-      return SqlExec(sqlQuery, user)
-      // Execute the SQL query using the appropriate database client
+      return SqlExec(sqlQuery, id_con)
+    // Execute the SQL query using the appropriate database client
 
-      result = []
-      if (dialect === 'mssql') {
-        result = await SQLServer.query + sqlQuery
-        // SQL Server execution logic here
-        // Example: const result = await SQLServer.query(sqlQuery);
-      } else if (dialect === 'posgres') {
-        result = await SQLServer + sqlQuery;
-        // PostgreSQL execution logic here
-        // Example: const result = await SQLServer(sqlQuery);
-      }
-
-      return result;
 
     case 'readFile':
       nameFile = body.nameFile.trim()

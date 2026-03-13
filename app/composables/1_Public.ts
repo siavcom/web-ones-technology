@@ -18,7 +18,7 @@ const publico = reactive({
     cpa_pge: "", cdi_pge: "", va1_pge: 0,
     va2_pge: 0, va3_pge: 0, va4_pge: 0, va5_pge: 0, de1_pge: "", de2_pge: "",
     de3_pge: "", de4_pge: "", de5_pge: "", pr1_pge: "", pr2_pge: "", pr3_pge: "",
-    pr4_pge: "", di0_pge: "", di1_pge: "", di2_pge: "", di3_pge: "", di4_pge: "", di5_pge: "", itr_pge: "",
+    pr4_pge: "", pr5_pge: "", di0_pge: "", di1_pge: "", di2_pge: "", di3_pge: "", di4_pge: "", di5_pge: "", itr_pge: "",
     vi1_pge: "", vi2_pge: "", vi3_pge: "", pol_pge: "", suc_pge: "",
     dcp_pge: 0, dci_pge: 0, pgi_pge: 0, coc_pge: "", cpr_pge: "",
     pap_pge: "", pac_pge: "", dbl_pge: 0, inm_pge: "", pmv_pge: "",

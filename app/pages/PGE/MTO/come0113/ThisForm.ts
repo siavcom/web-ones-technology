@@ -48,10 +48,21 @@ export class ThisForm extends captureForm {
     //this.pem_cer.prop.Visible = true
     this.con_pwd.prop.ReadOnly = false
     this.pwd_cer.prop.ReadOnly = false
-    this.key_cer.prop.Visible = true
-    this.key_cer.prop.ReadOnly = false
+    //this.key_cer.prop.Visible = true
+    this.pem_cer.prop.Visible = true
+
 
   }
+
+
+  override async bt_saveClick() {
+    await super.bt_saveClick()
+    this.Form.cer_cer.prop.BaseClass = 'comboBox'
+    await this.Form.cer_cer.when()
+  }
+
+
+
   /*
     override async bt_saveClick_old() {
       await super.bt_saveClick()

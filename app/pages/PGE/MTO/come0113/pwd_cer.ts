@@ -8,7 +8,7 @@
 // Update Date  :
 /////////////////////////////////////////////
 
-export class pwd_cer extends COMPONENT {
+export class pwd_cer extends CAPTURECOMPONENT {
 
     constructor() {
         super();
@@ -21,17 +21,23 @@ export class pwd_cer extends COMPONENT {
     }
 
     override async valid() {
+        this.Form.pem_cer.prop.Visible = false
+        this.Form.key_cer.prop.Visible = false
+
         if (this.prop.Value == '')
             return false
-
-        this.Form.key_cer.prop.ReadOnly = true
-        this.Form.key_cer.prop.Valid = false
-
-
         if (this.prop.Value != this.Form.con_pwd.prop.Value)
             return false
-        this.Form.pem_cer.prop.ReadOnly = false
+
         this.Form.pem_cer.prop.Visible = true
+        this.Form.key_cer.prop.Visible = true
+
+        this.Form.pem_cer.prop.Valid = false
+        this.Form.key_cer.prop.Valid = false
+
+        this.Form.pem_cer.prop.ReadOnly = false
+        this.Form.key_cer.prop.ReadOnly = false
+
 
         return true
     }

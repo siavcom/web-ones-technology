@@ -1,6 +1,6 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
-  <span :id="Id + '_component'" class="b64Vutton" :title="This.prop.ToolTipText" :style="divStyle"
+  <span :id="Id + '_component'" class="imgButton b64button" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
 
     <!-- The actual file input element, hidden from view -->
@@ -152,6 +152,15 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+
+const Styles = reactive(
+  {
+    captionStyle: captionStyle,
+    inputStyle: inputStyle,
+    style: divStyle,
+    //invalidInputStyle: invalidInputStyle
+  })
+
 
 const accept = computed(() => This.inputStyle.accept.toLowerCase().trim())
 

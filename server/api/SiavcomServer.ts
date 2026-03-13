@@ -33,6 +33,8 @@ import { promisify } from 'util';
 const execAsync = promisify(exec);
 let intentos = 0
 
+const config = useRuntimeConfig()
+const path = config.webOnesServer
 ////////////////////////////////////////////
 
 //import dat_emp from './Empresas.json'
@@ -40,7 +42,8 @@ export default defineEventHandler(async (event) => {
   intentos++
   //const sqlServer = require("./app/siavcom.controllers.js");
 
-  const path = '/sistemas/web-ones/public'
+  //const path = '/sistemas/web-ones/public'
+
   const body = await readBody(event)
 
   const call = body.call  // obtiene el tipo de llamada
@@ -152,14 +155,23 @@ export default defineEventHandler(async (event) => {
         const { stdout, stderr } = await execAsync(command);
         // Leer resultado
         const sslResult = await Fs.readFile(tempOutput, 'utf8');
-        //console.log('Resultado:', sslResult, tempInput, tempOutput);
+        console.log('Resultado:', sslResult, tempInput, tempOutput);
+        if (!sslResult) {
+          return {
+            success: false,
+            stderr: 'No se pudo generar el certificado'
+          }
+
+        }
         body.data = sslResult
         return {
           success: true, result: sslResult, stdout: stdout,
           stderr: stderr
         }
       }
-      catch (error) {
+      catch (error: any) {
+        console.error('Error en OpenSSL:', error);
+        return
         throw createError({
           statusCode: 500,
           statusMessage: `OpenSSL error: ${error.message}`
@@ -183,7 +195,8 @@ export default defineEventHandler(async (event) => {
 
       for (let j = 1; j <= lon_pal; j++) {
 
-        let Asc = pal_enc.substring(j, j + 1).charCodeAt(0)  // obtiene el codigo ascii
+        //  let Asc = pal_enc.substring(j, j + 1).charCodeAt(0)  // obtiene el codigo ascii
+        let Asc = pal_enc.substring(j - 1, j).charCodeAt(0)  // obtiene el codigo ascii
 
         if (Asc == 32)
           clave = clave + String.fromCharCode(Asc + pos)

@@ -185,6 +185,7 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
 
     const message = JSON.parse(JSONmessage)
     console.log('1) SendDocto processMessage transport =', message.transport)
+    const nombreEmpresa = message.nom_emp
     const transport = message.transport && typeof message.transport == 'string' ? message.transport.toLowerCase() : ''
 
     if (transport === 'whatsapp') {
@@ -376,9 +377,10 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
         const subject = message.subject
         const text = message.text
         const attachments = message.attachments
-
         console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        const mailServer = await useStorage().getItem('mail:Server');
+        const mailServerKey = `mail:${nombreEmpresa}`
+        //const mailServer = await useStorage().getItem('mail:Server');
+        const mailServer = await useStorage().getItem(mailServerKey);
         console.log('2) sendDocto SendMail====>>> mailServer=', mailServer)
         if (!mailServer) {
             webSocketPeer.send({
