@@ -21,7 +21,7 @@ export class d_tot_doc extends COMPONENT {
   
       calculo = computed(() => {
           console.log('1) COMPUTED ThisForm=', this.imp_doc.value)
-          // const data = await currentValue('*', 'vi_lla1_doc')
+          // const data = await currentValue('*', 'vi_vi_cap_comedoc')
           // return data?.imp_doc + data?.im0_doc + data?.im1_doc + data?.im2_doc + data?.im3_doc + data?.im4_doc + data?.im5_doc
           if (ThisForm.value == null) {
               return 0

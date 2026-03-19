@@ -65,6 +65,13 @@ export const appendM = (valueA: {}, valueB: {}): object => {
  * @returns {boolean} true if the string is null, false otherwise
  */
 export const isNull = (data: string): boolean => {
+
+  if (data !== null) {
+    if (data.trim().length === 0)
+      return true
+    return false
+  }
+
   return data == null ? true : false;
 }
 

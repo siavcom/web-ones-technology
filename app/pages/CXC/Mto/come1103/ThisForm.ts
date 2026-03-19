@@ -51,7 +51,7 @@ import { cba_cba } from './cba_cba';
 import { che_doc } from './che_doc';
 
 //import { co_xml } from './co_xml';
-import { cod_nom } from './cod_nom';
+import { cod_nom } from '@/classes/Siavcom/Doctos/cod_nom';
 import { rfc_pve } from "./rfc_pve";
 
 //import { Bt_apl_pag } from './Bt_apl_pag';
@@ -90,7 +90,7 @@ import { top_nom } from './top_nom';
 
 //import { Bt_veri_xml } from './Bt_veri_xml';
 import { vmo_doc } from '@/classes/Siavcom/Doctos/vmo_doc';
-import { Bt_campos_xml } from '@/classes/Siavcom/Doctos/Bt_campos_xml';
+
 
 import { Bt_imprime } from "./Bt_imprime";
 import { Bt_timbra } from "./Bt_timbra";
@@ -103,9 +103,10 @@ import { Bt_dre_doc } from '@/classes/Siavcom/Doctos/Bt_dre_doc';
 
 
 import { Bt_can_docto } from '@/classes/Siavcom/Doctos/Bt_can_docto';
-import { captura_xml } from './captura_xml';
-import { Bt_carga_xml } from './Bt_carga_xml';
 
+import { captura_xml } from '@/classes/Siavcom/Doctos/captura_xml';
+import { Bt_carga_xml } from '@/classes/Siavcom/Doctos/Bt_carga_xml';
+import { Bt_campos_xml } from '@/classes/Siavcom/Doctos/Bt_campos_xml';
 
 let thisForm = ref()
 
@@ -702,7 +703,8 @@ export class ThisForm extends captureForm {
 	// Objeto  :come1103
 	// Tipo   :Form
 	// Comentarios :Pertenece a la forma principal de captura
-	override async grabar(sw_rel: any) {
+	/*
+	override async grabar_old(sw_rel: any) {
 
 		if (!await super.grabar())
 			return
@@ -720,28 +722,7 @@ export class ThisForm extends captureForm {
 		// seleccionamos la vista
 
 		m = appendM(m, vi_cap_comedoc)     // appendM(m, await scatter())// scatter 
-		/*
-				sw_del = Deleted()
-				for (const Control of this.main) {
-		
-					if (substr(Control.prop.Name, 4, 1) == '_' && upper(left(Control.prop.ControlSource, 11)) == 'vi_cap_comedoc') {
-						if (Control.prop.Valid == false) {
-							Control.valid(sw_rel:boolean)
-							// buscamos controles no validados
-							if (Control.prop.Valid == false) {
-								// revizamos si es buena la validación
-								return false
-		
-							} // End If 
-		
-						} // End If 
-		
-					} // End If 
-		
-				} // End For; 
-		*/
-
-		// importe actual del documento
+			// importe actual del documento
 
 		let imp_act = this.im0_doc.prop.Value + this.im1_doc.prop.Value + this.im2_doc.prop.Value + this.im3_doc.prop.Value + this.im4_doc.prop.Value + this.im5_doc.prop.Value
 		if (this.sw_pga && len(rTrim(this.tcd_tcd.prop.Value)) > 0 && len(vi_cap_cometcd.pga_pga) > 0) {
@@ -845,15 +826,7 @@ export class ThisForm extends captureForm {
 				await deleteSqlRow('lla1_pve')
 				await select('lla1_pvd')
 				await requery(m, 'lla1_pvd')
-				/*
-								if (await recCount() > 0) {
-									await deleteLocalSql()
 				
-									await tableUpdate(0,false,'lla1_pvd')
-				
-								} // End If 
-				*/
-
 			} else {
 
 				// si es una alta
@@ -902,12 +875,14 @@ export class ThisForm extends captureForm {
 
 		return true
 	}   // Fin Procedure
-
-	// Graba los datos de un documento despues de una captura o medificacion
-	// Evento   :gra_doc
-	// Objeto  :gra_doc
-	// Tipo   :Metodo
-	// Comentarios :Graba los datos de un documento despues de una alta o actualizacion
+*/
+	/**
+	 * Graba los datos de un documento despues de una captura o medificacion
+	 * @Evento   :gra_doc
+	 * @Objeto  :gra_doc
+	 * @Tipo   :Metodo
+	 * @Comentarios :Graba los datos de un documento despues de una alta o actualizacion
+	 */
 	override async bt_saveClick() {
 		const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
 		if (vi_cap_comedoc.imp_doc == 0 &&

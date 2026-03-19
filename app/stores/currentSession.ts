@@ -29,7 +29,7 @@ export const Session = defineStore(
     const pass = ref("********");
     const nom_emp = ref("");
     const url = ref("");
-    const dialect = ref("Postgres");
+    const dialect = ref("postgres");
     const fpo_pge = ref(new Date().toDateString());
     const logoEmp = ref("");
     const fileLogoEmp = ref(null);
@@ -338,6 +338,7 @@ export const Session = defineStore(
               console.log("1) Pinia Public.value=", Public.value);
               if (data && data.length > 0) {
                 Var.value = data[0];
+
                 for (const comp in Var.value) {
                   if (typeof Var.value[comp] == "string") {
                     const Variable = Var.value[comp];
@@ -366,6 +367,8 @@ export const Session = defineStore(
 
                   }
                 }
+
+                Public.value.dialect = dialect.value.toLowerCase()
                 Public.value.des_mon1[1] = Var.value.de1_pge
                 Public.value.des_mon1[2] = Var.value.de2_pge
                 Public.value.des_mon1[3] = Var.value.de3_pge

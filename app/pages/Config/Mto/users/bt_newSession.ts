@@ -34,7 +34,7 @@ export class bt_newSession extends IMGBUTTON {
 
     let newSession = true
     let newUser = true
-    if (this.Form.dialect == 'mssql') { // MSSQL
+    if (Public.value.dialect == 'mssql') { // MSSQL
       await SQLExec(`USE [${this.Form.mPublic.dbname}]`)
       const data = await SQLExec(`select 1 as existe from master.dbo.syslogins where name ='${this.Form.log_usr.prop.Value.trim()}'`)
 

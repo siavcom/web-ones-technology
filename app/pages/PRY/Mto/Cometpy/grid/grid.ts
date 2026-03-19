@@ -75,7 +75,7 @@ export class Grid extends GRID {
     /*
 
 
- if (this.Form.dialect == "postgres") user = "lower(current_user)";
+ if (Public.value.dialect == "postgres") user = "lower(current_user)";
 
  this.prop.RowSource = `select des_equ,equ_equ from vi_cap_db_equipo   \
   where ${user}='sa' or \

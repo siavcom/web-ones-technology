@@ -40,7 +40,7 @@ export async function ini_cont(){
 
     //select(0)
 
-    await use('vi_lla1_pct',m) // use vi_lla1_pct vi_lla1_pct
+    await use('lla1_pct',m) // use lla1_pct lla1_pct
 
     m=appendM(m, await scatter())// scatter 
   // lee variables generales

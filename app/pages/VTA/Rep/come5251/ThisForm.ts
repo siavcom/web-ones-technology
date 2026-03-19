@@ -249,7 +249,7 @@ export class ThisForm extends reportVtas {
         }
 
         let fec_des = 'current_date'
-        if (this.Form.dialect = 'nssql') {
+        if (Public.value.dialect = 'nssql') {
           ins_sql = `set dateformat dmy ; 
                   declare @current_date as date;
                   SET @current_date=getdate() ;
@@ -272,7 +272,7 @@ export class ThisForm extends reportVtas {
         ins_sql += `${m.mon_doc},`
         ins_sql += `'${alm_des}')`
 
-        if (this.Form.dialect == 'postgres')
+        if (Public.value.dialect == 'postgres')
           ins_sql += " commit;"
 
 

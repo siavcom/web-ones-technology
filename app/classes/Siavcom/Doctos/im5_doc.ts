@@ -48,6 +48,8 @@ export class im5_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Se preguntarÃ¡ el impuesto segun el tipo de cliente o proveedor
     override async when() {
+        if (this.Form.prop.Name == 'COME5101')
+            return false
         return await this.Form.rev_per('imp_doc')
 
 

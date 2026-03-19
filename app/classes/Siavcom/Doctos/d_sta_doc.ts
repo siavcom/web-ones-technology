@@ -54,9 +54,9 @@ export class d_sta_doc extends COMPONENT {
 
         switch (this.prop.Value) {
             case 'C': {
-                const vi_lla1_doc = goto(0, 'vi_lla1_doc')
-                if (vi_lla1_doc.nde_doc > 0)
-                    MessageBox(this.prop.Messages[0][0] + vi_lla1_doc.tde_doc + Str(vi_lla1_doc.nde_doc), 16, this.prop.Messages[0][1])  // "El documento se convirtirá al documento :"
+                const vi_cap_comedoc = currentValue('tde_doc,nde_doc', 'vi_vi_cap_comedoc')
+                if (vi_cap_comedoc.nde_doc > 0)
+                    MessageBox(this.prop.Messages[0][0] + vi_cap_comedoc.tde_doc + vi_cap_comedoc.nde_doc.toString(), 16, this.prop.Messages[0][1])  // "El documento se convirtirá al documento :"
 
                 Styles.inputStyle.background = 'rgb(255,0,0)'
                 break

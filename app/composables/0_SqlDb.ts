@@ -1043,6 +1043,7 @@ export const tableUpdate = async (
                 num_int = 2; // se sale del for
             } else {
                 // hay error, obtiene los datos nuevos que tiene el registro y vuelve a grabar
+
                 console.error(
                     "No se pudo actualizar el registro en tabla " + alias,
                     dat_vis, 'LocalSQL', await localAlaSql(`select * from now.${alias} `)
@@ -2473,6 +2474,27 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
     } // no hay datos
 };
 
+/**
+ * @description Devuelve el número de registro actual
+ * @param alias 
+ * @returns 
+ */
+
+
+export function recNo(alias?: string) {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    if (!alias) {
+        // alias = This.value.are_tra[-1]; // buscamos a cual alias pertenece
+        alias = This.value.are_tra[This.value.num_are - 1];
+    }
+    if (!This.value.View[alias]) {
+        console.warn("recCount() No existe el alias", alias);
+        return 0;
+    }
+
+    return This.value.View[alias].recno
+}
 /// /////////////  Vfp recCount() /////////////////////
 // alias    : Alias
 /// ////////////////////////////////////////////
@@ -2497,25 +2519,6 @@ export const recCount = (alias?: string) => {
     return This.value.View[alias].recCount;
 }
 
-////////////////  Vfp reccno() /////////////////////
-// record Number
-// alias    : Alias
-///////////////////////////////////////////////
-export const recNo = (alias?: string) => {
-    const { This } = toRefs(state) // Hace referencia al valor inicial
-
-    if (!alias) {
-        // alias = This.value.are_tra[-1]; // buscamos a cual alias pertenece
-        alias = This.value.are_tra[This.value.num_are - 1];
-    }
-
-    // const vis_act = obj_vis.value;
-
-    if (alias == null) {
-        alias = This.value.are_tra[This.value.num_are - 1]; // buscamos a cual alias pertenece
-    }
-    return This.value.View[alias].recno;
-}
 
 /// /////////////////////////////  Vfp found() /////////////////////
 // Devuelve true si el registro si se encontro en un locate
@@ -2767,6 +2770,8 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
 
                 // si es un error de desconexion
                 const status = error.response.status.toString()
+
+                Public.value.num_err = status
                 if (status == "401" || status == "403" || status == "408") {
 
                     if (This.value.session.nom_emp == "" || status == "401" || status == "408") {
@@ -3362,19 +3367,24 @@ export const currentValue = async (field: string, alias?: string) => {
     }
 
     let data = await goto(0, alias)
-    if (field == '*')
+
+    if (Object.keys(data).length === 0) // No hay datos en el objeto
+        return data
+
+    if (field == '*') // todos los datos
         return data
 
     let result = {}
-    let fields = []
-    if (!Array.isArray(field))
-        fields.push(field)
-    else
-        fields = field
+    let fields: string[] = []
 
-    for (let i = 0; i < fields.length; i++)
-        result[fields[i]] = data[fields[i]]
+    if (typeof field === 'string')
+        fields = field.split(',')
 
+    for (let i = 0; i < fields.length; i++) {
+        const campo = fields[i].trim()  // limpiamos espacios en blanco
+        if (data[campo])
+            result[campo] = data[campo]
+    }
     return result
 }
 
@@ -3438,8 +3448,16 @@ export const skip = async (despla?: number, alias?: string) => {
         return await goto(data[data.length - 1].recno, alias); // se va a leer registro
 
     // si no hay datos
-    initAlias(alias) // Inicializa el alias si no hay datos
-    return 0; // No hay datos
+    if (despla > 0)
+        This.value.View[alias].eof = true;
+    if (despla < 0)
+        This.value.View[alias].bof = true;
+
+
+    This.value.View[alias].recno = 0
+    This.value.View[alias].data = []; // No hay datos
+
+    return false; // No hay datos
 };
 
 /// /////////////////////////////////////////////////
@@ -3463,6 +3481,10 @@ export const scatter = async (aliasFields?: [], alias?: string) => {
             return false;
         }
         alias = This.value.are_tra[This.value.num_are - 1];
+    }
+
+    if (recNo(alias) === 0) {
+        return false;
     }
 
     const res = await goto(0, alias); // lee los datos actuales
@@ -3526,20 +3548,14 @@ export const scatterBlank = async (aliasFields?: [], alias?: string) => {
  * Gathers data from the provided array and updates the current record in the specified alias.
  * 
  * @param {[]} from - An array containing data to be gathered and updated in the database.
- * @param {[]?} aliasFields - An optional array of field names that are to be updated.
- *                            If not provided, all fields in the current view's default values will be used.
  * @param {string?} alias - An optional string representing the alias of the view to update.
  *                          If not provided, the current alias in the area of work will be used.
- * 
- * @returns {Promise<null|boolean>} - Returns null if the current record number could not be determined,
+ * @returns {Array|null} - Returns null if the current record number could not be determined,
  *                                    otherwise performs the update operation.
  */
 
-export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Promise<null | boolean> => {
+export const gather = async (from: [], alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-
-    //    let resultado = [];
-    let fields = []
 
     if (!alias) {
         if (!This.value.are_tra[This.value.num_are - 1]) {
@@ -3547,31 +3563,26 @@ export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Pr
         }
         alias = This.value.are_tra[This.value.num_are - 1];
     }
+    const Recno = recNo(alias)
 
-    if (!aliasFields) {
-        aliasFields = []
-
-        for (const campo of This.value.View[alias].val_def) {
-            aliasFields.push(campo)
-        }
+    if (Recno == 0) {
+        return null;
     }
+    const fields = []
+    for (const field in from)
+        fields.push(field)
 
-    // checar diferencia entre recnoVal y recno
-    // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
+    const fieldsValue = await currentValue(fields, alias)
 
-    const res = await goto(0, alias); // lee los datos actuales
-
-    if (res.length == 0) {  // no hay regisro a actualoizar
-        return false;
+    if (fieldsValue.length == 0) {  // no hay regisro a actualizar
+        return null;
     }
-
-    const recno = res.recno
 
     let update = 'UOPDATE now.' + alias + ' SET '
     let sep = ''
 
-    for (const field of aliasFields) {
-        if (from[field]) {
+    for (const field of fields) {
+        if (field != 'recno') {
             const valor = from[field]
             if (typeof valor == 'string') {
                 update = update + sep + field + `='${valor}'`
@@ -3579,10 +3590,8 @@ export const gatherFrom = async (from: [], aliasFields?: [], alias?: string): Pr
                 update = update + sep + field + `=${valor}`
             sep = ','
         }
-
     }
-
-    update = update + ` WHERE recno=${recno} `
+    update = update + ` WHERE recno=${Recno} `
     console.log('Db gatherFrom update=', update)
     return await localAlaSql(update);
 };

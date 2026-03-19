@@ -24,7 +24,7 @@ export class equ_equ extends COMPONENT {
   }
   async init(): Promise<void> {
     let user = "lower(SYSTEM_USER)";
-    if (this.Form.dialect == "postgres") user = "lower(current_user)";
+    if (Public.value.dialect == "postgres") user = "lower(current_user)";
 
     this.prop.RowSource = `select des_equ,equ_equ from vi_cap_db_equipo  union select ' Todos ' des_equ,'??' equ_equ \
      where ${user}='sa' or \

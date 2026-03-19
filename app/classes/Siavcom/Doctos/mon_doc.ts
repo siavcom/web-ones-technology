@@ -8,7 +8,7 @@
 // Update Date  :
 /////////////////////////////////////////////
 // import { COMPONENT } from "@/classes/Component";
-import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
+
 //imports
 
 export class mon_doc extends CAPTURECOMPONENT {

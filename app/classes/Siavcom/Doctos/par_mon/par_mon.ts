@@ -48,7 +48,7 @@ export class par_mon extends PAR_MON {
   override async close() {
     super.close()
     /*
-    const alias = 'vi_lla1_doc'
+    const alias = 'vi_vi_cap_comedoc'
     const recno = await recNo(alias)
     updateCampo(1,alias+'.vm1_doc' , recno)
     updateCampo(this.vm2_pge.prop.Value,alias+'.vm2_doc' , recno)

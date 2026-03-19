@@ -676,7 +676,7 @@ export async function can_doc(tdo_tdo: string, ndo_doc: any) {
   let m = {}   // inicializamos m
   let are_tra = await select()
 
-  await select('vi_lla1_doc')
+  await select('lla1_doc')
 
   m = appendM(m, await scatter(m))// scatter 
 
@@ -705,7 +705,7 @@ export async function can_doc(tdo_tdo: string, ndo_doc: any) {
   m.cfd_xml = ''
   m.emt_xml = ''
   let est_can = ''
-  ins_sql = [select cfd_xml, emt_xml, FCA_XML, sta_doc  from man_comexml where tdo_tdo = ']+vi_lla1_doc.tdo_tdo+[' and ndo_doc =] + allTrim(str(vi_lla1_doc.ndo_doc))
+  ins_sql = [select cfd_xml, emt_xml, FCA_XML, sta_doc  from man_comexml where tdo_tdo = ']+lla1_doc.tdo_tdo+[' and ndo_doc =] + allTrim(str(lla1_doc.ndo_doc))
   // busca el cfdi en el xml
   if (await SQLExec(ins_sql, 'sqlresult')
     > 0) {
@@ -738,23 +738,23 @@ export async function can_doc(tdo_tdo: string, ndo_doc: any) {
     if (m.cer_cer > ' ') {
       let cer_ori = m.cer_cer
       m.cer_cer = enc_pal(cer_ori)
-      if (await select('vi_lla1_cer')
+      if (await select('lla1_cer')
         < 1) {
         await select('0')
 
-        await useNodata('vi_lla1_cer') // use vi_lla1_cer vi_lla1_cer Nodata
+        await useNodata('lla1_cer') // use lla1_cer lla1_cer Nodata
 
       } // End If 
 
-      await select('vi_lla1_cer')
+      await select('lla1_cer')
 
       if (await requery()
         > 0) {
         if (Field('PEM_CER') == 'PEM_CER') {
           m.pem_cer = space(4096)
-          m.pem_cer = vi_lla1_cer.pem_cer
-          let pas_cer = position.Left(des_pas(rTrim(vi_lla1_cer.pwd_cer)) + space(20), 20)
-          let key_cer = position.Left(des_pas(rTrim(vi_lla1_cer.ubi_cer)) + space(120), 120)
+          m.pem_cer = lla1_cer.pem_cer
+          let pas_cer = position.Left(des_pas(rTrim(lla1_cer.pwd_cer)) + space(20), 20)
+          let key_cer = position.Left(des_pas(rTrim(lla1_cer.ubi_cer)) + space(120), 120)
         } // End If 
 
       } else {
@@ -768,7 +768,7 @@ export async function can_doc(tdo_tdo: string, ndo_doc: any) {
       m.cer_cer = cer_ori
       // recuperamos el valor del certificado
       m = appendM(m, await scatter(m))// scatter 
-      //ins_sql=[select cfd_xml,emt_xml,FCA_XML  from comexml where tdo_tdo=']+vi_lla1_doc.tdo_tdo+[' and ndo_doc=]+Alltrim(Str(vi_lla1_doc.ndo_doc))
+      //ins_sql=[select cfd_xml,emt_xml,FCA_XML  from comexml where tdo_tdo=']+lla1_doc.tdo_tdo+[' and ndo_doc=]+Alltrim(Str(lla1_doc.ndo_doc))
       //=Iif(SQLExec(num_dbs,ins_sql)>0,.T.,err_sql())
 
       if (len(allTrim(m.cfd_xml)) > 100) {
@@ -808,7 +808,7 @@ export async function can_doc(tdo_tdo: string, ndo_doc: any) {
         let rfcReceptor = obt_cam_xml(m.cfd_xml, 'cfdi:Receptor', 'Rfc')
       } // End If 
 
-      await select('vi_lla1_doc')
+      await select('lla1_doc')
       //////////////////////
       // comenzar transaccion cambiando el estatus a cancelado
 
@@ -857,7 +857,7 @@ export async function can_doc(tdo_tdo: string, ndo_doc: any) {
 
       } // End If 
 
-    await select('vi_lla1_doc')
+    await select('lla1_doc')
 
     await requery()
 
@@ -1291,23 +1291,23 @@ export async function cla_alt(cop_con: any, cod_con: any, cla_con: any, cad_con:
 
 //!// If Parameters()>4           && SI SE BUSCA PRECIO ESPECIAL
 //!//  m.tip_tdn=tip_con
-//!//  Select vi_lla1_tca
+//!//  Select lla1_tca
 //!//  Use
 //!//  ins_sql="exec P_CAL_PRE_ISU_N '"+m.cla_isu+"','"+m.cop_nom+"','"+m.cod_nom+"','"+m.tip_tdn+"','"+dateToString(m.fec_con)+"'"
 //!//  If m.ndb_emp=4 && Si es PostgreSQL
 //!//   ins_sql="select P_CAL_PRE_ISU_N ('"+m.cla_isu+"','"+m.cop_nom+"','"+m.cod_nom+"','"+m.tip_tdn+"','"+dateToString(m.fec_con)+"')"
 //!//  Endif
-//!//  =Iif(SQLExec(num_dbs,ins_sql,'vi_LLA1_TCA')>0,0,err_sql())
+//!//  =Iif(SQLExec(num_dbs,ins_sql,'lla1_TCA')>0,0,err_sql())
 //!//  a=ins_sql
 //!//  If sw_tca=0   && si no hay datos
-//!//   Use  vi_lla1_tca Nodata
+//!//   Use  lla1_tca Nodata
 //!//  Endif
 //!//  Scatter Memvar
-//!// //use vi_lla1_tca    && abre la tabla de claves alternas
+//!// //use lla1_tca    && abre la tabla de claves alternas
 //!//  res_con=Iif(Reccount()>0,.T.,.F.)
 //!// Else                        && UNICAMENTE BUSCA CLAVES ALTERNAS
-//!//  Select vi_lla1_tca
-//!//  Use vi_lla1_tca    && abre la tabla de claves alternas
+//!//  Select lla1_tca
+//!//  Use lla1_tca    && abre la tabla de claves alternas
 //!//  res_con=Iif(Reccount()>0,.T.,.F.)
 //!// Endif
 // ---------------< Consulta de claves alternas >--------------------
@@ -1330,9 +1330,9 @@ export async function cla_alt_des(cop_con: any, cod_con: any, cla_con: any, tip_
 //!// m.cla_isu=cla_con
 //!// m.tip_tdn='  '
 //!// m.fti_con=for_tie
-//!// Select vi_lla1_tca
+//!// Select lla1_tca
 //!// Requery()
-//!// //use vi_lla1_tca    && abre la tabla de claves alternas
+//!// //use lla1_tca    && abre la tabla de claves alternas
 //!// res_con=Iif(Reccount()>0,.T.,.F.)
 //!// Select (are_tra)
 //!// Return res_con
@@ -1351,9 +1351,9 @@ export async function ped_adu(ped_con: any) {
   // obtiene la area de trabajo actual
 
   m.ped_ped = ped_con
-  await select('vi_lla1_ped')
+  await select('lla1_ped')
 
-  await use('vi_lla1_ped', m) // use vi_lla1_ped vi_lla1_ped
+  await use('lla1_ped', m) // use lla1_ped lla1_ped
   // abre la tabla de pedimentos
 
   let res_con = iif(await recCount() > 0, true, false)
@@ -1377,9 +1377,9 @@ export async function con_lot(lot_con: any) {
   // obtiene la area de trabajo actual
 
   m.ser_mov = lot_con
-  await select('vi_lla1_lot')
+  await select('lla1_lot')
 
-  await use('vi_lla1_lot', m) // use vi_lla1_lot vi_lla1_lot
+  await use('lla1_lot', m) // use lla1_lot lla1_lot
   // abre la tabla de lotes
 
   let res_con = iif(await recCount() > 0, true, false)
@@ -1403,14 +1403,14 @@ export async function con_isu(cla_con: any) {
   // obtiene la area de trabajo actual
 
   m.cla_isu = cla_con
-  await select('vi_lla1_isu')
+  await select('lla1_isu')
   // lee datos de insumos
 
-  await use('vi_lla1_isu', m) // use vi_lla1_isu vi_lla1_isu
+  await use('lla1_isu', m) // use lla1_isu lla1_isu
 
-  await select('vi_lla1_pro')
+  await select('lla1_pro')
 
-  await use('vi_lla1_pro', m) // use vi_lla1_pro vi_lla1_pro
+  await use('lla1_pro', m) // use lla1_pro lla1_pro
   // lee datos de productos
 
   let res_con = iif(await recCount() > 0, true, false)
@@ -1523,7 +1523,7 @@ export async function gen_con_cfd() {
 
   m.cod_nom = '000000'
   // asignamos el valores
-  m.tdo_tdo = vi_lla1_doc.tdo_tdo
+  m.tdo_tdo = lla1_doc.tdo_tdo
   m.blo_cfd = 'Conceptos'
   let res = await localAlaSql("INSERT INTO vi_cap_cfd select * From vi_gen_cfd Where blo_cfd = = m.blo_cfd AND cod_nom = m.cod_nom Order By ord_cfd")
 
@@ -2132,7 +2132,7 @@ export async function gen_cadena(inc_addenda: string) {
   m.cod_nom = '000000'
   // generamos el header
   // asignamos el valores
-  m.tdo_tdo = vi_lla1_doc.tdo_tdo
+  m.tdo_tdo = lla1_doc.tdo_tdo
   m.blo_cfd = 'Comprobante'
   // variable para seleccionar los datos dentro de la definicion
   let res = await localAlaSql("INSERT INTO vi_cap_cfd select * From vi_gen_cfd Where blo_cfd = = m.blo_cfd AND cod_nom = m.cod_nom Order By ord_cfd")
@@ -2182,7 +2182,7 @@ export async function gen_cadena(inc_addenda: string) {
     skip()
   } // End while 
 
-  m.tdo_tdo = vi_lla1_doc.tdo_tdo
+  m.tdo_tdo = lla1_doc.tdo_tdo
   //////////////////////////////////////////////////////////////////////////////////////////////
   // Informacion global CFDI ver 4 Factura Global
   // 20/Feb/2022 .- Se aumenta m.glo_xml
@@ -2230,10 +2230,10 @@ export async function gen_cadena(inc_addenda: string) {
   let rel_xml = ''
   //////////////////////////////////////////////////////////////////////////////////
   // TipoRelacion
-  await select('vi_lla1_doc')
-  //If vi_lla1_doc.tre_sat>' '   && Si hay CFDI relacionados con este CFDI
+  await select('lla1_doc')
+  //If lla1_doc.tre_sat>' '   && Si hay CFDI relacionados con este CFDI
 
-  if (vi_lla1_doc.tre_sat > ' ') {
+  if (lla1_doc.tre_sat > ' ') {
     // Si hay Tipo de relacion de CFDI relacionados con este CFDI
     m.dre_doc = ''
     let sw_dre = false
@@ -2312,10 +2312,10 @@ export async function gen_cadena(inc_addenda: string) {
         Xmltocursor(m.dre_doc, 'vi_imp_uuid_rel', 8192)
         break
       case cometdo.coa_tdo == 'A' && cometdo.tip_cfd != 'P':
-        //vi_lla1_doc.tre_sat='01'   && si es un abono que salda documentos
-        m.tdo_tdo = vi_lla1_doc.tdo_tdo
+        //lla1_doc.tre_sat='01'   && si es un abono que salda documentos
+        m.tdo_tdo = lla1_doc.tdo_tdo
         // asignamos el documento relacionado
-        m.ndo_doc = vi_lla1_doc.ndo_doc
+        m.ndo_doc = lla1_doc.ndo_doc
         let ins_sql = 'select SUM(mon_pag) as mon_pag from vi_imp_pag where tdo_tdo=?m.tdo_tdo and ndo_doc=?m.ndo_doc'
         if (await SQLExec(ins_sql)
           < 0) {
@@ -2326,7 +2326,7 @@ export async function gen_cadena(inc_addenda: string) {
 
         } // End If 
 
-        if (sqlresult.mon_pag + .045 < vi_lla1_doc.imp_doc + vi_lla1_doc.im0_doc + vi_lla1_doc.im1_doc + vi_lla1_doc.im2_doc + vi_lla1_doc.im3_doc + vi_lla1_doc.im4_doc + vi_lla1_doc.im5_doc) {
+        if (sqlresult.mon_pag + .045 < lla1_doc.imp_doc + lla1_doc.im0_doc + lla1_doc.im1_doc + lla1_doc.im2_doc + lla1_doc.im3_doc + lla1_doc.im4_doc + lla1_doc.im5_doc) {
           await MessageBox('El abono no esta totalmente asignado', 16, 'Error', 5000)
 
           return false
@@ -2343,10 +2343,10 @@ export async function gen_cadena(inc_addenda: string) {
 
         } // End If 
 
-        break        default: m.tdo_tdo = vi_lla1_doc.tdr_doc
+        break        default: m.tdo_tdo = lla1_doc.tdr_doc
         // asignamos el documento relacionado
-        m.ndo_doc = vi_lla1_doc.ndr_doc
-        await use('vi_lla1_xmlaliasvi_imp_uuid_rel', m) // use vi_lla1_xml vi_lla1_xml
+        m.ndo_doc = lla1_doc.ndr_doc
+        await use('lla1_xmlaliasvi_imp_uuid_rel', m) // use lla1_xml lla1_xml
 
     } // End case 
 
@@ -2946,7 +2946,7 @@ export async function gen_cadena(inc_addenda: string) {
 
   } // End If 
 
-  let dir_com = Public.value.dir_cfd + "\"+lTrim(str(year(vi_lla1_doc.fec_doc)))
+  let dir_com = Public.value.dir_cfd + "\"+lTrim(str(year(lla1_doc.fec_doc)))
   //IF NOT sw_cad
   //   m.cad_ori=m.cad_ori+'|"
   //endif
@@ -2957,22 +2957,22 @@ export async function gen_cadena(inc_addenda: string) {
     Mkdir(dir_com)
   } // End If 
 
-  dir_com = dir_com + '\'+Cmonth(vi_lla1_doc.fec_doc)
+  dir_com = dir_com + '\'+Cmonth(lla1_doc.fec_doc)
   if (!Directory(dir_com)) {
     // reviza si existe el mes
     Mkdir(dir_com)
   } // End If 
 
-  dir_com = dir_com + '\'+allTrim(vi_lla1_doc.cod_nom)
+  dir_com = dir_com + '\'+allTrim(lla1_doc.cod_nom)
   if (!Directory(dir_com)) {
     // reviza si existe la carpeta del cliente
     Mkdir(dir_com)
   } // End If 
 
-  let arc_cad = dir_com + '\'+allTrim(vi_lla1_doc.tdo_tdo)+lTrim(str(vi_lla1_doc.ndo_doc,8))+'.cad'
+  let arc_cad = dir_com + '\'+allTrim(lla1_doc.tdo_tdo)+lTrim(str(lla1_doc.ndo_doc,8))+'.cad'
   // nombre donde quedara la cadena original
   let num_arc = Fcreate(arc_cad, 0)
-  //    arc_cad=".\Comp_Digitales\"+Ltrim(Str(Year(vi_lla1_doc.fec_doc)))+'\'+vi_lla1_doc.tdo_tdo+Ltrim(Str(vi_lla1_doc.ndo_doc,6))+'.cad' && nombre donde quedara la cadena original
+  //    arc_cad=".\Comp_Digitales\"+Ltrim(Str(Year(lla1_doc.fec_doc)))+'\'+lla1_doc.tdo_tdo+Ltrim(Str(lla1_doc.ndo_doc,6))+'.cad' && nombre donde quedara la cadena original
   // crea el archivo de cadena original
   if (num_arc <= 0) {
     await select(are_tra)
@@ -3023,7 +3023,7 @@ export async function gen_xml(m: string | object | undefined.blo_cfd: any, detal
 
     } else {
 
-      m.cod_nom = vi_lla1_doc.cod_nom
+      m.cod_nom = lla1_doc.cod_nom
     } // End If 
 
   } else {
@@ -3031,11 +3031,11 @@ export async function gen_xml(m: string | object | undefined.blo_cfd: any, detal
     //!//
     //!//  endif
 
-    m.cod_nom = vi_lla1_doc.cod_nom
+    m.cod_nom = lla1_doc.cod_nom
     // asignamos el valores
-    if (m.con_con > 0 && await recCount('vi_lla1_con') > 0) {
+    if (m.con_con > 0 && await recCount('lla1_con') > 0) {
       try {
-        m.add_cfd = vi_lla1_con.add_cfd
+        m.add_cfd = lla1_con.add_cfd
       }
       catch (error) {
         m.add_cfd = 0
@@ -3682,10 +3682,10 @@ export async function gen_sello(timbre: string) {
     gen_tim = true
   } // End If 
 
-  m.sta_doc = vi_lla1_doc.sta_doc
-  let dir_com = Public.value.dir_cfd + "\"+lTrim(str(year(vi_lla1_doc.fec_doc)))+'\'+Cmonth(vi_lla1_doc.fec_doc)+'\'+allTrim(vi_lla1_doc.cod_nom)
-  let arc_cfd = dir_com + '\'+iif(position.Left(Public.value.nem_pge,8)=='LECHE 19' && substr(vi_lla1_doc.ref_doc,13,8)>'        ',strtran(allTrim(substr(vi_lla1_doc.ref_doc,13,12)),' ','')+'_','')+iif(m.dge_fim<='  ',allTrim(vi_lla1_doc.tdo_tdo)+right('0000000'+allTrim(str(vi_lla1_doc.ndo_doc)),8),allTrim(m.dge_fim)+right("0000000"+allTrim(str(con_des)),8))+'.xml'
-  let arc_cad = dir_com + '\'+allTrim(vi_lla1_doc.tdo_tdo)+lTrim(str(vi_lla1_doc.ndo_doc,8))+'.cad'
+  m.sta_doc = lla1_doc.sta_doc
+  let dir_com = Public.value.dir_cfd + "\"+lTrim(str(year(lla1_doc.fec_doc)))+'\'+Cmonth(lla1_doc.fec_doc)+'\'+allTrim(lla1_doc.cod_nom)
+  let arc_cfd = dir_com + '\'+iif(position.Left(Public.value.nem_pge,8)=='LECHE 19' && substr(lla1_doc.ref_doc,13,8)>'        ',strtran(allTrim(substr(lla1_doc.ref_doc,13,12)),' ','')+'_','')+iif(m.dge_fim<='  ',allTrim(lla1_doc.tdo_tdo)+right('0000000'+allTrim(str(lla1_doc.ndo_doc)),8),allTrim(m.dge_fim)+right("0000000"+allTrim(str(con_des)),8))+'.xml'
+  let arc_cad = dir_com + '\'+allTrim(lla1_doc.tdo_tdo)+lTrim(str(lla1_doc.ndo_doc,8))+'.cad'
   // nombre donde esta cadena original
 
   //!// IF SELECT('timbrado')=0
@@ -3703,9 +3703,9 @@ export async function gen_sello(timbre: string) {
   let are_tra = await select()
 
   m.cfd_xml = ''
-  if (vi_lla1_doc.sta_doc == 'I' || vi_lla1_doc.sta_doc == 'T') {
+  if (lla1_doc.sta_doc == 'I' || lla1_doc.sta_doc == 'T') {
     // si es un cfdi timbrado obtiene todos sus atributos
-    let ins_sql = [select cfd_xml from man_comexml where tdo_tdo = ']+vi_lla1_doc.tdo_tdo+[' and ndo_doc =] + allTrim(str(vi_lla1_doc.ndo_doc))
+    let ins_sql = [select cfd_xml from man_comexml where tdo_tdo = ']+lla1_doc.tdo_tdo+[' and ndo_doc =] + allTrim(str(lla1_doc.ndo_doc))
       =iif(await SQLExec(ins_sql)
       > 0, true, err_sql())
     if (await recCount() > 0) {
@@ -3760,7 +3760,7 @@ export async function gen_sello(timbre: string) {
     m.sta_doc = 'P'
   } // End If 
 
-  await select('vi_lla1_cer')
+  await select('lla1_cer')
 
   let cer_ori = allTrim(m.cer_cer)
   m.cer_cer = enc_pal(cer_ori)
@@ -3768,9 +3768,9 @@ export async function gen_sello(timbre: string) {
 
   m.cer_cer = cer_ori
   // recuperamos el valor del certificado
-  let key_cer = position.Left(des_pas(rTrim(vi_lla1_cer.ubi_cer)) + space(120), 120)
+  let key_cer = position.Left(des_pas(rTrim(lla1_cer.ubi_cer)) + space(120), 120)
   //login
-  let pas_cer = position.Left(des_pas(rTrim(vi_lla1_cer.pwd_cer)) + space(20), 20)
+  let pas_cer = position.Left(des_pas(rTrim(lla1_cer.pwd_cer)) + space(20), 20)
   //nombre
   await select(are_tra)
   //key_cer=des_pas(ubi_cer)
@@ -3789,22 +3789,22 @@ export async function gen_sello(timbre: string) {
     bin(i, 2) = position.Left(position.Left('00000000', 8 - i) + '1' + '00000000', 8)
   } // End For; 
 
-  let arc_md5 = dir_com + '\'+allTrim(vi_lla1_doc.tdo_tdo)+lTrim(str(vi_lla1_doc.ndo_doc,8))+'.md5'
+  let arc_md5 = dir_com + '\'+allTrim(lla1_doc.tdo_tdo)+lTrim(str(lla1_doc.ndo_doc,8))+'.md5'
   // aumentamos la carpeta del cliente
-  //dir_com=m.dir_cfd+"\"+Ltrim(Str(Year(vi_lla1_doc.fec_doc)))+'\'+CMONTH(vi_lla1_doc.fec_doc)+'\'+ALLTRIM(vi_lla1_doc.cod_nom)
-  //arc_cfd=dir_com+'\'+IIF(LEFT(m.nem_pge,8)='LECHE 19' and substr(vi_lla1_doc.ref_doc,13,8)>'        ' ,ALLTRIM(substr(vi_lla1_doc.ref_doc,13,8))+'_','')+
-  //IIF(m.dge_fim<='  ',vi_lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(vi_lla1_doc.ndo_doc)),8),
+  //dir_com=m.dir_cfd+"\"+Ltrim(Str(Year(lla1_doc.fec_doc)))+'\'+CMONTH(lla1_doc.fec_doc)+'\'+ALLTRIM(lla1_doc.cod_nom)
+  //arc_cfd=dir_com+'\'+IIF(LEFT(m.nem_pge,8)='LECHE 19' and substr(lla1_doc.ref_doc,13,8)>'        ' ,ALLTRIM(substr(lla1_doc.ref_doc,13,8))+'_','')+
+  //IIF(m.dge_fim<='  ',lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(lla1_doc.ndo_doc)),8),
   //ALLTRIM(m.dge_fim)+RIGHT("0000000"+alLtrim(Str(con_des)),8))+'.xml'
   // generas archivo con la cadena original
   //arc_cad=Sys(2023)+'\'+SUBSTR(SYS(2015), 3)+'.TMP'
   // nombre donde quedo la cadena original
-  // arc_cad=dir_com+'\'+Alltrim(vi_lla1_doc.tdo_tdo)+Ltrim(Str(vi_lla1_doc.ndo_doc,6))+'.cad' && nombre donde quedara la cadena original
+  // arc_cad=dir_com+'\'+Alltrim(lla1_doc.tdo_tdo)+Ltrim(Str(lla1_doc.ndo_doc,6))+'.cad' && nombre donde quedara la cadena original
   // nombre donde quedara el conprobante fiscal digital extendible
-  //// arc_cfd=dir_com+'\'+IIF(m.dge_fim<='  ',vi_lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(vi_lla1_doc.ndo_doc)),8),
+  //// arc_cfd=dir_com+'\'+IIF(m.dge_fim<='  ',lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(lla1_doc.ndo_doc)),8),
   //// ALLTRIM(m.dge_fim)+RIGHT("0000000"+alLtrim(Str(con_des)),8))+'.xml'
   // 16/Mar/2012 Se aumenta posicion 13 en delante de la referencia en el nombre del xml a generar
-  // arc_cfd=dir_com+'\'+IIF(LEFT(m.nem_pge,8)='LECHE 19' and substr(vi_lla1_doc.ref_doc,13,8)>'        ' ,ALLTRIM(substr(vi_lla1_doc.ref_doc,13,8))+'_','')+
-  //IIF(m.dge_fim<='  ',vi_lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(vi_lla1_doc.ndo_doc)),8),
+  // arc_cfd=dir_com+'\'+IIF(LEFT(m.nem_pge,8)='LECHE 19' and substr(lla1_doc.ref_doc,13,8)>'        ' ,ALLTRIM(substr(lla1_doc.ref_doc,13,8))+'_','')+
+  //IIF(m.dge_fim<='  ',lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(lla1_doc.ndo_doc)),8),
   //ALLTRIM(m.dge_fim)+RIGHT("0000000"+alLtrim(Str(con_des)),8))+'.xml'
   // arc_md5=Sys(2023)+'\'+SUBSTR(SYS(2015), 3)+'.TMP'
   // archivo encriptado con MD5
@@ -3812,7 +3812,7 @@ export async function gen_sello(timbre: string) {
   // llave privada
   let fir_dig = Sys(2023) + '\'+substr(Sys(2015),3)
   // fima digital
-  let sello_dig = dir_com + '\'+allTrim(vi_lla1_doc.tdo_tdo)+lTrim(str(vi_lla1_doc.ndo_doc,8))+'.b64'
+  let sello_dig = dir_com + '\'+allTrim(lla1_doc.tdo_tdo)+lTrim(str(lla1_doc.ndo_doc,8))+'.b64'
   // archivo donde quedara el sello digital
   // nombre donde quedara la firma
   ins_dos = 'openssl\bin\openssl pkcs8 -passin pass:' + pas_cer + ' -inform DER -in ' + key_cer + ' ' + ' -out ' + lla_pem
@@ -3906,8 +3906,8 @@ export async function gen_sello(timbre: string) {
   ins_dos = 'Delete File ' + arc_cad
     & ins_dos
   if (m.dge_fim <= '  ') {
-    m.tdo_tdo = vi_lla1_doc.tdo_tdo
-    m.ndo_doc = vi_lla1_doc.ndo_doc
+    m.tdo_tdo = lla1_doc.tdo_tdo
+    m.ndo_doc = lla1_doc.ndo_doc
   } else {
 
     m.tdo_tdo = m.dge_fim
@@ -4024,7 +4024,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
 
   if (at('CFDI', upper(arc_cfd)) == 0) {
     // no se ha asignado el cfd a cfdi
-    let tipo_doc = iif(m.dge_fim <= '  ', vi_lla1_doc.tdo_tdo, allTrim(m.dge_fim))
+    let tipo_doc = iif(m.dge_fim <= '  ', lla1_doc.tdo_tdo, allTrim(m.dge_fim))
     let arc_cfdi = position.Left(arc_cfd, rat(allTrim(tipo_doc), arc_cfd) - 1) + right(arc_cfd, len(arc_cfd) - rat(allTrim(tipo_doc), arc_cfd) + 1)
     //11/01/2017
     // arc_cfdi=Left(arc_cfd,Rat(Alltrim(tipo_doc),arc_cfd)-1)+'CFDI'+Right(arc_cfd,Len(arc_cfd)-Rat(Alltrim(tipo_doc),arc_cfd)+1)
@@ -4034,7 +4034,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
     arc_cfdi = arc_cfd
   } // End If 
 
-  let ins_sql = [select cfd_xml, UUID, sta_doc  from man_comexml where tdo_tdo = ']+vi_lla1_doc.tdo_tdo+[' and ndo_doc =] + allTrim(str(vi_lla1_doc.ndo_doc))
+  let ins_sql = [select cfd_xml, UUID, sta_doc  from man_comexml where tdo_tdo = ']+lla1_doc.tdo_tdo+[' and ndo_doc =] + allTrim(str(lla1_doc.ndo_doc))
   // busca si ya esta timbrado
   if (await SQLExec(ins_sql, 'sqlresult')
     < 0) {
@@ -4045,7 +4045,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
   } // End If 
 
   let sw_tim = false
-  if (vi_lla1_doc.sta_doc == 'T') {
+  if (lla1_doc.sta_doc == 'T') {
     if (await recCount('sqlresult') > 0) {
       // tiene cfdi en xml
       await select('sqlresult')
@@ -4072,18 +4072,18 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
         cad_tfd = '||' + No_version + '|' + UUID + '|' + FechaTimbrado + '|' + RfcProvCertif + '|' + selloCFD + '|' + noCertificadoSat + '||'
       } // End If 
 
-      if (vi_lla1_doc.sta_doc != 'T') {
+      if (lla1_doc.sta_doc != 'T') {
         // Inicio replace VFP
         const Recno = await recNo()
         const Alias = await alias()
-        await localAlaSql(`update ${Alias} set vi_lla1_doc.sta_doc=?  where recno=${Recno} `, ['T'])
+        await localAlaSql(`update ${Alias} set lla1_doc.sta_doc=?  where recno=${Recno} `, ['T'])
 
       } // End If 
 
       m.sta_doc = 'T'
     } else {
 
-      if (vi_lla1_doc.sta_doc == 'T') {
+      if (lla1_doc.sta_doc == 'T') {
         if (await MessageBox('Posiblemente el CFDI ya se timbró, pero el sistema no recibió su XML correspondiente. Si quiere tratar de timbrarlo otra ves?', 4 + 32)
           != 6) {
           await select(are_tra)
@@ -4121,7 +4121,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
 
       let rfc_emi = Public.value.rfc_pge
       // genera codigo de barras bidimencional
-      let rfc_rec = vi_lla1_nom.rfc_nom
+      let rfc_rec = lla1_nom.rfc_nom
       if (await select('vi_car_por')
         > 0 && await recCount('vi_car_por') > 0) {
         let numReg = await recNo()
@@ -4152,7 +4152,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
         gen_cod_bid_cp(vi_car_por.idccp, ffsVia)
       } else {
 
-        gen_cod_bid(rfc_emi, rfc_rec, vi_lla1_doc.imp_doc + vi_lla1_doc.im1_doc + vi_lla1_doc.im2_doc + vi_lla1_doc.im3_doc + iif(Public.value.sw_imp, vi_lla1_doc.im4_doc + vi_lla1_doc.im5_doc, 0), UUID)
+        gen_cod_bid(rfc_emi, rfc_rec, lla1_doc.imp_doc + lla1_doc.im1_doc + lla1_doc.im2_doc + lla1_doc.im3_doc + iif(Public.value.sw_imp, lla1_doc.im4_doc + lla1_doc.im5_doc, 0), UUID)
       } // End If 
 
       // Set Safety On 
@@ -4209,7 +4209,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
     // anterior <>
 
     tot_pagado(1) = Nvl(tot_pagado(1), 0)
-    if (Round(tot_pagado(1), 2) + 0.99 < Round(vi_lla1_doc.imp_doc + vi_lla1_doc.im0_doc + vi_lla1_doc.im1_doc + vi_lla1_doc.im2_doc + vi_lla1_doc.im3_doc + vi_lla1_doc.im4_doc + vi_lla1_doc.im5_doc, 2)) {
+    if (Round(tot_pagado(1), 2) + 0.99 < Round(lla1_doc.imp_doc + lla1_doc.im0_doc + lla1_doc.im1_doc + lla1_doc.im2_doc + lla1_doc.im3_doc + lla1_doc.im4_doc + lla1_doc.im5_doc, 2)) {
       await MessageBox('No se puede timbrar porque no esta totalmente asignado el importe del pago con los documentos pagados', 16, 'Error', 5000)
 
       await select(are_tra)
@@ -4228,10 +4228,10 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
   Zap
   m.cfd_xml = ''
   let ARC_XML = Filetostr(arc_cfd)
-  // dir_com=m.dir_cfd+"\"+Ltrim(Str(Year(vi_lla1_doc.fec_doc)))
-  // dir_com=dir_com+'\'+CMONTH(vi_lla1_doc.fec_doc)+'\'+ALLTRIM(vi_lla1_doc.cod_nom)  && se aumenta la carpeta del cliente
+  // dir_com=m.dir_cfd+"\"+Ltrim(Str(Year(lla1_doc.fec_doc)))
+  // dir_com=dir_com+'\'+CMONTH(lla1_doc.fec_doc)+'\'+ALLTRIM(lla1_doc.cod_nom)  && se aumenta la carpeta del cliente
   // obtenemos el archivo original xml
-  // arc_cfd=dir_com+'\'+IIF(m.dge_fim<='  ',vi_lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(vi_lla1_doc.ndo_doc)),8),
+  // arc_cfd=dir_com+'\'+IIF(m.dge_fim<='  ',lla1_doc.tdo_tdo+RIGHT('0000000'+alLtrim(Str(lla1_doc.ndo_doc)),8),
   //ALLTRIM(m.dge_fim)+RIGHT("0000000"+alLtrim(Str(con_des)),8))+'.xml'
   // leemos archivo xml antes de timbrar
   pos = at('>', ARC_XML)
@@ -4284,7 +4284,7 @@ export async function gen_cfdi(emp_tim: any, usu_tim: any, pas_tim: any, web_tim
     ARC_XML = strtran(ARC_XML, '  ', ' ')
   } // End while 
 
-  await select('vi_lla1_doc')
+  await select('lla1_doc')
   // Marcamos como timbrado el documento
 
   m = appendM(m, await scatter(m))// scatter 
@@ -4342,7 +4342,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
 
     releaseUse() // use 
 
-    await select('vi_lla1_doc')
+    await select('lla1_doc')
 
     await requery()
 
@@ -4354,7 +4354,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
 
   releaseUse() // use 
 
-  await select('vi_lla1_doc')
+  await select('lla1_doc')
   ////////////////////////////////////////////////////////////////////// 16/Jun/2022 //////////////////////////////
   //If SQLExec(num_dbs,ins_ver_sql,'resultado')<0  && si hay error al grabar
   // =err_sql()
@@ -4372,7 +4372,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
   //&
   const Recno = await recNo()
   const Alias = await alias()
-  await localAlaSql(`update ${Alias} set vi_lla1_doc.sta_doc=?  where recno=${Recno} `, ['X'])
+  await localAlaSql(`update ${Alias} set lla1_doc.sta_doc=?  where recno=${Recno} `, ['X'])
 
     =gra_reg()
   let a = ins_sql
@@ -4417,9 +4417,9 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
       < 0, err_sql(), '')
     } // End If 
 
-    m.tdo_tdo = vi_lla1_doc.tdo_tdo
+    m.tdo_tdo = lla1_doc.tdo_tdo
     //////////////////////////////////////////
-    m.ndo_doc = vi_lla1_doc.ndo_doc
+    m.ndo_doc = lla1_doc.ndo_doc
     m.sta_doc = 'T'
     if (inc_ade == false && len(allTrim(m.enc_add)) > 2) {
       // no esta incluida la addenda
@@ -4459,7 +4459,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
 
     } else {
 
-      let res = await localAlaSql("INSERT INTO doc_timbrados select tdo_tdo , ndo_doc From vi_lla1_doc")
+      let res = await localAlaSql("INSERT INTO doc_timbrados select tdo_tdo , ndo_doc From lla1_doc")
 
     } // End If 
 
@@ -4488,7 +4488,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
 
     releaseUse() // use 
 
-    await select('vi_lla1_doc')
+    await select('lla1_doc')
 
 
     //!//  If m.ndb_emp=4    && postgres
@@ -4547,7 +4547,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
 
     rfc_emi = Public.value.rfc_pge
     // genera codigo de barras bidimencional
-    rfc_rec = vi_lla1_nom.rfc_nom
+    rfc_rec = lla1_nom.rfc_nom
     if (await select('vi_car_por')
       > 0 && await recCount('vi_car_por') > 0) {
       numReg = await recNo()
@@ -4578,7 +4578,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
       gen_cod_bid_cp(vi_car_por.idccp, ffsVia)
     } else {
 
-      gen_cod_bid(rfc_emi, rfc_rec, vi_lla1_doc.imp_doc + vi_lla1_doc.im1_doc + vi_lla1_doc.im2_doc + vi_lla1_doc.im3_doc + iif(Public.value.sw_imp, vi_lla1_doc.im4_doc + vi_lla1_doc.im5_doc, 0), UUID)
+      gen_cod_bid(rfc_emi, rfc_rec, lla1_doc.imp_doc + lla1_doc.im1_doc + lla1_doc.im2_doc + lla1_doc.im3_doc + iif(Public.value.sw_imp, lla1_doc.im4_doc + lla1_doc.im5_doc, 0), UUID)
     } // End If 
 
   } else {
@@ -4593,13 +4593,13 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
 
     await MessageBox('El servicio de timbrado termino sin resultado ', 16)
 
-    let nom_tim = dir_com + '\timb' + iif(m.dge_fim <= '  ', allTrim(vi_lla1_doc.tdo_tdo) + right('0000000' + allTrim(str(vi_lla1_doc.ndo_doc)), 8), allTrim(m.dge_fim) + right("0000000" + allTrim(str(con_des)), 8)) + '.xml'
-    await select('vi_lla1_doc')
+    let nom_tim = dir_com + '\timb' + iif(m.dge_fim <= '  ', allTrim(lla1_doc.tdo_tdo) + right('0000000' + allTrim(str(lla1_doc.ndo_doc)), 8), allTrim(m.dge_fim) + right("0000000" + allTrim(str(con_des)), 8)) + '.xml'
+    await select('lla1_doc')
 
     await requery()
 
 
-    //IF vi_lla1_doc.sta_doc<>'T'
+    //IF lla1_doc.sta_doc<>'T'
     if (File(nom_tim)) {
       // si hay error de timbrado lo ponemos en proceso
       // Inicio replace VFP
@@ -4626,7 +4626,7 @@ from man_comedoc  where tdo_tdo='${m.tdo_tdo}' AND ndo_doc=${ALLTRIM(STR(m.ndo_d
   // Set Safety On 
 
   arc_cfd = arc_cfdi
-  await select('vi_lla1_doc')
+  await select('lla1_doc')
   //Select (are_tra)                   && seleccionamos el area de trabajo actual
   // actualizamos sus datos ya timbrados
 
@@ -5857,7 +5857,7 @@ export async function gen_ind(nom_arc: string, dir_arc: string, ini_arc: any, in
 
       if (Public.value.ndb_emp == 3) {
         // Si es Sybase
-        let ins_fox = 'use vi_lla1_' + right(nom_arc, 3) + ' alias estructura nodata'
+        let ins_fox = 'use lla1_' + right(nom_arc, 3) + ' alias estructura nodata'
           & ins_fox
       } else {
 
@@ -7555,7 +7555,7 @@ export async function gen_vis(nom_arc: string, ini_arc: any) {
               DBSetProp(nom_cam, 'Field', 'DefaultValue', rTrim(m.val_dat))
             } // End If 
             if (m.tip_dat == 'D') {
-              if (upper(nom_cam) == 'VI_LLA1_DOC.FEL_DOC' || upper(nom_cam) == 'VI_LLA1_VIA.FEC_VIA' || upper(nom_cam) == 'VI_LLA1_VIA.FLL_VIA') {
+              if (upper(nom_cam) == 'lla1_DOC.FEL_DOC' || upper(nom_cam) == 'lla1_VIA.FEC_VIA' || upper(nom_cam) == 'lla1_VIA.FLL_VIA') {
                 // si el tipo de datos es asignamos a date en la vista
                 DBSetProp(nom_cam, 'Field', 'DataType', 'T')
               } else {
@@ -7981,12 +7981,12 @@ export async function obt_fam(m: Record<string, never> | undefined.num_fam: numb
 
   m.cla_fam = substr(m.cla_isu, Public.value.pri_cla, Public.value.ult_cla - Public.value.pri_cla)
   // obtiene la familia
-  await select('vi_lla1_fam')
+  await select('lla1_fam')
   // utilizamos la vista de captura de familia para
 
   m.des_fam = ' '
   // traernos el datos
-  await use('vi_lla1_fam', m) // use vi_lla1_fam vi_lla1_fam
+  await use('lla1_fam', m) // use lla1_fam lla1_fam
 
   if (await recNo() > 0) {
     m.des_fam = des_fam
@@ -8473,7 +8473,7 @@ export async function des_pas(pal_enc: string | Promise<string>) {
 
 export async function F_obt_uuid_rel() {
   let m = {}   // inicializamos m
-  if (!vi_lla1_doc.tre_sat > '  ') {
+  if (!lla1_doc.tre_sat > '  ') {
     // si no hay relacion
     return ''
 
@@ -8483,8 +8483,8 @@ export async function F_obt_uuid_rel() {
 
   if (cometdo.tip_cfd == 'T') {
     if (tdr_doc > '  ' && ndr_doc > 0) {
-      m.tdo_tdo = vi_lla1_doc.tdo_tdo
-      m.ndo_doc = vi_lla1_doc.ndo_doc
+      m.tdo_tdo = lla1_doc.tdo_tdo
+      m.ndo_doc = lla1_doc.ndo_doc
       let ins_sql = 'select * from vi_imp_uuid_rel where tdo_tdo=?m.tdo_tdo and ndo_doc=?m.ndo_doc'
       if (await SQLExec(ins_sql, 'vi_imp_uuid_rel')
         < 0) {
@@ -8583,9 +8583,9 @@ export async function F_obt_uuid_rel() {
       break
     case cometdo.coa_tdo == 'A':
       // si es una pago que salda documentos
-      m.tdo_tdo = vi_lla1_doc.tdo_tdo
+      m.tdo_tdo = lla1_doc.tdo_tdo
       // asignamos el documento relacionado
-      m.ndo_doc = vi_lla1_doc.ndo_doc
+      m.ndo_doc = lla1_doc.ndo_doc
       ins_sql = 'select UUID_FAC as UUID,tia_pag as tdo_tdo,nua_pag as ndo_doc from vi_imp_pag where tdo_tdo=?m.tdo_tdo and ndo_doc=?m.ndo_doc'
       if (await SQLExec(ins_sql, 'vi_imp_uuid_rel')
         < 0) {
@@ -8599,9 +8599,9 @@ export async function F_obt_uuid_rel() {
 
       } // End If 
 
-      break      default: m.tdo_tdo = vi_lla1_doc.tdr_doc
+      break      default: m.tdo_tdo = lla1_doc.tdr_doc
       // asignamos el documento relacionado
-      m.ndo_doc = vi_lla1_doc.ndr_doc
+      m.ndo_doc = lla1_doc.ndr_doc
       ins_sql = 'select UUID_FAC as UUID,tia_pag as tdo_tdo,nua_pag as ndo_doc from vi_imp_pag where tdo_tdo=?m.tdo_tdo and ndo_doc=?m.ndo_doc'
       if (await SQLExec(ins_sql, 'vi_imp_uuid_rel')
         < 0) {
@@ -8650,8 +8650,8 @@ export async function F_obt_uuid_rel() {
 //!//  Create Cursor vi_imp_uuid_rel (tdo_tdo c(3),ndo_doc Int,fec_doc Date,tot_doc Currency,UUID c(36),ref_doc c(80))
 //!//  Xmltocursor(m.dre_doc,'vi_imp_uuid_rel',8192)
 //!// Case cometdo.coa_tdo='A'   && si es una pago que salda documentos
-//!//  m.tdo_tdo=vi_lla1_doc.tdo_tdo   && asignamos el documento relacionado
-//!//  m.ndo_doc=vi_lla1_doc.ndo_doc
+//!//  m.tdo_tdo=lla1_doc.tdo_tdo   && asignamos el documento relacionado
+//!//  m.ndo_doc=lla1_doc.ndo_doc
 //!//  ins_sql='select UUID_FAC as UUID,tia_pag as tdo_tdo,nua_pag as ndo_doc from vi_imp_pag where tdo_tdo=?m.tdo_tdo and ndo_doc=?m.ndo_doc'
 //!//  If SQLExec(num_dbs,ins_sql,'vi_imp_uuid_rel')<0
 //!//   a=ins_sql
@@ -8661,8 +8661,8 @@ export async function F_obt_uuid_rel() {
 //!//   Return .F.
 //!//  Endif
 //!// Otherwise
-//!//  m.tdo_tdo=vi_lla1_doc.tdr_doc   && asignamos el documento relacionado
-//!//  m.ndo_doc=vi_lla1_doc.ndr_doc
+//!//  m.tdo_tdo=lla1_doc.tdr_doc   && asignamos el documento relacionado
+//!//  m.ndo_doc=lla1_doc.ndr_doc
 //!//  ins_sql='select UUID_FAC as UUID,tia_pag as tdo_tdo,nua_pag as ndo_doc from vi_imp_pag where tdo_tdo=?m.tdo_tdo and ndo_doc=?m.ndo_doc'
 //!//  If SQLExec(num_dbs,ins_sql,'vi_imp_uuid_rel')<0
 //!//   a=ins_sql

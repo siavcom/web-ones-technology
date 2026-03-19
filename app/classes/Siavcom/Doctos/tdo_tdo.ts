@@ -75,6 +75,10 @@ export class tdo_tdo extends CAPTURECOMPONENT {
         } else {
             // Otros formularios
             this.Form.sw_aut = false
+
+            if (this.Form.captura_movi)
+                this.Form.captura_movi.prop.RecordSource = ''
+
             // apagamos switch de autorizado
             //inicializamos datos
 

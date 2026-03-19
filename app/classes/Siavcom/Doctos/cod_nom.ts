@@ -88,7 +88,7 @@ export class cod_nom extends CAPTURECOMPONENT {
         if (this.prop.Value.trim().length === 0)
             return false
 
-
+        const cometdo = await currentValue('*', 'cometdo')
 
         const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
 
@@ -106,16 +106,35 @@ export class cod_nom extends CAPTURECOMPONENT {
             if (vi_cap_comenom.length == 0 || vi_cap_comenom == null) // No existe el codigo
                 return false
 
+            if ((cometdo.cop_nom == 'C' && cometdo.coa_tdo == 'C') && (vi_cap_comenom.sta_nom == 'B' || vi_cap_comenom.ecc_nom == 'B')) {
+                // cliente bloqueado
+                let men_blo = 'Cliente bloqueado, ' + String.fromCharCode(13)
+                if (vi_cap_comenom.dst_nom.trim().length > 0) {
+                    men_blo = men_blo + vi_cap_comenom.dst_nom + String.fromCharCode(13)
+                } // End If 
+
+                if (vi_cap_comenom.ecc_nom == 'B') {
+                    men_blo = men_blo + 'Revise estado de cuenta de este cliente'
+                } // End If 
+
+                this.Form.MessageBox(men_blo)
+                this.prop.Valid = false
+                return false
+
+            } // End If 
+
+
+
             // actualiza el tipo de cliente en comedoc
             await updateCampo(vi_cap_comenom.tip_tdn, 'vi_cap_comedoc.tip_tdn', vi_cap_comedoc.recno)
 
             await this.lee_tdn() // lee tipo de cliente
-/*
-{
-                cop_nom: vi_cap_comenom.cop_nom,
-                tip_tdn: vi_cap_comenom.tip_tdn
-            }
-  */          const cometdo = await goto(0, 'cometdo')
+            /*
+            {
+                            cop_nom: vi_cap_comenom.cop_nom,
+                            tip_tdn: vi_cap_comenom.tip_tdn
+                        }
+              */
             this.d_nom_nom.prop.Value = vi_cap_comenom.nom_nom
             // asignamos fecha de vencimiento del documento
 

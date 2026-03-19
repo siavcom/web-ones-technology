@@ -40,7 +40,7 @@ export class bt_changePassword extends IMGBUTTON {
 
 
 
-    if (this.Form.dialect == 'mssql') {
+    if (Public.value.dialect == 'mssql') {
       const data = await SQLExec("select 1 as existe from master.dbo.syslogins where name ='" + this.Form.log_usr.prop.Value.trim() + "'")
 
       if (data.length == 0 || data[0].existe == 0) { // No existe la sesión

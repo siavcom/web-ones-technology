@@ -28,7 +28,7 @@ export class usu_doc extends COMPONENT {
   public override async init(): Promise<void> {
     let user = "sa";
 
-    if (this.Form.dialect == "postgres") user = "lower(current_user)";
+    if (Public.value.dialect == "postgres") user = "lower(current_user)";
     console.log('user', user)
     const data = await SQLExec(` SELECT log_usu as cve_usu,CAST(key_pri as char(4)) as num_usur FROM man_comeusu 
       union select ' TODOS' as cve_usu,'??' as num_usur `, 'loc_comeusu')
