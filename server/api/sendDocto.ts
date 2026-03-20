@@ -138,7 +138,7 @@ export default defineWebSocketHandler({
 
     },
     message(wsPeer, message) {
-        // console.log('SendDocto message on WebSocket=', message.transport, message.job)
+        console.log('SendDocto message on WebSocket=', message.transport, message.job)
         processMessage(wsPeer, message)
     },
 })
@@ -181,7 +181,7 @@ function genRandStr(length: number) {
 ////////////////////////////////////////////////////////////////////////
 // Procesa los mensajes recibidos por el websocket
 ////////////////////////////////////////////////////////////////////////
-async function processMessage(wsPeer: {}, JSONmessage: string) {
+async function processMessage(wsPeer_old: {}, JSONmessage: string) {
 
     const message = JSON.parse(JSONmessage)
     console.log('1) SendDocto processMessage transport =', message.transport)
@@ -213,9 +213,9 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
 
                 if (!WhatsAppInit) {
                     console.log('WhatsApp Not initialized - res=', res);
-                    wsPeer.send({
+                    webSocketPeer.send({
                         result: 'NoReady',
-
+                        message: 'WhatsApp Not initialized'
                     })
 
                     return
@@ -224,7 +224,7 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
                 console.log('WhatsApp initialized res=', res);
 
                 //  wsPeer.send(JSON.stringify({ result: 'Ready' }))
-                wsPeer.send({
+                webSocketPeer.send({
                     result: 'Ready',
                     data: whatsAppReady
                 })
@@ -234,7 +234,7 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
                     console.log('res =====>QR Code:', QrCode);
 
                     //webSocketPeer.send(JSON.stringify({
-                    wsPeer.send({
+                    webSocketPeer.send({
                         result: 'QrCode',
                         data: QrCode
                     })
@@ -378,14 +378,37 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
         const text = message.text
         const attachments = message.attachments
         console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        const mailServerKey = `mail:${nombreEmpresa}`
+
+        const con_id = 'sql:' + message.id_con
+        const id_con = await useStorage().getItem(con_id);
+        if (id_con == null) {
+            webSocketPeer.send({
+                result: 'mailError',
+                message: '1- No se encontro el definido del servidor de correo'
+            });
+            return
+        }
+
+
+        console.log('2) sendDocto SendMail====>>> id_con=', id_con)
+        const mailServerKey = `mail:${id_con.nom_emp}`
+        if (!mailServerKey) {
+            webSocketPeer.send({
+                result: 'mailError',
+                message: '2- No se encontro el definido del servidor de correo'
+            });
+            return
+        }
+
+
         //const mailServer = await useStorage().getItem('mail:Server');
         const mailServer = await useStorage().getItem(mailServerKey);
+
         console.log('2) sendDocto SendMail====>>> mailServer=', mailServer)
         if (!mailServer) {
             webSocketPeer.send({
                 result: 'mailError',
-                data: 'No se encontro el definido del servidor de correo'
+                message: '3-No se encontro el definido del servidor de correo'
             });
             console.log('2) Error sendDocto SendMail====>>> mailServer=', mailServer)
             return
@@ -453,31 +476,39 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
         if (mailServer && mailServer['from'])
             delete mailServer['from']
 
-        const transporter = nodemailer.createTransport(mailServer)
-        await transporter.verify();
-        console.log("Server is ready to take our messages");
-        console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
-        const mailOptions = {
-            from: `${fromMail}`, // sender address
-            to: `${to}`, // list of receivers
-            subject: `${subject}`, // Subject line
-            text: `${text}`, // plain text body
-            //  html: "<b>Hello world?</b>", // HTML version of the message
-            attachments: fileAttachments,
-            /*
-            headers: {
-                'List-Unsubscribe': '<mailto:unsubscribe@gova.com.mx>',
-                'X-Entity-Ref-ID': Date.now().toString()
-            }
-            */
-        }
-
 
 
         //   (async () => {
 
         try { // send mail with defined transport object
+
+            const transporter = nodemailer.createTransport(mailServer)
+            await transporter.verify().catch((err) => {
+                console.error("Error while verifying transporter", err);
+                webSocketPeer.send({
+                    result: 'mailError',
+                    message: err
+                });
+                throw err;
+            })
+            console.log("Server is ready to take our messages");
+            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
+            const mailOptions = {
+                from: `${fromMail}`, // sender address
+                to: `${to}`, // list of receivers
+                subject: `${subject}`, // Subject line
+                text: `${text}`, // plain text body
+                //  html: "<b>Hello world?</b>", // HTML version of the message
+                attachments: fileAttachments,
+                /*
+                headers: {
+                    'List-Unsubscribe': '<mailto:unsubscribe@gova.com.mx>',
+                    'X-Entity-Ref-ID': Date.now().toString()
+                }
+                */
+            }
+
             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
             console.log("Sending mail mailOptions:", mailOptions.to);
             const info = await transporter.sendMail(mailOptions);
@@ -492,10 +523,13 @@ async function processMessage(wsPeer: {}, JSONmessage: string) {
             console.log('finally :', info)
 
         } catch (err) {
-            console.error("Error while sending mail", err);
+            console.error("4- Error while sending mail err=", err);
+
+            //console.error("4- Error while sending mail", err);
+
             webSocketPeer.send({
                 result: 'mailError',
-                data: err
+                message: err
             });
 
         } finally {

@@ -168,12 +168,13 @@ export default defineEventHandler(async (event) => {
   //const path = '/sistemas/web-ones/public'
   const body = await readBody(event)
   const call = body.call  // obtiene el tipo de llamada
-
+  let con_id = ''
   if (body.user)
     user = body.user
 
   if (body.id_con) {
     id_con = body.id_con
+    con_id = 'sql:' + id_con
     const currentTime = new Date()
 
     // Borramos id_conexion con mas de un dia sin uso
@@ -184,13 +185,16 @@ export default defineEventHandler(async (event) => {
         delete connections[idCon]
         //connections.splice(1, 0, idCon);
         delete sqlPool[idCon]
+        await useStorage().removeItem(con_id)
 
+        //.deleteItem(con_id)
       }
     }
 
-    if (connections[id_con])
+    if (connections[id_con]) { // aactualiza la conexion 
       connections[id_con].time = currentTime
-
+      await useStorage().setItem(con_id, connections[id_con])
+    }
   }
 
 
@@ -247,6 +251,9 @@ export default defineEventHandler(async (event) => {
           console.log('1)  callServer >>>>>>>>>>   server key=' + mailServerKey, await useStorage().getItem(mailServerKey));
 
           await useStorage().setItem(mailServerKey, mailServer)
+
+
+
           //await useStorage().setItem('mail:Server', mailServer)
           //        console.log('2)  >>>>>>>>>>serverConfig=', await useStorage().getItem('mail:Server'))
 
@@ -265,7 +272,13 @@ export default defineEventHandler(async (event) => {
             sqlPool[id_con] = await postgres(sqlConfig)
           }
 
-          connections[id_con] = { time: new Date(), dialect: sqlConfig.dialect }
+          connections[id_con] = {
+            time: new Date(),
+            dialect: sqlConfig.dialect,
+            nom_emp: nombreEmpresa
+          }
+          await useStorage().setItem(con_id, connections[id_con]) // guardamos la conexion
+
           console.log('1)  >>>>>>>>>>iniEmp leeEmp sqlConfig poolConnections=', connections)
 
           //console.log('Test1====', await SqlExec(" select top 10 nom_doi from man_comedoi where cla_isu='LOGO' ", user))

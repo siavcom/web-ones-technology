@@ -83,7 +83,7 @@ export class tdo_tdo extends CAPTURECOMPONENT {
             //inicializamos datos
 
             // thisform.observaciones.enabled=.f.
-            this.Form.dre_doc.prop.Visible = false
+            this.Form.Bt_dre_doc.prop.Visible = false
             // thisform.impuestos.enabled=.f.
             this.Form.carta_porte.prop.Visible = false
             const cometdo = await currentValue('*', 'cometdo')

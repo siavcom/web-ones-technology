@@ -22,9 +22,18 @@ export class suc_pge extends CAPTURECOMPONENT {
         this.prop.ColumnWidths = "150px,25px";
         this.prop.ControlSource = "vi_cap_comedoc.suc_pge";
         this.prop.RowSource = "vi_cap_comeunn.des_unn,unn_unn";
-        this.prop.RowSourceType = 2;
+
         //propiedades
     }
+
+    override async init() {
+
+        await SQLExec(`select des_unn,unn_unn from vi_cap_comeunn  UNION select 'TODAS' as des_unn,'   ' as unn_unn  order by des_unn `, 'vi_cap_comeunn')
+        this.prop.RowSourceType = 2;
+
+    }
+
+
 
     override async when() {
         return await this.Form.rev_per(this.prop.Name)

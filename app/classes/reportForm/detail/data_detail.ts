@@ -9,7 +9,7 @@
 
 /////////////////// Server WebSocket /////////////////////
 
-const { status, data, send, open, close } = useWebSocket(`ws://${location.host}/api/sendDocto`, {
+const { status, data: wsData, send, open, close } = useWebSocket(`ws://${location.host}/api/sendDocto`, {
   autoReconnect: {
     retries: 3,
     delay: 1000,
@@ -63,15 +63,16 @@ export class data_detail extends CONTAINER {
   });
 
   ///////////////// whatch Server WebSocket /////////////////////
-  private unWatch = watch(data, (newData) => {
+  unWatch = watch(wsData, (newData) => {
 
-    // console.log('watch NewData=>>>>>', newData)
+    console.log('=============== watch NewData=>>>>>', newData)
 
     if (!newData) return;
 
     const data = JSON.parse(newData)
     //const data = newData
     const result = data.result
+    const message = data.message ? data.message : ''
 
     //console.log('watch result=', result, ' data=', data)
 
@@ -79,7 +80,7 @@ export class data_detail extends CONTAINER {
 
       case result == 'NoReady':
         whatsappReady.value = false
-        //   console.log('1) WhatsApp Not Ready=', data.data)
+        console.log('1) WhatsApp error:', message)
         //   const router = useRouter();
         //   router.push('/WhatsApp/Pro/Vincular');
         return;
@@ -125,7 +126,7 @@ export class data_detail extends CONTAINER {
         return
         break
       case result == 'mailError':
-        MessageBox(data.data, 16, "Mail sent Error ");
+        MessageBox(message, 16, "Mail sent Error ");
         return
         break
       case result == 'whatsAppError':
@@ -139,7 +140,7 @@ export class data_detail extends CONTAINER {
 
     }
 
-  })
+  }, { deep: true })
 
   public displayQr = new DISPLAYQR()
   public phone = new PHONE()
@@ -379,20 +380,26 @@ export class data_detail extends CONTAINER {
         }
       }
       */
+
+      const session = Session()
+      const { id_con } = storeToRefs(session)
+
+
       message = {
-        nom_emp: nom_emp.value,
+        id_con: id_con.value,
+        //  nom_emp: nom_emp.value,
         transport: 'mail',
         //  from: mailFrom,
         to: this.Form.data_detail.email.prop.Value,
         subject: this.Form.data_detail.subject.prop.Value,
         text: this.Form.data_detail.messageSend.prop.Value,
-        attachments
+        attachments,
 
       }
 
     }
     // El mensaje se enviará a través del boton de  WhatsApp
-    //console.log('Sending message via WebSocket:', message);
+    console.log('Sending message via WebSocket:', message);
     send(JSON.stringify(message));
     //this.Form.bt_whatsApp.send(message)
 

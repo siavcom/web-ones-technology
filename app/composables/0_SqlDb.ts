@@ -1709,7 +1709,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         let ins_sql = ` CREATE TABLE now.${alias} ( `
         let coma = ''
         for (const campo in respuesta[0]) {
-            console.log('Campo:', campo);
+            // console.log('Campo:', campo);
             let tipo = 'string'
             const tip_dat = typeof respuesta[0][campo];
             switch (tip_dat) {
@@ -3368,8 +3368,10 @@ export const currentValue = async (field: string, alias?: string) => {
 
     let data = await goto(0, alias)
 
-    if (Object.keys(data).length === 0) // No hay datos en el objeto
-        return data
+    if (data == null || data.length == 0)
+        return {}
+    // if (Object.keys(data).length === 0) // No hay datos en el objeto
+    //     return data
 
     if (field == '*') // todos los datos
         return data

@@ -92,8 +92,8 @@ import { top_nom } from './top_nom';
 import { vmo_doc } from '@/classes/Siavcom/Doctos/vmo_doc';
 
 
-import { Bt_imprime } from "./Bt_imprime";
-import { Bt_timbra } from "./Bt_timbra";
+import { Bt_imprime } from "@/classes/Siavcom/Doctos/Bt_imprime";
+import { Bt_timbra } from "@/classes/Siavcom/Doctos/Bt_timbra";
 
 import { report } from "./report/report";
 
@@ -484,19 +484,14 @@ export class ThisForm extends captureForm {
 			this.cod_nom.prop.Caption = '  '
 		} // End If 
 
-		//await use('vi_cap_comeunn', m) // use vi_cap_comeunn vi_cap_comeunn
-		await SQLExec(`select des_unn,unn_unn from vi_cap_comeunn  UNION select 'TODAS' as des_unn,'   ' as unn_unn  order by des_unn `, 'vi_cap_comeunn')
+
+		//	await SQLExec(`select des_unn,unn_unn from vi_cap_comeunn  UNION select 'TODAS' as des_unn,'   ' as unn_unn  order by des_unn `, 'vi_cap_comeunn')
 
 		result = await SQLExec(`select OBJECT_ID('vi_cap_comepry', 'V') as result`)
 
-		if (1 == 0 && result[0].result != null) {
-			//			await useNodata('vi_cap_comepry') // use vi_cap_comepry vi_cap_comepry Nodata
-
-		}
-		else {
+		if (result[0].result == null) {
 			this.RemoveObject('num_pry')
 			this.RemoveObject('tpy_tpy')
-			//	this.RemoveObject('num_pry')
 		}
 
 		/*
