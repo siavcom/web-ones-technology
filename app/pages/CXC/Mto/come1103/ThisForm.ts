@@ -105,7 +105,7 @@ import { Bt_dre_doc } from '@/classes/Siavcom/Doctos/Bt_dre_doc';
 import { Bt_can_docto } from '@/classes/Siavcom/Doctos/Bt_can_docto';
 
 import { captura_xml } from '@/classes/Siavcom/Doctos/captura_xml';
-import { Bt_carga_xml } from '@/classes/Siavcom/Doctos/Bt_carga_xml';
+import { Bt_carga_xml } from './Bt_carga_xml';
 import { Bt_campos_xml } from '@/classes/Siavcom/Doctos/Bt_campos_xml';
 
 let thisForm = ref()
@@ -221,7 +221,6 @@ export class ThisForm extends captureForm {
 	public Bt_campos_xml = new Bt_campos_xml()
 	public report = new report()
 
-
 	// propiedades 
 	aut_cap: boolean // Switch de autorizacion
 	cod_cap: string // Código de captura
@@ -238,7 +237,6 @@ export class ThisForm extends captureForm {
 
 	top_con = ''
 	tip_cap = 'C'
-
 
 	//this.Form.d_tot_doc.prop.Value = vi_cap_comedoc.imp_doc + vi_cap_comedoc.im0_doc + vi_cap_comedoc.im1_doc + vi_cap_comedoc.im2_doc + vi_cap_comedoc.im3_doc + vi_cap_comedoc.im4_doc + vi_cap_comedoc.im5_doc
 	//imp_doc = ref(0)
@@ -466,7 +464,6 @@ export class ThisForm extends captureForm {
 			} // End If 
 			this.cod_nom.prop.Caption = this.prop.Messages[6]
 			//   thisform.caption='Mantenimiento a cargos y abonos de proveedores'    && imprime el titulo
-			this.Bt_carga_xml.prop.Visble = false
 			// deshabilitamos cargar xmls
 
 			// desaparecemos datos de vendedores
@@ -487,9 +484,10 @@ export class ThisForm extends captureForm {
 
 		//	await SQLExec(`select des_unn,unn_unn from vi_cap_comeunn  UNION select 'TODAS' as des_unn,'   ' as unn_unn  order by des_unn `, 'vi_cap_comeunn')
 
-		result = await SQLExec(`select OBJECT_ID('vi_cap_comepry', 'V') as result`)
+		result = await SQLExec(`select OBJECT_ID('vi_cap_comepry', 'V') as exist`)
 
-		if (result[0].result == null) {
+		console.log('vi_cap_comepry exists:', result)
+		if (result.length == 0 || result[0].exist == null) {
 			this.RemoveObject('num_pry')
 			this.RemoveObject('tpy_tpy')
 		}
@@ -533,10 +531,9 @@ export class ThisForm extends captureForm {
 
 		await SQLExec(ins_sql, 'cometdo')
 
-		let cometdo = await goto(0, 'cometdo')
+		let cometdo = await goto('TOP', 'cometdo')
 
 		this.tdo_tdo.prop.Value = cometdo.tdo_tdo
-		this.tdo_tdo.prop.Value = 1
 
 		// tabla de seguridad por grupos
 
@@ -568,7 +565,7 @@ export class ThisForm extends captureForm {
 		} // End If 
 		*/
 
-		await useNodata('lla1_seg') // use lla1_seg lla1_seg Nodata
+		// await useNodata('lla1_seg') // use lla1_seg lla1_seg Nodata
 		// vista de seguridad por grupos
 		//await useNodata('vi_key_pag') // use vi_key_pag vi_key_pag Nodata
 		// vista de revision de captura de pagos
@@ -581,9 +578,8 @@ export class ThisForm extends captureForm {
 
 		//	await useNodata('lla1_pag', 'tabla') // use lla1_pag lla1_pag Nodata Alias
 		// vista de pagos
-		await useNodata('lla1_tdo') // use lla1_tdo lla1_tdo Nodata
+		// await useNodata('lla1_tdo') // use lla1_tdo lla1_tdo Nodata
 		// vista de tipos de documentos
-
 
 		//		this.prop.Messages[7] = 'Abono'
 		//		this.prop.Messages[9] = 'Cargo'
@@ -991,11 +987,12 @@ export class ThisForm extends captureForm {
 	override async bt_modifyClick(sw_save?: boolean) {
 		this.Form.Bt_campos_xml.prop.Visible = true
 		let m = {}
-		m = await goto(0, 'vi_cap_comedoc')
+		m = await currentValue('*', 'vi_cap_comedoc')
+		let cometdo = await currentValue('*', 'vi_cap_comedoc')
 
 		// checa si tiene movimientos 
 		const res = await SQLExec(`select CAST(count(man_comemov.key_pri) as int) as num_mov,max(sta_doc) as sta_doc from man_comedoc 
-			 left outer join man_comemov on man_comemov.tdo_tdo=man_comedoc.tdo_tdo and man_comemov.ndo_doc=man_comedoc.ndo_doc where man_comedoc.tdo_tdo='${m.tdo_tdo}' and man_comedoc.ndo_doc=${m.ndo_doc}`)
+			 left outer join man_comemov on man_comemov.tdo_tdo=man_comedoc.tdo_tdo and man_comemov.ndo_doc=man_comedoc.ndo_doc where man_comedoc.tdo_tdo='${cometdo}' and man_comedoc.ndo_doc=${m.ndo_doc}`)
 
 		if (!sw_save && !res[0]) {
 			this.Form.ndo_doc.setFocus()
@@ -1023,6 +1020,11 @@ export class ThisForm extends captureForm {
 		this.ap_pagos.prop.ReadOnly = false
 		this.bt_delete.prop.Visible = true;
 		this.bt_save.prop.Visible = true
+
+		// muestra solo si es proveedor y es un pago
+		if (cometdo.cop_nom == 'P' && cometdo.cop_tdo == 'A') {
+			this.Bt_carga_xml.prop.Visible = true
+		}
 
 		if (!sw_save)
 			this.cod_nom.lee_tdn()

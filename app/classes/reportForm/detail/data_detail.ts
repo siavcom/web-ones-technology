@@ -6,7 +6,7 @@
 // @Creation : 2025-12-15
 // @Update Date  : 2026-02-03
 ****************************************************/
-
+/*
 /////////////////// Server WebSocket /////////////////////
 
 const { status, data: wsData, send, open, close } = useWebSocket(`ws://${location.host}/api/sendDocto`, {
@@ -23,13 +23,16 @@ const { status, data: wsData, send, open, close } = useWebSocket(`ws://${locatio
     interval: 1000,
     pongTimeout: 1000,
   },
-*/
+
 })
 
+*/
+
+/*
 let whatsappReady = ref(false);
 let whatsAppQR = ref("");
 let transport = ref("");
-
+*/
 
 // public unWatch = unWatch();
 
@@ -52,96 +55,100 @@ import { DISPLAYQR } from "./displayQr";
 import { attachFiles } from "../attachFiles";
 
 export class data_detail extends CONTAINER {
-  transport = ''
+
+  //whatsappReady = ref(false);
+  //whatsAppQR = ref("");
+  transport = ref("Sin asignar");
 
   QRVisible = computed(() => {
-    return transport.value == 'whatsapp' && !whatsappReady.value ? true : false;
+    return this.transport.value == 'whatsapp' && !this.Form.whatsappReady.value ? true : false;
   });
 
   DataVisible = computed(() => {
-    return transport.value == 'whatsapp' && !whatsappReady.value ? false : true;
+    return this.transport.value == 'whatsapp' && !this.Form.whatsappReady.value ? false : true;
   });
 
   ///////////////// whatch Server WebSocket /////////////////////
-  unWatch = watch(wsData, (newData) => {
-
-    console.log('=============== watch NewData=>>>>>', newData)
-
-    if (!newData) return;
-
-    const data = JSON.parse(newData)
-    //const data = newData
-    const result = data.result
-    const message = data.message ? data.message : ''
-
-    //console.log('watch result=', result, ' data=', data)
-
-    switch (true) {
-
-      case result == 'NoReady':
-        whatsappReady.value = false
-        console.log('1) WhatsApp error:', message)
-        //   const router = useRouter();
-        //   router.push('/WhatsApp/Pro/Vincular');
-        return;
-
-      case result == 'WhatsAppReady':
-        //  console.log('1) WhatsApp Ready=', data.data)
-        if (data.data) {
-          whatsappReady.value = true;
-        }
-        whatsAppQR.value = ''
-        // MessageBox('WhatsApp listo', 1, "WhatsApp");
-        //   this.Form.data_detail.block[0].prop.Visible = false
-        //  this.Form.data_detail.block[1].prop.Visible = true
-        //   this.Form.data_detail.block[2].prop.Visible = true
-        return
-
-        break
-
-
-      case result == 'QrCode':
-
-        whatsAppQR.value = data.data
-        console.log(' transport QrCode=', whatsAppQR.value)
-        return
-        break
-
-      case result == "message" && this.displayQr.prop.Visible:
-        //  console.log('WebSocket message=', data.data)
-        // 0=mensaje sin titulo
-        // 1=Informacion solamente
-        // 2=? pregunta Cancel Abort Retry
-        // 4=? pregunta No Ok
-        MessageBox(data.data, 1, "Message");
-        return
-        break
-
-      case result == 'error':
-        MessageBox(data.data, 16, "Web Socket Error ");
-        return
-        break
-      case result == 'sentMail':
-        MessageBox(`From: ${data.data.envelope.from} To: ${data.data.envelope.to[0]} `, 1, "Mail sent OK ");
-        return
-        break
-      case result == 'mailError':
-        MessageBox(message, 16, "Mail sent Error ");
-        return
-        break
-      case result == 'whatsAppError':
-        MessageBox(data.data, 16, "Whatsapp sent Error ");
-        return
-        break
-      default:
-        console.log('WebSocket default, result=', result, ' data=', data.data)
-        return
-        break
-
-    }
-
-  }, { deep: true })
-
+  /*
+    unWatch = watch(wsData, (newData) => {
+  
+      console.log('=============== watch NewData=>>>>>', newData)
+  
+      if (!newData) return;
+  
+      const data = JSON.parse(newData)
+      //const data = newData
+      const result = data.result
+      const message = data.message ? data.message : ''
+  
+      //console.log('watch result=', result, ' data=', data)
+  
+      switch (true) {
+  
+        case result == 'NoReady':
+          whatsappReady.value = false
+          console.log('1) WhatsApp error:', message)
+          //   const router = useRouter();
+          //   router.push('/WhatsApp/Pro/Vincular');
+          return;
+  
+        case result == 'WhatsAppReady':
+          //  console.log('1) WhatsApp Ready=', data.data)
+          if (data.data) {
+            whatsappReady.value = true;
+          }
+          whatsAppQR.value = ''
+          // MessageBox('WhatsApp listo', 1, "WhatsApp");
+          //   this.Form.data_detail.block[0].prop.Visible = false
+          //  this.Form.data_detail.block[1].prop.Visible = true
+          //   this.Form.data_detail.block[2].prop.Visible = true
+          return
+  
+          break
+  
+  
+        case result == 'QrCode':
+  
+          whatsAppQR.value = data.data
+          console.log(' transport QrCode=', whatsAppQR.value)
+          return
+          break
+  
+        case result == "message" && this.displayQr.prop.Visible:
+          //  console.log('WebSocket message=', data.data)
+          // 0=mensaje sin titulo
+          // 1=Informacion solamente
+          // 2=? pregunta Cancel Abort Retry
+          // 4=? pregunta No Ok
+          MessageBox(data.data, 1, "Message");
+          return
+          break
+  
+        case result == 'error':
+          MessageBox(data.data, 16, "Web Socket Error ");
+          return
+          break
+        case result == 'sentMail':
+          MessageBox(`From: ${data.data.envelope.from} To: ${data.data.envelope.to[0]} `, 1, "Mail sent OK ");
+          return
+          break
+        case result == 'mailError':
+          MessageBox(message, 16, "Mail sent Error ");
+          return
+          break
+        case result == 'whatsAppError':
+          MessageBox(data.data, 16, "Whatsapp sent Error ");
+          return
+          break
+        default:
+          console.log('WebSocket default, result=', result, ' data=', data.data)
+          return
+          break
+  
+      }
+  
+    }, { deep: true })
+  */
   public displayQr = new DISPLAYQR()
   public phone = new PHONE()
   public subject = new SUBJECT();
@@ -158,7 +165,7 @@ export class data_detail extends CONTAINER {
     this.prop.Visible = false
     this.style.width = '80%'
 
-    this.displayQr.prop.Value = ref(whatsAppQR) // pasamos por referencia el valor
+    this.displayQr.prop.Value = ref(this.Form.whatsAppQR) // pasamos por referencia el valor
 
     //this.displayQr.prop.Value = QRVisible // pasamos por referencia el valor
 
@@ -200,7 +207,7 @@ export class data_detail extends CONTAINER {
 
     // =======================<Bloque 2 >=====================
 
-    this.Bt_send.prop.Visible = transport.value == 'whatsapp' ? !this.QRVisible.value : true;
+    this.Bt_send.prop.Visible = this.transport.value == 'whatsapp' ? !this.QRVisible.value : true;
 
     this.block[2] = structuredClone(container)
     this.block[2].component = {
@@ -218,10 +225,15 @@ export class data_detail extends CONTAINER {
 
   }
 
-  async open(transporte: string) {
-    transport.value = transporte.toLowerCase();
+  /**
+   * @deprecated : Inicializa whatsApp
+   * 
+   */
+  async open(transporte: string) {  //transporte: string
+    console.log('open transporte=', this.transport)
+    this.transport = transporte.toLowerCase();  // asignamos el transporte a la forma
 
-    if (transport.value == 'whatsapp') {
+    if (transporte == 'whatsapp') {
       this.Form.data_detail.phone.prop.Visible = true;
       this.Form.data_detail.email.prop.Visible = false;
     } else {
@@ -271,12 +283,12 @@ export class data_detail extends CONTAINER {
     this.Form.block[this.Form.data_detailBlock].prop.Visible = true; // Mostrar el bloque de entrada de datos
 
     this.block[1].title = 'Datos ' + transporte.toUpperCase()
-
+    //transport = ''
     this.Form.report.displayPdf.prop.Visible = false
 
     this.prop.Visible = true
 
-    if (transport.value == 'whatsapp' && !whatsappReady.value) {
+    if (transporte == 'whatsapp' && !this.Form.whatsappReady.value) {
       /*
             let message = {
               transport: 'whatsapp',
@@ -290,7 +302,8 @@ export class data_detail extends CONTAINER {
 
       }
 
-      send(JSON.stringify(message))
+      //send(JSON.stringify(message))
+      this.Form.sendMessage(JSON.stringify(message))
       //  MessageBox("WhatsApp no está listo aún. Vincule WhatsApp desde tu celular.", 1, "Advertencia");
       //   const router = useRouter();
       //   router.push('/WhatsApp/Pro/Vincular');
@@ -309,13 +322,11 @@ export class data_detail extends CONTAINER {
 
   // Envio de mensaje por servidor web-sockets sendDocto
   async sendData() {
-
-    const session = Session()
+    console.log('data_detail sendData transporte=', this.transport)
+    //const session = Session()
     //const { data } = await useAsyncData('id', () => session.id_con)
 
-    const { nom_emp } = storeToRefs(session)  //pasa los elementos por referencia al Global
-
-
+    // const { nom_emp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
     this.Form.data_detail.close()
 
@@ -324,7 +335,7 @@ export class data_detail extends CONTAINER {
     const attachments = await attachFiles(this.Form)
     let message = {}
 
-    if (transport.value == 'whatsapp') {
+    if (this.transport == 'whatsapp') {
       let phone = this.Form.data_detail.phone.prop.Value.replaceAll('+', '')
       phone = phone.replaceAll(' ', '')
       phone = phone.replaceAll('-', '')
@@ -341,7 +352,7 @@ export class data_detail extends CONTAINER {
         phone = '521' + phone
       console.log('phone length:', phone, phone.length)
       if (phone.length != 13) {
-        this.Form.data_detail.open(transport.value)
+        //this.Form.data_detail.open()
         this.Form.data_detail.phone.prop.ErrorMessage = 'El número de teléfono debe tener 12 o 13 dígitos'
         this.Form.data_detail.phone.prop.Valid = false
 
@@ -349,7 +360,7 @@ export class data_detail extends CONTAINER {
       }
 
       message = {
-        nom_emp: nom_emp.value,
+        nom_emp: Public.value.nom_emp,
         transport: 'whatsapp',
         job: 'sendMedia',
         data: {
@@ -361,7 +372,7 @@ export class data_detail extends CONTAINER {
 
     }
 
-    if (transport.value == 'mail') {
+    if (this.transport == 'mail') {
       /*
       if (View.vi_cap_comedoc) {
         const comedoc = goto(0, 'comedoc')
@@ -399,17 +410,12 @@ export class data_detail extends CONTAINER {
 
     }
     // El mensaje se enviará a través del boton de  WhatsApp
-    console.log('Sending message via WebSocket:', message);
-    send(JSON.stringify(message));
+    console.log('Sending message via WebSocket send:', this.Form.sendMessage) //, message);
+    this.Form.sendMessage(JSON.stringify(message));
     //this.Form.bt_whatsApp.send(message)
 
   }
 
-  // desconectamos el servidor web-sockets al cerrar
-  override onUnmounted(): void {
-    if (this.unWatch) {
-      this.unWatch();
-    }
-  }
+
 
 }

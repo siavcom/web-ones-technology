@@ -477,7 +477,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       //  if (This.Parent.Recno = !props.Registro)
       //    This.Parent.Recno = props.Registro
 
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, props.Registro)
+      const data = await readCampo(props.prop.ControlSource, props.Registro)
 
       let sw_dat = false
       for (const campo in data) {
@@ -567,7 +567,7 @@ const asignaValor = async () => {
   let found = false
   if (!MultiSelect.value) {  // Si no es multi select, calcula el valor resultante
     for (let i = 0; i < columnas.length && !found; i++) {
-      //   console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value,  'Value.value=', Value.value)
+      //  console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value.value=', Value.value)
 
       //if (columnas && columnas[0]) {
       if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
@@ -701,7 +701,7 @@ const validClick = async (num_ren: number) => {
   comboStyle.zIndex = zIndex.value
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
+  // console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
   //  await This.interactiveChange()
   emitValue()
   focusIn = false // Perdio el foco
@@ -735,7 +735,7 @@ const validCheck = async (num_ren: number) => {
     coma = ','
   }
   Value.value = ValResultante
-  console.log('comboBox evalidCheck ', 'Value=', Value.value)
+  //console.log('comboBox evalidCheck ', 'Value=', Value.value)
   // This.prop.Value = Value.value
   This.prop.Valid = false
   emitValue()
@@ -926,12 +926,6 @@ const ChecaStatus = async () => {
   return true
 }
 
-
-
-
-
-
-
 //////////////////////////////////////////////////////
 // Renderizado del combo box
 /////////////////////////////////////////////////////
@@ -954,12 +948,10 @@ const renderComboBox = async (readData?: boolean) => {
   }
   */
 
-  //  console.log('1) render combobox ===>>', This.Name)
 
   if (props.prop.RowSourceType < 1) return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
-
 
   await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
@@ -1030,8 +1022,8 @@ const renderComboBox = async (readData?: boolean) => {
 
       // aqui me quede (arreglar lectura por alias)
       const ins_sql = 'select ' + RowSource + ' from ' + alias
-      data = await This.Form.db.localSql(ins_sql)
-      // console.log('comboBox data ===>', ins_sql, data)
+      data = await localAlaSql(ins_sql)
+
 
       break
     }
@@ -1044,7 +1036,7 @@ const renderComboBox = async (readData?: boolean) => {
     }
     case 4: { // local SQL Query
 
-      data = await This.Form.db.localAlaSql(RowSource)
+      data = await localAlaSql(RowSource)
       break
     }
     case 5: {
@@ -1138,8 +1130,6 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-  //console.log('2) render combobox ===>>', This.Name, 'Value=', Value.value, 'columnas=', columnas)
-
   await emitValue(true, true)
   This.prop.Status = 'A'
   //2/Sep/2025 Status.value = 'A'
@@ -1201,6 +1191,10 @@ const nextElement = async () => {  //clickReturn
   */
 
   for (const element in This.Parent.estatus) {
+    if (!This.Parent[element].prop.TabIndex) {
+      console.log('Parent elemento', element)
+      return
+    }
     const Tab = This.Parent[element].prop.TabIndex
 
     //            'TabIndex=', Tab, TabIndex, lastIndex)
@@ -1228,7 +1222,7 @@ const nextElement = async () => {  //clickReturn
 // Obs: se llama desde el template
 //////////////////////////////////////////////////////////////////////
 const select = async () => {
-  console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
+  // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
   This.prop.Focus = false
   console.log('select', This.prop.Name)
   if (thisElement.focus)
@@ -1631,7 +1625,7 @@ watch(
 watch(
   () => This.prop.nextFocus,
   () => {
-    console.log('watch NextFocus', This.prop.Name, This.prop.nextFocus)
+    // console.log('watch NextFocus', This.prop.Name, This.prop.nextFocus)
     if (This.prop.nextFocus) {
       nextElement()
       This.prop.nextFocus = false
@@ -1821,7 +1815,7 @@ onMounted(async () => {
 
   await renderComboBox()
 
-  //  console.log('2) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
+  console.log(' ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
 
   //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
 

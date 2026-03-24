@@ -59,6 +59,11 @@ export class tdo_tdo extends CAPTURECOMPONENT {
         this.Form.Bt_campos_xml.prop.Visible = false // caprura xml
         this.Form.Bt_imprime.prop.Visible = false // imprime
         this.Form.Bt_timbra.prop.Visible = false // timbra
+        this.Form.Bt_carga_xml.prop.Visible = false
+        console.log('when tdo_tdo Value', this.prop.Value)
+        const tdo_tdo = this.prop.Value
+        const cometdo = await locateFor(`tdo_tdo='${tdo_tdo}'`, 'cometdo')
+
 
         if (this.Form.Name == 'come1103') { // Cargos y Abonos
             // useNodata('vi_cap_comepag')
@@ -86,7 +91,7 @@ export class tdo_tdo extends CAPTURECOMPONENT {
             this.Form.Bt_dre_doc.prop.Visible = false
             // thisform.impuestos.enabled=.f.
             this.Form.carta_porte.prop.Visible = false
-            const cometdo = await currentValue('*', 'cometdo')
+
             if (cometdo.afi_tdo == 1) {
                 this.Form.ped_ped.prop.Visible = false
 

@@ -33,24 +33,21 @@ export class num_pry extends CAPTURECOMPONENT {
     override async valid(sw_rel?: boolean) {
         let m = {}   // inicializamos m
         this.prop.Valid = false
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
+
         if (vi_cap_comedoc.num_pry == 0) {
             this.prop.Valid = true
             return true
-
         } // End If 
 
-        const vi_cap_comepry = await goto(0, 'vi_cap_comepry')
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const vi_cap_comepry = await currentValue('*', 'vi_cap_comepry')
 
         m.num_pry = iif(vi_cap_comedoc.key_pri, this.prop.Value, vi_cap_comedoc.num_pry)
 
 
-        if (vi_cap_comedoc.key_pri || vi_cap_comedoc.num_pry != vi_cap_comepry.num_pry) {
-            await select('vi_cap_comepry')
-
-            await requery()
-
-            if (await recCount() == 0) {
+        if (vi_cap_comedoc.key_pri > 0 || vi_cap_comedoc.num_pry != vi_cap_comepry.num_pry) {
+            await use('vi_cap_comepry', m)
+            if (await recCount('vi_cap_comepry') == 0) {
                 MessageBox('No existe el proyecto', 16, 'Error', 5000)
                 return false
 

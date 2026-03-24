@@ -36,7 +36,113 @@ import { tip_con } from './tip_con'
 
 //import { cam_dat } from './cam_dat'
 
+
+/////////////////// Server WebSocket para envio de documentos /////////////////////
+
+const { status, data: wsData, send, open, close } = useWebSocket(`ws://${location.host}/api/sendDocto`, {
+  autoReconnect: {
+    retries: 3,
+    delay: 1000,
+    onFailed() {
+      alert('Failed to connect WebSocket after 3 retries')
+    },
+  },
+  autoClose: false
+  /*heartbeat: {
+    message: 'ping',
+    interval: 1000,
+    pongTimeout: 1000,
+  },
+  */
+})
+
+
+//let whatsappReady = ref(false);
+let whatsAppQR = ref("");
+
 export class reportForm extends FORM {
+  sendMessage = send
+  whatsappReady = ref(false);
+  /**
+   * @description Watch para recibir mensajes del servidor WebSocket
+   * @note Los watchers solo funcionan si se ponen dentro de la forma principal
+   */
+
+  unWatch = watch(wsData, (newData) => {
+
+    console.log('=============== watch NewData=>>>>>', newData)
+
+    if (!newData) return;
+
+    const data = JSON.parse(newData)
+    //const data = newData
+    const result = data.result
+    const message = data.message ? data.message : ''
+
+    //console.log('watch result=', result, ' data=', data)
+
+    switch (true) {
+
+      case result == 'NoReady':
+        this.whatsappReady.value = false
+        console.log('1) WhatsApp error:', message)
+        //   const router = useRouter();
+        //   router.push('/WhatsApp/Pro/Vincular');
+        return;
+
+      case result == 'WhatsAppReady':
+        //  console.log('1) WhatsApp Ready=', data.data)
+        if (data.data) {
+          this.whatsappReady.value = true;
+        }
+        whatsAppQR.value = ''
+        // MessageBox('WhatsApp listo', 1, "WhatsApp");
+        //   this.Form.data_detail.block[0].prop.Visible = false
+        //  this.Form.data_detail.block[1].prop.Visible = true
+        //   this.Form.data_detail.block[2].prop.Visible = true
+        return
+
+
+      case result == 'QrCode':
+
+        whatsAppQR.value = data.data
+        console.log(' whatsAoo QrCode=', whatsAppQR.value)
+        return
+
+      case result == "message" && this.data_detail.displayQr.prop.Visible:
+        //  console.log('WebSocket message=', data.data)
+        // 0=mensaje sin titulo
+        // 1=Informacion solamente
+        // 2=? pregunta Cancel Abort Retry
+        // 4=? pregunta No Ok
+        MessageBox(data.data, 1, "Message");
+        return
+
+      case result == 'error':
+        MessageBox(data.data, 16, "Web Socket Error ");
+        return
+
+      case result == 'sentMail':
+        MessageBox(`From: ${data.data.envelope.from} To: ${data.data.envelope.to[0]} `, 1, "Mail sent OK ");
+        return
+
+      case result == 'mailError':
+        MessageBox(message, 16, "Mail sent Error ");
+        return
+
+      case result == 'whatsAppError':
+        MessageBox(data.data, 16, "Whatsapp sent Error ");
+        return
+
+      default:
+        console.log('WebSocket default, result=', result, ' data=', data.data)
+        return
+
+
+    }
+  })
+
+
   public mon_rep = new mon_rep();
   public tip_rep = new tip_rep();
   public var_ord = new var_ord(); // variable de orden principal de la vista
@@ -591,9 +697,11 @@ export class reportForm extends FORM {
 
   }
 
-
-
-
-
+  // desconectamos el servidor web-sockets al cerrar
+  override onUnmounted(): void {
+    if (this.Form.unWatch) {
+      this.Form.unWatch();
+    }
+  }
 
 }

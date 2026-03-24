@@ -152,7 +152,7 @@ textarea.textArea {
   box-sizing: border-box;
   /*height: 100%;
   width: 100%; */
-  background-color: rgb(223, 220, 220);
+  /* background-color: rgb(223, 220, 220);*/
   display: flow-root;
 
 }

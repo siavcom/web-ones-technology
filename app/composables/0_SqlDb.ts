@@ -188,7 +188,7 @@ export const releaseUse = async (alias?: string) => {
 }
 
 /**
- * Locates the first record in a local SQL table matching the specified condition.
+ * @description : Locates the first record in a local SQL table matching the specified condition.
  * 
  * @param where - The SQL condition to locate the record.
  * @param alias - (Optional) The alias name of the view to be used. If not provided, the current working area alias is used.
@@ -220,9 +220,11 @@ export const locateFor = async (where: string, alias?: string) => {
 
 }
 
-/// /////////////  Vfp Use nodata ///////////////////
-// nom_vis : Nombre de la vista a utilizar
-/// /////////////////////////////////////////////////
+/**  Vfp Use nodata 
+ * @description : Incializa una vista remota (tabla local sin datos con estructura del SQL Server)
+ * @param nom_vis : Nombre de la vista a utilizar
+ * @param alias : Alias de la vista
+ */
 
 export const useNodata = async (nom_vis: string, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
@@ -356,9 +358,10 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     }
 };
 
-/**
-* Iniciliza una vista remota 
-* @param nom_vis string    : Nombre de la vista a utilizar
+/**  VFP use
+* @decription : Obtiene los datos de una vista remota (tabla local con estructura del SQL Server)
+*               donde se le pasa los valores para hacer su consulta por medio de los parametros m
+* @param nom_vis string    : Nombre de la vista remota a utilizar
 * @param m{}              :  Varibles de memoria a pasar
 * @param alias string      : Alias
 * @param order string      : Orden
@@ -586,9 +589,12 @@ export const use = async (
 };
 
 
-/////////////  Hace un requery de una vista /////////////////////
-// nom_vis  : Nombre de la vista a utilizar
-////////////////////////////////////////////
+/** VFP requery
+ * @description :  Hace un requery de una vista /////////////////////
+ * @param alias string : Nombre de la vista a utilizar
+ * @param currentRow boolean : Si es true, actualiza la fila actual
+ * @returns boolean : True si se actualizó correctamente, false en caso contrario
+*/
 export const requery = async (alias?: string, currentRow?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -616,9 +622,10 @@ export const requery = async (alias?: string, currentRow?: boolean) => {
 
     return resultado
 }
-/////////////  Deshace los cambios no actualizados de la tabla /////////////////////
-// alias  : Nombre de la vista a utilizar
-////////////////////////////////////////////
+/** 
+ * @description : Deshace los cambios no actualizados de la tabla /////////////////////
+ * @param alias string : Nombre de la vista a utilizar
+*/
 export const tableRevert = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -630,21 +637,20 @@ export const tableRevert = async (alias?: string) => {
     return
 }
 
-
-/////////////////////////////////////////////////
-// alias  : Regrtesa el nombre del alias actual
-////////////////////////////////////////////
+/**
+* @return alias  : Regresa el nombre del alias actual
+*/
 export const alias = (): string => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     return This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
 }
 
-/// /////////////  Vfp obten un registro  /////////////////////
-// nom_vis  : Nombre de la vista a utilizar
-// key_pri  :  Key_pri
-/// ////////////////////////////////////////////
-// aqui me quede . revisar todo esto, puede que la tabla tenga varios alias
+/** Vfp obten un registro 
+* @param nom_vis  : Nombre de la vista a utilizar
+* @param key_pri  :  Key_pri
 
+// aqui me quede . revisar todo esto, puede que la tabla tenga varios alias
+*/
 export const obtRegistro = async (nom_tab: "", key_pri: number) => {
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
@@ -667,18 +673,20 @@ export const obtRegistro = async (nom_tab: "", key_pri: number) => {
     return [];
 };
 
-/// /////////////  Vfp table update /////////////////////
-// updateType : =0 Solo el registro actual
-//              =1 Todos los registros de la vista hasta encontrar un error de actualizacion. Si TableUpdate encuentra un registro que no
-//                 puede ser actualizado, fallará en ese punto y retornará un valor de .F., indicando que ha fallado. Ningún registro más allá del que tiene el problema será procesado.
-//              =2 Todos los registros de la vista. Si encuentra un error de actualizacion,
-//                  forzara la actualizacion con los datos propios.
-// Force : True forzará nuestra actualización y sobrescribirá los cambios realizados por el otro usuario
-//         False no realizará la actualización si otro usuario ha hecho modificaciones al mismo registro.
-// alias  : Nombre de la vista a utilizar
-// tab_man : Tabla de mantenimiento (model en sequelize en NodeServer)
-/// ////////////////////////////////////////////
+/** Vfp table update 
+ * @description Actualiza los registros de una vista
+ * @param updateType : =0 Solo el registro actual
+              =1 Todos los registros de la vista hasta encontrar un error de actualizacion. Si TableUpdate encuentra un registro que no
+                 puede ser actualizado, fallará en ese punto y retornará un valor de .F., indicando que ha fallado. Ningún registro más allá del que tiene el problema será procesado.
+              =2 Todos los registros de la vista. Si encuentra un error de actualizacion,
+                  forzara la actualizacion con los datos propios.
+* @Force : True forzará nuestra actualización y sobrescribirá los cambios realizados por el otro usuario
+         False no realizará la actualización si otro usuario ha hecho modificaciones al mismo registro.
+* @alias  : Nombre de la vista a utilizar
+* @tab_man : Tabla de mantenimiento (model en sequelize en NodeServer)
+**/
 export const tableUpdate = async (
+
     updateType?: number,
     force?: boolean,
     alias?: string,
@@ -1117,9 +1125,11 @@ export const tableUpdate = async (
 }; //
 
 
-/// /////////////  Vfp append blank /////////////////////
-// nom_vis  : Nombre de la vista a utilizar
-/// ////////////////////////////////////////////
+/**  Vfp append blank 
+ * @description Agrega un registro en blanco a la vista especificada
+ * @param alias  : Nombre de la vista a utilizar
+ * @param m  : Objeto con los valores a insertar
+ */
 export const appendBlank = async (alias?: string, m?: {}) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     const ThisForm = This.value.Form;
@@ -1263,10 +1273,11 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     */
 };
 
-/// ///////////// delete Sql Sever /////////////////////
-// alias  : Nombre de la vista a utilizar
-// row : Renglon donde se encuentra el registro a borrar
-/// ////////////////////////////////////////////
+/**
+ * @description Elimina un registro de la vista especificada
+ * @param recno  : Número de registro a eliminar
+ * @param alias  : Nombre de la vista a utilizar
+ */
 export const deleteSqlRow = async (recno?: number, alias?: any,) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -1370,11 +1381,12 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
     return true;
 };
 
-/// /////////////  deleteSqlRow local SQL /////////////////////
-// alias  : Nombre de la vista a utilizar
-// row : Renglon donde se encuentra el registro a borrar
-// SqlUpodate : Actualizacion inmediata en SQLSERVER
-/// ////////////////////////////////////////////
+/** 
+ * @description Elimina un registro de la vista especificada en el SQL local
+ * @param recno  : Número de registro a eliminar
+ * @param alias  : Nombre de la vista a utilizar
+ * @param SqlUpdate  : Actualizacion inmediata en SQLSERVER
+ */
 export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: boolean) => {
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
@@ -1468,6 +1480,9 @@ export const deleteSql = async (recno?: number, alias?: string, SqlUpdate?: bool
     return [];
 };
 
+
+
+
 export const deleted = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias)   // si no se da el alias
@@ -1486,7 +1501,7 @@ export const deleted = async (alias?: string) => {
 }
 
 /**
- * Borra el registro actual de la vista local y su correspondiente en SQLSERVER si esta configurado.
+ * @description : Borra el registro actual de la vista local y su correspondiente en SQLSERVER si esta configurado.
  * @param query query que se va a ejecutar en la base de datos local, si no se da se borrara el registro actual.
  *              Si se da una query que inicia con WHILE, se reemplazara por WHERE y se agregara la condicion de recno mayor o igual que el actual.
  *              Si se da una query que inicia con FOR, se reemplazara por WHERE y se agregara la condicion de recno mayor o igual que el actual.
@@ -1520,9 +1535,6 @@ export const deleteLocalSql = async (query?: string, alias?: string) => {
 
     return await localAlaSql(query);
 }
-
-
-
 
 /// /////////////  Vfp table insert /////////////////////
 // nom_vis  : Nombre de la vista a utilizar
@@ -1610,11 +1622,13 @@ export const insert = async (alias: string, m: Record<string, never>) => {
     }
 };
 
-/// /////////////  sqlexec /////////////////////
-// query  : Query a ejecutar
-// tip_res: D=Data T=Text J=JSON NULL=no data returned
-/// ///////////////////////////////////////////
-
+/**
+ *  VFP sqlexec
+ * @description Ejecuta una consulta SQL en el servidor
+ * @param query  : Query a ejecutar
+ * @param alias  : Nombre de la vista a utilizar
+ * @param tip_res: tipo de respuesta (D=Data, T=Text, J=JSON, NULL=no data returned)
+ */
 export const SQLExec = async (query: string, alias?: string, tip_res?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -1652,11 +1666,10 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
     try {
         //console.log("1) Begin SQLEXEC  Query=", query, 'alias=', alias);
         let respuesta = await axiosCall(dat_vis);
-        // console.log('2) Begin  SQLEXEC axios respuesta=', respuesta)
 
-        if (respuesta.length == 0) {
-            console.warn('3) Begin  SQLEXEC return sin  respuesta')
-            return respuesta
+        if (respuesta == undefined || respuesta.length == 0) {
+            console.trace('3) Begin  SQLEXEC return sin  respuesta Quer=', query)
+            return []
         }
 
         if (respuesta == null) return null;
@@ -1686,7 +1699,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         This.value.View[alias].Records = []; // Arreglo de registros para skip locate y seek
         await select(alias);
 
-        // console.log('Db SQLExec =====>',respuesta)
+        //console.log('1 SQLExec =====>', respuesta)
         // Generamos la extructura de la respuesta
         if (respuesta.length == 0) {
             return false;
@@ -1734,6 +1747,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         //    console.log('Db Axios sqlexec',response[0][0])
         //    const respuesta = response.data;
         //* ******************** */
+        //console.log('SQLExec respuesta= ', respuesta)
         if (respuesta.length > 0) { // si hay datos Asignamos los valores a la vista
             This.value.View[alias].recno = respuesta.length; // asignamos el ultimo numero registro de trabajo
             This.value.View[alias].recCount = respuesta.length; // registros totales
@@ -1747,7 +1761,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         if (tip_res == 'J') return JSON.stringify(respuesta)
 
         return respuesta;
-    } catch (error) {
+    } catch (error: any) {
         console.error("SQL Server Error", query, error);
         console.trace('======ERROR====== ');
         if (error.response) {
@@ -1761,10 +1775,10 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         return false;
     }
 };
-/// ////////////////////////////////////////////
-//  Genera tablas en servidor de SQL
-/// ///////////////////////////////////////////
-
+/**
+ * @description : Genera tablas en SQL Server
+ * @param {string} tabla  : Nombre de la tabla a generar
+ */
 export const genTabla = async (tabla: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!tabla) {
@@ -1794,10 +1808,11 @@ export const genTabla = async (tabla: string) => {
     return true;
 };
 
-/// ////////////////////////////////////////////
-//  Genera indices en servidor de SQL
-/// ///////////////////////////////////////////
-
+/**
+ * @description  Genera indices en servidor de SQL
+ * @param {string} tabla  : Nombre de la tabla a generar el indice
+ * @param {string} nom_ind  : Nombre del indice a generar
+ */
 export const genIndices = async (tabla: string, nom_ind: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!nom_ind) nom_ind = "";
@@ -1833,10 +1848,11 @@ export const genIndices = async (tabla: string, nom_ind: string) => {
     }
 };
 
-/// ////////////////////////////////////////////
-//  Genera vistas en servidor de SQL
-/// ///////////////////////////////////////////
-
+/**
+ * @description : Genera vistas en servidor de SQL
+ * @param {string} tabla  : Nombre de la tabla a generar la vista
+ * @param {string} nom_vis  : Nombre de la vista a generar
+ */
 export const genVistasSql = async (tabla: string, nom_vis?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!tabla) {
@@ -1872,10 +1888,10 @@ export const genVistasSql = async (tabla: string, nom_vis?: string) => {
     }
 };
 
-/// ////////////////////////////////////////////
-//  Genera MODEL en el backEnd
-/// ///////////////////////////////////////////
-
+/**
+ * @description : Genera MODEL en el backEnd
+ * @param {string} tabla  : Nombre de la tabla a generar el model
+ */
 export const genModel = async (tabla: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!tabla) {
@@ -2184,13 +2200,12 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
     return true
 }
 
-/// //////////////////////////////////////////////////
-// genera la tabla en alasql
-// respuesta : json con los renglones para generar la tabla
-// alias : nombre que tendra la tabla
-// noData : si es useNodata
-/// //////////////////////////////////////////////////
-
+/**
+ * @description : genera la tabla en SQL local
+ * @param {any} respuesta : json con los renglones para generar la tabla
+ * @param {string} alias : nombre que tendra la tabla
+ * @param {boolean} noData : si es useNodata
+ */
 const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => {
     // console.log("1 Db genera_tabla"); // .data
     const { This } = toRefs(state) // Hace referencia al valor inicial
@@ -2480,7 +2495,6 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
  * @returns 
  */
 
-
 export function recNo(alias?: string) {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -2495,9 +2509,10 @@ export function recNo(alias?: string) {
 
     return This.value.View[alias].recno
 }
-/// /////////////  Vfp recCount() /////////////////////
-// alias    : Alias
-/// ////////////////////////////////////////////
+/**  Vfp recCount()
+ * @description Devuelve el número de renglones de una vista
+ * @parameters alias    : Alias
+*/
 export const recCount = (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -2520,10 +2535,10 @@ export const recCount = (alias?: string) => {
 }
 
 
-/// /////////////////////////////  Vfp found() /////////////////////
-// Devuelve true si el registro si se encontro en un locate
-// alias    : Alias
-/// ////////////////////////////////////////////
+/**  Vfp found() 
+ * @description Devuelve true si el registro si se encontro en un locate
+ * @parameters alias  : Alias de la vista
+*/
 export const found = (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -2635,10 +2650,10 @@ return false;
 */
 };
 
-///////////////////////////////////////////////
-// LLamada axios al back-end 
-// dat_lla: datos de la llamada axios
-///////////////////////////////////////
+/**
+ * LLamada axios al back-end 
+ * @param dat_lla datos de la llamada axios
+ */
 export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (
@@ -2821,20 +2836,21 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     window.close();
 }
 
-//////////////////////////////////
-// Funcion de delay
-// ms : milisegundos
-////////////////////////////////
 
-
+/**
+ * @description : Funcion de delay
+ * @param {number} ms : milisegundos
+ */
 const delay = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
-/// /////////////////////////////////////////////////
-// Instruccion sql base de datos local
-// db_name :Base de datos a utilizar
-// ins_sql : Instruccion SQL
-/// //////////////////////////////////////
+
+
+/**
+ * @description : Instruccion sql base de datos local
+ * @param {string} ins_sql : Instruccion SQL
+ * @param {string} DataBase : Base de datos local a utilizar
+ */
 export const localSql = async (ins_sql: string, DataBase?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
@@ -2864,11 +2880,11 @@ export const localSql = async (ins_sql: string, DataBase?: string) => {
     }
 }
 
-/// /////////////////////////////////////////////////
-// Instruccion sql base de datos local
-// db_name :Base de datos a utilizar
-// ins_sql : Instruccion SQL
-/// //////////////////////////////////////
+/**
+ * @description : Instruccion sql base de datos local
+ * @param {string} ins_sql : Instruccion SQL
+ * @param {any} datos : Datos para la instruccion SQL
+ */
 export const localAlaSql = async (ins_sql: string, datos?: any) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     await alasql('USE now ;')
@@ -2892,7 +2908,13 @@ export const localAlaSql = async (ins_sql: string, datos?: any) => {
     }
 }
 
-
+/**
+ * @description : Select sql base de datos local y exporta a archivo
+ * @param {string} ins_sql : Instruccion SQL
+ * @param {string} alias : Alias de la tabla o tipo de datos (TXT, CSV, XLSX)
+ * @param {string} filename : Nombre de la tabla donde quedar el resultado
+ * @returns 
+ */
 export const selectInto = async (ins_sql: string, alias?: string, filename?: string) => {
 
     const { This } = toRefs(state) // Hace referencia al valor inicial
@@ -2959,9 +2981,13 @@ export const selectInto = async (ins_sql: string, alias?: string, filename?: str
 
 //= ===============================
 
-/// /////////////////////////////////////////////////
-// Lee Value de la tabla local
-/// //////////////////////////////////////
+/**
+ * @description Lee el valor de un campo de de una tabla local
+ * @param {string} ControlSource Nombre de la tabla.campo 
+ * @param {number} recno Numero de registro
+ * @param {string} DataBase Nombre de la base de datos
+ * @returns Valor del campo
+ */
 export const readCampo = async (ControlSource: string, recno: number, DataBase?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (ControlSource == "")
@@ -3077,9 +3103,13 @@ export const readValues = async (
     return [];
 };*/
 
-/// /////////////////////////////////////////////////
-// Graba Value de la tabla local
-/// //////////////////////////////////////
+/**
+* @description Actualiza elvalor de unn campo en una tabla del SQL local
+* @param {any} Value - Valor a actualizar
+* @param {string} ControlSource - ControlSource del campo a actualizar
+* @param {number} recno - Recno del registro a actualizar
+* @param {boolean} old - Si es true, actualiza el valor de la tabla local que contiene los valores originales
+*/
 export const updateCampo = async (Value: any, ControlSource: string, recno: number, old?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     // async update(Value: any) {
@@ -3187,12 +3217,10 @@ export const getAlias = (alias?: string): string | null => {
 
 
 /**
- * goto: Se mueve al registro segun desplazamiento
- * despla : Si es numerico brinca al recno con ese numero,
- *          Si es string top=brinca la primer registro del alias, button=brinca la ultimo registro del alias
- * @param despla {number|string} : desplazamiento, si es numerico brinca al recno con ese numero, si es string
- * top=brinca la primer registro del alias, button=brinca la ultimo registro del alias
- * @param alias {string} : nombre del alias
+ * @description: Se mueve al registro segun desplazamiento
+ * @param {number|string} despla  : desplazamiento, si es numerico brinca al recno con ese numero, si es string
+                 top=brinca la primer registro del alias, button=brinca la ultimo registro del alias
+ * @param {string}  alias : nombre del alias
  * @returns {number|null} : recno del registro, null si no hay datos
  */
 export const goto = async (despla: string | number, area?: string, lastDatabase?: boolean) => {
@@ -3288,8 +3316,8 @@ export const goto = async (despla: string | number, area?: string, lastDatabase?
 };
 
 /**
- * Inicializa el alias si no hay datos
- * @param {string} alias Nombre del alias
+ * @description: Inicializa el alias si no hay datos
+ * @param {string} alias : nombre del alias
  * @returns {void}
  */
 export const initAlias = (alias: string): void => {
@@ -3303,10 +3331,11 @@ export const initAlias = (alias: string): void => {
 
 }
 
-//////////////////////////////////////////////
-// bof : Indica si esta a principo del archivo
-//////////////////////////////////////////////
-
+/**
+ * @description: Indica si esta a principo de una tabla del SQL local
+ * @param {string} alias : nombre del alias
+ * @returns {boolean}
+ */
 export const bof = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias)
@@ -3326,11 +3355,10 @@ export const bof = async (alias?: string) => {
 }
 
 /**
- * Retrieves the old value of a of a remote view for the current record number.
- *
- * @param field - The name of the field to retrieve the value for.
- * @param alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
- * @returns The value of the specified field if it exists, otherwise returns false.
+ * @description: Retrieves the old value of a of a remote view for the current record number.
+ * @param {string} field - The name of the field to retrieve the value for.
+ * @param {string} alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
+ * @returns {any} The value of the specified field if it exists, otherwise returns false.
  */
 
 export const oldValue = async (field: string, alias?: string) => {
@@ -3391,10 +3419,11 @@ export const currentValue = async (field: string, alias?: string) => {
 }
 
 
-//////////////////////////////////////////////
-// eof : Indica si esta a fin del archivo
-//////////////////////////////////////////////
-
+/**
+ * @description: Indica si esta a fin del archivo del SQL local
+ * @param {string} alias : nombre del alias
+ * @returns {boolean}
+ */
 export const eof = async (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias) {
@@ -3412,7 +3441,11 @@ export const eof = async (alias?: string) => {
     alasql('USE now;')
     return eof
 }
-
+/**
+ * @description: Devuelve la estructura de una vista local
+ * @param {string} alias : nombre del alias
+ * @returns {Array} 
+ */
 export const afields = (alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (!alias) {
@@ -3422,7 +3455,7 @@ export const afields = (alias?: string) => {
 }
 
 /**
- * Moves the record pointer relative to the current record number and returns the new record number.
+ * @description Moves the record pointer relative to the current record number and returns the new record number.
  * @param despla - The number of records to move. If positive, moves forward, if negative, moves backward.
  * @param alias - The alias of the table. If not provided, the last alias in the area of work will be used.
  * @returns The new record number if the move is successful, 0 if there are no records.
@@ -3467,7 +3500,7 @@ export const skip = async (despla?: number, alias?: string) => {
 // tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
 /// //////////////////////////////////////
 /**
- * Gets the data from the current record
+ * @description :Gets the data from the current record 
  * @param {Object} aliasFields - fields to read in an array ['field1','field2'.....'filedn']
  * @param {Object} alias - alias table
  * @returns {Object} A new object with data field 
@@ -3510,10 +3543,12 @@ export const scatter = async (aliasFields?: [], alias?: string) => {
 };
 
 
-/// /////////////////////////////////////////////////
-// scatter Lee los registros y pone sus campos en blanco del registro actual
-// tipo : MEMVAR (todos los registros), FIELDS (solo los campos que esten en FIELDS )
-/// //////////////////////////////////////
+/** scatter VFP
+ * @description   Lee los registros y pone sus campos en blanco del registro actual
+ * @param {Array|string?} aliasFields - fields to read in an array ['field1','field2'.....'filedn']
+ * @param {styring?} alias - alias table
+ * @returns {Object} A new object with data field 
+ */
 export const scatterBlank = async (aliasFields?: [], alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     let resultado = {}
@@ -3598,14 +3633,14 @@ export const gather = async (from: [], alias?: string) => {
     return await localAlaSql(update);
 };
 
-
-
-/// //////////////////////////////
-// Clona una vista local
-// baseAlias: Vista local la cual se va clonar
-// alias: Vista en donde quedara la vista clonada
-// filters: Variables que filtraran la vista clonada
-/// //////////////////////////////
+/**
+ * @description Clona una vista local
+ * @param {string} baseAlias - Vista local la cual se va clonar
+ * @param {string} alias - Vista en donde quedara la vista clonada
+ * @param {Object?} filters - Variables que filtraran la vista clonada
+ * @param {boolean?} force - Si es true, fuerza la clonación
+ * @returns {Promise<void>}
+ */
 export const localClone = async (
     baseAlias: string,
     alias: string,
@@ -3730,7 +3765,7 @@ export const localClone = async (
 /**
  * JasperReport
  *
- * Genera un reporte en PDF con JasperReport
+ * @description Genera un reporte en PDF con JasperReport
  * @param {string} query - Consulta SQL que se usara para generar el reporte
  * @param {string} for_rep - Contenido del archivo jrxml
  * @param {string} [dataView=''] - Nombre de la vista que se usara para generar el reporte
@@ -3818,6 +3853,12 @@ export const VfpCursor = async (query: string) => {
     // console.log('Db VfpCursor ==>', data)
     return data;
 };
+
+/**
+ * @description Convierte un XML a un cursor en el SQL loccal
+ * @param xml 
+ * @param alias 
+ */
 
 export const xmlToCursor = async (xml: string, alias: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial

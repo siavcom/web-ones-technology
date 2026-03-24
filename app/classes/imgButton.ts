@@ -29,6 +29,7 @@ export class IMGBUTTON extends COMPONENT {
       background: '#dfdcdc',
       borderRadius: '5%',
     }
+    this.style.backgroundColor = "floralwhite"
     this.inputStyle.background = 'white'
     this.inputStyle.color = 'black'
 

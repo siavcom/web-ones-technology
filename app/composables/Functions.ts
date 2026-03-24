@@ -38,6 +38,8 @@ import fs from 'fs'
 const ThisForm = ref(null)
 export const openForm = (This: any) => {
   ThisForm.value = This
+
+  at()
 }
 
 //import modal from '@/components/modal.vue'
@@ -99,8 +101,8 @@ export const upper = (data: string): string => {
 }
 
 /**
- * Generates a string with a specified number of spaces
- * @param {number} numero - The number of spaces to generate
+ * Genees a string with a specified number of spaces
+ * @param {number} numero - The number of spaces to genee
  * @returns {string} A string with the specified number of spaces
  */
 export const space = (numero: number): string => {
@@ -294,39 +296,81 @@ export const replicateString = (str: string, lon: number): string => {
 }
 
 /**
- * Finds the position of a given substring in a string.
- *
- * @param {string} subStr - The substring to search for. Case sensitive
- * @param {string} str - The string to search in.
+ * Equivalente a at() de VFP: Busca subcadena sin distinguir mayúsculas/minúsculas.*
+ * @param {string} cSearch - La subcadena a buscar.
+ * @param {string} cString - La cadena donde buscar.
+ * @param {number} [nOccurrence=1] - Qué ocurrencia buscar (opcional).
  * @returns {number} - The position of the found substring, or -1 if not found.
  */
-export const at = (subStr: string, str: string): number => {
-  return str.indexOf(subStr);
-}
-
-
-/**
- * Finds the position of a given substring in a string. 
- *
- * @param {string} subStr - The substring to search for.
- * @param {string} str - The string to search in.
- * @returns {number} - The position of the found substring, or -1 if not found.
- */
-export const atc = (subStr: string, str: string): number => {
-  subStr = subStr.toUpperCase()
-  str = str.toUpperCase()
-  return str.indexOf(subStr);
+export function atc(cSearch: string, cString: string, nOccurrence?: number): number {
+  if (nOccurrence === undefined) {
+    nOccurrence = 1
+  }
+  cSearch = cSearch.toLowerCase();
+  cString = cString.toLowerCase();
+  return at(cSearch, cString, nOccurrence)
 }
 
 /**
- * Finds the last position of a given substring in a string.
- *
- * @param {string} searchString - The substring to search for. Case sensitive.
- * @param {string} text - The string to search in.
- * @returns {number} - The position of the found substring, or -1 if not found.
+ * Equivalente de ratc() de VFP
+ * @param {string} cSearchFor - Cadena a buscar
+ * @param {string} cSearchIn - Cadena donde buscar
+ * @returns {number} - Posición de la última ocurrencia (1-based)
  */
-export function rat(searchString: string, text: string): number {
-  return text.lastIndexOf(searchString);
+export function ratc(cSearchFor: string, cSearchIn: string): number {
+  cSearchFor = cSearchFor.toLowerCase();
+  cSearchIn = cSearchIn.toLowerCase();
+  return rat(cSearchFor, cSearchIn);
+}
+
+/**
+ * Equivalente de rat() de VFP
+ * @param {string} cSearchFor - Cadena a buscar
+ * @param {string} cSearchIn - Cadena donde buscar
+ * @returns {number} - Posición de la última ocurrencia (1-based)
+ */
+export function rat(cSearchFor: string, cSearchIn: string): number {
+  if (!cSearchFor || !cSearchIn) return 0;
+
+  // lastIndexOf en JS es 0-based, VFP es 1-based.
+  // lastIndexOf devuelve -1 si no encuentra nada.
+  let position = cSearchIn.lastIndexOf(cSearchFor);
+
+  // Si encuentra la subcadena, sumamos 1 para igualar a VFP
+  return position !== -1 ? position + 1 : 0;
+}
+
+
+
+/**
+ * Equivalente a at() de VFP: Busca subcadena sin distinguir mayúsculas/minúsculas.
+ * @param {string} cSearch - La subcadena a buscar.
+ * @param {string} cString - La cadena donde buscar.
+ * @param {number} [nOccurrence=1] - Qué ocurrencia buscar (opcional).
+ * @returns {number} - Posición de inicio (base 1) o 0 si no se encuentra.
+ */
+export function at(cSearch: string, cString: string, nOccurrence?: number): number {
+
+  if (nOccurrence === undefined) {
+    nOccurrence = 1
+  }
+
+  if (!cSearch || !cString || nOccurrence < 1) return 0;
+
+  // Convertir ambas a minúsculas para emular el comportamiento 'case-insensitive'
+
+  let pos = -1;
+  let count = 0;
+
+  // Buscar la ocurrencia n
+  while (count < nOccurrence) {
+    pos = cString.indexOf(cSearch, pos + 1);
+    if (pos === -1) break; // No encontrado
+    count++;
+  }
+
+  // VFP usa base 1, JS usa base 0. Si pos es -1 (no encontrado), devolvemos 0.
+  return pos === -1 ? 0 : pos + 1;
 }
 
 /**

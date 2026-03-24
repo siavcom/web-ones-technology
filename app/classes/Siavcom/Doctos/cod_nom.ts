@@ -46,7 +46,11 @@ export class cod_nom extends CAPTURECOMPONENT {
             return false
         } // End If 
 
+        const cometdo = await currentValue('*', 'cometdo')
+
         const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        this.help.cop_nom = cometdo.cop_nom
+
         if (vi_cap_comedoc.key_pri) { // Documento existente
             const vi_cap_comepag = await localAlaSql('select count(key_pri) as key_pri from vi_cap_comepag where key_pri<>0')
 
@@ -58,13 +62,12 @@ export class cod_nom extends CAPTURECOMPONENT {
             } // End If 
         }
 
-        if (this.Form.prop.tip_cap == 'P' && await select('lla1_pve') > 0) {
+        if (cometdo.cop_nom == 'P' && await select('lla1_pve') > 0) {
             // si es proveedores y esta conectado a contabilidad
             await useNodata('lla1_pve') // use lla1_pve lla1_pve NODATA
 
         } // End If 
 
-        this.Form.Bt_carga_xml.prop.Visble = true
         if (this.Form.cod_cap > '      ') {
             return false
 
@@ -90,19 +93,20 @@ export class cod_nom extends CAPTURECOMPONENT {
 
         const cometdo = await currentValue('*', 'cometdo')
 
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
 
         // rellenamos con ceros a la derecha
         m.cop_nom = this.Form.tip_cap
         m.cod_nom = jus_cer(this.prop.Value, m.cop_nom)
         this.prop.Value = m.cod_nom
 
-        let vi_cap_comenom = await goto(0, 'vi_cap_comenom')
+        let vi_cap_comenom = await currentValue('*', 'vi_cap_comenom')
+        console.log('valid cod_nom comenom=', vi_cap_comenom, m)
         // si cambio de codigo o es un codigo nuevo
-        if (vi_cap_comenom == null || vi_cap_comenom.length == 0 || m.cod_nom != vi_cap_comenom.cod_nom) {
+        if (vi_cap_comenom.length == 0 || m.cod_nom != vi_cap_comenom.cod_nom) {
             await use('vi_cap_comenom', m) // use vi_cap_comenom vi_cap_comenom
-            vi_cap_comenom = await goto(0, 'vi_cap_comenom')
-            console.log('vi_cap_comenom', vi_cap_comenom)
+            vi_cap_comenom = await currentValue('*', 'vi_cap_comenom')
+            console.log('vi_cap_comenom=', vi_cap_comenom)
             if (vi_cap_comenom.length == 0 || vi_cap_comenom == null) // No existe el codigo
                 return false
 
@@ -202,10 +206,18 @@ export class cod_nom extends CAPTURECOMPONENT {
             
                         } // End For; 
             */
+            if (cometdo.cop_nom == 'P' && cometdo.coa_tdo == 'A') {
+                this.Form.Bt_carga_xml.prop.Visible = true
+            }
+
 
             return true
 
         } // End If 
+
+        if (cometdo.cop_nom == 'P' && cometdo.coa_tdo == 'A') {
+            this.Form.Bt_carga_xml.prop.Visible = true
+        }
 
         return true
 

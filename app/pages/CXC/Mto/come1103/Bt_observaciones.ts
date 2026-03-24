@@ -21,7 +21,7 @@ export class Bt_observaciones extends IMGBUTTON {
         this.prop.Disabled = true;
         this.prop.Visible = false;
         this.prop.ToolTipText = "Observaciones del documento";
-        this.style.fontSize = '9px';
+
         this.style.width = '127px';
         this.prop.Position = 'footer';
 

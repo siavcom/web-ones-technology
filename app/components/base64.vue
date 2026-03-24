@@ -1,6 +1,6 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
-  <span :id="Id + '_component'" class="imgButton b64button" :title="This.prop.ToolTipText" :style="Styles.style"
+  <span :id="Id + '_component'" class="imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
 
     <!-- The actual file input element, hidden from view -->
@@ -13,8 +13,8 @@
       :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
 
     <!-- Button for other file types  -->
-    <button :id="Id" v-else :style="inputStyle" @click="triggerFileInput" :disabled="prop.ReadOnly || prop.Disabled">
-      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :style="inputStyle" />
+    <button :id="Id" v-else :style="Styles.style" @click="triggerFileInput" :disabled="prop.ReadOnly || prop.Disabled">
+      <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" />
       <label :id="Id + '_label_'" word-wrap: @click="triggerFileInput">
         {{ prop.Caption.length > 0 ? prop.Caption : 'Load file' }}</label>
     </button>
@@ -199,7 +199,9 @@ if (divStyle.display == "inline-flex")
 
 if (divStyle.display == "99%")
   divStyle.width = "auto"
-
+console.log("Styles.style.backgroundColor", Styles.style.backgroundColor)
+if (Styles.style.backgroundColor == "transparent")
+  Styles.style.backgroundColor = "floralwhite"
 
 const zIndex = divStyle.zIndex
 
@@ -572,7 +574,6 @@ onMounted(async () => {
 
   divStyle.display = 'flex-root'
   divStyle.flexDirection = 'column'
-  divStyle.backgroundColor = 'red'
 
 
   await emitValue(true)
@@ -599,6 +600,6 @@ onMounted(async () => {
 
 <style scoped>
 .button {
-  background-color: bind("props.style.backgroundColor")
+  background-color: bind("Styles.style.backgroundColor")
 }
 </style>

@@ -390,7 +390,7 @@ async function processMessage(wsPeer_old: {}, JSONmessage: string) {
         }
 
 
-        console.log('2) sendDocto SendMail====>>> id_con=', id_con)
+        //console.log('2) sendDocto SendMail====>>> id_con=', id_con)
         const mailServerKey = `mail:${id_con.nom_emp}`
         if (!mailServerKey) {
             webSocketPeer.send({
@@ -404,8 +404,9 @@ async function processMessage(wsPeer_old: {}, JSONmessage: string) {
         //const mailServer = await useStorage().getItem('mail:Server');
         const mailServer = await useStorage().getItem(mailServerKey);
 
-        console.log('2) sendDocto SendMail====>>> mailServer=', mailServer)
+        //console.log('2) sendDocto SendMail====>>> mailServer=', mailServer)
         if (!mailServer) {
+            console.log('2) Error sendDocto SendMail====>>> mailServer=', mailServer)
             webSocketPeer.send({
                 result: 'mailError',
                 message: '3-No se encontro el definido del servidor de correo'
@@ -483,16 +484,19 @@ async function processMessage(wsPeer_old: {}, JSONmessage: string) {
         try { // send mail with defined transport object
 
             const transporter = nodemailer.createTransport(mailServer)
-            await transporter.verify().catch((err) => {
-                console.error("Error while verifying transporter", err);
-                webSocketPeer.send({
-                    result: 'mailError',
-                    message: err
-                });
-                throw err;
-            })
-            console.log("Server is ready to take our messages");
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            await transporter.verify()
+            /* .catch((err) => {
+                 console.log('+++++++++++++++++++++++ ERROR ++++++++++++++++++++++++++++++++++++')
+                 console.error("1) Error while verifying transporter ", err);
+                 errorMessage = err.message
+                 webSocketPeer.send({
+                     result: 'mailError',
+                     message: err.message
+                 });
+
+             })
+             */
+
 
             const mailOptions = {
                 from: `${fromMail}`, // sender address
@@ -509,28 +513,33 @@ async function processMessage(wsPeer_old: {}, JSONmessage: string) {
                 */
             }
 
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-            console.log("Sending mail mailOptions:", mailOptions.to);
+
+            console.log("+++++++++++++++++ Sending mail mailOptions:", mailOptions.to);
             const info = await transporter.sendMail(mailOptions);
-            console.log("Message sent: %s", info.messageId);
+            //console.log("Message sent: %s", info.messageId);
             // Preview URL is only available when using an Ethereal test account
-            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
             webSocketPeer.send({
                 result: 'sentMail',
                 data: info
             });
-            console.log('finally :', info)
+            //console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            console.log('++++++++++++++++++++ finally :', info)
 
         } catch (err) {
-            console.error("4- Error while sending mail err=", err);
+            console.error("=============== ERROR EN EL ENVIO DEL MAIL =====================")
 
             //console.error("4- Error while sending mail", err);
 
+            let message = err.message
+            console.log("4.1- Error while sending mail err=", message);
+
             webSocketPeer.send({
                 result: 'mailError',
-                message: err
+                message: message
             });
+
 
         } finally {
             deleteFiles(fileAttachments)

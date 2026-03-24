@@ -46,12 +46,8 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
         let m = { tdo_tdo: this.Form.tdo_tdo.prop.Value }   // inicializamos m
         // debugger
-        const res = await locateFor(`tdo_tdo='${m.tdo_tdo}'`, 'cometdo')
-        const cometdo = res[0]
-
+        const cometdo = await currentValue('*', 'cometdo')
         // refresca tabla de clasificacion de documentos
-
-
         if (this.Form.Name === 'come1103') { // Cargos y Abonos
             if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' || cometdo.cop_nom + cometdo.coa_tdo == 'PC') {
                 this.Form.d_sal_doc.prop.Caption = 'Aplicado'

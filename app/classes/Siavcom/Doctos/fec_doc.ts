@@ -56,6 +56,7 @@ export class fec_doc extends CAPTURECOMPONENT {
 
         } // End If 
 
+        const cometdo = ('cop_nom,coa_nom', 'cometdo')
 
         return true
 

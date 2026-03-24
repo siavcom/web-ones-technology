@@ -3,10 +3,10 @@
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!-- UButton -->
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
-      :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.captionStyle" :tabindex="prop.TabIndex" @focus="onFocus"
+      :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.style" :tabindex="prop.TabIndex" @focus="onFocus"
       @focusout="focusOut" @click.stop="click">
       <img :id="Id + '_img_'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.inputStyle" @click.stop="click" />{{ prop.Image.length
+        :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.style" @click.stop="click" />{{ prop.Image.length
           == 0 ? prop.Caption
           : '' }}
       <label :id="Id + '_label_'" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
