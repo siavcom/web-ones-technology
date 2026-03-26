@@ -21,17 +21,19 @@ export class IMGBUTTON extends COMPONENT {
     this.prop.BaseClass = 'imgButton';
     this.prop.Position = 'footer'; // main, header , footer
     this.captionStyle = {
-      fontSize: '11px',
+      fontSize: '12px',
       fontWeight: 'bold',
-      color: '#000000',
+      //  color: '#000000',
       textAlign: 'center',
-      minWidth: '-moz-available',
-      background: '#dfdcdc',
-      borderRadius: '5%',
+
+      // background: "floralwhite", //'#dfdcdc',
+      width: '100%',
+      height: '100%',
+      //  borderRadius: '5%',
     }
-    this.style.backgroundColor = "floralwhite"
     this.inputStyle.background = 'white'
     this.inputStyle.color = 'black'
+
 
     Object.assign(this.style, {
       background: 'white',
@@ -41,6 +43,8 @@ export class IMGBUTTON extends COMPONENT {
       borderRadius: '10%',
       boxShadow: "0 4px 8px 0, 0 6px 20px 0",
       boxSizing: "border-box",
+      backgroundColor: "floralwhite"
+
     })
 
 

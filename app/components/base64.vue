@@ -1,7 +1,7 @@
 <template>
   <!--div class="divibutton" v-show="prop.Visible" :style="style"-->
   <span :id="Id + '_component'" class="imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+    v-show="This.prop.Visible" @click.middle.stop="middleClick">
 
     <!-- The actual file input element, hidden from view -->
     <input type="file" ref="fileInput" @change="handleFileChange" :accept="inputStyle.accept" hidden />
@@ -13,9 +13,9 @@
       :id="Id + '_img'" class="img" :src="Value" :alt="prop.Value" :disabled="prop.ReadOnly" :style="inputStyle" />
 
     <!-- Button for other file types  -->
-    <button :id="Id" v-else :style="Styles.style" @click="triggerFileInput" :disabled="prop.ReadOnly || prop.Disabled">
+    <button :id="Id" v-else @click="triggerFileInput" :disabled="prop.ReadOnly || prop.Disabled">
       <img :id="Id + '_img'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" />
-      <label :id="Id + '_label_'" word-wrap: @click="triggerFileInput">
+      <label :id="Id + '_label_'" word-wrap: @click="triggerFileInput" :style="Styles.captionStyle">
         {{ prop.Caption.length > 0 ? prop.Caption : 'Load file' }}</label>
     </button>
 
@@ -24,17 +24,18 @@
     <!--   -->
 
     <!-- Carga archivo  v-if="Value.length > 0"-->
+    <div class="bt_container" :style="{ display: 'flex' }">
+      <img :id="Id + '_bt_load'" class="img" src='/Iconos/svg/upload.svg' :alt="prop.Value"
+        :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;" @click="triggerFileInput"
+        title="Load file" />
+      <!-- Elimina archivo
+        -->
 
-    <img :id="Id + '_bt_load'" class="img" src='/Iconos/svg/upload.svg' :alt="prop.Value"
-      :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;" @click="triggerFileInput"
-      title="Load file" />
-    <!-- Elimina archivo -->
-
-    <img v-if="Value.length > 0" :id="Id + '_bt_delete'" class="img" src="/Iconos/svg/delete-color.svg"
-      :alt="prop.Value" :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;"
-      @click.capture="bt_delete()" title="Delete file" />
-    <div :id="'swal-container' + Id"></div>
-
+      <img v-if="Value.length > 0" :id="Id + '_bt_delete'" class="img" src="/Iconos/svg/delete-color.svg"
+        :alt="prop.Value" :disabled="prop.ReadOnly || prop.Disabled" style="width:32px;height:32px ;"
+        @click.capture="bt_delete()" title="Delete file" />
+      <div :id="'swal-container' + Id"></div>
+    </div>
   </span>
 </template>
 
@@ -221,12 +222,14 @@ const fileInput = ref(null);
 // y llama por medio del valor fileInput.value.click() , es el ref del <input type"file"
 const triggerFileInput = () => {
   fileInput.value.click();
+
 };
 
 // 3. Handle the file selection and load the image for preview
 
 const handleFileChange = (event) => {
   const file = event.target.files[0];
+  console.log("File selected:", file, 'event=', event);
   // if (file && file.type.startsWith('image/')) {
   // Use the FileReader API to read the file and create a data URL for preview
   const reader = new FileReader();
@@ -234,8 +237,17 @@ const handleFileChange = (event) => {
     Value.value = e.target.result;
     emitValue(false, false, Value.value)  // actuliza el valor Value en localAlaSql
     //uploadedImageUrl.value = e.target.result;
+
   };
-  reader.readAsDataURL(file);
+
+  if (accept.value.includes('txt') || accept.value.includes('xml')) {
+    console.log('Reading as text', accept.value);
+    reader.readAsText(file);
+  } else {
+    console.log('Reading as data URL', accept.value);
+    reader.readAsDataURL(file);
+  }
+  This.click()
 
   // You can also use URL.createObjectURL(file) for a simpler preview URL
   // uploadedImageUrl.value = URL.createObjectURL(file);

@@ -152,8 +152,8 @@ export class Bt_dre_doc extends IMGBUTTON {
     override async when() {
         let m = {}   // inicializamos m
         this.prop.Valid = true
-        const cometdo = await goto(0, 'cometdo')
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const cometdo = await currentValue('*', 'cometdo')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
         // solo los pagos fiscales se les puede meter una relacion
         if (cometdo.cop_nom != 'C' || cometdo.NMO_TDO > 0 || cometdo.tip_cfd != 'P') {
             return false

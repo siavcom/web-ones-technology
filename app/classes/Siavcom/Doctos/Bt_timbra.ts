@@ -32,7 +32,7 @@ export class Bt_timbra extends IMGBUTTON {
     let ins_sql = ''
 
     this.prop.Visible = false
-    m = await goto(0, 'vi_cap_comedoc')
+    m = await currentValue('*', 'vi_cap_comedoc')
     if (!await timbraCFDI(m.tdo_tdo, m.ndo_doc))
       return
 

@@ -3,14 +3,13 @@
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!-- UButton -->
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
-      :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.style" :tabindex="prop.TabIndex" @focus="onFocus"
-      @focusout="focusOut" @click.stop="click">
+      :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut"
+      @click.stop="click">
       <img :id="Id + '_img_'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        :disabled="prop.ReadOnly || prop.Disabled" :style="Styles.style" @click.stop="click" />{{ prop.Image.length
-          == 0 ? prop.Caption
-          : '' }}
-      <label :id="Id + '_label_'" v-if="prop.Image.length > 0" :style="Styles.captionStyle" word-wrap:
-        :disabled="prop.ReadOnly || prop.Disabled" v-show="prop.Visible" @click.stop="click">
+        @click.stop="click" :style="Styles.captionStyle" />
+      <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
+      <label :id="Id + '_label_'" v-if="prop.Image.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
+        :style="Styles.captionStyle">
         {{ prop.Image.length > 0 ? prop.Caption : '' }}</label>
     </button>
     <!--/UButton-->
@@ -109,7 +108,8 @@ const This = Component.value  // falta probar reactividad utilizando Component.v
 const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
-const style = reactive({ ...Este.style })
+const divStyle = reactive({ ...Este.style })
+
 let inFocus = false
 /*
 const style.pointerEvents=This.prop.ReadOnly ? 'none' : 'auto'
@@ -122,12 +122,13 @@ const style = computed(() => {
 })
 */
 
-const Styles =
-{
-  captionStyle: captionStyle,
-  inputStyle: inputStyle,
-  style: style
-}
+const Styles = reactive(
+  {
+    captionStyle: captionStyle,
+    inputStyle: inputStyle,
+    style: divStyle,
+    //invalidInputStyle: invalidInputStyle
+  })
 
 //const Id = This.prop.Name + props.Registro.toString().trim()
 
@@ -264,11 +265,6 @@ watch(
   { deep: false }
 )
 
-
-
-
-
-
 onMounted(async () => {
   // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
   thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
@@ -283,13 +279,27 @@ onMounted(async () => {
 
   };
   //  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
+
+
+  if (This.prop.Image.length > 0) {
+    inputStyle.boxShadow = ''
+    divStyle.height = inputStyle.height
+    divStyle.width = inputStyle.width
+  }
+
+  divStyle.display = 'flex-root'
+  divStyle.flexDirection = 'column'
+
+
+  /*
   Styles.inputStyle.width = '100%' //  divStyle.width
+  
   if (This.prop.Image.length > 0) {
     Styles.inputStyle.boxShadow = ''
     Styles.style.height = Styles.inputStyle.height
     Styles.style.width = Styles.inputStyle.width
   }
-
+*/
   This.afterMounted()
   // console.log('Init imgButton Name=', props.prop.Name, 'Src=', props.prop.Image, 'props.Registro=', props.Registro)
 })

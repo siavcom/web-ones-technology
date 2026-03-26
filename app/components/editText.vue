@@ -3,21 +3,21 @@
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-    }}</span>
+      }}</span>
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly || onlyRead" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
-      @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
-      v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
-      v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)" @input.self="onInput"
-      @keydown.delete="keyPress($event)">
+      @focusout="lostFocus" @focus="onFocus" @keydown="keyDown">
+    <!--v-on:keyup.63="clickHelp()" v-on:keyup.13="keyDown"
+      v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown" v-on:keyup.up="keyDown"
+      @input.self="onInput" @keydown.delete="keyDown" -->
 
     <!-- @input.self="onInput"   @click.capture="onClick"
         
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
-      @focusout="lostFocus" @focus="onFocus" @keypress="keyPress($event)" v-on:keyup.63="clickHelp()"
+      @focusout="lostFocus" @focus="onFocus" @keydown="keyDown" v-on:keyup.63="clickHelp()"
       @click.middle.stop="middleClick()" v-on:keyup.delete="key = 127" v-on:keyup.13="key = 13"
       v-on:keyup.backspace="key = 8"
     v-maska="maska" @maska="onMaska"
@@ -31,29 +31,29 @@
 
     <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
-      :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex"
-      @keypress="keyPress($event)" @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)"
-      v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)"
-      v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)">
+      :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex" @keydown="keyDown"
+      @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)">
+    <!--v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
+      v-on:keyup.up="keyDown" v-on:keyup.63="clickHelp()"-->
     <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
     <!--textArea -->
     <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
     <textarea :id="Id + '_textarea'" class="textArea" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
       :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows"
-      :cols='Styles.inputStyle.cols' @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
-      v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)" v-on:keyup.delete="keyPress($event)"
-      v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)" @keydown.delete="keyPress($event)"></textarea>
+      :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus" @focusout="lostFocus"></textarea>
+    <!--v-on:keyup.13="keyDown"
+      v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown" v-on:keyup.up="keyDown"
+      @keydown.delete="keyDown"  -->
     <!--/spam-->
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
     <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly || onlyRead"
-      :tabindex="prop.TabIndex" @keypress="keyPress($event)" @focus="onFocus" @focusout="lostFocus"
-      v-on:keyup.63="clickHelp()" v-on:keyup.13="keyPress($event)" v-on:keyup.backspace="keyPress($event)"
-      v-on:keyup.delete="keyPress($event)" v-on:keyup.down="keyPress($event)" v-on:keyup.up="keyPress($event)"
-      @keydown.delete="keyPress($event)">
+      :tabindex="prop.TabIndex" @focus="onFocus" @focusout="lostFocus" @keydown="keyDown">
+    <!-- v-on:keyup.63="clickHelp()"  v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
+      v-on:keyup.up="keyDown" @keydown.delete="keyDown"-->
     <!--v-on:keyup.enter="clickReturn()" -->
     <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
@@ -88,15 +88,15 @@
     <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
       ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
       :disabled="This.prop.Disabled || (checkValue && checkValueParent)" :tabindex="prop.TabIndex" v-model="checkValue"
-      @focusout="lostFocus" @keypress="keyPress($event)">
+      @focusout="lostFocus" @keydown="keyDown">
 
     <!--  TEXT   -->
     <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :maxlength="MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-      @focusout="lostFocus" @focus="onFocus" v-on:keyup.63="clickHelp()" v-maska="maska" @maska="onMaska"
-      @keypress="keyPress($event)" @keypress.backspace="keyPress($event)" @keypress.delete="keyPress($event)"
-      @keypress.down="keyPress($event)" @keypress.up="keyPress($event)" @keydown.delete="keyPress($event)">
+      @focusout="lostFocus" @focus="onFocus" v-maska="maska" @maska="onMaska" @keydown="keyDown">
+    <!--v-on:keyup.63="clickHelp()"  @keydown.backspace="keyDown" @keydown.delete="keyDown" @keydown.down="keyDown"
+      @keydown.up="keyDown" @keydown.delete="keyDown"  -->
     <!--v-on:keyup.enter="clickReturn()" se quita ya que onFocus es que lo substituye @click.capture="onClick"-->
 
     <!--/span-->
@@ -108,7 +108,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -146,8 +146,6 @@
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
   </span>
 </template>
-
-
 
 <script setup lang="ts">
 //<script setup lang="ts" vapor>
@@ -1024,23 +1022,40 @@ const clickCheckBox = () => {
 
 }
 
+
+const handleBeforeInput = (event) => {
+  // Access the native InputEvent properties (e.g., data, inputType)
+  console.log('beforeinput event triggered:', event.data, event.inputType);
+
+  // Example: Prevent the letter 'a' from being entered
+  if (event.data && event.data.toLowerCase() === 'a') {
+    event.preventDefault(); // Prevents the DOM modification
+    //this.statusMessage = 'The letter "a" is blocked!';
+    console.log('The letter "a" is blocked!');
+  }
+
+}
+
+
 /////////////////////////////////////////////////////////////////////
 // KeyPress
 // Descripcion: Cada tecla que se presiona en el input
 /////////////////////////////////////////////////////////////////
 
-const keyPress = ($event: {
-  charCode: number;
-  preventDefault: () => void;
-  keycode: number; charCod: number;
+const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode: number; charCod: number; }
+  /*  
+  $event: {
+    charCode: number;
+    preventDefault: () => void;
+    keycode: number; charCod: number;
+  
+  }*/
+) => {
 
-}) => {
-  // <input       @keypress="keyPress($event)"
   KeyPressed = true
   This.prop.Valid = false // comenzo a teclear. Apagamos validacion
-  // $event.target.value  valor que tiene el buffer 
-  //console.log('1) >>>>>KeyPress===>', $event.target.value, +$event.charCode)
-  const char = +$event.charCode
+  //console.log('1) >>>>>KeyPress===>', $event, +$event.keyCode)
+  const char = +$event.keyCode
   const Type = propType.value
   if (displayError.value) {
     displayError.value = false
@@ -1049,7 +1064,7 @@ const keyPress = ($event: {
   }
 
   // oprimió ? (help)
-  if ((Type == 'text' || Type == 'number' || Type == 'date') && char == 63) { // '?'
+  if ((Type == 'text' || Type == 'number') && char == 63) { // '?'
     //console.log('1) Help KeyPres==>', $event.charCode)
     //$event.preventDefault()
     clickHelp()
@@ -1059,7 +1074,6 @@ const keyPress = ($event: {
 
   // new KeyboardEvent('keydown', {
   if (Type != 'textarea' && $event.charCode == 13) { //|| // Return
-
     return lostFocus(1)
 
   }
@@ -1068,13 +1082,13 @@ const keyPress = ($event: {
   if (This.prop.Status != 'P')
     This.prop.Status = 'P'
 
-  Key.value = $event.charCode
+  Key.value = char
   This.prop.Key = $event.charCode
 
   /*
     if (Type == 'number') {
       const cha = String.fromCharCode(This.prop.Key) // obtiene el caracter
-      console.log('onMaska keyPress char=', cha)
+      console.log('onMaska keyDown char=', cha)
       const valueText = Value.value.toString()
   
       const pos = valueText.indexOf('.')
@@ -1129,6 +1143,9 @@ const nextElement = async () => {  //clickReturn
   */
 
   for (const element in This.Parent.estatus) {
+    console.log('Parent elemento', element)
+    if (!This.Parent[element]) continue
+
     const Tab = This.Parent[element].prop.TabIndex
 
     if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex) {
@@ -1240,7 +1257,7 @@ const onFocus = async () => {
     }
   }
 
-  // El displayError se apaga en el keyPress cuando es un input text, number o date 
+  // El displayError se apaga en el keyDown cuando es un input text, number o date 
   if ((Type == 'json' || Type == 'checkbox') && displayError.value) {
     displayError.value = false
     if (This.prop.ShowError)
@@ -1460,21 +1477,21 @@ watch(
 // Si se cambia This.prop.Value desde afuera del componente 
 ///////////////////////////////////////
 watch(
-  () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
-
+  () => This.prop.Value,
   async (new_val: any, old_val: any) => {
 
     //if (This.prop.Name == 'cod_non')
-    console.log('1) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
+    console.log('1.0) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
 
     //if (focusIn.value == 1) || sw_emitValue) {// Si tiene el foco deshabilita el watch 19/Feb/2026
-    if (focusIn.value == 1) {// Si tiene el foco deshabilita el watch
-      //sw_emitValue = false 19/Feb/2026
-      return
-    }
-
+    /*
+        if (1 == 0 && focusIn.value == 1) {// Si tiene el foco deshabilita el watch
+          //sw_emitValue = false 19/Feb/2026
+          return
+        }
+    */
     //if (This.prop.Name == 'cod_non')
-    console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val,)
+    console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val)
 
     if (watchPropValue) { // Si se cambio desde el emitValue se ignora
       return

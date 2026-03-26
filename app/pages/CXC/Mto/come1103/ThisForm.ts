@@ -396,6 +396,7 @@ export class ThisForm extends captureForm {
 
 	// tipo de captura, sistema de captura
 	override async init() {
+		if (!await super.init()) return
 		let tip_cap = this.Params[0]
 		let cod_nom = this.Params[1]
 		this.tip_cap = tip_cap
@@ -471,6 +472,7 @@ export class ThisForm extends captureForm {
 			//this.com_doc.prop.Visible = false
 			this.RemoveObject('ven_ven')
 			this.RemoveObject('com_doc')
+			this.RemoveObject('hrs_doc')
 
 			this.cod_nom.prop.InputMask = Public.value.ipr_pge
 		} // End If 
@@ -532,11 +534,9 @@ export class ThisForm extends captureForm {
 		await SQLExec(ins_sql, 'cometdo')
 
 		let cometdo = await goto('TOP', 'cometdo')
-
 		this.tdo_tdo.prop.Value = cometdo.tdo_tdo
 
 		// tabla de seguridad por grupos
-
 		// await rev_seg_doc()
 		// cambiamos por rutina de seguridad
 
@@ -628,6 +628,16 @@ export class ThisForm extends captureForm {
 			this.d_sal_cta.prop.Visible = false
 			this.RemoveObject('rfc_pve')
 		} // End If 
+
+		if (this.prop.tip_cap == 'P') {
+			this.RemoveObject('cba_cba')
+			this.RemoveObject('che_doc')
+			this.RemoveObject('d_fel_doc')
+		}
+		else {
+			this.RemoveObject('rfc_pve')
+		}
+
 		await localAlaSql('CREATE TABLE IF NOT EXISTS now.vcomesal (tdo_tdo CHAR(3),des_tdo CHAR(16),ndo_doc NUMERIC(8),ref_doc CHAR(40),fec_doc DATE (8),fve_doc DATE (8),sal_doc NUMERIC(19,5),dmo_doc CHAR(3),pag_doc NUMERIC(19,5))')
 
 		m.nom_tab = this.prop.Name
@@ -687,7 +697,22 @@ export class ThisForm extends captureForm {
 		this.ap_pagos.c_mon_pag.prop.InputMask = '99,999,999.' + replicateString('9', this.dca_pag)
 		this.ap_pagos.c_mon_pag.prop.Decimals = this.dca_pag
 
-		await super.init()
+
+		// obtenemos datos xml de comepge
+		let nom_cur = 'pgexml'
+		m.nom_tab = 'comepge'
+		m.key_xmd = 1
+
+		const lla1_xmd = await use('lla1_xmd', m) // use vi_lla1_obt_xmd vi_lla1_obt_xmd
+
+		if (lla1_xmd.length > 0) {
+			if (await lla1_xmd.xml_xmd.trim() > ' ') {
+				await xmlToCursor(lla1_xmd.xml_xmd, nom_cur)
+				console.log('Cursor creado:', await localSql(`SELECT * FROM ${nom_cur}`))
+			} // End If 
+		} // End If 
+
+
 	}   // Fin Procedure
 
 	// Evento  :grabar
@@ -1026,6 +1051,7 @@ export class ThisForm extends captureForm {
 			this.Bt_carga_xml.prop.Visible = true
 		}
 
+		// si no es un save, lee el lot tipo de cliente para solo permitir los impuestos segun el tipo de cliente
 		if (!sw_save)
 			this.cod_nom.lee_tdn()
 

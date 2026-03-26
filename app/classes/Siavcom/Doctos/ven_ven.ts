@@ -48,13 +48,13 @@ export class ven_ven extends CAPTURECOMPONENT {
         } // End If 
 
         m.ven_ven = this.prop.Value
-        const lla1_ven = goto(0, 'lla1_ven')
+        const lla1_ven = currentValue('*', 'lla1_ven')
 
         if (lla1_ven == null || m.ven_ven != lla1_ven.ven_ven) {
             // si cambio de vendedor o es un vendedor nuevo
             await use('lla1_ven', m) // use lla1_ven lla1_ven
 
-            const lla1_ven = await goto(0, 'lla1_ven')
+            const lla1_ven = await currentValue('*', 'lla1_ven')
             if (lla1_ven == null)
                 return false
 

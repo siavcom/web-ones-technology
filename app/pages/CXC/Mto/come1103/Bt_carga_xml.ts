@@ -44,23 +44,24 @@ export class Bt_carga_xml extends IMGBUTTON {
         }
         // End If 
         // verificacom si tomamos fecha del xml o la digitada,
-        const pgexml = await currentValue('*', 'pgexml')
-        m.fec_xml_pve = pgexml.fec_xml_pve ? pgexml.fec_xml_pve : 'N'
-        if (m.fec_xml_pve == 'N' && MessageBox('Recuerde digitar la fecha del documento antes de cargar el xml, Continuamos?', 4) != 6) {
+        debugger
+        const pgexml = await localAlaSql('select * from pgexml')
+        m.fec_xml_pve = pgexml[0].fec_xml_pve ? pgexml[0].fec_xml_pve : 'N'
+        if (m.fec_xml_pve == 'N' && await MessageBox('Recuerde digitar la fecha del documento antes de cargar el xml, Continuamos?', 4) != 6) {
             return false
         } // End If 
 
         const cometdo = await currentValue('*', 'cometdo')
-        m.xml_sat = this.prop.Value.trim()
+        m.xml_sat = this.prop.Value
 
         m.xml_sat = m.xml_sat.replaceAll(' "', '"')
         //// lectura archivo xml
         m.xml_sat = m.xml_sat.replaceAll(' =', '=')
-        m.xml_sat = m.xml_sat.replaceAll('= ', '=')
+        m.xml_sat = m.xml_sat.replaceAll('= ', '=').trim()
 
         if (atc(' certificado="', m.xml_sat, 1) > 0) {
             m.xml_sat1 = left(m.xml_sat, atc(' certificado="', m.xml_sat, 1))
-            m.xml_sat2 = right(m.xml_sat, len(m.xml_sat) - atc(' certificado="', m.xml_sat, 1))
+            m.xml_sat2 = right(m.xml_sat, m.xml_sat.length - atc(' certificado="', m.xml_sat, 1))
             let pos_ini = atc('"', m.xml_sat2, 2)
             m.xml_sat = m.xml_sat1 + 'cerfificado=""' + right(m.xml_sat2, len(m.xml_sat2) - pos_ini)
         } // End If 

@@ -62,7 +62,7 @@ export class tcd_tcd extends CAPTURECOMPONENT {
                 // Si hay cuenta bancaria
                 if (vi_cap_cometcd.cba_cba > 0) {
                     await use('lla1_cba', m) // use lla1_cba lla1_cba
-                    const lla1_cba = await goto(0, 'lla1_cba')
+                    const lla1_cba = await currentValue('*', 'lla1_cba')
 
                     // Hay cuenta bancaria
                     if (lla1_cba.mon_cba != null) {
@@ -160,7 +160,7 @@ export class tcd_tcd extends CAPTURECOMPONENT {
                         m.cop_nom = 'N'
                         m.cod_nom = space(12)
         
-                        m = appendM(m, await goto(0, 'vi_cap_cometcd'))// scatter 
+                        m = appendM(m, await currentValue('*', 'vi_cap_cometcd'))// scatter 
         
                         if (m.cba_cba > 0) { // si  hay cuenta bancaria
         
@@ -205,13 +205,13 @@ export class tcd_tcd extends CAPTURECOMPONENT {
             this.prop.Value = vi_cap_cometcd.tcd_tcd
             console.log('tcd_tcd when vi_cap_cometcd', vi_cap_cometcd)
         }
+        if (this.Form.cba_cba) {
+            this.Form.cba_cba.prop.Valid = true
+            this.Form.cba_cba.prop.ReadOnly = true
 
-        this.Form.cba_cba.prop.Valid = true
-        this.Form.cba_cba.prop.ReadOnly = true
-
-        this.Form.che_doc.prop.Valid = true
-        this.Form.che_doc.prop.ReadOnly = true
-
+            this.Form.che_doc.prop.Valid = true
+            this.Form.che_doc.prop.ReadOnly = true
+        }
         if (ReadOnly)
             this.prop.Valid = await this.Valid()
 
@@ -244,7 +244,7 @@ export class tcd_tcd extends CAPTURECOMPONENT {
 
 
 
-        const cometdo = await goto(0, 'cometdo')
+        const cometdo = await currentValue('*', 'cometdo')
 
         if (Public.value.pct_pct == 1 && this.Form.prop.tip_cap == 'P') {     // Si tiene contabilidad  && calcula saldo de chequera
             m.tdo_tdo = this.Form.tdo_tdo.prop.Value

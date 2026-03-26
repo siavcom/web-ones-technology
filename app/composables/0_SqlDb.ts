@@ -365,7 +365,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 * @param m{}              :  Varibles de memoria a pasar
 * @param alias string      : Alias
 * @param order string      : Orden
-* @returns boolean:  - True si la vista se inicializó correctamente, false en caso contrario
+* @returns array|boolean:  - Data Array  del primer renglon resultante o false en caso de error
 **/
 
 export const use = async (
@@ -475,6 +475,8 @@ export const use = async (
                     This.value.View[alias].exp_indice.trim()
                 );
                 console.trace('======ERROR====== ');
+                await MessageBox("Error: USE " + alias + " exp_ind=" +
+                    This.value.View[alias].exp_indice.trim(), 16, 'Front End Error')
 
                 return false;
             }
@@ -486,6 +488,9 @@ export const use = async (
                     " indice=" +
                     This.value.View[alias].exp_indice
                 );
+                await MessageBox("Error: USE " + alias + " Index=" +
+                    This.value.View[alias].exp_indice.trim(), 16, 'Front End Error')
+
                 return false;
             }
         }
@@ -501,6 +506,8 @@ export const use = async (
             } catch (error) {
                 console.error("eval =", val_eval, error);
                 console.trace('======ERROR====== ');
+                await MessageBox("Error: USE " + alias + " Where=" +
+                    val_eval, 16, 'Front End Error')
                 return false;
             }
 
@@ -547,7 +554,8 @@ export const use = async (
         } catch (error) {
             console.error(error);
             console.trace('======ERROR====== ');
-
+            await MessageBox("Error: USE " + alias + " Where=" +
+                val_eval, 16, 'Front End Error')
             return false;
         }
 
@@ -562,17 +570,17 @@ export const use = async (
         //console.log("1 Db Use Axios =====>", dat_vis); // .data
         // This.value.View[alias].m = m; // Variables m para hacer requery
         const data = await axiosCall(dat_vis);
-
-
-
         if (data.length) {
             // No hubo error
             const response = await genera_tabla(data, alias)
             console.log("1) Db Use Axios data=", data, "=====>response=", response); // .data
 
-            return response;
+            const res = await goto('TOP', alias)
+            res.length = 1
+            return res
+            //            return response;
         }
-        else return []; //   { return [] }
+        else return { length: 0 }; //   { return [] }
     } catch (error) {
         console.error("Axios error :", dat_vis, error);
         console.trace('======ERROR====== ');
@@ -583,7 +591,8 @@ export const use = async (
             " " +
             error.response.statusText
         );
-
+        await MessageBox("Error: USE " + alias + " Where=" +
+            This.value.View[alias].exp_indice, 16, 'Back End Error')
         return false;
     }
 };

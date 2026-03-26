@@ -43,7 +43,7 @@ export class Bt_autorizacion extends IMGBUTTON {
 
         } // End If 
 
-        const lla1_seg = await goto(0, 'lla1_seg')
+        const lla1_seg = await currentValue('*', 'lla1_seg')
         let aut_cap = false
         let pas_aut = des_pal(lla1_seg.cla_seg)
         // password de Bt_autorizacion

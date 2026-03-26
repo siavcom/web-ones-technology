@@ -10,7 +10,6 @@ import { FORM } from "@/classes/Form";
 
 import { provide, watch } from 'vue';
 
-
 export class captureForm extends FORM {
   public gridCaptura: [] = [];
   public noData = false;
@@ -44,12 +43,22 @@ export class captureForm extends FORM {
 
   override async init() {
 
+    const session = Session()
+    const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al Global
+
+    if (!(id_con.value > " ")) {
+      console.error('Session not active')
+      window.history.back()
+      return false
+    }
+
     if (this.prop.RecordSource.length > 2)
       await useNodata(this.prop.RecordSource)
     else
       console.warn('.prop.RecordSource empty', this.prop.Name)
 
     this.bt_save.Grid = this.gridCaptura; // asignamos el arreglo de grid
+    return true
   }
 
   /// /////////////////////////////////////
@@ -89,34 +98,34 @@ export class captureForm extends FORM {
    * Obs: this method is inherited and can be modified from the ThisForm.
    */
   //public async inSave_old() { return true }
-
-  async showBt(button: string, valor: boolean) {
-
-    if (this[button].prop.Visible != valor) {
-      // await [button].show.value(valor)
-
-      console.log('shwoBt ', `ThisForm.${button}.prop.Visible=${valor}`)
-
-      //      this.eventos.push(`ThisForm.${button}.prop.Visible=${valor}`)
-
-      const Id = this.Form[button].prop.htmlId + '_main'
-      this.Form[button].prop.Visible = !valor
-      await nextTick()
-      this.Form[button].prop.Visible = valor
-      // this.eventos.push(`ThisForm.${button}.prop.Visible=${valor};` + `NextTick('ThisForm.${button}.prop.Visible=${valor}')`)
-
-      // console.log('shwoBt ', this[button].prop.Visible)
-
-      //await nextTick()
-
-      //this.eventos.push(`nextTick(function () {ThisForm.${button}.prop.Visible=${valor}});`)
-
-      //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
-
-
+  /*
+    async showBt(button: string, valor: boolean) {
+  
+      if (this[button].prop.Visible != valor) {
+        // await [button].show.value(valor)
+  
+        console.log('shwoBt ', `ThisForm.${button}.prop.Visible=${valor}`)
+  
+        //      this.eventos.push(`ThisForm.${button}.prop.Visible=${valor}`)
+  
+        const Id = this.Form[button].prop.htmlId + '_main'
+        this.Form[button].prop.Visible = !valor
+        await nextTick()
+        this.Form[button].prop.Visible = valor
+        // this.eventos.push(`ThisForm.${button}.prop.Visible=${valor};` + `NextTick('ThisForm.${button}.prop.Visible=${valor}')`)
+  
+        // console.log('shwoBt ', this[button].prop.Visible)
+  
+        //await nextTick()
+  
+        //this.eventos.push(`nextTick(function () {ThisForm.${button}.prop.Visible=${valor}});`)
+  
+        //  this.eventos.push('ThisForm.bt_save.prop.Visible=true')
+  
+  
+      }
     }
-  }
-
+  */
   /// /////////////////////////////////////
   // Metodo : before when component
   // Descripcion :Si es un campo llave, inicializa todos los componentes
@@ -159,14 +168,13 @@ export class captureForm extends FORM {
 
   }
 
-  /// /////////////////////////////////////
-  // Metodo : valid
-  // Descripcion : Valida los componentes de la forma. Si es un dato nuevo
-  //              manda refrescar la forma para permitir su captura
-  //              Si no es un dato nuevo: Muestra los datos para permitir su
-  //              modificacion
-  /// /////////////////////////////////////
-
+  /**
+   * @Method : validKeyComponent
+   * @Description : Valida el componete pasado por referecia de la forma. Si es un dato nuevo
+   *              manda refrescar la forma para permitir su captura
+   *              Si no es un dato nuevo: Muestra los datos para permitir su
+   *              modificacion
+   */
   async validKeyComponent(Comp: undefined) {
 
     if (this.sw_update && this.bt_save.prop.Visible)
@@ -174,7 +182,7 @@ export class captureForm extends FORM {
 
     this.sw_update = false
     const thisComp = Comp.value
-    console.log('validKeyComponent Este=', thisComp.prop.Name)
+    //console.log('validKeyComponent Este=', thisComp.prop.Name)
     //if (!compName) return false;
 
     this.prop.RecordSource = this.prop.RecordSource.toLowerCase();
@@ -183,9 +191,6 @@ export class captureForm extends FORM {
     //const { ...m } = Public.value;
     const m = this.Form.mPublic
 
-
-
-    const sw_val = true
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
       /*  if (this[comp].prop.Capture && this[comp].prop.UpdateKey) {
@@ -204,7 +209,9 @@ export class captureForm extends FORM {
   
         }
     */
+      //  console.log("validKeyComponent comp=", comp, "this[comp]=", this[comp])
       if (this[comp].prop.Capture) {
+        //this[comp].prop.Disabled = false
         //          if (this[comp].prop.First)
         //            this.First = this[comp]
         if (this[comp].prop.Type == "number")
@@ -279,7 +286,8 @@ export class captureForm extends FORM {
     }   // Hay datos
 
     //this.sw_update = false
-    this.Recno = data[0].recno;
+    console.log('validKeyComponent data=', data)
+    this.Recno = data.recno;
     this.prop.Status = 'P'
     for (const comp of this.main) {
       const CompCap = this[comp]
@@ -390,10 +398,11 @@ export class captureForm extends FORM {
       }
     } // fin metodo
   */
-  /// //////////////////////////////
-  // Metodo : bt_save
-  // Descripcion : Graba los datos de la forma
-  /// //////////////////////////////
+  /**
+   * @description : Boton para grabar los datos de la forma
+   * @note : 
+   */
+
   public bt_save = new (class extends IMGBUTTON {
     public Grid = [];
     constructor() {
@@ -422,6 +431,15 @@ export class captureForm extends FORM {
 
   });
 
+  /**
+   * @method bt_saveClick
+   * @description :Graba los datos de la forma 
+   * @note : Checa que todos los campos de captura esten validados antes de grabar. 
+   *         No toma en cuenta campo ReadOnly o Disabled
+   * @returns :Verdadeo si se grabo correctamente, falso si no
+   *
+   */
+
   public async bt_saveClick() {
     if (this.prop.RecordSource.length < 2)
       return
@@ -432,7 +450,7 @@ export class captureForm extends FORM {
 
     // Recorremos toda la forma y revisamos si estan validados
     for (const comp of this.main) {
-      if (this[comp].prop.Capture && !this[comp].prop.ReadOnly && this[comp].prop.Visible && !this[comp].prop.Valid) {
+      if (this[comp].prop.Capture && !this[comp].prop.Disabled && !this[comp].prop.ReadOnly && this[comp].prop.Visible && !this[comp].prop.Valid) {
         // tratamos de validar 
         if (!(await this[comp].valid())) {
           console.warn('CaptureForm bt_save click() Invalid comp=', comp)
@@ -480,10 +498,10 @@ export class captureForm extends FORM {
     return resultado;
   }
 
-  /// //////////////////////////////
-  // Metodo : bt_modify
-  // Descripcion : Modifca los datos de la forma
-  /// //////////////////////////////
+  /**
+   * @Method : bt_modify
+   * @Description : Modifca los datos de la forma
+   */
 
   public bt_modify = new (class extends IMGBUTTON {
     constructor() {
@@ -521,10 +539,10 @@ export class captureForm extends FORM {
     return
   }
 
-  /// //////////////////////////////
-  // Metodo : bt_delete
-  // Descripcion : Borra los datos de la forma
-  /// //////////////////////////////
+  /**
+   * @Method : bt_delete
+   * @Description : Boton para borrar los datos de la forma
+   */
 
   public bt_delete = new (class extends IMGBUTTON {
     constructor() {
@@ -547,6 +565,11 @@ export class captureForm extends FORM {
 
   });
 
+
+  /**
+   * @Method : bt_deleteClick
+   * @Description : Click del boton para borrar los datos de la forma
+   */
   public async bt_deleteClick() {
     if (this.prop.Disabled)
       return;
@@ -597,34 +620,11 @@ export class captureForm extends FORM {
   }
 
 
-  /*
 
-  // Metodo		: grabar
-  // Comentarios	: Este metodo es general para todas las rutinas de actualización de datos
-  async grabar(com_gra?: string) {
-
-    if (recCount() == 0) {		// si no hay registro activo
-      return true							// regresa
-    }
-    if (!com_gra) {						// si no se pasan parametros
-      com_gra = 'El registro '	// el comentario de grabación sera "El registro"
-    }
-
-    if (await tableUpdate(0)) {							// graba el registro
-      this.sw_update = false
-      return true
-    }
-    else {
-      return false
-    }
-  }
-
-
-*/
-
-  // Metodo		:rev_per
-  // Comentarios	: Reviza prmisos de seguridad de la tabla comedoc 
-
+  /**
+   * @Method : rev_per
+   * @Description : Reviza prmisos de seguridad de la tabla comedoc 
+   */
   async rev_per(nom_cam: string, sw_mov?: boolean) {
 
     // si es el adminstrador o se dio password de autorización

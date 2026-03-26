@@ -43,7 +43,7 @@ export class captura_xml extends CONTENEDOR_XML {
 
     }
     override async open(): Promise<void> {
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
         if (await super.open('COMEDOC', vi_cap_comedoc.tdo_tdo, vi_cap_comedoc.key_pri))
             this.Form.block[5].prop.Visible = true
         else

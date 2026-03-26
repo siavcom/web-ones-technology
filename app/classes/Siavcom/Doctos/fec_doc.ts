@@ -31,14 +31,15 @@ export class fec_doc extends CAPTURECOMPONENT {
         if (this.Form.prop.key == 27)
             return true
 
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
+        const vi_cap_comenom = await currentValue('*', 'vi_cap_comenom')
 
         if (vi_cap_comedoc.key_pri || await oldValue('fec_doc', 'vi_cap_comedoc') != this.prop.Value) {
             this.Form.fve_doc.prop.Value = this.Form.fec_doc.prop.Value
             //  calculamos fecha de vencimiento
 
             // si es un cliente y un cargo o proveedor y abono
-            const cometdo = await goto(0, 'cometdo')
+            const cometdo = await currentValue('*', 'cometdo')
             if (cometdo.cop_nom + cometdo.coa_tdo == 'CC' || cometdo.cop_nom + cometdo.coa_tdo == 'PA') {
                 this.Form.fve_doc.prop.Value = this.Form.fve_doc.prop.Value + vi_cap_comenom.dcr_nom
             } // End If 
@@ -46,17 +47,20 @@ export class fec_doc extends CAPTURECOMPONENT {
             //this.Form.fve_doc.refresh
         } // End If 
 
-        if (year(this.prop.Value) <= 2000) {
+        let currentYear = year(Public.value.fpo_pge)
+        console.log('fec_doc valid surrentYear=', currentYear)
+        if (year(this.prop.Value) <= currentYear - 10) {
             return false
 
         } // End If 
 
-        if (year(this.prop.Value) >= 2050) {
+        if (month(this.prop.Value) == 12)
+            currentYear++
+
+        if (year(this.prop.Value) > currentYear) {
             return false
 
         } // End If 
-
-        const cometdo = ('cop_nom,coa_nom', 'cometdo')
 
         return true
 

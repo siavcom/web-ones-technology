@@ -37,7 +37,7 @@ export class vmo_doc extends CAPTURECOMPONENT {
     // Comentarios :Es la validación del valor de la moneda
     override async valid(sw_rel?: boolean) {
         let m = {}   // inicializamos m
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
         switch (true) {
             case vi_cap_comedoc.mon_doc == 2:
                 updateCampo(this.prop.Value, 'vi_cap_comedoc.vm2_doc', vi_cap_comedoc.recno)

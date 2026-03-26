@@ -40,7 +40,7 @@ export class par_mon extends PAR_MON {
   }
 
   override async open() {
-    const cometdo = await goto(0, 'cometdo')
+    const cometdo = await currentValue('*', 'cometdo')
     this.block[0].title = this.prop.Messages[0] + cometdo.des_tdo + ' ' + this.Form.ndo_doc.prop.Value.toString()
     super.open()
   }

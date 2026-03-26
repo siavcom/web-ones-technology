@@ -21,15 +21,15 @@ export class Bt_imprime extends IMGBUTTON {
     this.prop.Capture = false;
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/pdf-file.svg"        //print-color3.svg";
-    this.prop.TabIndex = 3
     this.prop.Visible = false
     this.prop.ToolTipText = 'get PDF'
-    this.style.width = '84px'
+    this.prop.Caption = ' Display PDF'
+    this.style.width = '76px'
 
   } // Fin constructor
 
   override async click() {
-    const m = await goto(0, 'vi_cap_comedoc')
+    const m = await currentValue('*', 'vi_cap_comedoc')
     const router = useRouter();
     const path = {
       path: '/VTA/Rep/come5251',

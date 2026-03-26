@@ -225,8 +225,8 @@ export class ap_pagos extends GRID {
         // si no no es un ndocumento de pago 
 
         // Ponemos de solo lectura los controles
-        this.Form.cba_cba.prop.ReadOnly = true
-        this.Form.mon_doc.prop.ReadOnly = true
+        // this.Form.cba_cba.prop.ReadOnly = true
+        //   this.Form.mon_doc.prop.ReadOnly = true
 
         //   this.renglon = 0
         // renglon

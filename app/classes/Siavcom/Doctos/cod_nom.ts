@@ -48,7 +48,7 @@ export class cod_nom extends CAPTURECOMPONENT {
 
         const cometdo = await currentValue('*', 'cometdo')
 
-        const vi_cap_comedoc = await goto(0, 'vi_cap_comedoc')
+        const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
         this.help.cop_nom = cometdo.cop_nom
 
         if (vi_cap_comedoc.key_pri) { // Documento existente
@@ -98,16 +98,20 @@ export class cod_nom extends CAPTURECOMPONENT {
         // rellenamos con ceros a la derecha
         m.cop_nom = this.Form.tip_cap
         m.cod_nom = jus_cer(this.prop.Value, m.cop_nom)
+
         this.prop.Value = m.cod_nom
 
         let vi_cap_comenom = await currentValue('*', 'vi_cap_comenom')
-        console.log('valid cod_nom comenom=', vi_cap_comenom, m)
+
         // si cambio de codigo o es un codigo nuevo
+
         if (vi_cap_comenom.length == 0 || m.cod_nom != vi_cap_comenom.cod_nom) {
-            await use('vi_cap_comenom', m) // use vi_cap_comenom vi_cap_comenom
-            vi_cap_comenom = await currentValue('*', 'vi_cap_comenom')
-            console.log('vi_cap_comenom=', vi_cap_comenom)
-            if (vi_cap_comenom.length == 0 || vi_cap_comenom == null) // No existe el codigo
+            vi_cap_comenom = await use('vi_cap_comenom', m) // use vi_cap_comenom vi_cap_comenom
+            if (!vi_cap_comenom) // error en la llamada
+                return
+
+            console.log('valid cod_nom vi_cap_comenom=', vi_cap_comenom)
+            if (vi_cap_comenom.length == 0) // No existe el codigo
                 return false
 
             if ((cometdo.cop_nom == 'C' && cometdo.coa_tdo == 'C') && (vi_cap_comenom.sta_nom == 'B' || vi_cap_comenom.ecc_nom == 'B')) {
@@ -126,9 +130,6 @@ export class cod_nom extends CAPTURECOMPONENT {
                 return false
 
             } // End If 
-
-
-
             // actualiza el tipo de cliente en comedoc
             await updateCampo(vi_cap_comenom.tip_tdn, 'vi_cap_comedoc.tip_tdn', vi_cap_comedoc.recno)
 
@@ -226,45 +227,50 @@ export class cod_nom extends CAPTURECOMPONENT {
     // Lee el tipo de cliente paea ver que impuestos tiene asignado
     async lee_tdn() {
 
-        const m = await scatter(['cop_nom', 'tip_tdn'], 'vi_cap_comedoc')
-        console.log('lee_tdn', m)
+        const m = await currentValue('cop_nom, tip_tdn', 'vi_cap_comedoc')
         let lla1_tdn = await currentValue('*', 'lla1_tdn')
+        console.log('lee_tdn m=', m)
 
-        if (lla1_tdn == null || lla1_tdn.length == 0 || lla1_tdn.tip_tdn != m.tip_tdn) {
-            await use('lla1_tdn', m) // use lla1_tdn lla1_tdn
-            lla1_tdn = await currentValue('*', 'lla1_tdn')
+        if (lla1_tdn.length == 0 || lla1_tdn.tip_tdn != m.tip_tdn) {
+            lla1_tdn = await use('lla1_tdn', m) // use lla1_tdn lla1_tdn
         }
 
         if (lla1_tdn.ai0_tdn == 0) {
-            this.Form.im0_doc.prop.ReadOnly = true
+            this.Form.im0_doc.prop.Disabled = true
             this.Form.im0_doc.prop.Valid = true
-        } // End If 
+        } else
+            this.Form.im0_doc.prop.Disabled = false
 
         if (lla1_tdn.ai1_tdn == 0) {
-            this.Form.im1_doc.prop.ReadOnly = true
+            this.Form.im1_doc.prop.Disabled = true
             this.Form.im1_doc.prop.Valid = true
-        } // End If 
+        } else
+            this.Form.im1_doc.prop.Disabled = false
 
         if (lla1_tdn.ai2_tdn == 0) {
-            this.Form.im2_doc.prop.ReadOnly = true
+            this.Form.im2_doc.prop.Disabled = true
             this.Form.im2_doc.prop.Valid = true
-        } // End If 
+        } else
+            this.Form.im2_doc.prop.Disabled = false
 
 
         if (lla1_tdn.ai3_tdn == 0) {
-            this.Form.im3_doc.prop.ReadOnly = true
+            this.Form.im3_doc.prop.Disabled = true
             this.Form.im3_doc.prop.Valid = true
-        } // End If 
+        } else
+            this.Form.im3_doc.prop.Disabled = false
 
         if (lla1_tdn.ai4_tdn == 0) {
-            this.Form.im4_doc.prop.ReadOnly = true
+            this.Form.im4_doc.prop.Disabled = true
             this.Form.im4_doc.prop.Valid = true
-        } // End If 
+        } else
+            this.Form.im4_doc.prop.Disabled = false
 
         if (lla1_tdn.ai5_tdn == 0) {
-            this.Form.im5_doc.prop.ReadOnly = true
+            this.Form.im5_doc.prop.Disabled = true
             this.Form.im5_doc.prop.Valid = true
-        } // End If 
+        } else
+            this.Form.im5_doc.prop.Disabled = false
 
     }
     //metodo

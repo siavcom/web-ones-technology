@@ -21,7 +21,7 @@
 
     <span :id="Id + '_span'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -59,8 +59,7 @@
     <div :id="Id + '_selectOne'" v-else class="comboBox text" ref="RefCombo" :style='comboStyle'>
       <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled"
         :readonly="prop.ReadOnly || onlyRead" :value="displayText" :tabindex="prop.TabIndex" ref="Ref"
-        @keypress="keyPress($event)" @focus.prevent="toggle = false; onFocus()"
-        @focusout="focusIn = false; emitValue()" />
+        @keydown="keyDown" @focus.prevent="toggle = false; onFocus()" @focusout="focusIn = false; emitValue()" />
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
@@ -99,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!-- <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -611,12 +610,13 @@ const toggleClick = async () => {
   comboStyle.zIndex = toggle.value ? zIndex.value + 2 : zIndex.value
 }
 ////////////////////////////////////////////////////////////////////
-// KeyPress
+// keyDown
 // Descripcion: Cada tecla que se presiona en el input
 /////////////////////////////////////////////////////////////////
 
-const keyPress = ($event) => {
-  //console.log('1) >>>>>KeyPress===>', This.prop.ReadOnly) //, $event.target, $event.target.value)
+const keyDown = ($event: { charCode: number, keyCode: number }) => {
+  //console.log('1) >>>>>keyDown===>', This.prop.ReadOnly) //, $event.target, $event.target.value)
+  const char = +$event.keyCode
   if (This.prop.ReadOnly || This.prop.Disabled) return
   if (displayError.value) {
     displayError.value = false
@@ -631,13 +631,15 @@ const keyPress = ($event) => {
 
   //console.log('comboBox Name=',This.Name,'Key=',$event.charCode)
 
-  if ($event.charCode == 32) {
+  //  if ($event.charCode == 32) {
+  if (char == 32) {
     inputBuffer = ''
     toggle.value = true
 
   }
 
-  let Key: string = String.fromCharCode($event.charCode)
+  //let Key: string = String.fromCharCode($event.charCode)
+  let Key: string = String.fromCharCode(char)
   Key = Key.toUpperCase()
   const buffer = inputBuffer + Key
   This.prop.Valid = false

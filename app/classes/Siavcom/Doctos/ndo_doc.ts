@@ -127,7 +127,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
             m.tip_dia = ''
             m.cta_cta = ''
             if (records[0])
-                m = await goto(0, 'comedia')
+                m = await currentValue('*', 'comedia')
 
             if (m.tip_dia.trim() == 'CH') {
                 if (m.cta_cta.trim() == '')
@@ -234,8 +234,13 @@ export class ndo_doc extends CAPTURECOMPONENT {
                 } // End If 
 
 
-
             } // End For; 
+            this.Form.im0_doc.prop.Disabled = true
+            this.Form.im1_doc.prop.Disabled = true
+            this.Form.im2_doc.prop.Disabled = true
+            this.Form.im3_doc.prop.Disabled = true
+            this.Form.im4_doc.prop.Disabled = true
+            this.Form.im5_doc.prop.Disabled = true
 
             // asignamos fecha contable
 
@@ -271,7 +276,8 @@ export class ndo_doc extends CAPTURECOMPONENT {
             if (this.Form.num_pry)
                 await this.Form.num_pry.valid()   // validamos el número de proyecto
 
-            await this.Form.cba_cba.leeChequeras()  // obtenemos datos de  chequera
+            if (this.Form.cba_cba)
+                await this.Form.cba_cba.leeChequeras()  // obtenemos datos de  chequera
 
             if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' || cometdo.cop_nom + cometdo.coa_tdo == 'PC') {
                 await this.Form.Do_nopagados.open()

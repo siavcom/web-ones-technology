@@ -746,7 +746,7 @@ export const day = (dateString: string): number => {
 
 
 /**
- * Returns the month from a given date string.
+ * @description Returns the month from a given date string.
  * 
  * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
  * @returns {number} - The month as a number (1-12).
@@ -755,11 +755,10 @@ export const day = (dateString: string): number => {
 export const month = (dateString: string): number => {
   const currentDate = new Date(dateString); // Creates a Date object for the current date and time
   return currentDate.getMonth() + 1; // Retrieves the month (0-11) and adds 1 to get the month number (1-12)  
-
 }
 
 /**
- * Returns the year from a given date string.
+ * @description Returns the year from a given date string.
  * 
  * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
  * @returns {number} - The year as a number.
@@ -768,12 +767,10 @@ export const month = (dateString: string): number => {
 export const year = (dateString: string): number => {
   const currentDate = new Date(dateString); // Creates a Date object for the current date and time
   return currentDate.getFullYear();
-
 }
 
-
 /**
- * Returns the day of the week from a given date string.
+ * @description : Returns the day of the week from a given date string.
  * 
  * @param {string} dateString - The date string in format 'AAAA-MM-DD'.
  * @returns {number} - The day of the week as a number (0-6), where 0 is Sunday and 6 is Saturday.
@@ -790,7 +787,7 @@ export const getDay = (dateString: string): number => {
 // Filtra un array segun el valor del filter= { Position: "header" }
 
 /**
- * Filtra un array segun el valor del filter= { Position: "header" }
+ * @description : Filtra un array segun el valor del filter= { Position: "header" }
  * @param {Array} array - Arreglo de objetos.
  * @param {Object} filters - Objeto con las claves y valores a filtrar, ejemplo. { Position: "header" }
  * @returns {Array} - Un nuevo array con los elementos filtrados.
@@ -807,9 +804,8 @@ export const multiFilter = (array: [], filters: {}): Array<any> => {
 // Funciones de números
 ///////////////////////////////////////////////
 
-
 /**
- * Returns the integer part of a given number.
+ * @description : Returns the integer part of a given number.
  * @param {number} numero - Number to get the integer part of.
  * @returns {number} - The integer part of the number.
  */
@@ -819,7 +815,7 @@ export const int = (numero: number) => {
 
 
 /**
- * Convierte un número en una cadena con separadores de miles, decimales y signo.
+ * @description : Convierte un número en una cadena con separadores de miles, decimales y signo.
  * @param {number} val - Número a convertir.
  * @param {string} [currency] - Moneda a utilizar ('MXN', 'EUR', 'USD'). Default: ""
  * @param {number} [integers] - Número de enteros a mostrar. Default: 0
@@ -897,8 +893,9 @@ export const numberFormat = (
 //////////////////////////////////////////////
 
 /**
- * Funcion que devuelve un valor dependiendo de una condicion.
- * Si la condicion es verdadera devuelve el primer valor, si es falsa devuelve el segundo.
+ * @description : Funcion que devuelve un valor dependiendo de una condicion.
+                  Si la condicion es verdadera devuelve el primer valor,
+                  si es falsa devuelve el segundo valor.
  * @param condicion - condicion a evaluar
  * @param verdadero - valor a devolver si la condicion es verdadera
  * @param falso - valor a devolver si la condicion es falsa
@@ -919,7 +916,7 @@ export const iif = (condicion: boolean, verdadero: any, falso: any): any => {
 // 
 
 /**
- * Muestra un mensaje de processing
+ * @description : Muestra un mensaje de processing
  * @param texto - Texto a mostrar en la alerta.
 */
 
@@ -937,7 +934,10 @@ export function Processing(texto?: string) {
   });
 
 }
-
+/**
+ * @description : Cierra el mensaje de processing y muestra un mensaje de éxito o error.
+ * @param texto - Texto a mostrar en la alerta.
+ */
 export function closeProcessing(texto?: string) {
   if (!texto) texto = 'Success'
   Swal.close(); // Close the processing alert first
@@ -1231,7 +1231,7 @@ export async function MessageBox(
 /////////////////////////////////////////////
 
 /**
- * Delay the execution of the next line of code by a given number of milliseconds.
+ * @description : Delay the execution of the next line of code by a given number of milliseconds.
  * @param {number} ms - The number of milliseconds to delay.
  * @returns {Promise<void>} - A promise that resolves after the given number of milliseconds has passed.
  */
@@ -1249,7 +1249,7 @@ export async function Delay(ms: number): Promise<void> {
 
 
 /**
- * Crea un array de dos dimensiones con la cantidad de filas especificadas
+ * @description : Crea un array de dos dimensiones con la cantidad de filas especificadas
  * @param {number} rows - La cantidad de filas que se desean en el array
  * @returns {array} - Un array de dos dimensiones con la cantidad de filas especificadas
  */
@@ -1272,9 +1272,7 @@ export function Dime2D(rows: number): Array<any> {
 /////////////////////////////////////////////
 
 /**
- * objToLowerCase
- * 
- * Recorre un objeto y pasa sus nombres a lowercase
+ * @description : Recorre un objeto y pasa sus nombres a lowercase
  * 
  * @param {object} data - objeto a recorrer
  * @returns {object} objeto con nombres de propiedades en lowercase
@@ -1296,12 +1294,12 @@ export function objToLowerCase(data: {}): object {
       objeto[i][ele.toLowerCase()] = data[i][ele]
     }
   }
-  console.log('objToLowerCase renglones res=', objeto)
+  // console.log('objToLowerCase renglones res=', objeto)
   return objeto
 }
 
 /**
- * Rounds a number to a specified number of decimal places.
+ * @description : Rounds a number to a specified number of decimal places.
  * @param {number} n The number to round.
  * @param {number} [digits=0] The number of decimal places to round to.
  * @returns {number} The rounded number.
@@ -1325,7 +1323,7 @@ export function sleep(sleepDuration: number) {
 }
 
 /**
- * Importa un componente de manera asíncrona
+ * @description : Importa un componente de manera asíncrona para uso en components
  * @param {string} name nombre del coponente a importar
  * @returns {object} componente importado.
  * Nota : No se pude definir defineAsyncComponent(()
@@ -1383,6 +1381,7 @@ export function impComponent(name: string): object {
     }
   }
 }
+
 //////////////////////////////////////////////
 // Clase : consoleLog
 // @author: Fernando Cuadras Angulo
