@@ -1,30 +1,27 @@
 //////////////////////////////////////////////
 // This Form was generated automatically for web-ones-technology
 // @baseClass  : Component
-// @class : nom_pve
-// Description : Componente nom_pve
+// @class : top_nom
+// Description : Componente top_nom
 // @author: El Fer Blocks (Fernando Cuadras)
 // Creation : 24/07/25
 // Update Date  :
 /////////////////////////////////////////////
 // import { COMPONENT } from "@/classes/Component";
-
 //imports
 
-export class nom_pve extends COMPONENT {
+export class top_nom extends COMPONENT {
     //public
     constructor() {
         super();
 
-        this.prop.Type = 'text';
-        this.prop.ControlSource = "lla1_pve.nom_pve";
-        this.style.DisabledBackColor = 'rgb(234, 234, 234)'
-        this.prop.ReadOnly = false;
-        this.style.width = '200px';
+        this.prop.Caption = "SAT Tipo de Operacion";
+        this.prop.ControlSource = "lla1_pve.top_pve";
+
+        this.style.width = '35px';
 
         //propiedades
     }
-
 
 
     override async when() {
@@ -35,5 +32,6 @@ export class nom_pve extends COMPONENT {
         } // End If 
         return true
     }   // Fin Procedure
+
     //metodo
 }

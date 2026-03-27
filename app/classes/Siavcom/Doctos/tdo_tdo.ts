@@ -40,13 +40,13 @@ export class tdo_tdo extends CAPTURECOMPONENT {
         const cometdo = await locateFor(`tdo_tdo='${this.prop.Value}'`, 'cometdo')
 
         if (cometdo.cop_nom + cometdo.coa_tdo == 'CA' ||
-            cometdo.cop_nom + cometdo.coa_tdo == 'PA' ||
+            cometdo.cop_nom + cometdo.coa_tdo == 'PC' ||
             cometdo.cop_nom + cometdo.coa_tdo == 'CN' ||
             cometdo.cop_nom + cometdo.coa_tdo == 'PN' ||
             cometdo.inv_tdo == 'P')
-            this.Form.fve_doc.prop.Visible = true
-        else
             this.Form.fve_doc.prop.Visible = false
+        else
+            this.Form.fve_doc.prop.Visible = true
 
         return true
     }   // Fin Procedure
@@ -77,6 +77,17 @@ export class tdo_tdo extends CAPTURECOMPONENT {
 
             this.Form.aut_cap = false
             this.Form.d_sal_cta.prop.Value = 0
+            if (this.Form.tip_cap == 'P') {
+                this.Form.rfc_pve.nom_pve.prop.Visible = false
+                this.Form.rfc_pve.tte_nom.prop.Visible = false
+                this.Form.rfc_pve.top_nom.prop.Visible = false
+                this.Form.rfc_pve.iva_pve.prop.Visible = false
+                this.Form.rfc_pve.obs_pve.prop.Visible = false
+                this.Form.rfc_pve.bt_graba_pve.prop.Visible = false
+            }
+
+
+
         } else {
             // Otros formularios
             this.Form.sw_aut = false

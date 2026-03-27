@@ -53,7 +53,6 @@ import { che_doc } from './che_doc';
 //import { co_xml } from './co_xml';
 import { cod_nom } from '@/classes/Siavcom/Doctos/cod_nom';
 import { rfc_pve } from "./rfc_pve";
-
 //import { Bt_apl_pag } from './Bt_apl_pag';
 import { d_coa_tdo } from '@/classes/Siavcom/Doctos/d_coa_tdo';
 import { d_sta_doc } from '@/classes/Siavcom/Doctos/d_sta_doc';
@@ -85,7 +84,7 @@ import { Bt_observaciones } from './Bt_observaciones';
 //import { Otro } from './Otro';
 
 import { suc_pge } from '@/classes/Siavcom/Doctos/suc_pge';
-import { top_nom } from './top_nom';
+import { top_nom } from './rfc_pve/top_nom';
 
 
 //import { Bt_veri_xml } from './Bt_veri_xml';
@@ -308,7 +307,6 @@ export class ThisForm extends captureForm {
 			[4]: this.d_sta_doc,
 			[5]: this.ref_doc,
 			[6]: this.cod_nom,
-
 			[7]: this.rfc_pve,
 			[8]: this.cba_cba,
 			[9]: this.d_sal_cta,
@@ -438,6 +436,7 @@ export class ThisForm extends captureForm {
 		} // End If 
 
 		if (tip_cap == 'C') {
+			this.RemoveObject('rfc_pve')
 
 			if (doc_dis) {
 				this.prop.Caption = this.prop.Messages[1]
@@ -467,12 +466,26 @@ export class ThisForm extends captureForm {
 			//   thisform.caption='Mantenimiento a cargos y abonos de proveedores'    && imprime el titulo
 			// deshabilitamos cargar xmls
 
-			// desaparecemos datos de vendedores
-			//this.ven_ven.prop.Visible = false
-			//this.com_doc.prop.Visible = false
+			// desaparecemos datos que nos son de proveedores
+
 			this.RemoveObject('ven_ven')
 			this.RemoveObject('com_doc')
 			this.RemoveObject('hrs_doc')
+			this.RemoveObject('cba_cba')
+			this.RemoveObject('che_doc')
+			this.RemoveObject('d_fel_doc')
+
+			// solo se habilita si esta activada la contabilidad y es cuentas
+			// por pagar
+			if (Public.value.pct_pct == 1) {
+
+				await SQLExec("select dia_dia , mon_dia From vi_cap_comedia", 'comedia')
+				//    * USE vi_cap_dia ALIAS comedia
+				// provvedores varios en contabilidad
+				this.d_sal_cta.prop.Visible = true
+			}
+
+
 
 			this.cod_nom.prop.InputMask = Public.value.ipr_pge
 		} // End If 
@@ -514,6 +527,7 @@ export class ThisForm extends captureForm {
 		   ${iif(doc_dis, 'nmo_tdo = 0', '0=0')} `   // nmo_doc= numero de movimientos 
 
 		if (tip_cap == 'C') {
+
 			/*
 			let res = await localAlaSql(`INSERT INTO cometdo select * ,\
 					 iif ( coa_tdo = 'C' , ${this.prop.Messages[9]}, iif ( coa_tdo = 'A' ,    ${this.prop.Messages[7]} , ${this.prop.Messages[8]} ) )  \
@@ -524,11 +538,11 @@ export class ThisForm extends captureForm {
 
 			//NOFILTER READWRITE
 		} else {
+
 			ins_sql += ` Order By coa_tdo desc, des_tdo `
 			/*let res = await localAlaSql(`INSERT INTO cometdo select * , \
 					iif ( coa_tdo = 'C' , ${this.prop.Messages[9]} , iif ( coa_tdo = 'A' , ${this.prop.Messages[7]} ,  ${this.prop.Messages[8]} ) ) As afe_tdo From vi_cap_tdo where coa_tdo$'CA' AND cop_nom = tip_cap AND iif ( doc_dis , nmo_tdo = 0 , true ) Order By coa_tdo Desc , des_tdo `)
 		   */
-			//NOFILTER READWRITE
 		} // End If 
 
 		await SQLExec(ins_sql, 'cometdo')
@@ -612,31 +626,8 @@ export class ThisForm extends captureForm {
 			this.sw_pga = true
 		} // End If 
 
-		if (Public.value.pct_pct == 1 && this.prop.tip_cap == 'P') {
-			// solo se habilita si esta activada la contabilidad y es cuentas
-			// por pagar
+		this.d_sal_cta.prop.Visible = false
 
-			let res = await localAlaSql("INSERT INTO comedia select dia_dia , mon_dia From vi_cap_dia")
-			//    * USE vi_cap_dia ALIAS comedia
-			await useNodata('lla1_pvd') // use lla1_pvd lla1_pvd Nodata
-			// provvedores varios en contabilidad
-			this.d_sal_cta.prop.Visible = true
-
-
-		} else {
-			// quita los objetos que no se utilizan en Cuentas por cobrar
-			this.d_sal_cta.prop.Visible = false
-			this.RemoveObject('rfc_pve')
-		} // End If 
-
-		if (this.prop.tip_cap == 'P') {
-			this.RemoveObject('cba_cba')
-			this.RemoveObject('che_doc')
-			this.RemoveObject('d_fel_doc')
-		}
-		else {
-			this.RemoveObject('rfc_pve')
-		}
 
 		await localAlaSql('CREATE TABLE IF NOT EXISTS now.vcomesal (tdo_tdo CHAR(3),des_tdo CHAR(16),ndo_doc NUMERIC(8),ref_doc CHAR(40),fec_doc DATE (8),fve_doc DATE (8),sal_doc NUMERIC(19,5),dmo_doc CHAR(3),pag_doc NUMERIC(19,5))')
 

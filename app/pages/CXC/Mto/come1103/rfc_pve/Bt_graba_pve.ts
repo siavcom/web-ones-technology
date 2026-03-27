@@ -19,7 +19,7 @@ export class bt_graba_pve extends IMGBUTTON {
         this.prop.Caption = "Graba";
         this.style.fontSize = '8px';
         this.style.width = '74px';
-        this.prop.Position = 'footer'; // main, header , footer
+
         //propiedades
     }
 

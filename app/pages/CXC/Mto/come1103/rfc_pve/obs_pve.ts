@@ -17,6 +17,7 @@ export class obs_pve extends COMPONENT {
         super();
         this.prop.Caption = "Bt_observaciones";
         this.prop.ControlSource = "lla1_pve.obs_pve";
+
         this.style.width = '346px';
 
         //propiedades

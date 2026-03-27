@@ -102,6 +102,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
     // Tipo   :Cuadro de texto
     // Comentarios :Es la validación de la llave principal
     override async valid() {
+        let m = {}
 
         /*      if (this.Form.prop.key == 27 || this.Form.prop.key == 15) {
                   this.prop.Valid = false
@@ -133,7 +134,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
                 if (m.cta_cta.trim() == '')
                     m.cta_cta = cometdo.ctb_tdo.trim()
 
-                this.Form.d_sal_cta.prop.Value = cal_sal_cta(cta_cta, Public.value.fpo_pge, m.mon_dia)
+                this.Form.d_sal_cta.prop.Value = await cal_sal_cta(m.cta_cta, Public.value.fpo_pge, m.mon_dia)
                 this.Form.d_sal_cta.prop.Currency = Public.value.des_mon1(m.mon_dia)
                 this.Form.d_sal_cta.prop.Caption = 'Saldo al ' + new Date(Public.value.fpo_pge)
                 this.Form.d_sal_cta.prop.Visible = true
@@ -145,7 +146,7 @@ export class ndo_doc extends CAPTURECOMPONENT {
 
         let vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
         console.log('valid ndo_doc vi_cap_comedoc=', vi_cap_comedoc)
-        let m = { ...vi_cap_comedoc }   // inicializamos m
+        m = { ...vi_cap_comedoc }   // inicializamos m
 
         // Tabla de clasificacion de documentos
         let vi_cap_cometcd = await currentValue('*', 'vi_cap_cometcd')

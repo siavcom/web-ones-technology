@@ -269,67 +269,8 @@ export class Bt_carga_xml extends IMGBUTTON {
                 //   this.Form.mon_doc.refresh
             } // End If fin Lectura cod_nom *******
 
-
             m = appendM(m, await scatter('*', 'vi_cap_comenom'))// scatter 
-            /*
-                      // seguridad por sucursales
-                      // si no tiene sucursal el cliente o proveedor
-                      // si no tiene sucirsal el usuario
-                      // o es diferente la sucursal del cliente o proveedor
-                      // a la del usuario
-                      if (Public.value.sucursal != '   ' && Public.value.sucursal != Public.value.suc_pge && Public.value.suc_pge != '   ') {
-                          MessageBox('Cliente de otra sucursal')
-                          return false
-                      } // End If 
-          */
 
-            /*
-                        await use('lla1_tdn', m) // use lla1_tdn lla1_tdn
-                        const lla1_tdn=await currentValue('*','lla1_tdn')
-            
-                        if (lla1_tdn.ai0_tdn == 1) {
-                            this.Form.im0_doc.prop.Visible = true
-                        } else {
-            
-                            this.Form.im0_doc.prop.Visible = false
-                        } // End If 
-            
-                        if (lla1_tdn.ai1_tdn == 1) {
-                            this.Form.im1_doc.prop.Visible = true
-                        } else {
-            
-                            this.Form.im1_doc.prop.Visible = false
-                        } // End If 
-            
-                        if (lla1_tdn.ai2_tdn == 1) {
-                            this.Form.im2_doc.prop.Visible = true
-                        } else {
-            
-                            this.Form.im2_doc.prop.Visible = false
-                        } // End If 
-            
-                        if (lla1_tdn.ai3_tdn == 1) {
-                            this.Form.im3_doc.prop.Visible = true
-                        } else {
-            
-                            this.Form.im3_doc.prop.Visible = false
-                        } // End If 
-            
-                        if (lla1_tdn.ai4_tdn == 1) {
-                            this.Form.im4_doc.prop.Visible = true
-                        } else {
-            
-                            this.Form.im4_doc.prop.Visible = false
-                        } // End If 
-            
-                        if (lla1_tdn.ai5_tdn == 1) {
-                            this.Form.im5_doc.prop.Visible = true
-                        } else {
-            
-                            this.Form.im5_doc.prop.Visible = false
-                        } // End If 
-            
-                        */
         } // End If 
 
         // fin de if de pve de siavcom

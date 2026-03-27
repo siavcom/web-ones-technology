@@ -20,6 +20,7 @@ export class iva_pve extends COMPONENT {
         this.prop.ControlSource = "lla1_pve.iva_pve";
         this.prop.Decimals = 3;
         this.prop.InputMask = "99.999";
+
         this.style.width = '60px';
 
         //propiedades

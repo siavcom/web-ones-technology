@@ -245,7 +245,7 @@ export class captureForm extends FORM {
 
     let key_pri = 0;
 
-    if (data.length == 0) {
+    if (data === null) {
       //      this.sw_update = true
 
       // No hay datos

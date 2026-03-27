@@ -94,6 +94,7 @@ export class cod_nom extends CAPTURECOMPONENT {
         const cometdo = await currentValue('*', 'cometdo')
 
         const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
+        console.log('gather vi_cap_comedoc', vi_cap_comedoc)
 
         // rellenamos con ceros a la derecha
         m.cop_nom = this.Form.tip_cap
@@ -107,11 +108,12 @@ export class cod_nom extends CAPTURECOMPONENT {
 
         if (vi_cap_comenom.length == 0 || m.cod_nom != vi_cap_comenom.cod_nom) {
             vi_cap_comenom = await use('vi_cap_comenom', m) // use vi_cap_comenom vi_cap_comenom
-            if (!vi_cap_comenom) // error en la llamada
-                return
-
+            if (!vi_cap_comenom) { // error en la llamada
+                console.trace('valid cod_nom Error al llamar el back-end')
+                return false
+            }
             console.log('valid cod_nom vi_cap_comenom=', vi_cap_comenom)
-            if (vi_cap_comenom.length == 0) // No existe el codigo
+            if (vi_cap_comenom === null) // No existe el codigo
                 return false
 
             if ((cometdo.cop_nom == 'C' && cometdo.coa_tdo == 'C') && (vi_cap_comenom.sta_nom == 'B' || vi_cap_comenom.ecc_nom == 'B')) {
@@ -131,8 +133,9 @@ export class cod_nom extends CAPTURECOMPONENT {
 
             } // End If 
             // actualiza el tipo de cliente en comedoc
-            await updateCampo(vi_cap_comenom.tip_tdn, 'vi_cap_comedoc.tip_tdn', vi_cap_comedoc.recno)
 
+            await gather(vi_cap_comenom, 'vi_cap_comedoc')
+            console.log('valid cod_nom', await currentValue('*', 'vi_cap_comedoc'))
             await this.lee_tdn() // lee tipo de cliente
             /*
             {
@@ -179,44 +182,30 @@ export class cod_nom extends CAPTURECOMPONENT {
         } // End If 
 
 
-        // Proveedores varios
-        if (this.Form.prop.tip_cap == 'P' && View['lla1_pve']) {
-            // si es proveedores y esta conectado a contabilidad
-            m.rfc_pve = vi_cap_comenom.rfc_nom
+        // Proveedores varios solo si esta conectado con contabilidad
+        // Aqui me quede 
+        if (this.Form.prop.tip_cap == 'P') {
+            if (Public.value.pct_pct == 1) {
+                m.rfc_pve = vi_cap_comenom.rfc_nom.trim()
 
-            await use('lla1_pve', m)
-
-            if (await recCount() == 0) {
-                // si no esta dado de alta en proveedores varios
-                await appendBlank('lla1_pve')
-                await updateCampo(m.rfc_nom, 'lla1_pve.rfc_pve', 1)
-                await updateCampo(vi_cap_comenom.nom_nom, 'lla1_pve.nom_pve', 1)
-                await updateCampo(vi_cap_comenom.tte_nom, 'lla1_pve.tte_pve', 1)
-                await updateCampo(vi_cap_comenom.top_nom, 'lla1_pve.top_pve', 1)
+                if (m.rfc_pve.length == 0 || await use('lla1_pve', m) == null) {
+                    // si no esta dado de alta en proveedores varios
+                    await useNodata('lla1_pve')
+                    await appendBlank('lla1_pve', m)
+                    await updateCampo(m.rfc_nom, 'lla1_pve.rfc_pve', 1)
+                    await updateCampo(vi_cap_comenom.nom_nom, 'lla1_pve.nom_pve', 1)
+                    await updateCampo(vi_cap_comenom.tte_nom, 'lla1_pve.tte_pve', 1)
+                    await updateCampo(vi_cap_comenom.top_nom, 'lla1_pve.top_pve', 1)
+                    this.Form.rfc_pve.prop.Visible = true
+                    nextTick(() => {
+                        this.Form.rfc_pve.prop.Focus = true
+                    })
+                } else
+                    this.Form.rfc_pve.prop.Visible = false
 
             } // End If 
-            this.Form.rfc_pve.prop.Visible = true
-            /*            for (const Control of this.Form.main) {
-                            // quitamos que solo es de lectura
-                            const Comp = this.Form[Control]
-                            if (substr(Comp.prop.Name, 4, 1) == '_' && left(Comp.prop.ControlSource, 11) == 'lla1_pve') {
-                                Control.prop.ReadOnly = false
-                                // no permitimos captura
-                                Control.Refresh
-                            } // End If 
-            
-                        } // End For; 
-            */
-            if (cometdo.cop_nom == 'P' && cometdo.coa_tdo == 'A') {
-                this.Form.Bt_carga_xml.prop.Visible = true
-            }
 
 
-            return true
-
-        } // End If 
-
-        if (cometdo.cop_nom == 'P' && cometdo.coa_tdo == 'A') {
             this.Form.Bt_carga_xml.prop.Visible = true
         }
 

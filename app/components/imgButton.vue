@@ -8,10 +8,11 @@
       <img :id="Id + '_img_'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
         @click.stop="click" :style="Styles.captionStyle" />
       <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
-      <label :id="Id + '_label_'" v-if="prop.Image.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
+      <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
         :style="Styles.captionStyle">
-        {{ prop.Image.length > 0 ? prop.Caption : '' }}</label>
+        {{ prop.Caption }}</label>
     </button>
+    <!--v-if="prop.Image.length > 0" -->
     <!--/UButton-->
 
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"

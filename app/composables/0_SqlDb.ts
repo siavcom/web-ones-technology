@@ -576,12 +576,12 @@ export const use = async (
             console.log("1) Db Use Axios data=", data, "=====>response=", response); // .data
 
             const res = await goto('TOP', alias)
-            res.length = 1
             return res
             //            return response;
         }
-        else return { length: 0 }; //   { return [] }
-    } catch (error) {
+        else
+            return null; //   { return [] }
+    } catch (error: any) {
         console.error("Axios error :", dat_vis, error);
         console.trace('======ERROR====== ');
 
@@ -3396,7 +3396,7 @@ export const oldValue = async (field: string, alias?: string) => {
  * @returns The value of the specified field if it exists, otherwise returns false.
  */
 
-export const currentValue = async (field: string, alias?: string) => {
+export const currentValue = async (field: string | Array<string>, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
@@ -3416,14 +3416,23 @@ export const currentValue = async (field: string, alias?: string) => {
     let result = {}
     let fields: string[] = []
 
+    if (Array.isArray(field))
+        fields = field
+
     if (typeof field === 'string')
         fields = field.split(',')
 
+
+
     for (let i = 0; i < fields.length; i++) {
         const campo = fields[i].trim()  // limpiamos espacios en blanco
-        if (data[campo])
+        if (data[campo] === undefined)
+            data[campo] = null
+
+        if (data[campo] || data[campo] === null)
             result[campo] = data[campo]
     }
+
     return result
 }
 
@@ -3593,14 +3602,14 @@ export const scatterBlank = async (aliasFields?: [], alias?: string) => {
 /**
  * Gathers data from the provided array and updates the current record in the specified alias.
  * 
- * @param {[]} from - An array containing data to be gathered and updated in the database.
+ * @param {} from - An object containing data to be gathered and updated in the database.
  * @param {string?} alias - An optional string representing the alias of the view to update.
  *                          If not provided, the current alias in the area of work will be used.
- * @returns {Array|null} - Returns null if the current record number could not be determined,
+ * @returns {Object|null} - Returns null if the current record number could not be determined,
  *                                    otherwise performs the update operation.
  */
 
-export const gather = async (from: [], alias?: string) => {
+export const gather = async (from: {}, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!alias) {
@@ -3614,21 +3623,48 @@ export const gather = async (from: [], alias?: string) => {
     if (Recno == 0) {
         return null;
     }
-    const fields = []
-    for (const field in from)
-        fields.push(field)
+
+    const fields = Object.keys(from)
+
+    let indice = fields.indexOf('recno'); // Borramos el campo recno
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
+
+    indice = fields.indexOf('key_pri'); // Borramos el campo key_pri
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
+
+    indice = fields.indexOf('timestamp'); // Borramos el campo timestamp
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
+
+    indice = fields.indexOf('tie_uac'); // Borramos el campo tie_uac
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
+
+    indice = fields.indexOf('tie_cre'); // Borramos el campo tie_cre
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
+
+    indice = fields.indexOf('usu_usu'); // Borramos el campo usu_usu
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
+
+    indice = fields.indexOf('usu_cre'); // Borramos el campo usu_usu
+    if (indice !== -1)
+        fields.splice(indice, 1); // Eliminar 1 elemento en el índice
 
     const fieldsValue = await currentValue(fields, alias)
 
-    if (fieldsValue.length == 0) {  // no hay regisro a actualizar
+    if (Object.keys(fieldsValue).length === 0) {  // no hay regisro a actualizar
         return null;
     }
-
-    let update = 'UOPDATE now.' + alias + ' SET '
+    let update = ' '
     let sep = ''
-
     for (const field of fields) {
-        if (field != 'recno') {
+
+        if (Object.hasOwn(from, field)) {
+
             const valor = from[field]
             if (typeof valor == 'string') {
                 update = update + sep + field + `='${valor}'`
@@ -3637,9 +3673,11 @@ export const gather = async (from: [], alias?: string) => {
             sep = ','
         }
     }
-    update = update + ` WHERE recno=${Recno} `
-    console.log('Db gatherFrom update=', update)
-    return await localAlaSql(update);
+    if (update > ' ') {
+        update = 'UPDATE now.' + alias + ' SET ' + update + ` WHERE recno=${Recno} `
+        await localAlaSql(update);
+    }
+    return true
 };
 
 /**

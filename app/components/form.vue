@@ -71,16 +71,15 @@
                   <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
                     <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                     <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
-
                       <div v-for="(component, key) in block.component" :key="key"
                         :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-
-                        <component :id="Id + '_blockComponent_' + key + component.prop.Name"
-                          :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                          v-model:Status="component.prop.Status" :Registro="component.Recno" :prop="component.prop"
-                          :style="component.style" :position="component.position">
-                        </component>
-
+                        <div v-if="component.prop"><!-- {{ component.prop.Name }} -->
+                          <component :id="Id + '_blockComponent_' + key + component.prop.Name"
+                            :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                            v-model:Status="component.prop.Status" :Registro="component.Recno" :prop="component.prop"
+                            :style="component.style" :position="component.position">
+                          </component>
+                        </div>
                       </div>
                     </div>
                   </div>
