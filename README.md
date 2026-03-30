@@ -737,47 +737,51 @@ Class for manipulating SQL databases with VFP-like methods.
 
 Database Methods
 
-appendBlank(<alias>, <memoryObject>) - Append row in local SQL table with default TypeScript values
+appendBlank(<alias>, <memoryObject>) - Append row in local SQL table with default TypeScript .values
 
-bof(<alias?>) - After locate, skip or goto, returns true if at last row
+bof(<alias?>) - After locate, skip or goto, returns true if at last row.
 
-currentValue(<fieldArray>, <alias?>) - Scatter values into object from local SQL table
+currentValue(<fieldArray>, <alias?>) - Scatter values into object from local SQL table.
 
-deleteSqlRow(<alias?>, <key_pri?>) - Delete current row in local SQL table
+deleteSqlRow(<alias?>, <key_pri?>) - Delete current row in local SQL table.
 
-deleteSql(<recno>, <alias>, <SqlUpdate>) - Delete row with recno in local SQL table
+deleteSql(<recno>, <alias>, <SqlUpdate>) - Delete row with recno in local SQL table.
 
-eof(<alias?>) - After locate, skip or goto, returns true if at first row
+eof(<alias?>) - After locate, skip or goto, returns true if at first row.
 
-found(<alias?>) - After locate, skip or goto, returns true if current row exists
+found(<alias?>) - After locate, skip or goto, returns true if current row exists.
 
-gather(<object values>) - Gather values in local SQL table from object values
+gather(<object values>,<alias?>) - Gather values in local SQL table from object values.
 
-goto(<row>) - Goto record number of local SQL (row=0 for current row)
+goto(<row>,<alias>) - Goto record number of local SQL (row=0 for current row), Returns data of the row.
 
-insert(<alias>, <memoryObject>) - (not in use)
+insert(<alias>, <memoryObject>) - (deprecated).
 
-localAlaSql(<query>) - Execute query in local SQL table
+localAlaSql(<query>) - Execute query in local SQL table.
 
-readCampo(<alias>, <field>) - Read field in local SQL table
+localClone(<baseAlias>, <alias>, <filters?>, <force?>) - Clone local SQL table. 
 
-recCount(<alias?>) - Get record count of local SQL table
+readCampo(<alias>, <field>) - Read field in local SQL table.
 
-recno(<alias?>) - Get current record number of local SQL table
+recCount(<alias?>) - Get record count of local SQL table.
 
-select(<alias?>) - Select default values in local SQL table
+recNo(<alias?>) - Get current record number of local SQL table.
 
-skip(<rowNumbers>) - Skip record number of local SQL table
+select(<alias?>) - Select default values in local SQL table.
 
-scatter(<fieldArray?>, <alias?>) - Scatter values into object from local SQL table
+skip(<rowNumbers>,<alias?>) - Skip record number of local SQL table.
 
-scatterBlank(<fieldArray>, <alias?>) - Scatter blank values from local SQL table
+scatter(<fieldArray?>, <alias?>) - Scatter values into object from local SQL table.
 
-SQLExecute(<query>) - Execute query in SQL-Server
+scatterBlank(<fieldArray>, <alias?>) - Scatter blank values from local SQL table.
+
+SQLExecute(<query>, <alias?>) - Execute query in SQL-Server. Returns the result of the query. 
 
 tableUpdate(<updateType>, <force>, <alias>) - Update local SQL table to SQL-Server table
 
-use(<table>, <memoryObject>, <alias?>) - Prepare local SQL table with data (clone of SQL-Server view)
+updateCampo(<value>,<field>, <alias>) - Update field in local SQL table
+
+use(<table>, <memoryObject>, <alias?>) - Prepare local SQL table with data (clone of SQL-Server view). If memoryObject is provided, it will be used to populate the table. Return the field array of the table or null if the table could not get data.
 
 useNodata(<table>, <alias?>) - Prepare local SQL table without data (clone of SQL-Server view)
 
@@ -788,6 +792,8 @@ Parameter Types:
 <alias> - Local SQL table alias (type: string)
 
 <fieldArray> - Array with field and value of SQL table (type: Array). '*' for all fields
+
+<filters> - Object with field and value to filter (type: Object)
 
 <force> - Force update (type: boolean):  
    false: If update fails because another user changed data first, return false.  
@@ -828,63 +834,97 @@ Parameter Types:
 🔧 Web-Ones Functions
 
 String Functions :
-addMonth(<date>, <month>) - Add months to date
 
-addYear(<date>, <year>) - Add years to date
+left(<string>, <length>) - Return leftmost characters.
 
-addDay(<date>, <day>) - Add days to date
+right(<string>, <length>) - Return rightmost characters.
 
-left(<string>, <length>) - Return leftmost characters
+at(<string>, <index>) - Return character at specified index.
 
-right(<string>, <length>) - Return rightmost characters
+atc(<string>, <index>) - Return character at specified index (case-insensitive).
 
-at(<string>, <index>) - Return character at specified index
+space(<length>) - Return string of spaces.
 
-atc(<string>, <index>) - Return character at specified index (case-insensitive)
+len(<string>) - Return string length.
 
-space(<length>) - Return string of spaces
+int(<number>) - Return integer part of number.
 
-len(<string>) - Return string length
+rTrim(<string>) - Remove trailing spaces.
 
-int(<number>) - Return integer part of number
+lTrim(<string>) - Remove leading spaces.
 
-rTrim(<string>) - Remove trailing spaces
+allTrim(<string>) - Remove leading and trailing spaces.
 
-lTrim(<string>) - Remove leading spaces
+replicateString(<string>, <length>) - Repeat string specified times.
 
-allTrim(<string>) - Remove leading and trailing spaces
+rat(<string>, <index>) - Return last position of substring.
 
-replicateString(<string>, <length>) - Repeat string specified times
+replace(<string>, <oldString>, <newString>) - Replace substring.
 
-rat(<string>, <index>) - Return last position of substring
+asc(<char>) - Return ASCII code of character.
 
-replace(<string>, <oldString>, <newString>) - Replace substring
+substr(<string>, <first>, <length?>) - Extract substring.
 
-asc(<char>) - Return ASCII code of character
+strtran(<string>, <oldString>, <newString>) - Replace substring.
 
-substr(<string>, <first>, <length?>) - Extract substring
+atc(<searched string>, <string>, <occurrence?>) - Find substring case-insensitive
 
-strtran(<string>, <oldString>, <newString>) - Replace substring
+ratc(<searched string>, <string>) - Find last occurrence case-insensitive
+
+rat(<searched string>, <string>) - Find last occurrence case-sensitive
+
+at(<searched string>, <string>, <occurrence?>) - Find substring case-sensitive
+
+char(<character code>) - Convert ASCII code to character
+
+left(<string>, <position>) - Extract left substring. 
+
+right(<string>, <position>) - Extract right substring.
+
+lower(<string>) - Convert string to lowercase
+
+upper(<string>) - Convert string to uppercase
+
+space(<length>) - Generate string with specified number of spaces
+
 
 Date Functions :
 
-dateToSql(<date>) - Convert date to YYYYMMDD format
+dateToSql(<string date>) - Convert date string to YYYYMMDD format.
 
-dateToString(<date>) - Convert date to YYYY-MM-DD format
+dateToString(<string date>) - Convert date string to YYYY-MM-DD format.
 
-stringToDate(<string>) - Convert string to YYYY-MM-DD format
+stringToDate(<string>) - Convert string to YYYY-MM-DD format.
 
-currentTime() - Return current time as YYYY-MM-DD HH24:MI:SS
+currentTime() - Return current time as YYYY-MM-DD HH24:MI:SS.
 
-dateTimeToSql(<date>) - Convert date to YYYYMMDDHHMMSS format
+dateTimeToSql(<string date>) - Convert date to YYYYMMDDHHMMSS format.
 
-stringToTime(<string>) - Convert string to YYYY-MM-DD HH24:MI format
+stringToTime(<string>) - Convert string to YYYY-MM-DD HH24:MI format.
 
-dayToMilliseconds(<day>, <Type?>) - Convert days to milliseconds
+dayToMilliseconds(<day>, <Type?>) - Convert days to milliseconds.
 
-addDate(<date>, <data>, <Type?>) - Add time to date (Type: 'D'=days, 'M'=months, 'Y'=years, 'W'=weeks)
+addDate(<date>, <data>, <Type?>) - Add time to date (Type: 'D'=days, 'M'=months, 'Y'=years, 'W'=weeks).
 
-Utility Functions
+dateToText(<string date>) - Convert date to localized text
+
+addDay(<string date>, <days>) - Add days to date
+
+addMonth(<string date>, <months>) - Add months to date
+
+addYear(<string date>, <years>) - Add years to date
+
+day(<string date>) - Get day of month
+
+month(<string date>) - Get month number
+
+year(<string date>) - Get year
+
+getDay(<string date>) - Get day of week
+
+
+Utility Functions:
+
 multiFilter(<array>, <filters>) - Filter array based on field values
 
 MessageBox(<text>, <type?>, <title?>, <timer?>) - Display message box
@@ -894,6 +934,20 @@ Delay(<ms>) - Wait for milliseconds
 objToLowerCase(<object>) - Convert object element names to lowercase
 
 roundTo(<n>, <digits?>) - Round number to decimal places
+
+isNull(<string>) - Check if string is null or empty
+
+nvl(<data>, <alternative>) - Return alternative value if data is null
+
+str(<number>, <length?>, <decimals?>) - Convert number to formatted string
+
+transform(, <image?>) - Format number with locale
+
+isObject(<value>) - Check if value is an object
+
+ascan(<searched string>, <array>, <start?>, <count?>, <column?>) - Search array (VFP AScan equivalent)
+
+
 
 appendM(m, additionalObject) - Append data to m object
 

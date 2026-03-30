@@ -181,21 +181,26 @@ export class cod_nom extends CAPTURECOMPONENT {
 
         } // End If 
 
-
         // Proveedores varios solo si esta conectado con contabilidad
-        // Aqui me quede 
-        if (this.Form.prop.tip_cap == 'P') {
+        debugger
+
+        if (this.Form.prop.Name = 'come0103' && this.Form.prop.tip_cap == 'P') {
+
             if (Public.value.pct_pct == 1) {
                 m.rfc_pve = vi_cap_comenom.rfc_nom.trim()
-
+                this.Form.rfc_pve.Recno = 0
                 if (m.rfc_pve.length == 0 || await use('lla1_pve', m) == null) {
                     // si no esta dado de alta en proveedores varios
                     await useNodata('lla1_pve')
                     await appendBlank('lla1_pve', m)
+                    const Recno = recNo('lla1_pve')
+
                     await updateCampo(m.rfc_nom, 'lla1_pve.rfc_pve', 1)
                     await updateCampo(vi_cap_comenom.nom_nom, 'lla1_pve.nom_pve', 1)
                     await updateCampo(vi_cap_comenom.tte_nom, 'lla1_pve.tte_pve', 1)
                     await updateCampo(vi_cap_comenom.top_nom, 'lla1_pve.top_pve', 1)
+                    //  this.Form.rfc_pve.prop.Value = m.rfc_pve
+                    this.Form.rfc_pve.Recno = Recno
                     this.Form.rfc_pve.prop.Visible = true
                     nextTick(() => {
                         this.Form.rfc_pve.prop.Focus = true

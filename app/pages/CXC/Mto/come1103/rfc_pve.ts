@@ -32,9 +32,10 @@ export class rfc_pve extends COMPONENT {
         this.prop.Caption = "RFC";
         this.prop.Visible = true;
         this.prop.ControlSource = "lla1_pve.rfc_pve";
-        //this.style.width = '119px';
+        this.prop.RecordSource = "lla1_pve";
         this.prop.Visible = false;
         this.inputStyle.width = '100px';
+        this.prop.ErrorMessage = 'Longitud inválida';
         this.asignaRecno()
         //propiedades
     }
@@ -46,7 +47,6 @@ export class rfc_pve extends COMPONENT {
             this.prop.ControlSource = "lla1_pve.rfc_pve";
         }
     }
-
 
     /**
      * @Evento   :keyPress
@@ -112,7 +112,7 @@ export class rfc_pve extends COMPONENT {
         } // End If 
 
         if (m.rfc_pve.length < 12 || m.rfc_pve.length > 13) {
-            MessageBox('Longitud inválida', 16, 'Error', 3000)
+
             return false
 
         } // End If 

@@ -316,12 +316,12 @@ export class COMPONENT {
   }
 
   /**
-   * Asigna el número de registro (Recno) a cada componente dentro de la forma.
+   * @description :Asigna el número de registro (Recno) a cada componente dentro de la forma.
    * 
-   * Itera sobre todos los componentes del objeto actual. Para cada componente que
-   * tenga la propiedad `Capture` y cuyo `ControlSource` empiece con el mismo valor
-   * que `RecordSource` del objeto, asigna una referencia al número de registro 
-   * actual (`Recno`) a la propiedad `Recno` del componente.
+   * @Note :Itera sobre todos los componentes del objeto actual. Para cada componente que
+     cuyo `ControlSource` empiece con el mismo valor que `this.prop.RecordSource` del objeto padre.
+     Asignamdo  por referencia el `this.Recno` del padre (`Recno`) a la propiedad `Recno` de 
+    cada componente hijo
    * 
    * @returns {Promise<void>}
    */
@@ -343,6 +343,8 @@ export class COMPONENT {
         && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
         // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
         Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+
+        // Si el componente es de captura de datos de un Form o grid, lo aumenta a arreglo de validaciones
 
         if (Comp.prop.Capture) {
           this.Valid.value.push(ref(this[comp].prop.Valid))

@@ -15,12 +15,9 @@ export class nom_pve extends COMPONENT {
     //public
     constructor() {
         super();
-
         this.prop.Type = 'text';
         this.prop.ControlSource = "lla1_pve.nom_pve";
-
         this.style.width = '200px';
-
         //propiedades
     }
 
