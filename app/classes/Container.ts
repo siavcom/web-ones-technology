@@ -30,6 +30,16 @@ export class CONTAINER extends COMPONENT {
     this.style.background = 'antiquewhite'
 
     this.style.left = '1%'
+
+    this.containerStyle.display = 'flex'
+    this.containerStyle.flexWrap = 'wrap'
+    this.containerStyle.width = 'min-content'
+
+    this.style.border = '2px solid black'
+    this.style.borderRadius = '5px'
+
+
+
     // Estilo de cada contenedor del modal
 
   }

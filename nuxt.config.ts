@@ -37,6 +37,18 @@ export default defineNuxtConfig({
   // Para poder hacer los enlaces simbolicos, se aumenta los directorios
   // para que vite los acepte
   vite: {
+    optimizeDeps: { // Se sugirio agregar esto para evitar el error de dependencias
+      include: [
+        'socket.io-client',
+        'sweetalert2',
+        'maska/vue',
+        '@vueuse/integrations/useQRCode',
+        'xml-js', // CJS
+        'axios',
+        'alasql', // CJS
+      ]
+    },  
+  
     /////// incluir estas dos lineas para correr nuxt 3.17 y 4.0 en dev /////////////////////////
     /////// quitarlas al compilar para producción //////////////////////////////////////////////
     //  optimizeDeps: { exclude: ['axios', 'form-data'] },
@@ -52,7 +64,8 @@ export default defineNuxtConfig({
       },
     },
     esbuild: {
-      keepNames: true   // Keeps the original class and method names (doesn't obfuscate them). Don't remove it. (problem nuxt >=3.15)
+      keepNames: true,   // Keeps the original class and method names (doesn't obfuscate them). Don't remove it. (problem nuxt >=3.15)
+      pure: ['console.log', 'console.error', 'console.warn', 'console.debug', 'console.trace'], // en el compilado, no incluye estas instrucciones
     }
   },
 
@@ -75,7 +88,7 @@ export default defineNuxtConfig({
   },*/
 
 
-  // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
+  // 23/Oct/2024 Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
   //build: {
   //  transpile: ['pinia-plugin-persistedstate'],
   // },

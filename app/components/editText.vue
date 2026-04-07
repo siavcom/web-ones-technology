@@ -2,8 +2,10 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
   <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption" :style="Styles.captionStyle">{{ prop.Caption
-      }}</span>
+    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
+      prop.Caption }}
+    </span>
+
 
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
@@ -108,11 +110,11 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
-    <div class="component_container" :style="containerStyle">
+    <div class="component_container" v-if='This.main.length > 0' :style="containerStyle">
       <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
         :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
@@ -128,11 +130,10 @@
         <div v-for="(component, key) in block.component" :key="key"
           :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
           <!--v-bind:Component="ref(Ele)"-->
-          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
+          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.Type)"
             v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
             :prop="component.prop" :position="component.position">
             <!--:style="component.style" :inputStyle="component.inputStyle"
-                                               
                       @click.capture="component.click()"-->
           </component>
         </div>
@@ -144,6 +145,7 @@
        
     @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
+
   </span>
 </template>
 
@@ -1054,8 +1056,9 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
 
   KeyPressed = true
   This.prop.Valid = false // comenzo a teclear. Apagamos validacion
-  //console.log('1) >>>>>KeyPress===>', $event, +$event.keyCode)
+  console.log('1) >>>>>KeyPress===>', $event, +$event.keyCode)
   const char = +$event.keyCode
+  const key = $event.key
   const Type = propType.value
   if (displayError.value) {
     displayError.value = false
@@ -1064,7 +1067,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   }
 
   // oprimió ? (help)
-  if ((Type == 'text' || Type == 'number') && char == 63) { // '?'
+  if ((Type == 'text' || Type == 'number') && key == '?') { // '?'
     //console.log('1) Help KeyPres==>', $event.charCode)
     //$event.preventDefault()
     clickHelp()

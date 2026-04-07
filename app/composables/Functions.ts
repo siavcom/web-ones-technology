@@ -150,12 +150,13 @@ export const allTrim = (input: string): string => {
  * @returns {Promise<string>} - A promise that resolves to the file contents as a string.
  */
 
+/*
 export function fileToStr(input: string): string {
   // const fs = require('fs');
   const contents = fs.readFileSync(input).toString()
   return contents
 }
-
+*/
 /**
  * Converts a string from number
  * 
@@ -217,7 +218,7 @@ export const len = (strVariable: string): number => {
   if (typeof strVariable != 'string' || strVariable == null || strVariable == undefined || strVariable == '')
     return 0
 
-  return strVariable.length()
+  return strVariable.length
 }
 
 export function isObject(value: null | undefined | object): boolean {
@@ -339,8 +340,6 @@ export function rat(cSearchFor: string, cSearchIn: string): number {
   // Si encuentra la subcadena, sumamos 1 para igualar a VFP
   return position !== -1 ? position + 1 : 0;
 }
-
-
 
 /**
  * Equivalente a at() de VFP: Busca subcadena sin distinguir mayúsculas/minúsculas.
@@ -1279,7 +1278,7 @@ export function Dime2D(rows: number): Array<any> {
  */
 export function objToLowerCase(data: {}): object {
 
-  console.log('objToLowerCase datalebgth ', data)
+
   if (!data.length) {
     const objeto = {}
     for (const ele in data) {
@@ -1290,6 +1289,7 @@ export function objToLowerCase(data: {}): object {
   const objeto = []
   for (let i = 0; data.length > i; i++) {
     const renglon = data[i]
+    objeto[i] = {}
     for (const ele in renglon) {
       objeto[i][ele.toLowerCase()] = data[i][ele]
     }

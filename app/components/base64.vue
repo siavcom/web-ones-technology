@@ -227,11 +227,20 @@ const triggerFileInput = () => {
 
 // 3. Handle the file selection and load the image for preview
 
-const handleFileChange = (event) => {
+const handleFileChange = async (event) => {
   const file = event.target.files[0];
   console.log("File selected:", file, 'event=', event);
   // if (file && file.type.startsWith('image/')) {
   // Use the FileReader API to read the file and create a data URL for preview
+
+  if (accept.value.includes('txt') || accept.value.includes('xml')) {
+    Value.value = await file.text();
+    //console.log(Value.value);
+    emitValue(false, false, Value.value)  // actuliza el valor Value en localAlaSql
+    This.click()
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = (e) => {
     Value.value = e.target.result;

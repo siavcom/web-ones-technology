@@ -17,9 +17,7 @@ Zero Web Programming Required: Build applications using only TypeScript classes
 
 Legacy Migration: Convert VFP code to TypeScript with our built-in translator
 
-Enterprise Ready: Full ERP system compatibility
-
-No User Retraining: Identical UI/UX to VFP applications
+No User Retraining: Similar to VFP applications
 
 Cross-Browser: Works on Chrome, Firefox, Safari, Edge
 
@@ -31,14 +29,12 @@ Menu maintenance system
 
 Visual components: EditBox, ComboBox, Grid, Container, etc.
 
-
 Backend (Node.js + Express)
 RESTful web services via VFP-NODE
 
 Database connectivity and business logic
 
 Real-time communication support
-
 
 Database Layer
 
@@ -532,15 +528,18 @@ Sample: For a web page called clientForm, in a pages directory:
 
 text
 
-pages/clientForm/index.vue      // Only file of the form (content never changes)
+accountPayable= account payable system directory
+clientForm= client form directory
 
-pages/clientForm/ThisForm.ts    // Principal form
+pages/accountPayable/clientForm/index.vue      // Only file of the form (content never changes)
 
-pages/clientForm/component1.ts  // Component 1
+pages/accountPayable/clientForm/ThisForm.ts    // Principal form
 
-pages/clientForm/component2.ts  // Component 2
+pages/accountPayable/clientForm/component1.ts  // Component 1
+
+pages/accountPayable/clientForm/component2.ts  // Component 2
 ...
-pages/clientForm/componentN.ts  // Component N
+pages/accountPayable/clientForm/componentN.ts  // Component N
 
 index.vue (always has this content)
 
@@ -671,6 +670,7 @@ Grid Properties
   Type: boolean
   Value = true update data when all row is valid
   Value = false disable auto update
+
 Grid Methods
 typescript
   appendRow(<memoryVariables>: {})
@@ -694,8 +694,12 @@ Column Properties
   Type: string
   Value = local Sql Table + field
 
+  Caption = <Column caption>
+  Type: string
+  Value = column caption
+
 // Example:
-this.prop.columnLabel = 'Header 1'
+this.prop.Caption = 'Header 1'
 [!NOTE]
 For complete example, look in page directory. Each directory is a Vue View Page. pages/SqlDictionary is the SQL database maintenance dictionary.
 
@@ -705,10 +709,11 @@ Component containing one or more container blocks.
 Default Styles
 
 ```typescript
-
 this.containerStyle.display = 'flex'
 this.containerStyle.flexWrap = 'wrap'
 this.style.maxWidth = '600px'
+```
+
 Block Definition
 
 // =======================<Bloque 0>===============
@@ -735,7 +740,7 @@ async close() {
 🗄️ SQL Database Class (VFP SQL Instructions)
 Class for manipulating SQL databases with VFP-like methods.
 
-Database Methods
+DATABASE METHODS :
 
 appendBlank(<alias>, <memoryObject>) - Append row in local SQL table with default TypeScript .values
 
@@ -809,7 +814,8 @@ Parameter Types:
 
 <row> - Recno row id to go (type: number)
 
-<resultType> - Result type (type: string)
+<resultType> - Result type (type: string), 
+Sample : Result type (D=Data, T=Text, J=JSON, NULL=no data returned)
 
 <rowNumbers> - Row numbers to skip (type: number)
 
@@ -829,6 +835,12 @@ Parameter Types:
    0: Update only current record  
    1: Update all records (fails at first error)  
    2: Update all records (continues on error)  
+
+[!NOTE]
+
+All the functions that use the parameter <alias> are related to the local SQL table. If the parameter is not provided, the function will use the default alias.
+
+All methods are ASYNC functions, so they need to be called with await.
 
 
 🔧 Web-Ones Functions

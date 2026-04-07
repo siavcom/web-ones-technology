@@ -33,7 +33,7 @@ export class IMGBUTTON extends COMPONENT {
     }
     this.inputStyle.background = 'white'
     this.inputStyle.color = 'black'
-
+    this.style.alignContent = 'normal'
 
     Object.assign(this.style, {
       background: 'white',
