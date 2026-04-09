@@ -110,7 +110,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1056,7 +1056,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
 
   KeyPressed = true
   This.prop.Valid = false // comenzo a teclear. Apagamos validacion
-  console.log('1) >>>>>KeyPress===>', $event, +$event.keyCode)
+  // console.log('1) >>>>>KeyPress===>', $event, +$event.keyCode)
   const char = +$event.keyCode
   const key = $event.key
   const Type = propType.value
@@ -1484,7 +1484,7 @@ watch(
   async (new_val: any, old_val: any) => {
 
     //if (This.prop.Name == 'cod_non')
-    console.log('1.0) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
+    //   console.log('1.0) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val, focusIn.value)
 
     //if (focusIn.value == 1) || sw_emitValue) {// Si tiene el foco deshabilita el watch 19/Feb/2026
     /*
@@ -1494,7 +1494,7 @@ watch(
         }
     */
     //if (This.prop.Name == 'cod_non')
-    console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val)
+    // console.log('2) watch This.prop.Value editText Name=', This.prop.Name, 'new_val=', new_val)
 
     if (watchPropValue) { // Si se cambio desde el emitValue se ignora
       return
@@ -1524,8 +1524,7 @@ watch(
 
     }
 
-
-    console.log('3) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value)
+    //  console.log('3) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value)
 
     if (This.prop.Status == 'P') {// No se ha salido del componente
 
@@ -1590,11 +1589,9 @@ watch(
 
     }
 
-
-
     // 19/Ene/2026 se pruebacambia a asignaValue 
     // await asignaValue(new_val)
-    console.log('2) watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
+    // console.log('2) watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
     watchPropValue = true
     await emitValue(false, true, new_val)  // This.prop.Valid) //se puso await
     watchPropValue = false

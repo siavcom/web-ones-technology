@@ -646,7 +646,7 @@ export class captureForm extends FORM {
     // busca el nombre del objeto en el arreglo nom_cam
 
     nom_cam = nom_cam.toUpperCase().slice(0, 3)
-    console.log('rev_per nom_obj', this.nom_obj, 'nom_cam', nom_cam)
+    //  console.log('rev_per nom_obj', this.nom_obj, 'nom_cam', nom_cam)
 
     //const pos = ascan(this.nom_obj, nom_cam)
 

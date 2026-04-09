@@ -39,7 +39,6 @@ const ThisForm = ref(null)
 export const openForm = (This: any) => {
   ThisForm.value = This
 
-  at()
 }
 
 //import modal from '@/components/modal.vue'
@@ -214,7 +213,7 @@ export function strToFile(input: string) {
  * @returns {number} - The length of the string.
  */
 export const len = (strVariable: string): number => {
-  console.log('len strVariable', strVariable, typeof strVariable)
+
   if (typeof strVariable != 'string' || strVariable == null || strVariable == undefined || strVariable == '')
     return 0
 
@@ -350,7 +349,7 @@ export function rat(cSearchFor: string, cSearchIn: string): number {
  */
 export function at(cSearch: string, cString: string, nOccurrence?: number): number {
 
-  if (nOccurrence === undefined) {
+  if (!nOccurrence) {
     nOccurrence = 1
   }
 
@@ -409,14 +408,45 @@ export const substr_old = (texto: string, first: number, lon?: number): string =
   return texto.substring(first, lon);
 };
 
-export function substr(cadena: string, inicio: number, longitud?: number): string {
+
+export function substr_ant(cadena: string, inicio: number, longitud?: number): string {
   // Ajusta el índice para que sea base 0, como en JavaScript.
   const inicioAjustado = inicio - 1;
 
   // Utiliza el método substr() de JavaScript para extraer la subcadena.
   // El método substr() ya maneja los casos de longitud opcional.
-  return cadena.substring(inicioAjustado, longitud);
+  return cadena.substr(inicioAjustado, longitud);
 }
+
+
+/**
+ * @description :Extracts a substring from a given string starting at a specified position.
+ * 
+ * @param cadena - The source string from which to extract the substring.
+ * @param inicio - The starting position (1-based index) from which to begin extraction.
+ * @param longitud - The number of characters to extract. Defaults to the remainder of the string if not provided.
+ * @returns The extracted substring.
+ */
+export function substr(cadena: string, inicio: number, longitud?: number): string {
+  // 1. Manejar el índice base-1 de VFP (convertir a base-0 de JS)
+  // Si inicio es 1, en JS es 0. Si inicio es 0 o negativo, VFP trata de manejarlo,
+  // pero usualmente inicia desde 1.
+  let startIdx = inicio > 0 ? inicio - 1 : 0;
+
+  // 2. Si no se especifica longitud, extraer hasta el final
+  if (longitud === undefined || longitud === null) {
+    return cadena.slice(startIdx);
+  }
+
+  // 3. Calcular el índice final para slice(inicio, fin)
+  // El segundo parámetro de slice es el índice donde termina (no incluido)
+  let endIdx = startIdx + longitud;
+
+  // 4. Usar slice para extraer
+  return cadena.slice(startIdx, endIdx);
+}
+
+
 
 
 /**
@@ -579,7 +609,8 @@ export const stringToDate = (texto?: string): string => {
   let date = texto
   if (date.length >= 10)
     date = date.slice(0, 10) + 'Z';
-  // console.log('1) stringToDate date=', date)
+
+  console.log('1) stringToDate date=', date)
   // console.log('2) stringToDate date=', new Date(date).toISOString())
   // console.log('3) stringToDate date=', new Date(date).toISOString().substring(0, 10))
   return new Date(date).toISOString().substring(0, 10); // ISOString es formato 'AAAA-MM-DD'

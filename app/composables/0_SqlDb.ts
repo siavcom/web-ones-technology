@@ -1155,7 +1155,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     }
 
     m = !m ? Public.value : m
-    console.log('appendBlank m=', m)
+    //  console.log('appendBlank m=', m)
 
     let recno = 0;
     // Obtenemos el valor del siguiente recno
@@ -3396,16 +3396,16 @@ export const oldValue = async (field: string, alias?: string) => {
  * @returns The value of the specified field if it exists, otherwise returns false.
  */
 
-export const currentValue = async (field: string | Array<string>, alias?: string) => {
+export const currentValue = async (field: string | Array<string>, aliasTable?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    if (!alias) {
-        alias = This.value.are_tra[This.value.num_are - 1];
+    if (!aliasTable) {
+        aliasTable = This.value.are_tra[This.value.num_are - 1];
     }
-
-    let data = await goto(0, alias)
-
-    if (data == null || data.length == 0)
+    let data = {}
+    data = await goto(0, aliasTable) // Obtenemos el registro actual
+    // console.log('currentValue Alias=', aliasTable, 'data=', data)
+    if (data == null || data == {})
         return {}
     // if (Object.keys(data).length === 0) // No hay datos en el objeto
     //     return data
@@ -3413,24 +3413,25 @@ export const currentValue = async (field: string | Array<string>, alias?: string
     if (field == '*') // todos los datos
         return data
 
-    let result = {}
+    const result = {}
     let fields: string[] = []
 
-    if (Array.isArray(field))
+    if (Array.isArray(field)) {
         fields = field
+    }
 
     if (typeof field === 'string')
         fields = field.split(',')
 
+    for (const campo in data) {
+        // console.log('campo=', campo, 'fields=', fields.includes(campo))
+        if (fields.includes(campo)) { // si el campo esta en la lista de campos 
+            if (data[campo] === undefined)
+                data[campo] = null
 
-
-    for (let i = 0; i < fields.length; i++) {
-        const campo = fields[i].trim()  // limpiamos espacios en blanco
-        if (data[campo] === undefined)
-            data[campo] = null
-
-        if (data[campo] || data[campo] === null)
+            // console.log('data[campo]=', data[campo])
             result[campo] = data[campo]
+        }
     }
 
     return result
@@ -3661,22 +3662,35 @@ export const gather = async (from: {}, alias?: string) => {
     }
     let update = ' '
     let sep = ''
-    for (const field of fields) {
+    //if (alias == 'lla1_xml')
+    //    debugger
 
+    for (const field in fieldsValue) {
         if (Object.hasOwn(from, field)) {
-
             const valor = from[field]
-            if (typeof valor == 'string') {
-                update = update + sep + field + `='${valor}'`
-            } else
-                update = update + sep + field + `=${valor}`
-            sep = ','
+            // console.log('gather UPDATE', `UPDATE now.${alias}  SET ${field}=? WHERE recno=${Recno}`, 'Valor', valor)
+
+            //     if (typeof valor == 'string') {
+            // update = update + sep + field + `='${valor}'`
+
+            await localAlaSql(`UPDATE now.${alias}  SET ${field}=? WHERE recno=${Recno}`, [valor]);
+
+
+            //      } else {
+            //   update = update + sep + field + `=${valor}`
+            //          await localAlaSql(`UPDATE now.${alias}  SET ${field}=? WHERE recno=${Recno}`, [valor]);
+            //await localAlaSql(`UPDATE now.${alias}  SET ${field}=${valor} WHERE recno=${Recno}`);
+            //      }
+            //      sep = ','
         }
     }
-    if (update > ' ') {
-        update = 'UPDATE now.' + alias + ' SET ' + update + ` WHERE recno=${Recno} `
-        await localAlaSql(update);
-    }
+    // debugger
+
+    //if (update > ' ') {
+    //    update = 'UPDATE now.' + alias + ' SET ' + update + ` WHERE recno=${Recno} `
+    //    await localAlaSql(update);
+    // }
+
     return true
 };
 
