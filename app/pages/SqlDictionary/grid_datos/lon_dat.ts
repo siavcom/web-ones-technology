@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class lon_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -39,7 +38,6 @@ export class lon_dat extends COLUMN {
             this.prop.Value = '8'
             this.prop.ReadOnly = true
 
-
         }
         if (this.Parent.tip_dat.prop.Value == 'M') {
             this.prop.Value = '10'
@@ -54,7 +52,6 @@ export class lon_dat extends COLUMN {
 
         return !this.prop.ReadOnly
     }
-
 
     override async valid() {
         this.prop.Valid = true

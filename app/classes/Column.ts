@@ -7,7 +7,6 @@
 
 import { COMPONENT } from "@/classes/Component";
 
-
 export class COLUMN extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
 

@@ -27,7 +27,6 @@ export class bt_edit extends COMPONENT {
     this.style.fontSize = '10px'
     this.style.width = '30px'
 
-
   } // Fin constructor
 
   async click(add?: boolean) {
@@ -72,8 +71,6 @@ export class bt_edit extends COMPONENT {
     if (this.Sql.db.View[RecordSource])
       await useNodata(RecordSource)
 
-
-
     // clonamos la vista segun si el query es Main , ALL  
 
     await localClone('vi_cap_db_query', RecordSource, filter)
@@ -95,6 +92,5 @@ export class bt_edit extends COMPONENT {
     //  this.Parent.bt_delete.prop.Visible = true
 
   }
-
 
 }

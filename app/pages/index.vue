@@ -84,7 +84,6 @@
       <a href="https://www.npmjs.com/package/node-jasper-report">node jasper</a>
     </div>
 
-
   </div>
 </template>
 
@@ -95,7 +94,6 @@ const NuxtVersion = ref(4)
 
 //console.log('Vue Version', version, nuxtApp.nuxt.version);
 </script>
-
 
 <style scoped>
 #app {
@@ -109,7 +107,6 @@ const NuxtVersion = ref(4)
   justify-content: center;
   align-items: center;
 }
-
 
 div.imagen {
   align-content: center;

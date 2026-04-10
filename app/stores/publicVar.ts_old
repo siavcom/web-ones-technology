@@ -80,7 +80,6 @@ export const PublicVar = defineStore('mPublic', () => {
     Var
   }
 
-
 },
   {
     //    persist: { storage: persistedState.localStorage, },
@@ -89,7 +88,6 @@ export const PublicVar = defineStore('mPublic', () => {
   },
 
 )
-
 
 //if (import.meta.hot) {
 // import.meta.hot.accept(acceptHMRUpdate(PublicVar, import.meta.hot))

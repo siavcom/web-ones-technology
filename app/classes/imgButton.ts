@@ -12,7 +12,6 @@
 
 import { COMPONENT } from "@/classes/Component";
 
-
 export class IMGBUTTON extends COMPONENT {
   BaseClass = "imgButton";
   // textLabel = "";
@@ -46,7 +45,6 @@ export class IMGBUTTON extends COMPONENT {
       backgroundColor: "floralwhite"
 
     })
-
 
   }
 

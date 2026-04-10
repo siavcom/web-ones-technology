@@ -12,7 +12,6 @@
 
 import { GRID } from '@/classes/Grid'
 
-
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
 import { nom_tab } from './nom_tab'
 import { des_tab } from './des_tab'
@@ -37,6 +36,5 @@ export class grid_tablas extends GRID {
     this.prop.autoLoad = false
 
   }
-
 
 }

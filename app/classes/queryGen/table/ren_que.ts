@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class ren_que extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {

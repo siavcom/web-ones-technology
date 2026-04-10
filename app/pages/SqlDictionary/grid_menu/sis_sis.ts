@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class sis_sis extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -31,6 +30,5 @@ export class sis_sis extends COLUMN {
         this.prop.Valid = true
         return false
     }
-
 
 }

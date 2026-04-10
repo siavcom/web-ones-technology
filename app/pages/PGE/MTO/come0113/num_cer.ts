@@ -9,7 +9,6 @@
 /////////////////////////////////////////////
 // import {editText} from "@/classes/editText";
 
-
 export class num_cer extends CAPTURECOMPONENT {
   constructor() {
     super();
@@ -40,12 +39,6 @@ export class num_cer extends CAPTURECOMPONENT {
 
     //    updateCampo(data, "vi_cap_comecer.cer_cer", this.Recno) 
   }
-
-
-
-
-
-
 
   //metodo
 }

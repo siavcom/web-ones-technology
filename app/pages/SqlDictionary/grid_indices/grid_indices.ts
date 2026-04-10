@@ -24,7 +24,6 @@ import { whe_ind } from './whe_ind'
 import { col_ind } from './col_ind'
 import { uni_ind } from './uni_ind'
 
-
 export class grid_indices extends GRID {
 
   // Columna que tiene el grid
@@ -36,7 +35,6 @@ export class grid_indices extends GRID {
   public whe_ind = new whe_ind()
   public col_ind = new col_ind()
   public uni_ind = new uni_ind()
-
 
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -76,7 +74,5 @@ export class grid_indices extends GRID {
     await super.appendRow(m) // llama a la clase base
 
   }
-
-
 
 }

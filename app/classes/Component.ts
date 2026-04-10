@@ -266,7 +266,6 @@ export class COMPONENT {
       this.block[0] = structuredClone(container)
    */
 
-
   container =
     {
       component: {
@@ -296,7 +295,6 @@ export class COMPONENT {
       },
 
     }
-
 
   imagen = { src: "" };
   old_value = ""
@@ -393,7 +391,6 @@ export class COMPONENT {
           lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
         }
 
-
         if (m.lan_lan > '   ') {
           await this.Sql.use('vi_cap_db_languages', m)
           await this.Sql.use('vi_cap_db_messages', m)
@@ -435,7 +432,6 @@ export class COMPONENT {
 
     }
     this.translate()  // Traduce al lenguaje del usuario
-
 
     /* 26/Dic/2024
         // Si el componente esta en algun bloque  le quita su posiscion 
@@ -569,7 +565,6 @@ export class COMPONENT {
         TabIndex++;
       }
 
-
       TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes
       if (maxTabIndex < TabIndex)
         maxTabIndex = TabIndex;
@@ -577,7 +572,6 @@ export class COMPONENT {
       mainElement[i].Id = TabIndex;
       main.push(comp);
     }
-
 
     ///////////////// Footer ///////////////////////////////
     // Obtenemos solo los elementos del Footer
@@ -597,7 +591,6 @@ export class COMPONENT {
       footerElement[i].Id = TabIndex;
       footer.push(comp);
     }
-
 
     this.footer = footer.reverse();
 
@@ -654,7 +647,6 @@ export class COMPONENT {
     return;
   }
 
-
   public async onChangeValue() {
     return
   }
@@ -662,7 +654,6 @@ export class COMPONENT {
   public async recnoChange() {
     return;
   }
-
 
   /////////////////////////////////////////////////////////////////////
   // Valid
@@ -685,14 +676,12 @@ export class COMPONENT {
   // Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
   ////////////////////////////////////////////////////////////////////
 
-
   public async interactiveChange() { }
 
   /////////////////////////////////////////////////////////////////////
   // Click
   // Descripcion: Hace el click
   /////////////////////////////////////////////////////////////////
-
 
   /**
    * @description
@@ -716,7 +705,6 @@ export class COMPONENT {
       return false
     } // End If 
     this.old_value = this.prop.Value
-
 
     if (!this.prop.ReadOnly)
       await this.gotFocus()
@@ -797,7 +785,6 @@ export class COMPONENT {
    * Cada tecla que se presiona en el input
    * en this.prop.Key queda el valor presionado
    */
-
 
   /**
    * @description*
@@ -880,7 +867,6 @@ export class COMPONENT {
           this.Form.mPublic.lan_lan = ''
         */
 
-
     if (!this.Form.language || !this.sw_translate || this.Sql.View.vi_cap_db_languages.recCount == 0)
       return
 
@@ -889,7 +875,6 @@ export class COMPONENT {
     if (data.length > 0 && data[0].recno > 0) {
 
       const Value = data[0]
-
 
       if (Value.columntextlabel.length > 0)
         this.prop.ColumnTextLabel = Value.columntextlabel
@@ -937,7 +922,6 @@ export class COMPONENT {
     this.sw_translate = false
     return
   }
-
 
   async getWord(prop: any) {
     if (!this.Form.languages || this.Sql.Views.vi_cap_db_languages.recCount == 0)
@@ -989,7 +973,6 @@ export class COMPONENT {
     }
     //  console.log('3) RemoveObject', this, this.block,)
   }
-
 
   setAll(prop: any, value: any) {
     // Asigna a todos los componentes el valor

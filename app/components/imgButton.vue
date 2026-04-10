@@ -116,7 +116,6 @@ let inFocus = false
 const style.pointerEvents=This.prop.ReadOnly ? 'none' : 'auto'
 const styel.opacity=!This.prop.ReadOnly ? '1' : '0.5'
 
-
 const style = computed(() => {
   style.pointerEvents=This.prop.ReadOnly ? 'none' : 'auto'
   styel.opacity=!This.prop.ReadOnly ? '1' : '0.5'
@@ -221,7 +220,6 @@ watch(
   { deep: false }
 );
 
-
 ////////////////////////////////////////
 // Registro
 // Nota: Lee de la base de datos local segun el valor de Registro
@@ -238,7 +236,6 @@ watch(
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
-
 
 watch(
   () => This.prop.Focus, //props.prop.Focus,
@@ -281,7 +278,6 @@ onMounted(async () => {
   };
   //  console.log('imgButton onMounted Name=', props.prop.Name, 'Src=', props.prop.Image, 'Style', Styles)
 
-
   if (This.prop.Image.length > 0) {
     inputStyle.boxShadow = ''
     divStyle.height = inputStyle.height
@@ -290,7 +286,6 @@ onMounted(async () => {
 
   divStyle.display = 'flex-root'
   divStyle.flexDirection = 'column'
-
 
   /*
   Styles.inputStyle.width = '100%' //  divStyle.width

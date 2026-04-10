@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class pad_que extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -35,10 +34,7 @@ export class pad_que extends COLUMN {
         if (this.prop.Value != ')' && this.prop.Value != ' ')
             this.prop.Value = ''
 
-
         return true
     }
-
-
 
 }

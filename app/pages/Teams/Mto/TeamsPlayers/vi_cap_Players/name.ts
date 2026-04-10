@@ -33,7 +33,6 @@ export class name extends COMPONENT {
     this.prop.Capture = true
     this.prop.updateKey = false
 
-
     // this.RecordSource="" oJo
 
     ///////////////////////// 
@@ -86,10 +85,8 @@ export class name extends COMPONENT {
     // this.prop.BoundColumn= 2
     // this.prop.ColumnWidths= "50%,50%"
 
-
     //// Column grid ////
     // this.prop.Order = 2
-
 
     ///////////////////////// 
     // Style
@@ -117,7 +114,6 @@ export class name extends COMPONENT {
     // this.style.wordWrap= "break-word"
     // this.style.cols = "60"
 
-
   }
 
   ////////////////////////////////// 
@@ -140,7 +136,6 @@ export class name extends COMPONENT {
 
   // async valid() {
   // }
-
 
   ////////////////////////////////// 
   // event click 

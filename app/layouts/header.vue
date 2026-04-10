@@ -28,7 +28,6 @@
   </ClientOnly>
 </template>
 
-
 <script lang="ts" setup>
 //vertical-align:middle;
 // @/assets/logo.pn
@@ -59,11 +58,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 //console.log('LayOut Header Props', props)
 
-
 /*
 const srcLogo = ref('')
 const logoEmp1 = ref(props.logoEmp)
-
 
 const leeLogo = async () => {
   console.log('1) leeLogo() file=', logoEmp1.value)
@@ -80,11 +77,9 @@ const leeLogo = async () => {
 
   const bannerImage = srcLogo.value //document.getElementById('bannerImg');
 
-
   localStorage.setItem("imgData", bannerImage);
 
   //localStorage.setItem("imgData", srcLogo.value);
-
 
   console.log('4) leeLogo() header file=', srcLogo.value)
 
@@ -93,20 +88,15 @@ const leeLogo = async () => {
   // bannerImg.src = "data:image/png;base64," + dataImage;
   //bannerImg.src = "data:image/png," + dataImage;
 
-
   //  srcLogo.value = "data:image/png;base64," + dataImage;
   srcLogo.value = dataImage;
 
 }
-
-
 
 if (props.logoEmp.length > 5) {
   leeLogo()
 
 }
 */
-
-
 
 </script>

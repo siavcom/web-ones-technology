@@ -35,8 +35,6 @@
 
       </v-btn>
 
-
-
 */
 /*import { 
    //toRefs,
@@ -99,11 +97,9 @@ const props = defineProps<{
     Top: number;
   };
 
-
 }>();
 const BSource = ref('')
 const loading = ref(true)
-
 
 const Component = toRef(() => props.prop.This)
 //console.log('editText Component=', Component.value)
@@ -116,7 +112,6 @@ const divStyle = reactive({ ...Este.style })
 //const Id = This.prop.Name + props.Registro.toString().trim()
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
-
 
 divStyle.width = '95%'
 
@@ -131,12 +126,10 @@ watch(
 
       //const blob = new Blob([JSON.stringify(new_val)],{type: 'application/pdf'})
 
-
       const blob = new Blob([new_val], { type: 'application/pdf' }); // JavaScript Blob
 
       BSource.value = URL.createObjectURL(blob);
       console.log('embedPdf asigna buffer URL', BSource.value)
-
 
       loading.value = false
 
@@ -152,13 +145,10 @@ watch(
     } else
       loading.value = true
 
-
     console.log('embedPdf Buffer=', BSource.value)
   },
   { deep: false }
 );
-
-
 
 //const Value = ref(props.prop.Value);
 //const { Value } = toRefs(props);

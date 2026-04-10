@@ -23,5 +23,4 @@ export class PlaceHolder extends COMPONENT {
     this.inputStyle.width = "496px";
   }
 
-
 }

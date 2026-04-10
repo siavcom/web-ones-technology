@@ -26,7 +26,6 @@ export class FORM extends COMPONENT {
   language = false
   Recno = ref(999999999)
 
-
   headerStyle = {
     display: 'flex',
     alignItems: 'last baseline',

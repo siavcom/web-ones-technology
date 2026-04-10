@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class nom_ind extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -35,6 +34,5 @@ export class nom_ind extends COLUMN {
 
         return await super.valid();
     }
-
 
 }

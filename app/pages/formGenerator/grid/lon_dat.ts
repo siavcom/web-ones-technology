@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class lon_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -26,10 +25,8 @@ export class lon_dat extends COLUMN {
         this.prop.Placeholder = "Longitud"
         this.prop.ReadOnly = true
 
-
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
         this.style.width = '48px'
     }
-
 
 }

@@ -49,7 +49,6 @@
 
 <script lang="ts" setup>
 
-
 interface Props {
   Registro: number;
 
@@ -99,7 +98,6 @@ const props = withDefaults(defineProps<Props>(), {
     RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
     RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
 
-
     Sorted: false,
     Status: "",
     ShowError: false,
@@ -116,7 +114,6 @@ const props = withDefaults(defineProps<Props>(), {
     Valid: false,
     Visible: true,
     Value: '',
-
 
   },
   /*
@@ -174,15 +171,12 @@ const inputStyle = reactive({ ...Este.inputStyle })
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
 
-
 //console.log('10 modalContainer Name=', This.prop.Name, 'divStyle=', divStyle, 'Id=', Id)
 
 /**********************
  
 //const Divi = ref(This.Divi)
 // Generamos la Matriz Divi de forma dinamica para mostrar los elementos
-
-
 
 // Buscamos cuantos Divi hay que generar
 const arr = [];
@@ -195,9 +189,7 @@ for (let i = 0; i < This.Divi.length; i++) {
   }
 }
 
-
 //const arr =await  Dime2D(j) // Create Array(j);
-
 
 //const Divi = ref([[], [], []])
 const Divi = ref(arr)
@@ -221,7 +213,6 @@ for (let i = 0; i < This.Divi.length; i++) {
 console.log('modalContainer Divis=', This.Divi, Divi.value)
 
   ********************************/
-
 
 /*
 const elementArray = []
@@ -259,7 +250,6 @@ const impComp = ((name: string, pos?: string) => {
 })
 */
 
-
 //init();
 
 onMounted(async () => {
@@ -278,7 +268,6 @@ const middleClick = () => {
     This.Form.translateContainer.open(ref(This))
 }
 
-
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
@@ -287,9 +276,6 @@ const handler = (event) => {
   }
   event.preventDefault();
 }
-
-
-
 
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

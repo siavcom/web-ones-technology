@@ -4,7 +4,6 @@
     <button class='change__style' @click='changeStyle()'>Change Style</button>
     <tabs :mode="This.prop.Style">
 
-
       <slot name="componentes">
         <tab :id="'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key" :title="block.title">
           {{ block.title }}
@@ -26,12 +25,8 @@
 
       </slot>
 
-
       <!--
             container
-
-
-
 
         
         
@@ -78,7 +73,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 
-
 //////////////////////////////////////////////
 // Componentes
 //////////////////////////////////////////////
@@ -92,9 +86,6 @@ const browseLite = defineAsyncComponent(() => import('~/components/browse.vue'))
 const details = defineAsyncComponent(() => import('@/components/details.vue'))
 const embedPdf = defineAsyncComponent(() => import('@/components/embedPdf.vue'))
 const container = defineAsyncComponent(() => import('@/components/container.vue'))
-
-
-
 
 interface Props {
   //Recno: number;
@@ -148,7 +139,6 @@ const props = withDefaults(defineProps<Props>(), {
     RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
     RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
 
-
     Sorted: false,
     Status: "",
     ShowError: false,
@@ -165,7 +155,6 @@ const props = withDefaults(defineProps<Props>(), {
     Valid: false,
     Visible: true,
     Value: [String, Number, Date],
-
 
   },
 
@@ -191,14 +180,11 @@ const props = withDefaults(defineProps<Props>(), {
     Top: 0,
   },
 
-
   pageFrame: [],
 
 })
 
 //const frame = reactive(props.pageFrame)
-
-
 
 const Component = ref(props.prop.This)
 const This = Component.value
@@ -207,14 +193,12 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 
-
 //const Id = This.Name + props.Registro.toString()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
 console.log('pageFrame Name=', This.prop.Name, 'blocks=', This.block)
 const Divi = ref(This.Divi)
-
 
 const mode = ref('dark')
 
@@ -225,8 +209,6 @@ const changeStyle = () => {
     mode.value = 'dark'
   }
 }
-
-
 
 /*
 const elementArray = []
@@ -258,7 +240,6 @@ const middleClick = () => {
     This.Form.translateContainer.open(ref(This))
 }
 
-
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
@@ -269,7 +250,6 @@ const handler = (event) => {
 }
 
 </script>
-
 
 <style lang="css">
 * {

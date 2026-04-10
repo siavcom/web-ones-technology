@@ -55,8 +55,6 @@
 
 <script lang="ts" setup>
 
-
-
 interface Props {
   Registro: number;
   prop: {};
@@ -102,7 +100,6 @@ const props = withDefaults(defineProps<Props>(), {
     RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
     RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
 
-
     Sorted: false,
     Status: "",
     ShowError: false,
@@ -119,7 +116,6 @@ const props = withDefaults(defineProps<Props>(), {
     Valid: false,
     Visible: true,
     Value: [String, Number, Date],
-
 
   },
   /*
@@ -165,7 +161,6 @@ inputStyle: {
     // inputWidth: "inherit"
   },
 
-
 */
 //const Component = ref(props.prop.This)
 const Component = toRef(() => props.prop.This)
@@ -175,7 +170,6 @@ const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const containerStyle = reactive({ ...Este.containerStyle })
-
 
 //const Id = This.Name + props.Registro.toString()
 
@@ -207,14 +201,12 @@ const element = ref(ele)
 console.log('Divi ele=>', element.value)
 */
 
-
 //init();
 const middleClick = () => {
   // console.log('middleClick')
   if (This.Form && This.Form.translateContainer)
     This.Form.translateContainer.open(ref(This))
 }
-
 
 const handler = (event) => {
   if (event.which === 1) {

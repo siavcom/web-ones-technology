@@ -24,5 +24,4 @@ export class ErrorMessages extends COMPONENT {
     this.inputStyle.width = "496px";
   }
 
-
 }

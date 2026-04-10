@@ -39,7 +39,6 @@ export class bt_obtener extends IMGBUTTON {
     this.Form.report.bt_excel.prop.Visible = false;
     this.Form.report.bt_json.prop.Visible = false;
 
-
     this.Form.report.displayPdf.prop.Source = "";
     const main = this.Form.main
 
@@ -48,12 +47,10 @@ export class bt_obtener extends IMGBUTTON {
     this.Form.queryGen.prop.Visible = false
     this.Form.reportFields.prop.Visible = false
 
-
     for (let i = 0; i < main.length; i++) {
       if (!this.Form[main[i]].prop.Disabled)
         this.Form[main[i]].prop.Visible = false
     }
-
 
     this.Form.bt_pdf.prop.Visible = false;
 
@@ -82,8 +79,6 @@ export class bt_obtener extends IMGBUTTON {
 
     // console.log("bt_obtener", "Form.block=", this.Form.block);
     // const i = this.Form.block.length - 1
-
-
 
     this.Form.report.displayBrowse.prop.RowSource = "sqlresult";
     this.Form.report.displayBrowse.prop.Visible = true;

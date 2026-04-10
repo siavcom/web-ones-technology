@@ -119,7 +119,6 @@ const browseLite = resolveComponent('browse')
 const container = resolveComponent('container')
 const embedPdf = resolveComponent('embedPdf')
 
-
 const emit = defineEmits([ //"update", 
   "update:Value",
   "update:Status",
@@ -211,8 +210,6 @@ var sw_ini = true
 var openDetail = ref(false)
 //const Focus = ref(false)
 
-
-
 //const Id = This.prop.Name
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
@@ -224,8 +221,6 @@ const scroll = reactive({
   page: 0,        // Numero de pagina desplegada
   rows: props.prop.Rows // Renglones que puede tener la pagina
 })
-
-
 
 //const LocalDb = new localDb();
 /////////////////////////////////////////////////////////////////////
@@ -261,8 +256,6 @@ const toggle = () => {
 // Hacer el set focus 
 ///////////////////////////////////////
 
-
-
 /*
 /////////////////////////////////////////////////////////////////////
 // focusOut
@@ -282,8 +275,6 @@ const focusOut = async () => {
 */
 //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
 //return true;
-
-
 
 /*
 ////////////////////////////////////////
@@ -325,7 +316,6 @@ watch(
 
     }
 
-
   },
   { deep: false }
 );
@@ -358,25 +348,18 @@ watch(
       //console.log('watch Visible ===>', scroll)
       for (const componet in This) {
 
-
-
       }
-
-
 
     }
   },
   { deep: false }
 );
 
-
-
 /************************************************************************************ */
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
 // no ejecuta el evento
 /////////////////////////////////
-
 
 watch(
   () => eventos,
@@ -458,13 +441,10 @@ watch(
   { deep: true }
 );
 
-
 const loadData = async () => {
   console.log('details load Data')
 
 }
-
-
 
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal
@@ -487,11 +467,6 @@ const ejeEvento = (newEvento: string) => {
   This.Form.eventos.push(newEvento) // emitimos los eventos a la forma padre
 
 }
-
-
-
-
-
 
 /////////////////////////////////////////
 // Metodo init Vfp
@@ -530,7 +505,6 @@ const middleClick = () => {
     This.Form.translateContainer.open(ref(This))
 }
 
-
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
@@ -556,7 +530,6 @@ div.detailsOpen {
   align-content: baseline;
 }
 
-
 /*
 div.contenedor {
   background: white;
@@ -575,9 +548,6 @@ header {
   border-width: 1px;
   padding: 0 10x;
 }
-
-
-
 
 .modal {
   width: 300px;
@@ -618,7 +588,6 @@ header {
   z-index: 999;
   transition: opacity 0.2s ease;
 }
-
 
 div.footerDetail {
   display: flex;

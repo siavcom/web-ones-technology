@@ -21,7 +21,7 @@
 
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -98,7 +98,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!-- <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -195,7 +195,6 @@ const props = withDefaults(defineProps<Props>(), {
     RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
     RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
 
-
     Sorted: false,
     Status: "",
     displayError: false,
@@ -212,7 +211,6 @@ const props = withDefaults(defineProps<Props>(), {
     Valid: false,
     Visible: true,
     Value: [String, Number, Date],
-
 
   },
   /*
@@ -250,7 +248,6 @@ const props = withDefaults(defineProps<Props>(), {
   },
 */
 })
-
 
 //const Component = ref(props.prop.This)
 const Component = toRef(() => props.prop.This)
@@ -344,7 +341,6 @@ const toggleStyle = reactive({
   marginTop: 'auto'
 })
 
-
 Styles.inputStyle.zIndex = zIndex.value  //****
 const toggleZIndex = comboStyle.zIndex + 1
 
@@ -359,7 +355,6 @@ const columncaptionStyle = {
   position: "relative",
   zIndex: comboStyle.zIndex + 1
 }
-
 
 const List = ref(This.prop.ListCount)
 const columnContainer = reactive({
@@ -414,14 +409,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
         //2/Sep/2025  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
         return
 
-
       }
       Value.value = columnas[0].value
       swInit = false
     }
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
-
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       await updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -513,7 +506,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     } else  // si no hay controlSource
       This.prop.Valid = true
 
-
   }
 
   // This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
@@ -530,13 +522,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   }
   // console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
 
-
   await asignaValor()
   This.prop.Value = Value.value
   if (This.onChangeValue) {
     await This.onChangeValue(ref(Styles))
   }
-
 
   //nextTick(function () {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
@@ -558,7 +548,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   }
   return true
 }
-
 
 const asignaValor = async () => {
 
@@ -591,7 +580,6 @@ const asignaValor = async () => {
     }
   }
   swInit = false
-
 
 }
 
@@ -657,8 +645,6 @@ const keyDown = ($event: { charCode: number, keyCode: number }) => {
     let valor = typeof columnas[i].text[0] == 'number' ? columnas[i].text[0].toString() : columnas[i].text[0]
     valor = valor.toUpperCase().slice(0, buffer.length)
 
-
-
     if (buffer == valor) {
       displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
 
@@ -682,16 +668,13 @@ const help = async () => {
 
 }
 
-
 const focusOut = async () => {  // se puede perder el foco si no es un renglon viejo
   // console.log('focusOut')
 
   This.prop.lastRow = This.Row // Guarda el renglon actual
 
-
   return
 }
-
 
 /////////////////////////////////////////////////////////////////////
 // Valid
@@ -748,7 +731,6 @@ const validCheck = async (num_ren: number) => {
 
 };
 
-
 /////////////////////////////////////////////////////////////////////
 // ValidList (solo MultiSelect)
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -764,7 +746,6 @@ const validList = async () => {
   }
 
   focusIn = false // Perdio el foco
-
 
   return
 
@@ -809,7 +790,6 @@ const onFocus = async (click?: boolean) => {
     }
   */
 
-
   if (This.beforeWhen)
     await This.beforeWhen()
 
@@ -821,7 +801,6 @@ const onFocus = async (click?: boolean) => {
     sw_focus.value = true
     //    This.Form.eventos.push(This.prop.Map + '.when()')
   }
-
 
   This.prop.ReadOnly = !await This.when()
   onlyRead.value = false // Permitimos captura
@@ -842,7 +821,6 @@ const onFocus = async (click?: boolean) => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const toggleFocus = async () => {
-
 
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     if (Recno.value > 0) {
@@ -892,7 +870,6 @@ const toggleFocus = async () => {
   setTimeout(function () {
     thisElement.focus({ focusVisible: true });
     thisElement.select();
-
 
   }, 0);
 
@@ -950,14 +927,11 @@ const renderComboBox = async (readData?: boolean) => {
   }
   */
 
-
   if (props.prop.RowSourceType < 1) return
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
 
   await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
-
-
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
@@ -970,7 +944,6 @@ const renderComboBox = async (readData?: boolean) => {
       delete columnas[ren];
     }
    */
-
 
   ///////////////////////
   // generamos un arreglo dependiendo del RowSourceType
@@ -1026,7 +999,6 @@ const renderComboBox = async (readData?: boolean) => {
       const ins_sql = 'select ' + RowSource + ' from ' + alias
       data = await localAlaSql(ins_sql)
 
-
       break
     }
     case 3: {   // SQL Server Query
@@ -1069,11 +1041,9 @@ const renderComboBox = async (readData?: boolean) => {
     }
   }
 
-
   // }
   // else
   //  console.warn('2) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
-
 
   if (val_col.length == 0) {
     console.warn('2) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
@@ -1145,7 +1115,6 @@ const renderComboBox = async (readData?: boolean) => {
 const ColumnWidth = (columnas: string) => {
   columnas = "['" + columnas.replaceAll(",", "','") + "']"
 
-
   let columnWidth = []
   eval('columnWidth=' + columnas)
 
@@ -1154,7 +1123,6 @@ const ColumnWidth = (columnas: string) => {
   }
 
 }
-
 
 /////////////////////////////////////////////
 // Busca el siguiente elemento a seleccionar
@@ -1243,7 +1211,6 @@ const select = async () => {
 
 }
 
-
 ////////////////////////////////////////////////////////////////
 //                          Watchers                          //
 ////////////////////////////////////////////////////////////////
@@ -1259,7 +1226,6 @@ watch(
   },
   { deep: false }
 );
-
 
 ////////////////////////////////////////
 // This.prop.Visible 
@@ -1281,8 +1247,6 @@ watch(
   { deep: false }
 );
 
-
-
 ////////////////////////////////////////
 // Registro
 // Nota: Lee de la base de datos local segun el valor de Registro
@@ -1291,7 +1255,6 @@ watch(
 watch(
   () => This.Recno, //props.Registro,
   async (new_val) => {
-
 
     if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
       return
@@ -1303,11 +1266,6 @@ watch(
   },
   { deep: true }
 );
-
-
-
-
-
 
 /*
 ////////////////////////////////////////
@@ -1340,7 +1298,6 @@ watch(
   { deep: false }
 );
 
-
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
@@ -1359,7 +1316,6 @@ watch(
   { deep: false }
 );
 */
-
 
 ///////////////////////////////////////
 // Hacer el set focus 
@@ -1385,7 +1341,6 @@ watch(
       Styles.style.zIndex = 200  // aumenta el z index cuando despliaga las columnas
     else
       Styles.style.zIndex = zIndex.value// This.style.zIndex
-
 
     //console.log('watch toggle.value', props.Name, old_val, new_val)
     if (!old_val && new_val) toggleFocus()
@@ -1425,7 +1380,6 @@ watch(
   },
   { deep: true }
 )
-
 
 ///////////////////////////////////////
 // ControlSource
@@ -1485,7 +1439,6 @@ watch(
 ///////////////////////////////////////
 // Sorted
 ///////////////////////////////////////
-
 
 watch(
   () => props.prop.Sorted,
@@ -1572,12 +1525,10 @@ watch(
         //console.log("Cambio tamaÃ±o 2", inputWidth.value);
       }
 
-
     }
   },
   { deep: false }
 );
-
 
 ////////////////////////////////////////
 // watch Valid     8/Ags/2025 .- Se anexo al watch This.prop.Valid
@@ -1636,8 +1587,6 @@ watch(
   { deep: false }
 );
 
-
-
 /** 
  Checa los cambio de estuatusn de todos los componentes
  y si alguno esta en modo edicion, no permite que este componente tome el foco
@@ -1686,10 +1635,6 @@ const ChecaEventos = async (Evento?: string) => {
 
   return true
 }
-
-
-
-
 
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers
@@ -1742,7 +1687,6 @@ const ReadOnlyWatch = () => {
   }
 }
 
-
 /////////////////////////////////////////
 // Metodo init 
 /////////////////////////////////////////
@@ -1775,7 +1719,6 @@ onMounted(async () => {
 
     Styles.inputStyle.maxHeight = Styles.inputStyle.fontSize
 
-
     if (Styles.inputStyle.width.search("px") > 0) {
       textWidth = +Styles.inputStyle.width.replaceAll('px', '') - 30
       Styles.inputStyle.width = textWidth.toString() + 'px'
@@ -1804,14 +1747,12 @@ onMounted(async () => {
     if (toggleStyle.maxHeight == 'auto')
       toggleStyle.maxHeight = '13px'
 
-
     if (toggleStyle.maxHeight.search("px") > 0) {
       const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 3
       toggleStyle.maxHeight = textWidth.toString() + 'px'
       toggleStyle.height = toggleStyle.maxHeight
     }
     //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
-
 
   }
 
@@ -1821,9 +1762,7 @@ onMounted(async () => {
 
   //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
 
-
   await This.recnoChange()
-
 
   This.Recno = props.Registro
 
@@ -1843,13 +1782,11 @@ onMounted(async () => {
 
 })
 
-
 onBeforeMount(async () => {
   //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
   //    if (This.init)
   //      await This.init()
 })
-
 
 onUnmounted(async () => {
 
@@ -1879,9 +1816,7 @@ function myClick(e) {
       return
   }
 
-
   //console.log(This.prop.Name, '2) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
-
 
   if (RefCombo && RefCombo.value != null) {
 
@@ -1893,10 +1828,8 @@ function myClick(e) {
       }
     }
 
-
   }
 }
-
 
 window.addEventListener('mousedown', myClick);
 
@@ -1910,7 +1843,6 @@ const middleClick = () => {
   if (This.Form && This.Form.translateContainer)
     This.Form.translateContainer.open(ref(This))
 }
-
 
 const handler = (event) => {
   if (event.which === 1) {
@@ -1951,7 +1883,6 @@ const handler = (event) => {
   margin-right: 5px;*/
 }
 
-
 .multiSelect {
 
   /* z-index: 2;*/
@@ -1962,7 +1893,6 @@ const handler = (event) => {
 
 }
 
-
 div.comboBox {
   display: flex;
   height: fit-content;
@@ -1971,19 +1901,16 @@ div.comboBox {
 
 }
 
-
 div.textInput {
   display: flex;
 
 }
-
 
 input.input {
   background-color: initial;
   order: 1px solid rgb(0, 5, 2);
   border-radius: 5px;
 }
-
 
 input.label {
   width: v-bind("inputWidth");
@@ -2067,7 +1994,6 @@ div.option:hover {
 select[multiple]:focus option:checked {
   background: rgb(163, 193, 168) linear-gradient(0deg, rgb(163, 193, 168) 0%, rgb(163, 193, 168) 100%);
 }
-
 
 /*div class='column'*/
 

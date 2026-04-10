@@ -31,7 +31,6 @@ export class bt_close extends IMGBUTTON {
 
   override async click() {
 
-
     let bloque = 0
     for (bloque = 0; bloque < this.Form.block.length - 2; bloque++)
       if (!this.Form.block[bloque].prop.Disabled)

@@ -23,7 +23,5 @@ export class queryPri extends queryGen {
         this.prop.TabIndex = 12
     }
 
-
-
 }
 

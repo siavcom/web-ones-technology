@@ -46,8 +46,6 @@ export class grid_vistas extends GRID {
     this.prop.ReadOnly = false;
     this.prop.autoLoad = false;
 
-
-
   }
 
 }

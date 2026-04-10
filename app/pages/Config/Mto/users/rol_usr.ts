@@ -34,7 +34,6 @@ export class rol_usr extends CAPTURECOMPONENT {
       if (res.length == 0 || res[0].role == null)
          return false
 
-
       return true
    } // valid 
 }

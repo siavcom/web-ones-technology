@@ -6,7 +6,6 @@
       prop.Caption }}
     </span>
 
-
     <input :id="Id" v-if="propType == 'number'" class="number" type="text" inputmode="numeric" :style=Styles.inputStyle
       ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model.trim="currentValue[focusIn]"
       :readonly="This.prop.ReadOnly || onlyRead" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
@@ -110,7 +109,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -299,7 +298,6 @@ const helpStyle = {
 if (props.prop.Help)
   containerStyle.paddingLeft = "2px"
 
-
 const propType = computed(() => This.prop.Type.toLowerCase().trim())
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
@@ -315,7 +313,6 @@ let swHelp = false
 
 // let Help = false
 
-
 const Status = ref(props.prop.Status);
 const ToolTipText = ref(true)
 Status.value = 'I'
@@ -329,7 +326,6 @@ const checkValueParent = ref(This.Parent.options && This.Parent.options.length >
 const MaxLength = ref(props.prop.MaxLength)
 let sw_MaxLength = false
 //let sw_emitValue = false
-
 
 if (Styles.style.zIndex == 0)
   Styles.style.zIndex = 100 - This.prop.TabIndex
@@ -353,7 +349,6 @@ const compJson = ref([])
 const typeNumber = ref('text');
 
 let KeyPressed = false
-
 
 const maska = ref({
   mask: props.prop.InputMask,
@@ -399,9 +394,7 @@ const config = reactive({
 
 var watchPropValue = false
 
-
 let onlyRead = ref(false)
-
 
 // para no permitir la campura si esta en proceso
 /*const ReadOnly = computed(() => {
@@ -425,10 +418,8 @@ const toNumberStr = async (n: number) => {
     //maximumFractionDigits: 2,
     //  roundingIncrement: 5,
 
-
   }).format(n);
 };
-
 
 // Formateo de valores
 const onInput = ({ target }) => {
@@ -450,7 +441,6 @@ const onInput = ({ target }) => {
     TargetValue = +currentValue.value[1]
   }
 
-
   // Si ya hay  un punto decimal
   if (typeof currentValue.value[1] == 'string' && currentValue.value[1].indexOf('.') >= 0) {
     const Decimales = currentValue.value[1].length - currentValue.value[1].indexOf('.') - 1
@@ -468,7 +458,6 @@ const onInput = ({ target }) => {
     currentValue.value[1] = oldVal
     return
   }
-
 
   let valorNumerico = parseFloat(TargetValue) // valor numerico   
 
@@ -510,7 +499,6 @@ initial	Sets this property to its default value. Read about initial
 inherit	Inherits this property from its parent element. Read about inherit
 */
 
-
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
@@ -543,7 +531,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         //newValor = This.prop.Value  // Si viene del watch This.prop.Value
       }
     }
-
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
@@ -636,8 +623,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     //  console.log('editText emitValue() 1) readCam Name=', props.prop.Name, 'Valor=', 'prop:value=', This.prop.Value)
     //    This.prop.Valid = true
 
-
-
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
       let defaultValue = ''
       if (ControlSource.length > 0 || props.prop.Value == null) {
@@ -662,7 +647,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       } else {
         Value.value = props.prop.Value // asignamos valor al Value.value
       }
-
 
     }
     else {
@@ -733,7 +717,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         }
       }
     }
-
 
   }
 
@@ -814,7 +797,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       displayDate.value = new Date(Value.value)
       currentDate.value = await stringToTime(Value.value) //Value.value.slice(0, 19)
 
-
       nextTick(function () {
         emit("input:displayDate", displayDate); // actualiza el valor Value en el componente padre
         emit("input:currentDate", currentDate); // actualiza el valor Value en el componente padre
@@ -887,7 +869,6 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 
   //console.log('Numeros Value ====>', Value.value)
 
-
   if (!stringValue.match(regex)) {
     let Valor = Value.value
     // console.log('Numeros Not match ====>', Value.value, Valor)
@@ -904,7 +885,6 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
   }
 
 }
-
 
 */
 /////////////////////////////////////////////////////////////////////
@@ -924,13 +904,11 @@ const lostFocus = async (fromReturn: number) => {
   if (This.prop.Valid)
     focusIn.value = 0 // Perdio el foco
 
-
   if (fromReturn && fromReturn > 0) {
     //  console.log('2) lostFocus fromReturn', This.prop.Name)
     return nextElement() //clickReturn()
   }
 }
-
 
 const asignaValue = async (new_val?: any) => {
   const Type = propType.value
@@ -945,7 +923,6 @@ const asignaValue = async (new_val?: any) => {
       currentValue.value[1] = 0
     // console.log('1) asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
 
-
     Value.value = +currentValue.value[1]  //13/Ene/2024
     if (Value.value < +props.prop.Min)
       This.prop.Valid = false
@@ -955,7 +932,6 @@ const asignaValue = async (new_val?: any) => {
       This.prop.Valid = false
 
     //  console.log('2) asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
-
 
   }
 
@@ -1024,7 +1000,6 @@ const clickCheckBox = () => {
 
 }
 
-
 const handleBeforeInput = (event) => {
   // Access the native InputEvent properties (e.g., data, inputType)
   console.log('beforeinput event triggered:', event.data, event.inputType);
@@ -1037,7 +1012,6 @@ const handleBeforeInput = (event) => {
   }
 
 }
-
 
 /////////////////////////////////////////////////////////////////////
 // KeyPress
@@ -1108,7 +1082,6 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
 
 }
 
-
 /////////////////////////////////////////////
 // Busca el siguiente elemento a seleccionar
 /////////////////////////////////////////////
@@ -1173,7 +1146,6 @@ const nextElement = async () => {  //clickReturn
 
 }
 
-
 /**
  * Agrega el evento click al array de eventos del form
  * @return {void}
@@ -1222,7 +1194,6 @@ const onFocus = async () => {
 
   if (This.beforeWhen)
     await This.beforeWhen()
-
 
   //console.log('2) onFocus', This.prop.Name)
 
@@ -1332,7 +1303,6 @@ const select = async () => {
 
 }
 
-
 ////////////////////////////////////////
 // Watchers : Triggers de templates
 // Descripcion : Cuando cambia el Value de la propiedad del ControlSource, asigna el Value de
@@ -1351,7 +1321,6 @@ watch(
   },
   { deep: false }
 );
-
 
 watch(
   () => This.prop.InputMask,
@@ -1374,7 +1343,6 @@ watch(
   { deep: false }
 );
 
-
 /////////////////////////////////////////////////////////////////////
 // change This.prop.ShowError
 /////////////////////////////////////////////////////////////////
@@ -1391,7 +1359,6 @@ watch(
   { deep: false }
 );
 
-
 /////////////////////////////////////////////////////////////////////
 // change checkValue.value
 /////////////////////////////////////////////////////////////////
@@ -1406,7 +1373,6 @@ watch(
       This.prop.Value = new_val == true ? 1 : 0
       This.click()
 
-
       /*      if (!checkValue.value) {
               Styles.inputStyle.backgroundColor = '#f2f2f2'
               Styles.inputStyle.background = 'radial - gradient(circle at center, #f2f2f2 50 %, transparent 50 %)'
@@ -1419,7 +1385,6 @@ watch(
   },
   { deep: false }
 );
-
 
 ////////////////////////////////////////
 // ControlSource
@@ -1445,7 +1410,6 @@ watch(
   () => This.Recno, //props.Registro,
   async (new_val) => {
 
-
     if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
       return
     //console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
@@ -1456,7 +1420,6 @@ watch(
   },
   { deep: true }
 );
-
 
 ////////////////////////////////////////
 // Hacer el set focus 
@@ -1474,7 +1437,6 @@ watch(
   },
   { deep: false }
 )
-
 
 ////////////////////////////////////////
 // Si se cambia This.prop.Value desde afuera del componente 
@@ -1636,7 +1598,6 @@ watch(
   { deep: false }
 );
 
-
 ////////////////////////////////////////////////////////////////////
 // change This.prop.ReadOnly
 // Change background color of input whene ReadOnly
@@ -1650,7 +1611,6 @@ watch(
   },
   { deep: false }
 );
-
 
 /** 
  Checa los cambio de estuatusn de todos los componentes
@@ -1667,7 +1627,6 @@ watch(
     }
   }, { deep: true }
 );
-
 
 /**
  @Description: Checa Status si los demas componentes no estan en proceso
@@ -1698,7 +1657,6 @@ const ChecaStatus = async () => {
 
   return true
 }
-
 
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun su validacion llamado por watchers
@@ -1768,7 +1726,6 @@ const ReadOnlyStyle = () => {
   }
 }
 
-
 const onMaska = (event: CustomEvent<MaskaDetail>) => {
   /* console.log('onMaska=',
      {
@@ -1801,7 +1758,6 @@ const styleAssing = async () => {
     Styles.style.borderRadius = '4px'
     Styles.style.color = 'black'
   }
-
 
   if (Type == 'textarea' || Type == 'text') {
     //  console.log('2) EditText Name=', This.prop.Name, 'Styles.inputStyle.width =', Styles.inputStyle.width)
@@ -1849,7 +1805,6 @@ const handler = (event) => {
 
 onMounted(async () => {
 
-
   focusIn.value = 0
   if (This.onMounted)
     await This.onMounted()
@@ -1877,10 +1832,7 @@ onMounted(async () => {
       emit("update:checkValue", checkValue)
     }
 
-
-
   }
-
 
   if (propType.value == 'textarea')
     Styles.captionStyle.alignContent = 'flex-start'
@@ -1893,9 +1845,7 @@ if (!This.prop.RefValue == null)
   Value.value = This.prop.RefValue.value
 */
 
-
   await emitValue(true)
-
 
   This.Recno = props.Registro
 
@@ -1903,7 +1853,6 @@ if (!This.prop.RefValue == null)
     oldVal = Value.value.toString()   // asignamos el valor viejo  
   else
     oldVal = Value.value   // asignamos el valor viejo
-
 
   This.afterMounted()
 

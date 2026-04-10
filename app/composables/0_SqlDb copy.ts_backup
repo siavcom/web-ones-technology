@@ -3532,6 +3532,11 @@ export const scatterBlank = async (aliasFields?: [], alias?: string) => {
         alias = This.value.are_tra[This.value.num_are - 1];
     }
 
+    // checar diferencia entre recnoVal y recno
+    // const recno = This.value.View[alias].recnoVal[This.value.View[alias].row].recno;
+    // const recno = await goto(0, alias); // lee los datos actuales
+    //const recno = await goto(0, alias); // lee los datos actuales
+
     if (!aliasFields) {
         for (const campo of View[alias].val_def)
             resultado[campo] = View[alias].val_def[campo]
@@ -3877,5 +3882,6 @@ const errorAlert = async (message: string) => {
     await MessageBox(message, 16, "SQL Server Error  ");
     //alert(message);
 }
+
 // Fin de la clase================================
 

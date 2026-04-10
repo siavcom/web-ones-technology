@@ -61,7 +61,6 @@ export class translateContainer extends CONTAINER {
     this.style.height = 'auto'
     this.captionStyle.fontSize = '20px'
 
-
     this.asignaRecno()  // asigna recno a c/componente de captura de la forma
 
     // =======================<Bloque 0 >===============
@@ -119,7 +118,6 @@ export class translateContainer extends CONTAINER {
     else
       this.ColumnTextLabel.prop.Visible = false
 
-
     let rowsource = ""
     //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
     if (comp.prop.BaseClass.toLowerCase() == 'combobox' &&
@@ -168,7 +166,6 @@ export class translateContainer extends CONTAINER {
     messages = messages + "]"
     //  console.log('2) comp.prop.Messages=', messages)
 
-
     const m = {
       for_lan: this.Form.prop.Name,
       lan_lan: this.Form.mPublic.lan_lan ? this.Form.mPublic.lan_lan : '   ',
@@ -208,7 +205,6 @@ export class translateContainer extends CONTAINER {
     }
 
     // console.log('1)- messages=', this)
-
 
     this.prop.Disabled = false
     this.prop.Visible = true

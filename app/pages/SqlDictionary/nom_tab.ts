@@ -8,7 +8,6 @@
 
 import { COMPONENT } from "@/classes/Component";
 
-
 export class nom_tab extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {

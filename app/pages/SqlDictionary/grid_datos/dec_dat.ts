@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class dec_dat extends COLUMN {
 
   //  constructor(parent: Record<string, never>) {
@@ -46,7 +45,6 @@ export class dec_dat extends COLUMN {
       return false
     }
 
-
     return true
   }
 
@@ -57,10 +55,8 @@ export class dec_dat extends COLUMN {
       return false
     }
 
-
     return true
 
   }
-
 
 }

@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class cal_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -38,7 +37,6 @@ export class cal_dat extends COLUMN {
             this.prop.Valid = true
         }
 
-
         /*
         const Value = this.Parent.cam_dat.prop.Value.trim().toUpperCase();
         if (
@@ -51,7 +49,6 @@ export class cal_dat extends COLUMN {
         )
             this.prop.ReadOnly = true;
 */
-
 
         return !this.prop.ReadOnly
 

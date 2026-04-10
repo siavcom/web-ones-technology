@@ -40,7 +40,6 @@ export class pas_usu extends COMPONENT {
     if (this.Parent.log_usu.prop.Value.trim == '')
       return true
 
-
     if (this.prop.Value.trim().length == 0) {
       return false
     }

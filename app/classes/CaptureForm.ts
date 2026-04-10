@@ -82,7 +82,6 @@ export class captureForm extends FORM {
    */
   // public async afterDelete() { }
 
-
   /**
    * inDelete Method
    * Description: function that is executed when you enter the delete method.
@@ -135,7 +134,6 @@ export class captureForm extends FORM {
     const thisComp = Comp.value
     if (this.Recno != 0)
       this.Recno = 0
-
 
     for (const comp of this.main) {
 
@@ -266,7 +264,6 @@ export class captureForm extends FORM {
       this.bt_delete.prop.Visible = false;
       //  console.log('valid Component m=', m, 'result=', result, 'Recno=', this.Recno, 'key_pri=', key_pri)
 
-
       // se utiliza nextTixc para q ue los componentes no prendan la validacion
       nextTick(() => {
         for (const comp of this.main) {
@@ -278,7 +275,6 @@ export class captureForm extends FORM {
           //          this.Form[comp].prop.Valid = this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey ? false : this.Form[comp].prop.Valid
         }
       });
-
 
       // console.log('ValidComponent appendBlank Return')
       return true
@@ -309,7 +305,6 @@ export class captureForm extends FORM {
 
     return true
   } // Fin Metodo Valid
-
 
   /////////////////////////////////////////
   // Metodo : refreshComponent
@@ -565,7 +560,6 @@ export class captureForm extends FORM {
 
   });
 
-
   /**
    * @Method : bt_deleteClick
    * @Description : Click del boton para borrar los datos de la forma
@@ -601,7 +595,6 @@ export class captureForm extends FORM {
     return false
   }
 
-
   //////////////////////////
   async requery() {
 
@@ -618,8 +611,6 @@ export class captureForm extends FORM {
 
     return;
   }
-
-
 
   /**
    * @Method : rev_per
@@ -663,7 +654,6 @@ export class captureForm extends FORM {
       if (obj_seg == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
         return true
     }
-
 
     return false
 

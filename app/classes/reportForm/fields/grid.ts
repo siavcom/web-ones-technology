@@ -29,7 +29,6 @@ export class Grid extends GRID {
   public act_report = new act_report();
   public fields_report = new fields_report();
 
-
   constructor() {
     super();
 
@@ -65,7 +64,6 @@ export class Grid extends GRID {
         position: { type: "number", label: "Position", value: g, readOnly: false, style: { width: '64px' } }
 
       }
-
 
       // m.yes_report=1
       // m.header_report=m.des_cam

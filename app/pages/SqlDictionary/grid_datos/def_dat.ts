@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class def_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {

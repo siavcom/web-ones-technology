@@ -8,7 +8,6 @@
 // Update Date  : 2025-06-30
 /////////////////////////////////////////////
 
-
 import { COMPONENT } from "@/classes/Component";
 export class des_fec extends COMPONENT {
   constructor() {

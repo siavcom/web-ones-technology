@@ -26,7 +26,6 @@ export class has_fec extends COMPONENT {
         console.log('has_fec init', this.prop.Value)
     }
 
-
     override async valid() {
         if (this.Parent.des_fec.prop.Visible == true) {
             console.log('VALID VALUE=', this.prop.Value, 'Desde=', dateToString(this.Parent.des_fec.prop.Value))

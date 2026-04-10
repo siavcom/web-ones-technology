@@ -43,7 +43,4 @@ export class tip_dat extends COLUMN {
     //   await super.when(row)
   }
 
-
-
-
 }

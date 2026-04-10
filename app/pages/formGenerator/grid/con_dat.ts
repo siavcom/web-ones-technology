@@ -31,5 +31,4 @@ export class con_dat extends COLUMN {
 
     }
 
-
 }

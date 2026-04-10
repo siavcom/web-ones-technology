@@ -24,7 +24,6 @@ import { val_que } from './val_que'
 import { pad_que } from './pad_que'
 import { uni_que } from './uni_que'
 
-
 export class Grid extends GRID {
   public ren_que = new ren_que()
   public pai_que = new pai_que()

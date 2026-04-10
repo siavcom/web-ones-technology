@@ -82,10 +82,8 @@ export class nam_usr extends CAPTURECOMPONENT {
       // this.prop.BoundColumn= 2
       // this.prop.ColumnWidths= "50%,50%"
 
-
       //// Column grid ////
       // this.prop.Order = 2
-
 
       ///////////////////////// 
       // Style
@@ -112,7 +110,6 @@ export class nam_usr extends CAPTURECOMPONENT {
       // this.style.textAlign= "left"
       // this.style.wordWrap= "break-word"
       // this.style.cols = "60"
-
 
    }
 

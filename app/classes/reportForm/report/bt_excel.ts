@@ -13,7 +13,6 @@
  * @extends {COMPONENT}
  */
 
-
 //  revisar utilería https://vue-xlsx.netlify.app/guide/#quick-start
 
 import { read, writeFileXLSX, utils } from "xlsx";

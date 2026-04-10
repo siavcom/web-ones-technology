@@ -23,7 +23,6 @@ import { bt_aceptar } from "./bt_aceptar"
 
 import { FORM } from '@/classes/Form'
 
-
 export class ThisForm extends FORM {
 
   ////////////////////////////////////
@@ -33,7 +32,6 @@ export class ThisForm extends FORM {
   public query = new query()
   public browse = new BROWSE()
   public bt_aceptar = new bt_aceptar()
-
 
   constructor() {
     super()  // inicializa la clase base
@@ -52,7 +50,6 @@ export class ThisForm extends FORM {
     //this.style.maxHeight='400px'
 
     // this.grid=[<<grid>>]
-
 
   }
 

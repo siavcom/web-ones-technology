@@ -200,9 +200,6 @@ export class GRID extends COMPONENT {
     return true;
   }
 
-
-
-
   /*
   /////////////////////////////////////////////////////
   // asignaRenglon
@@ -292,8 +289,6 @@ export class GRID extends COMPONENT {
     return true
   }
 
-
-
   /*
     async saveRow() {
       await this.saveTable(true)  // solo graba el renglon actual
@@ -307,7 +302,6 @@ export class GRID extends COMPONENT {
 
     this.Row = -1
 
-
     if (oneRow == undefined)
       oneRow = false
 
@@ -317,7 +311,6 @@ export class GRID extends COMPONENT {
     if (oneRow) {
       updateType = 0;  // actualiza solo el renglon actual
     }
-
 
     if (updateType) {
       if (this.Form.prop.UpdateMessage.length > 0)

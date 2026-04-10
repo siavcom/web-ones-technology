@@ -28,7 +28,6 @@
 <script setup lang="ts">
 /*
 
-
    :page-size="15"
         :page-options="pageOptions"
       
@@ -46,10 +45,6 @@
         @is-finished="isFinished"
         @return-checked-rows="returnChequedRows" :column-filter="filter">
 
-
-
-
-
   :page-size="table.pageSize" 
  :grouping-display="table.groupingDisplay" 
 :is-loading="table.isLoading"
@@ -66,9 +61,7 @@
       :is-loading="table.isLoading" 
       :messages="table.messages"
 
-
 */
-
 
 //////////////////////////////////////
 // https://vue3-lite-table.vercel.app/
@@ -76,7 +69,6 @@
 
 //import tableLite from "vue3-table-lite/ts"; // TypeScript
 import TableLite from "@/components/TableLiteTs.vue"  // TypeScript
-
 
 ///////////////////////////////////////
 // Propiedades del componente reactivas
@@ -146,7 +138,6 @@ const props = defineProps<{
     Decimals: number;
     Nu: 'arab';//
 
-
     //compAddress: any;
   };
   // inputStyle: {};
@@ -168,8 +159,6 @@ const props = defineProps<{
   };
   //db: any
 }>();
-
-
 
 /*
 
@@ -209,7 +198,6 @@ This.Id = Id
 
 divStyle.maxWidth = "1200px"
 
-
 const table = This.table
 
 //const isLoading = ref(false)
@@ -231,8 +219,6 @@ const table = reactive({
   oriRows:[],
   totalRecordCount: 0,
 
-
-
   sortable: {
     order: "recno",
     sort: "asc",
@@ -251,14 +237,12 @@ const table = reactive({
         );
       },
 
-
 })
 
 */
 ////////////////////////////////////////
 // RowSource
 ///////////////////////////////////////
-
 
 watch(
   () => table.checkBox,
@@ -268,9 +252,6 @@ watch(
   },
   { deep: false }
 );
-
-
-
 
 ///////////////////////////
 
@@ -286,7 +267,6 @@ watch(
     table.totalRecordCount = 0
     table.filters = {}
 
-
     if (new_val == '') {
       return
 
@@ -294,7 +274,6 @@ watch(
       // obtiene el primer registro para obtener logitudes y descripcion de variables
       const result = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + ' limit 1')
       if (result.length > 0 && table.columns.length == 0) {
-
 
         const Id = {
           label: 'Id',
@@ -306,7 +285,6 @@ watch(
         table.columns.push(Id)
 
         // genera el header 
-
 
         for (const field in result[0]) {
 
@@ -370,7 +348,6 @@ const doSearch = async (offset: number, limit: number, order: string, sort: stri
     for (const elements in table.filters)
       sw_filters = true
 
-
     //  console.log('doSearch  table.filters=',table.filters,'sw_filers=',sw_filters)
     const rows = sw_filters ?
       await multiFilter(table.oriRows, table.filters) :
@@ -397,17 +374,13 @@ const doSearch = async (offset: number, limit: number, order: string, sort: stri
 
     console.log('browseLite doSearch offset=', offset, 'limit=', limit, 'order=', order, 'Rows=', table.rows)
 
-
-
     //This.rows = ref(table.rows)
     table.totalRecordCount = datos.length
     table.sortable.order = order;
     table.sortable.sort = sort;
   }
 
-
 }
-
 
 /*
 
@@ -415,9 +388,6 @@ row-clicked
 
     Description: You can get row data from this function after row clicked.
     Type: (rowData) => void
-
-
-
 
 */
 
@@ -450,7 +420,6 @@ const initTable = ({ el: tableComponent }) => {
   })
   //      ).mount(childTh[1]);
 
-
   //      createApp(
  defineComponent({
     setup() {
@@ -478,7 +447,6 @@ const tableLoadingFinish = (elements) => {
   isLoading.value = false;
   console.log('tableLoadingFinish ', elements)
 
-
 };
 */
 
@@ -488,7 +456,6 @@ const returnChequedRows = (rowData: []) => {
     This.prop.Value = rowData[0]
     This.close()
 
-
   }
 };
 
@@ -496,12 +463,10 @@ const rowClicked = (rowData: []) => {
   console.log('Click in row ', rowData)
 };
 
-
 const rowToggled = (rows, isCollapsed) => {
   console.log('RowToggled')
 
 }
-
 
 ////////// Killo Soft //////////
 //let PropsRows = ref(props.rows)
@@ -515,7 +480,6 @@ function multiFilter(array, filters) {
 }
 */
 
-
 const filter = async (filters?: {}, limit: number) => {
 
   const filtro = {}
@@ -523,7 +487,6 @@ const filter = async (filters?: {}, limit: number) => {
     filters = table.filters
   else
     table.filters = filters
-
 
   let sw_filters = false
   for (const elements in filters)
@@ -560,7 +523,6 @@ const filter = async (filters?: {}, limit: number) => {
   const NewRows = sw_filters ? await multiFilter(table.oriRows, filtro) :
     table.oriRows
 
-
   console.log('browseLite doSearch offset=', 'limit=', limit, NewRows)
   limit = (limit > NewRows.length) ? NewRows.length : limit
   table.totalRecordCount = NewRows.length
@@ -575,11 +537,9 @@ const filter = async (filters?: {}, limit: number) => {
   //   emit("Rows", PropsRows);
   //    console.log('TableLite en browseLite filter NewRows==>>', NewRows)
 
-
   //     table.rows=NewRows  // asignamos Nuevos renglones
   //    This.rows=table.rows // exportamos rows al componente
   // });
-
 
 };
 
@@ -587,7 +547,6 @@ const isFinished = () => {
   table.isLoading = false
 
   console.log('isFinished', table.isLoading)
-
 
   /*
   Array.prototype.forEach.call(elements, function (element) {
@@ -606,13 +565,11 @@ const isFinished = () => {
   */
 };
 
-
 const middleClick = () => {
   // console.log('middleClick')
   if (This.Form && This.Form.translateContainer)
     This.Form.translateContainer.open(ref(This))
 }
-
 
 const handler = (event) => {
   if (event.which === 1) {
@@ -623,7 +580,6 @@ const handler = (event) => {
 }
 
 ////////// Killo Soft ////////// 
-
 
 </script>
 

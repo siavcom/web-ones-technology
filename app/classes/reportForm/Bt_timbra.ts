@@ -33,8 +33,6 @@ export class Bt_timbra extends IMGBUTTON {
     MessageBox('Timbrado exitoso')
     this.Form.bt_pdf.click()
 
-
   }   // Fin Procedure
-
 
 }

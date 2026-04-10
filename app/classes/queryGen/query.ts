@@ -29,6 +29,5 @@ export class query extends COMPONENT {
     this.prop.Placeholder = 'SQL QUERY'
     // this.inputStyle.cols = 80
 
-
   }
 }

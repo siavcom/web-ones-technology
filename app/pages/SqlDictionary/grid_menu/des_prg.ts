@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class des_prg extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {

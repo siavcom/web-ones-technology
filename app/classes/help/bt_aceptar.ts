@@ -60,7 +60,6 @@ export class bt_aceptar extends IMGBUTTON {
       where = ` ${this.Parent.cam_dat.prop.Value} >= ${this.Parent.des_dat.prop.Value} and \
         ${this.Parent.cam_dat.prop.Value} <= ${this.Parent.has_dat.prop.Value}`
 
-
       if (Type == 'string') {
         where = ` ${this.Parent.cam_dat.prop.Value} >= '${this.Parent.des_dat.prop.Value}' and \
                ${this.Parent.cam_dat.prop.Value} <= '${this.Parent.has_dat.prop.Value}'`
@@ -76,7 +75,6 @@ export class bt_aceptar extends IMGBUTTON {
     const and = this.Parent.prop.Where ? 'and' : ' '
 
     where = ` where ${this.Parent.prop.Where} ${and} ${where} `
-
 
     //    const data = await this.Sql.localAlaSql(`select cam_dat,ref_dat from now.diccionario `)
     //    console.log('bt_aceptar data=', data)
@@ -117,6 +115,5 @@ export class bt_aceptar extends IMGBUTTON {
     this.Parent.browse.prop.Visible = true;
 
   }
-
 
 }

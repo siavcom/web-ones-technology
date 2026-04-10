@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class nullValue extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -30,6 +29,5 @@ export class nullValue extends COLUMN {
         this.style.width = '40px'
 
     }
-
 
 }

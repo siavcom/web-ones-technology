@@ -125,7 +125,6 @@ export class bt_aceptar extends IMGBUTTON {
 
     //================ Si es captura de Grid o Compuesto =====================
 
-
     if (
       this.Form.tip_for.prop.Value == "C" ||
       this.Form.tip_for.prop.Value == "G"

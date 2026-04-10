@@ -20,14 +20,11 @@ import { jerseyno } from "./jerseyno"
 import { positionname } from "./positionname"
 import { birthday } from "./birthday"
 
-
-
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
 
 import { captureForm } from '@/classes/CaptureForm'
-
 
 export class ThisForm extends captureForm {
 
@@ -42,7 +39,6 @@ export class ThisForm extends captureForm {
   public jerseyno = new jerseyno()
   public positionname = new positionname()
   public birthday = new birthday()
-
 
   constructor() {
     super()  // inicializa la clase base
@@ -61,12 +57,9 @@ export class ThisForm extends captureForm {
     this.style.backgroundImage = "/logos/Logo_Empresa.png"
     this.grid = ['']
 
-
   }
   async init() {
 
-
   }
-
 
 } // End ThisForm

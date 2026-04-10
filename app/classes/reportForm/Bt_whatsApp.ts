@@ -6,7 +6,6 @@
  * @extends {IMGBUTTON}
  */
 
-
 export class Bt_whatsApp extends IMGBUTTON {
   // public data_detail = new data_detail();
 
@@ -22,7 +21,6 @@ export class Bt_whatsApp extends IMGBUTTON {
     this.prop.ToolTipText = 'Enviar por WhatsApp';
     this.style.width = '84px'
 
-
   } // Fin constructor
 
   override async click() {
@@ -32,7 +30,6 @@ export class Bt_whatsApp extends IMGBUTTON {
     return
 
   }
-
 
   // desconectamos el servidor web-sockets al cerrar
 

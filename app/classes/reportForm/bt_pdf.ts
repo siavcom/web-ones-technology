@@ -63,7 +63,6 @@ export class bt_pdf extends IMGBUTTON {
     console.log("bt_pdf for_imp=", this.Form.for_imp.prop.Value)
     console.log("bt_pdf for_imp=", this.Form.data)
 
-
     const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
     console.log("bt_pdf buffer=", query, this.Form.for_imp.prop.Value, this.Form.data)
 
@@ -83,6 +82,5 @@ export class bt_pdf extends IMGBUTTON {
     return
 
   }
-
 
 }

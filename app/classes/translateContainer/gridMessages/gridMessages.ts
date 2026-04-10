@@ -18,7 +18,6 @@ export class gridMessages extends GRID {
   public messageText = new messageText()
   public titleBarText = new titleBarText()
 
-
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super()
@@ -55,7 +54,5 @@ export class gridMessages extends GRID {
     await super.appendRow(m) // llama a la clase base
 
   }
-
-
 
 }

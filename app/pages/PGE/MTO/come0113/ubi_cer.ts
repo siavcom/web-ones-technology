@@ -11,7 +11,6 @@
 
 import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
 
-
 export class ubi_cer extends CAPTURECOMPONENT {
 
     constructor() {

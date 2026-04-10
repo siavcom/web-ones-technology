@@ -28,5 +28,4 @@ export class num_vis extends COLUMN {
 
     }
 
-
 }

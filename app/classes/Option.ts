@@ -50,7 +50,6 @@ export class option extends COMPONENT {
     this.prop.ReadOnly = true
     const thisForm = this.Parent
 
-
     for (let i = 1; i < thisForm.options.length; i++) {   // apaga los demas checkbox
       const item = thisForm.options[i]
       if (item.prop.OptionNumber != this.prop.OptionNumber) {

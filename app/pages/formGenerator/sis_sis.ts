@@ -68,7 +68,6 @@ export class sis_sis extends COMPONENT {
     if (this.prop.Value > '   ')
       where = ` where sis_sis = '${this.prop.Value.trim()}'`
 
-
     this.Form.tab_form.prop.Visible = false;
     this.Form.tab_grid.prop.Visible = false;
     if (this.Form.tip_for.prop.Value == "C" || this.Form.tip_for.prop.Value == "F") {
@@ -83,10 +82,6 @@ export class sis_sis extends COMPONENT {
       this.Form.tab_grid.prop.Visible = true;
 
     }
-
-
-
-
 
     return true
   }

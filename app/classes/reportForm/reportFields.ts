@@ -16,14 +16,12 @@ import { con_report } from './con_report'
 
 import { Grid } from './fields/grid'
 
-
 export class reportFields extends COMPONENT {
 
   ////////////////////////////////////
   // component imported
   ////////////////////////////////////
   //public mensaje=new mensaje()
-
 
   public con_report = new con_report()
   public Grid = new Grid()
@@ -42,7 +40,6 @@ export class reportFields extends COMPONENT {
     this.prop.Visible = false
     this.style.width = 'auto'
   }
-
 
 }
 

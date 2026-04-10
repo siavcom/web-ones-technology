@@ -11,7 +11,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class ico_prg extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -25,6 +24,5 @@ export class ico_prg extends COLUMN {
         this.prop.ToolTipText = 'Icono a aparecer en el menú'
         this.style.width = '350px'
     }
-
 
 }

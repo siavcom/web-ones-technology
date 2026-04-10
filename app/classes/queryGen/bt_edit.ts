@@ -26,7 +26,6 @@ export class bt_edit extends COMPONENT {
     this.captionStyle.fontSize = '10px'
     this.style.width = '50px'
 
-
   } // Fin constructor
 
   async click(add?: boolean) {
@@ -57,7 +56,6 @@ export class bt_edit extends COMPONENT {
     await localClone('vi_cap_db_query', RecordSource, filter)
     this.Parent.Grid.prop.RecordSource = RecordSource
 
-
     console.log('bt_edit alaSql recordSource=', this.Parent.Grid.prop.RecordSource,
       await localAlaSql(`select * from ${this.Parent.Grid.prop.RecordSource}`))
 
@@ -75,8 +73,6 @@ export class bt_edit extends COMPONENT {
         }
     */
 
-
   }
-
 
 }

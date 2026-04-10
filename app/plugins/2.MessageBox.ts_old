@@ -5,10 +5,7 @@
 // Ult.Mod  : 22/Junio/2022
 /////////////////////////////////////////////
 
-
-
 import 'sweetalert2/dist/sweetalert2.min.css';
-
 
 export default defineNuxtPlugin(() => {
   return {
@@ -111,7 +108,6 @@ export default defineNuxtPlugin(() => {
         }
         //console.warn('messageBox 3',valor,tipo)
 
-
         switch (valor) {
           case 16: // stop sign
             //console.log('messagebox 16')
@@ -142,9 +138,7 @@ export default defineNuxtPlugin(() => {
             break
         }
 
-
         valor = valor > 0 ? tipo - valor : tipo // restamos el primer resultado        
-
 
         val_ini = 512
         while (valor > 511) {

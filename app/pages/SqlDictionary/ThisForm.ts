@@ -57,7 +57,6 @@ export class ThisForm extends FORM {
     this.prop.Caption = "Mantenimiento al diccionario de datos"
     this.prop.Status = "A"
 
-
     //    this.mainStyle.display = ""
     //    this.mainStyle.background = "white"
     //    this.mainStyle.color = "#b94295"

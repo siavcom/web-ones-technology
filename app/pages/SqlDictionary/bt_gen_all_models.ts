@@ -4,7 +4,6 @@
 // Creacion : Sep/2022
 /////////////////////////////////////////////
 
-
 export class bt_gen_all_models extends IMGBUTTON {
 
   constructor() {
@@ -20,7 +19,6 @@ export class bt_gen_all_models extends IMGBUTTON {
 
   } // Fin constructor
 
-
   async click() {
 
     if (await MessageBox('Generamos sequelize MODELS de todas las tablas', 4, '') == 6) {
@@ -32,7 +30,5 @@ export class bt_gen_all_models extends IMGBUTTON {
 
     return
   }
-
-
 
 }

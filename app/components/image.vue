@@ -51,7 +51,6 @@ const style = reactive({ ...Este.style })
 const Image = ref(props.prop.Image)
 const focusIn = ref(0)
 
-
 const Styles =
 {
   captionStyle: captionStyle,
@@ -68,7 +67,6 @@ This.Recno = props.Registro
 
 const Value = ref(props.prop.Value)
 const ToolTipText = ref(true)
-
 
 /**********************************************
  * Watchers 
@@ -89,7 +87,6 @@ watch(
   },
   { deep: false }
 );
-
 
 ////////////////////////////////////////
 // Registro
@@ -124,7 +121,6 @@ watch(
   },
   { deep: true }
 );
-
 
 /*
 
@@ -173,13 +169,6 @@ watch(
   },
   { deep: false }
 )
-
-
-
-
-
-
-
 
 ////////////////////////////////////////////////////////////////////
 // onFocus
@@ -252,7 +241,6 @@ const lostFocus = async () => {
 
 }
 
-
 onMounted(async () => {
   // Styles.captionStyle       :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }"
 
@@ -285,7 +273,6 @@ const middleClick = () => {
   if (This.Form && This.Form.translateContainer)
     This.Form.translateContainer.open(ref(This))
 }
-
 
 const handler = (event) => {
   if (event.which === 1) {

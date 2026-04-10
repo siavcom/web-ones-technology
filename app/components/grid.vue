@@ -145,7 +145,6 @@
 
         </span>
 
-
         <span :id="Id + '_botton_controles_delete_row'" title="Delete row"
           v-show="prop.showDeleteButton && !This.prop.ReadOnly" :style="{
             'padding': '5px',
@@ -160,9 +159,6 @@
           <input ref="Ref" :id="Id + '_Rows_page_number'" type="number" v-model="scroll.rows" :step="1" min="5"
             max="500">
         </span>
-
-
-
 
         <!--
         <div :id="Id + '_footer_div_' + compFooter" v-for="(compFooter) in This.footer" style="zIndex:0">
@@ -182,7 +178,6 @@
 
   </div>
 </template>
-
 
 <script setup lang="ts">
 /*   Cambios en el componente
@@ -399,12 +394,9 @@ watch(
 
     }
 
-
   },
   { deep: false }
 );
-
-
 
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
@@ -555,7 +547,6 @@ watch(
   { deep: false }
 );
 
-
 //////////////////////////////////////////////
 // Cuanmdo se asigna el valor del renglon activo This.Row
 /////////////////////////////////////////////////
@@ -615,20 +606,17 @@ watch(
           if (This[comp].prop.BaseClass.toLowerCase() == 'imgbutton')
             This[comp].click()
 
-
         }
       }
       if (RowInsert) {
         RowInsert = false
       }
 
-
     }
 
   },
   { deep: false }
 );
-
 
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal
@@ -644,7 +632,6 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
 
   if (This.Row == Row)
     return
-
 
   /*
     if (This[ColumnName].prop.Type == 'textLabel') {
@@ -662,7 +649,6 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
       }
     }
   }
-
 
   This.prop.Valid = false
   // This.prop.Status = 'P'
@@ -719,7 +705,6 @@ const loadData = async (Pos?: number) => {
   if (This.prop.RecordSource.length < 2) {
     return
   }
-
 
   This.Form.prop.Status = 'P'
   This.prop.Valid = false
@@ -803,13 +788,11 @@ const loadData = async (Pos?: number) => {
     if (RowInsert)
       return
 
-
   } catch (err) {
     console.warn('Error loadData ', err)
     //    scroll.noResult = true;
     //    scroll.message = "Error loading data";
   }
-
 
   restableceStatus()
   This.Form.prop.Status = 'A'
@@ -821,8 +804,6 @@ const restableceStatus = async () => {
   for (const comp in compStatus.value)
     compStatus.value[comp] == 'A'
 }
-
-
 
 ///////////////  Controles de navegación ///////////////
 
@@ -845,7 +826,6 @@ const first = async () => {
   scroll.page = 0
   loadData()
 }
-
 
 /**
  * @function previous
@@ -899,7 +879,6 @@ const last = async (insert?: boolean): Promise<void> => {
     }
   }
 
-
   if (This.prop.RecordSource.length < 2 || View[props.prop.RecordSource].recnoVal.length == 0) {
     scroll.page = 0
     scroll.top = false
@@ -921,7 +900,6 @@ const last = async (insert?: boolean): Promise<void> => {
   //console.log('2.6) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length)
 
   await loadData(1)
-
 
   // await asignaRenglon(scroll.dataPage[rows].id, First)
   /*
@@ -1074,7 +1052,6 @@ const ChecaStatus = async () => {
   return true
 }
 
-
 /*
 const autoLoad = async (RecordSource: string) => {
   //scroll.controls = false
@@ -1140,11 +1117,8 @@ onMounted(async () => {
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
 
-
-
   if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid para abrir tabla de captura 
     await This.valid()
-
 
   if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
     await loadData()
@@ -1158,9 +1132,7 @@ onMounted(async () => {
   This.Row = -100
 })
 
-
 //init(); // Ejecuta el init
-
 
 const middleClick = () => {
   // console.log('grid middleClick', This)
@@ -1228,8 +1200,6 @@ div.controles {
   overflow-x: auto;
   width: auto;
 }
-
-
 
 table {
   /* Not required only for visualizing */

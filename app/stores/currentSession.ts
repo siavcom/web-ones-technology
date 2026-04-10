@@ -101,7 +101,6 @@ export const Session = defineStore(
         return
       });
 
-
       // Password correcto, leemos datos de la empresa (logo y otros)
       socket.on("loginOk", async (res: {}) => {
         console.log('openSocket loginOk========>', res)
@@ -259,8 +258,6 @@ export const Session = defineStore(
       //  sin no se ha inicilizado la conexion aborta todo
       menu.value = []  // vaciamos el menú
 
-
-
       if (id_con.value == "") {
         const router = useRouter();
         router.push("/Login");
@@ -277,10 +274,7 @@ export const Session = defineStore(
       socket = sockets.value[nom_emp.value];
       // console.log('************storage leeMenu sockets=', sockets.value)
 
-
       if (socket) {   // 
-
-
 
         // hay socket
         await socket.emit("sql async", dat_vis, (response) => {
@@ -361,7 +355,6 @@ export const Session = defineStore(
                   }
                   // Guardamos variables publicas
 
-
                   if (Public.value[comp]) {
                     Public.value[comp] = Var.value[comp];
 
@@ -432,7 +425,6 @@ export const Session = defineStore(
     function updateMenu(menuObt: any[]) {
       menu.value = menuObt;
     }
-
 
     //////////////////////////////////////////////
     // funcion obtLogo

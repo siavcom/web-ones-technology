@@ -159,8 +159,6 @@ import { storeToRefs } from 'pinia'
 import { INIT } from "@/classes/Init";
 //import { refreshNuxtData } from '#app'
 
-
-
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
 
@@ -250,7 +248,6 @@ const Valid = reactive(ThisForm.Valid)
 const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 ThisForm.Id = Id
 
-
 // Datos forma por forma . En app.vue esta useHead
 useSeoMeta({
   title: ThisForm.prop.Name,
@@ -338,7 +335,6 @@ watch(
   }, { deep: true }
 );
 
-
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
 watch(
@@ -360,7 +356,6 @@ watch(
   },
   { deep: true }
 );
-
 
 // Checa todas las validaciones que tienen todos los componentes el form 
 
@@ -405,7 +400,6 @@ watch(Valid, async (new_val) => {
     ThisForm.bt_saveClick()
   else
     ThisForm.bt_save.prop.Visible = true
-
 
 },
   { deep: true }); //, flush: 'post'
@@ -477,9 +471,6 @@ const Init = new INIT();  // solo se puso para evitar de errores que tenia
 
 const mounted = ref(false)
 
-
-
-
 /**
  * Despues ede montar la forma, asigna los estatus de los componentes
  * 
@@ -515,7 +506,6 @@ onBeforeMount(async () => {
 
       console.log('ThisForm.estatus', ThisForm.estatus)
 
-
       await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
       /*
           for (const i in ThisForm.elements) {
@@ -537,20 +527,16 @@ onBeforeMount(async () => {
  */
   //Valid = toRef(ThisForm, "Valid")
 
-
   console.log('ThisForm onMounted  ', ThisForm)
   loading.value = false
   ThisForm.afterMounted()
 
 })
 
-
 onUnmounted(async () => {
 
   if (ThisForm && ThisForm.onUnmounted) await ThisForm.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
 })
-
-
 
 const middleClick = () => {
   console.log('middleClick')
@@ -565,7 +551,6 @@ const handler = (event) => {
     ThisForm.translateContainer.open(ref(ThisForm))
   event.preventDefault();
 }
-
 
 const NextTick = (ins: string) => {
   console.log('NextTick', ins)
@@ -586,7 +571,6 @@ const NextTick = (ins: string) => {
   justify-content: center;
   align-items: center;
 }
-
 
 .Mainform-enter-active,
 .Mainform-leave-active {
@@ -612,10 +596,6 @@ const NextTick = (ins: string) => {
 .detailForm2-transition-group {
   transition: all 0.5s ease;
 }
-
-
-
-
 
 img.logoVue {
   float: left;
@@ -716,9 +696,6 @@ img.circle {
   width: 18px;
 }
 
-
-
-
 img.bt_salir {
   background-color: rgb(255, 255, 255);
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
@@ -779,7 +756,6 @@ img.bt_salir {
   visibility: visible;
   opacity: 1;
 }
-
 
 .disabled {
   pointer-events: none;

@@ -47,7 +47,7 @@
 
                     <li @click="isMan = !isMan">
                       <span class="links_options">{{ Props.maintenance
-                      }}</span>
+                        }}</span>
                       <nuxt-img class="ico" :src="isMan ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
                     <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
@@ -161,7 +161,6 @@
                               </a>
 
 */
-
 
 // Utilizacion de Pinia 
 import { storeToRefs } from 'pinia'
@@ -297,7 +296,6 @@ const Style = {
   menuFooterTextColor: '#fff'
 }
 
-
 Props.menuItems.push(
   {
     // link: 'http://siavcom.com.mx:38000/Login',
@@ -327,9 +325,6 @@ const session = Session()
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
-
-
-
 /*
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
@@ -338,7 +333,6 @@ await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
 
 console.log('session logoEmp=', logoEmp)
 */
-
 
 const usrMenu = menu
 //const Prop = ref(props)
@@ -355,7 +349,6 @@ const isRep = ref(false)
 const isPro = ref(false)
 
 // Idicamos si ya esta firmado
-
 
 const isLoggedIn = ref(Props.isLoggedIn)
 
@@ -384,8 +377,6 @@ useHead({
   */
 
 });
-
-
 
 const cssVars = computed(() => {
   return {
@@ -495,7 +486,6 @@ const obtMenu = () => {
       })
 
   }
-
 
   for (let i = 0; usrMenu.value.length > 0 && usrMenu.value.length > i; i++) {
     // solo agrega menu principal
@@ -1083,8 +1073,6 @@ sidebar li a .links_options {
   }
 
 }
-
-
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

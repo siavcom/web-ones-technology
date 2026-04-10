@@ -22,5 +22,4 @@ export class ToolTipText extends COMPONENT {
     this.inputStyle.width = "496px";
   }
 
-
 }

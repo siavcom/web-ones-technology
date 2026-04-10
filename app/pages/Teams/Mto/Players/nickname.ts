@@ -11,7 +11,6 @@
 // base class
 ///////////////////////////////////////
 
-
 //import { captureComponent } from '@/classes/captureComponent'
 
 export class nickname extends CAPTURECOMPONENT {
@@ -33,7 +32,6 @@ export class nickname extends CAPTURECOMPONENT {
     this.prop.Decimals = 0
     this.prop.Capture = true
     this.prop.updateKey = false
-
 
     // this.RecordSource="" oJo
 
@@ -87,10 +85,8 @@ export class nickname extends CAPTURECOMPONENT {
     // this.prop.BoundColumn= 2
     // this.prop.ColumnWidths= "50%,50%"
 
-
     //// Column grid ////
     // this.prop.Order = 2
-
 
     ///////////////////////// 
     // Style
@@ -118,9 +114,7 @@ export class nickname extends CAPTURECOMPONENT {
     // this.style.wordWrap= "break-word"
     // this.style.cols = "60"
 
-
   }
-
 
   //////////////////////////
   // KeyPress

@@ -28,7 +28,6 @@ import Component from "/templates/Component.txt?raw";
 import Grid from "/templates/Grid.txt?raw";
 import Column from "/templates/Column.txt?raw";
 
-
 //import { readFileSync } from 'fs'
 //https://github.com/gildas-lormeau/zip.js
 import {
@@ -329,7 +328,6 @@ vue-upload-component
 
 https://stackoverflow.com/questions/33643107/read-and-write-a-text-file-in-typescript
 
-
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -337,8 +335,6 @@ fs.readFile(path.join(__dirname, "filename.txt"), (err, data) => {
     if (err) throw err;
     console.log(data);
 })
-
-
 
 */
 
@@ -365,9 +361,6 @@ saveFile: function() {
     try { fs.writeFileSync('myfile.txt', data, 'utf-8'); }
     catch(e) { alert('Failed to save the file !'); }
 }
-
-
-
 
 */
 

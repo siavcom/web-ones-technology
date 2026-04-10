@@ -5,7 +5,6 @@
 // Ult. Mod: 15/Mayo/2023
 /////////////////////////////////////////////
 
-
 export class bt_gen_model extends IMGBUTTON {
 
   constructor() {
@@ -27,14 +26,12 @@ export class bt_gen_model extends IMGBUTTON {
     if (this.prop.Disabled) return
     this.prop.Disabled = true
 
-
     if (await this.Form.bt_aceptar.grabaDatos('vi_cap_comedat') && await MessageBox('Continuamos con la generación del sequelize MODEL ' + this.Form.nom_tab.prop.Value, 4, '') == 6) {
       const error = await genModel(this.Form.nom_tab.prop.Value)
       if (error.length)
         console.error('Error al generar/regenerar MODEL ', this.Form.nom_tab.prop.Value)
     }
     this.prop.Disabled = false
-
 
     return
   }

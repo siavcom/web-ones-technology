@@ -27,8 +27,6 @@ import { wri_dat } from "./wri_dat";
 import { def_dat } from "./def_dat";
 import { cal_dat } from "./cal_dat";
 
-
-
 export class grid_datos extends GRID {
   // Columna que tiene el grid
   // public con_dat = new COLUMN()

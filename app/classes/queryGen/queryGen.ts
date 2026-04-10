@@ -73,10 +73,7 @@ export class queryGen extends COMPONENT {
     */
     console.log('Click ', name,)
 
-
     this.nco_que.interactiveChange()
-
-
 
   }
 

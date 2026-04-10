@@ -25,7 +25,6 @@ export class bt_delete extends COMPONENT {
     this.captionStyle.fontSize = '10px'
     this.style.width = '50px'
 
-
   } // Fin constructor
 
   async click() {
@@ -34,6 +33,5 @@ export class bt_delete extends COMPONENT {
     this.prop.Visible = false
 
   }
-
 
 }

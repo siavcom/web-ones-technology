@@ -50,7 +50,6 @@ export class nco_que extends COMPONENT {
     //console.log("1 InteractiveChange Value", this.prop.Value, this.Parent.Name);
     const tabla = this.Parent.tabla;
 
-
     this.Parent.bt_edit.prop.Visible = false;
     this.Parent.bt_delete.prop.Visible = false;
     this.Parent.Grid.prop.Visible = false;

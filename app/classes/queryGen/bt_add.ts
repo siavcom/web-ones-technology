@@ -41,7 +41,6 @@ export class bt_add extends COMPONENT {
     m.cam_dat = this.Form.var_ord.prop.Value
     m.vis_rep = this.Form.vis_rep
 
-
     const data = await SQLExec(`select max(nco_que)+1 as max_que from man_db_query \
       where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
          and usu_que='${m.usu_que}' `)
@@ -80,7 +79,6 @@ export class bt_add extends COMPONENT {
     this.Parent.nco_que.prop.Value = m.nco_que
     console.log('bt_add nco_que==', m.nco_que, this.Parent.nco_que.prop.Value)
 
-
     const filter = {
       usu_que: this.Parent.usu_que,
       nco_que: this.Parent.nco_que.prop.Value
@@ -91,6 +89,5 @@ export class bt_add extends COMPONENT {
     this.Parent.table.prop.Visible = true
     */
   }
-
 
 }

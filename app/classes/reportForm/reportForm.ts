@@ -29,13 +29,11 @@ import { bt_pdf } from "./bt_pdf";
 import { des_fec } from "./des_fec";
 import { has_fec } from "./has_fec";
 
-
 import { des_dat } from './des_dat'
 import { has_dat } from './has_dat'
 import { tip_con } from './tip_con'
 
 //import { cam_dat } from './cam_dat'
-
 
 /////////////////// Server WebSocket para envio de documentos /////////////////////
 
@@ -55,7 +53,6 @@ const { status, data: wsData, send, open, close } = useWebSocket(`ws://${locatio
   },
   */
 })
-
 
 //let whatsappReady = ref(false);
 let whatsAppQR = ref("");
@@ -102,7 +99,6 @@ export class reportForm extends FORM {
         //   this.Form.data_detail.block[2].prop.Visible = true
         return
 
-
       case result == 'QrCode':
 
         whatsAppQR.value = data.data
@@ -138,21 +134,17 @@ export class reportForm extends FORM {
         console.log('WebSocket default, result=', result, ' data=', data.data)
         return
 
-
     }
   })
-
 
   public mon_rep = new mon_rep();
   public tip_rep = new tip_rep();
   public var_ord = new var_ord(); // variable de orden principal de la vista
 
-
   // public cam_dat = new cam_dat()
   public tip_con = new tip_con()
   public des_dat = new des_dat()
   public has_dat = new has_dat()
-
 
   public queryPri = new queryPri();
   public queryUsu = new queryUsu();
@@ -191,8 +183,6 @@ export class reportForm extends FORM {
 
     this.mainStyle.display = 'inherit'
 
-
-
     this.prop.addRow = false; // Si es verdadero aumenta renglon automaticamente
 
     this.mon_rep.prop.TabIndex = 101;
@@ -215,7 +205,6 @@ export class reportForm extends FORM {
     this.report.prop.TabIndex = 120;
 
     this.prop.cam_pri = ''
-
 
     let i = 0
 
@@ -248,7 +237,6 @@ export class reportForm extends FORM {
 
     this.block[i].title = 'Rango'
     this.block[i].prop.Visible = true
-
 
     i++
 
@@ -293,7 +281,6 @@ export class reportForm extends FORM {
     this.block[i].title = 'Datos envio'
     this.block[i].prop.Visible = false
 
-
   }
 
   public override async init() {
@@ -321,7 +308,6 @@ export class reportForm extends FORM {
       "camposView",
       "NULL"
     );
-
 
     if (!View.camposView || View.camposView.recCount == 0) {
       MessageBox("No existe la vista Sql :" + vis_rep, 16, "Error  ");
@@ -367,7 +353,6 @@ export class reportForm extends FORM {
 
     //  await this.queryPri.nco_que.interactiveChange();
 
-
     if (this.Sql.session.user == "sa") {
       this.reportFields.prop.Visible = true;
 
@@ -387,7 +372,6 @@ export class reportForm extends FORM {
     };
     await use("vi_cap_db_query", m); // todos los querys del reporte
   }
-
 
   // asignamos RecordSource y ControlSource de cada columna
   async asignaRecordSource(nom_que: string, RecordSource: string) {
@@ -498,7 +482,6 @@ export class reportForm extends FORM {
     } // EndFor
     if (query.length > 0) query = "(" + query + ")";
 
-
     //console.log("where ===>>>session=", session.dialect, query);
 
     return query;
@@ -543,7 +526,6 @@ export class reportForm extends FORM {
       where = ` ${this.var_ord.prop.Value} >= ${des_dat} and \
     ${this.var_ord.prop.Value} <= ${has_dat}`
 
-
       /*
             if (Type == 'date' || Type == 'dateTime') {
               const des_dat = dateToSring(this.des_dat.prop.Value)
@@ -558,7 +540,6 @@ export class reportForm extends FORM {
     //console.log('gen_query where=', where )
 
     var orden: string = " order by " + this.var_ord.prop.Value; // variable de orden principal de la vista
-
 
     var executeQuery: string = "select * from " + this.vis_rep;
 
@@ -603,7 +584,6 @@ export class reportForm extends FORM {
     }
     const m = await this.obtData(); // Variable de memoria los propiedades de la forma
 
-
     console.log("reportForm query", executeQuery);
 
     return executeQuery;
@@ -629,9 +609,6 @@ export class reportForm extends FORM {
     }
 
     // Obtenemos variables Publicas
-
-
-
 
     const Var = this.mPublic;
     for (let component in Var) {
@@ -681,17 +658,14 @@ export class reportForm extends FORM {
       ))
         return
 
-
       for (let i = 0; i < this.fields.length; i++)
         await this.Sql.localAlaSql(`update now.diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
 
     }
 
-
     this.var_ord.prop.Value = this.prop.cam_pri // asignamos campo principal
     this.var_ord.prop.RowSource = `diccionario.ref_dat,cam_dat`;
     this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
-
 
     // await this.var_ord.interactiveChange()
 

@@ -43,11 +43,6 @@ export class des_dat extends COMPONENT {
 
         this.Parent.has_dat.prop.Value = Value //+ ztas
 
-
-
-
-
-
       //      if (this.prop.MaxLength - (this.prop.Value.length) > 0) {
       //       const ztas = 'z'.repeat(this.prop.MaxLength - (this.prop.Value.length))
       //      }

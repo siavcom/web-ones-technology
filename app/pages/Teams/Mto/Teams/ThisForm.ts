@@ -18,14 +18,11 @@ import { sport } from "./sport"
 import { category } from "./category"
 import { manager } from "./manager"
 
-
-
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
 
 import { captureForm } from '@/classes/CaptureForm'
-
 
 export class ThisForm extends captureForm {
 
@@ -38,7 +35,6 @@ export class ThisForm extends captureForm {
   public sport = new sport()
   public category = new category()
   public manager = new manager()
-
 
   constructor() {
     super()  // inicializa la clase base
@@ -57,12 +53,10 @@ export class ThisForm extends captureForm {
     this.style.backgroundImage = "/Logo_Empresa.bmp"
     // this.grid=[<<grid>>]
 
-
   }
   async init() {
     // <<init>>
 
   }
-
 
 } // End ThisForm

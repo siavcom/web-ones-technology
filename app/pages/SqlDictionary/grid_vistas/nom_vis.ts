@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class nom_vis extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {

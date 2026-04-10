@@ -25,7 +25,6 @@ import { nickname } from "./nickname"
 import { jerseyno } from "./jerseyno"
 import { positionname } from "./positionname"
 
-
 export class grid extends GRID {
 
   public player = new player()
@@ -33,7 +32,6 @@ export class grid extends GRID {
   public nickname = new nickname()
   public jerseyno = new jerseyno()
   public positionname = new positionname()
-
 
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -45,6 +43,5 @@ export class grid extends GRID {
     this.prop.ReadOnly = false;
     this.prop.ColumnCount = 5
   }
-
 
 }

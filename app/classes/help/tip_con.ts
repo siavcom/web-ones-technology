@@ -34,8 +34,6 @@ export class tip_con extends COMPONENT {
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
 
-
-
   }
 
   async when() {
@@ -56,7 +54,6 @@ export class tip_con extends COMPONENT {
     }
     this.prop.ReadOnly = true
     return false
-
 
   }
   async interactiveChange() {

@@ -19,14 +19,11 @@ import { category } from "./category"
 import { manager } from "./manager"
 import { grid } from "./vi_cap_Players/Grid"
 
-
-
 ///////////////////////////////////////
 // Base class 
 ///////////////////////////////////////
 
 import { captureForm } from '@/classes/CaptureForm'
-
 
 export class ThisForm extends captureForm {
 
@@ -40,7 +37,6 @@ export class ThisForm extends captureForm {
   public category = new category()
   public manager = new manager()
   public vi_cap_Players = new grid()
-
 
   constructor() {
     super()  // inicializa la clase base
@@ -61,12 +57,9 @@ export class ThisForm extends captureForm {
     this.style.backgroundImage = "/img/Logo_Empresa.bmp"
     this.grid = ['vi_cap_Players']
 
-
   }
   async init() {
 
-
   }
-
 
 } // End ThisForm

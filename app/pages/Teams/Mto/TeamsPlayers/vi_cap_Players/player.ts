@@ -33,7 +33,6 @@ export class player extends COMPONENT {
     this.prop.Capture = true
     this.prop.updateKey = true
 
-
     // this.RecordSource="" oJo
 
     ///////////////////////// 
@@ -86,10 +85,8 @@ export class player extends COMPONENT {
     // this.prop.BoundColumn= 2
     // this.prop.ColumnWidths= "50%,50%"
 
-
     //// Column grid ////
     // this.prop.Order = 2
-
 
     ///////////////////////// 
     // Style
@@ -117,7 +114,6 @@ export class player extends COMPONENT {
     // this.style.wordWrap= "break-word"
     // this.style.cols = "60"
 
-
   }
 
   ////////////////////////////////// 
@@ -133,7 +129,6 @@ export class player extends COMPONENT {
     return !this.prop.ReadOnly
     //   await super.when() no hace falta el super porque en focus.capture lo hace 
   }
-
 
   ////////////////////////////////// 
   // event valid 

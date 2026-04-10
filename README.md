@@ -1268,6 +1268,8 @@ Developed on Linux (Ubuntu 22.04, 24.04) and Windows 10
 
 Node requirements: See Nuxt documentation https://nuxt.com/docs/getting-started/installation  
 
+The app directory contains 33,048 lines of effective code after excluding blank lines, representing a considerable-sized project with a good code density (83.9% of the lines contain code).
+
 👨‍💻 About
 I'm an experienced Fox programmer (since 1981) with extensive experience designing and programming using VFP, MSSQL, and PostgreSQL databases.  
 I'm old but I'm not lazy.  

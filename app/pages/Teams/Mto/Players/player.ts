@@ -33,7 +33,6 @@ export class player extends CAPTURECOMPONENT {
         this.prop.Capture = true
         this.prop.updateKey = true
 
-
         // this.RecordSource="" oJo
 
         ///////////////////////// 
@@ -86,10 +85,8 @@ export class player extends CAPTURECOMPONENT {
         // this.prop.BoundColumn= 2
         // this.prop.ColumnWidths= "50%,50%"
 
-
         //// Column grid ////
         // this.prop.Order = 2
-
 
         ///////////////////////// 
         // Style
@@ -117,8 +114,6 @@ export class player extends CAPTURECOMPONENT {
         // this.style.wordWrap= "break-word"
         // this.style.cols = "60"
 
-
     }
-
 
 }

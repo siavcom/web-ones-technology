@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class cam_act extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -42,6 +41,5 @@ export class cam_act extends COLUMN {
         return !this.prop.ReadOnly
 
     }
-
 
 }

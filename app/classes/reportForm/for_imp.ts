@@ -23,5 +23,4 @@ export class for_imp extends COMPONENT {
         this.prop.TabIndex = 15
     }
 
-
 }

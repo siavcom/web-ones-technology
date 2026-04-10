@@ -7,7 +7,6 @@ if (to.fullPath === '/Login') {
     next();
   }
 
-
   next();
 });
 
@@ -24,5 +23,4 @@ Sample :
  const safeURL = sanitizeUrl(userInput);
  </script>
  <a :href="safeURL">Safe Profile Link</a>
-
 

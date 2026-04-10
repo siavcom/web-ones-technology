@@ -23,5 +23,4 @@ export class Bt_send extends IMGBUTTON {
     this.Form.data_detail.sendData()
   }   // Fin Procedure
 
-
 }

@@ -30,7 +30,6 @@ export class tzo_usr extends CAPTURECOMPONENT {
       this.prop.updateKey = false
       this.prop.ReadOnly = true
 
-
    }
    override init() {
       const items = [
@@ -560,7 +559,6 @@ export class tzo_usr extends CAPTURECOMPONENT {
          // names must be equal
          return 0;
       });
-
 
       let i = 0
       for (const item of items) {

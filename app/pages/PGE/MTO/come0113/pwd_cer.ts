@@ -38,7 +38,6 @@ export class pwd_cer extends CAPTURECOMPONENT {
         this.Form.pem_cer.prop.ReadOnly = false
         this.Form.key_cer.prop.ReadOnly = false
 
-
         return true
     }
     //metodo

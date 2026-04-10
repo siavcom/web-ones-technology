@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class des_ind extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -23,7 +22,6 @@ export class des_ind extends COLUMN {
         this.prop.ControlSource = 'vi_cap_comeind.des_ind'
         this.prop.ToolTipText = 'Descripción del indice'
         this.prop.Placeholder = "Descripción del indice"
-
 
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
         this.style.width = '300px'

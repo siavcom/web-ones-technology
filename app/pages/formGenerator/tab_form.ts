@@ -34,7 +34,6 @@ export class tab_form extends COMPONENT {
     this.style.width = "580px";
     this.prop.Visible = false;
 
-
     this.inputStyle.fontSize = "17px";
     this.inputStyle.fontWeight = "bold";
     this.inputStyle.width = "350px";

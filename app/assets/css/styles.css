@@ -39,7 +39,6 @@ div.backGround {
   margin-top: 1px
 }
 
-
 div.divi {
   /*display: inline-flex; / recomendado por raul*/
   display: inline-flex;
@@ -361,8 +360,6 @@ input[class="number_old"] {
   animation: blinkingText 1.2s infinite;
 }
 
-
-
 @keyframes blinkingText {
   0% {
     color: rgb(248, 8, 8);
@@ -470,8 +467,6 @@ section.formheader_old {
 
 }
 
-
-
 section.formmain_old {
   /*display: flex;*/
   /*  flex;*/
@@ -491,8 +486,6 @@ section.formmain_old {
   z-index: 1;
 }
 
-
-
 section.formfooter_old {
   display: flex;
   /*  flex;*/
@@ -508,11 +501,6 @@ section.formfooter_old {
   z-index: 0;
   /*flex-direction: row-reverse; */
 }
-
-
-
-
-
 
 /* Tooltip arrow */
 /*

@@ -40,7 +40,4 @@ export class sou_dat extends COLUMN {
 
   }
 
-
-
-
 }

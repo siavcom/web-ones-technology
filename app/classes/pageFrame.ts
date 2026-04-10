@@ -13,7 +13,6 @@ export class PAGEFRAME extends COMPONENT {
   Divi = []
   block = [] //{}
 
-
   container =
     {
       component: {
@@ -49,8 +48,6 @@ export class PAGEFRAME extends COMPONENT {
       title: ''
     }
 
-
-
   /* {
     header: [],
     main: [],
@@ -75,7 +72,6 @@ export class PAGEFRAME extends COMPONENT {
     }
     this.prop.Capture = false;
     // Estilo de cada contenedor del modal
-
 
   }
   async init() {
@@ -113,7 +109,6 @@ export class PAGEFRAME extends COMPONENT {
 
       let group = this[componente].Position[0]
       let element = this[componente].Position[1]
-
 
       if (!this.Divi[group])  // so existe el objeto, lo agrega
         this.Divi[group] = []

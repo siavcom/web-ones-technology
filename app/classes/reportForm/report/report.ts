@@ -34,7 +34,6 @@ export class report extends CONTAINER {
   public bt_json = new bt_json()
   public bt_close = new bt_close()
 
-
   constructor() {
     super()
     this.prop.Disabled = true
@@ -49,8 +48,6 @@ export class report extends CONTAINER {
 
     this.style.display = 'block'
 
-
-
     this.displayPdf.Position = [0, 0]
     this.displayBrowse.Position = [0, 1]
 
@@ -59,6 +56,5 @@ export class report extends CONTAINER {
     this.bt_json.Position = [1, 1]
 
   }
-
 
 }

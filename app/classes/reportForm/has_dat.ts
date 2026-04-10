@@ -30,7 +30,6 @@ export class has_dat extends COMPONENT {
     if (this.prop.Type == 'text' && this.prop.Value.trim().length == 0)
       this.prop.Value = 'z'.repeat(this.prop.MaxLength)
 
-
     return true
   }
 }

@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class ref_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -34,6 +33,5 @@ export class ref_dat extends COLUMN {
     override async when() {
         return await this.Parent.cam_dat.when()
     }
-
 
 }

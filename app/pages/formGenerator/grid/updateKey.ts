@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class updateKey extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -35,6 +34,5 @@ export class updateKey extends COLUMN {
         return true
 
     }
-
 
 }

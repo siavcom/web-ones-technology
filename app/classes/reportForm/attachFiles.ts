@@ -31,7 +31,6 @@ export async function attachFiles(thisForm: {}) {
     file: base64String
   })
 
-
   if (View.vi_cap_comedoc) {
     const data = await localAlaSql(`select cop_nom,cod_nom,tdo_tdo,ndo_doc from vi_cap_comedoc `)
     if (data.length > 0) {

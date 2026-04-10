@@ -15,7 +15,6 @@
 
 export class birthday extends CAPTURECOMPONENT {
 
-
     constructor() {
         super()
 
@@ -30,7 +29,6 @@ export class birthday extends CAPTURECOMPONENT {
         this.prop.MaxLength = 8
         this.prop.Capture = true
         this.prop.updateKey = false
-
 
         // this.RecordSource="" oJo
 
@@ -84,10 +82,8 @@ export class birthday extends CAPTURECOMPONENT {
         // this.prop.BoundColumn= 2
         // this.prop.ColumnWidths= "50%,50%"
 
-
         //// Column grid ////
         // this.prop.Order = 2
-
 
         ///////////////////////// 
         // Style
@@ -115,8 +111,6 @@ export class birthday extends CAPTURECOMPONENT {
         // this.style.wordWrap= "break-word"
         // this.style.cols = "60"
 
-
     }
-
 
 }

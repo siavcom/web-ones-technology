@@ -26,8 +26,6 @@ export class PHONE extends COMPONENT {
     this.captionStyle.fontWeight = 'bold'
     this.inputStyle.width = '620px';
 
-
-
   }
 
   override async valid_olf() {

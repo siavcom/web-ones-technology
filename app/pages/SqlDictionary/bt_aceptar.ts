@@ -46,7 +46,6 @@ export class bt_aceptar extends IMGBUTTON {
     this.prop.Caption = this.prop.Messages[17][0]; // "Aceptar";
     // console.log('bt_aceptar constructor Messages', this.prop.Messages)
 
-
   } // Fin constructor
 
   override async click() {
@@ -92,7 +91,6 @@ export class bt_aceptar extends IMGBUTTON {
           this.Form.sis_sis.setFocus();
         }
 
-
         //this.Form.dic_dat.valid()
         this.prop.Visible = true;
         return;
@@ -126,7 +124,6 @@ export class bt_aceptar extends IMGBUTTON {
         if (data && (await this.Form.db.recCount("vi_cap_comeind")) > 0) {
           if (!(await this.grabaDatos("vi_cap_comeind"))) dataUpdate = false;
         } else dataUpdate = false;
-
 
       }
 
@@ -250,9 +247,7 @@ export class bt_aceptar extends IMGBUTTON {
           this.Form.grid_vistas.prop.Visible = true;
           this.Form.bt_gen_vistas.prop.Visible = true;
 
-
         }
-
 
       }
 
@@ -285,13 +280,10 @@ export class bt_aceptar extends IMGBUTTON {
 
       console.log('1) bt_aceptar vi_cap_cometab recCount =', await recCount("vi_cap_cometab"))
 
-
       if (await recCount("vi_cap_cometab") == 0) {
         await appendBlank("vi_cap_cometab", m);
       }
       console.log('2) bt_aceptar vi_cap_cometab recCount =', await localAlaSql("select * from vi_cap_cometab"))
-
-
 
       this.Form.grid_tablas.prop.RecordSource = 'vi_cap_cometab';
       this.Form.grid_tablas.prop.Visible = true;
@@ -396,8 +388,6 @@ export class bt_aceptar extends IMGBUTTON {
       )
         data[i].con_dat = i + 100;
     }
-
-
 
     // borramos la tabla original y la reinsertamos en Cursor temporal
     await this.Sql.localAlaSql(

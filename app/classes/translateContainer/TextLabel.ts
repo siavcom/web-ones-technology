@@ -22,5 +22,4 @@ export class textlabel extends COMPONENT {
     this.inputStyle.width = "496px";
   }
 
-
 }

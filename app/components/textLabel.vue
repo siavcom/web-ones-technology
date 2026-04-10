@@ -41,7 +41,6 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 
 const emit = defineEmits(["update", "update:checkValue"]);
@@ -96,7 +95,6 @@ const props = defineProps<{
     CurrencyDisplay: 'code'; //to use the ISO currency code.
     Decimals: number;
     Nu: 'arab';//
-
 
     //compAddress: any;
   };
@@ -283,14 +281,11 @@ const asignaResultado = async (valor?: string) => {
 
   valor = Text.value
 
-
-
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1; // Si no hay valor de columna donde asignar el valor
   // recorre todo los renglones en columnas
 
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
-
 
   if (props.prop.RowSourceType < 1) return
   // if (props.prop.Status == 'I') return
@@ -300,12 +295,10 @@ const asignaResultado = async (valor?: string) => {
     return;
   }
 
-
   if (props.prop.RowSourceType > 0 && props.prop.ColumnCount > 0 &&
     props.prop.RowSource.length > 0 && !Render) {
     await renderComboBox()
     // console.log('Render 1) textLabel Name=', props.prop.Name, 'Text.value=', Text.value, 'Value=', This.prop.Value, 'columns=', columnas)
-
 
   }
 
@@ -320,14 +313,11 @@ const asignaResultado = async (valor?: string) => {
     //    if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
     //        Value.value == columnas[i].value) {
 
-
-
     if (columnas[i].value) {
       if (
         (typeof columnas[i].value == 'string' && typeof valor == 'string' && valor.trim() == columnas[i].value.trim()) ||
         valor == columnas[i].value) {
         // El objeto columna tiene dos campos value y text
-
 
         //displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
 
@@ -340,7 +330,6 @@ const asignaResultado = async (valor?: string) => {
   }
   if (!found && columnas.length > 0 && columnas[0].text) { // No se encontro el valor , asignara el primer valor
     //Value.value = columnas[0].value
-
 
     Text.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
     //  console.log('TextLabelcomboBox Name=', props.prop.Name, 'No found ', 'Value=', Text.value)
@@ -367,7 +356,6 @@ const renderComboBox = async () => {
   //console.log('1) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', Text.value, 'ControlSource=', props.prop.ControlSource)
   //console.log('inputStyle asignaResultado renderCombo',props.Name,Value)
   const RowSource: string = props.prop.RowSource
-
 
   // RowSourceType: 0, //1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array
   // this.prop.RowSource = "camposView.ref_dat,cam_dat";
@@ -481,7 +469,6 @@ const renderComboBox = async () => {
   // toma el tamaño del arreglo solo de la primer columna
   var valor = null
 
-
   for (
     let ren = 0;
     ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length);
@@ -518,7 +505,6 @@ const renderComboBox = async () => {
   //Text.value = valor
   //console.log('TextLabel combobox Name=', This.prop.Name, 'Text.Value=', Text.value,' valor=',valor)
 
-
   //console.log('2) textLabel renderComboBox', This.Name, 'Registro=', props.Registro, 'Valor=', valor, 'ControlSource=', props.prop.ControlSource)
 
   //30/Oct/2025
@@ -538,23 +524,16 @@ const renderComboBox = async () => {
 
 }
 
-
-
-
-
 // Leemos el valor segun el recno
-
 
 const readValue = async (on_Mounted?: boolean) => {
 
   //  if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
   //    return
 
-
   if (!on_Mounted && This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
     return
   //console.log('2) readValue This.prop.Name=', This.prop.Name, 'This.Parent.Recno=', This.Parent.Recno, 'props.Registro=', props.Registro)
-
 
   if (props.Registro > 0 && props.prop.ControlSource.length > 2) {
     //    console.log('TextLabel Name=', props.prop.Name, 'Recno=', props.Registro)
@@ -575,7 +554,6 @@ const readValue = async (on_Mounted?: boolean) => {
   return
 
 }
-
 
 watch(
   () => This.prop.RowSource,
@@ -602,13 +580,11 @@ watch(
   { deep: false }
 )
 
-
 watch(
   () => props.Registro,
   async (new_val, old_val) => {
     if (This.BaseClass == 'Column' && This.Parent.Recno > 0 && This.Parent.Recno != props.Registro)
       return
-
 
     if (old_val != new_val && new_val > 0) {
       await readValue()
@@ -691,7 +667,6 @@ const ReadOnly = () => {
   }
 }
 
-
 /////////////////////////////////////////
 // Metodo init Vfp
 // Aqui debemos de asignar todos los Valores inciales del componente
@@ -724,7 +699,6 @@ onMounted(async () => {
   if (This.prop.BaseClass == "imgButton")
     Type.value = 'imgButton'
 
-
   //await renderComboBox()
 
   // console.log('onMounted 1) textLabel Name=', This?.prop?.Name, 'props.Registro=', props.Registro)
@@ -751,7 +725,6 @@ onMounted(async () => {
   //This.recnoChange()
 
 })
-
 
 </script>
 

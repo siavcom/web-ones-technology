@@ -40,8 +40,6 @@ export class des_dat extends COMPONENT {
 
         this.Parent.has_dat.prop.Value = Value //+ ztas
 
-
-
     }
     return true
   }

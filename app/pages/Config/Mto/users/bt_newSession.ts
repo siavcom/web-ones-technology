@@ -27,7 +27,6 @@ export class bt_newSession extends IMGBUTTON {
       ["Creación de inicio de sesión con exito "], // 1
     ];
 
-
   } // Fin constructor
 
   override async click() {
@@ -55,7 +54,6 @@ export class bt_newSession extends IMGBUTTON {
         await SQLExec(`CREATE LOGIN[${this.Form.log_usr.prop.Value}] WITH PASSWORD = N'${this.Form.pw1_usr.prop.Value}', DEFAULT_DATABASE = [${this.Form.mPublic.dbname}], CHECK_EXPIRATION = OFF, CHECK_POLICY = OFF`)
       if (newUser)
         await SQLExec(`CREATE USER[${this.Form.log_usr.prop.Value}] FOR LOGIN[${this.Form.log_usr.prop.Value.trim()}]; `)
-
 
       // Dueño de la base de datos
       if (this.Form.log_usr.prop.Value.trim() === 'sa@' + this.Form.mPublic.dbname) {

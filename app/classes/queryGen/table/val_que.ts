@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class val_que extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -33,7 +32,5 @@ export class val_que extends COLUMN {
         return true
 
     }
-
-
 
 }

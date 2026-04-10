@@ -38,8 +38,6 @@ export class bt_changePassword extends IMGBUTTON {
       return
     }
 
-
-
     if (Public.value.dialect == 'mssql') {
       const data = await SQLExec("select 1 as existe from master.dbo.syslogins where name ='" + this.Form.log_usr.prop.Value.trim() + "'")
 
@@ -58,16 +56,10 @@ export class bt_changePassword extends IMGBUTTON {
         return
       }
 
-
       //ins_sql="alter user "+LOWER(Rtrim(Thisform.log_usu.Value))+" with password "+this.pa1_usr.prop.Value+" ;"
       await SQLExec("alter user " + this.Form.prop.log_usr.Value.trim().toLowerCase() + " with password " + this.Form.pw1_usr.prop.Value.trim() + " ;")
       MessageBox(this.prop.Messages[1][0])
       return
-
-
-
-
-
 
     }
     this.Form.log_usr.setFocus()

@@ -48,7 +48,6 @@ const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al 
 // watchers 
 /// ///////////////////////////////////////
 
-
 // If the id_con changes
 watch(
   () => id_con.value,
@@ -73,7 +72,6 @@ onBeforeMount(async () => {
   console.log('======Fin Login Form exitoso====', ThisForm)
   mounted.value = true
 })
-
 
 </script>
 

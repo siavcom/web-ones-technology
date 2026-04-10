@@ -30,5 +30,4 @@ export class num_ind extends COLUMN {
 
     }
 
-
 }

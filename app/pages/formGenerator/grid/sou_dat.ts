@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class sou_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -33,8 +32,5 @@ export class sou_dat extends COLUMN {
         return !this.prop.ReadOnly
         //   await super.when(row)
     }
-
-
-
 
 }

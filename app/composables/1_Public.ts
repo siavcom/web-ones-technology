@@ -41,9 +41,6 @@ const publico = reactive({
     // Moneda arrays
     val_mon1: [0, 1, 0, 0, 0, 0],
 
-
-
-
     des_mon1: ["", "MXN", "", "", "", ""],
     pro_mon1: ["", "M.N.", "", "", "", ""],
     dec_mon1: ["", "", "", "", ""],
@@ -95,6 +92,4 @@ export const Public_2 = computed(() => {
     return PUBLIC.value
 })
 */
-
-
 

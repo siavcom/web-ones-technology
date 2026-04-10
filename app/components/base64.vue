@@ -49,7 +49,6 @@
 const emit = defineEmits(["update", "update:Value",
   "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
 
-
 const props = defineProps<{
   //Recno: number;
   //Component: any;
@@ -97,7 +96,6 @@ const props = defineProps<{
     Notation: 'standard'; //standard,scientific,enginniering,compact
     Nu: 'arab';//
 
-
     Placeholder: "";
 
     ReadOnly: false;
@@ -120,7 +118,6 @@ const props = defineProps<{
     View: "";
     Visible: true;
     When: boolean;
-
 
   };
   /*
@@ -145,7 +142,6 @@ const props = defineProps<{
   //db: any
 }>();
 
-
 const Component = toRef(() => props.prop.This)
 
 const This = Component.value  // falta probar reactividad utilizando Component.value.This
@@ -161,7 +157,6 @@ const Styles = reactive(
     style: divStyle,
     //invalidInputStyle: invalidInputStyle
   })
-
 
 const accept = computed(() => This.inputStyle.accept.toLowerCase().trim())
 
@@ -318,7 +313,6 @@ const readFile = ($event) => {
 
 */
 
-
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuevo valor asignado
@@ -405,7 +399,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
         const Recno = This.Recno
         const data = await readCampo(This.prop.ControlSource, Recno)
 
-
         for (const campo in data) {
 
           if (campo == 'key_pri' && data.key_pri > 0)
@@ -429,7 +422,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
     // Asigna valores a campos de captura
 
   }
-
 
   // dato valido para que el watch de This.prop.Value no se active
   if (This.prop.Valid)
@@ -462,13 +454,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, Valor?: string) =
   return
 }
 
-
 ////////////////////////////////////////
 // Watchers : Triggers de templates
 // Descripcion : Cuando cambia el Value de la propiedad del ControlSource, asigna el Value de
 //                la vista a la propiedad de Value de la propiedad
 // Notas : Si se tiene en props, se tiene que vigilar el cambio de props.prop.Value
-
 
 /////////////////////////////////////////////////////////////////////
 // change This.prop.ShowError
@@ -487,7 +477,6 @@ watch(
   },
   { deep: false }
 );
-
 
 ////////////////////////////////////////
 // ControlSource
@@ -518,7 +507,6 @@ watch(
   { deep: true }
 );
 
-
 ////////////////////////////////////////
 // Hacer el set focus 
 ///////////////////////////////////////
@@ -546,8 +534,6 @@ watch(
 
   async (new_val: any, old_val: any) => {
 
-
-
     if (This.prop.Status == 'P') // se cambio desde el mismo proceso
       return
 
@@ -562,13 +548,11 @@ watch(
   { deep: true }
 );
 
-
 const middleClick = () => {
   // console.log('middleClick')
   if (This.Form && This.Form.translateContainer)
     This.Form.translateContainer.open(ref(This))
 }
-
 
 const handler = (event) => {
   if (event.which === 1) {
@@ -596,7 +580,6 @@ onMounted(async () => {
   divStyle.display = 'flex-root'
   divStyle.flexDirection = 'column'
 
-
   await emitValue(true)
 
   This.Recno = props.Registro
@@ -615,7 +598,6 @@ onMounted(async () => {
   console.log('base64 mounted divStyle', divStyle)
 
 })
-
 
 </script>
 

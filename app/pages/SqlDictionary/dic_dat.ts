@@ -43,7 +43,6 @@ export class dic_dat extends COMPONENT {
     //this.style.zIndex=3
   }
 
-
   public override async when() {
     await this.interactiveChange()
     return !this.prop.ReadOnly;
@@ -77,6 +76,5 @@ export class dic_dat extends COMPONENT {
     this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
 
   }
-
 
 }

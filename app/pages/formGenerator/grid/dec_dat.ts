@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class dec_dat extends COLUMN {
 
   //  constructor(parent: Record<string, never>) {
@@ -29,6 +28,5 @@ export class dec_dat extends COLUMN {
     //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
     this.style.width = '20px'
   }
-
 
 }

@@ -97,14 +97,12 @@ export class sis_sis extends COMPONENT {
     return true
   }
 
-
   async valid_old() {
     // if (this.Form.nom_tab.prop.Visible) {
 
     // Tablas o diseño de Tablas
 
     if (this.Form.dic_dat.prop.Value == 'D') {
-
 
       let where = ''
       if (this.prop.Value > '   ')

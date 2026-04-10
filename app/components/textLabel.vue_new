@@ -5,7 +5,6 @@
       :style="captionStyle">{{ prop.Caption +
         " " }}</div>
 
-
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
       :style="Styles.inputStyle" :checked="checkValue" readonly="true" />
 
@@ -35,11 +34,8 @@
 
     </textLabel>
 
-
-
   </div>
 </template>
-
 
 <script setup lang="ts">
 
@@ -96,7 +92,6 @@ const props = defineProps<{
     Decimals: number;
     Nu: 'arab';//
 
-
     //compAddress: any;
   };
   // inputStyle: {};
@@ -127,7 +122,6 @@ const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 
-
 let noRegistro = ref(0)
 const Recno = props.Registro
 const Styles =
@@ -137,13 +131,9 @@ const Styles =
   style: divStyle
 }
 
-
 //const Id = This.prop.Name + props.Registro.toString().trim()
 
-
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
-
-
 
 const Value = ref(props.prop.Value)
 
@@ -220,7 +210,6 @@ const asignaResultado = async (valor?: string) => {
       valor == columnas[i].value) {
       // El objeto columna tiene dos campos value y text
 
-
       //displayText.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
 
       Text.value = typeof columnas[i]['text'][0] == 'string' ? columnas[i]['text'][0].trim() : columnas[i]['text'][0]  // asigna el resultado a mostrar
@@ -252,7 +241,6 @@ const renderComboBox = async () => {
   //  if (Status.value == 'I') return
 
   if (props.prop.ColumnCount == 0) return
-
 
   if (!props.prop.RowSource || props.prop.RowSource.length < 2 || props.prop.RowSource == undefined) {
     return;
@@ -377,7 +365,6 @@ const renderComboBox = async () => {
   // toma el tamaño del arreglo solo de la primer columna
   var valor = null
 
-
   for (
     let ren = 0;
     ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length);
@@ -447,7 +434,6 @@ const readCampo = async () => {
   This.prop.Value = Text.value
 
   //  This.Recno = props.Registro
-
 
   if (This.onChangeValue) {
     await This.onChangeValue(ref(Styles))
@@ -542,7 +528,6 @@ watch(
       noRegistro = toRef(This.Sql.View[tabla], 'recno')
     }
 
-
   },
   { deep: false }
 )
@@ -572,7 +557,6 @@ watch(
 
     //10/Oct/2025  si se comenta deja de funcinar en el grid
 
-
     if (Recno > 0 && props.prop.ControlSource.length > 0) {
 
       //    console.log('watch text Label ala=', await localAlaSql(`select * from ${This.Parent.prop.RecordSource}`))
@@ -580,7 +564,6 @@ watch(
 
       if (This.BaseClass == 'Column' && This.Parent.Recno != props.Registro) // no pertenece al mismo renglom
         return
-
 
       //  console.log('watch This.prop.Value', new_val, old_val, 'Registro=', Registro, 'props.Registro=', props.Registro, 'props.prop.RowSourceType=', props.prop.RowSourceType, 'props.prop.RowSource=', props.prop.RowSource)
 
@@ -660,8 +643,6 @@ watch(
   { deep: false }
 );
 
-
-
 ////////////////////////////////////////////////////////
 // Cambia el estilo del input segun si es de solo lectura
 ////////////////////////////////////////////////////////
@@ -678,8 +659,6 @@ const ReadOnly = () => {
     Styles.inputStyle.opacity = This.inputStyle.opacity
   }
 }
-
-
 
 /////////////////////////////////////////
 // Metodo init Vfp
@@ -726,7 +705,6 @@ onMounted(async () => {
       // noRegistro = toRefs(View[tabla].recno)
       //    console.log('init  textLabel tabla', tabla, 'View', This.Sql.View[tabla])
 
-
       // noRegistro = ref(View[tabla].recno)
       noRegistro = toRef(This.Sql.View[tabla], 'recno')
       // console.log('noRegistro', tabla, noRegistro)
@@ -746,7 +724,6 @@ const middleClick = () => {
     This.Form.translateContainer.open(ref(This))
 }
 
-
 const handler = (event) => {
   if (event.which === 1) {
     //if (This.Form)
@@ -754,7 +731,6 @@ const handler = (event) => {
   }
   event.preventDefault();
 }
-
 
 //init();
 </script>

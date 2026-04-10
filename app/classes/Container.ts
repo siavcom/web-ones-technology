@@ -38,8 +38,6 @@ export class CONTAINER extends COMPONENT {
     this.style.border = '2px solid black'
     this.style.borderRadius = '5px'
 
-
-
     // Estilo de cada contenedor del modal
 
   }
@@ -108,7 +106,6 @@ export class CONTAINER extends COMPONENT {
 
       let group = this[componente].Position[0]
       let element = this[componente].Position[1]
-
 
       if (!this.Divi[group])  // so existe el objeto, lo agrega
         this.Divi[group] = []

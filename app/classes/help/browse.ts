@@ -17,13 +17,10 @@ export class browse extends BROWSE {
     this.prop.oneClick = true
   }
 
-
   async close() {
     //super.close()
     await this.Parent.close()
 
-
   }
-
 
 }

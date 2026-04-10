@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class pai_que extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -40,6 +39,5 @@ export class pai_que extends COLUMN {
         this.Parent.pad_que.prop.Valid = true
         return true
     }
-
 
 }

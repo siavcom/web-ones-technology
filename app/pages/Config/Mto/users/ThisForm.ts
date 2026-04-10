@@ -87,7 +87,6 @@ export class ThisForm extends captureForm {
     else
       this.newUser = false
 
-
     return super.bt_saveClick()
   }
 

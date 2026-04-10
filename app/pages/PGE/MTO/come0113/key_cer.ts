@@ -9,7 +9,6 @@
 /////////////////////////////////////////////
 // import {editText} from "@/classes/editText";
 
-
 export class key_cer extends COMPONENT {
 
     constructor() {
@@ -23,7 +22,6 @@ export class key_cer extends COMPONENT {
         this.inputStyle.accept = ".key" // ".key, .pem, .cer, application/x-pem-file, application/pkix-cert"
         this.prop.Position = 'footer'
         this.prop.Image = "/Iconos/svg/key.svg"
-
 
     }
     override when() {

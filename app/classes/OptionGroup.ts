@@ -69,7 +69,6 @@ export class OPTIONGROUP extends COMPONENT {
   */
   public override async afterMounted() {
 
-
     for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
       const item = this.options[i]
 

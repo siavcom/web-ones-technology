@@ -9,7 +9,6 @@
 /////////////////////////////////////////////
 // import {editText} from "@/classes/editText";
 
-
 export class cer_cer extends CAPTURECOMPONENT {
   captionBackup: string = '';
 
@@ -66,7 +65,6 @@ export class cer_cer extends CAPTURECOMPONENT {
     this.Parent.pwd_cer.prop.Value = ''
     this.Parent.key_cer.prop.Value = ''
     this.Parent.pem_cer.prop.Value = ''
-
 
     this.prop.RowSourceType = 0
     if (this.prop.BaseClass === "editText") {
@@ -158,6 +156,5 @@ export class cer_cer extends CAPTURECOMPONENT {
 
     return true
   }
-
 
 }

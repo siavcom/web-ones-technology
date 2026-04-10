@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class vue_dat extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -31,7 +30,6 @@ export class vue_dat extends COLUMN {
     override async when() {
         this.prop.Valid = true
 
-
         if (this.Parent.def_dat.prop.Value.trim() + this.Parent.cal_dat.prop.Value.trim() != '') {
             this.prop.ReadOnly = true
         }
@@ -40,8 +38,6 @@ export class vue_dat extends COLUMN {
             this.prop.ReadOnly = true
             this.prop.Valid = true
         }
-
-
 
         /*
                 const Value = this.Parent.cam_dat.prop.Value.trim().toUpperCase();
@@ -82,6 +78,5 @@ export class vue_dat extends COLUMN {
         return true
 
     }
-
 
 }

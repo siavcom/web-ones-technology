@@ -31,7 +31,6 @@ export class pw2_usr extends COMPONENT {
       this.style.width = "300px";
    }
 
-
    override async when() {
       return await this.Form.pw1_usr.valid()
 

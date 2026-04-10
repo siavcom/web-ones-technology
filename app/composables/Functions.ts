@@ -120,7 +120,6 @@ export const rTrim = (input: string): string => {
   return input.replace(rTrimRegex, '');
 }
 
-
 /**
  * Removes leading carriage return and newline characters from the start of a string.
  * 
@@ -224,7 +223,6 @@ export function isObject(value: null | undefined | object): boolean {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-
 /**
  * Searches for a value in an array, similar to the VFP ASscan() function.
  *
@@ -236,7 +234,6 @@ export function isObject(value: null | undefined | object): boolean {
  * @returns {number} - The position of the found element, or 0 if not found.
  */
 export function ascan<T>(array: T[], searchValue: string | number | boolean, startElement: number = 1, numElements: number = array.length, searchColumn?: number): number {
-
 
   if (!Array.isArray(array))
   //   array = variable
@@ -250,7 +247,6 @@ export function ascan<T>(array: T[], searchValue: string | number | boolean, sta
   if (startElement < 1 || startElement > array.length) {
     return 0;
   }
-
 
   if (numElements == undefined)
     numElements = array.length
@@ -390,7 +386,6 @@ export const left = (texto: string, lon: number): string => {
   return texto.substring(0, lon);
 };
 
-
 /**
  * Extracts a substring from a given string starting at a specified position.
  * 
@@ -408,7 +403,6 @@ export const substr_old = (texto: string, first: number, lon?: number): string =
   return texto.substring(first, lon);
 };
 
-
 export function substr_ant(cadena: string, inicio: number, longitud?: number): string {
   // Ajusta el índice para que sea base 0, como en JavaScript.
   const inicioAjustado = inicio - 1;
@@ -417,7 +411,6 @@ export function substr_ant(cadena: string, inicio: number, longitud?: number): s
   // El método substr() ya maneja los casos de longitud opcional.
   return cadena.substr(inicioAjustado, longitud);
 }
-
 
 /**
  * @description :Extracts a substring from a given string starting at a specified position.
@@ -446,9 +439,6 @@ export function substr(cadena: string, inicio: number, longitud?: number): strin
   return cadena.slice(startIdx, endIdx);
 }
 
-
-
-
 /**
  * Right function
  * @param {string} texto - Texto a extraer a la derecha
@@ -468,7 +458,6 @@ export const char = (ascci: number): string => {
   return String.fromCharCode(ascci);
 };
 
-
 /**
  * Replaces all occurrences of a substring within a string with a new substring.
  * @param {string} stringSource - The original string to perform replacements on.
@@ -481,7 +470,6 @@ export const strtran = (stringSource: string, stringSearch: string, stringReplac
   console.log('strtran', stringSource, stringSearch, stringReplace)
   return stringSource.replaceAll(stringSearch, stringReplace);
 };
-
 
 /////////////////////////////////////
 // Funciones Fecha
@@ -645,10 +633,8 @@ export const stringToTime = (texto?: string): string => {
   else
     date = texto.slice(0, 16) + 'Z'; //Se necesita la Z para que no le sume la hota de UTC
 
-
   return new Date(date).toISOString().substring(0, 16); // ISOString es formato 'AAAA-MM-DD'
 };
-
 
 /**
  * Convierte dias o semanas en milisegundos.
@@ -665,7 +651,6 @@ export const dayToMilliseconds = (day: number, Type?: string): number => {
   if (Type.slice(0, 0).toUpperCase() == "W" || Type.slice(0, 0).toUpperCase() == "S")    // Semanas
     return day * 1000 * 60 * 60 * 24 * 7; // Por 7 dias de la semana
 };
-
 
 /**
  * Adds a specified number of days to a given date.
@@ -761,7 +746,6 @@ export const addDate = (dateString: string, data: any, tipo?: string): string =>
   return addDay(dateString, data)
 };
 
-
 /**
  * Returns the day of the month from a given date string.
  * 
@@ -773,7 +757,6 @@ export const day = (dateString: string): number => {
   const currentDate = new Date(dateString); // Creates a Date object for the current date and time
   return currentDate.getDate(); // Retrieves the day of the month
 }
-
 
 /**
  * @description Returns the month from a given date string.
@@ -842,7 +825,6 @@ export const multiFilter = (array: [], filters: {}): Array<any> => {
 export const int = (numero: number) => {
   return Math.trunc(numero);
 }
-
 
 /**
  * @description : Convierte un número en una cadena con separadores de miles, decimales y signo.
@@ -979,7 +961,6 @@ export function closeProcessing(texto?: string) {
   });
 }
 
-
 /**
  * Muestra un mensaje de alerta con una serie de botones y iconos segun el tipo y los parametros pasados.
  * @param texto - Texto a mostrar en la alerta.
@@ -1113,7 +1094,6 @@ export async function MessageBox(
     if (valor > 16) { val_ini = val_ini / 2 }
   }
   //console.warn('messageBox 3',valor,tipo)
-
 
   switch (valor) {
     case 16: // stop sign
@@ -1252,7 +1232,6 @@ export async function MessageBox(
   return resultado
 }
 
-
 //////////////////////////////////////////////
 // Clase : delay
 // @author: Fernando Cuadras Angulo
@@ -1276,7 +1255,6 @@ export async function Delay(ms: number): Promise<void> {
 // Ult.Mod  : 24/Julio/2024
 // Descripcion: Crea un array de dos dimensiones
 /////////////////////////////////////////////
-
 
 /**
  * @description : Crea un array de dos dimensiones con la cantidad de filas especificadas
@@ -1308,7 +1286,6 @@ export function Dime2D(rows: number): Array<any> {
  * @returns {object} objeto con nombres de propiedades en lowercase
  */
 export function objToLowerCase(data: {}): object {
-
 
   if (!data.length) {
     const objeto = {}

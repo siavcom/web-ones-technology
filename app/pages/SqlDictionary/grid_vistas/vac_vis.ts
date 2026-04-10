@@ -11,7 +11,6 @@
 import { COLUMN } from '@/classes/Column'
 // 
 
-
 export class vac_vis extends COLUMN {
 
   //  constructor(parent: Record<string, never>) {
@@ -48,7 +47,6 @@ export class vac_vis extends COLUMN {
         this.prop.Valid = false
 
         return false
-
 
       }
     }

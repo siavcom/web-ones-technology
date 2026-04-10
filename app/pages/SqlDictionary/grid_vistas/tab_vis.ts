@@ -25,5 +25,4 @@ export class tab_vis extends COLUMN {
         this.style.width = '400px'
     }
 
-
 }

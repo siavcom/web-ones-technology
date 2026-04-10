@@ -36,7 +36,6 @@ export class tab_grid extends COMPONENT {
     this.inputStyle.width = "250px";
     this.style.width = "550px";
 
-
     this.inputStyle.fontSize = "17px";
     this.inputStyle.fontWeight = "bold";
     this.inputStyle.width = "350px";
@@ -72,8 +71,6 @@ export class tab_grid extends COMPONENT {
     this.Form.vis_grid.prop.Visible = true;
 
     this.Form.nom_for.prop.Visible = true;
-
-
 
     //await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `,'vi_cap_comeind')
     // this.Form.nom_ind.prop.RowSource = `select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `

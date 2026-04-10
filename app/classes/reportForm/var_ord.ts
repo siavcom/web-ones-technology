@@ -26,7 +26,6 @@ export class var_ord extends COMPONENT {
 
     // this.style.marginLeft = "10px";
 
-
   }
   /*
   override async when() {
@@ -60,7 +59,6 @@ export class var_ord extends COMPONENT {
     if (this.prop.RowSource == '') return
     if (this.prop.RowSourceType == 0) return
 
-
     const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
 
     let num_dat = 0
@@ -80,7 +78,6 @@ export class var_ord extends COMPONENT {
     let Type = 'text'
     let des_Value = this.Form.fields[num_dat][2] ? eval(this.Form.fields[num_dat][2]) : ''
     let has_Value = this.Form.fields[num_dat][3] ? eval(this.Form.fields[num_dat][3]) : ''
-
 
     if (tip_dat == 'smallint' ||
       tip_dat.slice(0, 3) == 'int' ||
@@ -121,7 +118,6 @@ export class var_ord extends COMPONENT {
       this.Form.has_dat.prop.Value = has_Value.slice(0, lon_dat)
     }
 
-
     this.Type = Type
 
     this.Form.des_dat.prop.MaxLength = lon_dat
@@ -132,9 +128,7 @@ export class var_ord extends COMPONENT {
     this.Form.has_dat.prop.Decimals = data[0].dec_dat
     this.Form.has_dat.prop.Type = Type
 
-
     this.Form.tip_con.when()
-
 
   }
 

@@ -30,7 +30,6 @@ export class tip_con extends COMPONENT {
 
   }
 
-
   override async when() {
 
     if (this.Parent.var_ord.Type == 'text') {

@@ -11,7 +11,6 @@
 
 import { CAPTURECOMPONENT } from "@/classes/CaptureComponent";
 
-
 export class ace_cer extends CAPTURECOMPONENT {
 
     constructor() {

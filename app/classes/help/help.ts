@@ -80,7 +80,6 @@ export class HELP extends CONTAINER {
 
     }
 
-
     this.block[1] = {
       component: {
 
@@ -103,7 +102,6 @@ export class HELP extends CONTAINER {
     this.bt_aceptar.prop.TabIndex = 8.5
     this.browse.prop.TabIndex = 8.6
     this.prop.oneClick = true
-
 
   }
 
@@ -176,7 +174,6 @@ export class HELP extends CONTAINER {
         else
           this.Parent.prop.Value = this.browse.prop.Value
 
-
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
       this.Parent.Help = false  //Aqui me quede
@@ -189,9 +186,6 @@ export class HELP extends CONTAINER {
 
     //this.browse.super.close()
   }
-
-
-
 
 }
 

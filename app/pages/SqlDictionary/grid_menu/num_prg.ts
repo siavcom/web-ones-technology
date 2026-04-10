@@ -10,7 +10,6 @@
 ///////////////////////////////////////
 import { COLUMN } from '@/classes/Column'
 
-
 export class num_prg extends COLUMN {
 
     //  constructor(parent: Record<string, never>) {
@@ -27,6 +26,5 @@ export class num_prg extends COLUMN {
         this.prop.Placeholder = "Orden del programa"
         this.style.width = '30px'
     }
-
 
 }

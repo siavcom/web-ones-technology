@@ -251,7 +251,6 @@ export class data_detail extends CONTAINER {
         mailJson = {};
       }
 
-
       //this.Form.data_detail.block[1].prop.Visible = true
       //this.Form.data_detail.block[2].prop.Visible = true
       let tipo = ''
@@ -395,7 +394,6 @@ export class data_detail extends CONTAINER {
       const session = Session()
       const { id_con } = storeToRefs(session)
 
-
       message = {
         id_con: id_con.value,
         //  nom_emp: nom_emp.value,
@@ -415,7 +413,5 @@ export class data_detail extends CONTAINER {
     //this.Form.bt_whatsApp.send(message)
 
   }
-
-
 
 }

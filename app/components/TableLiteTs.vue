@@ -31,8 +31,6 @@
                   )
                     ">
 
-
-
                   <div class="vtl-thead-column" :class="{
                     'vtl-sortable': col.sortable,
                     'vtl-both': col.sortable,
@@ -75,7 +73,8 @@
                     groupingRowsRefs[groupingIndex][i] = el;
                   }
                     " :name="'vtl-group-' + groupingIndex" class="vtl-tbody-tr" :class="typeof rowClasses === 'function' ? rowClasses(row) : rowClasses
-                      " @mouseenter="addHoverClassToTr" @mouseleave="removeHoverClassFromTr" @click="$emit('row-clicked', row)">
+                      " @mouseenter="addHoverClassToTr" @mouseleave="removeHoverClassFromTr"
+                    @click="$emit('row-clicked', row)">
                     <td v-if="hasCheckbox" class="vtl-tbody-td">
                       <div>
                         <input type="checkbox" class="vtl-tbody-checkbox" :ref="(el: any) => {
@@ -227,7 +226,6 @@
 
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts">
-
 
 interface pageOption {
   value: number;
@@ -419,7 +417,6 @@ export default defineComponent({
     },
     columnFilter: null, //Rutinas para filtrar
 
-
   },
   setup(props, { emit, slots }) {
     let localTable = ref<HTMLElement | null>(null);
@@ -553,7 +550,6 @@ export default defineComponent({
       setting.page = 1;
       // emit("get-now-page", setting.page);
 
-
     };
 
     ////////// Killo Soft ////////// 
@@ -605,11 +601,6 @@ export default defineComponent({
 
       return result;
     });
-
-
-
-
-
 
     ////////////////////////////
     //
@@ -965,15 +956,12 @@ export default defineComponent({
      */
     onMounted(() => {
 
-
-
       nextTick(() => {
         if (props.rows.length > 0) {
           callIsFinished();
         }
       });
     });
-
 
     return {
       slots,

@@ -34,5 +34,4 @@ export class bt_view extends COMPONENT {
 
   }
 
-
 }
