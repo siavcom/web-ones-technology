@@ -102,10 +102,12 @@ export class bt_aceptar extends IMGBUTTON {
         }
     */
     const res = await SQLExec(`select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`, 'browse')
+    // console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
+
 
     //const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
 
-    if (!res || !this.Sql.View.browse || this.Sql.View.browse.recCount == 0) {
+    if (!res || !View.browse || View.browse.recCount == 0) {
       if (!res)
         MessageBox("No hay datos")
 

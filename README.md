@@ -285,6 +285,7 @@ export class dic_dat extends COMPONENT {
 ```
 
 📋 TypeScript Component Types
+
 Browse - Table display
 
 CaptureComponent - Component of CaptureForm

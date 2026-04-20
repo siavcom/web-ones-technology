@@ -61,19 +61,17 @@ export const appendM = (valueA: {}, valueB: {}): object => {
 //////////////////////////////////////
 
 /**
- * Checks if a string is null.
+ * @description Checks if a string is null.
  * @param {string} data - The string to check
  * @returns {boolean} true if the string is null, false otherwise
  */
-export const isNull = (data: string): boolean => {
-
-  if (data !== null) {
-    if (data.trim().length === 0)
-      return true
-    return false
-  }
-
-  return data == null ? true : false;
+export const isNull = (data: string | number): boolean => {
+  console.log('isNull data=', data)
+  if (data == null)
+    return true;
+  if (typeof data === 'number' || (typeof data === 'string' && data.trim().length > 0))
+    return false;
+  return true;
 }
 
 export const nvl = (data: string | number, resultado: string | number) => {

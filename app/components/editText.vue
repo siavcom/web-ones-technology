@@ -109,7 +109,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -573,11 +573,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           if (This.prop.Valid)
             This.prop.Valid = false
 
-          // 7/Feb/2024       
-          //This.Form.prop.Status = 'A'
-          //if (KeyPressed) {
-          // focusIn.value    
-          //select()  //  Quitamos 11/Ags/2025
           displayError.value = true
           This.prop.ShowError = true
 
@@ -832,17 +827,6 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
   // })
   ToolTipText.value = true  // Activamos el ToolTipText
 
-  // Se comento 27 Febrero 2025
-  /*
-  if (!This.prop.Valid) {
-   
-    displayError.value = true
-    This.prop.ShowError = true
-    select() // Hace select en el componente    thisElement.select()
-    return
-  }
-*/
-
   Status.value = 'A'  // se necesita para que el watch padre funcione
   //2/Sep/2025   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   This.prop.Status = 'A'
@@ -1086,10 +1070,12 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
 // Busca el siguiente elemento a seleccionar
 /////////////////////////////////////////////
 const nextElement = async () => {  //clickReturn
+  console.log('1) nextElement Name', This.prop.Name)
 
-  if (Object.keys(This.Parent).length === 0)
+  if (Object.keys(This.Parent).length === 0) // si el elemento padre no tiene elementos
     return
 
+  console.log('2) nextElement Name estatus=', This.Parent.estatus)
   This.prop.Status = 'A'
   await Delay(40)
 
@@ -1167,17 +1153,18 @@ const onClick = () => {
 const onFocus = async () => {
 
   ToolTipText.value = false  // apaga tooltip
-  //console.log('1) onFocus', This.prop.Name, focusIn.value)
+  console.log('1) onFocus', This.prop.Name, 'firstFocus=', firstFocus)
   // Es su primer focus
+  onlyRead.value = false
+  if (firstFocus == false) {  // Primer focus
 
-  if (!firstFocus) {  // Primer focus
-    onlyRead.value = true // No permite captura de datos
-    if (!await ChecaStatus()) {
-      firstFocus = true
+    firstFocus = true
+    if (!await ChecaStatus()) { // si algun estatus de al gun componente esta en Proceso
+      onlyRead.value = true // Pone por mientras solo de lectura
       return
     }
   }
-
+  onlyRead.value = false // No permite captura de datos
   firstFocus = false
   /*
     if (swHelp) {  // se llamo desde el help
@@ -1282,13 +1269,13 @@ const clickHelp = async () => {
 //////////////////////////////////////////////////////////////////////
 const select = async () => {
   // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
+  onlyRead.value = false
   This.prop.Focus = false
-
-  console.log('select', This.prop.Name)
+  console.log('select', This.prop.Name, 'thisElement', thisElement)
   if (thisElement?.focus)
     thisElement.focus();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   else
-    thisElement?.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+    thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
 
   //thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   /*
@@ -1431,7 +1418,7 @@ watch(
     if (!new_val) {
       return
     }
-    This.prop.Focus = false
+
     select()
     return
   },
@@ -1614,16 +1601,22 @@ watch(
 
 /** 
  Checa los cambio de estuatusn de todos los componentes
- y si alguno esta en modo edicion, no permite que este componente tome el foco
+ y si alguno esta en modo edicion, no permite que este componente tome el foco.
+ Si el watch se dispara pero no es el componente que tomo el foco, no hace nada
 */
 
 watch(
   () => This.Parent.estatus,
   async () => {
+    if (!firstFocus)
+      return
+    //16/Feb/2026  Si ya habia tenido el foco
 
-    // console.log('EditText watch Form.estatus', This.Form.estatus)
-    if (firstFocus && await ChecaStatus()) { //16/Feb/2026  Si ya habia tenido el foco
-      onFocus() // Continua tomando el foco
+    if (await ChecaStatus()) {
+      //console.log('EditText watch Form.estatus Name', This.prop.Name)
+
+      This.prop.Focus = true
+      //onFocus() // Continua tomando el foco
     }
   }, { deep: true }
 );
@@ -1633,7 +1626,10 @@ watch(
 */
 
 const ChecaStatus = async () => {
-
+  await Delay(100)
+  if (!This.Parent || !This.Parent.estatus || This.Parent.estatus.length == 0) {
+    return true
+  }
   // Si esta en un contenedor grid
   /*  if (This.Parent && This.Parent.prop.BaseClass == "grid") {
   
@@ -1648,6 +1644,7 @@ const ChecaStatus = async () => {
     }
   */
   // Si es componente de un form
+
   for (const comp in This.Parent.estatus) {
     if (comp != This.prop.Name && This.Parent.estatus[comp] != 'A') {
       console.warn(This.prop.Name, '1) Form Checa Estatus Componente en proceso=', comp, 'Estatus=', This.Parent.estatus)

@@ -435,9 +435,9 @@ export class captureForm extends FORM {
    *
    */
 
-  public async bt_saveClick() {
+  public async bt_saveClick(mensaje?: string) {
     if (this.prop.RecordSource.length < 2)
-      return
+      return false
 
     this.bt_save.prop.Visible = false;
 
@@ -451,7 +451,7 @@ export class captureForm extends FORM {
           console.warn('CaptureForm bt_save click() Invalid comp=', comp)
           this.bt_save.prop.Visible = true;
           await this[comp].setFocus()
-          return;
+          return false;
         }
       }
     }
@@ -471,7 +471,7 @@ export class captureForm extends FORM {
 
       console.log('bt_save result', result)
       if (result) {
-        MessageBox("Datos actualizados");
+        MessageBox(mensaje ? mensaje : "Data updated");
         resultado = true
         this.sw_update = false
       } else {

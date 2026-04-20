@@ -392,8 +392,8 @@ export class COMPONENT {
         }
 
         if (m.lan_lan > '   ') {
-          await this.Sql.use('vi_cap_db_languages', m)
-          await this.Sql.use('vi_cap_db_messages', m)
+          await use('vi_cap_db_languages', m)
+          await use('vi_cap_db_messages', m)
           this.Form.language = true
           // this.Form.language = false
         }
@@ -559,10 +559,12 @@ export class COMPONENT {
           }
         }
       } else {
-        this[comp].prop.TabIndex = TabIndex; // asignamos el TabIndex
-        //       console.log('1) block Main Init Component =', this[comp].prop.Name, 'TabIndex=', TabIndex)
 
-        TabIndex++;
+        if (this[comp].prop.BaseClass.toLowerCase() != 'textlabel') {
+          this[comp].prop.TabIndex = TabIndex; // asignamos el TabIndex
+          //       console.log('1) block Main Init Component =', this[comp].prop.Name, 'TabIndex=', TabIndex)
+          TabIndex++;
+        }
       }
 
       TabIndex = await this[comp].Init(Form, TabIndex); // Corre el InitForm en todos los componentes

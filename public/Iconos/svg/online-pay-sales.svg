@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>.cls-1{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
+</defs>
+<g id="online-pay">
+<line class="cls-1" x1="14.5858" x2="17.4142" y1="6.5858" y2="9.4142"/>
+<line class="cls-1" x1="17.4142" x2="14.5858" y1="6.5858" y2="9.4142"/>
+<circle cx="13.9935" cy="18.7232" r="1.0691"/>
+<circle cx="52.9935" cy="34.7232" r="1.0691"/>
+<line class="cls-1" x1="41.0008" x2="41.0008" y1="30.906" y2="41.7454"/>
+<path class="cls-1" d="M11.7708,50H3.2354A2.1642,2.1642,0,0,1,1.02,47.8905V29.1059a2.1641,2.1641,0,0,1,2.215-2.1094H34.9182"/>
+<line class="cls-1" x1="0.9914" x2="40.9786" y1="31.1117" y2="30.9699"/>
+<line class="cls-1" x1="41" x2="1.0127" y1="37" y2="37.1417"/>
+<line class="cls-1" x1="5.0339" x2="12.0338" y1="43.0974" y2="43.0726"/>
+<line class="cls-1" x1="5.0445" x2="16.0444" y1="46.0974" y2="46.0584"/>
+<path class="cls-1" d="M18,49.7436v-.8971A3.8465,3.8465,0,0,1,21.8465,45H28s2-5,9-4c6.2624.8946,6.1219,2.59,11.7509,2.9369"/>
+<path class="cls-1" d="M34,48l-5,2H7.6177A1.6177,1.6177,0,0,0,6,51.6177H6a1.6177,1.6177,0,0,0,1.3654,1.5979L25,56l15-3,8.893,2.4254"/>
+<circle cx="53" cy="46" r="1"/>
+<polyline class="cls-1" points="63 42 49 42 49 58 57 58 57 42.327"/>
+<line class="cls-1" x1="57" x2="57" y1="56" y2="42.3271"/>
+<line class="cls-1" x1="63" x2="57" y1="56" y2="56"/>
+<circle class="cls-1" cx="42.9999" cy="21" r="10"/>
+<line class="cls-1" x1="47" x2="39" y1="16" y2="26"/>
+<circle class="cls-1" cx="39.5" cy="17.5" r="1.5"/>
+<circle class="cls-1" cx="46.5" cy="24.5" r="1.5"/>
+</g>
+</svg>

@@ -42,7 +42,7 @@ export class HELP extends CONTAINER {
 
   constructor() {
     super()
-    this.prop.ColumnTextLabel = 'Buscador'
+    this.prop.Caption = 'Buscador'
     this.prop.cam_pri = ''
     this.prop.oneClick = true
     this.prop.BaseClass = 'modalContainer'
@@ -123,7 +123,7 @@ export class HELP extends CONTAINER {
       or = ' or '
     }
 
-    if (!this.Sql.View[this.prop.RecordSource]) {
+    if (!View[this.prop.RecordSource]) {
 
       fields = ` ( ${fields} )`
       console.log("open fields=", fields)
@@ -160,7 +160,6 @@ export class HELP extends CONTAINER {
   }
 
   async close() {
-    this.prop.Visible = false
     this.browse.prop.RowSource = ''
 
     // regresa el valor al campo principal
@@ -176,12 +175,13 @@ export class HELP extends CONTAINER {
 
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
-      this.Parent.Help = false  //Aqui me quede
 
       await this.Parent.valid()
       //this.Parent.prop.Focus = true
 
     }
+    this.Parent.Help = false  //Aqui me quede
+    this.prop.Visible = false
     this.Parent.prop.Focus = true
 
     //this.browse.super.close()

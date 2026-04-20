@@ -17,7 +17,7 @@
     <div class="splash-screen">
       <div class="spinner-wrapper">
         <div class="spinner">
-          <p>...`Loaded ${progress.value}%`... </p>
+          <!--p>...`Loaded ${progress.value}%`... </p-->
 
         </div>
       </div>
