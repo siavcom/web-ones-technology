@@ -361,7 +361,7 @@ watch(
 
 watch(Valid, async (new_val) => {
 
-  console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
+  //  console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
   if (ThisForm.prop.BaseClass.toLowerCase() !== 'captureform')
     return
 
@@ -374,12 +374,45 @@ watch(Valid, async (new_val) => {
   for (const i in ThisForm.main) {
     const comp = ThisForm.main[i]
     const Componente = ThisForm[comp]
-    if (!Componente.prop.Valid && Componente.prop.Capture && !Componente.prop.ReadOnly && Componente.prop.Visible) {
-      console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
-      //      ThisForm.bt_modify.prop.Visible = false
-      ThisForm.bt_delete.prop.Visible = false
+    if (!Componente.prop.Valid && Componente.prop.Capture &&
+      !Componente.prop.ReadOnly && Componente.prop.Visible == true &&
+      Componente.prop.BaseClass.toLowerCase() !== 'textlabel') {
+      ///////////////
+      let sw_found = false
+      for (let I = 0; I < ThisForm.block.length && !sw_found; I++) {
 
-      return
+        if (ThisForm.block[I].component) { // bloques horizontales
+
+          for (let J = 0; J < ThisForm.block[I].component.length && !sw_found; J++) {
+            console.log('============ Componente no validado invisible =========> ', ThisForm.block[I].component[J])
+            if (ThisForm.block[I].component[J].prop.Visible == false && ThisForm.block[I].component[J].prop.Name == Componente.prop.Name) { // Aqui se podria hacer algo con el block
+              sw_found = true
+              console.log('============ Componente no validado invisible =========> ', comp, I, J)
+
+              break
+            }
+          }
+
+        } else {
+          // bloques verticales
+          if (ThisForm.block[I].prop.Visible == false && ThisForm.block[I].prop.Name == Componente.prop.Name) {
+            console.log('============  Componente no validado invisible =========> bloque=', I)
+            sw_found = true
+            break
+          }
+        }
+
+
+      }
+      if (!sw_found) {
+
+        ////////////////////
+        console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
+        //      ThisForm.bt_modify.prop.Visible = false
+        ThisForm.bt_delete.prop.Visible = false
+
+        return
+      }
     }
   }
   /*

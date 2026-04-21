@@ -136,7 +136,7 @@ export const lTrim = (input: string): string => {
  * @returns {string} - The trimmed string with leading and trailing whitespace removed.
  */
 export const allTrim = (input: string): string => {
-  return input.trim();
+  return typeof input === 'string' ? input.trim() : input;
 }
 
 /**

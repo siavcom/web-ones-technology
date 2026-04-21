@@ -576,9 +576,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           displayError.value = true
           This.prop.ShowError = true
 
-          //}
 
-          //          This.prop.Focus = true
           if (Type == 'checkbox')
             checkValue.value = This.prop.Value == 1 ? true : false
           This.prop.Status = 'A'
@@ -878,7 +876,6 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 const lostFocus = async (fromReturn: number) => {
   //console.log('1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
 
-  firstFocus = false
   if (This.prop.ReadOnly) {
     return
   }
@@ -1114,16 +1111,17 @@ const nextElement = async () => {  //clickReturn
       lastIndex = Tab
       console.log('Parent Siguiente elemento', This.prop.Name, 'nextFocus=', element)
       //   This.prop.Disabled = Disabled
+      if (This.Parent[element].prop.Visible == true) {
+        This.Parent[element].prop.Focus = true
 
-      This.Parent[element].prop.Focus = true
-      return
-
+        return
+      }
     }
 
   }
   /*
   const Disabled = This.prop.Disabled
-
+ 
   This.prop.Disabled = true
   Delay(10)
   This.prop.Disabled = Disabled
@@ -1140,7 +1138,7 @@ const nextElement = async () => {  //clickReturn
 const onClick = () => {
   onFocus()
   //This.Form.eventos.push(This.prop.Map + '.click()')
-
+ 
 }
 */
 ////////////////////////////////////////////////////////////////////
@@ -1153,13 +1151,14 @@ const onClick = () => {
 const onFocus = async () => {
 
   ToolTipText.value = false  // apaga tooltip
-  console.log('1) onFocus', This.prop.Name, 'firstFocus=', firstFocus)
+  //console.clear()
+  //console.log('1) onFocus', This.prop.Name, 'firstFocus=', firstFocus)
   // Es su primer focus
   onlyRead.value = false
   if (firstFocus == false) {  // Primer focus
 
-    firstFocus = true
     if (!await ChecaStatus()) { // si algun estatus de al gun componente esta en Proceso
+      firstFocus = true
       onlyRead.value = true // Pone por mientras solo de lectura
       return
     }
@@ -1271,11 +1270,15 @@ const select = async () => {
   // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
   onlyRead.value = false
   This.prop.Focus = false
-  console.log('select', This.prop.Name, 'thisElement', thisElement)
-  if (thisElement?.focus)
+  console.trace('select', This.prop.Name)
+  if (thisElement.focus)
     thisElement.focus();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   else
     thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+
+  if (firstFocus)
+    onFocus()
+
 
   //thisElement.select();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   /*
@@ -1415,12 +1418,10 @@ watch(
   () => This.prop.Focus, //props.prop.Focus,
   (new_val: any, old_val: any) => {
 
-    if (!new_val) {
+    if (new_val == false) {
       return
     }
-
     select()
-    return
   },
   { deep: false }
 )
@@ -1608,12 +1609,12 @@ watch(
 watch(
   () => This.Parent.estatus,
   async () => {
-    if (!firstFocus)
+    if (firstFocus == false)
       return
     //16/Feb/2026  Si ya habia tenido el foco
 
+    console.log('EditText watch Form.estatus Name', This.prop.Name)
     if (await ChecaStatus()) {
-      //console.log('EditText watch Form.estatus Name', This.prop.Name)
 
       This.prop.Focus = true
       //onFocus() // Continua tomando el foco
@@ -1860,9 +1861,7 @@ if (!This.prop.RefValue == null)
   // si es el primer elemento a posicionarse
   if (props.prop.First || props.prop.Focus) {
     // This.prop.First = false
-    This.prop.Focus = false
-    This.prop.Focus = true
-    return
+    select()
   }
 
   ValidStyle()
