@@ -28,6 +28,7 @@ export class bt_pdf extends IMGBUTTON {
   } // Fin constructor
 
   override async click() {
+
     this.prop.Visible = false
 
     let bloque = 0
@@ -59,14 +60,14 @@ export class bt_pdf extends IMGBUTTON {
     // this.Form.report.displayBrowse.table.isLoading = true; // indicadorm de caqrga
     const query = await this.Form.gen_query()
 
-    console.log("bt_pdf query=", query)
-    console.log("bt_pdf for_imp=", this.Form.for_imp.prop.Value)
-    console.log("bt_pdf for_imp=", this.Form.data)
+    console.log("bt_pdf reportForm query=", query, 'this.Form.data=', this.Form.data)
+    console.log("bt_pdf reportForm for_imp=", this.Form.for_imp.prop.Value)
 
     const buffer = await jasperReport(query, this.Form.for_imp.prop.Value, this.Form.data)
-    console.log("bt_pdf buffer=", query, this.Form.for_imp.prop.Value, this.Form.data)
+    console.log("bt_pdf reportForm buffer=", query, this.Form.for_imp.prop.Value, this.Form.data)
 
     // this.Form.report.displayBrowse.table.isLoading = false
+
     if (buffer == null) {
       closeProcessing('No data to show')
       this.Form.report.bt_close.click()

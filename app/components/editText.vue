@@ -41,7 +41,7 @@
     <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
     <textarea :id="Id + '_textarea'" class="textArea" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
       :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
-      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="Styles.inputStyle.rows"
+      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="This?.prop.Rows || 2"
       :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus" @focusout="lostFocus"></textarea>
     <!--v-on:keyup.13="keyDown"
       v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown" v-on:keyup.up="keyDown"
@@ -109,7 +109,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1271,6 +1271,9 @@ const select = async () => {
   onlyRead.value = false
   This.prop.Focus = false
   console.trace('select', This.prop.Name)
+  if (!thisElement) // No hay elemento
+    return
+
   if (thisElement.focus)
     thisElement.focus();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
   else

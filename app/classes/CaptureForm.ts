@@ -178,6 +178,10 @@ export class captureForm extends FORM {
     if (this.sw_update && this.bt_save.prop.Visible)
       await this.bt_save.click()
 
+    if (this.prop.RecordSource.trim().length < 2) {
+      MessageBox('No hay vista de actualizacion en el Form')
+      return false
+    }
     this.sw_update = false
     const thisComp = Comp.value
     //console.log('validKeyComponent Este=', thisComp.prop.Name)
@@ -187,26 +191,10 @@ export class captureForm extends FORM {
 
     thisComp.prop.Valid = true;
     //const { ...m } = Public.value;
-    const m = this.Form.mPublic
+    const m = { ...Public.value }
 
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
-      /*  if (this[comp].prop.Capture && this[comp].prop.UpdateKey) {
-  
-          if ((this[comp].prop.name != ThisComp.prop.Name && !this[comp].prop.Valid) ||
-            (typeof this[comp].prop.Value == "string" && this[comp].prop.Value.trim().length == 0) ||
-            (typeof this[comp].prop.Value == "number" && this[comp].prop.Value == 0)
-          ) {
-  
-            this[comp].prop.ErrorMessage = "Dato no permitido";
-            this[comp].prop.Valid = false;
-            this[comp].prop.Focus = true
-            console.log('1) validKeyComponent No permite datos en blanco UpdateKey component= ', thisComp.prop.Name)
-            return this[comp].prop.Valid
-          }
-  
-        }
-    */
       //  console.log("validKeyComponent comp=", comp, "this[comp]=", this[comp])
       if (this[comp].prop.Capture) {
         //this[comp].prop.Disabled = false
@@ -219,14 +207,13 @@ export class captureForm extends FORM {
       }
     }
 
+
+
     // Termino la validacion de llaves principales
     //  thisComp.prop.Valid = true;
 
     // Leemos datos de la tabla de actualizacion
-    if (this.prop.RecordSource.length < 2) {
-      MessageBox('No hay vista de actualizacion en el Form')
-      return false
-    }
+
 
     // console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
     const data = await use(this.prop.RecordSource, m);

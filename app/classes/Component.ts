@@ -129,6 +129,7 @@ export class COMPONENT {
     RecordSource: "",
     RefValue: null, // Valor por Referencia de otro componente
     Row: 0,
+    Rows: 2,
     RowSource: '', /** @Value  Formulario que contiene al componente actual  */
     RowSourceType: 0, /** @Value 1-Value, 2-Alias,3-Query SQL Server,4 -Query Local SQL , 5-Array */
 
@@ -305,7 +306,7 @@ export class COMPONENT {
     this.Recno = 0;
     this.prop.This = this;
     this.inputStyle.cols = 100 // textArea cols
-    this.inputStyle.rows = 5 // textArea rows
+    this.prop.Rows = 5 // textArea rows
     this.inputStyle.borderRadius = '3px'
 
     if ((this.prop.Type == 'number' || this.prop.Type == 'checkBox') && typeof this.prop.Value == "string")

@@ -28,7 +28,7 @@ export class des_fec extends COMPONENT {
     des_fec = addDay(des_fec, +1)
 
     this.prop.Value = des_fec
-    console.log('des_fec init', this.prop.Value)
+    //   console.log('des_fec init', this.prop.Value)
   }
   override async valid() {
     if (this.Parent.has_fec.prop.Value < this.prop.Value)

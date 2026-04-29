@@ -1,13 +1,13 @@
 <template>
-   <NuxtLoadingIndicator />
-   <div v-if='progress < 100 && progress > 0' class="progress-bar"></div>
+   <!--NuxtLoadingIndicator />
+    <div v-if='progress < 100 && progress > 0' class="progress-bar">Loaded {{ progress }} %</div> -->
    <div>
       <slot />
    </div>
 </template>
 
 <script lang="ts" setup>
-// Loaded {{ progress }} %
+// 
 /*
 const {
    progress,

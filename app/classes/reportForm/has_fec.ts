@@ -23,12 +23,12 @@ export class has_fec extends COMPONENT {
     }
     override async init() {
         this.prop.Value = Public.value.fpo_pge;
-        console.log('has_fec init', this.prop.Value)
+
     }
 
     override async valid() {
         if (this.Parent.des_fec.prop.Visible == true) {
-            console.log('VALID VALUE=', this.prop.Value, 'Desde=', dateToString(this.Parent.des_fec.prop.Value))
+
             if (this.prop.Value < dateToString(this.Parent.des_fec.prop.Value)) {
                 //await MessageBox('Fecha inválida',6,'Error')
                 return false

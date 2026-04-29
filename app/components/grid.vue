@@ -13,8 +13,9 @@
       <!-- v-if="scroll.dataPage && scroll.dataPage.length" -->
 
       <div :id="Id + '_div_grid_tabla'" class="tabla" :style="{
-        minHeight: 'fit-content', height: 'max-content', width: 'inherit',
-
+        minHeight: 'fit-content',
+        height: 'max-content',
+        width: 'inherit',
       }">
         <table :id="Id + '_grid_tabla'" class="gridTable"
           :style="{ height: 'auto', pointerEvents: props.prop.ReadOnly ? 'none' : 'auto' }"> <!--lineHeight:11px-->
@@ -625,7 +626,7 @@ watch(
 /////////////////////////////////
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
-  console.log('1) grid asignaRenglon ColumnName=', ColumnName, ' Row=', Row, 'ReadOnly', This.prop.ReadOnly)
+  //console.log('1) grid asignaRenglon ColumnName=', ColumnName, ' Row=', Row, 'ReadOnly', This.prop.ReadOnly)
   //console.log('2)asignaRenglon AlaSql vi_cap_comecpy=', await localAlaSql('select * from vi_cap_comecpy'))
 
   if (This.prop.ReadOnly) return
@@ -696,7 +697,7 @@ const asignaStyle = (style: {}, itemId: string) => {
 /////////////////////////////////////////
 
 const loadData = async (Pos?: number) => {
-  console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'This.Row=', This.Row)
+  //console.log('1) Grid loadData() RecordSource=', props.prop.RecordSource, 'This.Row=', This.Row)
 
   This.Recno = 0
   while (scroll.dataPage.length > 0)
@@ -797,6 +798,7 @@ const loadData = async (Pos?: number) => {
   restableceStatus()
   This.Form.prop.Status = 'A'
   scroll.controls = true
+  console.log('Fin Grid loadData() RecordSource=', props.prop.RecordSource, 'This.Row=', This.Row)
 
 }
 
@@ -1077,7 +1079,7 @@ const autoLoad = async (RecordSource: string) => {
  * @description Se tiene que emitir para que cambie el Valor en el template
  *********************************************/
 onMounted(async () => {
-  //  console.log('1) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main)
+  console.log('1) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'ReadOnly=', props.prop.ReadOnly)
 
   // await This.init()
 
@@ -1123,8 +1125,8 @@ onMounted(async () => {
   if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
     await loadData()
 
-  console.log('2) Init Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main,
-    'RecordSource=', props.prop.RecordSource)
+  console.log('Fin) onMounted Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main,
+    'RecordSource=', props.prop.RecordSource, 'ReadOnly=', props.prop.ReadOnly)
 
   This.prop.Valid = true // Asignamos el valor de validacion del grid
   scroll.controls = true

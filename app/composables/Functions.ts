@@ -814,6 +814,23 @@ export const multiFilter = (array: [], filters: {}): Array<any> => {
 ///////////////////////////////////////////////
 // Funciones de números
 ///////////////////////////////////////////////
+/** 
+ * @description : Redondea un número a una cantidad específica de decimales.
+ * @param {number} nExpression - Número a redondear.
+ * @param {number} nDecimalPlaces - Número de decimales a redondear.
+ * @returns {number} - Número redondeado.
+ */
+export function round(nExpression: number, nDecimalPlaces: number) {
+  // Si nDecimalPlaces es undefined, VFP redondea a 0 decimales
+  if (nDecimalPlaces === undefined) nDecimalPlaces = 0;
+
+  // Crear el multiplicador (10^nDecimalPlaces)
+  var multiplier = Math.pow(10, nDecimalPlaces);
+
+  // Redondear la expresión multiplicada y luego dividir
+  return Math.round(nExpression * multiplier) / multiplier;
+}
+
 
 /**
  * @description : Returns the integer part of a given number.

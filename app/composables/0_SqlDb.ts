@@ -228,6 +228,7 @@ export const locateFor = async (where: string, alias?: string) => {
 export const useNodata = async (nom_vis: string, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
+
     nom_vis = nom_vis.trim();
     while (!This.value.Estatus) {
         console.log("Db esperando cambio de estatus");
@@ -245,7 +246,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     alias = alias.trim();
 
     // console.log("1) Db useNodata nom_vis==> ", nom_vis, alias);
-
+    //console.log("2) reportForm useNodata", This.value.Form.data);
     if (This.value.View[alias]) {
         // si exite ya la vista, solo borra los datos locales
         // console.log('Db useNodata View ',alias,This.value.View)
@@ -256,6 +257,7 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
             This.value.View[alias].recnoVal.pop();
         }
 
+        //     console.log("2.1) reportForm useNodata", This.value.Form.data);
         try {
 
             await localAlaSql("delete from last." + alias);
@@ -305,26 +307,23 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
     };
     dat_vis.nom_vis = nom_vis; // Nombre de la vista
 
-    // console.log("2) Db useNodata nom_vis==> ", nom_vis, alias, dat_vis);
-
     //   console.log("Db useNodata VIEW==> ", nom_vis, alias, dat_vis);
+
     try {
-        //     console.log("2).1 Db useNodata nom_vis==> ");
         const response: any = await axiosCall(dat_vis);
-        //    console.log("2).2 Db useNodata nom_vis==> ");
 
         if (response == null) {
             console.error("==== . No existe la tabla===>", alias);
             console.trace('======ERROR====== ');
             return false;
         }
-
+        // generamos la tabla segun la estructura regresada
         if ((await genera_tabla(response, alias, true)) == null)
-            // generamos la tabla segun la estructura regresada
             return false;
-        //  console.log("2).3 Db useNodata nom_vis==> ");
+
         // abre  la tabla de mantenimiento
         // console.log("Db useNodata VIEW despues de generar_tabla==> ", alias, "VIEW=", This.value.View[alias]);
+
         if (This.value.View[alias] && This.value.View[alias].tip_obj.trim() == "VIEW") {
 
             if (This.value.View[alias].tablaSql == null) {
@@ -363,14 +362,8 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 * @returns array|boolean:  - Data Array  del primer renglon resultante o false en caso de error
 **/
 
-export const use = async (
-    nom_vis: string,
-    m?: {},
-    alias?: string,
-    order?: string) => {
-
+export const use = async (nom_vis: string, m?: {}, alias?: string, order?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-
     while (!This.value.Estatus) {
         console.log("Db esperando cambio de estatus");
     }
@@ -391,9 +384,6 @@ export const use = async (
 
         // si exite ya la vista, Borra los datos locales
 
-        //  if (alias == nom_vis) {
-
-        await alasql('use last')
         if (alasql.tables[alias])
             await localAlaSql("delete from last." + alias);
 
@@ -421,9 +411,6 @@ export const use = async (
     }
 
     if (!This.value.View[alias] || (await select(alias)) == 0) {
-
-        console.log("use-> Db Use UseNodata", nom_vis, alias);
-
         await useNodata(nom_vis, alias);
     }
 
@@ -490,7 +477,6 @@ export const use = async (
             }
         }
         if (This.value.View[alias].exp_where != 'null' && This.value.View[alias].exp_where.trim().length > 0) {
-            // console.log("Db dataBase exp_where", This.value.View[alias].exp_where);
 
             const val_eval = "`" + This.value.View[alias].exp_where.trim() + "`";
 
@@ -563,11 +549,13 @@ export const use = async (
     try {
         //console.log("1 Db Use Axios =====>", dat_vis); // .data
         // This.value.View[alias].m = m; // Variables m para hacer requery
+
         const data = await axiosCall(dat_vis);
+
         if (data.length) {
             // No hubo error
-            const response = await genera_tabla(data, alias)
-            console.log("1) Db Use Axios data=", data, "=====>response=", response); // .data
+            //if (!sw_genera_tabla)
+            await genera_tabla(data, alias)
 
             const res = await goto('TOP', alias)
             return res
@@ -2182,24 +2170,10 @@ const genera_vista = async (data: {}, alias: string, noData?: boolean) => {
  * @param {boolean} noData : si es useNodata
  */
 const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => {
-    // console.log("1 Db genera_tabla"); // .data
+
     const { This } = toRefs(state) // Hace referencia al valor inicial
     alias = alias.trim();
     This.value.num_are = This.value.are_tra.indexOf(alias) + 1; // regresa un -1 si no hay elemento
-
-    // borra las tablas localALASql
-    // 19/Ene/2026 se substituye
-    //    await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
-    //    await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
-
-    /*
-    try {
-          await localAlaSql("delete from last." + alias + ";");
-          await localAlaSql("delete from now." + alias + ";");
-    } catch (error) {
-          console.error("Error al eliminar tablas:", error);
-    }
-    */
 
     if (!This.value.View[alias]) {
         // console.log("Db geneta_tabla ", alias);
@@ -2281,7 +2255,8 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
 
         // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
         let des_tab = " CREATE TABLE " + alias + " (recno INT "; //PRIMARY KEY
-        console.log('genera_tabla Db ALASQL est_tabla', respuesta.est_tabla)
+        // console.log("1) geneta_tabla reportForm this.Form.data=", This.data);
+        // console.log('genera_tabla Db ALASQL alias=' + alias + ' est_tabla', respuesta.est_tabla)
 
         for (const nom_cam in respuesta.est_tabla) {
             // genera la descripcion de la tabla para generarla en alasql
@@ -2629,16 +2604,17 @@ return false;
 export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     if (
-        !(This.value.session.id_con > " ") ||
-        This.value.session.user == "" ||
-        This.value.session.nom_emp == ""
+        !(This.value.session?.id_con > " ") ||
+        This.value.session?.user == "" ||
+        This.value.session?.nom_emp == ""
     ) {
-        console.log(
+        console.trace(
             "Data bases session =======>",
             This.value.session.id_con,
             This.value.session.user,
             This.value.session.nom_emp
         );
+
         errorAlert("Back End error : Session not active");
         //MessageBox("Back End error", 16, "SQL Error Open");
 
@@ -2650,21 +2626,6 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
 
     dat_lla.id_con = This.value.session.id_con; // asignamos el id de connexion
 
-    /*   Creo que ya quedo fuera de uso
-   const broadcast=This.value.socketIo?This.value.session.socketId+new Date().getTime().toString():''
- 
-    if (broadcast>''){
-       dat_lla.broadcast=broadcast
-        This.value.socketIo.on(broadcast), async (res: {}) => {
-          const respuesta = res.data
-          console.log('Sockect response  ======>>>', dat_lla, 'respuesta', 'OK')
-          return respuesta        
- 
-        }
-          This.value.socketIo.emit('sql async',dat_lla)
-    }
- 
-   */
     // hay socket de conexion // Tenemos que poner en verdadero para utilizar sockets
 
     if (This.value.socket.value && false) {
@@ -2693,7 +2654,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
         }
     }
 
-    const ThisForm: any = This.value.Form;
+    //    const ThisForm: any = This.value.Form;
     let numIntentos = 0;
     let numLogin = 0;
 
@@ -2705,17 +2666,17 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     // This.value.axiosActive = true;
     setTimeout(() => controller.abort(), 60000); // 60 segundos
 
+
     do {
         try {
-            console.log('AXIOS ', dat_lla)
             const response = await axios.post(This.value.session.url + "sql", dat_lla, {
                 signal, //: AbortSignal.timeout(300000),  // milisegundos 5 minutos
                 //    headers: { 'Content-type': 'application/json' },
             });
             /*
-            data - The response body provided by the server. If the response from the server is a JSON, Axios will automatically parse data into a JavaScript object.
-            status - The HTTP status code from the response e.g. 200, 400, 404.
-             */
+              data - The response body provided by the server. If the response from the server is a JSON, Axios will automatically parse data into a JavaScript object.
+              status - The HTTP status code from the response e.g. 200, 400, 404.
+               */
             //  This.value.axiosActive = false;
             const respuesta = response.data;
             /*
@@ -3800,8 +3761,8 @@ export const jasperReport = async (query: string, for_rep: string, dataView?: st
 
         return response.data;
     } catch (error) {
-        errorAlert("Report Server Error  :" + error.response.statusText);
-        //await MessageBox(error.response.statusText, 16, "Report Server Error  ");
+
+        await errorAlert("Report Server Error  :" + error.response.statusText);
     }
 
     closeProcessing()

@@ -582,9 +582,13 @@ export class reportForm extends FORM {
 
       executeQuery = executeQuery + where + orden;
     }
-    const m = await this.obtData(); // Variable de memoria los propiedades de la forma
 
-    console.log("reportForm query", executeQuery);
+    // 28/Abril/2026
+    console.trace("1)reportForm query", executeQuery, 'this.Form.data=', this.data);
+
+    await this.obtData(); // Variable de memoria los propiedades de la forma
+
+    console.log("2)reportForm query", executeQuery, 'this.Form.data=', this.data);
 
     return executeQuery;
 
@@ -597,7 +601,8 @@ export class reportForm extends FORM {
   //////////////////////////////////////
 
   async obtData(data?: {}) {
-    if (!data) data = {};
+    if (!data)
+      data = {};
 
     // obtenemos valores de los componentes en la forma
     for (let i = 0; i < this.main.length; i++) {
@@ -607,14 +612,17 @@ export class reportForm extends FORM {
       )
         data[this.main[i]] = this[this.main[i]].prop.Value;
     }
-
+    console.log("1) <<<<<<<<<<<<<<<<<<<<<<<reportForm>>>>>>>>>>>>>>>>> obtData data= ", data);
     // Obtenemos variables Publicas
-
-    const Var = this.mPublic;
-    for (let component in Var) {
-      data[component] = Var[component];
-      //console.log("bt_json component.value= ", data[component]);
-    }
+    /*
+        const Var = Public.value;
+        for (let component in Var) {
+          data[component] = Var[component];
+          //console.log("bt_json component.value= ", data[component]);
+        }
+        */
+    console.log("2) <<<<<<<<<<<<<<<<<<<<<<<reportForm>>>>>>>>>>>>>>>>> obtData data= ", Public.value);
+    data = { ...data, ...Public.value }
     //console.log("bt_json obtData= ", data,this.Form.mPublic);
 
     data['tit_rep'] = this.tit_rep // Aumenta la propiedad this.tit_rep
@@ -624,7 +632,7 @@ export class reportForm extends FORM {
     data['ord_rep'] = this.ord_rep // Aumenta la propiedad this.con_rep
     this.data = data;
 
-    // console.log("bt_json obtData= ", data);
+    console.log("3) <<<<<<<<<<<<<<<<<<<<<<<reportForm>>>>>>>>>>>>>>>>> obtData = ", data);
 
     return data;
   }
@@ -659,7 +667,7 @@ export class reportForm extends FORM {
         return
 
       for (let i = 0; i < this.fields.length; i++)
-        await this.Sql.localAlaSql(`update now.diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
+        await localAlaSql(`update now.diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
 
     }
 
@@ -668,7 +676,7 @@ export class reportForm extends FORM {
     this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
 
     // await this.var_ord.interactiveChange()
-
+    console.log("1) open <<<<<<<<<<<<<<<<<<<<<<<reportForm>>>>>>>>>>>>>>>>> obtData Public= ", Public.value);
   }
 
   // desconectamos el servidor web-sockets al cerrar

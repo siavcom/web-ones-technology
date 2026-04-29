@@ -31,7 +31,7 @@ export class GRID extends COMPONENT {
     this.prop.BaseClass = "grid";
     this.prop.Capture = false;
     this.prop.RecordSource = "";
-    this.prop.Row = 0;
+    this.prop.Row = 0; // Renglon donde esta posicionado la captura del grid
     this.prop.Caption = "Grid de datos";
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
     this.prop.addRow = true; // Si es verdadero aumenta renglon automaticamente

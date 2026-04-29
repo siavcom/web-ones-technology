@@ -59,7 +59,8 @@ export class var_ord extends COMPONENT {
     if (this.prop.RowSource == '') return
     if (this.prop.RowSourceType == 0) return
 
-    const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
+    // 28/Abril/2026
+    // const m = await this.Form.obtData(); // Variable de memoria los propiedades de la forma
 
     let num_dat = 0
 
@@ -70,7 +71,7 @@ export class var_ord extends COMPONENT {
       }
     }
 
-    const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where trim(cam_dat)='${this.prop.Value.trim()}'`)
+    const data = await localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where trim(cam_dat)='${this.prop.Value.trim()}'`)
     console.log('interactiveChange var_ord', `select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value.trim()}'`, data)
     const tip_dat = data[0].tip_dat
     const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
