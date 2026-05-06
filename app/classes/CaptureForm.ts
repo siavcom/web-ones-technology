@@ -448,7 +448,7 @@ export class captureForm extends FORM {
     const bt_delete = this.bt_delete.prop.Visible
     this.bt_delete.prop.Visible = false;
 
-    if (await MessageBox(this.bt_save.prop.Caption, 4, "") == 6) {
+    if (this.prop.autoUpdate || await MessageBox(this.bt_save.prop.Caption, 4, "") == 6) {
 
       const result = await tableUpdate(
         0,
@@ -456,7 +456,7 @@ export class captureForm extends FORM {
         this.prop.RecordSource
       );
 
-      console.log('bt_save result', result)
+      //    console.log('bt_save result', result)
       if (result) {
         MessageBox(mensaje ? mensaje : "Data updated");
         resultado = true

@@ -97,7 +97,8 @@
 
         <!-- click.capture.stop -->
         <span :id="Id + '_botton_controles_save'" title="Save all rows" v-show="prop.showSaveButton && This.prop.Valid"
-          @click="saveTable()" :style="{ 'padding': '5px' }">
+          @click="saveTable()"
+          :style="{ 'padding': '5px', 'opacity': This.prop.Valid && !This.prop.ReadOnly ? '1' : '0.4' }">
           <nuxt-img :id="Id + '_ botton_controles_save_img'" src="/Iconos/svg/save-color1.svg" width="40" />
         </span>
 
@@ -881,7 +882,7 @@ const last = async (insert?: boolean): Promise<void> => {
     }
   }
 
-  if (This.prop.RecordSource.length < 2 || View[props.prop.RecordSource].recnoVal.length == 0) {
+  if (This.prop.RecordSource.length < 2 || Sql.View[props.prop.RecordSource].recnoVal.length == 0) {
     scroll.page = 0
     scroll.top = false
     scroll.bottom = false
@@ -965,7 +966,8 @@ const appendRow = async () => {
     }
   }
   //await last()
-  await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
+  if (!This.prop.addRow)
+    await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
   /*  18/Jun/2025 
     if (scroll.dataPage[scroll.dataPage.length - 1]) {
       const Row = scroll.dataPage[scroll.dataPage.length - 1].id
@@ -1006,6 +1008,8 @@ const deleteRow = async (recno?: number) => {
 }
 
 const saveTable = async () => {
+  if (This.prop.ReadOnly)
+    return
 
   // Checa si estan validadas todas las columnas
   if (This.Row >= 0) {

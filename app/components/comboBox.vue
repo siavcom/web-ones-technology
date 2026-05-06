@@ -21,7 +21,7 @@
 
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -94,11 +94,15 @@
     </div>
     <!--span class="errorText" v-show="!prop.Valid && displayError">{{ prop.ErrorMessage }}</span-->
 
+
+    <img :id="Id + '_help'"
+      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
+      src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
     <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ This.prop.ErrorMessage.toString().length >= 1 ?
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!-- <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -275,6 +279,17 @@ const Styles = reactive(
     style: divStyle
   }
 )
+
+const helpStyle = {
+  // position: 'absolute',
+  // left: inputStyle.width,
+  marginTop: '1px',
+  width: '20px',
+  maxHeight: '20px',
+  paddingLeft: '2px',
+  alignContent: 'flex-start'
+}
+
 const styleOption = reactive({
   backgroundColor: "white"
   //background-color: aquamarine;
@@ -520,10 +535,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     else
       Value.value = ''
   }
-  // console.log('Buscando Valor ComboBox Name=', props.prop.Name,'columnas=',columnas)
 
   await asignaValor()
-  This.prop.Value = Value.value
+  // This.prop.Value = Value.value    5/May/2026
   if (This.onChangeValue) {
     await This.onChangeValue(ref(Styles))
   }
@@ -534,6 +548,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
   emit("update") // emite un update en el componente padre
   //})
   // })
+  // console.log('emitValue ComboBox Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'displaytext=', displayText.value)
+
   ToolTipText.value = true  // Activamos el ToolTipText
   displayError.value = false  // Desactivamos mensaje de error
   This.prop.displayError = false
@@ -751,6 +767,28 @@ const validList = async () => {
 
 };
 
+
+//////////////////////////////////////////////////////////////////////
+// clickHelp : Se pide ayuda del usuario para encontrar un valor
+//////////////////////////////////////////////////////////////////////
+const clickHelp = async () => {
+
+  if (!await ChecaStatus())
+    return
+
+  This.prop.ReadOnly = !await This.when()
+  if (This.prop.ReadOnly)
+    return nextElement()
+  //This.prop.Valid = true
+  displayError.value = false
+  This.prop.ShowError = false
+
+  This.help.open()
+  focusIn = false
+
+}
+
+
 ////////////////////////////////////////////////////////////////////
 // onFocus
 // Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
@@ -814,6 +852,10 @@ const onFocus = async (click?: boolean) => {
   //   This.click()
 
 }
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////
 // toggleFocus
@@ -1356,7 +1398,8 @@ watch(
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
-    if (watchPropValue) return
+    // console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    if (watchPropValue == true) return
     if (focusIn == true) {// Si tiene el foco deshabilita el watch
       //sw_emitValue = false 19/Feb/2026
       return
@@ -1369,6 +1412,7 @@ watch(
 
       watchPropValue = true
       await emitValue(false)
+
       watchPropValue = false
       if (This.prop.Valid && This.onChangeValue) {
         //console.log('watch emit Value comboBox onChangeValue Name=', props.prop.Name, 'Value=', This.prop.Value)
@@ -1377,6 +1421,7 @@ watch(
         }
       }
     }
+    // console.log('>>>>>>>>>>>>>>Fin ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
   },
   { deep: true }
 )

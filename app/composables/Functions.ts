@@ -664,13 +664,47 @@ export function addDay(dateString: string, dias: number): string {
 }
 
 /**
+ * Suma o resta meses a una fecha 'aaaa-mm-dd'.
+ * @param {string} dateStr - Fecha original en formato 'aaaa-mm-dd'.
+ * @param {number} meses - Número de meses a sumar (positivo) o restar (negativo).
+ * @returns {string} Nueva fecha en formato 'aaaa-mm-dd'.
+ */
+export function addMonth(dateStr: string, meses: number) {
+  // 1. Convertir la cadena 'yyyy-mm-dd' a objeto Date. 
+  // Usamos 'T00:00:00' para evitar problemas de zona horaria (UTC)
+  let time = ''
+  if (dateStr.trim().length > 10) {
+    const pos = dateStr.trim().length - 10
+    //time=right(dateStr.trim(),pos)
+    time = dateStr.trim().slice(-pos)
+    dateStr = dateStr.trim().slice(0, 10)
+  }
+  dateStr = dateStr.trim() + 'T00:00:00'
+
+  //const fecha = new Date(dateStr + 'T00:00:00');
+  const fecha = new Date(dateStr);
+  // 2. Modificar el mes
+  fecha.setMonth(fecha.getMonth() + meses);
+
+  // 3. Formatear de vuelta a 'aaaa-mm-dd' (yyyy-mm-dd)
+  const year = fecha.getFullYear();
+  const month = String(fecha.getMonth() + 1).padStart(2, '0');
+  const day = String(fecha.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}` + time;
+}
+
+
+/**
  * Adds a specified number of months to a given date.
  *
  * @param {string} dateString - The initial date to which the months will be added.
  * @param {number} months - The amount of months to add.
  * @returns {string} - A new date string with the specified months added.
  */
-export function addMonth(dateString: string, months: number): string {
+/*
+
+export function addMonth2(dateString: string, months: number): string {
   const fecha = new Date(dateString);
   let mes = fecha.getMonth();
   let año = fecha.getFullYear();
@@ -701,7 +735,7 @@ export function addMonth(dateString: string, months: number): string {
   return new Date(año, mes, dia).toISOString().slice(0, 10);
 
 }
-
+*/
 /**
  * Adds a specified number of years to a given date.
  *

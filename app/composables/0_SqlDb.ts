@@ -1632,7 +1632,7 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         let respuesta = await axiosCall(dat_vis);
 
         if (respuesta == undefined || respuesta.length == 0) {
-            console.trace('3) Begin  SQLEXEC return sin  respuesta Quer=', query)
+            // console.trace('3) Begin  SQLEXEC return sin  respuesta Quer=', query)
             return []
         }
 
@@ -3290,21 +3290,22 @@ export const bof = async (alias?: string) => {
 
 export const oldValue = async (field: string, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
+    const punto = field.indexOf('.')
     if (!alias) {
-        const punto = field.indexOf('.')
-        if (punto > -1) {
+        if (punto >= 1) {
             alias = field.slice(0, punto)
-
         } else
             alias = This.value.are_tra[This.value.num_are - 1];
     }
+    if (punto >= 0)
+        field = field.slice(punto + 1)
 
     const recno = This.value.View[alias].recno
     const data = await localAlaSql(`select ${field} from last.${alias} where recno=${recno}`)
-    alasql('USE now;')
+    alasql('USE now')
     if (data.length > 0)
         return data[0][field]
-    return false
+    return null
 }
 
 /**

@@ -134,7 +134,7 @@ export class HELP extends CONTAINER {
       );
 
       for (let i = 0; i < this.fields.length; i++)
-        await this.Sql.localAlaSql(`update diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
+        await localAlaSql(`update diccionario set ref_dat = '${this.fields[i][1]}' where cam_dat = '${this.fields[i][0]}'`)
 
     }
     this.browse.prop.Value = ''

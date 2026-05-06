@@ -12,7 +12,7 @@
 import { COMPONENT } from "@/classes/Component";
 
 export class cam_dat extends COMPONENT {
-  Type: string
+  Type = 'string'
   constructor() {
     super();
     this.prop.BaseClass = "comboBox";
@@ -20,7 +20,7 @@ export class cam_dat extends COMPONENT {
     this.prop.BoundColumn = 2;
     this.prop.Capture = false;
     this.prop.updateKey = true;
-    this.prop.ColumnWidths = "200px,56px";
+    this.prop.ColumnWidths = "264px,128px";
     this.style.width = "256px";
     this.style.marginLeft = "10px";
     this.inputStyle.height = '23px'
@@ -32,10 +32,13 @@ export class cam_dat extends COMPONENT {
     this.style.fontWeight = "bold";
 
   }
-  async when() {
-    await this.interactiveChange()
+  override async when() {
+    this.interactiveChange()
+    return true
   }
-  async interactiveChange() {
+
+
+  override async interactiveChange() {
     const data = await this.Sql.localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value}'`)
     const tip_dat = data[0].tip_dat
     let Type = 'string'
@@ -79,5 +82,6 @@ export class cam_dat extends COMPONENT {
     this.Parent.has_dat.prop.Decimals = data[0].dec_dat
     this.Parent.has_dat.prop.Value = has_Value
     this.Parent.tip_con.when()
+    return true
   }
 }

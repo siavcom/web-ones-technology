@@ -376,7 +376,8 @@ watch(Valid, async (new_val) => {
     const Componente = ThisForm[comp]
     if (!Componente.prop.Valid && Componente.prop.Capture &&
       !Componente.prop.ReadOnly && Componente.prop.Visible == true &&
-      Componente.prop.BaseClass.toLowerCase() !== 'textlabel') {
+      (Componente.prop.BaseClass.toUpperCase() == 'EDITTEXT' ||
+        Componente.prop.BaseClass.toUpperCase() == 'COMBOBOX')) {
       ///////////////
       let sw_found = false
       for (let I = 0; I < ThisForm.block.length && !sw_found; I++) {

@@ -886,7 +886,7 @@ const lostFocus = async (fromReturn: number) => {
     focusIn.value = 0 // Perdio el foco
 
   if (fromReturn && fromReturn > 0) {
-    //  console.log('2) lostFocus fromReturn', This.prop.Name)
+    console.log('2) lostFocus fromReturn', This.prop.Name)
     return nextElement() //clickReturn()
   }
 }
@@ -960,7 +960,7 @@ const asignaValue = async (new_val?: any) => {
   }
 
   // This.prop.Value = Value.value
-  // console.log('1.1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
+  console.log('1.1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
 
   if (new_val)
     await emitValue(false, true, new_val)

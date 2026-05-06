@@ -127,7 +127,7 @@ export class GRID extends COMPONENT {
     if (data.length == 0) {
       // No tiene registros
 
-      console.log("Grid valid no tiene registros ", this.Name);
+      console.log(" valid Append RowGrid valid no tiene registros ", this.Name);
       await this.appendRow(m);
     }
     //    this.prop.RecordSource=RecordSource
@@ -263,7 +263,7 @@ export class GRID extends COMPONENT {
     // select(this.prop.RecordSource)
 
     const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
-    console.log('Append Row this.prop RecordSource= ', this.prop.RecordSource, '  ', await localAlaSql(`select  * from ${this.prop.RecordSource} `))
+    console.log('1) Append Row this.prop RecordSource= ', this.prop.RecordSource, '  ', await localAlaSql(`select  * from ${this.prop.RecordSource} `))
     this.prop.Disabled = false;
 
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
