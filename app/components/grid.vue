@@ -573,7 +573,7 @@ watch(
       if (RowInsert)
         return
 
-      await last(true)
+      await last()
       RowInsert = true  // para cuando loadData()
 
       //console.log('3) Insert Grid watch Row = ', This.Row)
@@ -635,6 +635,12 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
   if (This.Row == Row)
     return
 
+  if (This.Row >= 0) {
+    if (await ChecaStatus() == false) {
+      return
+    }
+  }
+
   /*
     if (This[ColumnName].prop.Type == 'textLabel') {
   
@@ -642,6 +648,7 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
       return
     }
   */
+  /*
   if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
     //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
     for (const columna of This.elements) {
@@ -651,6 +658,7 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
       }
     }
   }
+*/
 
   This.prop.Valid = false
   // This.prop.Status = 'P'
@@ -874,7 +882,7 @@ const next = async () => {
  * @param {boolean} insert - Si true, inserta un nuevo registro antes de navegar
  * @returns {Promise<void>}
  */
-const last = async (insert?: boolean): Promise<void> => {
+const last = async (): Promise<void> => {
 
   if (This.Row >= 0) {
     if (!await ChecaStatus()) {
@@ -882,16 +890,19 @@ const last = async (insert?: boolean): Promise<void> => {
     }
   }
 
-  if (This.prop.RecordSource.length < 2 || Sql.View[props.prop.RecordSource].recnoVal.length == 0) {
-    scroll.page = 0
-    scroll.top = false
-    scroll.bottom = false
-    scroll.dataPage = []
-    if (This.prop.addRow)
-      await This.appendRow()
+  /*
+    if (This.prop.RecordSource.length < 2 || Sql.View[props.prop.RecordSource].recnoVal.length == 0) {
+      scroll.page = 0
+      scroll.top = false
+      scroll.bottom = false
+      scroll.dataPage = []
+      if (This.prop.addRow)
+        await This.appendRow()
+  
+      return
+    }
+    */
 
-    return
-  }
   scroll.controls = false
   // if (scroll.bottom && !RowInsert) return
   //  console.log('2.5) Insert Grid last() scroll.page=', scroll.page, 'View=', Sql.View[props.prop.RecordSource].recnoVal.length, 'scroll.rowa', scroll.rows)
@@ -943,38 +954,34 @@ const last = async (insert?: boolean): Promise<void> => {
  */
 const appendRow = async () => {
 
-  if (This.Row >= 0) {
-    if (!await ChecaStatus()) {
-      return
-    }
+  if (This.Row >= 0 && !await ChecaStatus()) {
+    return
   }
 
-  await last()
-  scroll.controls = false
+  This.appendRow()
+  return
 
-  if (Sql.View[props.prop.RecordSource].recnoVal.length > 0 && This.Row >= 0) {
-    for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
-      const comp = This.main[i]
-
-      if (This[comp].prop.Capture && !This[comp].prop.Valid) { // Si alguno no esta Validado
-        if (!This[comp].valid()) {
-          //  console.log('before appendRow Not valid', comp, This[comp].prop.Valid)
-          This[comp].prop.Focus = true
-          return
+  /*
+    await last()
+    scroll.controls = false
+  
+    if (Sql.View[props.prop.RecordSource].recnoVal.length > 0 && This.Row >= 0) {
+      for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
+        const comp = This.main[i]
+  
+        if (This[comp].prop.Capture && !This[comp].prop.Valid) { // Si alguno no esta Validado
+          if (!This[comp].valid()) {
+            //  console.log('before appendRow Not valid', comp, This[comp].prop.Valid)
+            This[comp].prop.Focus = true
+            return
+          }
         }
       }
     }
-  }
-  //await last()
-  if (!This.prop.addRow)
-    await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
-  /*  18/Jun/2025 
-    if (scroll.dataPage[scroll.dataPage.length - 1]) {
-      const Row = scroll.dataPage[scroll.dataPage.length - 1].id
-      await asignaRenglon(Row, First)
-    }
+    //await last()
+    if (!This.prop.addRow)
+      await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
   */
-
 }
 
 //  await last(true) 
@@ -1044,12 +1051,18 @@ const saveTable = async () => {
  */
 const ChecaStatus = async () => {
   // Si es componente de un form
-  for (let i = 0; i < This.main.length; i++) {
+
+  console.log('ChecaStatus This=', This)
+  // for (let i = 0; i < This.main.length; i++) {
+
+  for (let i = 0; i < This.elements.length; i++) {
+    const column = This.elements[i].Name;
+
     // Si es campo de captura
 
-    if (This[This.main[i]].prop.Capture == true && (This[This.main[i]].prop.Status != 'A' || !This[This.main[i]].prop.Valid)) {
-      console.warn('Grid SaveTable No valid Column=', This[This.main[i]].prop.Name)
-      This[This.main[i]].prop.Focus = true
+    if (This[column].prop.Capture == true && (This[column].prop.Status != 'A' || !This[column].prop.Valid)) {
+      console.warn('Grid SaveTable No valid Column=', This[column].prop.Name)
+      This[column].prop.Focus = true
       return false
     }
 
