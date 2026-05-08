@@ -41,7 +41,7 @@ export class GRID extends COMPONENT {
     this.prop.showDeleteButton = true; // Si es verdadero muestra el boton de borrar
     this.prop.showSaveButton = true; // Si es verdadero muestra el boton de grabar
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
-    this.prop.UpdateMessage = "Grabamos la tabla";
+    this.prop.UpdateMessage = "Grabamos datos";
     this.prop.DeleteMessage = "Borramos renglon";
     this.prop.ErrorMessage = 'Datos no actualizados '
     this.prop.OkMessage = 'Actualización exitosa'
@@ -227,14 +227,26 @@ export class GRID extends COMPONENT {
   //const asignaRenglon = (newEvento: string) => {
   public async asignaRenglon_new(Row: number, ColumnName: string) {
     ColumnName = ColumnName.trim();
-
     this.Row = Row;
     this.Column = ColumnName
     this[ColumnName].prop.Focus = true; // Establece el foco en la columna seleccionada
     console.log('asignaRenglon ColumnaName =', ColumnName, this[ColumnName].prop.Focus)
-
     //  console.log('asignaRenglon ColumnaName =', ColumnName, this[ColumnName].prop)
+  }
 
+  ///////////////////////////////////////////////////
+  // Refresca renglon con los datos actuales del ControlSource
+  ///////////////////////////////////////////////////
+  public refreshRow() {
+    for (let i = 0; i < this.elements.length; i++) {
+      const column = this.elements[i].Name;
+
+      if (this[column]) { // Si existe columna
+        const ControlSource = this[column].prop.ControlSource
+        this[column].prop.ControlSource = ''
+        this[column].prop.ControlSource = ControlSource
+      }
+    }
   }
 
   ///////////////////////////////////////////////////
@@ -246,26 +258,19 @@ export class GRID extends COMPONENT {
       return
 
     this.prop.Disabled = true;
-
     //this.Row = -1;
-
     this[this.main[this.main.length - 1]].prop.Last = true;
-
-    if (!mem) mem = {};
-
+    if (!mem)
+      mem = {};
     let m = appendM(mem, this.Form.mPublic)
-
     for (const comp of this.Form.main) {
       if (!m[comp])
         m[comp] = this.Form[comp].prop.Value;
-
     }
     // select(this.prop.RecordSource)
-
     const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     console.log('1) Append Row this.prop RecordSource= ', this.prop.RecordSource, '  ', await localAlaSql(`select  * from ${this.prop.RecordSource} `))
     this.prop.Disabled = false;
-
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
   }
 
@@ -276,7 +281,6 @@ export class GRID extends COMPONENT {
   /////////////////////////
   async deleteRow(recno: number, force?: boolean) {
 
-    // borramos el renglon?
     if (force || await MessageBox(this.prop.DeleteMessage, 4, '') == 6) {
       this.prop.Status = 'A'
       const result = await deleteSqlRow(recno, this.prop.RecordSource);
@@ -284,16 +288,10 @@ export class GRID extends COMPONENT {
       // await restableceStatus()
       if (result)
         this.Row = -1;
-
     }
     return true
   }
 
-  /*
-    async saveRow() {
-      await this.saveTable(true)  // solo graba el renglon actual
-    }
-  */
   //////////////////////////////////
   // Graba Tabla
   // vis_cap: Vista de captura
@@ -301,12 +299,10 @@ export class GRID extends COMPONENT {
   async saveTable(oneRow?: boolean) {
 
     this.Row = -1
-
     if (oneRow == undefined)
       oneRow = false
 
     let resultado = true;
-
     let updateType = 1;  // actualiza todos los registros
     if (oneRow) {
       updateType = 0;  // actualiza solo el renglon actual
@@ -346,6 +342,8 @@ export class GRID extends COMPONENT {
   //
   /////////////////////////////////
   async saveRow(columnName?: string) {
+    if (await MessageBox(this.prop.UpdateMessage, 4, "") != 6)
+      return false
 
     const resultado = await tableUpdate(
       0,

@@ -74,10 +74,16 @@ export const isNull = (data: string | number): boolean => {
   return true;
 }
 
-export const nvl = (data: string | number, resultado: string | number) => {
-  if (data == null)
-    return resultado
-  return data
+/**
+ * @description Checks if data is null. If data null return resultado.
+ * @param {value} value - The data value to check is null
+ * @param {value} result - The result 
+ * @returns {data} 
+ */
+export const nvl = (value: any, result: any) => {
+  if (value == null)
+    return result
+  return value
 }
 
 /**
@@ -348,6 +354,7 @@ export function at(cSearch: string, cString: string, nOccurrence?: number): numb
   }
 
   if (!cSearch || !cString || nOccurrence < 1) return 0;
+
 
   // Convertir ambas a minúsculas para emular el comportamiento 'case-insensitive'
 

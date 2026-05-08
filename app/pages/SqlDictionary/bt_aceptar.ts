@@ -261,10 +261,10 @@ export class bt_aceptar extends IMGBUTTON {
       // Hay datos capturados, grabara informacion
       if (
         this.Form.grid_tablas.prop.Visible &&
-        (await this.Form.db.recCount("vi_cap_cometab")) > 0
+        (await recCount("vi_cap_cometab")) > 0
       ) {
         await this.grabaDatos("vi_cap_cometab");
-        await this.Form.db.useNodata("vi_cap_cometab");
+        await useNodata("vi_cap_cometab");
         this.Form.prop.Status = "A";
         this.Form.grid_tablas.prop.Visible = false;
 
@@ -283,7 +283,7 @@ export class bt_aceptar extends IMGBUTTON {
       if (await recCount("vi_cap_cometab") == 0) {
         await appendBlank("vi_cap_cometab", m);
       }
-      console.log('2) bt_aceptar vi_cap_cometab recCount =', await localAlaSql("select * from vi_cap_cometab"))
+      // console.log('2) bt_aceptar vi_cap_cometab recCount =', await localAlaSql("select * from vi_cap_cometab"))
 
       this.Form.grid_tablas.prop.RecordSource = 'vi_cap_cometab';
       this.Form.grid_tablas.prop.Visible = true;

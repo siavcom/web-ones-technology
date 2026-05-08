@@ -369,7 +369,7 @@ const loadGrid = async () => {
   if (Sql.View[This.prop.RecordSource]) {
     await loadData()
 
-    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.showSaveButton && This.prop.addRow)  // No hay renglones
+    if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.ReadOnly == false && This.prop.addRow)  // No hay renglones
       appendRow()
     /*
         else
@@ -472,7 +472,7 @@ watch(
     if (This.Row < 0) return
     for (const comp in compValid) { // Recorre todos los estatus del grid
       if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && This[comp].prop.Visible && !This[comp].prop.Valid) { // Si alguno no esta validado
-        console.log('2).1 3.3 -- Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
+        //  console.log('2).1 3.3 -- Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
         return
       }
       This.prop.Valid = true
@@ -503,7 +503,7 @@ watch(
     if (Now.length == 0 || last.length == 0) return
 
     if (Now[0][campo] !== Last[0][campo]) {
-      console.log('<<<<<Grabara renglon>>>> 3.3.4 saveRow Grid watch compValid ColumnName=', ColumnActive)
+      // console.log('<<<<<Grabara renglon>>>> 3.3.4 saveRow Grid watch compValid ColumnName=', ColumnActive)
 
       if (!await This.saveRow(ColumnActive)) {
         This[ColumnActive].prop.Valid = false
@@ -1057,11 +1057,10 @@ const ChecaStatus = async () => {
 
   for (let i = 0; i < This.elements.length; i++) {
     const column = This.elements[i].Name;
-
     // Si es campo de captura
 
     if (This[column].prop.Capture == true && (This[column].prop.Status != 'A' || !This[column].prop.Valid)) {
-      console.warn('Grid SaveTable No valid Column=', This[column].prop.Name)
+      //console.warn('Grid SaveTable No valid Column=', This[column].prop.Name)
       This[column].prop.Focus = true
       return false
     }
@@ -1139,16 +1138,17 @@ onMounted(async () => {
   if (props.prop.autoLoad) // Si tiene autoLoad, llama valid de este grid para abrir tabla de captura 
     await This.valid()
 
-  if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
-    await loadData()
-
+  //if (props.prop.RecordSource.length > 1 && Sql.View[props.prop.RecordSource])
+  //  await loadData()
+  loadGrid()
   console.log('Fin) onMounted Grid==>', This.Name, 'autoLoad=', props.prop.autoLoad, 'main', This.main,
     'RecordSource=', props.prop.RecordSource, 'ReadOnly=', props.prop.ReadOnly)
-
-  This.prop.Valid = true // Asignamos el valor de validacion del grid
-  scroll.controls = true
-  This.Recno = 0
-  This.Row = -100
+  /*
+    This.prop.Valid = true // Asignamos el valor de validacion del grid
+    scroll.controls = true
+    This.Recno = 0
+    This.Row = -100
+    */
 })
 
 //init(); // Ejecuta el init

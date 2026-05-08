@@ -126,7 +126,7 @@ export class HELP extends CONTAINER {
     if (!View[this.prop.RecordSource]) {
 
       fields = ` ( ${fields} )`
-      console.log("open fields=", fields)
+
       await SQLExec(
         `select ref_dat,cam_dat,tip_dat,lon_dat,dec_dat
         from vi_schema_views where nom_tab='${this.prop.RecordSource}' and ${fields} order by con_dat`,
