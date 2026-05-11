@@ -110,7 +110,7 @@ export class HELP extends CONTAINER {
     this.Parent.prop.ShowError = false
     this.Parent.prop.Valid = true
     this.Parent.Help = true
-
+    debugger
     this.tip_con.when()
     this.des_dat.prop.Value = ''
     this.has_dat.prop.Value = ''

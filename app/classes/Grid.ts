@@ -238,13 +238,16 @@ export class GRID extends COMPONENT {
   // Refresca renglon con los datos actuales del ControlSource
   ///////////////////////////////////////////////////
   public refreshRow() {
+
     for (let i = 0; i < this.elements.length; i++) {
       const column = this.elements[i].Name;
 
       if (this[column]) { // Si existe columna
         const ControlSource = this[column].prop.ControlSource
         this[column].prop.ControlSource = ''
-        this[column].prop.ControlSource = ControlSource
+        nextTick(() => {
+          this[column].prop.ControlSource = ControlSource
+        })
       }
     }
   }

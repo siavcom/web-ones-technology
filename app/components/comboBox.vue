@@ -604,7 +604,9 @@ const toggleClick = async () => {
   if (!toggle.value) {
     // if (!sw_focus.value)
     if (!focusIn) {
-      await onFocus()   // 18/Junio/2025
+      await onFocus(true)   // 18/Junio/2025
+      return
+
     }
 
   }
@@ -843,8 +845,19 @@ const onFocus = async (click?: boolean) => {
   This.prop.ReadOnly = !await This.when()
   onlyRead.value = false // Permitimos captura
 
-  if (This.prop.ReadOnly)
+  if (This.prop.ReadOnly) {
     nextElement()
+    return
+  }
+
+  if (click == true) {
+    console.log('onFocus click toggle.value=', toggle.value)
+    toggle.value = false // !toggle.value
+    nextTick(function () {
+      toggle.value = true
+      comboStyle.zIndex = toggle.value ? zIndex.value + 2 : zIndex.value
+    })
+  }
 
   return
 
@@ -867,7 +880,7 @@ const toggleFocus = async () => {
   if (!props.prop.Valid) {    // = false; // old revisar si se necesita
     if (Recno.value > 0) {
 
-      const data = await This.Form.db.readCampo(props.prop.ControlSource, Recno.value, 'Old')
+      const data = await readCampo(props.prop.ControlSource, Recno.value, 'Old')
       let valor = ''
 
       for (const campo in data) {

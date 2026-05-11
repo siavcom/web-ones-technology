@@ -1050,6 +1050,9 @@ export async function MessageBox(
     });
     ThisForm.value.containerId = ''
 
+
+    console.trace('messageBox ', texto, tipo, timer)
+
     return;
   }
 
@@ -1283,8 +1286,10 @@ export async function MessageBox(
     }
   })
   //     console.log('MessageBox por aqui salio')
-  if (ThisForm.value) ThisForm.value.containerId = ''
+  if (ThisForm.value)
+    ThisForm.value.containerId = ''
 
+  console.trace('messageBox ', texto, tipo, timer)
   return resultado
 }
 
