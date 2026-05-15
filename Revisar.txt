@@ -32,6 +32,19 @@ Crear vistas SQL
   vi_cap_<tabla>
    ejemplo : vi_cap_comedoc
             vi_cap_comepga
+
+Vistas de consula Vue 
+  vi_con_<tabla>
+   ejemplo : vi_con_comeped
+            vi_con_comepga
+
+Vistas de verificacion Vue 
+  vi_con_<tabla>
+   ejemplo : vi_ver_pedidos
+            vi_ver_serie
+
+Dar permisos de select a estas vistas para el grupo/rol siavcom
+
 generar  vi_comesat
 grant select on vi_comesat to siavcom
 grant select on vi_documentos to siavcom

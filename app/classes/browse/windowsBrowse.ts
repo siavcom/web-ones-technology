@@ -18,22 +18,24 @@ import { CONTAINER } from "@/classes/Container";
 // Component import
 //////////////////////////////////////
 
-import { des_dat } from './des_dat'
-import { has_dat } from './has_dat'
-import { tip_con } from './tip_con'
-import { cam_dat } from './cam_dat'
-import { bt_aceptar } from "./bt_aceptar"
+//import { des_dat } from './des_dat'
+//import { has_dat } from './has_dat'
+//import { tip_con } from './tip_con'
+//import { cam_dat } from './cam_dat'
+//import { bt_aceptar } from "./bt_aceptar"
 import { bt_close } from "./bt_close"
 import { browse } from "./browse"
+import { bt_aceptar } from "./bt_aceptar";
 
 export class HELP extends CONTAINER {
-
-  public cam_dat = new cam_dat()
-  public tip_con = new tip_con()
-  public des_dat = new des_dat()
-  public has_dat = new has_dat()
-
-  public bt_aceptar = new bt_aceptar()
+  /*
+    public cam_dat = new cam_dat()
+    public tip_con = new tip_con()
+    public des_dat = new des_dat()
+    public has_dat = new has_dat()
+  
+    public bt_aceptar = new bt_aceptar()
+    */
   public bt_close = new bt_close()
 
   public browse = new browse()
@@ -57,11 +59,12 @@ export class HELP extends CONTAINER {
 
     this.block[0] = {
       component: {
-        [0]: this.cam_dat,
-        [1]: this.tip_con,
-        [2]: this.des_dat,
-        [3]: this.has_dat,
-        [4]: this.browse,
+        /*        [0]: this.cam_dat,
+                [1]: this.tip_con,
+                [2]: this.des_dat,
+                [3]: this.has_dat,
+                */
+        [0]: this.browse,
 
       },
       prop: {
@@ -84,8 +87,8 @@ export class HELP extends CONTAINER {
     this.block[1] = {
       component: {
 
-        [0]: this.bt_aceptar,
-        [1]: this.bt_close
+        //    [0]: this.bt_aceptar,
+        [0]: this.bt_close
       },
       prop: {
         Visible: true
@@ -95,13 +98,13 @@ export class HELP extends CONTAINER {
       },
       title: ''
     }
-
-    this.cam_dat.prop.TabIndex = 8.1
-    this.tip_con.prop.TabIndex = 8.2
-    this.des_dat.prop.TabIndex = 8.3
-    this.has_dat.prop.TabIndex = 8.4
-    this.bt_aceptar.prop.TabIndex = 8.5
-    this.browse.prop.TabIndex = 8.6
+    /*
+        this.cam_dat.prop.TabIndex = 8.1
+        this.tip_con.prop.TabIndex = 8.2
+        this.des_dat.prop.TabIndex = 8.3
+        this.has_dat.prop.TabIndex = 8.4
+        this.bt_aceptar.prop.TabIndex = 8.5
+        */
     this.prop.oneClick = true
 
   }
@@ -111,10 +114,11 @@ export class HELP extends CONTAINER {
     this.Parent.prop.ShowError = false
     this.Parent.prop.Valid = true
     this.Parent.Help = true
-
-    this.tip_con.when()
-    this.des_dat.prop.Value = ''
-    this.has_dat.prop.Value = ''
+    /*
+        this.tip_con.when()
+        this.des_dat.prop.Value = ''
+        this.has_dat.prop.Value = ''
+        */
     this.Parent.prop.ReadOnly = true
 
     let fields = ''
@@ -139,24 +143,29 @@ export class HELP extends CONTAINER {
 
     //}
     this.browse.prop.Value = ''
-    if (!this.prop.Visible) {
-      this.cam_dat.prop.RowSource = `diccionario.ref_dat,cam_dat`;
-      this.cam_dat.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
-      this.cam_dat.prop.Value = this.prop.cam_pri // asignamos campo principal
-      await this.cam_dat.interactiveChange()
-      this.tip_con.prop.Visible = true
-      this.cam_dat.prop.Visible = true
-      // this.des_dat.prop.Visible = true
-      //  this.has_dat.prop.Visible = true
-      this.bt_aceptar.prop.Visible = true
-      this.browse.prop.Visible = false
-      this.prop.Visible = true
-    } else {
-      this.prop.Visible = false
-      this.cam_dat.prop.RowSourceType = 0
-    }
-    this.Parent.prop.Valid = true
-    this.tip_con.when()
+    /*
+     if (!this.prop.Visible) {
+       this.cam_dat.prop.RowSource = `diccionario.ref_dat,cam_dat`;
+       this.cam_dat.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
+       this.cam_dat.prop.Value = this.prop.cam_pri // asignamos campo principal
+       await this.cam_dat.interactiveChange()
+       this.tip_con.prop.Visible = true
+       this.cam_dat.prop.Visible = true
+       // this.des_dat.prop.Visible = true
+       //  this.has_dat.prop.Visible = true
+       this.bt_aceptar.prop.Visible = true
+       this.browse.prop.Visible = false
+       this.prop.Visible = true
+     } else {
+       this.prop.Visible = false
+       this.cam_dat.prop.RowSourceType = 0
+     } */
+    this.browse.prop.Visible = false
+    this.prop.Visible = true
+
+
+    // this.Parent.prop.Valid = true
+    // this.tip_con.when()
 
   }
 

@@ -1,0 +1,1434 @@
+<!--
+----------------------------------------------------------------------------------------------
+              Killo Soft
+ ----------------------------------------------------------------------------------------------
+ Autor    	: ElFerBlocks
+ Sistema  	: Web-Ones  							Version : 1.0  VUE
+ Programa 	: EditBox    		Mnemo   : editText.vue
+ Ult.Mod :   11/Marzo/2025 se agrego el siguiente if
+ Objeto		: VUE
+ Comentarios	: Componente de edicion de texto
+ ----------------------------------------------------------------------------------------------
+-->
+<template>
+  <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
+  <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
+
+  <span :id="Id + '_component'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
+    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+    <!--Etiqueta del componente -->
+    <!--div class=" mensajes" v-show="This.prop.Visible" -->
+
+    <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
+      prop.Caption
+    }}</span>
+    <!--List Box -->
+    <div :id="Id + '_miniBrowse'" class="miniBrowse" ">
+      <!--select v-model=" List" multiple-->
+      <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
+
+        <!--titulos de comlumnas-->
+        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex">
+
+          <div v-if="valueIndex == 0" :id="Id + '_columns__titleCol_' + col" class="columnaTitle"
+            :disabled="prop.ReadOnly" v-for="(text, col) in This.ColumnProps" :key="col"
+            :style="This.ColumnProps[col].style">
+            <label id="Id + '_titleCol_'+valueIndex++col" class="ColumnaTitle" v-text='This.ColumnProps[col].title'>
+            </label>
+          </div>
+
+
+          <!--Imprime Columnas -->
+
+          <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
+            v-for="(text, col) in option.text" :key="col" :style="{
+              'background': option.check ? 'rgb(163, 193, 168)' : 'white',
+              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': inputStyle.height
+            }">
+            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
+              :style:="columncaptionStyle" />
+          </div>
+
+          <!--nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
+            width="15px" /-->
+
+          <!--div v-show='option.check'>+</div-->
+          <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
+
+        </div>
+      </div>
+
+    </div>
+    <!--/select-->
+
+
+    <div class="component_container" :style="containerStyle">
+      <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
+        :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
+        :position="This[compMain].position">
+      </component>
+    </div>
+
+    <!--Compponentes en bloque-->
+    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+
+        <div v-for="(component, key) in block.component" :key="key"
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+          <!--v-bind:Component="ref(Ele)"-->
+          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
+            v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
+            :prop="component.prop" :position="component.position">
+            <!--:style="component.style" :inputStyle="component.inputStyle"
+                                               
+                      @click.capture="component.click()"-->
+          </component>
+        </div>
+      </div>
+    </div>
+  </span>
+  <!--v-bind:inputStyle="This[compMain].inputStyle"
+  span v-if="prop.ShowValue">{{ prop.Value }}</span-->
+  <!--/div-->
+
+</template>
+
+<script setup lang="ts">
+// "update:Key", "update:Focus"
+
+const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
+///////////////////////////////////////
+// Variables comunes globales al componente
+////////////////////////////////////
+
+interface Props {
+  //Recno: number;
+  Registro: number;
+
+  prop: {};
+  style: {};
+  position: {};
+  //  inputStyle: {};
+}
+const props = withDefaults(defineProps<Props>(), {
+
+  Registro: 0,
+  // Component: null,
+  // Value: undefined,
+  prop: {
+    BaseClass: "miniBrowse",
+    BoundColumn: 1, // Columna donde se tomara el Value
+
+    Capture: true,
+    ControlSource: "",
+    ColumnCount: 0,
+    ColumnWidths: "", //"75%,25%"
+
+    List: [],
+
+    Disabled: false,
+
+    ErrorMessage: "",
+
+    First: false,
+    Focus: false,
+    Format: "",
+
+    InputMask: "",
+
+    MaxLength: 0,
+    MultiSelect: false,
+    //Multiple: false,
+
+    Name: "",
+
+    Placeholder: "",
+
+    ReadOnly: false,
+    RowSource: "", // vi_cap_doc.tdo_tdo,des_tdo
+    RowSourceType: 0, //1-Value, 2-Alias, 3-SQL Server,4- Local SQL, 5-Array
+
+    Sorted: false,
+    Status: "",
+    displayError: false,
+    ShowValue: false,
+    Style: 0, //0=DropDown Combo 2=DropDown List
+
+    TabIndex: 0,
+    Tag: "",
+    textLabel: "",
+    This: null,
+    ToolTipText: "",
+    Type: "text",
+
+    Valid: false,
+    Visible: true,
+    Value: [String, Number, Date],
+
+  },
+
+})
+
+//const Component = ref(props.prop.This)
+const Component = toRef(() => props.prop.This)
+const This = Component.value
+
+const Este = props.prop.This
+const captionStyle = reactive({ ...Este.captionStyle })
+const inputStyle = reactive({ ...Este.inputStyle })
+const divStyle = reactive({ ...Este.style })
+const containerStyle = reactive({ ...Este.containerStyle })
+let focusIn = false
+
+
+const MultiSelect = ref(props.prop.MultiSelect)
+const Styles = reactive(
+  {
+    captionStyle: captionStyle,
+    inputStyle: inputStyle,
+    style: divStyle
+  }
+)
+
+let swInit = true
+const Value = ref(props.prop.Value)
+//const Recno = ref(0)
+const Valid = ref(props.prop.Valid)
+Valid.value = true
+const ToolTipText = ref(true)
+
+//const Id = This.prop.Name + '_' + props.Registro.toString().trim()
+const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
+This.Id = Id
+let thisElement: Element | null
+This.prop.htmlId = Id
+const columnas = reactive([{}]); // tiene todos los renglones del comboBox
+
+while (columnas.length > 0)
+  columnas.pop()
+
+const displayText = ref("");
+//const width = reactive([{}]);
+const width = reactive(['60%', '20%', '20%']);
+
+//const ReadOnly = ref(props.prop.ReadOnly)
+//const Ref = ref(null)
+const RefCombo = ref(null)
+
+const Status = ref(props.prop.Status);
+// Status.value = 'I'
+const toggle = ref(false)
+
+const hover = ref(false)
+
+const displayError = ref(false)
+const sw_focus = ref(false)
+
+if (MultiSelect.value) {
+  if (!Styles.style.borderStyle)
+    Styles.style.borderStyle = "solid"
+  if (!Styles.style.borderRadius)
+    Styles.style.borderRadius = "4px"
+
+  if (!Styles.style.borderColor)
+    Styles.style.borderColor = 'black';
+  if (!Styles.style.borderWidth)
+    Styles.style.borderWidth = '1px'
+}
+
+if (Styles.style.width == 'auto')
+  Styles.style.width = 'fit-content'
+
+const zIndex = ref(Styles.style.zIndex) //ref(This.style.zIndex)
+
+const comboStyle = reactive({
+  height: 'fit-content',
+  width: Styles.inputStyle.width,    //'fit-content',
+  zIndex: zIndex.value
+})
+const toggleStyle = reactive({
+  maxHeight: Styles.style.fontSize,
+  height: Styles.style.fontSize,
+  marginTop: 'auto'
+})
+
+Styles.inputStyle.zIndex = zIndex.value  //****
+const toggleZIndex = comboStyle.zIndex + 1
+
+const inputWidth = ref('auto')
+
+const columncaptionStyle = {
+  width: 'auto', //inputWidth.value,
+  border: "1px solid rgb(0, 5, 2)",
+  borderRadius: "4px",
+  background: "white",
+  color: "black",
+  position: "relative",
+  zIndex: comboStyle.zIndex + 1
+}
+
+const List = ref(This.prop.ListCount)
+const columnContainer = reactive({
+  width: 'auto',
+  height: 'auto', //height: min-content
+  maxHeight: '200px', //
+  //zIndex: comboStyle.zIndex + 1
+})
+
+//if (multiSelect.value) {
+columnContainer.height = 'min-content'
+columnContainer.maxHeight = 'min-content'
+columnContainer.maxHeight = 'min-content'
+columnContainer.minHeight = 'max-content'
+columnContainer.borderRadius = '4px';
+columnContainer.boxSizing = 'border-box';
+columnContainer.maxHeight = Styles.style.maxHeight
+columnContainer.overflowY = 'scroll';
+columnContainer.overflowX = 'scroll';
+columnContainer.borderStyle = 'solid';
+columnContainer.borderColor = 'black';
+columnContainer.borderWidth = '1px'
+
+let inputBuffer = ''
+
+/////////////////////////////////////////////////////////////////////
+// emitValue
+// Descripcion: emite hacia el componente padre el nuevo valor asignado
+/////////////////////////////////////////////////////////////////
+const emitValue_old = async (readCam?: boolean, isValid?: boolean) => {
+
+  if (!readCam)
+    readCam = false
+
+  if (!isValid)
+    isValid = false
+
+  toggle.value = false
+  let readValid = false
+
+  if (!readCam) {  // Se cambio el valor del campo.  Graba el valor en Sql localmente.
+    if (!isValid)
+      This.prop.Status = 'P'
+    //2/Sep/2025 Status.value = 'P'
+    //2/Sep/2025 emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
+
+    if (swInit) { // swInit Value.value.trim().length == 0
+      if (columnas.length == 0) {
+        await renderComboBox()
+        This.prop.Status = 'A'
+        //2/Sep/2025  Status.value = 'A'
+        //2/Sep/2025  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+        return
+
+      }
+      Value.value = columnas[0].value
+      swInit = false
+    }
+    // Si no viene del watch This.prop.Value
+    let Valor = Value.value
+
+    if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+      await updateCampo(Valor, props.prop.ControlSource, props.Registro)
+    }
+
+    // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
+    This.prop.Value = Value.value
+
+    if (isValid == undefined)
+      isValid = false
+
+    if (!isValid) {
+      //   console.log('1.1) comboBox emitValue() Name', props.prop.Name, 'Value=', Valor)
+      await This.interactiveChange()
+      //This.prop.Valid = false
+      inputBuffer = ''
+      //      This.prop.Valid = false
+      const newValue = This.prop.Value
+
+      if (!await This.valid()) {
+
+        // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
+        displayError.value = true
+        This.prop.displayError = true
+
+        if (This.prop.Valid)
+          This.prop.Valid = false
+
+        This.prop.Status = 'A'
+        //2/Sep/2025 Status.value = 'A'
+        //2/Sep/2025 emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+        return
+      }
+      This.prop.Valid = true
+      This.prop.Status = 'A'
+      //2/Sep/2025 Status.value = 'A'
+      //2/Sep/2025 emit("update:Status", 'A')
+
+      if (newValue != This.prop.Value)
+        return
+
+      sw_focus.value = false
+
+    }
+
+  }
+  else {  // Cuando es una lectura de campo
+    if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
+      // Actualizamos el registro del form
+
+      // This.prop.Valid = false
+      //  if (This.Parent.Recno = !props.Registro)
+      //    This.Parent.Recno = props.Registro
+
+      const data = await readCampo(props.prop.ControlSource, props.Registro)
+
+      let sw_dat = false
+      for (const campo in data) {
+
+        //   if (campo == 'key_pri' && data.key_pri > 0)
+        //     This.prop.Valid = true
+
+        if (campo != 'key_pri') {
+          sw_dat = true
+
+          This.prop.Valid = true// ya se capturo algo , se apaga Valid
+          Value.value = data[campo]
+          //console.log('comboBox emitValue readCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+
+          if (!isValid) {
+            readValid = true
+          }
+        }
+        else {
+          /* se quito 23/Feb/2026
+                    if (data.key_pri > 0)
+                      This.prop.Valid = true
+                    else
+                      This.prop.Valid = false
+          */
+        }
+
+      }
+      if (!sw_dat) {
+
+        Value.value = null  // asigna el primer Text valor
+
+      }
+    } else  // si no hay controlSource
+      This.prop.Valid = true
+
+  }
+
+  // This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
+  This.prop.Status = 'A'
+  //2/Sep/2025  Status.value = 'A'  // se necesita para que el watch padre funcione
+  //2/Sep/2025   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
+
+  if (Value.value == null) {
+    if (columnas[0] && typeof columnas[0].value == 'number')
+      Value.value = 0
+    else
+      Value.value = ''
+  }
+
+  await asignaValor()
+  // This.prop.Value = Value.value    5/May/2026
+  if (This.onChangeValue) {
+    await This.onChangeValue(ref(Styles))
+  }
+
+  //nextTick(function () {
+  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+  emit("update:displayText", displayText.value); // actualiza el valor Value en el componente padre
+  emit("update") // emite un update en el componente padre
+  //})
+  // })
+  // console.log('emitValue ComboBox Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'displaytext=', displayText.value)
+
+  ToolTipText.value = true  // Activamos el ToolTipText
+  displayError.value = false  // Desactivamos mensaje de error
+  This.prop.displayError = false
+
+  //console.log('3.3 comboBox emitValue() Name', props.prop.Name, 'This.prop.Valid=', This.prop.Valid)
+
+  if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
+    // console.log('comboBox emitValue valid() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
+    //  await This.interactiveChange()
+    //  This.valid()
+
+  }
+  return true
+}
+
+/////////////////////////////////////////////////////////////////////
+// ValidList (solo MultiSelect)
+// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
+//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
+/////////////////////////////////////////////////////////////////
+const validList = async () => {
+
+  for (const element of This.Parent.elements) {
+    const comp = element.Name.toLowerCase().trim()
+    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name.toLowerCase().trim()) {
+      return
+    }
+  }
+
+  focusIn = false // Perdio el foco
+
+  return
+
+};
+
+
+
+////////////////////////////////////////////////////////////////////
+// onFocus
+// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
+//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
+// Obs: el onFocus() se llama desde el coponente parent 
+/////////////////////////////////////////////////////////////////
+/*
+const onFocus = async (click?: boolean) => {
+  // No se permite el focus si es solo lectura
+
+  ToolTipText.value = false  // apaga tooltip
+  //console.log('1) onFocus', This.prop.Name, focusIn.value)
+  // Es su primer focus
+
+  if (!firstFocus) {  // Primer focus
+    onlyRead.value = true // No permite captura de datos
+    if (!await ChecaStatus()) {
+      firstFocus = true
+      return
+    }
+
+  }
+
+  firstFocus = false
+  if (This.prop.ReadOnly || This.prop.Disabled)
+    return nextElement()
+
+  if (focusIn)
+    return
+  
+  if (This.beforeWhen)
+    await This.beforeWhen()
+
+  focusIn = true
+
+  //console.log('2) comboBox onFocus Grid Name', This.prop.Name)
+
+  if (!sw_focus.value) {
+    sw_focus.value = true
+    //    This.Form.eventos.push(This.prop.Map + '.when()')
+  }
+
+  This.prop.ReadOnly = !await This.when()
+  onlyRead.value = false // Permitimos captura
+
+  if (This.prop.ReadOnly) {
+    nextElement()
+    return
+  }
+
+  if (click == true) {
+    console.log('onFocus click toggle.value=', toggle.value)
+    toggle.value = false // !toggle.value
+    nextTick(function () {
+      toggle.value = true
+      comboStyle.zIndex = toggle.value ? zIndex.value + 2 : zIndex.value
+    })
+  }
+
+  return
+
+  // if (!This.prop.ReadOnly)
+  //   This.click()
+
+}
+
+*/
+
+
+
+
+//////////////////////////////////////////////////////
+// Renderizado del combo box
+/////////////////////////////////////////////////////
+const renderComboBox = async (readData?: boolean) => {
+  //console.log(' 0-) Render Multiselect comboBox prop.Name=', props.prop.Name, ' List.value=', List.value, ' columnas.length=', columnas.length)
+
+  if (columnas.length > 0) return
+
+  // if (props.prop.Status == 'I') return
+
+  // 9/Feb/2024 borra las columnas si las tiene 
+  // se cambia cada ves que se renderiza en el watch o init
+  //  while (columnas.length > 0)
+  //  columnas.pop()
+
+  /*
+  for (let ren = 0; ren < columnas.length; ren++) {
+    // Borra todos los renglones
+    delete columnas[ren];
+  }
+  */
+
+  if (props.prop.RowSourceType < 1) return
+  if (props.prop.ColumnCount == 0) return
+  if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
+
+  await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
+
+  const BoundColumn =
+    (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
+
+  // Numero de columnas
+  const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
+  /*  9/Feb/2024 se quito y se mando arriba
+    for (let ren = 0; ren < columnas.length; ren++) {
+      // Borra todos los renglones
+      delete columnas[ren];
+    }
+   */
+
+  ///////////////////////
+  // generamos un arreglo dependiendo del RowSourceType
+
+  let val_col: any = [];  // valores de columna
+  let RowSource = props.prop.RowSource
+
+  const rowSourceType = props.prop.RowSourceType;
+
+  // console.log('ComboBox renderiza ', props.prop.Name, ' RowSource ===>>', RowSource, 'rowSourceType=', rowSourceType)
+
+  //const sql = props.db
+  let data = []
+  switch (rowSourceType) {
+
+    case 1:    // Value o por valor directamente 
+
+      {
+        RowSource = "'" + props.prop.RowSource + "'"
+        RowSource = RowSource.replaceAll(',', "','");
+        //let pos=0;
+        //pos= props.prop.RowSource.indexOf() // similar at VFP
+
+        const Values = eval("[" + RowSource + "]"); // por medio del eval generamos el arreglo
+        if (props.prop.ColumnCount == 1) {  // si solo tiene una columna
+          val_col = Values;
+        } else {  // Si tiene mas de una columna
+          let ren = 0; // renglon
+          let ele = 0; // numero de elemento
+          while (ele < Values.length) {
+            // recorremos todos los elementos
+            for (
+              let col = 0;
+              col < props.prop.ColumnCount;
+              col++ // recorre columna por columna
+            ) {
+              val_col[ren][col] = Values[ele];
+              ele++; // incrementamos el elemento
+            }
+          }
+          ren++; // incrementamos el renglon
+        }
+        break;
+      }
+
+    case 2: { // Alias
+      const pos = RowSource.indexOf(".") // posicion del punto
+
+      // Obtenemos el alias
+      const alias = (pos > 2) ? RowSource.slice(0, pos) : ''
+
+      // aqui me quede (arreglar lectura por alias)
+      const ins_sql = 'select ' + RowSource + ' from ' + alias
+      data = await localAlaSql(ins_sql)
+
+      break
+    }
+    case 3: {   // SQL Server Query
+      data = await SQLExec(RowSource, 'MEMVAR') //This.Form.db.
+
+      //console.log('render comboBox data ===>', data)
+
+      break
+    }
+    case 4: { // local SQL Query
+
+      data = await localAlaSql(RowSource)
+      break
+    }
+    case 5: {
+      // Array , solo copiamos el arreglo
+      val_col = RowSource;
+
+      break;
+    }
+    case 6: {
+      // Field
+      break;
+    }
+  }
+
+  //    if (data[0]) {
+  if ((rowSourceType >= 2 && rowSourceType <= 4)) {
+    if (!data || (data && data.length == 0)) {
+      console.warn('1) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', RowSource, ' RowSourceType=', props.prop.RowSourceType)
+      return
+    }
+
+    for (const nom_obj in data[0]) {
+      const renglon = []
+      for (let ren = 0; ren < data.length; ren++) {
+        renglon.push(data[ren][nom_obj])
+      }
+      val_col.push(renglon)
+    }
+  }
+
+  // }
+  // else
+  //  console.warn('2) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
+
+  if (val_col.length == 0) {
+    console.warn('2) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', props.prop.RowSource, ' RowSourceType=', props.prop.RowSourceType)
+    return
+  }
+
+  if (MultiSelect.value) {
+
+    if (This.prop.Value.trim().length > 0) {
+      const listValue = "['" + This.prop.Value.trim().replaceAll(",", "','") + "']"
+      eval('List.value=' + listValue)
+
+    }
+
+  }
+
+  for (let ren = 0; ren < (props.prop.ColumnCount <= 1 ? val_col.length : val_col[0].length); ren++) {
+    // asignamos el Value del BoundColum 
+    let check = false
+    if (MultiSelect.value) {
+      for (let i = 0; i < List.value.length; i++) {
+        if (props.prop.ColumnCount <= 1 && List.value[i] == val_col[ren]) {
+          check = true
+        }
+
+        if (props.prop.ColumnCount > 1 && List.value[i] == val_col[BoundColumn][ren]) {
+          check = true
+        }
+
+      }
+
+    }
+    if (props.prop.ColumnCount <= 1) { // Si solo es una columna
+
+      columnas[ren] = {
+        value: val_col[ren],
+        text: [val_col[ren]],
+        check: check
+      }
+
+    } else {
+
+      columnas[ren] = {  // asignamos el valor segun el BoundColumn
+        value: val_col[BoundColumn][ren], // asignamos el valor segun BoundCoulumn
+        text: [],   // un arreglo vacio y se llenara con el numero de columnas del resultado
+        check: check
+      };
+      // console.log("Antes de Asigna option columnCount ===>",props.prop.ColumnCount);
+      for (let col = 0; col < props.prop.ColumnCount; col++) { // recorremos todas las columnas
+        //console.log("Asigna option ===>",props.prop.RowSource,ren,col);
+
+        columnas[ren].text[col] = val_col[col][ren]; // asignamos los valore text de todas las demas columnas
+        // console.log("Asigna option ===>",ren,col.props.prop.RowSource[col][ren]);
+      }
+
+    }
+  }
+
+  //  await emitValue(true, true)   No se necesita en este caso
+  This.prop.Status = 'A'
+  //2/Sep/2025 Status.value = 'A'
+  //2/Sep/2025emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  //console.log('3) render combobox ===>>', This.Name, 'Value=', Value.value)
+  return
+
+}
+
+//ColumWidth
+const ColumnWidth = (columnas: string) => {
+  columnas = "['" + columnas.replaceAll(",", "','") + "']"
+
+  let columnWidth = []
+  eval('columnWidth=' + columnas)
+
+  for (let col = 0; col < columnWidth.length; col++) {
+    width[col] = columnWidth[col];
+  }
+
+}
+
+/////////////////////////////////////////////
+// Busca el siguiente elemento a seleccionar
+/////////////////////////////////////////////
+const nextElement = async () => {  //clickReturn
+
+  if (Object.keys(This.Parent).length === 0)
+    return
+
+  This.prop.Status = 'A'
+  await Delay(200)
+
+  const TabIndex = This.prop.TabIndex
+  let lastIndex = 9999999
+  /*
+    if (This.Parent.BaseClass == "grid") {
+      const grid = This.Parent
+  
+      for (const element in grid.elements) {
+        const Tab = This.Form[element].prop.TabIndex
+        if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex
+          && !This.Parent[element].prop.ReadOnly && !This.Parent[element].prop.Disabled
+        ) {
+          lastIndex = Tab
+          //nextFocus = This.Parent[element].prop.htmlId
+          console.log('Grid Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+  
+          This.Parent[element].prop.Focus = true
+          return
+  
+        }
+      }
+  
+      return
+    }
+  */
+
+  for (const element in This.Parent.estatus) {
+    if (!This.Parent[element] || !This.Parent[element].prop.TabIndex) {
+      console.log('Parent elemento', element)
+      return
+    }
+    const Tab = This.Parent[element].prop.TabIndex
+
+    //            'TabIndex=', Tab, TabIndex, lastIndex)
+
+    if (This.prop.Name != element && Tab > TabIndex && Tab < lastIndex
+      && !This.Parent[element].prop.ReadOnly && !This.Parent[element].prop.Disabled) {
+      lastIndex = Tab
+      //nextFocus = This.Parent[element].prop.htmlId
+      console.log('Parent Siguiente elemento', This.prop.Name, 'nextFocus=', element)
+      //   This.prop.Disabled = Disabled
+
+      This.Parent[element].prop.Focus = true
+      return
+
+    }
+
+  }
+  // This.prop.Disabled = Disabled
+  return
+
+}
+
+//////////////////////////////////////////////////////////////////////
+// select : Se hace el foco y se selecciona el input
+// Obs: se llama desde el template
+//////////////////////////////////////////////////////////////////////
+const select = async () => {
+  // console.log('editText select Name=', This.prop.Name, 'thisElement=', thisElement)
+  This.prop.Focus = false
+  console.log('select', This.prop.Name)
+  if (thisElement.focus)
+    thisElement.focus();  // setSelectionRange(selectionStart, selectionEnd, selectionDirection)
+
+  return
+
+}
+
+////////////////////////////////////////////////////////////////
+//                          Watchers                          //
+////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+// change This.prop.Enabled
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.Enabled,
+  () => {
+    if (This.prop.Disabled != !This.prop.Enabled)
+      This.prop.Disabled = !This.prop.Enabled
+
+  },
+  { deep: false }
+);
+
+////////////////////////////////////////
+// This.prop.Visible 
+///////////////////////////////////////
+watch(
+  () => This.prop.Visible,
+  (new_val, old_val) => {
+    //console.log('watch This.prop.Visible =', new_val)
+    if (!new_val)
+      comboStyle.height = '0%'
+    else
+      comboStyle.height = Styles.style.height // This.style.height
+
+    renderComboBox(true) // Refresca componente
+
+    //readCampo(props.Registro)
+
+  },
+  { deep: false }
+);
+
+/*
+////////////////////////////////////////
+// Registro
+// Nota: Lee de la base de datos local segun el valor de Registro
+//       Se utiliza para el manejo de grid
+///////////////////////////////////////
+watch(
+  () => This.Recno, //props.Registro,
+  async (new_val) => {
+
+    if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
+      return
+    //console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
+    await emitValue(true)
+    //29/Oct/2025 -- Se quita, daba problema en el grid
+    //This.Recno = props.Registro
+    This.recnoChange()
+  },
+  { deep: true }
+);
+
+*/
+///////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+watch(
+  () => This.prop.Focus, //props.prop.Focus,
+  (new_val: any) => {
+    if (!new_val)
+      return
+    select()
+  },
+  { deep: false }
+)
+/*
+///////////////////////////////////////
+// ControlSource
+///////////////////////////////////////
+watch(
+  () => props.prop.ControlSource,
+  (new_val, old_val) => {
+
+    if (new_val != old_val) {
+      //  console.log('ComboBox Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val, old_val)
+      emitValue(true, true)
+    }
+
+  },
+  { deep: false }
+);
+*/
+///////////////////////////////////////
+// RowSoure
+///////////////////////////////////////
+watch(
+  () => props.prop.RowSource,
+  (new_val, old_val) => {
+    //console.log('watch ComboBox RowSource===>>', new_val)
+    if (new_val != old_val) {
+      // 9/Feb/2024 borra las columnas si las tiene 
+      while (columnas.length > 0)
+        columnas.pop()
+
+      renderComboBox(true)
+    }
+  },
+  { deep: true }
+);
+
+///////////////////////////////////////
+// RowSourceType
+///////////////////////////////////////
+
+watch(
+  () => props.prop.RowSourceType,
+
+  (new_val, old_val) => {
+    // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
+
+    //console.log('watchComboBox RowSourceType===>>', new_val)
+    if (new_val != old_val) {
+      // 9/Feb/2024 borra las columnas si las tiene 
+      while (columnas.length > 0)
+        columnas.pop()
+
+      renderComboBox(true)
+    }
+  },
+  { deep: false }
+);
+///////////////////////////////////////
+// Sorted
+///////////////////////////////////////
+
+watch(
+  () => props.prop.Sorted,
+
+  (new_val, old_val) => {
+    if (new_val != old_val) {
+      //console.log('ComboBox renderiza por cambio en Sorted ===>>', new_val)
+      // 9/Feb/2024 borra las columnas si las tiene 
+      while (columnas.length > 0)
+        columnas.pop()
+
+      renderComboBox(true);
+    }
+  },
+  { deep: false }
+);
+
+///////////////////////////////////////
+// ColumCount
+///////////////////////////////////////
+
+watch(
+  () => props.prop.ColumnCount,
+
+  (new_val, old_val) => {
+    if (new_val != old_val) {
+      while (columnas.length > 0)
+        columnas.pop()
+
+      renderComboBox(true);
+    }
+  },
+  { deep: false }
+);
+
+///////////////////////////////////////
+// ColumnWidths
+///////////////////////////////////////
+watch(
+  () => props.prop.ColumnWidths,
+
+  (new_val, old_val) => {
+    // console.log('Watch ColumnWidths', new_val)
+
+    if (new_val != old_val) {
+      ColumnWidth(new_val)
+    }
+
+  },
+  { deep: false }
+);
+
+///////////////////////////////////////
+// BoundColum
+///////////////////////////////////////
+watch(
+  () => props.prop.BoundColumn,
+
+  (new_val, old_val) => {
+    if (new_val != old_val) {
+      while (columnas.length > 0)
+        columnas.pop()
+
+      renderComboBox(true);
+    }
+  },
+  { deep: false }
+);
+
+///////////////////////////////////////
+//width
+///////////////////////////////////////
+
+watch(
+  () => This.style.width,
+
+  (new_val, old_val) => {
+    // console.log("Cambio tamaÃ±o ", inputWidth.value);
+    if (new_val != old_val) {
+      if (This.style.width.substr(-2, 2) == 'px') {
+        const len = This.style.width.length - 2
+        const width: number = +This.style.width.substr(0, len) - 30
+        inputWidth.value = width.toString() + 'px'
+        //console.log("Cambio tamaÃ±o 2", inputWidth.value);
+      }
+
+    }
+  },
+  { deep: false }
+);
+
+/////////////////////////////////////////////////////////////////////
+// change This.prop.ShowError
+/////////////////////////////////////////////////////////////////
+watch(
+  () => This.prop.nextFocus,
+  () => {
+    // console.log('watch NextFocus', This.prop.Name, This.prop.nextFocus)
+    if (This.prop.nextFocus) {
+      nextElement()
+      This.prop.nextFocus = false
+    }
+  },
+  { deep: false }
+);
+
+
+/////////////////////////////////////////
+// Metodo init 
+/////////////////////////////////////////
+
+//const init = async () => {
+
+onMounted(async () => {
+  thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
+  //  console.log('1) comboBox onMounted  Name=', This.prop.Name)
+
+  // textInputStyle.zIndex = zIndex
+
+  if (This.prop.Init) {
+
+    if (props.prop.Style == 0)
+      MultiSelect.value = true
+
+    if (MultiSelect.value)
+      Styles.captionStyle.alignContent = 'flex-start';
+
+    let textWidth = 0
+
+    // 13/Marzo/2023 se quita el siguiente if
+    /*   
+       if (Styles.style.zIndex)
+         Styles.style.zIndex = Styles.style.zIndex + 99
+       else
+         Styles.style.zIndex = 100
+   */
+
+    Styles.inputStyle.maxHeight = Styles.inputStyle.fontSize
+
+    if (Styles.inputStyle.width.search("px") > 0) {
+      textWidth = +Styles.inputStyle.width.replaceAll('px', '') - 30
+      Styles.inputStyle.width = textWidth.toString() + 'px'
+
+    }
+    if (Styles.inputStyle.width.search("%") > 0) {
+      textWidth = +Styles.inputStyle.width.replaceAll('%', '') - 5
+      Styles.inputStyle.width = textWidth.toString() + '%'
+    }
+
+    if (props.prop.Type == 'date') {
+      Styles.inputStyle.width = '100px'
+      Styles.inputStyle.height = '18px'
+      Styles.inputStyle.maxHeight = '20px'
+    }
+    if (props.prop.Type == 'number')
+      Styles.inputStyle.textAlign = 'right'
+
+    if (!This.prop.Visible) {
+      comboStyle.height = '0%'
+      //console.log('comboStyle Visible', comboStyle.height)
+    }
+
+    // asina tamaño de la imagen toogle
+
+    if (toggleStyle.maxHeight == 'auto')
+      toggleStyle.maxHeight = '13px'
+
+    if (toggleStyle.maxHeight.search("px") > 0) {
+      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 3
+      toggleStyle.maxHeight = textWidth.toString() + 'px'
+      toggleStyle.height = toggleStyle.maxHeight
+    }
+    //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
+
+  }
+
+  await renderComboBox()
+
+  console.log(' ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
+
+  //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
+
+  await This.recnoChange()
+
+  This.Recno = props.Registro
+
+  //oldVal = Value.value   // asignamos el valor viejo
+  // si es el primer elemento a posicionarse
+  // si es el primer elemento a posicionarse
+  if ((props.prop.First || props.prop.Focus) && This.Parent.BaseClass != "grid") {
+    // First = true
+    This.prop.Focus = false
+    This.prop.Focus = true
+
+  }
+  This.prop.Init = false
+
+  This.afterMounted()
+  //  console.log(' comboBox onMounted Name=', This.prop.Name)
+
+})
+
+onBeforeMount(async () => {
+  //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+  //    if (This.init)
+  //      await This.init()
+})
+
+onUnmounted(async () => {
+
+  window.removeEventListener('mousedown', myClick); // <div>
+  if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
+
+})
+
+/////////////////////////////////////////////////////////////////////
+// Focus Out
+// Se do click fuera focusOut click
+// checar canvas.removeEventListener
+//////////////////////////////////////////////////////////////////////
+
+function myClick(e) {
+  // console.log('myClick ComboBox focus in and out ',e.target)
+  // to remove
+
+  // console.log(This.prop.Name, '1) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
+
+  const clickedEl = e.target;
+
+  if (This.prop.Disabled || !This.prop.Visible) {
+    if (RefCombo && RefCombo.value != null && !RefCombo.value.contains(clickedEl))
+      sw_focus.value = false
+    if (!toggle.value)
+      return
+  }
+
+  //console.log(This.prop.Name, '2) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
+
+  if (RefCombo && RefCombo.value != null) {
+
+    if (!RefCombo.value.contains(clickedEl)) {
+      sw_focus.value = false
+      focusIn = false
+      if (toggle.value) {
+        toggle.value = false
+      }
+    }
+
+  }
+}
+
+window.addEventListener('mousedown', myClick);
+
+/**
+ * Handler for right click event on the component
+ *
+ * @param {MouseEvent} event - the event
+ */
+const middleClick = () => {
+  // console.log('middleClick')
+  if (This.Form && This.Form.translateContainer)
+    This.Form.translateContainer.open(ref(This))
+}
+
+const handler = (event) => {
+  if (event.which === 1) {
+    //if (This.Form)
+    //  This.Form.translateContainer.open(ref(This))
+  }
+  event.preventDefault();
+}
+
+</script>
+
+<style scoped>
+/*  elemento click check*/
+.toggleImagen {
+
+  border-radius: 20%;
+  border: 1px rgb(0, 5, 2);
+
+  vertical-align: bottom;
+  border-style: solid;
+  border-color: black;
+
+  margin-left: 1px;
+  margin-top: .5%;
+
+  box-shadow: black 0px 1px 1px 0, 0 1px 1px 0;
+  background: #76a184;
+  /*background: #76a184;   
+  border: rgb(0, 5, 2);
+  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
+*/
+
+  max-height: fit-content
+    /*height: 93% */
+    /* margin-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;*/
+}
+
+.multiSelect {
+
+  /* z-index: 2;*/
+  max-height: inherit;
+  border-radius: 5px;
+  border: 1px;
+  overflow-x: auto;
+
+}
+
+div.comboBox {
+  display: flex;
+  height: fit-content;
+  /* order: 1px solid rgb(0, 5, 2);
+  border-radius: 5px; */
+
+}
+
+div.textInput {
+  display: flex;
+
+}
+
+input.input {
+  background-color: initial;
+  order: 1px solid rgb(0, 5, 2);
+  border-radius: 5px;
+}
+
+input.label {
+  width: v-bind("inputWidth");
+  border: 1px solid rgb(0, 5, 2);
+  border-radius: 5px;
+  background: white;
+  color: black;
+  position: relative;
+  /* z-index: 10;*/
+}
+
+/* Cambia el background cuando solo es de lectura */
+input.label.ReadOnly {
+  background: rgb(212, 212, 212);
+  /* disabled color */
+
+  /* visibility: visible;
+  opacity: 1;*/
+}
+
+/*input.label:disabled {
+    color: black;
+    background : white;
+     
+}
+*/
+div.toggle {
+  position: absolute;
+  /* no borrar se utiliza junto con div.option position:relative*/
+  border: rgb(0, 5, 2);
+  border-radius: 2%;
+  overflow: hidden;
+  overflow-y: auto;
+  width: 100%;
+  /*max-content;*/
+  height: auto;
+  max-height: 260px;
+  top: 20px;
+  /*left: -5%;*/
+  z-index: v-bind('toggleZIndex');
+}
+
+/* css de la lista de combo box*/
+div.option {
+  box-shadow: 0 4px 8px 0, 0 6px 20px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  /* no borrar se utiliza junto con div.toggle position:absolute*/
+  /* border: 1px solid rgb(0, 5, 2);*/
+  padding: 5px 10px;
+  /* espacio top left right booton ,vertical horizontal */
+
+  background: white;
+  /* #e3e6e4;*/
+  color: #292b2a;
+  /* #0b0c0c negro;   #7a18e9; morado*/
+  /*este es el color que toman los elementos desplegados**/
+  /*display: table-row;   /*list-item;  /* inline-block;
+
+ /* margin-left: -60px; */
+  /* bottom: 125%;
+ /* left: 50%;
+  margin-left: -60px;*/
+  opacity: 1;
+  /* z-index: v-bind("props.style.zIndex" ); */
+  /* v-bind('zIndex') la capa en la cual se presenta donde 0 la mas abajo */
+  right: 0%;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+  z-index: v-bind('toggleZIndex')
+    /* transition: opacity 0.3s;*/
+}
+
+div.option:hover {
+  background: rgb(231, 238, 231);
+}
+
+select[multiple]:focus option:checked {
+  background: rgb(163, 193, 168) linear-gradient(0deg, rgb(163, 193, 168) 0%, rgb(163, 193, 168) 100%);
+}
+
+/*div class='column'*/
+
+div.multi {
+  box-shadow: 0 4px 8px 0, 0 6px 20px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  /* no borrar se utiliza junto con div.toggle position:absolute*/
+  /* border: 1px solid rgb(0, 5, 2);*/
+  padding: 5px 10px;
+  /* espacio top left right booton ,vertical horizontal */
+
+  background: white;
+  /* #e3e6e4;*/
+  color: #292b2a;
+  /* #0b0c0c negro;   #7a18e9; morado*/
+  /*este es el color que toman los elementos desplegados**/
+  /*display: table-row;   /*list-item;  /* inline-block;
+
+ /* margin-left: -60px; */
+  /* bottom: 125%;
+ /* left: 50%;
+  margin-left: -60px;*/
+  opacity: 1;
+  /* z-index: v-bind("props.style.zIndex" ); */
+  /* v-bind('zIndex') la capa en la cual se presenta donde 0 la mas abajo */
+  right: 0%;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+  z-index: v-bind('toggleZIndex')
+    /* transition: opacity 0.3s;*/
+}
+</style>
