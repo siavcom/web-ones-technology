@@ -195,6 +195,8 @@ imgButton - Button with image
 
 modalComponent - Modal component container
 
+miniBrowse - Minimal browse component
+
 textLabel - Text label
 
 📝 TypeScript Components
@@ -463,7 +465,7 @@ typescript
     - when RowSourceType=2: 'tablename.field1,field2'  
     - when RowSourceType=3 or 4: 'SELECT column1,column2 FROM tablefield'  
 
-  RowSourceType: <How to fill comboBox>  
+  RowSourceType: <How to fill comboBox or miniBrowse>  
   Type: number  
 
   ´´´text

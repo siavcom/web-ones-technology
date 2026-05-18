@@ -15,7 +15,7 @@
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
   <span :id="Id + '_component'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+    v-show="This.prop.Visible">
     <!--Etiqueta del componente -->
     <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
@@ -25,28 +25,25 @@
     <!--List Box -->
     <div :id="Id + '_miniBrowse'" class="miniBrowse" ">
       <!--select v-model=" List" multiple-->
-      <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
+      <div :id="Id" class="columnContainer" :style="columnContainer">
 
-        <!--titulos de comlumnas-->
-        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex">
+        <!--titulos de columnas-->
 
-          <div v-if="valueIndex == 0" :id="Id + '_columns__titleCol_' + col" class="columnaTitle"
-            :disabled="prop.ReadOnly" v-for="(text, col) in This.ColumnProps" :key="col"
-            :style="This.ColumnProps[col].style">
-            <label id="Id + '_titleCol_'+valueIndex++col" class="ColumnaTitle" v-text='This.ColumnProps[col].title'>
-            </label>
+        <div :id="Id + '_column_titles'" class="option">
+          <div :id="Id + '_columns__titleCol_' + col" class="columnaTitle" v-for="(text, col) in This.ColumnProps"
+            :key="col" :style="This.ColumnProps[col].style">
+            <label id="Id + '_title_'+This.ColumnProps[col].title" class="ColumnaTitle"
+              v-text='This.ColumnProps[col].title'></label>
           </div>
+        </div>
 
+        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex">
 
           <!--Imprime Columnas -->
 
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
-            v-for="(text, col) in option.text" :key="col" :style="{
-              'background': option.check ? 'rgb(163, 193, 168)' : 'white',
-              'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': inputStyle.height
-            }">
-            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
-              :style:="columncaptionStyle" />
+            v-for="(text, col) in option.text" :key="col" :style="This.ColumnProps[col].style">
+            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"></label>
           </div>
 
           <!--nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
@@ -124,7 +121,7 @@ const props = withDefaults(defineProps<Props>(), {
     Capture: true,
     ControlSource: "",
     ColumnCount: 0,
-    ColumnWidths: "", //"75%,25%"
+    // ColumnWidths: "", //"75%,25%"
 
     List: [],
 
@@ -582,7 +579,7 @@ const renderComboBox = async (readData?: boolean) => {
   if (props.prop.ColumnCount == 0) return
   if (!props.prop.RowSource || !props.prop.RowSource.length || props.prop.RowSource.length < 1) return;
 
-  await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
+  //await ColumnWidth(props.prop.ColumnWidths) // asigna tamaño de columnas
 
   const BoundColumn =
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
@@ -763,7 +760,7 @@ const renderComboBox = async (readData?: boolean) => {
 }
 
 //ColumWidth
-const ColumnWidth = (columnas: string) => {
+/*const ColumnWidth = (columnas: string) => {
   columnas = "['" + columnas.replaceAll(",", "','") + "']"
 
   let columnWidth = []
@@ -774,7 +771,7 @@ const ColumnWidth = (columnas: string) => {
   }
 
 }
-
+*/
 /////////////////////////////////////////////
 // Busca el siguiente elemento a seleccionar
 /////////////////////////////////////////////
@@ -875,7 +872,7 @@ watch(
 watch(
   () => This.prop.Visible,
   (new_val, old_val) => {
-    //console.log('watch This.prop.Visible =', new_val)
+    console.log('miniBroese  watch This.prop.Visible =', new_val)
     if (!new_val)
       comboStyle.height = '0%'
     else
@@ -968,7 +965,7 @@ watch(
   (new_val, old_val) => {
     // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
 
-    //console.log('watchComboBox RowSourceType===>>', new_val)
+    console.log('miniBrowse watch RowSourceType===>>', new_val)
     if (new_val != old_val) {
       // 9/Feb/2024 borra las columnas si las tiene 
       while (columnas.length > 0)
@@ -1016,7 +1013,7 @@ watch(
   },
   { deep: false }
 );
-
+/*
 ///////////////////////////////////////
 // ColumnWidths
 ///////////////////////////////////////
@@ -1033,7 +1030,7 @@ watch(
   },
   { deep: false }
 );
-
+*/
 ///////////////////////////////////////
 // BoundColum
 ///////////////////////////////////////
