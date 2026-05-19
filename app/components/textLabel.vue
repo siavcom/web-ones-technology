@@ -164,6 +164,7 @@ let sw_ReadCampo = false
 /////////////////////////////////////////////
 const nextElement = async () => {  //clickReturn
 
+  return // 19/Mayo/2026 .- se aumenta el return para que no trate de ir al siguiente elemento
   if (This.Form == null)
     return
 
