@@ -312,8 +312,10 @@ Each component is a TypeScript class with properties affecting visual and databa
 
 📊 Component Properties Reference
 Base Properties
-typescript
+
 this.prop.<Name of property> = <Value>
+
+Properties for all components :
 
  BaseClass: <webComponent>  
  Type: string  
@@ -334,87 +336,90 @@ this.prop.<Name of property> = <Value>
  Focus: <When set to true, this component takes focus>  
  Type: boolean  
 
- Format: <> (future version)  
- Type: string  
-
- Image: <Component background image path>  
- Type: string  
-
- InputMask: <> (future version)  
- Type: string  
-
-Map: <Show structure map of this component>  
+ Map: <Show structure map of this component>  
   Type: string  
   Example: "this.Form.componentName"  
-
- Max: <Maximum value for number>  
- Type: number  
-
- MaxLength: <Maximum character length>  
- Type: number  
-
- Min: <Minimum value for number>  
- Type: number  
 
  Name: <Name of component>  
  Type: string  
 
- Placeholder: <label inside input blurred>  
- Type: string  
+ ReadOnly : <true|false>
+ type : boolean
 
  Position: <position in a form>  
  Type: string  
  Values: 'header', 'main', 'footer' 
 
-  ReadOnly: <true when component is read only>  
-  Type: boolean  
-
  Status: <Status of component>  
   Type: string  
   Values: P=Process, A=Active, I=Initialization  
 
-  TabIndex: <Component tab index in form component>  
+ TabIndex: <Component tab index in form component>  
   Type: number  
 
-  ToolTipText: <Component tool tip text>  
-  Type: string  
+ ToolTipText: <Component tool tip text>  
+ Type: string  
 
-  Type: <Data input type when BaseClass="editText">  
-  Type: string  
-  Values: 'number', 'text', 'date', 'dateTime', 'spinner', 'checkBox', 'json'  
+ Visible: <true when component is visible>  
+ Type: boolean  
 
-  Valid: <true when component is valid>  
-  Type: boolean  
 
-  Value: <Value of component>  
-  Type: string, date, number, boolean, json  
+Properties according to component
+ 
+ Max: <Maximum value for number>  
+ Type: number  
+ Component : editText
 
-  Visible: <true when component is visible>  
-  Type: boolean  
+ MaxLength: <Maximum character length>  
+ Type: number  
+ Component : editText
+
+ Min: <Minimum value for number>  
+ Type: number  
+ Component : editText
+
+ Placeholder: <label inside input blurred>  
+ Type: string  
+ Component : editText
+
+ Type: <Data input >  
+ Type: string  
+ Values: 'number', 'text', 'date', 'dateTime', 'spinner', 'checkBox', 'json'  
+ Component : editText
+
+ Valid: <true when component is valid>  
+ Type: boolean  
+ Component : editText, comboBox
+
+ Value: <Value of component>  
+ Type: string, date, number, boolean, json  
+ Component : editText, comboBox
 
 Database Component Properties
-
   ControlSource: <Name of SQL field>  
   Type: string  
   Example value: 'localTable.field'
+  Component : editText, comboBox
 
   RecordSource: <local or remote table name>  
   Type: string  
   Example value: 'viewTableName'
+  Component : editText, comboBox, grid
 
   SqlUpdate: <True when component loses focus, update field component. When false, update field component using tableUpdate method>  
   Type: boolean  
+  Component : editText
+  Component : grid, captureForm
 
-  Behavior Properties
-  Capture: <When capture is true, can't lose focus until Validate or esc>  
+  Capture: <When capture is true, can't lose focus until Validate >  
   Type: boolean  
-
+  Note : not in use now
 
   Recno: <Record Number for localSql field value>  
   Type: number  
+  Component : editText, comboBox, grid
 
-  
-Numeric Component Properties
+Numeric Component Properties when component type is 'number' or 'spinner' in a editText component
 
 typescript  
   Currency: <Currency to display>  
@@ -426,22 +431,16 @@ typescript
 
   Decimals: <Decimals to show and capture>  
   Type: number  
-
-  Max: <Maximum value in this component>  
-  Type: number  
-
-  Min: <Minimum value in this component>  
-  Type: number  
-
+  
   Step: <When spinner component number step>  
   Type: number  
 
-ComboBox Properties  
+ComboBox, miniBrowse component Properties  
 
-typescript  
   Style: <Type of combo box>  
   Type: number  
   Values: 0=DropDown, 2=DropDown List  
+  Note: not in use now
 
   BoundColumn: <The value is attached to the column>  
   Type: number  
@@ -465,7 +464,7 @@ typescript
     - when RowSourceType=2: 'tablename.field1,field2'  
     - when RowSourceType=3 or 4: 'SELECT column1,column2 FROM tablefield'  
 
-  RowSourceType: <How to fill comboBox or miniBrowse>  
+  RowSourceType: <How to fill component>  
   Type: number  
 
   ´´´text

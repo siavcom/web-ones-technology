@@ -21,7 +21,7 @@
 
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_miniBrowse'" class="miniBrowse" ">
       <!--select v-model=" List" multiple-->
@@ -31,19 +31,21 @@
 
         <div :id="Id + '_column_titles'" class="option">
           <div :id="Id + '_columns__titleCol_' + col" class="columnaTitle" v-for="(text, col) in This.ColumnProps"
-            :key="col" :style="This.ColumnProps[col].style">
+            :key="col" :style="{ width: This.ColumnProps[col].style.width }">
             <label id="Id + '_title_'+This.ColumnProps[col].title" class="ColumnaTitle"
               v-text='This.ColumnProps[col].title'></label>
           </div>
         </div>
 
-        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex">
+        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex"
+          @click.stop="Check(valueIndex)">
 
           <!--Imprime Columnas -->
 
           <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
-            v-for="(text, col) in option.text" :key="col" :style="This.ColumnProps[col].style">
-            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"></label>
+            v-for="(text, col) in option.text" :key="col" :style="{ width: This.ColumnProps[col].style.width }">
+            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
+              :style="This.ColumnProps[col].style"></label>
           </div>
 
           <!--nuxt-img :id="Id + '_options_' + option + '_img'" v-show='option.check' src="/Iconos/svg/add-color.svg"
@@ -290,194 +292,15 @@ columnContainer.borderWidth = '1px'
 
 let inputBuffer = ''
 
-/////////////////////////////////////////////////////////////////////
-// emitValue
-// Descripcion: emite hacia el componente padre el nuevo valor asignado
-/////////////////////////////////////////////////////////////////
-const emitValue_old = async (readCam?: boolean, isValid?: boolean) => {
+////////////////////////////////////
+// dio click en una columna
+//  @click.stop="Check(valueIndex)"
+///////////////////////////////////
 
-  if (!readCam)
-    readCam = false
-
-  if (!isValid)
-    isValid = false
-
-  toggle.value = false
-  let readValid = false
-
-  if (!readCam) {  // Se cambio el valor del campo.  Graba el valor en Sql localmente.
-    if (!isValid)
-      This.prop.Status = 'P'
-    //2/Sep/2025 Status.value = 'P'
-    //2/Sep/2025 emit("update:Status", 'P'); // actualiza el valor Status en el componente padre
-
-    if (swInit) { // swInit Value.value.trim().length == 0
-      if (columnas.length == 0) {
-        await renderComboBox()
-        This.prop.Status = 'A'
-        //2/Sep/2025  Status.value = 'A'
-        //2/Sep/2025  emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-        return
-
-      }
-      Value.value = columnas[0].value
-      swInit = false
-    }
-    // Si no viene del watch This.prop.Value
-    let Valor = Value.value
-
-    if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-      await updateCampo(Valor, props.prop.ControlSource, props.Registro)
-    }
-
-    // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
-    This.prop.Value = Value.value
-
-    if (isValid == undefined)
-      isValid = false
-
-    if (!isValid) {
-      //   console.log('1.1) comboBox emitValue() Name', props.prop.Name, 'Value=', Valor)
-      await This.interactiveChange()
-      //This.prop.Valid = false
-      inputBuffer = ''
-      //      This.prop.Valid = false
-      const newValue = This.prop.Value
-
-      if (!await This.valid()) {
-
-        // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
-        displayError.value = true
-        This.prop.displayError = true
-
-        if (This.prop.Valid)
-          This.prop.Valid = false
-
-        This.prop.Status = 'A'
-        //2/Sep/2025 Status.value = 'A'
-        //2/Sep/2025 emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-        return
-      }
-      This.prop.Valid = true
-      This.prop.Status = 'A'
-      //2/Sep/2025 Status.value = 'A'
-      //2/Sep/2025 emit("update:Status", 'A')
-
-      if (newValue != This.prop.Value)
-        return
-
-      sw_focus.value = false
-
-    }
-
-  }
-  else {  // Cuando es una lectura de campo
-    if (props.Registro > 0 && props.prop.ControlSource.length > 0) {
-      // Actualizamos el registro del form
-
-      // This.prop.Valid = false
-      //  if (This.Parent.Recno = !props.Registro)
-      //    This.Parent.Recno = props.Registro
-
-      const data = await readCampo(props.prop.ControlSource, props.Registro)
-
-      let sw_dat = false
-      for (const campo in data) {
-
-        //   if (campo == 'key_pri' && data.key_pri > 0)
-        //     This.prop.Valid = true
-
-        if (campo != 'key_pri') {
-          sw_dat = true
-
-          This.prop.Valid = true// ya se capturo algo , se apaga Valid
-          Value.value = data[campo]
-          //console.log('comboBox emitValue readCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
-
-          if (!isValid) {
-            readValid = true
-          }
-        }
-        else {
-          /* se quito 23/Feb/2026
-                    if (data.key_pri > 0)
-                      This.prop.Valid = true
-                    else
-                      This.prop.Valid = false
-          */
-        }
-
-      }
-      if (!sw_dat) {
-
-        Value.value = null  // asigna el primer Text valor
-
-      }
-    } else  // si no hay controlSource
-      This.prop.Valid = true
-
-  }
-
-  // This.prop.Valid = true // dato valido para que el watch de This.prop.Value no se active
-  This.prop.Status = 'A'
-  //2/Sep/2025  Status.value = 'A'  // se necesita para que el watch padre funcione
-  //2/Sep/2025   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-  //console.log('comboBox Name=',This.Name,'Value.value=',Value.value,' columns=====>>>',columnas)
-
-  if (Value.value == null) {
-    if (columnas[0] && typeof columnas[0].value == 'number')
-      Value.value = 0
-    else
-      Value.value = ''
-  }
-
-  await asignaValor()
-  // This.prop.Value = Value.value    5/May/2026
-  if (This.onChangeValue) {
-    await This.onChangeValue(ref(Styles))
-  }
-
-  //nextTick(function () {
-  emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  emit("update:displayText", displayText.value); // actualiza el valor Value en el componente padre
-  emit("update") // emite un update en el componente padre
-  //})
-  // })
-  // console.log('emitValue ComboBox Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'displaytext=', displayText.value)
-
-  ToolTipText.value = true  // Activamos el ToolTipText
-  displayError.value = false  // Desactivamos mensaje de error
-  This.prop.displayError = false
-
-  //console.log('3.3 comboBox emitValue() Name', props.prop.Name, 'This.prop.Valid=', This.prop.Valid)
-
-  if (This.prop.ValidOnRead && readValid) { // Se manda validar despues de leer el componente
-    // console.log('comboBox emitValue valid() Name', props.prop.Name, 'This.prop.Value=', This.prop.Value)
-    //  await This.interactiveChange()
-    //  This.valid()
-
-  }
-  return true
-}
-
-/////////////////////////////////////////////////////////////////////
-// ValidList (solo MultiSelect)
-// Descripcion: Cuando se cambie el valor del componente template (Value.value con el teclado),
-//              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
-/////////////////////////////////////////////////////////////////
-const validList = async () => {
-
-  for (const element of This.Parent.elements) {
-    const comp = element.Name.toLowerCase().trim()
-    if (This.Parent[comp].prop.estatus == 'P' && comp != This.Parent[comp].prop.Name.toLowerCase().trim()) {
-      return
-    }
-  }
-
-  focusIn = false // Perdio el foco
-
+const Check = async (num_ren: number) => {
+  console.log('Check', num_ren, 'columna', columnas[num_ren])
+  This.click(columnas[num_ren]?.value)
   return
-
 };
 
 
@@ -549,9 +372,6 @@ const onFocus = async (click?: boolean) => {
 }
 
 */
-
-
-
 
 //////////////////////////////////////////////////////
 // Renderizado del combo box
