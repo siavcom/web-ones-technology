@@ -627,9 +627,7 @@ watch(
 /////////////////////////////////
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
-  //console.log('1) grid asignaRenglon ColumnName=', ColumnName, ' Row=', Row, 'ReadOnly', This.prop.ReadOnly)
-  //console.log('2)asignaRenglon AlaSql vi_cap_comecpy=', await localAlaSql('select * from vi_cap_comecpy'))
-
+  //console.log('grid asignaRenglon', Row, ColumnName, 'Recno=', This.Recno, 'RecordSource=', This.prop.RecordSource)
   if (This.prop.ReadOnly) return
 
   if (This.Row == Row)
@@ -641,43 +639,43 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
     }
   }
 
-  /*
-    if (This[ColumnName].prop.Type == 'textLabel') {
-  
-      This.prop.Valid = true
-      return
-    }
-  */
-  /*
-  if (This.Row >= 0) { // Si hay un renglon seleccionado, checa las validaciones
-    //   console.log('asignaRenglon LocalAla=', await localAlaSql(`select  * from ${This.prop.RecordSource} `))
-    for (const columna of This.elements) {
-      if (This[columna.Name].prop.BaseClass == 'edittext' && !This[columna.Name].prop.ReadOnly && !This[columna.Name].prop.Valid) {
-        This[columna.Name].prop.Focus = true // Se posiciona el cursor en el componente no validado
-        return
-      }
-    }
-  }
-*/
-
   This.prop.Valid = false
-  // This.prop.Status = 'P'
 
-  //This.Row = Row;
   Column.value = ColumnName // Asigna el nombre de la columna activa
-
+  const First = ''
   // busca el ID del Row
   if (Row >= 0) {
     This.Row = -100
     const res = scroll.dataPage.find((ele) => ele.id == Row);
     This.Recno = res.recno
     console.log('1.2 grid asignaRenglon res=', This.Recno, RecordSource)
+
     // actualiza el row
     await goto(This.Recno, This.prop.RecordSource)
+    const key_pri = currentValue('key_pri', This.prop.RecordSource)
 
+    if (key_pri == 0) {   // Renglon nuevo
+
+      for (const columna of This.elements) {
+        if ((This[columna.Name].prop.BaseClass.toLowerCase() == 'edittext' || This[columna.Name].prop.BaseClass.toLowerCase() == 'combobox') &&
+          !This[columna.Name].prop.ReadOnly) {
+          if (First == '') {
+            First = columna.Name
+          }
+          This[columna.Name].prop.Valid = false
+          return
+        }
+      }
+    }
     nextTick(() => {
       console.log('1.3 grid asignaRenglon This.Row=', This.Row, 'ColumnName=', Column.value, 'This.Recno=', This.Recno)
       This.Row = Row;
+      if (First > ' ')
+        This[First].prop.Focus = true // Se posiciona el cursor en el componente no validado
+
+      else
+        This[ColumnName].prop.Focus = true
+
     })
 
   }

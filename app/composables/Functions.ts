@@ -190,9 +190,20 @@ export function str(nExpression: number, nLength?: number, nDecimalPlaces?: numb
   return result;
 }
 
-export function transform(nExpression: number, image?: string) {
+export function transform_old(nExpression: number, image?: string) {
   return nExpression.toLocaleString()
 
+}
+/**
+ * 
+ * @param {number} numero Numero a  formatear
+ * @param {string} patron Patrón de formato (ej: '$999,999,999.99999')
+ * @returns {string} Cadena formateada según el patrón
+ */
+
+export function transform(numero: number, patron: string): string {
+  let i = 0;
+  return patron.replace(/9/g, () => numero.toString()[i++] || '');
 }
 
 /**

@@ -109,7 +109,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1041,8 +1041,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
     This.prop.Status = 'P'
 
   Key.value = char
-  This.prop.Key = $event.charCode
-
+  This.prop.Key = char
   /*
     if (Type == 'number') {
       const cha = String.fromCharCode(This.prop.Key) // obtiene el caracter
@@ -1057,7 +1056,8 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   
   */
 
-  This.keyPress()
+  console.log('keyPress event', $event)
+  This.keyPress(char)
 
   //console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
 
