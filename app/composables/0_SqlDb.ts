@@ -2453,6 +2453,7 @@ export function recNo(alias?: string) {
     }
     if (!This.value.View[alias]) {
         console.warn("recCount() No existe el alias", alias);
+        console.trace('recNo error')
         return 0;
     }
 

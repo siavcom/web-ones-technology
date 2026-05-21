@@ -1056,9 +1056,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   
   */
 
-  console.log('keyPress event', $event)
   This.keyPress(char)
-
   //console.log('3)>>>>>KeyPress===>', char, 'Type=', Type)
 
 }
@@ -1855,7 +1853,7 @@ if (!This.prop.RefValue == null)
   else
     oldVal = Value.value   // asignamos el valor viejo
 
-  This.afterMounted()
+  This.afterMounted(props.Registro)
 
   // await This.recnoChange()
   This.prop.Status = 'A'

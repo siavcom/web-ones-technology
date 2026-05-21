@@ -431,8 +431,11 @@ const renderComboBox = async () => {
       break
     }
     case 4: { // local SQL Query
-      data = await This.Form.db.localAlaSql(props.prop.RowSource)
-      if (data == null) {
+      data = await localAlaSql(props.prop.RowSource)
+      console.log('Text Label render RowSource=', props.prop.RowSource)
+
+
+      if (data.length === 0) {
         //  console.warn('comoBox Render', This.name, 'RowSource', props.prop.RowSource)
         return
       }
@@ -720,11 +723,20 @@ onMounted(async () => {
     }
   
   */
-  await This.afterMounted()
+  await This.afterMounted(props.Registro)
 
   // console.log('Init TextLabel Name=', props.prop.Name, 'Text=', Text.value)
   //This.recnoChange()
 
+})
+
+onBeforeMount(async () => {
+  // console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+  if (This.beforeMount)
+    This.beforeMount()
+  //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+  //    if (This.init)
+  //      await This.init()
 })
 
 </script>

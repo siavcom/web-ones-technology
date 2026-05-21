@@ -21,7 +21,7 @@
 
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -105,7 +105,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!-- <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -1085,6 +1085,7 @@ const renderComboBox = async (readData?: boolean) => {
 
   //    if (data[0]) {
   if ((rowSourceType >= 2 && rowSourceType <= 4)) {
+    This.prop.Rows = data.length
     if (!data || (data && data.length == 0)) {
       console.warn('1) No data to render in ComboBox Name=', This.prop.Name, 'RowSource=', RowSource, ' RowSourceType=', props.prop.RowSourceType)
       return
@@ -1446,7 +1447,7 @@ watch(
 // ControlSource
 ///////////////////////////////////////
 watch(
-  () => props.prop.ControlSource,
+  () => This.prop.ControlSource,
   (new_val, old_val) => {
 
     if (new_val != old_val) {
@@ -1462,9 +1463,9 @@ watch(
 // RowSoure
 ///////////////////////////////////////
 watch(
-  () => props.prop.RowSource,
+  () => This.prop.RowSource,
   (new_val, old_val) => {
-    //console.log('watch ComboBox RowSource===>>', new_val)
+    console.log('watch ComboBox RowSource===>>', new_val)
     if (new_val != old_val) {
       // 9/Feb/2024 borra las columnas si las tiene 
       while (columnas.length > 0)
@@ -1479,23 +1480,20 @@ watch(
 ///////////////////////////////////////
 // RowSourceType
 ///////////////////////////////////////
-
 watch(
-  () => props.prop.RowSourceType,
-
+  () => This.prop.RowSourceType,
   (new_val, old_val) => {
     // if (props.prop.RowSourceType < 1 || props.prop.RowSource.length < 2) return
+    console.log('watch ComboBox RowSourceType===>>', new_val, old_val)
+    //if (new_val != old_val) {
+    // 9/Feb/2024 borra las columnas si las tiene 
+    while (columnas.length > 0)
+      columnas.pop()
 
-    //console.log('watchComboBox RowSourceType===>>', new_val)
-    if (new_val != old_val) {
-      // 9/Feb/2024 borra las columnas si las tiene 
-      while (columnas.length > 0)
-        columnas.pop()
-
-      renderComboBox(true)
-    }
+    renderComboBox(true)
+    // }
   },
-  { deep: false }
+  { deep: true }
 );
 ///////////////////////////////////////
 // Sorted
@@ -1838,12 +1836,15 @@ onMounted(async () => {
   }
   This.prop.Init = false
 
-  This.afterMounted()
+  This.afterMounted(props.Registro)
   //  console.log(' comboBox onMounted Name=', This.prop.Name)
 
 })
 
 onBeforeMount(async () => {
+  // console.log(' comboBox onBeforeMount Name=', This.prop.Name)
+  if (This.beforeMount)
+    This.beforeMount()
   //  console.log(' comboBox onBeforeMount Name=', This.prop.Name)
   //    if (This.init)
   //      await This.init()
