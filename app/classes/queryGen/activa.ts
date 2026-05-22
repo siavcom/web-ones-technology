@@ -30,7 +30,7 @@ export class activa extends COMPONENT {
 
   }
 
-  async interactiveChange() {
+  override async interactiveChange() {
     if (this.prop.Value == 1) {
       this.Parent.nco_que.prop.Visible = true
       this.Parent.query.prop.Visible = true

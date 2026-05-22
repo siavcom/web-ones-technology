@@ -71,7 +71,7 @@
                   v-model:Value="This[col.Name].prop.Value" v-model:Key="This[col.Name].prop.Key"
                   v-bind:Registro="item.recno != null && item.recno > 0 ? item.recno : 0"
                   v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
-                  v-bind:position="This[col.Name].position"
+                  v-bind:position="This[col.Name].position" tabindex="0"
                   :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 3 }">
                 </component>
                 <!--/div-->
@@ -265,13 +265,10 @@ const divStyle = reactive({ ...Este.style })
 
 // Nos sirve para deshabilitar todo el grid si es de solo lectura
 //divStyle.pointerEvents = This.prop.ReadOnly ? 'none' : 'auto'
-console.log(This.prop.Name, 'Grid divStyle=', divStyle, 'This.prop.ReadOnly=', This.prop.ReadOnly)
-
-//const Id = This.prop.Name + props.Registro.toString().trim()
 
 const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
 This.Id = Id
-//const compStatus = reactive({})
+
 const compStatus = ref(This.estatus)
 
 const compValid = reactive({})      // Arreglo de validacion de los componentes
@@ -347,6 +344,7 @@ const emitValue = async () => {
   return true;
 };
 
+
 /////////////////////////////////////////////////////////////////////
 // KeyPress
 // Descripcion: Cada tecla que se presiona en el input
@@ -368,7 +366,7 @@ const loadGrid = async () => {
 
   if (Sql.View[This.prop.RecordSource]) {
     await loadData()
-
+    console.log('loadGrid This.prop.RecordSource=', Sql.View[This.prop.RecordSource].recnoVal.length)
     if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.ReadOnly == false && This.prop.addRow)  // No hay renglones
       appendRow()
     /*
@@ -472,17 +470,19 @@ watch(
     if (This.Row < 0) return
     for (const comp in compValid) { // Recorre todos los estatus del grid
       if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && This[comp].prop.Visible && !This[comp].prop.Valid) { // Si alguno no esta validado
-        //  console.log('2).1 3.3 -- Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
+        console.warn('>>>>>> Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
         return
       }
       This.prop.Valid = true
     }
 
+    debugger
+    // Buca el recno de este renglon 
     const res = scroll.dataPage.find((ele) => ele.id == This.Row);
     const Recno = res.recno
     //console.log('2).0 3.3 -- Grid watch compValid ColumnActive=', Column.value)
     let ColumnActive = ''
-    ColumnActive = Column.value
+    ColumnActive = This.Column     //.value
 
     const ControlSource = This[ColumnActive].prop.ControlSource
     //console.log('2).0 3.3 -- Grid watch RecordSource=', ControlSource)
@@ -497,12 +497,13 @@ watch(
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim();
 
+
     //console.log('3) 3.3.2 saveRow Grid watch compValid tabla=', tabla, 'campo=', campo)
     const Now = await localAlaSql(`select ${campo} from now.${tabla} where recno=${Recno}`)
     const Last = await localAlaSql(`select ${campo} from last.${tabla} where recno=${Recno}`)
-    if (Now.length == 0 || last.length == 0) return
+    // if (Now.length == 0 || last.length == 0) return
 
-    if (Now[0][campo] !== Last[0][campo]) {
+    if (Last.length == 0 || Now[0][campo] !== Last[0][campo]) {
       // console.log('<<<<<Grabara renglon>>>> 3.3.4 saveRow Grid watch compValid ColumnName=', ColumnActive)
 
       if (!await This.saveRow(ColumnActive)) {
@@ -510,6 +511,7 @@ watch(
         This[ColumnActive].prop.ShowError = true
       }
     }
+
 
     //   This.prop.Valid = true
     //console.log('------>>>>>>  Grid watch compValid Vaid=', This.prop.Valid, 'Row=', This.Row,)

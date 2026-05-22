@@ -35,6 +35,7 @@ export class GRID extends COMPONENT {
     this.prop.Caption = "Grid de datos";
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
     this.prop.addRow = true; // Si es verdadero aumenta renglon automaticamente
+    this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
     this.prop.Visible = false;
 
     this.prop.showAddButton = true; // Si es verdadero muestra el boton de agregar
@@ -274,6 +275,13 @@ export class GRID extends COMPONENT {
     const values = await appendBlank(this.prop.RecordSource, m); //Incertamos un renglon en blanco
     console.log('1) Append Row this.prop RecordSource= ', this.prop.RecordSource, '  ', await localAlaSql(`select  * from ${this.prop.RecordSource} `))
     this.prop.Disabled = false;
+
+    for (let i = 0; i < this.elements.length; i++) {
+      const column = this.elements[i].Name;
+      this[column].prop.Valid = false
+
+    }
+
     this.Row = -10; // Ponemos en -10 para refrescar la pagina con el renglon insertado
   }
 

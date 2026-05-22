@@ -109,7 +109,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-      }}</div>
+    }}</div>
 
     <!--Compponentes que no estan en bloque-->
 
@@ -1234,6 +1234,9 @@ const onFocus = async () => {
     nextElement()
     return
   }
+
+  if (This.Parent.BaseClass == "grid")
+    This.Parent.Column = This.prop.Name
 
   focusIn.value = 1  // cambia el valor en el input number 
   console.log('7-fin) Fin ======>editText onFocus Name=', This.prop.Name)

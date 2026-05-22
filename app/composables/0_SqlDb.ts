@@ -3353,6 +3353,8 @@ export const currentValue = async (field: string | Array<string>, aliasTable?: s
             result[campo] = data[campo]
         }
     }
+    //  if (result.length == 1) // si solo es un campo
+    //      return result[0]
 
     return result
 }

@@ -17,7 +17,7 @@ export class bt_add extends COMPONENT {
     super()
     this.Index = 1
     this.prop.BaseClass = 'imgButton'
-    this.prop.Caption = 'Condición'
+    //this.prop.Caption = 'Condición'
     this.prop.Position = 'footer'
     this.prop.Image = "/Iconos/svg/add-color.svg";
     this.prop.ToolTipText = 'Nueva condicion'
