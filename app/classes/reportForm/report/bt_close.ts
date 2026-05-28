@@ -64,7 +64,7 @@ export class bt_close extends IMGBUTTON {
 
     // this.Form.var_ord.prop.Visible = true
 
-    this.Form.queryPri.prop.Visible = true
+    //this.Form.queryPri.prop.Visible = true
     this.Form.queryUsu.prop.Visible = true
     this.Form.queryGen.prop.Visible = true
     this.Form.reportFields.prop.Visible = false

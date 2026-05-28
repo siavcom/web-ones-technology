@@ -34,7 +34,7 @@ export class GRID extends COMPONENT {
     this.prop.Row = 0; // Renglon donde esta posicionado la captura del grid
     this.prop.Caption = "Grid de datos";
     this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
-    this.prop.addRow = true; // Si es verdadero aumenta renglon automaticamente
+    this.prop.addRow = false; // Si es verdadero aumenta renglon automaticamente
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
     this.prop.Visible = false;
 
@@ -353,9 +353,10 @@ export class GRID extends COMPONENT {
   //
   /////////////////////////////////
   async saveRow(columnName?: string) {
-    if (await MessageBox(this.prop.UpdateMessage, 4, "") != 6)
-      return false
 
+    /*    if (await MessageBox(this.prop.UpdateMessage, 4, "") != 6)
+          return false
+    */
     const resultado = await tableUpdate(
       0,
       false,

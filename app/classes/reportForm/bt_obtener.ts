@@ -42,7 +42,7 @@ export class bt_obtener extends IMGBUTTON {
     this.Form.report.displayPdf.prop.Source = "";
     const main = this.Form.main
 
-    this.Form.queryPri.prop.Visible = false
+    // this.Form.queryPri.prop.Visible = false
     this.Form.queryUsu.prop.Visible = false
     this.Form.queryGen.prop.Visible = false
     this.Form.reportFields.prop.Visible = false

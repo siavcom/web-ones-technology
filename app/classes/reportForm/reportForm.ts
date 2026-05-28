@@ -7,7 +7,7 @@
 
 //import { COMPONENT } from './Component'
 import { FORM } from "@/classes/Form";
-import { queryPri } from "@/classes/queryGen/queryPri";
+//import { queryPri } from "@/classes/queryGen/queryPri";
 import { queryUsu } from "@/classes/queryGen/queryUsu";
 import { queryGen } from "@/classes/queryGen/queryGen";
 import { data_detail } from './detail/data_detail'
@@ -146,7 +146,7 @@ export class reportForm extends FORM {
   public des_dat = new des_dat()
   public has_dat = new has_dat()
 
-  public queryPri = new queryPri();
+  //public queryPri = new queryPri();
   public queryUsu = new queryUsu();
   public queryGen = new queryGen();
 
@@ -196,7 +196,7 @@ export class reportForm extends FORM {
     this.des_dat.prop.TabIndex = 113;
     this.has_dat.prop.TabIndex = 114;
 
-    this.queryPri.prop.TabIndex = 115;
+    //this.queryPri.prop.TabIndex = 115;
     this.queryUsu.prop.TabIndex = 116;
     this.queryGen.prop.TabIndex = 117;
 
@@ -242,9 +242,9 @@ export class reportForm extends FORM {
 
     this.block[i] = structuredClone(this.container)
     this.block[i].component = {
-      [0]: this.queryPri,
-      [1]: this.queryUsu,
-      [2]: this.queryGen
+      // [0]: this.queryPri,
+      [0]: this.queryUsu,
+      [1]: this.queryGen
     }
 
     this.block[i].title = 'Condiciones'
@@ -288,7 +288,7 @@ export class reportForm extends FORM {
     // this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
     // this.var_ord.prop.RowSourceType = 3;
 
-    this.queryPri.prop.Disabled = true;
+    //this.queryPri.prop.Disabled = true;
     this.queryUsu.prop.Disabled = true;
     this.queryGen.prop.Disabled = true;
 
@@ -327,13 +327,14 @@ export class reportForm extends FORM {
     // await use("vi_cap_db_query", m); // todos los querys del reporte
 
     // Query Principal
+    /*
     await this.asignaRecordSource("queryPri", "query_main");
 
     if (this.prop.Development == false) {
       this.queryPri.bt_add.prop.Visible = false;
       this.queryPri.Grid.prop.showSaveButton = false;
     }
-
+*/
     // Query Usuario
 
     await this.asignaRecordSource("queryUsu", "query_user");
@@ -345,13 +346,11 @@ export class reportForm extends FORM {
 
     await this.asignaRecordSource("queryGen", "query_all");
 
-    console.log('query_pri RecordSource=', this.queryPri.Grid.prop.RecordSource)
-    console.log('query_usu RecordSource=', this.queryUsu.Grid.prop.RecordSource)
-    console.log('query_gen RecordSource=', this.queryGen.Grid.prop.RecordSource)
+    //console.log('query_pri RecordSource=', this.queryPri.Grid.prop.RecordSource)
+    //console.log('query_usu RecordSource=', this.queryUsu.Grid.prop.RecordSource)
+    //console.log('query_gen RecordSource=', this.queryGen.Grid.prop.RecordSource)
 
-    //    this.queryPri.activa.prop.Value = 0;
 
-    //  await this.queryPri.nco_que.interactiveChange();
 
     if (this.Sql.session.user == "sa") {
       this.reportFields.prop.Visible = true;
@@ -367,10 +366,11 @@ export class reportForm extends FORM {
 
     const m = {
       prg_prg: this.prop.Name,
-      par_prg: this.Params.par_prg ? this.Params.par_prg : " ",
+      par_prg: this.Params[0] ? this.Params[0] : " ",
       nom_tab: this.vis_rep,
     };
     await use("vi_cap_db_query", m); // todos los querys del reporte
+
   }
 
   // asignamos RecordSource y ControlSource de cada columna

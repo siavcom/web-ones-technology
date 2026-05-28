@@ -57,7 +57,7 @@ export class Grid extends GRID {
 
     m.nco_que = this.Parent.nco_que.prop.Value
     m.prg_prg = this.Form.prop.Name
-    m.par_prg = this.Form.Params.par_prg ? this.Form.Params.par_prg : ''
+    m.par_prg = this.Form.Params[0] ? this.Form.Params[0] : ''
     m.usu_que = this.Parent.usu_que
     m.ren_que = 1
     m.con_que = '='

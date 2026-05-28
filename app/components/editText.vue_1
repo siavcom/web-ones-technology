@@ -14,16 +14,16 @@
       @focusout="lostFocus" @focus="onFocus" @keydown="keyDown" -->
 
     <input :id="Id" v-if="propType == 'number'" class="number" ref="Ref" :style=Styles.inputStyle type="text"
-      v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
+      v-model.trim="formattedValue" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus" @focus="onFocus"
-      @keydown="keyDown" v-imask="maskOptions" @accept="onAccept" @init="onInit">
+      @keydown="keyDown" @input="Input">
 
-    <!--v-on:keyup.63="clickHelp()" v-on:keyup.13="keyDown"   currentValue[focusIn]
+      <!--v-on:keyup.63="clickHelp()" v-on:keyup.13="keyDown"   currentValue[focusIn]
 
       v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown" v-on:keyup.up="keyDown"
       @input.self="onInput" @keydown.delete="keyDown" -->
 
-    <!-- @input.self="onInput"   @click.capture="onClick"
+      <!-- @input.self="onInput"   @click.capture="onClick"
         
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keydown="keyDown" v-on:keyup.63="clickHelp()"
@@ -36,123 +36,127 @@
       :data-maska-number-fraction="props.prop.Decimals" data-maska-number-unsigned
       
     -->
-    <!--spinner-->
+      <!--spinner-->
 
-    <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
-      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
-      :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex" @keydown="keyDown"
-      @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)">
-    <!--v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
+      <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
+        :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
+        :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex" @keydown="keyDown"
+        @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)">
+        <!--v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
       v-on:keyup.up="keyDown" v-on:keyup.63="clickHelp()"-->
-    <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
-    <!--textArea -->
-    <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
-    <textarea :id="Id + '_textarea'" class="textArea" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
-      :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
-      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="This?.prop.Rows || 2"
-      :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus" @focusout="lostFocus"></textarea>
-    <!--v-on:keyup.13="keyDown"
+        <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
+        <!--textArea -->
+        <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
+        <textarea :id="Id + '_textarea'" class="textArea" v-else-if="propType == 'textarea'" ref="Ref"
+          spellcheck="false" :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead"
+          :disabled="This.prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
+          :rows="This?.prop.Rows || 2" :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus"
+          @focusout="lostFocus"></textarea>
+        <!--v-on:keyup.13="keyDown"
       v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown" v-on:keyup.up="keyDown"
       @keydown.delete="keyDown"  -->
-    <!--/spam-->
-    <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
-    <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
-    <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
-      :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
-      :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly || onlyRead"
-      :tabindex="prop.TabIndex" @focus="onFocus" @focusout="lostFocus" @keydown="keyDown">
-    <!-- v-on:keyup.63="clickHelp()"  v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
+        <!--/spam-->
+        <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
+        <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
+        <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
+          :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
+          :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled"
+          :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="lostFocus"
+          @keydown="keyDown">
+          <!-- v-on:keyup.63="clickHelp()"  v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
       v-on:keyup.up="keyDown" @keydown.delete="keyDown"-->
-    <!--v-on:keyup.enter="clickReturn()" -->
-    <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
+          <!--v-on:keyup.enter="clickReturn()" -->
+          <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
-    <!--/div-->
-    <div :id="Id" class='json' v-else-if="propType == 'json'" ref="Ref" :style=Styles.style>
-      <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
+          <!--/div-->
+          <div :id="Id" class='json' v-else-if="propType == 'json'" ref="Ref" :style=Styles.style>
+            <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
-      <!--TransitionGroup name='detailJson' tag="div"-->
-      <!--details-->
-      <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true'>
-        <!--summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'-->
-        <label>{{ comp.label }}
-        </label>
-        <!--/summary-->
-        <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
-          :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
-          :disabled="comp.disabled || This.prop.Disabled ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus" @focus="onFocus">
+            <!--TransitionGroup name='detailJson' tag="div"-->
+            <!--details-->
+            <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true'>
+              <!--summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'-->
+              <label>{{ comp.label }}
+              </label>
+              <!--/summary-->
+              <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
+                :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
+                :disabled="comp.disabled || This.prop.Disabled ? true : false"
+                :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus"
+                @focus="onFocus">
 
-      </div>
-      <!--/details-->
-      <!--/TransitionGroup-->
-    </div>
+            </div>
+            <!--/details-->
+            <!--/TransitionGroup-->
+          </div>
 
-    <!--   CHECKBOX  
+          <!--   CHECKBOX  
          Disabled se debe activar cuando el checkValue y checkValueParent esten activados 
          checkValue automaticamente cambia de valor cuando se selecciona y con el washer cambiamos el valor This.prop.Value 
          -->
 
-    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
-      ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
-      :disabled="This.prop.Disabled || (checkValue && checkValueParent)" :tabindex="prop.TabIndex" v-model="checkValue"
-      @focusout="lostFocus" @keydown="keyDown">
+          <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
+            ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
+            :disabled="This.prop.Disabled || (checkValue && checkValueParent)" :tabindex="prop.TabIndex"
+            v-model="checkValue" @focusout="lostFocus" @keydown="keyDown">
 
-    <!--  TEXT   -->
-    <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
-      v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
-      :maxlength="MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-      @focusout="lostFocus" @focus="onFocus" v-maska="maska" @maska="onMaska" @keydown="keyDown">
+            <!--  TEXT   -->
+            <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
+              v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
+              :maxlength="MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
+              @focusout="lostFocus" @focus="onFocus" v-maska="maska" @maska="onMaska" @keydown="keyDown">
 
 
 
-    <!--v-on:keyup.63="clickHelp()"  @keydown.backspace="keyDown" @keydown.delete="keyDown" @keydown.down="keyDown"
+              <!--v-on:keyup.63="clickHelp()"  @keydown.backspace="keyDown" @keydown.delete="keyDown" @keydown.down="keyDown"
       @keydown.up="keyDown" @keydown.delete="keyDown"  -->
-    <!--v-on:keyup.enter="clickReturn()" se quita ya que onFocus es que lo substituye @click.capture="onClick"-->
+              <!--v-on:keyup.enter="clickReturn()" se quita ya que onFocus es que lo substituye @click.capture="onClick"-->
 
-    <!--/span-->
+              <!--/span-->
 
-    <img :id="Id + '_help'"
-      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
-      src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
-    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{
-      This.prop.ErrorMessage.toString().length >= 1 ?
-        This.prop.ErrorMessage
-        :
-        '--- Invalid Input ---'
-    }}</div>
+              <img :id="Id + '_help'"
+                v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
+                class='help_icon' src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
+              <div :id="Id + '_error'" class="errorText" v-show="displayError">{{
+                This.prop.ErrorMessage.toString().length >= 1 ?
+                  This.prop.ErrorMessage
+                  :
+                  '--- Invalid Input ---'
+              }}</div>
 
-    <!--Compponentes que no estan en bloque-->
+              <!--Compponentes que no estan en bloque-->
 
-    <div class="component_container" v-if='This.main.length > 0' :style="containerStyle">
-      <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
-        :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
-        :position="This[compMain].position">
-      </component>
-    </div>
+              <div class="component_container" v-if='This.main.length > 0' :style="containerStyle">
+                <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
+                  :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
+                  :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
+                  :position="This[compMain].position">
+                </component>
+              </div>
 
-    <!--Compponentes en bloque-->
-    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
-      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+              <!--Compponentes en bloque-->
+              <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
+                <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+                <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
 
-        <div v-for="(component, key) in block.component" :key="key"
-          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-          <!--v-bind:Component="ref(Ele)"-->
-          <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.Type)"
-            v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
-            :prop="component.prop" :position="component.position">
-            <!--:style="component.style" :inputStyle="component.inputStyle"
+                  <div v-for="(component, key) in block.component" :key="key"
+                    :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+                    <!--v-bind:Component="ref(Ele)"-->
+                    <component :id="Id + '_component_' + key + component.prop.Name"
+                      :is="impComponent(component.prop.Type)" v-model:Value="component.prop.Value"
+                      v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
+                      :position="component.position">
+                      <!--:style="component.style" :inputStyle="component.inputStyle"
                       @click.capture="component.click()"-->
-          </component>
-        </div>
-      </div>
-    </div>
+                    </component>
+                  </div>
+                </div>
+              </div>
 
-    <!--/Teleport-->
-    <!--   :ShowError="This[compMain].prop.ShowError" 
+              <!--/Teleport-->
+              <!--   :ShowError="This[compMain].prop.ShowError" 
        
     @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
@@ -177,10 +181,10 @@
 */
 
 import { vMaska } from "maska/vue"
-//import createNumberMask from 'text-mask-addons/dist/createNumberMask';
-//import { conformToMask } from 'vue-text-mask';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
+import { conformToMask } from 'vue-text-mask';
 //import { Money } from "v-money3";
-import { IMaskDirective as vImask } from 'vue-imask'
+
 ///////////////////////////////////////
 // Emits
 //////////////////////////////////////
@@ -389,25 +393,7 @@ const maska = ref({
 // convierte "!" en "A" en el inpputMask (VFP)
 maska.value.mask = maska.value.mask.replace(/!/gi, 'A')
 
-const maskInstance = ref(null)
-
-
-const maskOptions = reactive({
-  mask: Number,
-  scale: This.prop.Decimals,         // digits after point
-  signed: +(This.prop.Min) < 0 ? true : false,            // allow negative numbers
-  thousandsSeparator: ',',  // thousands separator
-  padFractionalZeros: true, // pad fractional zeros with zeroes
-  normalizeZeros: true,     // append or remove zeros at ends
-  radix: '.',               // fractional delimiter
-  mapToRadix: ['.'],        // symbols to treat as radix
-  min: +This.prop.Min,                    // Lower limit constraint
-  max: +This.prop.Max,
-  expose: true
-})
-
-
-/*
+const formattedValue = ref('')
 const currencyMask = createNumberMask({
   allowDecimal: true,   // Permite decimales
   decimalLimit: This.prop.Decimals,      // Máximo 4 dígitos después del punto (como en .9999)
@@ -419,12 +405,26 @@ const currencyMask = createNumberMask({
   prefix: This.prop.Currency, // Símbolo de moneda
   Suffix: This.prop.Suffix
 })
+
+/*
+const config = reactive({
+  masked: false,
+  prefix: This.prop.Currency,
+  suffix: '',
+  thousands: ',',
+  decimal: '.',
+  precision: This.prop.Decimals,
+  disableNegative: false,
+  disabled: This.prop.Disabled,
+  min: +This.prop.Min,
+  max: +This.prop.Max,
+  allowBlank: false,
+  minimumNumberOfCharacters: 0,
+  shouldRound: true,
+  focusOnRight: false,
+})
+
 */
-
-
-
-
-
 
 var watchPropValue = false
 
@@ -455,7 +455,70 @@ const toNumberStr = async (n: number) => {
   }).format(n);
 };
 
+// Formateo de valores
+const onInput_old = ({ target }) => {
+  // currentValue.value[1] es le vsalor sin formatear
 
+  const key = Key.value
+
+  if (key == 8 || key == 127) { // BackSpace or Delete
+    oldVal = currentValue.value[1]
+    return
+  }
+
+  let TargetValue = +target.value
+
+  if (key == 45) {// si puso un signo negativo y el valor es positivo
+    currentValue.value[1] = '-' + currentValue.value[1].replaceAll('-', '')
+    if (currentValue.value[1] == '-')
+      return
+    TargetValue = +currentValue.value[1]
+  }
+
+  // Si ya hay  un punto decimal
+  if (typeof currentValue.value[1] == 'string' && currentValue.value[1].indexOf('.') >= 0) {
+    const Decimales = currentValue.value[1].length - currentValue.value[1].indexOf('.') - 1
+    if (Decimales > props.prop.Decimals) {
+      currentValue.value[1] = oldVal
+      return
+    }
+    if (currentValue.value[1].indexOf('.') == 0 && currentValue.value[1].length == 1) {
+      currentValue.value[1] = '0.'
+      return
+    }
+  }
+
+  if (isNaN(TargetValue)) {
+    currentValue.value[1] = oldVal
+    return
+  }
+
+  let valorNumerico = parseFloat(TargetValue) // valor numerico   
+
+  if (+valorNumerico < props.prop.Min) {
+    currentValue.value[1] = oldVal
+    return
+  }
+  if (+valorNumerico > props.prop.Max) {
+    currentValue.value[1] = oldVal
+    return
+  }
+
+  if (typeof currentValue.value[1] == 'string' && currentValue.value[1].indexOf('.') == -1 && +currentValue.value[1] == 0) {
+    currentValue.value[1] = '0'
+    return
+  }
+
+  if (+currentValue.value[1] != TargetValue) {
+    currentValue.value[1] = TargetValue.toString() // valor numerico
+
+  }
+
+  currentValue.value[0] = parseFloat(TargetValue) // valor numerico
+  oldVal = TargetValue.toString()
+  //  console.log('Fin)==> EditBox onInput Name=', props.prop.Name, 'currentValue.value[1]=', currentValue.value[1], 'TargetValue=', TargetValue, 'key=', key, 'oldVal=', oldVal)
+
+}
 
 /*  position
 static	Elements renders in order, as they appear in the document flow. This is default.
@@ -840,38 +903,119 @@ const Numeros = async ($event: { data: { toString: () => any; }; }) => {
 }
 
 */
+/**
+ * @description Formatea el valor ingresado por el usuario en un campo de tipo número
+ * @param event Evento del input
+ **/
+const Input = (event: any) => {
+  onInput(event.target.value, event)
+}
 
-// 1. Se ejecuta cuando el input se inicializa. Aquí asignamos el valor inicial.
-const onInit = (e) => {
+const onInput = (inputValue: string, event?: any) => {
+  const oriInputValue = inputValue
+  /*
+  if ( (inputValue != '.' &&
+    inputValue != '+' &&
+    inputValue != '-') && isNaN(+inputValue)) {
 
-  console.log('onInit', e)
-  maskInstance.value = e.detail;
-  if (props.prop.Value !== null && props.prop.Value !== undefined) {
-    maskInstance.value.typedValue = props.prop.Value;
+    inputValue = ''
+
+    const maskArray = currencyMask(inputValue); //Value.value.toString()
+    // Aplicamos la máscara al texto ingresado
+    const conformed = conformToMask(inputValue, maskArray, { guide: false });
+
+    // Actualizamos la vista con el texto formateado
+    const formatted = conformed.conformedValue.replace('[]', '').replace('[]', '');
+    formattedValue.value = formatted
+    return
+
   }
-};
+*/
 
-const onAccept = (e: any) => {
-  const maskRef = e.detail;
-  // Guardamos la instancia de IMask si no la teníamos mapeada
-  if (!maskInstance.value) {
-    maskInstance.value = maskRef;
+  // 1. LIMPIEZA PREVENTIVA: Eliminar caracteres extraños de inmediato
+  inputValue = inputValue.replace(/[^0-9.,$ ]/g, '');
 
-    // Si el padre envió un valor inicial válido, se lo inyectamos a la fuerza
-    if (Value.value !== null && Value.value !== undefined) {
-      maskInstance.value.typedValue = Value.value
+  // 2. EVITAR MÁSCARA VACÍA O CORRUPTA (Previene el error t2[I] is undefined)
+  // Si el usuario borró todo o introdujo algo inválido, lo forzamos a '0'
+  const cleanCheck = inputValue.replace(/[^0-9]/g, '');
+  if (!cleanCheck || cleanCheck === '') {
+    // Si inicia con punto directamente, lo volvemos un decimal válido
+    if (inputValue.includes('.')) {
+      inputValue = '0.';
+    } else {
+      // Si está totalmente vacío, limpiamos los estados y salimos de inmediato
+      formattedValue.value = '';
+      Value.value = '0';
+      // event.target.value = '';
+      return;
     }
   }
 
-  if (Number.isNaN(Value.value) || Value.value == null) {
-    Value.value = 0
+  // 3. SEGURO PARA EL PUNTO INICIAL
+  if (inputValue === '.' || inputValue === '$ .') {
+    inputValue = '0.';
   }
 
-  // console.log('Fin ) onAccept  maskInstance.value', maskInstance.value, 'Value', Value.value)
+  /*
+    if (inputValue.startsWith('.')) {
+      inputValue = '0' + inputValue;
+    }
+  
+    // Eliminamos cualquier caracter que no sea número, punto, o el prefijo $, para evitar letras muertas
+    inputValue = inputValue.replace(/[^0-9.,$ ]/g, '');
+  */
+  console.log('1) onInput inputValue=', inputValue, 'typeof=', typeof inputValue)
+  try {
+    // Generamos el arreglo de la máscara pasando el valor actual (así evitamos el error lastIndexOf)
+    const maskArray = currencyMask(inputValue.trim());
+    console.log('2) onInput maskArray=', maskArray)
+    // Aplicamos la máscara al texto ingresado
+    const conformed = conformToMask(inputValue, maskArray, { guide: false });
+    console.log('3) onInput conformed=', conformed)
+    // Actualizamos la vista con el texto formateado
+    const formatted = conformed.conformedValue.replace('[]', '').replace('[]', '');
+    console.log('4) onInput formatted=', formatted)
+    // 3. Convertir el string formateado a un número puro para tu backend/lógica
+    const cleanString = conformed.conformedValue
+      .replace(This.prop.Curremcy, '')  // Quita el prefijo
+      .replace(/,/g, '') // Quita los separadores de miles
+      .replace('[]', '')
+      .replace('[]', '')
+      .replace(This.prop.Suffix, '')
 
-  // Notificamos el número limpio (Number) de vuelta al componente padre
-  //  emit('update:modelValue', maskRef.typedValue);
+    const newValue = cleanString ? parseFloat(cleanString) : 0;
+    formattedValue.value = formatted
+    Value.value = newValue
+
+    /*
+        console.log('Input Value=', Value.value, 'cleanString=', cleanString, 'Value=', Value.value)
+        if (+newValue >= +This.prop.Min && +newValue <= +This.prop.Max) {
+          formattedValue.value = formatted
+          Value.value = newValue
+    
+        } else { // Sobrepaso el MAX o el MIN
+         
+          const maskArray = currencyMask(Value.value.toString());
+          // Aplicamos la máscara al texto ingresado
+          const conformed = conformToMask(Value.value.toString(), maskArray, { guide: false });
+          // Actualizamos la vista con el texto formateado
+          formattedValue.value = conformed.conformedValue.replace('[]', '').replace('[]', '');
+        }
+          if (event)
+          event.target.value = formatted
+    */
+
+
+
+
+  } catch (error) {
+    // Si la librería llega a fallar internamente en casos extremos, atrapamos el error
+    console.warn("Error controlado en text-mask:", error);
+  }
+  console.log('Fin editText onInput Name=', This.prop.Name, Value.value, 'formatedValue', formattedValue.value)
 };
+
+
 
 /////////////////////////////////////////////////////////////////////
 // lostFocus
@@ -1231,7 +1375,7 @@ const onFocus = async () => {
 
   // emit("update:Value", Value.value)
   // sw_emitValue = false 19/Feb/2026
-  // This.prop.Valid = true
+  This.prop.Valid = true
 
   This.prop.ReadOnly = !await This.when()
   onlyRead.value = false // Permitimos captura
@@ -1242,11 +1386,12 @@ const onFocus = async () => {
     return
   }
 
-  if (This.Parent.prop.BaseClass == "grid")
+  if (This.Parent.BaseClass == "grid")
     This.Parent.Column = This.prop.Name
 
   focusIn.value = 1  // cambia el valor en el input number 
-  console.log('7-fin) Fin ======>editText onFocus Name=', This.prop.Name, 'This.Parent.Column=', This.Parent.Column)
+  console.log('7-fin) Fin ======>editText onFocus Name=', This.prop.Name)
+
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1488,12 +1633,8 @@ watch(
 
     if (Type == 'number') {
       console.log('=======1) watch name=', This.prop.Name, 'prop.Value', This.prop.Value)
-      Value.value = This.prop.Value
-      if (maskInstance.value && new_val !== maskInstance.value.typedValue) {
-        maskInstance.value.typedValue = new_val ?? 0;
-      }
-      // await onInput(This.prop.Value.toString())
-      console.log('========2) watch name=', This.prop.Name, 'formatedValue', maskInstance.value)
+      await onInput(This.prop.Value.toString())
+      console.log('========2) watch name=', This.prop.Name, 'formatedValue', formattedValue.value)
     }
 
 
@@ -1504,7 +1645,7 @@ watch(
         case 'number':
           console.log('=======3) watch prop.Value', This.prop.Value)
           //  await onInput(This.prop.Value.toString())
-          console.log('=======4) watch prop.Value', This.prop.Value, 'formatedValue', maskInstance.value)
+          console.log('=======4) watch prop.Value', This.prop.Value, 'formatedValue', formattedValue.value)
           /* 27/May/2026
           currentValue.value[1] = +new_val //.toString().trim() // Captura
           currentValue.value[0] = numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
@@ -1826,7 +1967,8 @@ const handler = (event) => {
 // Metodo init 
 /////////////////////////////////////////
 
-onMounted(async (e) => {
+onMounted(async () => {
+
   focusIn.value = 0
   if (This.onMounted)
     await This.onMounted()
@@ -1842,8 +1984,8 @@ onMounted(async (e) => {
       This.prop.Value = +This.prop.Value
 
     }
-    // onInput(This.prop.Value.toString())
-    console.log('FormatValue', maskInstance.value, 'OriginalValue', This.prop.Value, This.prop.Min, This.prop.Max)
+    onInput(This.prop.Value.toString())
+    console.log('FormatValue', formattedValue.value, 'OriginalValue', This.prop.Value, This.prop.Min, This.prop.Max)
     /* 27/May/2026
         currentValue.value[1] = +This.prop.Value
         currentValue.value[0] = numberFormat(+This.prop.Value, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)

@@ -69,11 +69,12 @@ export class nco_que extends COMPONENT {
         );
     */
     const q = {
-      usu_que: this.Parent.usu_que,
+      usu_que: this.Parent.usu_que.trim(),
       nco_que: +this.prop.Value,
     };
 
     const RecordSource = this.Parent.Grid.prop.RecordSource;
+    //console.log('nco_que vi_cap_db_query=', await localAlaSql("select * From vi_cap_db_query order by nco_que,ren_que"))
 
     const ins_sql = `select * From vi_cap_db_query \
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`;
@@ -81,20 +82,25 @@ export class nco_que extends COMPONENT {
     const data = await localAlaSql(ins_sql);
     //  console.log('Numero de condicion renglones=', await localAlaSql(ins_sql))
 
-    if (data.length == 0) {
+    if (data.length == 0) { // No hay query en esta condicion
 
       //      this.Parent.query.prop.Value = '' // limpiamos el query
+
+      this.Parent.query.prop.Value = ""; // limpiamos el query
+      return
+      /*
       if (this.prop.Value == 1) {
-        this.Parent.query.prop.Value = ""; // limpiamos el query
         return;
       }
+
       if (this.prop.Value > 1) {
-        this.prop.Valid = false;
+       // this.prop.Valid = false;
         this.prop.Value = this.prop.Value - 1;
         return;
         //this.interactiveChange()
       }
       return;
+      */
     } // Endif (
     this.prop.ReadOnly = false;
 
@@ -200,6 +206,7 @@ export class nco_que extends COMPONENT {
     return;
   }
 
+  /*
   //////////////////////////////////
   // event when
   ///////////////////////////////////
@@ -210,13 +217,6 @@ export class nco_que extends COMPONENT {
 
     return true;
   }
+*/
 
-  //////////////////////////////////
-  // event click
-  ///////////////////////////////////
-  /*
-  async click() {
-
-  }
-  */
 }

@@ -77,6 +77,7 @@ export class COMPONENT {
     id: 0,
     Image: "",
     Init: true,
+    IntegerLimit: 9, // limite de enteros de captura
     InputMask: "", //'XX-XX' '$999,999.99' '!!!-XXXXXX-9'
     /*
         // # represents numbers 0 - 9
@@ -139,6 +140,7 @@ export class COMPONENT {
     Status: "I",
     Step: "1",
     Style: 2, //commonly in comboBox
+    Suffix: "",
 
     TabIndex: 0,
     Tag: "",

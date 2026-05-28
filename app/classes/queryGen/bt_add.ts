@@ -34,22 +34,29 @@ export class bt_add extends COMPONENT {
 
     m.nco_que = this.Parent.nco_que.prop.Value
     m.prg_prg = this.Form.prop.Name
-    m.par_prg = this.Form.Params.par_prg ? this.Form.Params.par_prg : ''
+    //m.par_prg = this.Form.Params.par_prg ? this.Form.Params.par_prg : ''
+    m.par_prg = this.Form.Params[0] ? this.Form.Params[0] : ''
     m.usu_que = this.Parent.usu_que
 
     m.con_que = '='
     m.cam_dat = this.Form.var_ord.prop.Value
     m.vis_rep = this.Form.vis_rep
 
-    const data = await SQLExec(`select max(nco_que)+1 as max_que from man_db_query \
+    const data = await SQLExec(`select nco_que from man_db_query \
+      where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' and nom_tab='${m.vis_rep}' \
+         and usu_que='${m.usu_que}' and nco_que = ${m.nco_que} `)
+
+    if (data.length > 0) {
+
+      const data = await SQLExec(`select max(nco_que)+1 as max_que from man_db_query \
       where prg_prg='${m.prg_prg}' and par_prg='${m.par_prg}' \
          and usu_que='${m.usu_que}' `)
-    m.nco_que = 1
-    if (data[0] && data[0].max_que && data[0].max_que != null) {
-      m.nco_que = data[0].max_que
+      m.nco_que = 1
+      if (data[0] && data[0].max_que && data[0].max_que != null) {
+        m.nco_que = data[0].max_que
+      }
+      this.Parent.nco_que.prop.Value = m.nco_que
     }
-    this.Parent.nco_que.prop.Value = m.nco_que
-
     return this.Parent.bt_edit.click(true) // se pone en true para sumar nueva condicion
 
     //    this.Parent.bt_edit.prop.Visible = false
