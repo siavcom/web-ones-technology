@@ -546,10 +546,11 @@ export class reportForm extends FORM {
     // const m = await this.obtData(); // Variable de memoria los propiedades de la forma
 
     //    if (this.query.length > 1) executeQuery = this.query;
-
-    const where_pri = await this.gen_where("queryPri");
-    if (where_pri.length > 3)
-      where = `${where} and ${where_pri}`
+    /* 30/May/2026
+     const where_pri = await this.gen_where("queryPri");
+     if (where_pri.length > 3)
+       where = `${where} and ${where_pri}`
+     */
 
     // Anexa al where si hay condiciones por usuario
     if (this.queryUsu.activa.prop.Value == 1) {

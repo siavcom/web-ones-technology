@@ -585,21 +585,34 @@ export const use = async (nom_vis: string, m?: {}, alias?: string, order?: strin
  * @param currentRow boolean : Si es true, actualiza la fila actual
  * @returns boolean : True si se actualizó correctamente, false en caso contrario
 */
-export const requery = async (alias?: string, currentRow?: boolean) => {
+export const requery = async (alias?: string, key_pri?: number, currentRow?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-
+    console.log('requery alias=', alias, 'key_pri', key_pri, 'currentRow=', currentRow)
+    if (key_pri == 0)
+        return
+    debugger
     if (!alias)       // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
+    let m = {}
+    if (!key_pri) {
+        m = await currentValue('key_pri,recno', alias)
+        key_pri = m.key_pri
+    } else
+        m = await localAlaSql(`select * from ${alias} where key_pri=${key_pri}`)
 
-    const m = await goto(0, alias)
+    console.log('requery m=', m)
 
-    if (currentRow) {
+    if (currentRow) { // solo el registro actual
+        const resultado = await SQLExec(`select * from ${alias} where key_pri=${key_pri}`)
 
-        const resultado = await SQLExec(`select * from ${alias} where key_pri=${m.key_pri}`)
+        // leemos de SQLServer
         if (resultado && resultado.length > 0) {
             for (let i = 0; i < resultado.length; i++) {
                 for (const field in resultado[i]) {
                     const alias_field = `${alias}.${field}`
+                    // actualiza Now
+                    await updateCampo(resultado[0][field], alias_field, m.recno)
+                    // actualiza Last
                     await updateCampo(resultado[0][field], alias_field, m.recno, true)
                 }
             }
@@ -607,10 +620,9 @@ export const requery = async (alias?: string, currentRow?: boolean) => {
         return resultado
     }
 
-    const resultado = await use(alias, m)
-
-    return resultado
+    return await use(alias, m)
 }
+
 /** 
  * @description : Deshace los cambios no actualizados de la tabla /////////////////////
  * @param alias string : Nombre de la vista a utilizar
@@ -637,7 +649,7 @@ export const alias = (): string => {
 /** Vfp obten un registro 
 * @param nom_vis  : Nombre de la vista a utilizar
 * @param key_pri  :  Key_pri
-
+ 
 // aqui me quede . revisar todo esto, puede que la tabla tenga varios alias
 */
 export const obtRegistro = async (nom_tab: "", key_pri: number) => {
@@ -742,8 +754,9 @@ export const tableUpdate = async (
         // Solo actualiza un registro
         if (!recno) {
             // No hay registro a actualizar
+            console.warn("tableUpdate: No hay recno en " + alias, 'View', This.value.View[alias]);
             errorAlert("ERROR :No hay recno en " + alias);
-            return;
+            return false;
         }
         select.where = { recno };
         where = `WHERE recno=${recno}`;
@@ -820,7 +833,7 @@ export const tableUpdate = async (
 
             if (datos.length > 0) {
                 old_dat = datos[0];
-                //console.log('tableupdate old=',old_dat)
+                console.log('tableupdate old=', old_dat)
             } else {
                 console.error(
                     "tableUpdate error recno ",
@@ -854,6 +867,31 @@ export const tableUpdate = async (
         for (const campo in This.value.View[tab_man].val_def) {
             // for (const campo in dat_act[row]) {
 
+            let newField = dat_act[row][campo]
+            let oldField = old_dat[campo]
+            console.log()
+            if (typeof newField == 'string') {
+                if (newField == null)
+                    newField = ''
+
+                newField = newField.trim()
+                if (oldField == null)
+                    oldField = ''
+
+                oldField = oldField.trim();
+            }
+            if (typeof newField == 'number') {
+                if (newField == null)
+                    newField = 0
+
+
+                if (oldField == null)
+                    oldField = 0
+            }
+
+
+
+
             if (dat_act[row][campo] == null)
                 dat_act[row][campo] = "";
 
@@ -871,6 +909,8 @@ export const tableUpdate = async (
             //       console.log("UPDATE campo=", campo, ' valor=', dat_act[row][campo]);
 
             const nom_campo = campo.toLowerCase();
+            console.log('tableUpdate campo=', campo, 'dat_act[row][campo]', dat_act[row][campo], typeof dat_act[row][campo])
+
             if (
                 This.value.View[tab_man].est_tabla[campo] &&
                 nom_campo != "recno" &&
@@ -880,10 +920,12 @@ export const tableUpdate = async (
                 nom_campo != "usu_cre" &&
                 //          nom_campo != "key_pri" &&
                 nom_campo != "timestamp" &&
-                (dat_vis.tip_llamada == "INSERT" || old_dat[campo] == null ||
-                    (typeof dat_act[row][campo] == "number" && old_dat[campo] !== dat_act[row][campo]) ||
-                    (typeof dat_act[row][campo] == "string" && old_dat[campo].trim() !== dat_act[row][campo].trim()) ||
-                    ((typeof dat_act[row][campo] != "string" && typeof dat_act[row][campo] != "number") && old_dat[campo] !== dat_act[row][campo])
+                (dat_vis.tip_llamada == "INSERT" || oldField == null ||
+                    /*                    (typeof dat_act[row][campo] == "number" && old_dat[campo] !== dat_act[row][campo]) ||
+                                        (typeof dat_act[row][campo] == "string" && old_dat[campo]?.trim() !== dat_act[row][campo].trim()) ||
+                                        ((typeof dat_act[row][campo] != "string" && typeof dat_act[row][campo] != "number") && old_dat[campo] !== dat_act[row][campo])
+                    */
+                    oldField !== newField
                 )
             ) {
 
@@ -898,15 +940,17 @@ export const tableUpdate = async (
                         tipo == "smallint" ||
                         tipo == "tinyint" ||
                         tipo == "bigint":
-                        m[campo] = +dat_act[row][campo];
+                        // m[campo] = +dat_act[row][campo];
+                        m[campo] = +newField;
                         break;
                     case tipo == "boolean" || tipo == "logical":
-                        m[campo] = +dat_act[row][campo];
+                        //m[campo] = +dat_act[row][campo];
+                        m[campo] = +newField;
                         break;
 
                     case tipo == "date" || tipo == "time":
 
-                        let valor = dat_act[row][campo].trim();
+                        let valor = newField;
 
                         const formato = "T00:00:00"; //.000Z"
 
@@ -933,10 +977,11 @@ export const tableUpdate = async (
                                 dat_act[row][campo] = '"' + dat_act[row][campo] + '"';
 
                             if (dat_act[row][campo] != null) {
-                                m[campo] =
-                                    typeof dat_act[row][campo] == "string"
-                                        ? dat_act[row][campo].trim()
-                                        : dat_act[row][campo];
+                                m[campo] = newField
+                                /* typeof dat_act[row][campo] == "string"
+                                    ? dat_act[row][campo].trim()
+                                    : dat_act[row][campo];
+                                    */
                             } else m[campo] = "";
                         } catch (error) {
                             console.error(
@@ -1053,9 +1098,10 @@ export const tableUpdate = async (
                 if (dat_act[row].key_pri > 0) {
                     const key_pri = dat_act[row].key_pri
                     // si es un dato existennte
-                    console.log('tableUpdate ', nom_tab, key_pri)
-                    await requery(alias, true) // obtenemos los datos desde el sql server
-                    const respuesta = await goto(0, alias) // se trae de nuevo los datos
+                    console.log('tableUpdate alias=', alias, 'nomTab=', nom_tab, 'key_pri', key_pri)
+
+                    const respuesta = await requery(alias, key_pri, true) // obtenemos los datos desde el sql server
+                    //const respuesta = await goto(0, alias) // se trae de nuevo los datos
                     /*
                                         const respuesta = await obtRegistro(
                                             nom_tab,
@@ -2990,7 +3036,7 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
     
     const data = await readValues(tabla, campo, recno, DataBase);
     // console.log('Db Read renglon ',data[0])
-
+ 
     //    return data[0][campo]
     alasql('USE now ;')
     return data[0];
@@ -3018,7 +3064,7 @@ export const readValues = async (
         " WHERE recno=? ;",
         recno
     );
-
+ 
     alasql('USE now ;')
     if (data.length > 1) {
         for (const campo in data[1][0]) {
@@ -3030,7 +3076,7 @@ export const readValues = async (
         return data[1]; // todos los campos
     } else
         console.warn('Sql.readValue no data =====>', tabla, campos, recno, data)
-
+ 
     return [];
 };*/
 
@@ -3231,7 +3277,7 @@ export const goto = async (despla: string | number, area?: string, lastDatabase?
     This.value.View[alias].row = -1;
 
     // Lee datos del alias del registro actual
-    This.value.View[alias].recno = data[0].recno;
+    This.value.View[alias].recno = recno;
     const row = This.value.View[alias].recnoVal.find((ele) => ele.recno == recno);
     This.value.View[alias].row = row.id;
     This.value.View[alias].data = data[0]
@@ -3839,7 +3885,7 @@ export const xmlToCursor = async (xml: string, alias: string) => {
 
 const errorAlert = async (message: string) => {
 
-    await MessageBox(message, 16, "SQL Server Error  ");
+    await MessageBox(message, 16, "SQL Server Error  ", 7000);
     //alert(message);
 }
 // Fin de la clase================================

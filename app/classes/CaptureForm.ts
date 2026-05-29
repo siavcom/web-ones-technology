@@ -466,7 +466,7 @@ export class captureForm extends FORM {
         console.error('Save error bt_saveClick',)
         const m = await scatter(['key_pri', 'recno'], this.prop.RecordSource)
         if (m.key_pri > 0) { // si es un registro existente 
-          await requery(this.prop.RecordSource)
+          await requery(this.prop.RecordSource, m.key_pri)
 
           this.Recno = 0
           this.Recno = m.recno
@@ -573,7 +573,8 @@ export class captureForm extends FORM {
         this.First.setFocus()  // hacemos focon en el primer elemento
         return true
       }
-      await this.requery()
+      const m = await currentValue('*', this.prop.RecordSource)
+      await this.requery(this.prop.RecordSource, m.key_pri, true)
 
     }
     this.bt_modify.prop.Visible = true;

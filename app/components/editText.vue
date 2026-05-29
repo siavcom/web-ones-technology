@@ -496,16 +496,20 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       This.prop.Status = 'P'
 
       // Si no viene del watch This.prop.Value
+      Value.value = Type == 'number' ? +Value.value : Value.value
       if (!newValor) {
         // console.log('-----------0) editText emitValue() !readCam Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value, 'ControlSource=', props.prop.ControlSource, 'Recno=', props.Registro)
         newValor = Value.value
         //newValor = This.prop.Value  // Si viene del watch This.prop.Value
-      }
+      } else
+        newValor = Type == 'number' ? +newValor : newValor
+
     }
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       const Recno = props.Registro
-      await updateCampo(newValor, props.prop.ControlSource, Recno)
+
+      await updateCampo(Type == 'number' ? +newValor : newValor, props.prop.ControlSource, Recno)
       //console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor)
       // Value.value = Valor
     }
@@ -900,6 +904,7 @@ const asignaValue = async (new_val?: any) => {
 
   This.prop.Status = 'P'
   if (Type == 'number') {
+    Value.value = +Value.value //30/May/2026
     /* 27/May/2022
       typeNumber.value = 'text';
       console.log('asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
@@ -1017,11 +1022,16 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
 ) => {
 
   KeyPressed = true
-  This.prop.Valid = false // comenzo a teclear. Apagamos validacion
+
   // console.log('1) >>>>>KeyPress===>', $event, +$event.keyCode)
   const char = +$event.keyCode
   const key = $event.key
   const Type = propType.value
+  console.log('char', char, 'key', key)
+  if (key == 'Tab' || char == 13) {
+    return
+  }
+  This.prop.Valid = false // comenzo a teclear. Apagamos validacion
   if (displayError.value) {
     displayError.value = false
     if (This.prop.ShowError)
@@ -1487,13 +1497,13 @@ watch(
     //  console.log('3) EditText Watch Value Name=', This.prop.Name, 'this.Value=', This.prop.Value, 'Value=', Value.value)
 
     if (Type == 'number') {
-      console.log('=======1) watch name=', This.prop.Name, 'prop.Value', This.prop.Value)
+      //     console.log('=======1) watch name=', This.prop.Name, 'prop.Value', This.prop.Value)
       Value.value = This.prop.Value
       if (maskInstance.value && new_val !== maskInstance.value.typedValue) {
         maskInstance.value.typedValue = new_val ?? 0;
       }
       // await onInput(This.prop.Value.toString())
-      console.log('========2) watch name=', This.prop.Name, 'formatedValue', maskInstance.value)
+      // console.log('========2) watch name=', This.prop.Name, 'formatedValue', maskInstance.value)
     }
 
 
@@ -1502,9 +1512,9 @@ watch(
       ///////////  24/Marzo2025     Se cambia compara Value.value por new_val
       switch (Type) {
         case 'number':
-          console.log('=======3) watch prop.Value', This.prop.Value)
+          //       console.log('=======3) watch prop.Value', This.prop.Value)
           //  await onInput(This.prop.Value.toString())
-          console.log('=======4) watch prop.Value', This.prop.Value, 'formatedValue', maskInstance.value)
+          //     console.log('=======4) watch prop.Value', This.prop.Value, 'formatedValue', maskInstance.value)
           /* 27/May/2026
           currentValue.value[1] = +new_val //.toString().trim() // Captura
           currentValue.value[0] = numberFormat(+new_val, This.prop.Currency, This.prop.MaxLength, This.prop.Decimals)
