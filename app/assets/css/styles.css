@@ -145,7 +145,7 @@ textarea.textArea {
   margin-top: 2px;
 }
 
-.imgButton {
+.imgButton_old {
   border-radius: 10%;
   box-shadow: 0 4px 8px 0, 0 6px 20px 0;
   box-sizing: border-box;
@@ -156,12 +156,6 @@ textarea.textArea {
 
 }
 
-.img {
-  /*filter: invert(1);
-transform: scale(2) translate(0px, 10px);*/
-  display: block;
-  width: 100%;
-}
 
 .button:hover {
   background-color: rgb(109, 134, 113);

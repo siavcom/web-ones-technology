@@ -5,8 +5,8 @@
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
       :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut"
       @click.stop="click" :style="{ width: '100%' }">
-      <img :id="Id + '_img_'" class="img" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        @click.stop="click" :style="{ width: '100%' }" />
+      <img :id="Id + '_img_'" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
+        :style="{ display: 'block', width: '100%' }" @click.stop="click" />
       <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
       <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
         :style="Styles.captionStyle">
@@ -29,7 +29,7 @@
 const props = defineProps<{
 
   Value: any;
-  Registro: number;  // Se pone para el manejo de grid
+  Registro: 0;  // Se pone para el manejo de grid
   // Block: number;
   // displayError: boolean;
   prop: {
@@ -321,3 +321,11 @@ const handler = (event) => {
 
 */
 </script>
+<style scoped>
+.img {
+  /*filter: invert(1);
+transform: scale(2) translate(0px, 10px);*/
+  display: block;
+  width: 100%;
+}
+</style>

@@ -205,7 +205,6 @@ const props = defineProps<{
   // Block: number;
   // displayError: boolean;
   prop: {
-
     Autofocus: false;
     BaseClass: "EditText";
     Capture: true;
@@ -401,7 +400,7 @@ const maskOptions = reactive({
   normalizeZeros: true,     // append or remove zeros at ends
   radix: '.',               // fractional delimiter
   mapToRadix: ['.'],        // symbols to treat as radix
-  min: +This.prop.Min,                    // Lower limit constraint
+  min: +This.prop.Min,      // Lower limit constraint
   max: +This.prop.Max,
   expose: true
 })
@@ -420,11 +419,6 @@ const currencyMask = createNumberMask({
   Suffix: This.prop.Suffix
 })
 */
-
-
-
-
-
 
 var watchPropValue = false
 
@@ -644,7 +638,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
             else
               Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
 
-            //console.log('2.1) editText emitValue writeCampo Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
+            console.log('2.1) editText emitValue Readampo Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
             if (!isValid) {
               readValid = true
@@ -1117,7 +1111,7 @@ const nextElement = async () => {  //clickReturn
   */
 
   for (const element in This.Parent.estatus) {
-    console.log('Parent elemento', element)
+    //  console.log('Parent elemento', element)
     if (!This.Parent[element]) continue
 
     const Tab = This.Parent[element].prop.TabIndex
@@ -1402,13 +1396,15 @@ watch(
 watch(
   () => props.prop.ControlSource, //props.prop.ControlSource,
   (new_val: any, old_val: any) => {
+
     if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
       return
-    // console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val)
+    //  console.log('EditText Watch ControlSource Name=', This.prop.Name, 'new_val =', new_val, 'old_val =', old_val)
+
     if (new_val != old_val)
       emitValue(true)
   },
-  { deep: false }
+  { deep: true }
 );
 
 ////////////////////////////////////////
@@ -1422,7 +1418,7 @@ watch(
 
     if (focusIn.value == 1) // Si tiene el foco deshabilita el watch
       return
-    //console.log('EditText Watch This.Recno Name=', This.prop.Name, 'new_val=', new_val, 'This.Renco=', This.Recno)
+
     await emitValue(true)
     //29/Oct/2025 -- Se quita, daba problema en el grid
     //This.Recno = props.Registro

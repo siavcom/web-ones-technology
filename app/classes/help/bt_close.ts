@@ -21,7 +21,7 @@ export class bt_close extends IMGBUTTON {
 
   }
 
-  async click() {
+  override async click() {
     this.Parent.browse.prop.RowSource = ''
     this.Parent.prop.Visible = false
 

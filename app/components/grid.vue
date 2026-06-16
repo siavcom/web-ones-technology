@@ -488,7 +488,6 @@ watch(
     //console.log('2).0 3.3 -- Grid watch compValid ColumnActive=', Column.value)
     let ColumnActive = ''
     ColumnActive = This.Column     //.value
-
     const ControlSource = This[ColumnActive].prop.ControlSource
     //console.log('2).0 3.3 -- Grid watch RecordSource=', ControlSource)
     if (ControlSource.length == 0)
@@ -527,7 +526,7 @@ watch(
     const data = await currentValue(['key_pri'], tabla)
     if (await This.saveRow()) {
       await goto(Recno, tabla)
-      if (data.key_pri > 0) { // Si es un renglon que ya esxite en la base de datos
+      if (data.key_pri > 0) { // Si es un renglon que ya exite en la base de datos
         return
       }
 
@@ -539,17 +538,22 @@ watch(
       return
 
     }
+    const Row = This.Row
+
     // Hubo error en grabacion de datos
     This.prop.Recno = 0
     This.prop.Recno = Recno
 
-    await goto(Recno, tabla)
+    //await goto(Recno, tabla)
+    //   nextTick(() => {
+
     if (data.key_pri > 0) { // Si es un renglon que ya esxite en la base de datos
+
       This[ColumnActive].prop.Valid = false
       This[ColumnActive].prop.Focus = true
+      // This[ColumnActive].prop.ControlSource = ControlSource
       return
     }
-
 
     // apagamos todas las validaciones
     let First = ''

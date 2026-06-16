@@ -330,6 +330,14 @@ export class COMPONENT {
     if (this.prop.Name == 'translateContainer')
       return
 
+    if (this.prop.RecordSource == '') {
+      const pos = this.prop.ControlSource.indexOf(".") + 1;
+      if (pos == 1) {
+        return;
+      } // si no hay definida vista
+      this.prop.RecordSource = this.prop.ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+    }
+
     // console.log('======== Asignado recno por referencia al padre ', this.prop.Name)
     for (const comp in this) {
       const Comp = this[comp]

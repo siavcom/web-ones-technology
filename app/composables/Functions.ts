@@ -201,10 +201,287 @@ export function transform_old(nExpression: number, image?: string) {
  * @returns {string} Cadena formateada según el patrón
  */
 
-export function transform(numero: number, patron: string): string {
+export function transform_OLD(numero: number, patron: string): string {
   let i = 0;
   return patron.replace(/9/g, () => numero.toString()[i++] || '');
 }
+//*************************
+/**
+ * Formatea un número emulando la función TRANSFORM() de VFP con soporte de localización.
+ * 
+ * @param {number|string} value - El número a formatear.
+ * @param {string} mask - La máscara de formato (ej: '999,999.99', '@R (999) 999-9999').
+ * @param {Object} options - Opciones de formato.
+ * @param {string} options.locale - Código de locale (default: 'es-ES').
+ * @param {boolean} options.leftAlign - Si es true, alinea a la izquierda.
+ * @param {Object} options.customSeparators - Separadores personalizados.
+ * @returns {string} El valor formateado.
+ */
+export function transform(value: string | number, mask: string, options = {}) {
+  const {
+    locale = 'es-ES',
+    leftAlign = false,
+    customSeparators = null
+  } = options;
+
+  // Obtener separadores según el locale
+  const separators = getSeparatorsByLocale(locale, customSeparators);
+
+  // Detectar códigos especiales en la máscara
+  const hasRawMode = mask.includes('@R');
+  const hasCurrencySymbol = mask.includes('$');
+  const hasNegativeParentheses = mask.includes('(');
+
+  // Limpiar los códigos especiales
+  let cleanMask = mask;
+  if (hasRawMode) cleanMask = cleanMask.replace('@R', '').trim();
+  if (hasCurrencySymbol) cleanMask = cleanMask.replace('$', '').trim();
+  if (hasNegativeParentheses) cleanMask = cleanMask.replace(/[()]/g, '');
+
+  // Convertir el valor a número
+  let numValue = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]/g, '')) : value;
+  if (isNaN(numValue)) numValue = 0;
+
+  let isNegative = numValue < 0;
+  let absValue = Math.abs(numValue);
+
+  // Modo RAW (@R)
+  if (hasRawMode) {
+    let result = '';
+    let valueIndex = 0;
+    const digits = String(Math.floor(absValue)).split('');
+
+    for (let i = 0; i < cleanMask.length && valueIndex < digits.length; i++) {
+      const maskChar = cleanMask[i];
+      if (maskChar === '9' || maskChar === '#') {
+        result += digits[valueIndex] || ' ';
+        valueIndex++;
+      } else {
+        result += maskChar;
+      }
+    }
+
+    if (isNegative && hasNegativeParentheses) {
+      result = '(' + result + ')';
+    } else if (isNegative && !hasNegativeParentheses) {
+      result = '-' + result;
+    }
+
+    return leftAlign ? result.trimStart() : result;
+  }
+
+  // --- MODO NORMAL ---
+  // Separar máscara en parte entera y decimal
+  let maskIntegerPart = cleanMask;
+  let maskDecimalPart = '';
+
+  // Encontrar el separador decimal en la máscara
+  const possibleDecimals = ['.', ',', ' '];
+  for (const dec of possibleDecimals) {
+    if (cleanMask.includes(dec)) {
+      const lastIndex = cleanMask.lastIndexOf(dec);
+      // Verificar que no sea un separador de miles
+      const beforeLast = cleanMask.substring(0, lastIndex);
+      if (beforeLast.includes(dec)) {
+        // Es un separador de miles, no decimal
+        continue;
+      }
+      maskIntegerPart = cleanMask.substring(0, lastIndex);
+      maskDecimalPart = cleanMask.substring(lastIndex + 1);
+      break;
+    }
+  }
+
+  // Contar dígitos necesarios en la parte entera
+  const integerDigitsNeeded = (maskIntegerPart.match(/[9#]/g) || []).length;
+  let integerPart = Math.floor(absValue).toString();
+
+  // Formatear parte decimal
+  let decimalPart = '';
+  if (maskDecimalPart) {
+    const decimalDigitsNeeded = (maskDecimalPart.match(/[9#]/g) || []).length;
+    const fractional = absValue - Math.floor(absValue);
+    let decimalStr = fractional.toFixed(decimalDigitsNeeded).split('.')[1] || '';
+    decimalStr = decimalStr.padEnd(decimalDigitsNeeded, '0').substring(0, decimalDigitsNeeded);
+
+    // Aplicar máscara a decimales (manteniendo caracteres literales)
+    let decimalIndex = 0;
+    for (let i = 0; i < maskDecimalPart.length; i++) {
+      if (maskDecimalPart[i] === '9' || maskDecimalPart[i] === '#') {
+        decimalPart += decimalStr[decimalIndex] || '0';
+        decimalIndex++;
+      } else {
+        decimalPart += maskDecimalPart[i];
+      }
+    }
+  }
+
+  // Formatear parte entera con separadores de miles
+  let formattedInteger = integerPart;
+  if (integerDigitsNeeded > 0 && integerPart.length < integerDigitsNeeded) {
+    formattedInteger = integerPart.padStart(integerDigitsNeeded, '0');
+  }
+
+  // Aplicar separadores de miles según la máscara
+  let finalInteger = '';
+  let intIndex = formattedInteger.length - 1;
+
+  // Procesar máscara de derecha a izquierda
+  for (let i = maskIntegerPart.length - 1; i >= 0 && intIndex >= 0; i--) {
+    const maskChar = maskIntegerPart[i];
+    if (maskChar === '9' || maskChar === '#') {
+      finalInteger = formattedInteger[intIndex] + finalInteger;
+      intIndex--;
+    } else {
+      finalInteger = maskChar + finalInteger;
+    }
+  }
+
+  // Si quedan dígitos sin procesar, agregarlos al inicio
+  if (intIndex >= 0) {
+    finalInteger = formattedInteger.substring(0, intIndex + 1) + finalInteger;
+  }
+
+  // Construir resultado
+  let result = finalInteger;
+  if (decimalPart) {
+    result += separators.decimal + decimalPart;
+  }
+
+  // Aplicar símbolo de moneda
+  if (hasCurrencySymbol) {
+    const currencySymbol = getCurrencySymbol(locale);
+    result = currencySymbol + result;
+  }
+
+  // Aplicar formato negativo
+  if (isNegative) {
+    if (hasNegativeParentheses) {
+      result = '(' + result + ')';
+    } else {
+      result = '-' + result;
+    }
+  }
+
+  return leftAlign ? result.trimStart() : result;
+}
+
+/**
+ * Obtiene los separadores según el locale
+ */
+function getSeparatorsByLocale(locale, customSeparators = null) {
+  if (customSeparators) {
+    return {
+      thousands: customSeparators.thousands || ',',
+      decimal: customSeparators.decimal || '.'
+    };
+  }
+
+  const separatorsMap = {
+    'es-ES': { thousands: '.', decimal: ',' },
+    'es-MX': { thousands: ',', decimal: '.' },
+    'es-AR': { thousands: '.', decimal: ',' },
+    'es-CL': { thousands: '.', decimal: ',' },
+    'es-CO': { thousands: '.', decimal: ',' },
+    'es-PE': { thousands: ',', decimal: '.' },
+    'en-US': { thousands: ',', decimal: '.' },
+    'en-GB': { thousands: ',', decimal: '.' },
+    'en-CA': { thousands: ',', decimal: '.' },
+    'de-DE': { thousands: '.', decimal: ',' },
+    'fr-FR': { thousands: ' ', decimal: ',' },
+    'pt-BR': { thousands: '.', decimal: ',' },
+    'ja-JP': { thousands: ',', decimal: '.' },
+    'zh-CN': { thousands: ',', decimal: '.' },
+    'default': { thousands: ',', decimal: '.' }
+  };
+
+  return separatorsMap[locale] || separatorsMap['default'];
+}
+
+/**
+ * Obtiene el símbolo de moneda según el locale
+ */
+function getCurrencySymbol(locale: string) {
+  const currencyMap = {
+    'es-ES': '€',
+    'es-MX': '$',
+    'es-AR': '$',
+    'es-CL': '$',
+    'es-CO': '$',
+    'es-PE': 'S/',
+    'en-US': '$',
+    'en-GB': '£',
+    'en-CA': 'C$',
+    'de-DE': '€',
+    'fr-FR': '€',
+    'pt-BR': 'R$',
+    'ja-JP': '¥',
+    'zh-CN': '¥',
+    'default': '$'
+  };
+
+  return currencyMap[locale] || currencyMap['default'];
+}
+
+/**
+ * Versión simplificada para valores monetarios
+ */
+export function transformCurrency(value: string | number, options = {}) {
+  const {
+    locale = 'es-ES',
+    decimalPlaces = 2,
+    useParenthesesForNegatives = false
+  } = options;
+
+  // Determinar la máscara basada en el valor
+  const absValue = Math.abs(typeof value === 'number' ? value : parseFloat(value) || 0);
+  const integerLength = Math.floor(absValue).toString().length;
+
+  // Construir la máscara de parte entera (ej: '#,###,###')
+  let integerMask = '';
+  for (let i = integerLength; i > 0; i -= 3) {
+    if (integerMask) integerMask = ',' + integerMask;
+    const groupSize = Math.min(3, i);
+    integerMask = '#'.repeat(groupSize) + integerMask;
+  }
+
+  // Si la máscara está vacía o es muy pequeña, usar un mínimo
+  if (!integerMask || integerMask.length < 1) {
+    integerMask = '#';
+  }
+
+  const mask = integerMask + '.' + '9'.repeat(decimalPlaces);
+  const negativeMask = useParenthesesForNegatives ? '(' + mask + ')' : mask;
+
+  return transform(value, negativeMask, { locale });
+}
+
+/**
+ * Formatea un número con separadores de miles según el locale
+ */
+export function formatNumber(value: string | number, options = {}) {
+  const { locale = 'es-ES', decimalPlaces = 0 } = options;
+  const num = Number(value);
+  if (isNaN(num)) return String(value);
+
+  return num.toLocaleString(locale, {
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces
+  });
+}
+//***************************************************
+// --- Funciones auxiliares adicionales para mayor comodidad ---
+
+
+/**
+ * Versión simplificada para números de teléfono
+ * @param {string|number} value - El número de teléfono
+ * @returns {string}
+ */
+export function transformPhone(value: string | number) {
+  return transform(value, '@R (999) 999-9999');
+}
+
 
 /**
  * Converts a string from a file to a Blob and creates a File object.

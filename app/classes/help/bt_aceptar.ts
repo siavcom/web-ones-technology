@@ -2,16 +2,15 @@
 ///////////////////////////////////////
 // base class
 ///////////////////////////////////////
-
+/** 
+ * Author : Fernando Cuadras Angulo
+ *  @CreationDate : 16/Abr/2024
+  * @UpdateDate  : 22/Abr/2024
+  * @export bt_aceptar
+  * @class imgButton
+  * @extends {COMPONENT}
+ **/
 export class bt_aceptar extends IMGBUTTON {
-  /** 
-  * Author : Fernando Cuadras Angulo
-  *  @CreationDate : 16/Abr/2024
-   * @UpdateDate  : 22/Abr/2024
-   * @export bt_aceptar
-   * @class imgButton
-   * @extends {COMPONENT}
-  **/
 
   constructor() {
     super();
@@ -36,12 +35,19 @@ export class bt_aceptar extends IMGBUTTON {
    * Luego llama al metodo when() del componente tip_con.
    */
   override async click() {
+    if (this.Parent.des_dat.prop.Visible) {
+      if (!await this.Parent.des_dat.valid()) {
+        this.Parent.des_dat.prop.Focus = true
+        return
+      }
+    }
+
+    if (this.Parent.has_dat.prop.Visible && this.Parent.has_dat.valid()) {
+      this.Parent.has_dat.prop.Focus = true
+      return
+    }
 
     this.Parent.browse.prop.RowSource = ''
-
-    // if (!await this.Parent.des_dat.valid())
-    //   return
-
     this.prop.Visible = false
 
     this.Parent.tip_con.prop.Visible = false
@@ -49,7 +55,6 @@ export class bt_aceptar extends IMGBUTTON {
     this.Parent.des_dat.prop.Visible = false
     this.Parent.has_dat.prop.Visible = false
 
-    await this.Parent.has_dat.valid()
 
     let where = ''
 
@@ -112,7 +117,7 @@ export class bt_aceptar extends IMGBUTTON {
     console.log("help aceptar res=", res)
     if (!res || res.length === 0) {
       MessageBox("No data")
-      return this.Parent.bt_close.click()
+      return await this.Parent.bt_close.click()
     }
 
     this.Parent.browse.prop.RowSource = "browse";

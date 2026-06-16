@@ -32,12 +32,22 @@ export class cam_dat extends COMPONENT {
     this.style.fontWeight = "bold";
 
   }
+  override async afterMounted() {
+
+    console.log('cam_dat afterMounted', this.Parent.prop.cam_pri, 'this.prop.Value', this.prop.Value)
+    if (this.Parent.prop.cam_pri.length > 0) {
+      this.prop.Value = this.Parent.prop.cam_pri
+    }
+  }
+
   override async when() {
     this.interactiveChange()
     return true
   }
 
   override async interactiveChange() {
+
+    console.trace('cam_dat interactiveChange This-prop.Value', this.prop.Value)
     const data = await localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value}'`)
     const tip_dat = data[0].tip_dat
     let Type = 'string'
@@ -81,6 +91,6 @@ export class cam_dat extends COMPONENT {
     this.Parent.has_dat.prop.Decimals = data[0].dec_dat
     this.Parent.has_dat.prop.Value = has_Value
     this.Parent.tip_con.when()
-    return true
+    return
   }
 }

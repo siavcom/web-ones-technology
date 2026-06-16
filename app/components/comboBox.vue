@@ -21,7 +21,7 @@
 
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-    }}</span>
+      }}</span>
     <!--List Box -->
     <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
@@ -105,7 +105,7 @@
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
-    }}</div>
+      }}</div>
 
     <!-- <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :style="Este.componentStyle" :is="impComponent(This[compMain].prop.BaseClass)"
@@ -434,7 +434,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
+    console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor, 'Registro=', props.Registro)
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+      console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor)
       await updateCampo(Valor, props.prop.ControlSource, props.Registro)
     }
 
@@ -970,7 +972,6 @@ const ChecaStatus = async () => {
 // Renderizado del combo box
 /////////////////////////////////////////////////////
 const renderComboBox = async (readData?: boolean) => {
-  //console.log(' 0-) Render Multiselect comboBox prop.Name=', props.prop.Name, ' List.value=', List.value, ' columnas.length=', columnas.length)
 
   if (columnas.length > 0) return
 
@@ -998,13 +999,7 @@ const renderComboBox = async (readData?: boolean) => {
     (!props.prop.BoundColumn ? 1 : props.prop.BoundColumn) - 1;
 
   // Numero de columnas
-  const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
-  /*  9/Feb/2024 se quito y se mando arriba
-    for (let ren = 0; ren < columnas.length; ren++) {
-      // Borra todos los renglones
-      delete columnas[ren];
-    }
-   */
+  //const ColumnCount = !props.prop.ColumnCount ? 1 : props.prop.ColumnCount;
 
   ///////////////////////
   // generamos un arreglo dependiendo del RowSourceType
@@ -1163,8 +1158,7 @@ const renderComboBox = async (readData?: boolean) => {
 
     }
   }
-
-  await emitValue(true, true)
+  await emitValue(readData, true)
   This.prop.Status = 'A'
   //2/Sep/2025 Status.value = 'A'
   //2/Sep/2025emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
@@ -1418,7 +1412,7 @@ watch(
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
-    // console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
     if (watchPropValue == true) return
     if (focusIn == true) {// Si tiene el foco deshabilita el watch
       //sw_emitValue = false 19/Feb/2026
@@ -1441,7 +1435,7 @@ watch(
         }
       }
     }
-    // console.log('>>>>>>>>>>>>>>Fin ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    console.log('>>>>>>>>>>>>>>Fin ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
   },
   { deep: true }
 )
@@ -1493,7 +1487,7 @@ watch(
     while (columnas.length > 0)
       columnas.pop()
 
-    renderComboBox(true)
+    renderComboBox(false)
     // }
   },
   { deep: true }
@@ -1564,7 +1558,7 @@ watch(
       while (columnas.length > 0)
         columnas.pop()
 
-      renderComboBox(true);
+      renderComboBox(false);
     }
   },
   { deep: false }

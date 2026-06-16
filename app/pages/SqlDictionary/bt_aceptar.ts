@@ -101,7 +101,7 @@ export class bt_aceptar extends IMGBUTTON {
       let data = false;
       if (
         this.Form.grid_datos.prop.Visible &&
-        (await this.Form.db.recCount("vi_cap_comedat")) > 4
+        (await recCount("vi_cap_comedat")) > 4
       ) {
         data = true;
         /*
@@ -121,7 +121,7 @@ export class bt_aceptar extends IMGBUTTON {
       if (this.Form.grid_indices.prop.Visible) {
         //    data = true
 
-        if (data && (await this.Form.db.recCount("vi_cap_comeind")) > 0) {
+        if (data && (await recCount("vi_cap_comeind")) > 0) {
           if (!(await this.grabaDatos("vi_cap_comeind"))) dataUpdate = false;
         } else dataUpdate = false;
 
@@ -130,7 +130,7 @@ export class bt_aceptar extends IMGBUTTON {
       // Vistas
       // Hay datos capturados, grabara informacion
       if (
-        data && (await this.Form.db.recCount("vi_cap_comevis")) > 0 &&
+        data && (await recCount("vi_cap_comevis")) > 0 &&
         this.Form.grid_vistas.prop.Visible
 
       ) {
@@ -200,7 +200,7 @@ export class bt_aceptar extends IMGBUTTON {
           ]);
           this.Form.grid_datos.RecordSource = 'vi_cap_comedat';
 
-          if ((await this.Form.db.recCount("vi_cap_comedat")) == 0) {
+          if ((await recCount("vi_cap_comedat")) == 0) {
             await this.Form.grid_datos.appendDatos();
           }
 
@@ -220,7 +220,7 @@ export class bt_aceptar extends IMGBUTTON {
             this.prop.Messages[11][0] + this.Form.nom_tab.prop.Value;
           // "Definición de indices SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
-          if ((await this.Form.db.recCount("vi_cap_comeind")) == 0) {
+          if ((await recCount("vi_cap_comeind")) == 0) {
             await this.Form.grid_indices.appendRow();
           }
 
@@ -236,7 +236,7 @@ export class bt_aceptar extends IMGBUTTON {
             this.prop.Messages[12][0] + this.Form.nom_tab.prop.Value;
           // "Definición de vistas SQL-Server de la tabla " + this.Form.nom_tab.prop.Value;
 
-          if ((await this.Form.db.recCount("vi_cap_comevis")) == 0) {
+          if ((await recCount("vi_cap_comevis")) == 0) {
             const m = {
               nom_tab: this.Form.nom_tab.prop.Value,
             };
@@ -278,7 +278,7 @@ export class bt_aceptar extends IMGBUTTON {
 
       await use("vi_cap_cometab", m);
 
-      console.log('1) bt_aceptar vi_cap_cometab recCount =', await recCount("vi_cap_cometab"))
+      // console.log('1) bt_aceptar vi_cap_cometab recCount =', await recCount("vi_cap_cometab"))
 
       if (await recCount("vi_cap_cometab") == 0) {
         await appendBlank("vi_cap_cometab", m);
@@ -298,7 +298,7 @@ export class bt_aceptar extends IMGBUTTON {
 
       if (
         this.Form.grid_menu.prop.Visible &&
-        (await this.Form.db.recCount("vi_cap_prg")) > 0
+        (await recCount("vi_cap_prg")) > 0
       ) {
         await this.grabaDatos("vi_cap_prg");
         await this.Form.db.useNodata("vi_cap_prg");
@@ -353,7 +353,7 @@ export class bt_aceptar extends IMGBUTTON {
       await this.Form.db.use("vi_cap_prg", m);
       this.Form.grid_menu.RecordSource = 'vi_cap_prg'
 
-      if ((await this.Form.db.recCount("vi_cap_prg")) == 0) {
+      if ((await recCount("vi_cap_prg")) == 0) {
         await this.Form.grid_menu.appendRow(m);
       }
       this.Form.grid_menu.prop.Visible = true;

@@ -45,7 +45,8 @@
                 <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
                   :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
                   <component :id="'component_' + compHeader" :is="impComponent(ThisForm[compHeader].prop.BaseClass)"
-                    :ShowError="ThisForm[compHeader].prop.ShowError" :Registro="ThisForm[compHeader].Recno"
+                    :ShowError="ThisForm[compHeader].prop.ShowError"
+                    :Registro="!ThisForm[compHeader].Recno.isNaN(NaN) ? ThisForm[compHeader].Recno : 0"
                     :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
                     :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
                 </div>
@@ -63,8 +64,9 @@
                     <component v-if="ThisForm[compMain].prop.Visible"
                       :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                       v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
-                      :Registro="ThisForm[compMain].Recno" :prop="ThisForm[compMain].prop"
-                      :style="ThisForm[compMain].style" :position="ThisForm[compMain].position" />
+                      :Registro="typeof ThisForm[compMain].Recno === 'number' ? ThisForm[compMain].Recno : 0"
+                      :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
+                      :position="ThisForm[compMain].position" />
                   </div>
                   <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
@@ -73,13 +75,14 @@
                     <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
                       <div v-for="(component, key) in block.component" :key="key"
                         :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-                        <div v-if="component.prop"><!-- {{ component.prop.Name }} -->
-                          <component :id="Id + '_blockComponent_' + key + component.prop.Name"
-                            :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                            v-model:Status="component.prop.Status" :Registro="component.Recno" :prop="component.prop"
-                            :style="component.style" :position="component.position">
-                          </component>
-                        </div>
+                        <!--div v-if="component.prop"--><!-- {{ component.prop.Name }} -->
+                        <component v-if="component.prop" :id="Id + '_blockComponent_' + key + component.prop.Name"
+                          :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                          v-model:Status="component.prop.Status"
+                          :Registro="typeof component.Recno == 'number' ? component.Recno : 0" :prop="component.prop"
+                          :style="component.style" :position="component.position">
+                        </component>
+                        <!--/div-->
                       </div>
                     </div>
                   </div>
@@ -102,11 +105,11 @@
                 -->
 
                 <div :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer" :class="compFooter">
-
                   <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
                     v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                    :Registro="ThisForm[compFooter].Recno" :prop="ThisForm[compFooter].prop"
-                    :style="ThisForm[compFooter].style" :position="ThisForm[compFooter].position" />
+                    :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"
+                    :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style"
+                    :position="ThisForm[compFooter].position" />
 
                   <!--:inputStyle="ThisForm[compFooter].inputStyle"
                   @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
@@ -245,7 +248,7 @@ const Estatus = ref(ThisForm.estatus)
 const Valid = reactive(ThisForm.Valid)
 //const Id = ThisForm.prop.Name
 
-const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //props.Registro.toString().trim()
+const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 1000).toString()
 ThisForm.Id = Id
 
 // Datos forma por forma . En app.vue esta useHead

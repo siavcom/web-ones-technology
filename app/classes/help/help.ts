@@ -38,6 +38,7 @@ export class HELP extends CONTAINER {
 
   public browse = new browse()
 
+
   fields: string[][]
 
   constructor() {
@@ -103,8 +104,8 @@ export class HELP extends CONTAINER {
     this.bt_aceptar.prop.TabIndex = 8.5
     this.browse.prop.TabIndex = 8.6
     this.prop.oneClick = true
-
   }
+
 
   async open() {
 

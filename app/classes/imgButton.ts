@@ -19,6 +19,7 @@ export class IMGBUTTON extends COMPONENT {
     super();
     this.prop.BaseClass = 'imgButton';
     this.prop.Position = 'footer'; // main, header , footer
+
     this.captionStyle = {
       fontSize: '12px',
       fontWeight: 'bold',

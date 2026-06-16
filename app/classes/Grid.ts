@@ -238,19 +238,19 @@ export class GRID extends COMPONENT {
   ///////////////////////////////////////////////////
   // Refresca renglon con los datos actuales del ControlSource
   ///////////////////////////////////////////////////
-  public refreshRow() {
+  public async refreshRow() {
 
     for (let i = 0; i < this.elements.length; i++) {
       const column = this.elements[i].Name;
-
-      if (this[column]) { // Si existe columna
-        const ControlSource = this[column].prop.ControlSource
-        this[column].prop.ControlSource = ''
-        nextTick(() => {
-          this[column].prop.ControlSource = ControlSource
-        })
+      console.log('refreshRow column=', column, 'Recno=', this.Recno, this[column].Recno)
+      if (this[column] && this[column].prop.ControlSource.trim().length > 1) { // Si existe columna
+        this[column].Recno = 0
+        await Delay(25)
+        this[column].Recno = this.Recno
+        //this[column].Recno = this[ControlSource].Recno
       }
     }
+
   }
 
   ///////////////////////////////////////////////////
@@ -297,10 +297,12 @@ export class GRID extends COMPONENT {
       const result = await deleteSqlRow(recno, this.prop.RecordSource);
       console.log('deleteRow result=', result)
       // await restableceStatus()
-      if (result)
+      if (result) {
         this.Row = -1;
+        return true;
+      }
     }
-    return true
+    return false
   }
 
   //////////////////////////////////
@@ -345,7 +347,8 @@ export class GRID extends COMPONENT {
       return false;
     }
     // this.Row = -1
-    return resultado;
+
+    return true;
   }
 
   //////////////////////////////////
@@ -364,8 +367,10 @@ export class GRID extends COMPONENT {
     );
     if (resultado) { //actualizacion con exito
       MessageBox(this.prop.OkMessage);
+
       return true;
     }
+
 
     return false;
     /*

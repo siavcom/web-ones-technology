@@ -159,9 +159,9 @@ export class captureForm extends FORM {
     if (this.First == null)
       this.First = this.main.length > 0 ? this[this.main[0]] : null
 
-    this.bt_delete.prop.Visible = false;
-    this.bt_modify.prop.Visible = false;
-    this.bt_save.prop.Visible = false;
+    this.Form.bt_delete.prop.Visible = false;
+    this.Form.bt_modify.prop.Visible = false;
+    this.Form.bt_save.prop.Visible = false;
     //  this.bt_save.prop.Visible = false;
 
   }
@@ -175,8 +175,8 @@ export class captureForm extends FORM {
    */
   async validKeyComponent(Comp: undefined) {
 
-    if (this.sw_update && this.bt_save.prop.Visible)
-      await this.bt_save.click()
+    if (this.sw_update && this.Form.bt_save.prop.Visible)
+      await this.Form.bt_save.click()
 
     if (this.prop.RecordSource.trim().length < 2) {
       MessageBox('No hay vista de actualizacion en el Form')
@@ -230,10 +230,14 @@ export class captureForm extends FORM {
 
     let key_pri = 0;
 
-    if (data === null) {
-      //      this.sw_update = true
-
-      // No hay datos
+    if (data === null) {       // No hay datos
+      for (const comp of this.main) {
+        if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey) {
+          this.Form[comp].prop.Valid = false // Apaga validaciones 
+          this.Form[comp].prop.ReadOnly = false // Permite captura
+        }
+        // *) this.Form[comp].prop.Valid = this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey ? false : this.Form[comp].prop.Valid
+      }
 
       console.log('appendBlank m=', m)
       const result = await appendBlank(this.prop.RecordSource, m);
@@ -250,19 +254,20 @@ export class captureForm extends FORM {
       key_pri = 0;
       this.bt_delete.prop.Visible = false;
       //  console.log('valid Component m=', m, 'result=', result, 'Recno=', this.Recno, 'key_pri=', key_pri)
-
-      // se utiliza nextTixc para q ue los componentes no prendan la validacion
-      nextTick(() => {
-        for (const comp of this.main) {
-          if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey) {
-            this.Form[comp].prop.Valid = false // Apaga validaciones 
-            this.Form[comp].prop.ReadOnly = false // Permite captura
-          }
-
-          //          this.Form[comp].prop.Valid = this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey ? false : this.Form[comp].prop.Valid
-        }
-      });
-
+      /* 04/Mayo/2026 se comento todo el siguiente bloque porque ya estaba comentado *)
+            // se utiliza nextTixc para q ue los componentes no prendan la validacion
+            nextTick(() => {
+              for (const comp of this.main) {
+                if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey) {
+                  this.Form[comp].prop.Valid = false // Apaga validaciones 
+                  this.Form[comp].prop.ReadOnly = false // Permite captura
+                }
+      
+                // *) this.Form[comp].prop.Valid = this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey ? false : this.Form[comp].prop.Valid
+              }
+            });
+      
+            */
       // console.log('ValidComponent appendBlank Return')
       return true
 
@@ -395,12 +400,12 @@ export class captureForm extends FORM {
       this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";
 
-      this.style.width = "76px";
+      this.style.width = "82px";
       this.prop.Visible = false;
     } // Fin constructor
 
     override async click() {
-      return this.Parent.bt_saveClick()
+      return await this.Form.bt_saveClick()
     }
 
     public async lee_grid() {
@@ -426,7 +431,7 @@ export class captureForm extends FORM {
     if (this.prop.RecordSource.length < 2)
       return false
 
-    this.bt_save.prop.Visible = false;
+    this.prop.Visible = false;
 
     let resultado = false
 
@@ -436,7 +441,7 @@ export class captureForm extends FORM {
         // tratamos de validar 
         if (!(await this[comp].valid())) {
           console.warn('CaptureForm bt_save click() Invalid comp=', comp)
-          this.bt_save.prop.Visible = true;
+          this.Form.bt_save.prop.Visible = true;
           await this[comp].setFocus()
           return false;
         }
@@ -448,13 +453,14 @@ export class captureForm extends FORM {
     const bt_delete = this.bt_delete.prop.Visible
     this.bt_delete.prop.Visible = false;
 
-    if (this.prop.autoUpdate || await MessageBox(this.bt_save.prop.Caption, 4, "") == 6) {
+    if (this.prop.autoUpdate || await MessageBox(this.Form.bt_save.prop.Caption, 4, "") == 6) {
 
       const result = await tableUpdate(
         0,
         false,
         this.prop.RecordSource
       );
+
 
       //    console.log('bt_save result', result)
       if (result) {
@@ -473,10 +479,10 @@ export class captureForm extends FORM {
         }
       }
     }
-    this.bt_save.prop.Visible = true;
+    this.Form.bt_save.prop.Visible = true;
     const key_pri = await scatter(['key_pri'], this.prop.RecordSource)
     if (key_pri > 0)
-      this.bt_delete.prop.Visible = bt_delete
+      this.Form.bt_delete.prop.Visible = bt_delete
     return resultado;
   }
 
@@ -538,7 +544,7 @@ export class captureForm extends FORM {
       this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
       // this.prop.TabIndex= 21
 
-      this.style.width = "76px";
+      this.style.width = "82px";
     } // Fin constructor
 
     override async click() {
@@ -558,11 +564,11 @@ export class captureForm extends FORM {
     // if (!await this.inDelete())
     //   return
 
-    this.bt_modify.prop.Visible = false;
-    this.bt_save.prop.Visible = false;
-    this.bt_delete.prop.Visible = false;
+    this.Form.bt_modify.prop.Visible = false;
+    this.Form.bt_save.prop.Visible = false;
+    this.Form.bt_delete.prop.Visible = false;
 
-    if ((await MessageBox(this.bt_delete.prop.Caption, 4, "")) === 6) {
+    if ((await MessageBox(this.Form.bt_delete.prop.Caption, 4, "")) === 6) {
       console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
       const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
 
@@ -577,9 +583,9 @@ export class captureForm extends FORM {
       await this.requery(this.prop.RecordSource, m.key_pri, true)
 
     }
-    this.bt_modify.prop.Visible = true;
-    this.bt_save.prop.Visible = true;
-    this.bt_delete.prop.Visible = true;
+    this.Form.bt_modify.prop.Visible = true;
+    this.Form.bt_save.prop.Visible = true;
+    this.Form.bt_delete.prop.Visible = true;
     return false
   }
 
