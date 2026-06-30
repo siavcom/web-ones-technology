@@ -31,7 +31,7 @@ export class team extends COMPONENT {
     this.prop.Max = "999"
     this.prop.Decimals = 0
     this.prop.Capture = true
-    this.prop.updateKey = true
+
 
     // this.RecordSource="" oJo
 

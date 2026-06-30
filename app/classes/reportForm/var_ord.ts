@@ -20,7 +20,7 @@ export class var_ord extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.Capture = false;
-    this.prop.updateKey = true;
+    ;
     this.prop.ColumnWidths = "200px,56px";
     //  this.style.width = "auto";
 

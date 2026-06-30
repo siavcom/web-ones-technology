@@ -27,7 +27,7 @@ export class team extends CAPTURECOMPONENT {
         this.prop.ColumnCount = 2
         this.prop.BoundColumn = 2
         this.prop.Capture = true
-        this.prop.updateKey = true
+
 
         // this.RecordSource="" oJo
 

@@ -171,6 +171,7 @@ export class COMPONENT {
     //  width: "100%"
     paddingLeft: "auto",
 
+
   }
 
   captionStyle = {
@@ -255,6 +256,16 @@ export class COMPONENT {
     zIndex: 1, // profundidad
 
   };
+  classCss = {
+    1: 'sm:w-full px-2 py-1',
+    label: 'text-sm text-slate-700 tracking-tight',
+    containerComponent: 'w-full flex flex-col',
+    containerInput: 'flex items-center',
+    input: 'w-full rounded-lg border bg-white px-2 py-1 text-sm text-slate-900 placeholder-slate-400 shadow-xs  transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 text-right',
+    inputDefault: 'border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100',
+    inputError: 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100',
+    toggle: ''
+  }
 
   position = {
     position: "left",
@@ -283,7 +294,7 @@ export class COMPONENT {
         boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
         padding: '10px',
         // display: 'inline-flex',
-        width: '-moz-available',
+        maxWidth: '95%',// '-moz-available',
         display: 'flex',
         flexWrap: 'wrap',
         alignContent: 'space-around' // 'space-between'  

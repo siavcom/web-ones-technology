@@ -3871,12 +3871,19 @@ export const jasperReport = async (query: string, for_rep: string, dataView?: st
     //   return buffer
 }
 
+/**
+ * @description Timbra un CFDI
+ * @param {string} tdo_tdo - Tipo de documento
+ * @param {number} ndo_doc - Numero de documento
+ * @returns {Promise<boolean>} - true si se timbro correctamente, false en caso contrario
+ */
+/*
 export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     const dat_timbrado = {
         // id_con: This.value.session.id_con,
-        tip_llamada: "GENCFDI",
+        tip_llamada: "timbraCFDI",
         tdo_tdo: tdo_tdo,
         ndo_doc: ndo_doc
     };
@@ -3892,6 +3899,73 @@ export const timbraCFDI = async (tdo_tdo: string, ndo_doc: number) => {
         return false;
     }
 }
+*/
+/**
+ * @description Cancela un CFDI
+ * @param {string} tdo_tdo - Tipo de documento
+ * @param {number} ndo_doc - Numero de documento
+ * @returns {Promise<boolean>} - true si se cancelo correctamente, false en caso contrario
+ */
+/*
+export const cancelaCFDI = async (tdo_tdo: string, ndo_doc: number, tip_cau: number, fol_sub: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    const dat_timbrado = {
+        // id_con: This.value.session.id_con,
+        tip_llamada: "cancelaCFDI",
+        tdo_tdo: tdo_tdo,
+        ndo_doc: ndo_doc,
+        tip_cau: tip_cau,
+        fol_sub: fol_sub
+    };
+
+    try {
+        Processing('Solicitud de CANCELACION de CFDI')
+        const response: any = await axiosCall(dat_timbrado);
+        closeProcessing()
+        return true;
+    } catch (error: any) {
+        errorAlert("Solicitud de CANCELACION de CFDI :" + error.response.statusText);
+        closeProcessing('Error al tratar de solicitar la CANCELACION CFDI')
+        return false;
+    }
+}
+*/
+/**
+ * @description Obtiene el estatus de un CFDI
+ * @param {string} tdo_tdo - Tipo de documento
+ * @param {number} ndo_doc - Numero de documento
+ * @returns {Promise<boolean>} - Estatus del CFDI ante el SAT
+ */
+/*
+export const statusCFDI = async (tdo_tdo: string, ndo_doc: number) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    const dat_timbrado = {
+        // id_con: This.value.session.id_con,
+        tip_llamada: "statusCFDI",
+        tdo_tdo: tdo_tdo,
+        ndo_doc: ndo_doc
+    };
+
+    try {
+        Processing('Solicitud de ESTATUS de CFDI')
+        const response: any = await axiosCall(dat_timbrado);
+        closeProcessing()
+        return true;
+    } catch (error: any) {
+        errorAlert("Solicitud de ESTATUS de CFDI :" + error.response.statusText);
+        closeProcessing('Error al tratar de solicitar el ESTATUS CFDI')
+        return false;
+    }
+}
+
+*/
+
+/**
+ * @description borra una vista de la base de datos local
+ * @param {string} alias - Alias de la vista
+ */
 
 export function dropView(alias: string) {
     localAlaSql(
@@ -3932,8 +4006,12 @@ export const xmlToCursor = async (xml: string, alias: string) => {
 
 }
 
-const errorAlert = async (message: string) => {
+/**
+ * @description Muestra una alerta de error
+ * @param message 
+ */
 
+export const errorAlert = async (message: string) => {
     await MessageBox(message, 16, "ERROR", 10000);
     //alert(message);
 }

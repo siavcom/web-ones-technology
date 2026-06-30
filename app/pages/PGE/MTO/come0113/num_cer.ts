@@ -22,7 +22,7 @@ export class num_cer extends CAPTURECOMPONENT {
     this.prop.Placeholder = "Número de certificado";
     this.prop.ErrorMessage = "Certificado inválido";
     this.prop.Capture = true;
-    this.prop.updateKey = true;
+    ;
 
     this.prop.Visible = false
     this.inputStyle.width = '254px'

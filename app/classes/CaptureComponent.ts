@@ -50,14 +50,14 @@ export class CAPTURECOMPONENT extends COMPONENT {
   // event valid
   // Solo os campos updateKey
   ///////////////////////////////////
-  override async valid() {
+  override async valid(mem?: {}) {
 
     this.Form.sw_update = true
     if (this.prop.ReadOnly || !this.prop.updateKey || !this.prop.Capture) {
       return true
     }
 
-    this.prop.Valid = await this.Form.validKeyComponent(ref(this));
+    this.prop.Valid = await this.Form.validKeyComponent(ref(this), mem);
 
     return this.prop.Valid;
   }

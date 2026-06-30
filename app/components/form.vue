@@ -408,15 +408,15 @@ watch(Valid, async (new_val) => {
 
 
       }
-      if (!sw_found) {
-
-        ////////////////////
-        console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
-        //      ThisForm.bt_modify.prop.Visible = false
-        ThisForm.bt_delete.prop.Visible = false
-
-        return
-      }
+      /* if (!sw_found) {
+ 
+         ////////////////////
+         console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
+         //      ThisForm.bt_modify.prop.Visible = false
+         ThisForm.bt_delete.prop.Visible = false
+ 
+         return
+       }*/
     }
   }
   /*
