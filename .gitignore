@@ -23,3 +23,13 @@ logs
 .env.*
 !.env.example
 
+app/classes/Siavcom
+app/composables/comeutl.ts
+app/composables/contutl.ts
+
+app/pages/COM
+app/pages/CXC
+app/pages/CXP
+app/pages/INV
+app/pages/VEN
+app/pages/VTA
