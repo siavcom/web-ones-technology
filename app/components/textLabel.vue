@@ -18,11 +18,14 @@
       readonly="true" @focus="nextElement()" v-model="Text" />
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
       :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
-    <button class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'" :style="Styles.inputStyle">
-      <img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
+    <imgButton class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
+      v-model:Value="This.prop.Value" v-model:Status="This.prop.Status"
+      :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop" :style="This.style"
+      :position="This.position" />
+    <!--img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text != null && Text.length > 0"
-        :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label>
-    </button>
+        :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label </imgButton>-->
+
     <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
       readonly="true" @focus="nextElement()" v-model="Text" />
 
@@ -41,7 +44,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" vapor>
 
 const emit = defineEmits(["update", "update:checkValue"]);
 

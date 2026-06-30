@@ -23,6 +23,7 @@ export class captureForm extends FORM {
     this.prop.BaseClass = "CaptureForm"
     this.style.width = "-moz-available";
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
+    this.prop.showDelete = true
     //this.prop.Messages[100] = 'Grabamos datos'
     //this.prop.Messages[101] = 'Borramos los datos'
     // asignamos los Recno de los componentes de main 
@@ -158,8 +159,8 @@ export class captureForm extends FORM {
     //  thisComp.prop.Valid = false
     if (this.First == null)
       this.First = this.main.length > 0 ? this[this.main[0]] : null
-
-    this.Form.bt_delete.prop.Visible = false;
+    if (this.prop.showDelete)
+      this.Form.bt_delete.prop.Visible = false;
     this.Form.bt_modify.prop.Visible = false;
     this.Form.bt_save.prop.Visible = false;
     //  this.bt_save.prop.Visible = false;
@@ -173,7 +174,8 @@ export class captureForm extends FORM {
    *              Si no es un dato nuevo: Muestra los datos para permitir su
    *              modificacion
    */
-  async validKeyComponent(Comp: undefined) {
+  async validKeyComponent(Comp: undefined, mem?: {}) {
+    console.log('validKey meme=', mem)
 
     if (this.sw_update && this.Form.bt_save.prop.Visible)
       await this.Form.bt_save.click()
@@ -191,7 +193,10 @@ export class captureForm extends FORM {
 
     thisComp.prop.Valid = true;
     //const { ...m } = Public.value;
-    const m = { ...Public.value }
+
+
+    const m = mem ? { ...Public.value, ...mem } : { ...Public.value };
+    console.log('validKey m=', m)
 
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
@@ -207,14 +212,8 @@ export class captureForm extends FORM {
       }
     }
 
-
-
-    // Termino la validacion de llaves principales
     //  thisComp.prop.Valid = true;
-
     // Leemos datos de la tabla de actualizacion
-
-
     // console.log('1) validComponent use this.prop.RecordSource', this.prop.RecordSource, 'm=', m)
     const data = await use(this.prop.RecordSource, m);
     // console.log('2) validComponent data=', data)
@@ -291,7 +290,8 @@ export class captureForm extends FORM {
     await nextTick(() => {
 
       this.bt_modify.prop.Visible = true;
-      this.bt_delete.prop.Visible = true;
+      if (this.prop.showDelete)
+        this.bt_delete.prop.Visible = true;
       //this.bt_modify.prop.Focus = true;
     })
 
@@ -521,8 +521,8 @@ export class captureForm extends FORM {
       }
     }
     await nextTick()
-
-    this.bt_delete.prop.Visible = true;
+    if (this.prop.showDelete)
+      this.bt_delete.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true
     return
   }

@@ -19,7 +19,7 @@ export class cam_dat extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.Capture = false;
-    this.prop.updateKey = true;
+    ;
     this.prop.ColumnWidths = "264px,128px";
     this.style.width = "256px";
     this.style.marginLeft = "10px";

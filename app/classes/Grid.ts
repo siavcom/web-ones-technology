@@ -56,6 +56,8 @@ export class GRID extends COMPONENT {
     this.style.background = "beige";
     this.Recno = 0;
 
+    this.prop.ColBrake = ''
+
     //  this.prop.Messages[0] = "Actualizamos la tabla";
     //  this.prop.Messages[1] = "Actualizamos el renglon";
     // this.prop.Messages[2] = "Datos actualizados ";

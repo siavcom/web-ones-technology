@@ -26,7 +26,7 @@ export class log_usr extends CAPTURECOMPONENT {
       this.prop.ToolTipText = 'login'
       this.prop.MaxLength = 62
       this.prop.Capture = true
-      this.prop.updateKey = true
+
       this.prop.ReadOnly = true
       this.inputStyle.width = "192px";
       this.prop.ErrorMessage = 'Usuario inválido';

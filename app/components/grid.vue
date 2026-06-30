@@ -1280,6 +1280,24 @@ table {
 
 }
 
+@media (max-width: 600px) {
+
+  /* Convierte las filas en bloques separados para pantallas pequeñas */
+  tr {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  td {
+    display: block;
+    text-align: right;
+  }
+}
+
+
+
+
+
 table.gridTable {
   border-collapse: collapse;
   width: fit-content;

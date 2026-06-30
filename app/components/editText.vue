@@ -1,7 +1,10 @@
 <template>
-  <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
-  <span :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
-    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+  <!--Se necesita el siguiente div para que funcione el siguiente v-show
+     28/Jun/2026 .-Se quita el spqm y se cambia por <div style="display: inline-block;"
+                  el display inline-block permite que los elementos que contiene el div, parreczcan seguidos de el
+    -->
+  <div style="display: inline-block;" :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText"
+    :style="Styles.style" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption }}
     </span>
@@ -125,7 +128,7 @@
 
     <!--Compponentes que no estan en bloque-->
 
-    <div class="component_container" v-if='This.main.length > 0' :style="containerStyle">
+    <div class="editText_container" v-if='This.main.length > 0' :style="containerStyle">
       <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
         :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
@@ -157,7 +160,7 @@
     @click.capture="This.eventos.push(This.map+'.' + compMain + '.click()')" 
            @click.capture="This.Form.eventos.push(This[compMain].prop.Map + '.click()')">-->
 
-  </span>
+  </div>
 </template>
 
 <script setup lang="ts">

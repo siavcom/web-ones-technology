@@ -24,7 +24,7 @@ export class cer_cer extends CAPTURECOMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.Capture = true;
-    this.prop.updateKey = true;
+    ;
     this.prop.ColumnWidths = "256px,0px";
     this.inputStyle.height = "17px";
     this.inputStyle.width = "256px";
