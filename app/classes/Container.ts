@@ -20,7 +20,7 @@ export class CONTAINER extends COMPONENT {
     this.prop.BaseClass = 'container' //'modalContainer'//
     this.prop.Position = 'main'
     this.prop.Capture = false;
-    this.style.borderRadius = '20px'
+    // this.style.borderRadius = '20px'
     this.captionStyle.color = 'black'
     this.captionStyle.fontWeight = 'bold'
     this.captionStyle.fontSize = '17px'
@@ -35,7 +35,7 @@ export class CONTAINER extends COMPONENT {
     this.containerStyle.flexWrap = 'wrap'
     this.containerStyle.width = 'min-content'
 
-    this.style.border = '2px solid black'
+    //this.style.border = '2px solid black'
     this.style.borderRadius = '5px'
 
     // Estilo de cada contenedor del modal

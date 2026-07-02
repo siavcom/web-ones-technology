@@ -1785,9 +1785,9 @@ const styleAssing = async () => {
 
   if (Type == 'json') {
     Styles.style.borderWidth = '1px'
-    Styles.style.borderStyle = 'solid'
+    // Styles.style.borderStyle = 'solid'
     Styles.style.height = 'auto'
-    Styles.style.borderRadius = '4px'
+    // Styles.style.borderRadius = '4px'
     Styles.style.color = 'black'
   }
 

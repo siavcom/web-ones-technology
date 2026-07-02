@@ -16,6 +16,7 @@ export class captureForm extends FORM {
   public First = null
   sw_update = false; // bandera de nuevo registro
   nom_obj = {}// objetos de validacion
+  blockCapturaXml: any = null
 
   // se debe de poner siempre el contructor
   constructor() {
@@ -161,7 +162,12 @@ export class captureForm extends FORM {
       this.First = this.main.length > 0 ? this[this.main[0]] : null
     if (this.prop.showDelete)
       this.Form.bt_delete.prop.Visible = false;
+
     this.Form.bt_modify.prop.Visible = false;
+    if (this.blockCapturaXml !== null) {
+      this.Form.Bt_campos_xml.prop.Visible = false;
+    }
+
     this.Form.bt_save.prop.Visible = false;
     //  this.bt_save.prop.Visible = false;
 
@@ -196,7 +202,7 @@ export class captureForm extends FORM {
 
 
     const m = mem ? { ...Public.value, ...mem } : { ...Public.value };
-    console.log('validKey m=', m)
+    console.log('validKey m=', mem)
 
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
@@ -290,6 +296,10 @@ export class captureForm extends FORM {
     await nextTick(() => {
 
       this.bt_modify.prop.Visible = true;
+      if (this.blockCapturaXml !== null) {
+
+        this.Form.Bt_campos_xml.prop.Visible = true;
+      }
       if (this.prop.showDelete)
         this.bt_delete.prop.Visible = true;
       //this.bt_modify.prop.Focus = true;
@@ -524,6 +534,8 @@ export class captureForm extends FORM {
     if (this.prop.showDelete)
       this.bt_delete.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true
+    if (this.blockCapturaXml !== null)
+      this.Form.Bt_campos_xml.prop.Visible = true
     return
   }
 
@@ -565,6 +577,9 @@ export class captureForm extends FORM {
     //   return
 
     this.Form.bt_modify.prop.Visible = false;
+    if (this.blockCapturaXml !== null)
+      this.Form.Bt_campos_xml.prop.Visible = false;
+
     this.Form.bt_save.prop.Visible = false;
     this.Form.bt_delete.prop.Visible = false;
 
@@ -584,6 +599,8 @@ export class captureForm extends FORM {
 
     }
     this.Form.bt_modify.prop.Visible = true;
+    if (this.blockCapturaXml !== null)
+      this.Form.Bt_campos_xml.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true;
     this.Form.bt_delete.prop.Visible = true;
     return false
