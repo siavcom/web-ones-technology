@@ -816,6 +816,20 @@ body {
   list-style: none;
 }
 
+.nav-list > li{
+  padding: 10px 5px !important;
+  border-radius: 6px !important;
+  margin-bottom: 5px;
+}
+
+.sidebar li:hover {
+  background-color: #00800040;
+}
+
+.sidebar > li:hover span{
+  color: #ffffff !important;
+}
+
 .sidebar li .tooltip {
   position: absolute;
   top: -20px;
@@ -882,13 +896,12 @@ body {
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
-  background: var(--bg-color);
 }
 
 
 .sidebar li a .links_name {
   color: var(--menu-items-text-color);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 400;
   white-space: nowrap;
   opacity: 0;
