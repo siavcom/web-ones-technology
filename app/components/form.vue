@@ -27,65 +27,72 @@
   <div v-else @click.middle.stop="middleClick()">
     <transition name='Mainform'>
 
-      <div id='ThisForm' :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
+      <div id='ThisForm' class="form form_class1" :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
         :style="{ 'width': '-moz-available' }">
-        <section class="ThisForm" :style="ThisForm.style">
-          <div id='backGround' class='backGround'>
+        <section class="ThisForm form form_class2" :style="ThisForm.style">
+          <div id='backGround' class='backGround form form_class3'>
             <!--VueForm class="cuerpo" v-bind:style="ThisForm.style" v-bind:position="ThisForm.position"-->
-            <section class="formheader" :style="ThisForm.headerStyle">
-              <slot name="header">
+            <section class="formheader form form_class4" :style="ThisForm.headerStyle">
+              <slot name="header" class="form form_class5">
 
                 <!--template v-slot:header-->
-                <h2 class="header2" float="left">
-                  <div id="titFor" class="titFor" :style="ThisForm.captionStyle">
-                    <label text-align="center">{{ ThisForm.prop.Caption }}</label>
+                <h2 class="header2 form form_class6" float="left">
+                  <div id="titFor" class="titFor form form_class7" :style="ThisForm.captionStyle">
+                    <label text-align="center" class="form form_class8">{{ ThisForm.prop.Caption }}</label>
                   </div>
                 </h2>
 
                 <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
-                  :class="compHeader" v-show='ThisForm[compHeader].prop.Visible'>
+                  :class="compHeader" v-show='ThisForm[compHeader].prop.Visible' class="form form_class9">
                   <component :id="'component_' + compHeader" :is="impComponent(ThisForm[compHeader].prop.BaseClass)"
                     :ShowError="ThisForm[compHeader].prop.ShowError"
                     :Registro="!ThisForm[compHeader].Recno.isNaN(NaN) ? ThisForm[compHeader].Recno : 0"
                     :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                    :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value" />
+                    :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value"
+                    class="form form_class10" />
                 </div>
 
               </slot>
             </section>
             <!-- Despliega todo los componentes de la forma  -->
-            <section class="formmain" :style="ThisForm.mainStyle">
-              <slot name="main">
+            <section class="formmain form form_class11" :style="ThisForm.mainStyle">
+              <slot name="main" class="form form_class12">
 
-                <TransitionGroup name='detailForm'>
+                <TransitionGroup name='detailForm' class="form form_class13">
 
                   <div :id="Id + '_' + compMain" v-if="ThisForm.block.length == 0" v-for="(compMain) in ThisForm.main"
-                    :key="compMain" :class="compMain" v-show='ThisForm[compMain].prop.Visible'>
+                    :key="compMain" :class="compMain" v-show='ThisForm[compMain].prop.Visible'
+                    class="form form_class14">
                     <component v-if="ThisForm[compMain].prop.Visible"
                       :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                       v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
                       :Registro="typeof ThisForm[compMain].Recno === 'number' ? ThisForm[compMain].Recno : 0"
                       :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                      :position="ThisForm[compMain].position" />
+                      :position="ThisForm[compMain].position" class="form form_class15" />
                   </div>
                   <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
-                  <div v-else :id="Id + 'block_divi_' + key" v-for="(block, key) in ThisForm.block" :key="key">
-                    <label :style="block.titleStyle" v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-                    <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
-                      <div v-for="(component, key) in block.component" :key="key"
-                        :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
-                        <!--div v-if="component.prop"--><!-- {{ component.prop.Name }} -->
-                        <component v-if="component.prop" :id="Id + '_blockComponent_' + key + component.prop.Name"
-                          :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                          v-model:Status="component.prop.Status"
-                          :Registro="typeof component.Recno == 'number' ? component.Recno : 0" :prop="component.prop"
-                          :style="component.style" :position="component.position">
-                        </component>
-                        <!--/div-->
+                  <template v-else v-for="(block, key) in ThisForm.block" :key="key">
+                    <div  :id="Id + 'block_divi_' + key" class="form form_class16" v-if="block.prop.Visible">
+                      <label :style="block.titleStyle" class="form form_class17"
+                        v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+                      <div :id="Id + 'block_' + key" :style="block.style"
+                        class="form form_class18">
+                        <div v-for="(component, key) in block.component" :key="key"
+                          :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px"
+                          class="responsive form form_class19">
+
+                          <component v-if="component.prop" :id="Id + '_blockComponent_' + key + component.prop.Name"
+                            :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
+                            v-model:Status="component.prop.Status"
+                            :Registro="typeof component.Recno == 'number' ? component.Recno : 0" :prop="component.prop"
+                            :style="component.style" :position="component.position" class="form form_class20">
+                          </component>
+
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </template>
                   <!------------------------------------------------------------->
                 </TransitionGroup>
               </slot>
@@ -93,32 +100,35 @@
 
             <!--/template-->
             <!--template v-slot:footer  -->
-            <section class="formfooter" :style="ThisForm.footerStyle">
+            <section class="formfooter form form_class20" :style="ThisForm.footerStyle">
               <!--Transition tag='div' -->
-              <nuxt-img class='circle'
+              <nuxt-img class='circle form form_class21'
                 :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
                 style="float:left" />
               <!--/Transition-->
-              <slot name="footer">
+              <slot name="footer" class="form form_class22">
                 <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
               v-bind:db="ref(ThisForm.db)"
                 -->
+                <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer">
+                  <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter"
+                    class="form  form_class23">
+                    <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
+                      v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
+                      :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"
+                      :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style"
+                      :position="ThisForm[compFooter].position" class="form form_class24" />
 
-                <div :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer" :class="compFooter">
-                  <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
-                    v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
-                    :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"
-                    :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style"
-                    :position="ThisForm[compFooter].position" />
-
-                  <!--:inputStyle="ThisForm[compFooter].inputStyle"
-                  @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
-                </div>
+                    <!--:inputStyle="ThisForm[compFooter].inputStyle"
+                    @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
+                  </div>
+                </template>
+                
               </slot>
 
-              <div id="salir" class="salir" @click='clickSalir()'>
+              <div id="salir" class="salir form form_class25" @click='clickSalir()'>
 
-                <img id="icono_salir" class='img' src="/Iconos/svg/exit4-color.svg" :style="{
+                <img id="icono_salir" class='img form form_class26' src="/Iconos/svg/exit4-color.svg" :style="{
                   'float': 'right',
                   'word-wrap': 'break-word',
                   'font-size': '13px',
@@ -128,9 +138,9 @@
 
               </div>
 
-              <div class='login' v-if="user != '' && id_con == '' && nom_emp != ''">
+              <div class='login form form_class27' v-if="user != '' && id_con == '' && nom_emp != ''">
                 <!--teleport to="#modal"-->User:{{ user }} Password:
-                <input type="password" v-model.trim="password" @focusout="pass = password">
+                <input type="password" class="form form_class28" v-model.trim="password" @focusout="pass = password">
                 <!--/teleport-->
               </div>
 

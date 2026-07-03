@@ -1,14 +1,14 @@
 <template>
-  <span :id="Id + '_component'" class="divi_imgButton" :title="This.prop.ToolTipText" :style="Styles.style"
+  <div :id="Id + '_component'" class="divi_imgButton imgbutton imgbutton_class1" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!-- UButton -->
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
-      :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut"
+      :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut" class="imgbutton imgbutton_class2"
       @click.stop="click" :style="{ width: '100%' }">
       <img :id="Id + '_img_'" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        :style="{ display: 'block', width: '100%' }" @click.stop="click" />
+        :style="{ display: 'block', width: '100%' }" @click.stop="click" class="imgbutton imgbutton_class3"/>
       <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
-      <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
+      <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click" class="imgbutton imgbutton_class4"
         :style="Styles.captionStyle">
         {{ prop.Caption }}</label>
     </button>
@@ -18,10 +18,10 @@
     <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="props.Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :position="This[compMain].position">
+      :style="This[compMain].style" :position="This[compMain].position" class="imgbutton imgbutton_class5" @click.stop="click" @focus.stop="onFocus">
     </component>
 
-  </span>
+  </div>
 </template>
 
 <script setup lang="ts">

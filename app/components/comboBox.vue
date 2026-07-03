@@ -14,19 +14,19 @@
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
 
-  <span :id="Id + '_component'" class="divi inputDivi" :title="This.prop.ToolTipText" :style="Styles.style"
+  <div :id="Id + '_component'" class="divi inputDivi combo combo_class1" :title="This.prop.ToolTipText" :style="Styles.style"
     v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <!--Etiqueta del componente -->
     <!--div class=" mensajes" v-show="This.prop.Visible" -->
 
-    <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
+    <span :id="Id + '_label'" class="etiqueta combo combo_class2" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
     }}</span>
     <!--List Box -->
-    <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect" @lostFocus="validList()">
+    <div :id="Id + '_multiselect'" v-if="MultiSelect" class="multiSelect combo combo_class3" @lostFocus="validList()">
       <!--select v-model="List" multiple-->
-      <div :id="Id" class="columnContainer" @focusout="toggle = !toggle" :style="columnContainer">
-        <div :id="Id + '_options_' + option" class="option" v-for="(option, valueIndex) in columnas"
+      <div :id="Id" class="columnContainer combo combo_class5" @focusout="toggle = !toggle" :style="columnContainer">
+        <div :id="Id + '_options_' + option" class="combo combo_class6 option" v-for="(option, valueIndex) in columnas"
           @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validCheck(valueIndex)"
           :disabled="prop.ReadOnly" :style="{
             'background': option.check ? 'rgb(163, 193, 168)' : 'white',
@@ -37,12 +37,12 @@
 
           <!--Imprime Columnas -->
 
-          <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
+          <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="combo combo_class7 columna" :disabled="prop.ReadOnly"
             v-for="(text, col) in option.text" :key="col" :style="{
               'background': option.check ? 'rgb(163, 193, 168)' : 'white',
               'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': inputStyle.height
             }">
-            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
+            <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="combo combo_class8 optionLabel" v-text="text"
               :style:="columncaptionStyle" />
           </div>
 
@@ -50,7 +50,7 @@
             width="15px" /-->
 
           <!--div v-show='option.check'>+</div-->
-          <!--input  class="checkBox" type="checkbox" v-model="option.check" /-->
+          <!--input  class="combo combo_class4 checkBox" type="checkbox" v-model="option.check" /-->
 
         </div>
 
@@ -59,49 +59,57 @@
     </div>
 
     <!--         ComboBox NOT MultiSelect      -->
-    <div :id="Id + '_selectOne'" v-else class="comboBox text" ref="RefCombo" :style='comboStyle'>
-      <input :id="Id" class="text" :style="Styles.inputStyle" :disabled="prop.Disabled"
+    <div :id="Id + '_selectOne'" v-else class="combo combo_class9 comboBox text" ref="RefCombo" :style='comboStyle'>
+      <input :id="Id" class="combo combo_class10 text" :style="Styles.inputStyle" :disabled="prop.Disabled"
         :readonly="prop.ReadOnly || onlyRead" :value="displayText" :tabindex="prop.TabIndex" ref="Ref"
         @keydown="keyDown" @focus.prevent="toggle = false; onFocus()" @focusout="focusIn = false; emitValue()" />
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
-      <div :id="Id + '_toggle'" class="toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
+      <div :id="Id + '_toggle'" class="combo combo_class11 toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
         :style="{ width: 'auto' }">
         <!--CheckBox -->
-        <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled" class="columContainer"
+        <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled" class="combo combo_class12 columContainer"
           @focusout="toggle = !toggle" :style="columnContainer">
           <!--Columnas -->
 
-          <div :id="Id + '_options_' + valueIndex" class="option" v-for="(option, valueIndex) in columnas"
-            @mouseover="hover = true" :key="valueIndex" @mouseleave="hover = false" @click.stop="validClick(valueIndex)"
-            :disabled="prop.ReadOnly">
+          <template v-for="(option, valueIndex) in columnas" :key="valueIndex">
+            <div :id="Id + '_options_' + valueIndex" class="combo combo_class13 option"
+            @mouseover="hover = true" @mouseleave="hover = false" @click.stop="validClick(valueIndex)"
+            :disabled="prop.ReadOnly" :style="{
+              'background-color': displayText.trim() == option.text[0].trim() ? '#7aac67' : 'white',
+              'color': displayText.trim() == option.text[0].trim() ? 'white' : 'black'
+            }">
             <!--Imprime Columnas -->
-
-            <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="columna" :disabled="prop.ReadOnly"
-              v-for="(text, col) in option.text" :key="col"
-              :style="{ 'width': width[col], 'text-align': 'left', 'z-index': toggleZIndex, 'height': inputStyle.height }">
-              <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="optionLabel" v-text="text"
-                :style:="columncaptionStyle" />
+              <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="combo combo_class14 columna" :disabled="prop.ReadOnly"
+                v-for="(text, col) in option.text" :key="col"
+                :style="{ 
+                  'width': width[col], 'text-align': 'left', 
+                  'z-index': toggleZIndex, 'height': inputStyle.height,
+                  
+                }">
+                <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="combo combo_class15 optionLabel" v-text="text"
+                  :style:="columncaptionStyle" />
+              </div>
+              
             </div>
-
-          </div>
+          </template>
         </div>
       </div>
       <!--toggle click.prevent -->
-      <nuxt-img :id="Id + '_toggle_img'" class="toggleImagen" :style="toggleStyle"
+      <nuxt-img :id="Id + '_toggle_img'" class="combo combo_class16 toggleImagen" :style="toggleStyle"
         v-if="!This.prop.ReadOnly && !This.prop.Disabled && !onlyRead"
         :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       <!--/div-->
     </div>
-    <!--span class="errorText" v-show="!prop.Valid && displayError">{{ prop.ErrorMessage }}</span-->
+    <!--span class="combo combo_class4 errorText" v-show="!prop.Valid && displayError">{{ prop.ErrorMessage }}</span-->
 
 
     <img :id="Id + '_help'"
-      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
+      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon combo combo_class17'
       src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
-    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{ This.prop.ErrorMessage.toString().length >= 1 ?
+    <div :id="Id + '_error'" class="combo combo_class18 errorText" v-show="displayError">{{ This.prop.ErrorMessage.toString().length >= 1 ?
       This.prop.ErrorMessage
       :
       '--- Invalid Input ---'
@@ -113,25 +121,25 @@
       v-bind:style="This[compMain].style" v-bind:position="This[compMain].position"> 
     </component-->
 
-    <div class="component_container" :style="containerStyle">
+    <div class="combo combo_class19 component_container" :style="containerStyle" v-if="This.main && Object.keys(This.main).length > 0">
       <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
         :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
-        :position="This[compMain].position">
+        :position="This[compMain].position" class="combo combo_class20">
       </component>
     </div>
 
     <!--Compponentes en bloque-->
-    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
-      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key" class="combo combo_class21">
+      <label v-if="block.title && block.prop.Visible" class="combo combo_class22">{{ block.title }}</label>
+      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style" class="combo combo_class23">
 
         <div v-for="(component, key) in block.component" :key="key"
-          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px" class="combo combo_class24">
           <!--v-bind:Component="ref(Ele)"-->
           <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
             v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
-            :prop="component.prop" :position="component.position">
+            :prop="component.prop" :position="component.position" class="combo combo_class25">
             <!--:style="component.style" :inputStyle="component.inputStyle"
                                                
                       @click.capture="component.click()"-->
@@ -139,7 +147,7 @@
         </div>
       </div>
     </div>
-  </span>
+  </div>
   <!--v-bind:inputStyle="This[compMain].inputStyle"
   span v-if="prop.ShowValue">{{ prop.Value }}</span-->
   <!--/div-->

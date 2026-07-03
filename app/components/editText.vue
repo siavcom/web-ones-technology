@@ -3,9 +3,9 @@
      28/Jun/2026 .-Se quita el spqm y se cambia por <div style="display: inline-block;"
                   el display inline-block permite que los elementos que contiene el div, parreczcan seguidos de el
     -->
-  <div style="display: inline-block;" :id="Id + '_component'" class=" divi inputDivi" :title="This.prop.ToolTipText"
+  <div style="display: inline-block;" :id="Id + '_component'" class=" divi inputDivi edit edit_class1" :title="This.prop.ToolTipText"
     :style="Styles.style" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
+    <span :id="Id + '_label'" class="etiqueta edit edit_class2" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption }}
     </span>
 
@@ -16,7 +16,7 @@
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keydown="keyDown" -->
 
-    <input :id="Id" v-if="propType == 'number'" class="number" ref="Ref" :style=Styles.inputStyle type="text"
+    <input :id="Id" v-if="propType == 'number'" class="number edit edit_class3" ref="Ref" :style=Styles.inputStyle type="text"
       v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus" @focus="onFocus"
       @keydown="keyDown" v-imask="maskOptions" @accept="onAccept" @init="onInit">
@@ -41,7 +41,7 @@
     -->
     <!--spinner-->
 
-    <input :id="Id" v-else-if="propType == 'spinner'" class="number" type="number" :style=Styles.inputStyle ref="Ref"
+    <input :id="Id" v-else-if="propType == 'spinner'" class="number edit edit_class3" type="number" :style=Styles.inputStyle ref="Ref"
       :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
       :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex" @keydown="keyDown"
       @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)">
@@ -50,7 +50,7 @@
     <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
     <!--textArea -->
     <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
-    <textarea :id="Id + '_textarea'" class="textArea" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
+    <textarea :id="Id + '_textarea'" class="textArea edit edit_class3" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
       :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="This?.prop.Rows || 2"
       :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus" @focusout="lostFocus"></textarea>
@@ -60,7 +60,7 @@
     <!--/spam-->
     <!--fecha v-model="currentValue[1]"  v-model="currentDate" se utiliza el value para que con emit funcione-->
     <!--div v-else-if="propType.slice(0, 4) == 'date'"-->
-    <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date" ref="Ref"
+    <input :id="Id" v-else-if="propType == 'date' || propType == 'datetime'" class="date edit edit_class3" ref="Ref"
       :style=Styles.inputStyle :type="propType == 'datetime' ? 'datetime-local' : 'date'" :min="prop.Min"
       :max="prop.Max" v-model="currentDate" :disabled="This.prop.Disabled" :readonly="This.prop.ReadOnly || onlyRead"
       :tabindex="prop.TabIndex" @focus="onFocus" @focusout="lostFocus" @keydown="keyDown">
@@ -70,22 +70,22 @@
     <!--input v-show="focusIn == 0" class="text" :style=Styles.inputStyle type="text" v-model="displayDate"
           :readonly="true" :placeholder="prop.Placeholder" @focus="onFocus"-->
     <!--/div-->
-    <div :id="Id" class='json' v-else-if="propType == 'json'" ref="Ref" :style=Styles.style>
+    <div :id="Id" class='json edit edit_class4' v-else-if="propType == 'json'" ref="Ref" :style=Styles.style>
       <!--span  v-if="currentJson[comp][data].type=='label'">{{ currentJson[comp][data].value + " " }}</span>
                 <input v-if="currentJson[comp][data].type==!label"
                   v-model="currentJson[comp][data].value" :type="currentJson[comp][data].type" -->
 
       <!--TransitionGroup name='detailJson' tag="div"-->
       <!--details-->
-      <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true'>
+      <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true' class='json edit edit_class5'>
         <!--summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'-->
-        <label>{{ comp.label }}
+        <label class='json edit edit_class6'>{{ comp.label }}
         </label>
         <!--/summary-->
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
           :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
           :disabled="comp.disabled || This.prop.Disabled ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus" @focus="onFocus">
+          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus" @focus="onFocus" class='json edit edit_class7'>
 
       </div>
       <!--/details-->
@@ -97,13 +97,13 @@
          checkValue automaticamente cambia de valor cuando se selecciona y con el washer cambiamos el valor This.prop.Value 
          -->
 
-    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox" type="checkbox" :style=Styles.inputStyle
+    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox edit edit_class8" type="checkbox" :style=Styles.inputStyle
       ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
       :disabled="This.prop.Disabled || (checkValue && checkValueParent)" :tabindex="prop.TabIndex" v-model="checkValue"
       @focusout="lostFocus" @keydown="keyDown">
 
     <!--  TEXT   -->
-    <input :id="Id" v-else class="text" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
+    <input :id="Id" v-else class="text edit edit_class8" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
       v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :maxlength="MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       @focusout="lostFocus" @focus="onFocus" v-maska="maska" @maska="onMaska" @keydown="keyDown">
@@ -117,9 +117,9 @@
     <!--/span-->
 
     <img :id="Id + '_help'"
-      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon'
+      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon edit edit_class9'
       src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
-    <div :id="Id + '_error'" class="errorText" v-show="displayError">{{
+    <div :id="Id + '_error'" class="errorText edit edit_class10" v-show="displayError">{{
       This.prop.ErrorMessage.toString().length >= 1 ?
         This.prop.ErrorMessage
         :
@@ -128,25 +128,25 @@
 
     <!--Compponentes que no estan en bloque-->
 
-    <div class="editText_container" v-if='This.main.length > 0' :style="containerStyle">
+    <div class="editText_container edit edit_class11" v-if='This.main.length > 0' :style="containerStyle">
       <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
         :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
-        :position="This[compMain].position">
+        :position="This[compMain].position" class="edit edit_class12">
       </component>
     </div>
 
     <!--Compponentes en bloque-->
-    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key">
-      <label v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style">
+    <div :id="Id + 'componentes_divi_' + key" v-for="(block, key) in This.block" :key="key" class="edit edit_class13">
+      <label v-if="block.title && block.prop.Visible" class="edit edit_class14">{{ block.title }}</label>
+      <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style" class="edit edit_class15">
 
         <div v-for="(component, key) in block.component" :key="key"
-          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px" class="edit edit_class16">
           <!--v-bind:Component="ref(Ele)"-->
           <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.Type)"
             v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
-            :prop="component.prop" :position="component.position">
+            :prop="component.prop" :position="component.position" class="edit edit_class17">
             <!--:style="component.style" :inputStyle="component.inputStyle"
                       @click.capture="component.click()"-->
           </component>
