@@ -181,7 +181,7 @@ export class captureForm extends FORM {
    *              modificacion
    */
   async validKeyComponent(Comp: undefined, mem?: {}) {
-    console.log('validKey meme=', mem)
+    // console.log('validKey meme=', mem)
 
     if (this.sw_update && this.Form.bt_save.prop.Visible)
       await this.Form.bt_save.click()
@@ -202,8 +202,8 @@ export class captureForm extends FORM {
 
 
     const m = mem ? { ...Public.value, ...mem } : { ...Public.value };
-    console.log('validKey m=', mem)
-
+    // console.log('validKey m=', mem)
+    let sw_act = true
     for (const comp of this.main) {// Busca si estan validados todos los componentes de captura
 
       //  console.log("validKeyComponent comp=", comp, "this[comp]=", this[comp])
@@ -216,7 +216,16 @@ export class captureForm extends FORM {
         else
           m[comp] = this[comp].prop.Value;
       }
+      if (this[comp].prop.updateKey && !this[comp].prop.Valid) {
+        sw_act = false;
+      }
+
     }
+    if (!sw_act) {
+      return true;
+    }
+
+    console.log('validKey m=', m)
 
     //  thisComp.prop.Valid = true;
     // Leemos datos de la tabla de actualizacion

@@ -177,15 +177,17 @@ export class HELP extends CONTAINER {
 
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
-
+      this.Parent.Help = false
+      this.Parent.prop.Visible = false
       await this.Parent.valid()
       //this.Parent.prop.Focus = true
 
     }
-    this.Parent.Help = false  //Aqui me quede
+
+    this.Parent.Help = false
     this.prop.Visible = false
     this.Parent.prop.Focus = true
-
+    this.bt_close.click()
     //this.browse.super.close()
   }
 

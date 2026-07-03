@@ -885,6 +885,12 @@ const lostFocus = async (fromReturn: number) => {
     return
   }
 
+  if (This.prop.Name == 'ndo_doc') {
+
+    // This.prop.Value = Value.value
+    console.log('1.1) lostFocus', This.prop.Name, 'Value=', Value.value)
+  }
+
   await asignaValue()
   // sw_emitValue = false 19/Feb/2026
   if (This.prop.Valid)
@@ -897,11 +903,21 @@ const lostFocus = async (fromReturn: number) => {
 }
 
 const asignaValue = async (new_val?: any) => {
+  /*
+    if (This.prop.Name == 'ndo_doc') {
+      console.log('1.1) lostFocus', This.prop.Name, 'Value=', Value.value)
+      debugger
+  
+    }
+  */
   const Type = propType.value
 
   This.prop.Status = 'P'
   if (Type == 'number') {
-    Value.value = +Value.value //30/May/2026
+    if (typeof Value.value === 'string') {
+      Value.value = +Value.value.replaceAll(',', '').replace(This.prop.Currency, '')
+    }
+
     /* 27/May/2022
       typeNumber.value = 'text';
       console.log('asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
@@ -914,12 +930,16 @@ const asignaValue = async (new_val?: any) => {
       Value.value = +currentValue.value[1]  //13/Ene/2024
      
   */
+
+    /*
     if (Value.value < +This.prop.Min)
-      This.prop.Valid = false
+        This.prop.Valid = false
+  
+      if (Value.value > +This.prop.Max)
+  
+        This.prop.Valid = false
+  */
 
-    if (Value.value > +This.prop.Max)
-
-      This.prop.Valid = false
 
     //  console.log('2) asignaValue editText Name', This.prop.Name, 'Value=', Value.value, 'currentValue=', currentValue.value[0], currentValue.value[1])
 
@@ -968,9 +988,7 @@ const asignaValue = async (new_val?: any) => {
       Value.value = Value.value.toLowerCase()
   }
 
-  // This.prop.Value = Value.value
-  console.log('1.1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
-
+  //console.log('1.1) lostFocus', This.prop.Name, 'ReadOnly=', This.prop.ReadOnly, 'Disabled=', This.prop.Disabled)
   if (new_val)
     await emitValue(false, true, new_val)
   else
@@ -1026,6 +1044,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   const Type = propType.value
   console.log('char', char, 'key', key)
   if (key == 'Tab' || char == 13) {
+    console.log('Tab or Enter pressed Name', This.prop.Name, 'Value=', Value.value)
     return
   }
   This.prop.Valid = false // comenzo a teclear. Apagamos validacion
@@ -1071,7 +1090,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   */
 
   This.keyPress(char)
-  console.log('3)>>>>>KeyDown===>', char, 'Type=', Type)
+  console.log('3)>>>>>KeyDown===>', char, 'Type=', Type, 'Value=', Value.value)
 
 }
 
@@ -1270,7 +1289,7 @@ const clickHelp = async () => {
   //This.prop.Valid = true
   displayError.value = false
   This.prop.ShowError = false
-
+  This.prop.Valid = true
   This.help.open()
   focusIn.value = 0
 
