@@ -1,24 +1,24 @@
 <template>
-  <div :id="Id + '_component'" v-show="prop.Visible" class="divi" :style="style" @click.middle.stop="middleClick()">
+  <div :id="Id + '_component'" v-show="prop.Visible" class="divi text text_class1" :style="style" @click.middle.stop="middleClick()">
 
     <!--div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
       :style="captionStyle">{{ prop.Caption +
         " " }}</div>-->
 
-    <span :id="Id + '_label'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && prop.Caption"
+    <span :id="Id + '_label'" class="etiqueta text text_class2" v-if="prop.BaseClass != 'imgButton' && prop.Caption"
       :style="Styles.captionStyle">{{ prop.Caption
       }}</span>
 
-    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox" type="checkBox"
+    <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox text text_class2" type="checkBox"
       :style=Styles.inputStyle :checked="checkValue" readonly="true" @focus="nextElement()" />
 
-    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text" value='Data' :style="Styles.inputStyle"
+    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text text text_class2" value='Data' :style="Styles.inputStyle"
       readonly="true" @focus="nextElement()" />
-    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text" type="date" :style="Styles.inputStyle"
+    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text text_class2" type="date" :style="Styles.inputStyle"
       readonly="true" @focus="nextElement()" v-model="Text" />
-    <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text" type="datetime-local"
+    <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text text_class2" type="datetime-local"
       :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
-    <imgButton class='button' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
+    <imgButton class='button text text_class3' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
       v-model:Value="This.prop.Value" v-model:Status="This.prop.Status"
       :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop" :style="This.style"
       :position="This.position" />
@@ -27,9 +27,9 @@
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label </imgButton>-->
 
     <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
-      readonly="true" @focus="nextElement()" v-model="Text" />
+      readonly="true" @focus="nextElement()" v-model="Text" class="text text_class4"/>
 
-    <div v-if="Type != 'imgButton' && prop.Image > '    '">
+    <div v-if="Type != 'imgButton' && prop.Image > '    '" class="text text_class5">
       <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
         :src="prop.Image" />
     </div>
@@ -37,7 +37,7 @@
     <textLabel :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :position="This[compMain].position">
+      :style="This[compMain].style" :position="This[compMain].position" class="text text_class6">
 
     </textLabel>
 

@@ -30,9 +30,9 @@
 
                 <!--span v-for="(menuItem, index) in menuItems" :key="index"-->
 
-                <span v-for="(menuItem, index) in Items" :key="index">
+                <li v-for="(menuItem, index) in Items" :key="index">
                   <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
-                  <li @click="obtSubMenu(menuItem.system)">
+                  <div @click="obtSubMenu(menuItem.system)">
                     <NuxtLink :to="menuItem.path" :target="menuItem.target"
                       @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
                       <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
@@ -40,8 +40,8 @@
                       <span class="links_name">{{ menuItem.name }}</span>
                     </NuxtLink>
                     <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
-                  </li>
-                  <span class="sub-menu-Mantenance"
+                  </div>
+                  <ul class="sub-menu-Mantenance"
                     v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system"
                     :style="{ 'color': 'chartreuse' }">
 
@@ -62,8 +62,8 @@
                         <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                       </li>
                     </span>
-                  </span>
-                  <span class="sub-menu-Reports"
+                  </ul>
+                  <ul class="sub-menu-Reports"
                     v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system"
                     :style="{ 'color': 'chartreuse' }">
                     <li text-align="end" @click="isRep = !isRep">
@@ -81,8 +81,8 @@
                         <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                       </li>
                     </span>
-                  </span>
-                  <span class="sub-menu-Process"
+                  </ul>
+                  <ul class="sub-menu-Process"
                     v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system"
                     :style="{ 'color': 'chartreuse' }">
                     <li text-align="end" @click="isPro = !isPro">
@@ -90,31 +90,30 @@
 
                       <nuxt-img class="ico" :src="isPro ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
-                    <span v-for="(menuItem, index) in subItemsPro" v-if="isPro" :key="index">
-                      <li>
-                        <NuxtLink :to="menuItem.path" :target="menuItem.target"
-                          @click="titleName = menuItem.name; isOpen = false">
-                          <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
-                        </NuxtLink>
+                    <li v-if="isPro" :key="index">
+                      <ul v-for="(menuItem, index) in subItemsPro">
+                        <li>
+                          <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                            @click="titleName = menuItem.name; isOpen = false">
+                            <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
+                          </NuxtLink>
 
-                        <!-- Hiperlink Tag  a :href="menuItem.link"-->
-                        <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
-                      </li>
-                    </span>
-                  </span>
-
-                  <!--li v-else>
-                <nuxt-img class="bx" :src="'/Iconos/'+menuItem.icon" :class="menuItem.icon" />
-                <span class="links_name">{{ menuItem.name }}</span>
-                <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
-              </li-->
-
-                </span>
+                          <!-- Hiperlink Tag  a :href="menuItem.link"-->
+                          <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
+                        </li>
+                      </ul>
+                      
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <button v-if="Props.isExitButton && isLoggedIn" @click.stop="exit()" class="text-black px-4 py-2 bg-white cursor-pointer mb-4 block w-full rounded mt-5" style="display: block; width: 100%; padding: 5px 2px;">Cerrar sesion</button>
+                </li>
               </ul>
             </ClientOnly>
           </div>
 
-          <div v-if="isLoggedIn" class="profile">
+          <div v-if="isLoggedIn" class="profile hidden md:block">
             <div class="profile-details">
               <nuxt-img v-if="Props.profileImg" :src="Props.profileImg" alt="Props.profileImg" />
               <nuxt-img v-else src="/Iconos/svg/bxs-user-rectangle.svg" class="bx bxs-user-rectangle" />
@@ -127,9 +126,6 @@
                 </div>
               </div>
             </div>
-            <!--i v-if="isExitButton" class="bx bx-log-out" id="log_out" @click.stop="$emit('button-exit-clicked')" /-->
-            <nuxt-img v-if="Props.isExitButton" id="log_out" src="/Iconos/svg/bx-log-out.svg" class="bx bx-log-out"
-              @click.stop="exit()" />
           </div>
         </div>
       </div>
@@ -396,7 +392,7 @@ const cssVars = computed(() => {
 )
 
 const mainFormLeft = computed(() => {
-  return isOpen.value ? '300px' : '120px' // '10%': '4%'
+  return isOpen.value ? '300px' : '110px' // '10%': '4%'
 })
 // removeState
 const exit = () => {
@@ -698,7 +694,7 @@ onMounted(async () => {
 }
 
 .menu {
-  background-color: antiquewhite;
+  background-color: #F5F5F5;
 
 }
 
@@ -747,6 +743,20 @@ body {
   display: flex;
   align-items: center;
   position: relative;
+}
+
+.sidebar li ul li{
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.sidebar li ul li img {
+  position: absolute;
+  right: 10px;
+  bottom: 13px;
 }
 
 .sidebar .logo-details .icon {
@@ -860,19 +870,9 @@ body {
   left: 0;
   transform: translateY(-50%);
   font-size: 22px;
-  background: var(--secondary-color);
   color: var(--icons-color);
 }
 
-.sidebar.open .bx-search:hover {
-  background: var(--secondary-color);
-  color: var(--icons-color);
-}
-
-.sidebar .bx-search:hover {
-  background: var(--menu-items-hover-color);
-  color: var(--bg-color);
-}
 
 .sidebar li a {
   display: flex;
@@ -885,9 +885,6 @@ body {
   background: var(--bg-color);
 }
 
-.sidebar li a:hover {
-  background: var(--menu-items-hover-color);
-}
 
 .sidebar li a .links_name {
   color: var(--menu-items-text-color);
@@ -917,7 +914,7 @@ sidebar li a .links_options {
 .sidebar li a:hover .links_name,
 .sidebar li a:hover i {
   transition: all 0.5s ease;
-  color: var(--bg-color);
+  color: white;
 }
 
 .sidebar li i {
@@ -950,8 +947,8 @@ sidebar li a .links_options {
 }
 
 .sidebar div img {
-  height: 45px;
-  width: 45px;
+  height: 20px;
+  width: 20px;
   object-fit: cover;
   border-radius: 6px;
   margin-right: 10px;

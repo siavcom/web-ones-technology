@@ -496,23 +496,165 @@ section.formfooter_old {
   /*flex-direction: row-reverse; */
 }
 
-/* Tooltip arrow */
-/*
-.error .errortext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
+
+/* =============== Raul vistas ======================  */
+
+.form_class16{
+  text-align: left;
 }
-*/
-/* Show the tooltip text when you mouse over the tooltip container */
-/*
-.error:hover .errortext {
-  visibility: visible;
-  opacity: 1;
+.form_class17{
+  margin-bottom: 10px;
+  display: block;
+  text-align: left !important;
 }
-*/
+
+
+@media(max-width: 768px) {
+  #webOnes{
+    display: none;
+  }
+
+  .form_class4, .form_class2, .form_class3, .form_class1, .form_class11, .form_class18{
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .form_class8{
+    font-size: 18px !important;
+  }
+
+  .form_class16 {
+    width: 100% !important;
+    margin-top: 10px !important;
+    margin:auto;
+  }
+  .form_class18{
+    width: 100% !important;
+    padding: 0px !important;
+  }
+
+  .form_class19, .form_class20, .combo, .edit, .text{
+    width: 100% !important;
+  }
+
+  .combo_class10, .edit_class3, .edit_class8, .text_class4, .edit_class8{
+    padding: 5px 2px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .edit_class12{
+    margin-left: 0 !important;
+  }
+
+  .combo_class10, .edit_class3, .edit_class8, .text_class4, .text_class2{
+    background-color: transparent !important;
+    border: 1px solid #8080805c !important;
+    box-shadow: none !important;
+    padding: 5px !important !important;
+    font-size: 15px !important;
+    margin:0px;
+  }
+
+  .div.divi{
+    margin: 0px !important;
+    height: auto !important;
+  }
+
+  span.text_class2{
+    border: none !important;
+  }
+
+  input, span.text, label, div{
+    font-size: 16px !important;
+  }
+
+  div div div input{
+    height: 30px !important;
+    max-height: 30px !important;
+    box-sizing: border-box;
+  }
+
+  .toggleImagen{
+    max-height: 20px;
+    margin-top: auto;
+    width: 25px !important;
+    position: relative;
+    bottom: 6px;
+    height: 30px;
+    min-height: 25px;
+  }
+  .imgbutton_class1 {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  .imgbutton_class2{
+    width: 40px !important;
+    cursor: pointer;
+  }
+  .modal-container{
+    width: 80% !important;
+    background-color: white !important;
+    border: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    left: auto;
+  }
+  .modal-body div div{
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .modal-body .edit_class1, .modal-body .combo_class1{
+    margin-left: 0px !important;
+  }
+  .modal-body button{
+    cursor: pointer !important;
+  }
+
+  .formfooter .imgbutton_class2 label{
+    display: none !important;
+  }
+  .formfooter div, .formfooter button, .formfooter img{
+    width: 40px !important;
+    object-fit: contain !important;
+    margin-right: 5px !important;
+    margin-top: 5px !important;
+  }
+
+  .formfooter button, .formfooter img{
+    cursor: pointer !important;
+  }
+
+  .formfooter div, .formfooter button{
+    background-color: transparent !important;
+    border: none !important;
+  }
+
+  .formfooter{
+    align-items: center !important;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    justify-content: space-around !important;
+  }
+
+  table{
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .form_class14{
+    width: 100% !important;
+  }
+
+  div.toggle{
+    top: 40px !important;
+  }
+  .combo_class12.columContainer{
+    background-color: white !important;
+  }
+}
+
+
+/* =============== Raul fin vistas ======================  */
