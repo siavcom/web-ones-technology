@@ -73,22 +73,22 @@
           @focusout="toggle = !toggle" :style="columnContainer">
           <!--Columnas -->
 
-          <template v-for="(option, valueIndex) in columnas" :key="valueIndex">
-            <div :id="Id + '_options_' + valueIndex" class="combo combo_class13 option"
-            @mouseover="hover = true" @mouseleave="hover = false" @click.stop="validClick(valueIndex)"
+          <template v-for="row in filteredColumnas" :key="row.valueIndex">
+            <div :id="Id + '_options_' + row.valueIndex" class="combo combo_class13 option"
+            @mouseover="hover = true" @mouseleave="hover = false" @click.stop="validClick(row.valueIndex)"
             :disabled="prop.ReadOnly" :style="{
-              'background-color': displayText.trim() == option.text[0].trim() ? '#7aac67' : 'white',
-              'color': displayText.trim() == option.text[0].trim() ? 'white' : 'black'
+              'background-color': activeOptionIndex == row.valueIndex || displayText.trim() == row.option.text[0].trim() ? '#7aac67' : 'white',
+              'color': activeOptionIndex == row.valueIndex || displayText.trim() == row.option.text[0].trim() ? 'white' : 'black'
             }">
             <!--Imprime Columnas -->
-              <div :id="Id + '_columns_' + valueIndex + '_col_' + col" class="combo combo_class14 columna" :disabled="prop.ReadOnly"
-                v-for="(text, col) in option.text" :key="col"
+              <div :id="Id + '_columns_' + row.valueIndex + '_col_' + col" class="combo combo_class14 columna" :disabled="prop.ReadOnly"
+                v-for="(text, col) in row.option.text" :key="col"
                 :style="{ 
                   'width': width[col], 'text-align': 'left', 
                   'z-index': toggleZIndex, 'height': inputStyle.height,
                   
                 }">
-                <label id="Id + '_columnslabel_'+valueIndex+'_col_'+col" class="combo combo_class15 optionLabel" v-text="text"
+                <label :id="Id + '_columnslabel_' + row.valueIndex + '_col_' + col" class="combo combo_class15 optionLabel" v-text="text"
                   :style:="columncaptionStyle" />
               </div>
               
@@ -404,7 +404,72 @@ columnContainer.borderStyle = 'solid';
 columnContainer.borderColor = 'black';
 columnContainer.borderWidth = '1px'
 
-let inputBuffer = ''
+const inputBuffer = ref('')
+const activeOptionIndex = ref(-1)
+
+const filteredColumnas = computed(() => {
+  const filtro = inputBuffer.value.trim().toUpperCase()
+
+  return columnas
+    .map((option: any, valueIndex: number) => ({ option, valueIndex }))
+    .filter(({ option }: { option: any }) => {
+      if (!filtro) return true
+      if (!option || !option.text) return false
+
+      return option.text.some((text: any) =>
+        text !== null && text !== undefined && text.toString().toUpperCase().includes(filtro)
+      )
+    })
+})
+
+const syncActiveOption = () => {
+  const match = filteredColumnas.value.find((row: any) => {
+    if (!row || !row.option || !row.option.text || !row.option.text[0]) return false
+    return displayText.value.toString().trim() == row.option.text[0].toString().trim()
+  })
+
+  activeOptionIndex.value = match ? match.valueIndex : (filteredColumnas.value.length > 0 ? filteredColumnas.value[0].valueIndex : -1)
+}
+
+const moveActiveOption = (direction: number) => {
+  if (filteredColumnas.value.length == 0) {
+    activeOptionIndex.value = -1
+    return
+  }
+
+  const list = filteredColumnas.value
+  let currentPos = list.findIndex((row: any) => row.valueIndex == activeOptionIndex.value)
+  if (currentPos < 0)
+    currentPos = 0
+
+  const nextPos = (currentPos + direction + list.length) % list.length
+  activeOptionIndex.value = list[nextPos].valueIndex
+}
+
+const scrollActiveOptionIntoView = async () => {
+  if (activeOptionIndex.value < 0 || !toggle.value)
+    return
+
+  await nextTick()
+
+  const container = document.getElementById(Id + '_columncontainer') as HTMLElement | null
+  const option = document.getElementById(Id + '_options_' + activeOptionIndex.value) as HTMLElement | null
+
+  if (!container || !option)
+    return
+
+  const optionTop = option.offsetTop
+  const optionBottom = optionTop + option.offsetHeight
+  const visibleTop = container.scrollTop
+  const visibleBottom = visibleTop + container.clientHeight
+
+  if (optionTop < visibleTop) {
+    container.scrollTop = optionTop
+  }
+  else if (optionBottom > visibleBottom) {
+    container.scrollTop = optionBottom - container.clientHeight
+  }
+}
 
 /////////////////////////////////////////////////////////////////////
 // emitValue
@@ -458,7 +523,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       //   console.log('1.1) comboBox emitValue() Name', props.prop.Name, 'Value=', Valor)
       await This.interactiveChange()
       //This.prop.Valid = false
-      inputBuffer = ''
+      inputBuffer.value = ''
       //      This.prop.Valid = false
       const newValue = This.prop.Value
 
@@ -633,9 +698,11 @@ const toggleClick = async () => {
 // Descripcion: Cada tecla que se presiona en el input
 /////////////////////////////////////////////////////////////////
 
-const keyDown = ($event: { charCode: number, keyCode: number }) => {
+const keyDown = ($event: KeyboardEvent) => {
   //console.log('1) >>>>>keyDown===>', This.prop.ReadOnly) //, $event.target, $event.target.value)
   const char = +$event.keyCode
+  const key = ($event.key || '').toUpperCase()
+
   if (This.prop.ReadOnly || This.prop.Disabled) return
   if (displayError.value) {
     displayError.value = false
@@ -643,7 +710,42 @@ const keyDown = ($event: { charCode: number, keyCode: number }) => {
   }
   if (!ToolTipText.value)
     ToolTipText.value = false
-  if ($event.charCode == 13) {
+
+  if (key == 'ARROWDOWN') {
+    $event.preventDefault()
+    toggle.value = true
+    if (activeOptionIndex.value == -1)
+      syncActiveOption()
+    else
+      moveActiveOption(1)
+
+    return
+  }
+
+  if (key == 'ARROWUP') {
+    $event.preventDefault()
+    toggle.value = true
+    if (activeOptionIndex.value == -1)
+      syncActiveOption()
+    else
+      moveActiveOption(-1)
+
+    return
+  }
+
+  if (key == 'ESCAPE') {
+    toggle.value = false
+    activeOptionIndex.value = -1
+    return
+  }
+
+  if (key == 'ENTER') {
+    $event.preventDefault()
+
+    if (toggle.value && activeOptionIndex.value >= 0) {
+      return validClick(activeOptionIndex.value)
+    }
+
     return nextElement() //clickReturn()
     // emit('customChange', $event.target.value + String.fromCharCode(9))
   }
@@ -651,16 +753,38 @@ const keyDown = ($event: { charCode: number, keyCode: number }) => {
   //console.log('comboBox Name=',This.Name,'Key=',$event.charCode)
 
   //  if ($event.charCode == 32) {
-  if (char == 32) {
-    inputBuffer = ''
+  if (key == 'BACKSPACE') {
+    if (inputBuffer.value.length > 0)
+      inputBuffer.value = inputBuffer.value.slice(0, -1)
+
     toggle.value = true
+    syncActiveOption()
+    return
+  }
+
+  if (key == ' ') {
+    inputBuffer.value = ''
+    toggle.value = true
+    syncActiveOption()
+    return
+  }
+
+  if (key.length != 1) {
+    return
 
   }
 
   //let Key: string = String.fromCharCode($event.charCode)
   let Key: string = String.fromCharCode(char)
-  Key = Key.toUpperCase()
-  const buffer = inputBuffer + Key
+  if (key && key.length == 1)
+    Key = key
+
+  const buffer = inputBuffer.value + Key
+  inputBuffer.value = buffer
+
+  toggle.value = true
+  syncActiveOption()
+
   This.prop.Valid = false
   let found = false
   let pos = 0
@@ -681,10 +805,11 @@ const keyDown = ($event: { charCode: number, keyCode: number }) => {
 
       Value.value = columnas[i].value
       found = true
-      inputBuffer = buffer
+      inputBuffer.value = buffer
+      activeOptionIndex.value = i
     }
   }
-  if (!found)
+  if (!found && columnas.length > 0)
     displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]  // asigna el resultado a mostrar
 
 }
@@ -715,6 +840,8 @@ const focusOut = async () => {  // se puede perder el foco si no es un renglon v
 const validClick = async (num_ren: number) => {
   toggle.value = false
   comboStyle.zIndex = zIndex.value
+  inputBuffer.value = ''
+  activeOptionIndex.value = -1
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
   // console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
@@ -1407,9 +1534,22 @@ watch(
       Styles.style.zIndex = zIndex.value// This.style.zIndex
 
     //console.log('watch toggle.value', props.Name, old_val, new_val)
+    if (new_val) {
+      syncActiveOption()
+      scrollActiveOptionIntoView()
+    }
+
     if (!old_val && new_val) toggleFocus()
   },
   { deep: true }
+);
+
+watch(
+  () => activeOptionIndex.value,
+  () => {
+    scrollActiveOptionIntoView()
+  },
+  { deep: false }
 );
 
 /////////////////////////////////////////////////////////
