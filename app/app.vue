@@ -30,7 +30,8 @@
 
                 <!--span v-for="(menuItem, index) in menuItems" :key="index"-->
 
-                <li v-for="(menuItem, index) in Items" :key="index">
+                <template v-for="(menuItem, index) in Items" :key="index">
+                  <li v-if="!(isLoggedIn && menuItem.path && menuItem.path.path === '/Login')">
                   <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
                   <div @click="obtSubMenu(menuItem.system)">
                     <NuxtLink :to="menuItem.path" :target="menuItem.target"
@@ -105,7 +106,8 @@
 
                     </li>
                   </ul>
-                </li>
+                  </li>
+                </template>
                 <li>
                   <button v-if="Props.isExitButton && isLoggedIn" @click.stop="exit()" class="logout-btn"
                     title="Cerrar sesion">
@@ -1120,7 +1122,7 @@ sidebar li a .links_options {
 .sidebar:not(.open) .logo-details #btn {
   position: relative;
   top: auto;
-  right: auto;
+  right: -10px;
   transform: none;
   width: 42px;
   height: 42px;
@@ -1197,5 +1199,12 @@ sidebar li a .links_options {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+@media (min-width: 992px) {
+  .mainForm{
+    margin:auto;
+    width: 90%;
+  }
 }
 </style>

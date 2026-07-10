@@ -35,6 +35,12 @@ div.backGround {
   /* opacity: 0.5;*/
 }
 
+.logoWebOnes{
+  width: 110px !important;
+  height: 60px !important;
+  object-fit: contain !important;
+}
+
 .inputDivi {
   margin-top: 1px
 }
