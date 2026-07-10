@@ -341,7 +341,7 @@ input[class="number_old"] {
   /* arrow*/
   content: " ";
   /*left: 64px;*/
-  bottom: 18px;
+  bottom: 45px;
   border-width: 0 px;
   /*border-style: solid; */
   /*background-color: transparent;*/
@@ -509,7 +509,7 @@ section.formfooter_old {
 }
 
 
-@media(max-width: 768px) {
+@media(max-width: 550px) {
   #webOnes{
     display: none;
   }

@@ -46,6 +46,7 @@ export default defineNuxtConfig({
         'xml-js', // CJS
         'axios',
         'alasql', // CJS
+        'vue-imask'
       ]
     },  
   
