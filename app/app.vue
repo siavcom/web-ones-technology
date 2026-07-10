@@ -396,7 +396,7 @@ const cssVars = computed(() => {
 )
 
 const mainFormLeft = computed(() => {
-  return isOpen.value ? '300px' : '110px' // '10%': '4%'
+  return isOpen.value ? '250px' : '0px'
 })
 // removeState
 const exit = () => {
@@ -642,16 +642,12 @@ const obtSubMenu = (system: string) => {
 watch(
   () => isOpen.value,
   () => {
-    const isMobile = window.innerWidth <= 768
-
-    if (isMobile) {
+    if (!Props.isPaddingLeft || !isOpen.value) {
       window.document.body.style.paddingLeft = '0px'
       return
     }
 
-    window.document.body.style.paddingLeft = isOpen.value && Props.isPaddingLeft
-      ? Props.menuOpenedPaddingLeftBody
-      : Props.menuClosedPaddingLeftBody
+    window.document.body.style.paddingLeft = Props.menuOpenedPaddingLeftBody
   },
   { deep: false }
 )
@@ -1063,7 +1059,7 @@ sidebar li a .links_options {
 .mainForm {
   position: relative;
   display: block;
-  margin-left: v-bind("mainFormLeft");
+  /* margin-left: v-bind("mainFormLeft"); */
   transition: all 1.5s ease;
 }
 
@@ -1103,6 +1099,40 @@ sidebar li a .links_options {
   margin: 0 auto;
 }
 
+.sidebar:not(.open) {
+  width: 58px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sidebar:not(.open) #my-scroll,
+.sidebar:not(.open) .profile,
+.sidebar:not(.open) .logo_name,
+.sidebar:not(.open) .menu-logo {
+  display: none;
+}
+
+.sidebar:not(.open) .logo-details {
+  margin: 10px 8px 0 8px !important;
+  justify-content: flex-end;
+}
+
+.sidebar:not(.open) .logo-details #btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  transform: none;
+  width: 42px;
+  height: 42px;
+  padding: 9px;
+  border-radius: 999px;
+  background: var(--bg-color);
+}
+
+.sidebar:not(.open) .tooltip {
+  display: none;
+}
+
 #my-scroll {
   overflow-y: auto;
   height: calc(100% - 60px);
@@ -1137,40 +1167,10 @@ sidebar li a .links_options {
     margin-left: 0 !important;
   }
 
-  .sidebar {
-    width: 58px;
-    background: transparent;
-    box-shadow: none;
-  }
-
   .sidebar.open {
     width: min(86vw, 320px);
     background: var(--bg-color);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  }
-
-  .sidebar:not(.open) #my-scroll,
-  .sidebar:not(.open) .profile,
-  .sidebar:not(.open) .logo_name,
-  .sidebar:not(.open) .menu-logo {
-    display: none;
-  }
-
-  .sidebar:not(.open) .logo-details {
-    margin: 10px 8px 0 8px !important;
-    justify-content: flex-end;
-  }
-
-  .sidebar:not(.open) .logo-details #btn {
-    position: relative;
-    top: auto;
-    right: auto;
-    transform: none;
-    width: 42px;
-    height: 42px;
-    padding: 9px;
-    border-radius: 999px;
-    background: var(--bg-color);
   }
 
   .sidebar li .tooltip {

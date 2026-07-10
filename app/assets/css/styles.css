@@ -4,8 +4,8 @@ body {
 
 div.ThisForm {
   background: white;
-  margin-left: -3%;
-  display: inline-block;
+  margin: auto;
+  max-width: 100%;
 }
 
 section.pagina {
