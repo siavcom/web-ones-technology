@@ -1296,7 +1296,7 @@ table {
 
   table.gridTable tr {
     margin-bottom: 12px;
-    border: 1px solid rgb(0, 5, 2);
+    /* border: 1px solid rgb(0, 5, 2); */
     border-radius: 6px;
     background: #fff;
   }

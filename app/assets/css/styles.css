@@ -41,8 +41,8 @@ div.backGround {
 }
 
 .logoWebOnes{
-  width: 110px !important;
-  height: 60px !important;
+  width: 150px !important;
+  height: 70px !important;
   object-fit: contain !important;
 }
 
@@ -521,6 +521,18 @@ section.formfooter_old {
 
 
 @media(max-width: 550px) {
+  #grid_tablas_234_grid_tbody > tr{
+    background-color: transparent !important;
+  }
+
+  .renNumber label{
+    text-align: left !important;
+  }
+
+  .tabla, .table.gridTable tr{
+    border: none !important;
+  }
+
   #webOnes{
     display: none;
   }
