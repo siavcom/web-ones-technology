@@ -50,8 +50,7 @@
                         }}</span>
                       <nuxt-img class="ico" :src="isMan ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                     </li>
-                    <span v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
-
+                    <template v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
                       <li>
                         <NuxtLink :to="menuItem.path" :target="menuItem.target"
                           @click="titleName = menuItem.name; isOpen = false">
@@ -61,7 +60,8 @@
                         <!-- Hiperlink Tag  a :href="menuItem.link"-->
                         <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                       </li>
-                    </span>
+
+                    </template>
                   </ul>
                   <ul class="sub-menu-Reports"
                     v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system"
@@ -102,12 +102,16 @@
                           <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                         </li>
                       </ul>
-                      
+
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <button v-if="Props.isExitButton && isLoggedIn" @click.stop="exit()" class="text-black px-4 py-2 bg-white cursor-pointer mb-4 block w-full rounded mt-5" style="display: block; width: 100%; padding: 5px 2px;">Cerrar sesion</button>
+                  <button v-if="Props.isExitButton && isLoggedIn" @click.stop="exit()" class="logout-btn"
+                    title="Cerrar sesion">
+                    <nuxt-img src="/Iconos/svg/bx-log-out.svg" class="logout-icon" width="20" />
+                    <span class="logout-text">Cerrar sesion</span>
+                  </button>
                 </li>
               </ul>
             </ClientOnly>
@@ -636,10 +640,18 @@ const obtSubMenu = (system: string) => {
 /// ///////////////////////////////////////
 
 watch(
-  () => isOpen,
-  (new_val, old_val) => {
-    window.document.body.style.paddingLeft = Props.isOpened && Props.isPaddingLeft ? Props.menuOpenedPaddingLeftBody : Props.menuClosedPaddingLeftBody
+  () => isOpen.value,
+  () => {
+    const isMobile = window.innerWidth <= 768
 
+    if (isMobile) {
+      window.document.body.style.paddingLeft = '0px'
+      return
+    }
+
+    window.document.body.style.paddingLeft = isOpen.value && Props.isPaddingLeft
+      ? Props.menuOpenedPaddingLeftBody
+      : Props.menuClosedPaddingLeftBody
   },
   { deep: false }
 )
@@ -745,8 +757,8 @@ body {
   position: relative;
 }
 
-.sidebar li ul li{
-  display: flex;
+.sidebar li ul li {
+  /* display: flex; */
   align-items: center;
   position: relative;
   cursor: pointer;
@@ -816,7 +828,7 @@ body {
   list-style: none;
 }
 
-.nav-list > li{
+.nav-list>li {
   padding: 10px 5px !important;
   border-radius: 6px !important;
   margin-bottom: 5px;
@@ -826,7 +838,7 @@ body {
   background-color: #00800040;
 }
 
-.sidebar > li:hover span{
+.sidebar>li:hover span {
   color: #ffffff !important;
 }
 
@@ -903,7 +915,7 @@ body {
   color: var(--menu-items-text-color);
   font-size: 18px;
   font-weight: 400;
-  white-space: nowrap;
+  white-space: space;
   opacity: 0;
   pointer-events: none;
   transition: 0.4s;
@@ -913,7 +925,7 @@ sidebar li a .links_options {
   color: var(--menu-items-text-color);
   font-size: 15px;
   font-weight: 400;
-  white-space: nowrap;
+  white-space: space;
   opacity: 0;
   pointer-events: none;
   transition: 0.4s;
@@ -1055,6 +1067,42 @@ sidebar li a .links_options {
   transition: all 1.5s ease;
 }
 
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1f2937;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: #e2f0e7;
+}
+
+.logout-icon {
+  filter: none;
+  flex-shrink: 0;
+}
+
+.sidebar:not(.open) .logout-text {
+  display: none;
+}
+
+.sidebar:not(.open) .logout-btn {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  margin: 0 auto;
+}
+
 #my-scroll {
   overflow-y: auto;
   height: calc(100% - 60px);
@@ -1082,6 +1130,52 @@ sidebar li a .links_options {
     display: none;
   }
 
+}
+
+@media (max-width: 768px) {
+  .mainForm {
+    margin-left: 0 !important;
+  }
+
+  .sidebar {
+    width: 58px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sidebar.open {
+    width: min(86vw, 320px);
+    background: var(--bg-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .sidebar:not(.open) #my-scroll,
+  .sidebar:not(.open) .profile,
+  .sidebar:not(.open) .logo_name,
+  .sidebar:not(.open) .menu-logo {
+    display: none;
+  }
+
+  .sidebar:not(.open) .logo-details {
+    margin: 10px 8px 0 8px !important;
+    justify-content: flex-end;
+  }
+
+  .sidebar:not(.open) .logo-details #btn {
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: none;
+    width: 42px;
+    height: 42px;
+    padding: 9px;
+    border-radius: 999px;
+    background: var(--bg-color);
+  }
+
+  .sidebar li .tooltip {
+    display: none;
+  }
 }
 
 #app {

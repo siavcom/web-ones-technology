@@ -49,14 +49,14 @@
               :style="This.Row < 0 || item.id != This.Row ? This.rowStyleInactive : This.rowStyleActive">
               <!-- :style="This.Row < 0 || item.id != This.Row ? trStyleInactive : trStyleActive"-->
               <!-- No utilizar vertical-aling en renNumber-->
-              <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' style="height: auto;"><label>{{
+              <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#" style="height: auto;"><label>{{
                 item.recno
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name"
                 :style='{ height: This[col.Name].style.height, padding: 0, textAlign: "-webkit-center" }'
-                :headers="col.Name">
+                :headers="col.Name" :data-label="This[col.Name].prop.ColumnTextLabel">
 
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.recno" v-bind:Id="item.id" v-bind:prop="This[col.Name].prop"
@@ -1280,17 +1280,60 @@ table {
 
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
-  /* Convierte las filas en bloques separados para pantallas pequeñas */
-  tr {
-    display: block;
-    margin-bottom: 15px;
+  table.gridTable thead {
+    display: none;
   }
 
-  td {
+  table.gridTable,
+  table.gridTable tbody,
+  table.gridTable tr,
+  table.gridTable td {
     display: block;
+    width: 100%;
+  }
+
+  table.gridTable tr {
+    margin-bottom: 12px;
+    border: 1px solid rgb(0, 5, 2);
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  table.gridTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    text-align: left;
+    border: 0;
+    border-bottom: 1px solid #dfe7e6;
+    min-height: 32px;
+    height: auto;
+  }
+
+  table.gridTable td:last-child {
+    border-bottom: 0;
+  }
+
+  table.gridTable td::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: #1e4a45;
+    flex: 0 0 45%;
+    text-align: left;
+  }
+
+  table.gridTable td > * {
+    flex: 1 1 auto;
+    min-width: 0;
     text-align: right;
+  }
+
+  table.gridTable td.renNumber::before {
+    content: "#: ";
   }
 }
 
