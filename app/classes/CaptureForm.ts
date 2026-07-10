@@ -17,6 +17,7 @@ export class captureForm extends FORM {
   sw_update = false; // bandera de nuevo registro
   nom_obj = {}// objetos de validacion
   blockCapturaXml: any = null
+  aut_cap = false // autorizacion de captura
 
   // se debe de poner siempre el contructor
   constructor() {
@@ -165,10 +166,10 @@ export class captureForm extends FORM {
 
     this.Form.bt_modify.prop.Visible = false;
     if (this.blockCapturaXml !== null) {
-      this.Form.Bt_campos_xml.prop.Visible = false;
+      this.Bt_campos_xml.prop.Visible = false;
     }
 
-    this.Form.bt_save.prop.Visible = false;
+    this.bt_save.prop.Visible = false;
     //  this.bt_save.prop.Visible = false;
 
   }
@@ -307,7 +308,7 @@ export class captureForm extends FORM {
       this.bt_modify.prop.Visible = true;
       if (this.blockCapturaXml !== null) {
 
-        this.Form.Bt_campos_xml.prop.Visible = true;
+        this.Bt_campos_xml.prop.Visible = true;
       }
       if (this.prop.showDelete)
         this.bt_delete.prop.Visible = true;
@@ -544,7 +545,7 @@ export class captureForm extends FORM {
       this.bt_delete.prop.Visible = true;
     this.Form.bt_save.prop.Visible = true
     if (this.blockCapturaXml !== null)
-      this.Form.Bt_campos_xml.prop.Visible = true
+      this.Bt_campos_xml.prop.Visible = true
     return
   }
 
@@ -587,10 +588,10 @@ export class captureForm extends FORM {
 
     this.Form.bt_modify.prop.Visible = false;
     if (this.blockCapturaXml !== null)
-      this.Form.Bt_campos_xml.prop.Visible = false;
+      this.Bt_campos_xml.prop.Visible = false;
 
-    this.Form.bt_save.prop.Visible = false;
-    this.Form.bt_delete.prop.Visible = false;
+    this.bt_save.prop.Visible = false;
+    this.bt_delete.prop.Visible = false;
 
     if ((await MessageBox(this.Form.bt_delete.prop.Caption, 4, "")) === 6) {
       console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
@@ -610,8 +611,8 @@ export class captureForm extends FORM {
     this.Form.bt_modify.prop.Visible = true;
     if (this.blockCapturaXml !== null)
       this.Form.Bt_campos_xml.prop.Visible = true;
-    this.Form.bt_save.prop.Visible = true;
-    this.Form.bt_delete.prop.Visible = true;
+    this.bt_save.prop.Visible = true;
+    this.bt_delete.prop.Visible = true;
     return false
   }
 
@@ -632,50 +633,4 @@ export class captureForm extends FORM {
     return;
   }
 
-  /**
-   * @Method : rev_per
-   * @Description : Reviza prmisos de seguridad de la tabla comedoc 
-   */
-  async rev_per(nom_cam: string, sw_mov?: boolean) {
-
-    // si es el adminstrador o se dio password de autorización
-
-    if (Public.value.log_usu.trim() == 'ADMIN' || this.Form.sw_aut) {
-      //console.log('Revisa permisos: ADMIN o sw_aut=true')
-      return true
-    }
-    // si es un documento que es anterior al cierre y no es una impresión
-
-    if (this.Form.sw_cie_per && nom_cam != 'IPR')
-      return false
-
-    const vi_cap_comedoc = await currentValue('*', 'vi_cap_comedoc')
-
-    if (!sw_mov)
-      sw_mov = false
-
-    // busca el nombre del objeto en el arreglo nom_cam
-
-    nom_cam = nom_cam.toUpperCase().slice(0, 3)
-    //  console.log('rev_per nom_obj', this.nom_obj, 'nom_cam', nom_cam)
-
-    //const pos = ascan(this.nom_obj, nom_cam)
-
-    if (this.Form.nom_obj[nom_cam]) {  // Si existe el objeto
-      const obj_seg = this.Form.nom_obj[nom_cam]
-
-      if (obj_seg == '1' || obj_seg == '3')	// permite Modifica o Captura y modifica
-        return true
-      // reviza si se permite la captura
-      if (obj_seg >= '2' && ((!sw_mov && this.Form.sw_update) || (sw_mov && this.Form.num_mov == 0)))
-        return true
-
-      // si permite la captura es impresión pero no se a impreso ni timbrado
-      if (obj_seg == '2' && nom_cam == 'IPR' && vi_cap_comedoc.sta_doc! > 'I' && vi_cap_comedoc.sta_doc! > 'T')
-        return true
-    }
-
-    return false
-
-  }
 }

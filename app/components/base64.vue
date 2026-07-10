@@ -228,10 +228,12 @@ const handleFileChange = async (event) => {
   // if (file && file.type.startsWith('image/')) {
   // Use the FileReader API to read the file and create a data URL for preview
 
-  if (accept.value.includes('txt') || accept.value.includes('xml')) {
-    Value.value = await file.text();
-    //console.log(Value.value);
-    emitValue(false, false, Value.value)  // actuliza el valor Value en localAlaSql
+  if (accept.value.includes('csv') || accept.value.includes('txt') || accept.value.includes('xml')) {
+    //  Value.value = await file.text();
+
+    This.prop.Value = await file.text();
+    console.log(This.prop.Value);
+    //emitValue(false, false, Value.value)  // actuliza el valor Value en localAlaSql
     This.click()
     return;
   }
@@ -244,7 +246,7 @@ const handleFileChange = async (event) => {
 
   };
 
-  if (accept.value.includes('txt') || accept.value.includes('xml')) {
+  if (accept.value.includes('txt') || accept.value.includes('csv') || accept.value.includes('xml')) {
     console.log('Reading as text', accept.value);
     reader.readAsText(file);
   } else {

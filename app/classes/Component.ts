@@ -289,7 +289,7 @@ export class COMPONENT {
       },
       style: {
         border: '1px solid rgb(0, 0, 0)',
-        background: 'bisque',
+        background: ' rgb(235,248,238)',
         borderRadius: '5px',
         boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
         padding: '10px',
@@ -704,7 +704,7 @@ export class COMPONENT {
 
   /////////////////////////////////////////////////////////////////////
   // Click
-  // Descripcion: Hace el click
+  // Descripcion: Metodo click izquierdo del mouse
   /////////////////////////////////////////////////////////////////
 
   /**
@@ -717,9 +717,9 @@ export class COMPONENT {
 
   /**
    * When VFP
-   * Descripcion: Cuando recibe el foco
+   * Descripcion: Cuando recibe el foco el componente
    * 
-   * @returns boolean
+   * @returns boolean true si el componente puede recibir el foco, false en caso contrario
    */
   public async when() {
 

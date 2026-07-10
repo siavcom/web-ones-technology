@@ -112,7 +112,7 @@ export const Session = defineStore(
         fpo_pge.value = await stringToDate(res.fpo_pge);
         dialect.value = res.dialect;
         ////////  leeMenu();
-        //console.log("Socket Connection sucefully id=", id_con.value);
+        // console.log("Socket Connection sucefully id=", id_con.value, 'user', user.value, 'pass', passStore);
         const data = await $fetch('/api/callServer',
           {
             method: 'post',    // Se necesita para que haga la llamada y retorne los datos

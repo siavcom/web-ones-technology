@@ -27,7 +27,7 @@ export class CONTAINER extends COMPONENT {
     this.style.height = 'min-content';
     this.style.width = "82%";
     this.style.maxWidth = '82%'
-    this.style.background = 'antiquewhite'
+    this.style.background = 'rgb(235,248,238)'
 
     this.style.left = '1%'
 

@@ -71,7 +71,7 @@ export class HELP extends CONTAINER {
 
       style: {
         border: '1px solid rgb(0, 0, 0)',
-        background: 'bisque',
+        background: ' rgb(235,248,238)',
         borderRadius: '10px',
         boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
         padding: '10px',
@@ -178,8 +178,8 @@ export class HELP extends CONTAINER {
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
       this.Parent.Help = false
-      this.Parent.prop.Visible = false
-      await this.Parent.valid()
+      this.prop.Visible = false
+      this.Parent.valid()
       //this.Parent.prop.Focus = true
 
     }
