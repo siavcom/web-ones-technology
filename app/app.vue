@@ -216,7 +216,7 @@ interface Props_interface {
 
 const Props = reactive({ //   withDefaults(defineProps<Props_interface>(), {
 
-  isOpened: true,
+  isOpened: false,
   //isMenuOpen: true,
   // menuTitle: 'KilloSoftware',
   menuLogo: '/logos/Siavcom.png',
@@ -355,7 +355,7 @@ const isPro = ref(false)
 const isLoggedIn = ref(Props.isLoggedIn)
 
 const isOpen = ref(Props.isOpened)
-isOpen.value = true
+isOpen.value = false
 
 /* ***********Titulos en las pestaÃ±as****************** */
 const titleName = ref('')

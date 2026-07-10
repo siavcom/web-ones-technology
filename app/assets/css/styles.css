@@ -8,6 +8,11 @@ div.ThisForm {
   max-width: 100%;
 }
 
+* {
+  max-width: 100% !important;
+}
+
+
 section.pagina {
   /* background: white;
   color: #b94295; /* #b94295;*/
