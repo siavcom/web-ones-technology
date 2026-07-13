@@ -9,7 +9,7 @@ div.ThisForm {
 }
 
 * {
-  max-width: 100% !important;
+  /* max-width: 100% !important; */
 }
 
 
@@ -389,6 +389,11 @@ input[class="number_old"] {
 
 .footer {
   /* flex-direction: row-reverse;*/
+}
+
+body.combo-dropdown-open .formfooter .bt_aceptar {
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .transition-group {}

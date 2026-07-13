@@ -67,7 +67,7 @@
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
       <div :id="Id + '_toggle'" class="combo combo_class11 toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
-        :style="{ width: 'auto' }">
+        :style="toggleLayerStyle">
         <!--CheckBox -->
         <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled" class="combo combo_class12 columContainer"
           @focusout="toggle = !toggle" :style="columnContainer">
@@ -98,7 +98,7 @@
       </div>
       <!--toggle click.prevent -->
       <nuxt-img :id="Id + '_toggle_img'" class="combo combo_class16 toggleImagen" :style="toggleStyle"
-        v-if="!This.prop.ReadOnly && !This.prop.Disabled && !onlyRead"
+        v-show="!This.prop.ReadOnly && !This.prop.Disabled"
         :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
 
       <!--/div-->
@@ -355,6 +355,7 @@ if (Styles.style.width == 'auto')
   Styles.style.width = 'fit-content'
 
 const zIndex = ref(Styles.style.zIndex) //ref(This.style.zIndex)
+const openLayerZIndex = 12000
 
 const comboStyle = reactive({
   height: 'fit-content',
@@ -365,6 +366,33 @@ const toggleStyle = reactive({
   maxHeight: Styles.style.fontSize,
   height: Styles.style.fontSize,
   marginTop: 'auto'
+})
+
+const toggleViewport = reactive({
+  left: '0px',
+  top: '0px',
+  width: '0px',
+  maxHeight: '260px'
+})
+
+const useViewportLayer = ref(false)
+
+const toggleLayerStyle = computed(() => {
+  if (!useViewportLayer.value) {
+    return { width: 'auto' }
+  }
+
+  return {
+    position: 'fixed',
+    left: toggleViewport.left,
+    top: toggleViewport.top,
+    width: toggleViewport.width,
+    minHeight: '0px',
+    maxHeight: toggleViewport.maxHeight,
+    overflowY: 'auto',
+    overflowX: 'auto',
+    zIndex: openLayerZIndex + 1
+  }
 })
 
 Styles.inputStyle.zIndex = zIndex.value  //****
@@ -469,6 +497,65 @@ const scrollActiveOptionIntoView = async () => {
   else if (optionBottom > visibleBottom) {
     container.scrollTop = optionBottom - container.clientHeight
   }
+}
+
+const updateToggleViewportPosition = async () => {
+  if (!toggle.value)
+    return
+
+  await nextTick()
+
+  const combo = document.getElementById(Id + '_selectOne') as HTMLElement | null
+  if (!combo)
+    return
+
+  const isGridByParent = !!(This && This.Parent && This.Parent.BaseClass == 'grid')
+  const isGridByDom = !!(combo.closest('td') && combo.closest('.tabla'))
+  useViewportLayer.value = isGridByParent || isGridByDom
+
+  if (!useViewportLayer.value)
+    return
+
+  const rect = combo.getBoundingClientRect()
+  const viewportHeight = window.innerHeight
+  const desiredHeight = 260
+  const margin = 8
+  const spaceBelow = viewportHeight - rect.bottom - margin
+  const spaceAbove = rect.top - margin
+  const openUp = spaceBelow < 120 && spaceAbove > spaceBelow
+
+  const maxAvailable = openUp ? Math.max(120, spaceAbove) : Math.max(120, spaceBelow)
+
+  toggleViewport.left = rect.left + 'px'
+  toggleViewport.top = openUp
+    ? Math.max(margin, rect.top - Math.min(desiredHeight, maxAvailable)) + 'px'
+    : rect.bottom + 'px'
+  toggleViewport.width = rect.width + 'px'
+  toggleViewport.maxHeight = Math.min(desiredHeight, maxAvailable) + 'px'
+}
+
+const handleViewportChange = () => {
+  updateToggleViewportPosition()
+}
+
+const setBodyComboDropdownOpen = (open: boolean) => {
+  if (typeof document == 'undefined' || !document.body)
+    return
+
+  const attr = 'data-combo-open-count'
+  let count = Number(document.body.getAttribute(attr) || '0')
+
+  if (open)
+    count = count + 1
+  else
+    count = Math.max(0, count - 1)
+
+  document.body.setAttribute(attr, count.toString())
+
+  if (count > 0)
+    document.body.classList.add('combo-dropdown-open')
+  else
+    document.body.classList.remove('combo-dropdown-open')
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -714,6 +801,7 @@ const keyDown = ($event: KeyboardEvent) => {
   if (key == 'ARROWDOWN') {
     $event.preventDefault()
     toggle.value = true
+    updateToggleViewportPosition()
     if (activeOptionIndex.value == -1)
       syncActiveOption()
     else
@@ -725,6 +813,7 @@ const keyDown = ($event: KeyboardEvent) => {
   if (key == 'ARROWUP') {
     $event.preventDefault()
     toggle.value = true
+    updateToggleViewportPosition()
     if (activeOptionIndex.value == -1)
       syncActiveOption()
     else
@@ -758,6 +847,7 @@ const keyDown = ($event: KeyboardEvent) => {
       inputBuffer.value = inputBuffer.value.slice(0, -1)
 
     toggle.value = true
+    updateToggleViewportPosition()
     syncActiveOption()
     return
   }
@@ -765,6 +855,7 @@ const keyDown = ($event: KeyboardEvent) => {
   if (key == ' ') {
     inputBuffer.value = ''
     toggle.value = true
+    updateToggleViewportPosition()
     syncActiveOption()
     return
   }
@@ -783,6 +874,7 @@ const keyDown = ($event: KeyboardEvent) => {
   inputBuffer.value = buffer
 
   toggle.value = true
+  updateToggleViewportPosition()
   syncActiveOption()
 
   This.prop.Valid = false
@@ -1529,14 +1621,30 @@ watch(
   () => toggle.value,
   (new_val, old_val) => {
     if (new_val)
-      Styles.style.zIndex = 200  // aumenta el z index cuando despliaga las columnas
+      Styles.style.zIndex = openLayerZIndex  // aumenta el z index cuando despliaga las columnas
     else
       Styles.style.zIndex = zIndex.value// This.style.zIndex
 
+    if (!old_val && new_val)
+      setBodyComboDropdownOpen(true)
+    else if (old_val && !new_val)
+      setBodyComboDropdownOpen(false)
+
     //console.log('watch toggle.value', props.Name, old_val, new_val)
     if (new_val) {
+      updateToggleViewportPosition().then(() => {
+        if (useViewportLayer.value) {
+          window.addEventListener('scroll', handleViewportChange, true)
+          window.addEventListener('resize', handleViewportChange)
+        }
+      })
       syncActiveOption()
       scrollActiveOptionIntoView()
+    }
+    else if (useViewportLayer.value) {
+      window.removeEventListener('scroll', handleViewportChange, true)
+      window.removeEventListener('resize', handleViewportChange)
+      useViewportLayer.value = false
     }
 
     if (!old_val && new_val) toggleFocus()
@@ -1998,6 +2106,10 @@ onBeforeMount(async () => {
 onUnmounted(async () => {
 
   window.removeEventListener('mousedown', myClick); // <div>
+  window.removeEventListener('scroll', handleViewportChange, true)
+  window.removeEventListener('resize', handleViewportChange)
+  if (toggle.value)
+    setBodyComboDropdownOpen(false)
   if (This.onUnmounted) await This.onUnmounted() //  console.log('ComboBox Desmontado onUnMounted', This.prop.Name, This.onUnmounted)
 
 })
@@ -2146,18 +2258,18 @@ input.label.ReadOnly {
 */
 div.toggle {
   position: absolute;
-  /* no borrar se utiliza junto con div.option position:relative*/
   border: rgb(0, 5, 2);
   border-radius: 2%;
   overflow: hidden;
   overflow-y: auto;
   width: 100%;
-  /*max-content;*/
-  height: auto;
-  max-height: 260px;
   top: 20px;
-  /*left: -5%;*/
   z-index: v-bind('toggleZIndex');
+  min-width: 350px !important;
+}
+
+div.toggle > div{
+  height: 100% !important;
 }
 
 /* css de la lista de combo box*/
