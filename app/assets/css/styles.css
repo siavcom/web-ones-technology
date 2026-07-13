@@ -519,10 +519,6 @@ section.formfooter_old {
   text-align: left !important;
 }
 
-.gridDatos td {
-  display: flex;
-  flex-direction: column;
-}
 
 
 
@@ -530,6 +526,12 @@ section.formfooter_old {
   #grid_tablas_234_grid_tbody > tr{
     background-color: transparent !important;
   }
+
+  .gridDatos td {
+  display: flex;
+  flex-direction: column;
+}
+
   
   .gridDatos td * {
     width: 100%;
