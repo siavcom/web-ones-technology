@@ -62,7 +62,7 @@
     <div :id="Id + '_selectOne'" v-else class="combo combo_class9 comboBox text" ref="RefCombo" :style='comboStyle'>
       <input :id="Id" class="combo combo_class10 text" :style="Styles.inputStyle" :disabled="prop.Disabled"
         :readonly="prop.ReadOnly || onlyRead" :value="displayText" :tabindex="prop.TabIndex" ref="Ref"
-        @keydown="keyDown" @focus.prevent="toggle = false; onFocus()" @focusout="focusIn = false; emitValue()" />
+        @keydown="keyDown" @focus.prevent="onFocus()" @focusout="onInputFocusOut" />
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
@@ -99,7 +99,8 @@
       <!--toggle click.prevent -->
       <nuxt-img :id="Id + '_toggle_img'" class="combo combo_class16 toggleImagen" :style="toggleStyle"
         v-show="!This.prop.ReadOnly && !This.prop.Disabled"
-        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'" @click.stop="toggleClick" />
+        :src="toggle ? '/Iconos/svg/bx-left-arrow.svg' : '/Iconos/svg/bx-down-arrow.svg'"
+        @mousedown.stop.prevent="onToggleMouseDown" @click.stop="toggleClick" />
 
       <!--/div-->
     </div>
@@ -281,6 +282,7 @@ let focusIn = false
 let Evento = ''
 
 let watchPropValue = false
+const ignoreInputFocusOut = ref(false)
 
 const MultiSelect = ref(props.prop.MultiSelect)
 const Styles = reactive(
@@ -765,20 +767,33 @@ const asignaValor = async () => {
 }
 
 const toggleClick = async () => {
+  if (This.prop.ReadOnly || This.prop.Disabled)
+    return
 
-  if (!toggle.value) {
-    // if (!sw_focus.value)
-    if (!focusIn) {
-      await onFocus(true)   // 18/Junio/2025
-      return
+  if (!focusIn)
+    await onFocus()
 
-    }
+  if (This.prop.ReadOnly || This.prop.Disabled)
+    return
 
-  }
-  if (!This.prop.ReadOnly)
-    toggle.value = !toggle.value
+  toggle.value = !toggle.value
 
   comboStyle.zIndex = toggle.value ? zIndex.value + 2 : zIndex.value
+}
+
+const onToggleMouseDown = () => {
+  // Prevent focusout side effects when the user clicks the toggle icon.
+  ignoreInputFocusOut.value = true
+}
+
+const onInputFocusOut = () => {
+  if (ignoreInputFocusOut.value) {
+    ignoreInputFocusOut.value = false
+    return
+  }
+
+  focusIn = false
+  emitValue()
 }
 ////////////////////////////////////////////////////////////////////
 // keyDown

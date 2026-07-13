@@ -391,9 +391,12 @@ input[class="number_old"] {
   /* flex-direction: row-reverse;*/
 }
 
-body.combo-dropdown-open .formfooter .bt_aceptar {
-  visibility: hidden !important;
+body.combo-dropdown-open .formfooter {
   pointer-events: none !important;
+}
+
+body.combo-dropdown-open .formfooter > * {
+  visibility: hidden !important;
 }
 
 .transition-group {}
