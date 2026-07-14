@@ -9,7 +9,7 @@ div.ThisForm {
 }
 
 * {
-  /* max-width: 100% !important; */
+  max-width: 100% !important;
 }
 
 
@@ -531,8 +531,16 @@ section.formfooter_old {
 
 
 @media(max-width: 550px) {
+  .gridTable{
+    width: 100% !important;
+  }
+
   #grid_tablas_234_grid_tbody > tr{
     background-color: transparent !important;
+  }
+
+  .renNumber{
+    flex-direction: row !important;
   }
 
   .gridDatos td {

@@ -289,9 +289,23 @@ const handler = (event) => {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  transition: opacity 0.3s ease;
 
+}
+
+.modal-container{
+  position: relative !important;
+  overflow: scroll;
+  display: block !important;
+  left: 2% !important;
+  right: 2% !important;
+  max-width: 90% !important;
+  max-height: 70vh !important;
+}
+
+.diviBrowse {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .modal-container-old {
@@ -307,7 +321,7 @@ const handler = (event) => {
   scrollbar-color: deeppink indigo;
   scrollbar-width: thin;
   scrollbar-gutter: auto;
-
+  overflow: scroll;
 }
 
 .modal-header h3 {

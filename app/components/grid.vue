@@ -1312,7 +1312,10 @@ table {
     border-bottom: 1px solid #dfe7e6;
     min-height: 32px;
     height: auto;
+    flex-direction: row;
   }
+
+
 
   table.gridTable td:last-child {
     border-bottom: 0;
@@ -1340,6 +1343,32 @@ table {
 
 
 
+
+@media (max-width: 550px) {
+  table.gridTable tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+  }
+
+  table.gridTable tbody tr:nth-child(even) {
+    background-color: #7aac6761 !important;
+  }
+
+  .renNumber label{
+    font-weight: bold;
+    font-size: 1.1rem !important;
+  }
+
+  table.gridTable td::before{
+    min-width: 30%;
+    max-width: 30%;
+  }
+
+  table.gridTable td .text_class1, table.gridTable td .edit_class1, table.gridTable td .combo_class1 {
+    width: 65% !important;
+    min-width: 65% !important;
+    max-width: 65% !important;
+  }
+}
 
 table.gridTable {
   border-collapse: collapse;
