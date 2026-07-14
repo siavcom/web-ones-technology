@@ -539,6 +539,13 @@ section.formfooter_old {
     background-color: transparent !important;
   }
 
+  .form_class17{
+    padding: 10px 5px;
+    background-color: #7aac67;
+    color: white !important;
+    font-size: 1.2rem !important;
+  }
+
   .renNumber{
     flex-direction: row !important;
   }
