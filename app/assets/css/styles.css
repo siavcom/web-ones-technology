@@ -597,6 +597,10 @@ section.formfooter_old {
     width: 100% !important;
   }
 
+  .checkbox.text, .checkbox.edit_class8{
+    width: 30px !important;
+  }
+
   .combo_class10, .edit_class3, .edit_class8, .text_class4, .edit_class8{
     padding: 5px 2px !important;
     margin-bottom: 5px !important;
@@ -660,7 +664,7 @@ section.formfooter_old {
     left: auto;
   }
   .modal-body div div{
-    background-color: transparent !important;
+    /* background-color: transparent !important; */
     border: none !important;
     box-shadow: none !important;
   }
