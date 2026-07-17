@@ -56,7 +56,7 @@
             <section class="formmain form form_class11" :style="ThisForm.mainStyle">
               <slot name="main" class="form form_class12">
 
-                <TransitionGroup name='detailForm' class="form form_class13">
+                <TransitionGroup name='detailForm'>
 
                   <div :id="Id + '_' + compMain" v-if="ThisForm.block.length == 0" v-for="(compMain) in ThisForm.main"
                     :key="compMain" :class="compMain" v-show='ThisForm[compMain].prop.Visible'
