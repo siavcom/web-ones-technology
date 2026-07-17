@@ -77,8 +77,8 @@
             <div :id="Id + '_options_' + row.valueIndex" class="combo combo_class13 option"
             @mouseover="hover = true" @mouseleave="hover = false" @click.stop="validClick(row.valueIndex)"
             :disabled="prop.ReadOnly" :style="{
-              'background-color': activeOptionIndex == row.valueIndex || displayText.trim() == row.option.text[0].trim() ? '#7aac67' : 'white',
-              'color': activeOptionIndex == row.valueIndex || displayText.trim() == row.option.text[0].trim() ? 'white' : 'black'
+              'background-color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? '#7aac67' : 'white',
+              'color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? 'white' : 'black'
             }">
             <!--Imprime Columnas -->
               <div :id="Id + '_columns_' + row.valueIndex + '_col_' + col" class="combo combo_class14 columna" :disabled="prop.ReadOnly"
@@ -451,6 +451,14 @@ const filteredColumnas = computed(() => {
       )
     })
 })
+
+const compareOptionText = (value: unknown) => {
+  if (value === null || value === undefined)
+    return ''
+
+  const text = value.toString().trim()
+  return text.length > 0 ? text : ''
+}
 
 const syncActiveOption = () => {
   const match = filteredColumnas.value.find((row: any) => {

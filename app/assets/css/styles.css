@@ -527,7 +527,13 @@ section.formfooter_old {
   text-align: left !important;
 }
 
+.form_class19{
+  /* overflow-x:scroll */
+}
 
+.backGround{
+  box-sizing: border-box;
+}
 
 
 @media(max-width: 550px) {
