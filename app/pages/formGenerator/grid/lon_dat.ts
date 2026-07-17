@@ -26,7 +26,7 @@ export class lon_dat extends COLUMN {
         this.prop.ReadOnly = true
 
         //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-        this.style.width = '48px'
+        this.style.width = '38px'
     }
 
 }

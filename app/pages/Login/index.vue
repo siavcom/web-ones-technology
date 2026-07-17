@@ -12,17 +12,14 @@
       </div>
       <div v-else class="form">
         <component id="emp_emp" :is="impComponent(ThisForm.emp_emp.prop.BaseClass)" :Registro="0"
-          :Value="ThisForm.emp_emp.prop.Value" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style"
-          :position="ThisForm.emp_emp.position" />
+          :Value="ThisForm.emp_emp.prop.Value" :prop="ThisForm.emp_emp.prop" :style="ThisForm.emp_emp.style" />
         <component id="log_usu" :is="impComponent(ThisForm.log_usu.prop.BaseClass)" :Value="ThisForm.log_usu.prop.Value"
-          :Registro="0" :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style"
-          :position="ThisForm.log_usu.position" />
+          :Registro="0" :prop="ThisForm.log_usu.prop" :style="ThisForm.log_usu.style" />
         <component id="pas_usu" :is="impComponent(ThisForm.pas_usu.prop.BaseClass)" :Value="ThisForm.pas_usu.prop.Value"
-          :Registro="0" :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style"
-          :position="ThisForm.pas_usu.position" />
+          :Registro="0" :prop="ThisForm.pas_usu.prop" :style="ThisForm.pas_usu.style" />
         <component id="bt_aceptar" :is="impComponent(ThisForm.bt_aceptar.prop.BaseClass)" class="aceptar" Value=" "
-          :Registro="0" :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style"
-          :position="ThisForm.bt_aceptar.position" :imagen="ThisForm.bt_aceptar.imagen" />
+          :Registro="0" :prop="ThisForm.bt_aceptar.prop" :style="ThisForm.bt_aceptar.style" />
+        <!-- v-model:Status="ThisForm[compFooter].prop.Status"-->
       </div>
     </div>
   </div>

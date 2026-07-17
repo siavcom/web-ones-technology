@@ -2,8 +2,7 @@ Web-Ones Technology: Complete SQL Web Development Platform
 Migrate Visual FoxPro Applications to Modern Web with TypeScript
 
 
-Technical documentation : https://deepwiki.com/badge.svg
-
+Technical documentation : https://deepwiki.com/siavcom/web-ones-technology
 
 🎯 Overview
 Web-Ones is a comprehensive framework for building SQL-based web applications using TypeScript (class-based) without requiring expertise in HTML, CSS, or Vue. It enables developers to migrate decades of Visual FoxPro (VFP),cliper , delphi and other Visual programing languages to modern web technology while preserving the familiar VFP programming paradigm.

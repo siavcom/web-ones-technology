@@ -65,7 +65,7 @@ export class ThisForm extends FORM {
 
   override async init() {
     try {
-      await this.Form.db.use("vi_cap_comeind");
+      await use("vi_cap_comeind");
     } catch (error) {
       console.log("======Error Init=====" + this.Name, error);
     }

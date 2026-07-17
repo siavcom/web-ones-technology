@@ -26,7 +26,7 @@ export class nullValue extends COLUMN {
         this.prop.Placeholder = ""
         this.prop.Value = 0
 
-        this.style.width = '40px'
+        this.style.width = '92px'
 
     }
 

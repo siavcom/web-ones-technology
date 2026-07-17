@@ -19,7 +19,7 @@ export class toolTipText extends COLUMN {
         this.prop.BaseClass = 'editText'
         this.prop.ControlSource = 'vi_cap_for.tooltiptext'
         this.prop.ToolTipText = 'valor tool tip text'
-        this.style.width = '200px'
+        this.style.width = '256px'
         // this.style.flexBasis = '30%' /* width/height  - initial value: auto */
     }
 

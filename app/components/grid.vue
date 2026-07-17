@@ -49,9 +49,10 @@
               :style="This.Row < 0 || item.id != This.Row ? This.rowStyleInactive : This.rowStyleActive">
               <!-- :style="This.Row < 0 || item.id != This.Row ? trStyleInactive : trStyleActive"-->
               <!-- No utilizar vertical-aling en renNumber-->
-              <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#" style="height: auto;"><label>{{
-                item.recno
-                  }}</label></td>
+              <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#"
+                style="height: auto;"><label>{{
+                  item.recno
+                }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name"
@@ -193,7 +194,8 @@ const emit = defineEmits(["update", "update:Value", "update:Status", "update:Err
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-
+  Value: string | number | Date;
+  Registro: number;  // Se pone para el manejo de grid
   prop: {
     ToolTipText: string;
     View: "";
@@ -228,26 +230,8 @@ const props = defineProps<{
     autoLoad: boolean;
     headerHeight: string;
   };
-  /*
-    style: {
-      background: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "500px";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
-    };
-    */
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
-  Registro: 0;
-  //Component: null;
-  //db: any
+  style: {};
+
 
 }>();
 // Valores componente padre
@@ -1329,7 +1313,7 @@ table {
     text-align: left;
   }
 
-  table.gridTable td > * {
+  table.gridTable td>* {
     flex: 1 1 auto;
     min-width: 0;
     text-align: right;
@@ -1353,17 +1337,19 @@ table {
     background-color: #7aac6761 !important;
   }
 
-  .renNumber label{
+  .renNumber label {
     font-weight: bold;
     font-size: 1.1rem !important;
   }
 
-  table.gridTable td::before{
+  table.gridTable td::before {
     min-width: 30%;
     max-width: 30%;
   }
 
-  table.gridTable td .text_class1, table.gridTable td .edit_class1, table.gridTable td .combo_class1 {
+  table.gridTable td .text_class1,
+  table.gridTable td .edit_class1,
+  table.gridTable td .combo_class1 {
     width: 65% !important;
     min-width: 65% !important;
     max-width: 65% !important;

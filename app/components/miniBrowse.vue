@@ -21,7 +21,7 @@
 
     <span :id="Id + '_label'" class="etiqueta" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
       prop.Caption
-      }}</span>
+    }}</span>
     <!--List Box -->
     <div :id="Id + '_miniBrowse'" class="miniBrowse" ">
       <!--select v-model=" List" multiple-->
@@ -103,19 +103,14 @@ const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Stat
 ////////////////////////////////////
 
 interface Props {
-  //Recno: number;
-  Registro: number;
-
+  Value: string | number | Date;
+  Registro: number;  // Se pone para el manejo de grid
   prop: {};
   style: {};
-  position: {};
-  //  inputStyle: {};
 }
 const props = withDefaults(defineProps<Props>(), {
-
+  Value: "",
   Registro: 0,
-  // Component: null,
-  // Value: undefined,
   prop: {
     BaseClass: "miniBrowse",
     BoundColumn: 1, // Columna donde se tomara el Value
@@ -166,7 +161,7 @@ const props = withDefaults(defineProps<Props>(), {
     Visible: true,
     Value: [String, Number, Date],
 
-  },
+  }
 
 })
 

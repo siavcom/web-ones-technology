@@ -56,18 +56,18 @@
 <script lang="ts" setup>
 
 interface Props {
-  Registro: number;
+  Value: string | number | Date;
+  Registro: number;  // Se pone para el manejo de grid
   prop: {};
-  // style: {};
-  position: {};
+  style: {};
+  // position: {};
 }
 
 //const props = defineProps<{
 const props = withDefaults(defineProps<Props>(), {
-
+  Value: '',
   Registro: 0,
   prop: {
-
     BaseClass: "container",
     BoundColumn: 1, // Columna donde se tomara el Value
 
@@ -136,11 +136,6 @@ const props = withDefaults(defineProps<Props>(), {
       // inputWidth: "inherit"
     },
     */
-  position: {
-    position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
-    left: 0,
-    Top: 0,
-  },
 
 })
 /*

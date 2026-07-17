@@ -213,6 +213,10 @@ export const locateFor = async (where: string, alias?: string) => {
 
         return records
     }
+    if (!This.value.View[alias]) {
+        errorAlert(`No existe el alias=${alias}`);
+        return null
+    }
     This.value.View[alias].recno = 0
 
     return records
@@ -362,17 +366,18 @@ export const useNodata = async (nom_vis: string, alias?: string) => {
 * @returns array|boolean:  - Data Array  del primer renglon resultante o false en caso de error
 **/
 
-export const use = async (nom_vis: string, m?: {}, alias?: string, order?: string) => {
+export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     while (!This.value.Estatus) {
         console.log("Db esperando cambio de estatus");
     }
 
     nom_vis = nom_vis.trim();
-    if (!m) {
-        m = {};
+    if (!mem) {
+        mem = {};
     }
 
+    const m = { ...mem };
     if (!alias) {
         alias = nom_vis; // asignamos el nombre de la vista
     }

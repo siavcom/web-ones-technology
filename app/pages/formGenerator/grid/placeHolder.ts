@@ -22,7 +22,7 @@ export class placeHolder extends COLUMN {
     this.prop.ToolTipText = 'PlaceHolder'
     this.prop.Placeholder = "PlaceHolder"
     //  this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-    this.style.width = '150px'
+    this.style.width = '256px'
   }
 
 }

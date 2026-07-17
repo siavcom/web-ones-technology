@@ -50,12 +50,9 @@ const emit = defineEmits(["update", "update:Value",
   "update:Valid", "update:Status", 'customChange']) //, "update:displayError", "update:Ref","update:Recno",
 
 const props = defineProps<{
-  //Recno: number;
-  //Component: any;
-  Value: any;
+
+  Value: string | number | Date;
   Registro: number;  // Se pone para el manejo de grid
-  // Block: number;
-  // displayError: boolean;
   prop: {
 
     Autofocus: false;
@@ -120,26 +117,7 @@ const props = defineProps<{
     When: boolean;
 
   };
-  /*
-    style: {
-      background: "white";
-      padding: "5px"; // Relleno
-      color: "#b94295";
-      width: "auto";
-      height: "30px";
-      fontFamily: "Arial";
-      fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-      textAlign: "left";
-      zIndex: 0
-  
-    };
-    */
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
-  //db: any
+  style: {};
 }>();
 
 const Component = toRef(() => props.prop.This)

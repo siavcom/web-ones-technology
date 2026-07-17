@@ -50,12 +50,10 @@
 <script lang="ts" setup>
 
 interface Props {
-  Registro: number;
-
+  Value: string | number | Date;
+  Registro: number;  // Se pone para el manejo de grid
   prop: {};
   style: {};
-  position: {};
-
 }
 
 //const props = defineProps<{
@@ -292,7 +290,7 @@ const handler = (event) => {
 
 }
 
-.modal-container{
+.modal-container {
   position: relative !important;
   overflow: scroll;
   display: block !important;

@@ -1743,6 +1743,23 @@ export function impComponent(name: string): object {
   }
 }
 
+export function page(action: string, param?: any) {
+  const router = useRouter();
+
+  if (action.toLowerCase() == 'back') {
+    router.back();
+    return;
+  }
+  if (action.toLowerCase() == 'push') {
+    router.push(param);
+  }
+  if (action.toLowerCase() == 'forward') {
+    router.forward();
+  }
+  if (action.toLowerCase() == 'go') {
+    router.go(+param);
+  }
+}
 //////////////////////////////////////////////
 // Clase : consoleLog
 // @author: Fernando Cuadras Angulo

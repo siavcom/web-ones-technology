@@ -22,7 +22,7 @@ export class controlSource extends COLUMN {
         //this.prop.ControlSource = 'vi_cap_for.controlsource'
         this.prop.ToolTipText = 'Control Source'
         this.prop.Placeholder = "table.field"
-        this.style.width = '250px'
+        this.style.width = '364px'
     }
 
 }

@@ -45,11 +45,9 @@
                 <div :id="'div_' + compHeader" v-for="(compHeader) in ThisForm.header" :key="compHeader"
                   :class="compHeader" v-show='ThisForm[compHeader].prop.Visible' class="form form_class9">
                   <component :id="'component_' + compHeader" :is="impComponent(ThisForm[compHeader].prop.BaseClass)"
-                    :ShowError="ThisForm[compHeader].prop.ShowError"
+                    :Value="ThisForm[compHeader].prop.Value"
                     :Registro="!ThisForm[compHeader].Recno.isNaN(NaN) ? ThisForm[compHeader].Recno : 0"
-                    :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style"
-                    :position="ThisForm[compHeader].position" :Value="ThisForm[compHeader].prop.Value"
-                    class="form form_class10" />
+                    :prop="ThisForm[compHeader].prop" :style="ThisForm[compHeader].style" class="form form_class10" />
                 </div>
 
               </slot>
@@ -65,30 +63,28 @@
                     class="form form_class14">
                     <component v-if="ThisForm[compMain].prop.Visible"
                       :is="impComponent(ThisForm[compMain].prop.BaseClass)"
-                      v-model:Value="ThisForm[compMain].prop.Value" v-model:Status="ThisForm[compMain].prop.Status"
+                      v-model:Value="ThisForm[compMain].prop.Value"
                       :Registro="typeof ThisForm[compMain].Recno === 'number' ? ThisForm[compMain].Recno : 0"
-                      :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style"
-                      :position="ThisForm[compMain].position" class="form form_class15" />
+                      :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style" class="form form_class15" />
                   </div>
+                  <!--v-model:Status="ThisForm[compMain].prop.Status"-->
                   <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
                   <template v-else v-for="(block, key) in ThisForm.block" :key="key">
-                    <div  :id="Id + 'block_divi_' + key" class="form form_class16" v-if="block.prop.Visible">
+                    <div :id="Id + 'block_divi_' + key" class="form form_class16" v-if="block.prop.Visible">
                       <label :style="block.titleStyle" class="form form_class17"
                         v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-                      <div :id="Id + 'block_' + key" :style="block.style"
-                        class="form form_class18">
+                      <div :id="Id + 'block_' + key" :style="block.style" class="form form_class18">
                         <div v-for="(component, key) in block.component" :key="key"
                           :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px"
                           class="responsive form form_class19">
 
                           <component v-if="component.prop" :id="Id + '_blockComponent_' + key + component.prop.Name"
                             :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                            v-model:Status="component.prop.Status"
                             :Registro="typeof component.Recno == 'number' ? component.Recno : 0" :prop="component.prop"
-                            :style="component.style" :position="component.position" class="form form_class20">
+                            :style="component.style" class="form form_class20">
                           </component>
-
+                          <!-- v-model:Status="component.prop.Status"-->
                         </div>
                       </div>
                     </div>
@@ -111,19 +107,17 @@
               v-bind:db="ref(ThisForm.db)"
                 -->
                 <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer">
-                  <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter"
-                    class="form  form_class23">
+                  <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter" class="form  form_class23">
                     <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
-                      v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
+                      v-model:Value="ThisForm[compFooter].prop.Value"
                       :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"
-                      :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style"
-                      :position="ThisForm[compFooter].position" class="form form_class24" />
+                      :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style" class="form form_class24" />
 
-                    <!--:inputStyle="ThisForm[compFooter].inputStyle"
+                    <!-- v-model:Status="ThisForm[compFooter].prop.Status"
                     @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
                   </div>
                 </template>
-                
+
               </slot>
 
               <div id="salir" class="salir form form_class25" @click='clickSalir()'>
@@ -180,22 +174,6 @@ const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(sessi
 // Nota : Se paso toda la carga de componentes a /conposables
 /////////////////////////////////////////////////
 
-//const MyButton = resolveComponent('MyButton')
-
-/*
-const imgButton = resolveComponent('imgButton.vue')
-const comboBox = resolveComponent('comboBox.vue')
-const editText = resolveComponent('editText.vue')
-const textLabel = resolveComponent('textLabel.vue')
-const grid = resolveComponent('grid.vue')
-const browseLite = resolveComponent('browseLite.vue')
-const details = resolveComponent('details.vue')
-const embedPdf = resolveComponent('embedPdf.vue')
-const container = resolveComponent('container.vue')
-const modalContainer = resolveComponent('modalContainer.vue')
-
-*/
-
 /* 
 ///////////////////////////////////////////////////////////////////////
 // Nuxt 4 :
@@ -204,19 +182,6 @@ const modalContainer = resolveComponent('modalContainer.vue')
 //  -. En el htnl en :is=":is="ThisForm[compFooter].prop.BaseClass" pasar directamente el nombre del componente en el que se va a trabajar
 //
 ///////////////////////////////////////////////////////////////////////
-
-const imgButton = computed(() => resolveComponent('LazyimgButton.vue'))
-const editText = computed(() => resolveComponent('LazyeditText.vue'))
-const comboBox = computed(() => resolveComponent('LazycomboBox.vue'))
-const textLabel = computed(() => resolveComponent('LazytextLabel.vue'))
-const grid = computed(() => resolveComponent('Lazygrid.vue'))
-const browseLite = computed(() => resolveComponent('LazybrowseLite.vue'))z
-const details = computed(() => resolveComponent('Lazydetails.vue'))
-const embedPdf = computed(() => resolveComponent('LazyembedPdf.vue'))
-const container = computed(() => resolveComponent('Lazycontainer.vue'))
-const modalContainer = computed(() => resolveComponent('LazymodalContainer.vue'))
-
-*/
 
 // en html en :is="imgButtonr" pasar directamente el nombre del componente en el que se va a trabajar
 /*
@@ -245,8 +210,11 @@ const base64 = defineAsyncComponent(() => import('@/components/base64.vue'))
 ////////////////////////////////////
 const emit = defineEmits(["updateIsOpen"])
 const props = defineProps<{
-  ThisForm: null;
+  ThisForm: {};
 }>();
+
+
+
 // Original
 //const ThisForm = reactive(new props.ThisForm) // no quitar el new
 

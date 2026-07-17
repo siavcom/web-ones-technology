@@ -89,11 +89,9 @@ const pageOptions = [
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-  //Recno: 0;
-  Value: any;
-  Registro: 0;
-  id: string;
-  //Show: false;
+
+  Value: string | number | Date;
+  Registro: number;  // Se pone para el manejo de grid
   prop: {
 
     This: null;
@@ -140,24 +138,7 @@ const props = defineProps<{
 
     //compAddress: any;
   };
-  // inputStyle: {};
-  style: {
-    background: "white";
-    padding: "5px"; // Relleno
-    color: "#b94295";
-    width: "500px";
-    height: "30px";
-    maxHeight: "auto"
-    fontFamily: "Arial";
-    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    textAlign: "left";
-  };
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
-  //db: any
+  style: {};
 }>();
 
 /*

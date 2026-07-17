@@ -24,6 +24,6 @@ export class maxLen extends COLUMN {
     this.prop.Value = "";
 
     //this.style.flexBasis = '30%' /* width/height  - initial value: auto */
-    this.style.width = "100px";
+    this.style.width = "80px";
   }
 }

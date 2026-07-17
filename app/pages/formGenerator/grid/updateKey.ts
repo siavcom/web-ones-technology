@@ -24,7 +24,7 @@ export class updateKey extends COLUMN {
         this.prop.ControlSource = 'vi_cap_for.updatekey'
         this.prop.Value = 1
 
-        this.style.width = '40px'
+        this.style.width = '92px'
 
     }
 

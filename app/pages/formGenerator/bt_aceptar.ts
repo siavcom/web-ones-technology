@@ -23,7 +23,7 @@ export class bt_aceptar extends IMGBUTTON {
     this.prop.Image = " /Iconos/svg/accept.svg";
     this.prop.TabIndex = 1;
     this.prop.Visible = false;
-    this.style.width = "30px";
+    this.style.width = "72px";
   } // Fin constructor
 
   override async click() {
@@ -44,7 +44,7 @@ export class bt_aceptar extends IMGBUTTON {
     this.Form.grid_columns.prop.RecordSource = "";
     this.Form.grid_form.prop.RecordSource = "";
 
-    const concatena = this.Form.db.dialect == "postgres" ? "||" : "+";
+    const concatena = Public.value.dialect == "postgres" ? "||" : "+";
     const m = {};
     const espacios = " ".repeat(64);
     //   const nom_tab = this.Form.nom_tab.prop.Value.trim()
@@ -67,7 +67,7 @@ export class bt_aceptar extends IMGBUTTON {
       1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
       0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
       ref_dat as placeholder,ref_dat as tooltiptext,'E' as baseclass `;
-      const ins_sql = `select ${campos} from vi_schema where \
+      const ins_sql = `select ROW_NUMBER() OVER(ORDER BY con_dat ASC) AS recno,0 as key_pri ,   ${campos} from vi_schema where \
       upper(cam_dat)<>'TIE_UAC' \
       and upper(cam_dat)<>'TIMESTAMP' \
       and upper(cam_dat)<>'USU_USU' \
@@ -76,17 +76,18 @@ export class bt_aceptar extends IMGBUTTON {
       and upper(cam_dat)<>'KEY_PRI' \
       and nom_vis='${vis_form}' order by con_dat`;
 
-      if (!(await this.Form.db.execute(ins_sql, "vi_cap_form"))) {
+      console.log("bt_aceptar ins_sql=>>>>>>>", ins_sql);
+      if (!(await SQLExec(ins_sql, "vi_cap_form"))) {
         MessageBox("No hay vista de captura para la forma principal", 16);
         return;
       }
 
-      await this.Form.db.localSql(
+      await localSql(
         " update vi_cap_form set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' "
       );
 
       // Buscamos la expresion de indice de actualizacion
-      const data = await this.Form.db.execute(
+      const data = await SQLExec(
         `select exp_ind,vac_vis from vi_cap_comevis \
                           join vi_cap_comeind on vi_cap_comevis.vac_vis=vi_cap_comeind.nom_ind where rtrim(nom_vis)='${vis_form}' `,
         "MEMVAR"
@@ -100,7 +101,7 @@ export class bt_aceptar extends IMGBUTTON {
       const exp_ind = data[0].exp_ind.trim();
       //        console.log('Expresion campo indice ==', nom_ind, exp_ind)
 
-      await this.Form.db.localSql(
+      await localSql(
         `update vi_cap_form set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `
       );
       // CHARINDEX(cam_dat,'${exp_ind}')>0    ${exp_ind} like trim(cam_dat)
@@ -138,7 +139,7 @@ export class bt_aceptar extends IMGBUTTON {
       1 as cam_act,${controlSource} as controlsource,0 as min,lon_dat as maxlen,1 as dat_cap,0 as lla_cap, \
       0 as nullvalue,'${espacios}' as length,'${espacios}' as textlabel, \
       ref_dat as placeholder,ref_dat as tooltiptext,'E' as baseclass `;
-      const ins_sql = `select ${campos} from vi_schema where \
+      const ins_sql = `select ROW_NUMBER() OVER(ORDER BY con_dat ASC) AS recno,0 as key_pri , ${campos} from vi_schema where \
       upper(cam_dat)<>'TIE_UAC' \
       and upper(cam_dat)<>'TIMESTAMP' \
       and upper(cam_dat)<>'USU_USU' \
@@ -147,38 +148,39 @@ export class bt_aceptar extends IMGBUTTON {
       and upper(cam_dat)<>'KEY_PRI' \
       and nom_vis='${vis_grid}' order by con_dat`;
 
-      console.log("1) bt_aceptar execute ins_sql", ins_sql);
+      console.log("1) bt_aceptar execute ins_sql===>", ins_sql);
 
       if (!await SQLExec(ins_sql, "vi_cap_grid")) {
         await MessageBox("No hay vista de captura para el grid de captura", 16);
         return;
       }
-      console.log("2) bt_aceptar vi_cap_grid ", await this.Sql.localAlaSql('select * from vi_cap_grid'));
-      await this.Sql.localAlaSql(
+      console.log("2) bt_aceptar vi_cap_grid ", await localAlaSql('select * from vi_cap_grid'));
+
+      await localAlaSql(
         " update vi_cap_grid set cam_act=1,updatekey=1,lon_dat=2147483647,min=1 where upper(trim(cam_dat))= 'KEY_PRI' or upper(trim(cam_dat))= 'ID' "
       );
 
       // Buscamos la expresion de indice de actualizacion
-      const data = await this.Form.db.execute(
+      const data = await SQLExec(
         `select exp_ind,vac_vis from vi_cap_comevis \
                     join vi_cap_comeind on vi_cap_comevis.vac_vis=vi_cap_comeind.nom_ind where rtrim(nom_vis)='${vis_grid}' `,
         "MEMVAR"
       );
 
       //////////////////////
-      /*      if (!this.Form.db.execute(ins_sql, 'vi_cap_grid')) {
+      /*      if (!SQLExec(ins_sql, 'vi_cap_grid')) {
               MessageBox('No hay vista de captura para el grid', 16)
               return
             }
             // Buscamos la expresion de indice de actualizacion
-            const data = await this.Form.db.execute(`select exp_ind,vac_vis from vi_cap_comevis \
+            const data = await SQLExec(`select exp_ind,vac_vis from vi_cap_comevis \
                                 join vi_cap_comeind on vi_cap_comevis.vac_vis=vi_cap_comeind.nom_ind where rtrim(nom_vis)='${vis_grid}'    `, 'MEMVAR')
       
             if (data.length == 0 || data[0].exp_ind.trim() == '') {
               MessageBox('No hay expresión de indice para el grid captura')
               return
             }
-            await this.Form.db.localSql(
+            await  localSql(
               `update vi_cap_grid set cam_act=1,updatekey=1 where '${exp_ind}' like '%'+trim(cam_dat)+'%' `)
       
             */

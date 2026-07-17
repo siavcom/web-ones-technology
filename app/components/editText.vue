@@ -3,10 +3,11 @@
      28/Jun/2026 .-Se quita el spqm y se cambia por <div style="display: inline-block;"
                   el display inline-block permite que los elementos que contiene el div, parreczcan seguidos de el
     -->
-  <div style="display: inline-block;" :id="Id + '_component'" class=" divi inputDivi edit edit_class1" :title="This.prop.ToolTipText"
-    :style="Styles.style" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class="etiqueta edit edit_class2" v-if="prop.Caption.length > 0" :style="Styles.captionStyle">{{
-      prop.Caption }}
+  <div style="display: inline-block;" :id="Id + '_component'" class=" divi inputDivi edit edit_class1"
+    :title="This.prop.ToolTipText" :style="Styles.style" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+    <span :id="Id + '_label'" class="etiqueta edit edit_class2" v-if="prop.Caption.length > 0"
+      :style="Styles.captionStyle">{{
+        prop.Caption }}
     </span>
 
 
@@ -16,8 +17,8 @@
       onkeypress='return  event.charCode== 45 || event.charCode== 46 || event.charCode== 43 || (event.charCode >= 48 && event.charCode <= 57)'
       @focusout="lostFocus" @focus="onFocus" @keydown="keyDown" -->
 
-    <input :id="Id" v-if="propType == 'number'" class="number edit edit_class3" ref="Ref" :style=Styles.inputStyle type="text"
-      v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
+    <input :id="Id" v-if="propType == 'number'" class="number edit edit_class3" ref="Ref" :style=Styles.inputStyle
+      type="text" v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" @focusout="lostFocus" @focus="onFocus"
       @keydown="keyDown" v-imask="maskOptions" @accept="onAccept" @init="onInit">
 
@@ -41,19 +42,20 @@
     -->
     <!--spinner-->
 
-    <input :id="Id" v-else-if="propType == 'spinner'" class="number edit edit_class3" type="number" :style=Styles.inputStyle ref="Ref"
-      :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max" v-model="This.prop.Value" :maxlength="MaxLength"
-      :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead" :tabindex="prop.TabIndex" @keydown="keyDown"
-      @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)">
+    <input :id="Id" v-else-if="propType == 'spinner'" class="number edit edit_class3" type="number"
+      :style=Styles.inputStyle ref="Ref" :disabled="This.prop.Disabled" :min="prop.Min" :max="prop.Max"
+      v-model="This.prop.Value" :maxlength="MaxLength" :step="This.prop.Step" :readonly="This.prop.ReadOnly || onlyRead"
+      :tabindex="prop.TabIndex" @keydown="keyDown" @focusout="lostFocus" @focus="onFocus" @input="emitValue(false)">
     <!--v-on:keyup.13="keyDown" v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown"
       v-on:keyup.up="keyDown" v-on:keyup.63="clickHelp()"-->
     <!--v-on:keyup.enter="clickReturn()"  @click.capture="onClick" -->
     <!--textArea -->
     <!--spam :id="Id" v-else-if="propType == 'textarea'" :style=Styles.inputStyle-->
-    <textarea :id="Id + '_textarea'" class="textArea edit edit_class3" v-else-if="propType == 'textarea'" ref="Ref" spellcheck="false"
-      :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
-      :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea" :rows="This?.prop.Rows || 2"
-      :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus" @focusout="lostFocus"></textarea>
+    <textarea :id="Id + '_textarea'" class="textArea edit edit_class3" v-else-if="propType == 'textarea'" ref="Ref"
+      spellcheck="false" :style=Styles.inputStyle v-model="Value" :readonly="This.prop.ReadOnly || onlyRead"
+      :disabled="This.prop.Disabled" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" type="textArea"
+      :rows="This?.prop.Rows || 2" :cols='Styles.inputStyle.cols' @keydown="keyDown" @focus="onFocus"
+      @focusout="lostFocus"></textarea>
     <!--v-on:keyup.13="keyDown"
       v-on:keyup.backspace="keyDown" v-on:keyup.delete="keyDown" v-on:keyup.down="keyDown" v-on:keyup.up="keyDown"
       @keydown.delete="keyDown"  -->
@@ -77,7 +79,8 @@
 
       <!--TransitionGroup name='detailJson' tag="div"-->
       <!--details-->
-      <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true' class='json edit edit_class5'>
+      <div :id="Id + '_detail_' + key" v-for="(comp, index, key) in compJson" key:='index' open='true'
+        class='json edit edit_class5'>
         <!--summary :id="Id" :style="{ fontWeight: 'bold', height: Styles.inputStyle.height }" :key='index'-->
         <label class='json edit edit_class6'>{{ comp.label }}
         </label>
@@ -85,7 +88,8 @@
         <input :id="Id + '_json_input' + key" v-model="comp.value" :type="comp.type ? comp.type : 'text'"
           :readonly="comp.readOnly || This.prop.ReadOnly ? true : false"
           :disabled="comp.disabled || This.prop.Disabled ? true : false"
-          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus" @focus="onFocus" class='json edit edit_class7'>
+          :style="comp.style ? comp.style : { width: 'auto', height: '13px' }" @focusout="lostFocus" @focus="onFocus"
+          class='json edit edit_class7'>
 
       </div>
       <!--/details-->
@@ -97,14 +101,14 @@
          checkValue automaticamente cambia de valor cuando se selecciona y con el washer cambiamos el valor This.prop.Value 
          -->
 
-    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox edit edit_class8" type="checkbox" :style=Styles.inputStyle
-      ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
+    <input :id="Id" v-else-if="propType == 'checkbox'" class="checkbox edit edit_class8" type="checkbox"
+      :style=Styles.inputStyle ref="Ref" :readonly="This.prop.ReadOnly || onlyRead"
       :disabled="This.prop.Disabled || (checkValue && checkValueParent)" :tabindex="prop.TabIndex" v-model="checkValue"
       @focusout="lostFocus" @keydown="keyDown">
 
     <!--  TEXT   -->
-    <input :id="Id" v-else class="text edit edit_class8" ref="Ref" spellcheck="false" :style=Styles.inputStyle :type="propType"
-      v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
+    <input :id="Id" v-else class="text edit edit_class8" ref="Ref" spellcheck="false" :style=Styles.inputStyle
+      :type="propType" v-model.trim="Value" :readonly="This.prop.ReadOnly || onlyRead" :disabled="This.prop.Disabled"
       :maxlength="MaxLength" :size="prop.MaxLength" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
       @focusout="lostFocus" @focus="onFocus" v-maska="maska" @maska="onMaska" @keydown="keyDown">
 
@@ -117,8 +121,8 @@
     <!--/span-->
 
     <img :id="Id + '_help'"
-      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible" class='help_icon edit edit_class9'
-      src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
+      v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
+      class='help_icon edit edit_class9' src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
     <div :id="Id + '_error'" class="errorText edit edit_class10" v-show="displayError">{{
       This.prop.ErrorMessage.toString().length >= 1 ?
         This.prop.ErrorMessage
@@ -142,7 +146,8 @@
       <div :id="Id + 'block_' + key" v-if="block.prop.Visible" :style="block.style" class="edit edit_class15">
 
         <div v-for="(component, key) in block.component" :key="key"
-          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px" class="edit edit_class16">
+          :id="Id + 'hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px"
+          class="edit edit_class16">
           <!--v-bind:Component="ref(Ele)"-->
           <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.Type)"
             v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
@@ -201,12 +206,8 @@ const emit = defineEmits(["update", "update:Value",
 //  el Recno pertenece al los componentes  de captura  del ThisForm  
 ////////////////////////////////////
 const props = defineProps<{
-  //Recno: number;
-  //Component: any;
-  Value: any;
-  Registro: number;  // Se pone para el manejo de grid
-  // Block: number;
-  // displayError: boolean;
+  Value: string | number | Date;
+  Registro: 0;  // Se pone para el manejo de grid
   prop: {
     Autofocus: false;
     BaseClass: "EditText";
@@ -269,12 +270,7 @@ const props = defineProps<{
     When: boolean;
 
   };
-
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
+  style: {};
 
 }>();
 

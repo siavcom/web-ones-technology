@@ -28,7 +28,7 @@ export class bt_aceptar extends IMGBUTTON {
     this.Form.browse.prop.RowSource = "";
     // console.log('bt_aceptar click===>>>',this.Form.browse.prop.RowSource)
     if (this.Form.query.prop.Value.trim() > "   ") {
-      const result = await this.Form.db.execute(
+      const result = await SQLExec(
         this.Form.query.prop.Value.trim(),
         "sqlresult"
       );

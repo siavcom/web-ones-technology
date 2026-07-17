@@ -53,7 +53,7 @@ export class tab_form extends COMPONENT {
 
   public async valid() {
     //    this.Form.nom_ind.prop.RowSourceType = 0
-    //    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
+    //    await SQLExec(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
     //    this.Form.nom_ind.prop.RowSourceType = 2
 
     this.Form.vis_form.prop.RowSourceType = 0;

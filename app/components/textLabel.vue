@@ -1,5 +1,6 @@
 <template>
-  <div :id="Id + '_component'" v-show="prop.Visible" class="divi text text_class1" :style="style" @click.middle.stop="middleClick()">
+  <div :id="Id + '_component'" v-show="prop.Visible" class="divi text text_class1" :style="style"
+    @click.middle.stop="middleClick()">
 
     <!--div :id="Id + '_labelText'" class=" etiqueta" v-if="prop.BaseClass != 'imgButton' && props.prop.Caption > ' '"
       :style="captionStyle">{{ prop.Caption +
@@ -12,10 +13,10 @@
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox text text_class2" type="checkBox"
       :style=Styles.inputStyle :checked="checkValue" readonly="true" @focus="nextElement()" />
 
-    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text text text_class2" value='Data' :style="Styles.inputStyle"
-      readonly="true" @focus="nextElement()" />
-    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text text_class2" type="date" :style="Styles.inputStyle"
-      readonly="true" @focus="nextElement()" v-model="Text" />
+    <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text text text_class2" value='Data'
+      :style="Styles.inputStyle" readonly="true" @focus="nextElement()" />
+    <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text text_class2" type="date"
+      :style="Styles.inputStyle" readonly="true" @focus="nextElement()" v-model="Text" />
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text text_class2" type="datetime-local"
       :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
     <imgButton class='button text text_class3' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
@@ -27,7 +28,7 @@
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label </imgButton>-->
 
     <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
-      readonly="true" @focus="nextElement()" v-model="Text" class="text text_class4"/>
+      readonly="true" @focus="nextElement()" v-model="Text" class="text text_class4" />
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '" class="text text_class5">
       <nuxt-img :id="Id + '_imagen'" v-if="prop.BaseClass == 'imgButton' && prop.Image > '    '" class="img"
@@ -52,9 +53,8 @@ const emit = defineEmits(["update", "update:checkValue"]);
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-  //Recno: 0;
-  Registro: 0;
-  //Show: false;
+  Value: string | number | Date;
+  Registro: number;  // Se pone para el manejo de grid
   prop: {
 
     This: null;
@@ -99,9 +99,10 @@ const props = defineProps<{
     Decimals: number;
     Nu: 'arab';//
 
-    //compAddress: any;
+
   };
-  // inputStyle: {};
+  style: {};
+  /*
   style: {
     background: "white";
     padding: "5px"; // Relleno
@@ -113,12 +114,7 @@ const props = defineProps<{
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
   };
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
-  //db: any
+*/
 }>();
 
 const Component = ref(props.prop.This)

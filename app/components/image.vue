@@ -12,7 +12,7 @@
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 // <img class="mt-6 mb-2 rounded border" :src="qrcode" alt="QR Code">
 const props = defineProps<{
-  //Value: string;
+  Value: string | number | Date;
   Registro: 0;
   prop: {
     Click: false;
@@ -38,7 +38,7 @@ const props = defineProps<{
     BaseClass: "imgButton";
     Image: "";
   };
-
+  style: {};
 }>();
 
 const Component = toRef(() => props.prop.This)

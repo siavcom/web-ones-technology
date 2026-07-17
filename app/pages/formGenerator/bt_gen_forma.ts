@@ -4,32 +4,14 @@
 // Creacion : 22/Noviembre/2022
 // Ult.Modificacion : 15/Febrero/2023
 /////////////////////////////////////////////
-import { COMPONENT } from "@/classes/Component";
 
-// importa archivos de texto
-//import Main from '/templates/Main.txt?raw'
-/*
-import Main from "@/public/templates/Main.txt?raw";
-import Form from "@/public/templates/ThisForm.txt?raw";
-import Component from "@/public/templates/Component.txt?raw";
-import Grid from "@/public/templates/Grid.txt?raw";
-import Column from "@/public/templates/Column.txt?raw";
-*/
+import Main from "~/assets/templates/Main.txt?raw";
+import Form from "~/assets/templates/ThisForm.txt?raw";
+import Component from "~/assets/templates/Component.txt?raw";
+import Grid from "~/assets/templates/Grid.txt?raw";
+import Column from "~/assets/templates/Column.txt?raw";
 
-// Cambio Nuxt 4 . Quitar @/public
-// Example
-// For example, referencing an image file in the public/img/ directory, available at the static URL /img/nuxt.png:
 
-// todos los archivos de templates estan en la carpeta templates de public
-
-import Main from "/templates/Main.txt?raw";
-import Form from "/templates/ThisForm.txt?raw";
-import Component from "/templates/Component.txt?raw";
-import Grid from "/templates/Grid.txt?raw";
-import Column from "/templates/Column.txt?raw";
-
-//import { readFileSync } from 'fs'
-//https://github.com/gildas-lormeau/zip.js
 import {
   BlobWriter,
   // HttpReader,
@@ -46,12 +28,13 @@ export class bt_gen_forma extends IMGBUTTON {
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
     this.prop.Caption = "Genera Forma";
+    this.prop.ToolTipText = "Genera Forma (VUE view)";
     this.prop.Capture = false;
     this.prop.Image = " /Iconos/svg/accept.svg";
     this.prop.Visible = false;
     //this.style.maxWidth = "min-content";
     this.prop.TabIndex = 2;
-    this.style.width = "30px";
+    this.style.width = "72px";
   } // Fin constructor
 
   async click() {
@@ -132,7 +115,7 @@ export class bt_gen_forma extends IMGBUTTON {
 
     // recorremos todos los componentes de captura
     while (this.Form.tip_for.prop.Value.length > 0) {
-      const renglon = await this.Form.db.localSql(
+      const renglon = await localSql(
         `select * from ${vis_grid} order by con_dat`
       );
       //console.log('bt_gen_for ', renglon)
@@ -219,7 +202,7 @@ export class bt_gen_forma extends IMGBUTTON {
 
         var row_com = Component;
         if (vis_grid == "vi_cap_grid") row_com = Column;
-
+        row_com = row_com.replaceAll("<<textLabel>>", Caption.trim());
         row_com = row_com.replaceAll("<<cam_dat>>", cam_dat.trim());
         row_com = row_com.replaceAll("<<Caption>>", Caption.trim());
         row_com = row_com.replaceAll("<<ref_dat>>", Caption.trim());

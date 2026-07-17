@@ -26,7 +26,7 @@ export class cam_act extends COLUMN {
         this.prop.Placeholder = ""
         this.prop.Value = 1
 
-        this.style.width = '40px'
+        this.style.width = '92px'
     }
 
     async when() {

@@ -60,7 +60,7 @@ export class tab_grid extends COMPONENT {
 
   public async valid() {
     //    this.Form.nom_ind.prop.RowSourceType = 0
-    //    await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
+    //    await SQLExec(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
     //    this.Form.nom_ind.prop.RowSourceType = 2
 
     this.Form.vis_grid.prop.RowSourceType = 0;
@@ -72,9 +72,9 @@ export class tab_grid extends COMPONENT {
 
     this.Form.nom_for.prop.Visible = true;
 
-    //await this.Form.db.execute(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `,'vi_cap_comeind')
+    //await SQLExec(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `,'vi_cap_comeind')
     // this.Form.nom_ind.prop.RowSource = `select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `
-    // console.log('vi_cap_comeind ==>'+await  this.Form.db.localSql('select * from vi_cap_comeind'))
+    // console.log('vi_cap_comeind ==>'+await   localSql('select * from vi_cap_comeind'))
 
     return true;
   }
