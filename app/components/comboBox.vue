@@ -2289,6 +2289,7 @@ div.toggle {
   top: 20px;
   z-index: v-bind('toggleZIndex');
   min-width: 350px !important;
+  max-height: 400px;
 }
 
 div.toggle>div {
