@@ -106,25 +106,20 @@
                 <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
               v-bind:db="ref(ThisForm.db)"
                 -->
-              <div style="display:flex; justify-content: space-between;">
-                <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer">
-                  <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter" class="form  form_class23">
-                    <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
-                      v-model:Value="ThisForm[compFooter].prop.Value"
-                      :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"
-                      :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style" class="form form_class24" />
+                <div style="display:flex; justify-content: space-between;">
+                  <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer">
+                    <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter" class="form  form_class23">
+                      <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
+                        v-model:Value="ThisForm[compFooter].prop.Value"
+                        :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"
+                        :prop="ThisForm[compFooter].prop" :style="ThisForm[compFooter].style"
+                        class="form form_class24" />
 
-                    <!-- v-model:Status="ThisForm[compFooter].prop.Status"
+                      <!-- v-model:Status="ThisForm[compFooter].prop.Status"
                     @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
-                  </div>
-                </template>
-<<<<<<< HEAD
-
-=======
-              </div>
-                
-                
->>>>>>> 2a687a39b3cb708f42466ff42775436882bebb61
+                    </div>
+                  </template>
+                </div>
               </slot>
 
               <div id="salir" class="salir form form_class25" @click='clickSalir()'>
