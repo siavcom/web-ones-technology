@@ -16,8 +16,8 @@ export class dic_dat extends COMPONENT {
     super();
     //  this.Name = 'dic_dat'
     this.prop.BaseClass = "comboBox";
-    this.prop.Caption = "Diccionario  de datos";
-    this.prop.ToolTipText = this.prop.Caption;
+    this.prop.Tooltip = "Diccionario  de datos";
+    this.prop.ToolTipText = this.prop.Tooltip;
     //   this.prop.ReadOnly = false;
     this.prop.Capture = false;
     // ["Definicion de Tabla", "Tablas del SQL Server", "Indices", "Vistas de captura", "Menú de programas"],
@@ -73,7 +73,7 @@ export class dic_dat extends COMPONENT {
     this.Form.bt_gen_vistas.prop.Visible = false;
     this.Form.bt_gen_all_models.prop.Visible = false;
 
-    this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
+    this.Form.bt_aceptar.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
 
   }
 

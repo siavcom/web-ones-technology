@@ -43,7 +43,7 @@ export class bt_aceptar extends IMGBUTTON {
       ["Aceptar"], // 17
       ["Actualiza tabla"], // 18
     ];
-    this.prop.Caption = this.prop.Messages[17][0]; // "Aceptar";
+    this.prop.Tooltip = this.prop.Messages[17][0]; // "Aceptar";
     // console.log('bt_aceptar constructor Messages', this.prop.Messages)
 
   } // Fin constructor
@@ -205,7 +205,7 @@ export class bt_aceptar extends IMGBUTTON {
           }
 
           this.Form.grid_datos.prop.Visible = true;
-          this.prop.Caption = this.Form.bt_aceptar.prop.Messages[18][0]  // "Actualiza tabla";
+          this.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[18][0]  // "Actualiza tabla";
 
           this.Form.grid_datos.prop.Caption =
             this.prop.Messages[10][0] + this.Form.nom_tab.prop.Value;

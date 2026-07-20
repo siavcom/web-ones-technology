@@ -11,7 +11,7 @@ export class bt_gen_indices extends IMGBUTTON {
     this.prop.BaseClass = "imgButton";
     this.prop.Position = "footer";
     this.prop.Visible = false;
-    this.prop.Caption = "Actualiza SQLServer index";
+    this.prop.Tooltip = "Actualiza SQLServer index";
     this.prop.ToolTipText = "Generate/Update SQL-Server indexes";
     this.prop.Capture = false;
     this.prop.Image = "/Iconos/svg/key.svg";

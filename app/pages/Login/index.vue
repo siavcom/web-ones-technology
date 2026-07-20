@@ -72,16 +72,40 @@ onBeforeMount(async () => {
 
 </script>
 
-<style>
+<style scoped>
 div.imagen {
-  align-content: center;
-  border: 2px solid green;
-  border-radius: 10px;
   padding: 60px;
-  background-color: #f2f4f5;
-  width: 200px;
-  background-image: url("/logos/Siavcom.png");
-  /* opacity: 0.5;*/
+  width: 300px;
+  margin: auto;
+  background-color: white;
+  border: 1px solid #00800040;
+  border-radius: 6px;
+}
+
+.form > div{
+  background-color: transparent !important;
+  margin-bottom: 20px !important;
+}
+
+.form div, .form input{
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.form .imgbutton{
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  width: 60px !important;
+}
+
+.form input{
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
 }
 
 /*

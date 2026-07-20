@@ -48,7 +48,7 @@ export class grid_datos extends GRID {
   constructor() {
     super();
     this.Name = "grid_datos";
-    this.prop.Caption = "Definicion de campos";
+    this.prop.Tooltip = "Definicion de campos";
     this.prop.RecordSource = "vi_cap_comedat";
     this.prop.Visible = false;
     this.prop.autoLoad = false;

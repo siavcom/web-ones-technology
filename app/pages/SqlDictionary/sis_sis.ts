@@ -17,7 +17,7 @@ export class sis_sis extends COMPONENT {
     super();
 
     this.prop.BaseClass = "comboBox";
-    this.prop.Caption = "Menú de sistemas";
+    this.prop.Tooltip = "Menú de sistemas";
     this.prop.Capture = false;
     //this.prop.Sw_val = false;
     this.prop.ErrorMessage = "";
@@ -83,7 +83,7 @@ export class sis_sis extends COMPONENT {
       }
       return
     }
-    this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
+    this.Form.bt_aceptar.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     this.Form.bt_aceptar.prop.Visible = true;
 
     //  this.Form.dic_dat.when(true)

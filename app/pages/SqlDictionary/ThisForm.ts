@@ -54,7 +54,7 @@ export class ThisForm extends FORM {
     this.prop.Name = "SqlDictionary"
 
     //this.prop.tag = ""
-    this.prop.Caption = "Mantenimiento al diccionario de datos"
+    this.prop.Tooltip = "Mantenimiento al diccionario de datos"
     this.prop.Status = "A"
 
     //    this.mainStyle.display = ""

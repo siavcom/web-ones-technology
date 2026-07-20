@@ -14,7 +14,7 @@ export class tpr_prg extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.prop.Caption = "Tipo de menú";
+    this.prop.Tooltip = "Tipo de menú";
     this.prop.BaseClass = "comboBox";
     this.prop.ToolTipText = "Tipo de menú";
     this.prop.RowSource = [
@@ -40,7 +40,7 @@ export class tpr_prg extends COMPONENT {
     this.Form.sis_sis.prop.Visible = false;
     this.Form.nom_tab.prop.Visible = false;
     this.Form.grid_menu.prop.Visible = false;
-    this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
+    this.Form.bt_aceptar.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     return true;
   }
 

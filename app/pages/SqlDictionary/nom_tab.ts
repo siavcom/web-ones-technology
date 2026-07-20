@@ -15,7 +15,7 @@ export class nom_tab extends COMPONENT {
 
     this.prop.BaseClass = "comboBox";
 
-    this.prop.Caption = "Tablas del SQL Server";
+    this.prop.Tooltip = "Tablas del SQL Server";
     this.prop.Capture = true;
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 0; // 3   1-Value, 2-Alias,3-sql 5-Array
@@ -51,7 +51,7 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_model.prop.Visible = false;
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;
-    this.Form.bt_aceptar.prop.Caption = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
+    this.Form.bt_aceptar.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     this.Form.bt_aceptar.prop.Visible = true;
 
   }

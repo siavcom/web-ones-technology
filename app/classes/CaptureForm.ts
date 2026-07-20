@@ -415,7 +415,6 @@ export class captureForm extends FORM {
     constructor() {
       super();
       // this.prop.Name = "bt_save";
-      this.prop.Caption = "Grabar Datos";
       this.prop.Position = "footer";
       this.prop.ToolTipText = 'Graba los datos del documento '
       this.prop.Image = "/Iconos/svg/accept.svg";
@@ -515,7 +514,7 @@ export class captureForm extends FORM {
     constructor() {
       super();
       //this.prop.Name = "bt_modify";
-      this.prop.Caption = "Modifica datos";
+      this.prop.ToolTipText = "Modifica datos";
       this.prop.BaseClass = "imgButton";
       this.prop.Position = "footer";
       this.prop.Visible = false;
@@ -558,7 +557,7 @@ export class captureForm extends FORM {
     constructor() {
       super();
       this.prop.Name = "bt_delete";
-      this.prop.Caption = "Borra datos";
+      this.prop.ToolTipText = "Borra datos";
 
       this.prop.Position = "footer";
       this.prop.Visible = false;
