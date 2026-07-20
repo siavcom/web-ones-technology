@@ -110,13 +110,14 @@ export class HELP extends CONTAINER {
   async open() {
 
     this.Parent.prop.ShowError = false
+    this.Parent.prop.ReadOnly = true
     this.Parent.prop.Valid = true
     this.Parent.Help = true
 
     this.tip_con.when()
     this.des_dat.prop.Value = ''
     this.has_dat.prop.Value = ''
-    this.Parent.prop.ReadOnly = true
+
 
     let fields = ''
     let or = ''
@@ -177,14 +178,14 @@ export class HELP extends CONTAINER {
 
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
-      this.Parent.Help = false
-      this.prop.Visible = false
+      this.Parent.prop.ReadOnly = false
       this.Parent.valid()
+
       //this.Parent.prop.Focus = true
 
     }
 
-    this.Parent.Help = false
+    this.Parent.Help = true
     this.prop.Visible = false
     this.Parent.prop.Focus = true
     this.bt_close.click()
