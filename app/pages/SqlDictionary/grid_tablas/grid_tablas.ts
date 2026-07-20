@@ -30,7 +30,7 @@ export class grid_tablas extends GRID {
   constructor() {
     super()
     this.Name = 'grid_tablas'
-    this.prop.Caption = 'Tablas del SQL Server'
+    this.prop.Tooltip = 'Tablas del SQL Server'
     this.prop.Visible = false
     this.prop.ReadOnly = false
     this.prop.autoLoad = false

@@ -518,6 +518,71 @@ section.formfooter_old {
 
 /* =============== Raul vistas ======================  */
 
+.controles img{
+  cursor: pointer;
+}
+
+.imgbutton_class2{
+  display: inline-block !important;
+  background-color: white;
+  border: none;
+}
+
+.imgbutton_class2 img{
+  width: 42px !important;
+}
+
+.backGround {
+  background-color: white !important;
+}
+
+.form_class16 {
+  margin: 10px 0;
+}
+
+.form_class18, .form_class11, .formheader{
+  border: none !important;
+}
+
+.formfooter{
+  justify-content: end !important;
+}
+
+#salir, .toggleImagen, button{
+  cursor: pointer;
+}
+
+.formfooter .form_class23, .formfooter #salir{
+  margin-right: 10px !important;
+}
+
+
+
+.formfooter .imgbutton_class2{
+  background-color: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  border:none !important;
+}
+
+.formfooter .imgbutton_class1{
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: auto !important;
+}
+
+
+.formfooter .imgbutton_class2 img{
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.formfooter .imgbutton_class1, #salir{
+  height: 40px !important;
+  width: 40px !important;
+}
+
 .form_class16{
   text-align: left;
 }

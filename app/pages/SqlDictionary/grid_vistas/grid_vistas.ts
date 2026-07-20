@@ -40,7 +40,7 @@ export class grid_vistas extends GRID {
   constructor() {
     super();
     this.Name = "grid_vistas";
-    this.prop.Caption = "Definicion de vistas de captura";
+    this.prop.Tooltip = "Definicion de vistas de captura";
 
     this.prop.Visible = false;
     this.prop.ReadOnly = false;

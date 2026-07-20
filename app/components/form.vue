@@ -102,9 +102,9 @@
             <!--template v-slot:footer  -->
             <section class="formfooter form form_class20" :style="ThisForm.footerStyle">
               <!--Transition tag='div' -->
-              <nuxt-img class='circle form form_class21'
+              <!-- <nuxt-img class='circle form form_class21'
                 :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
-                style="float:left" />
+                style="float:left" /> -->
               <!--/Transition-->
               <slot name="footer" class="form form_class22">
                 <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
