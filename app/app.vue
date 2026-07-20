@@ -20,13 +20,16 @@
           <div id="my-scroll" style="margin: 6px 14px 0 14px;">
             <ClientOnly>
               <ul class="nav-list" style="overflow: visible;">
-                <li v-if="isLoggedIn" @click="isOpen = true">
-                  <!--i class="bx bx-search" ></i-->
-                  <nuxt-img src="/Iconos/svg/bx-search.svg" class="bx bx-search" />
-                  <input type="text" :placeholder="Props.searchPlaceholder"
-                    @input="$emit('search-input-emit', $event.target.value)">
-                  <span class="tooltip">{{ Props.searchTooltip }}</span>
-                </li>
+                <template v-if="false">
+                  <li v-if="isLoggedIn" @click="isOpen = true">
+                    <!--i class="bx bx-search" ></i-->
+                    <nuxt-img src="/Iconos/svg/bx-search.svg" class="bx bx-search" />
+                    <input type="text" :placeholder="Props.searchPlaceholder"
+                      @input="$emit('search-input-emit', $event.target.value)">
+                    <span class="tooltip">{{ Props.searchTooltip }}</span>
+                  </li>
+                </template>
+                
 
                 <!--span v-for="(menuItem, index) in menuItems" :key="index"-->
 

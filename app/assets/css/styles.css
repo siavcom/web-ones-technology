@@ -3,7 +3,7 @@ body {
 }
 
 div.ThisForm {
-  background: white;
+  background: transparent;
   margin: auto;
   max-width: 100%;
 }
@@ -520,6 +520,8 @@ section.formfooter_old {
 
 .controles img{
   cursor: pointer;
+  width: 30px;
+  height: 30px;
 }
 
 .imgbutton_class2{
@@ -545,7 +547,7 @@ section.formfooter_old {
 }
 
 .formfooter{
-  justify-content: end !important;
+  justify-content: space-between !important;
 }
 
 #salir, .toggleImagen, button{
@@ -556,7 +558,14 @@ section.formfooter_old {
   margin-right: 10px !important;
 }
 
-
+.LoginForm .form input{
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+}
 
 .formfooter .imgbutton_class2{
   background-color: transparent !important;

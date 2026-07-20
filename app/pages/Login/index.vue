@@ -105,19 +105,5 @@ div.imagen {
   width: 60px !important;
 }
 
-.form input{
-  height: 30px !important;
-  min-height: 30px !important;
-  max-height: 30px !important;
-}
 
-/*
-div.DatosUsuario {
-  opacity: 1;
-  background-color: transparent;
-  align-content: start;
-  text-align: start;
-
-}
-*/
 </style>

@@ -110,6 +110,7 @@
                 <!--                 @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')" 
               v-bind:db="ref(ThisForm.db)"
                 -->
+              <div style="display:flex; justify-content: space-between;">
                 <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer">
                   <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter"
                     class="form  form_class23">
@@ -123,6 +124,8 @@
                     @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')" -->
                   </div>
                 </template>
+              </div>
+                
                 
               </slot>
 
