@@ -21,8 +21,7 @@
       :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
     <imgButton class='button text text_class3' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
       v-model:Value="This.prop.Value" v-model:Status="This.prop.Status"
-      :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop" :style="This.style"
-      :position="This.position" />
+      :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop" :style="This.style" />
     <!--img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text != null && Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label </imgButton>-->
@@ -38,7 +37,7 @@
     <textLabel :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
       :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
       :ShowError="This[compMain].prop.ShowError" :Registro="Registro" :prop="This[compMain].prop"
-      :style="This[compMain].style" :position="This[compMain].position" class="text text_class6">
+      :style="This[compMain].style" class="text text_class6">
 
     </textLabel>
 

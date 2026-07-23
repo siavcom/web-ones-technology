@@ -135,8 +135,7 @@
     <div class="editText_container edit edit_class11" v-if='This.main.length > 0' :style="containerStyle">
       <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
-        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
-        :position="This[compMain].position" class="edit edit_class12">
+        :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style" class="edit edit_class12">
       </component>
     </div>
 
@@ -151,7 +150,7 @@
           <!--v-bind:Component="ref(Ele)"-->
           <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.Type)"
             v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
-            :prop="component.prop" :position="component.position" class="edit edit_class17">
+            :prop="component.prop" class="edit edit_class17">
             <!--:style="component.style" :inputStyle="component.inputStyle"
                       @click.capture="component.click()"-->
           </component>
@@ -1275,7 +1274,7 @@ const onFocus = async () => {
 // clickHelp : Se pide ayuda del usuario para encontrar un valor
 //////////////////////////////////////////////////////////////////////
 const clickHelp = async () => {
-
+  Value.value = ''
   if (!await ChecaStatus())
     return
 
@@ -1286,6 +1285,7 @@ const clickHelp = async () => {
   displayError.value = false
   This.prop.ShowError = false
   This.prop.Valid = true
+
   This.help.open()
   focusIn.value = 0
 

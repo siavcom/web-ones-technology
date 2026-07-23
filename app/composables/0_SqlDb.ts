@@ -918,7 +918,7 @@ export const tableUpdate = async (
             //       console.log("UPDATE campo=", campo, ' valor=', dat_act[row][campo]);
 
             const nom_campo = campo.toLowerCase();
-            console.log('tableUpdate campo=', campo, 'dat_act[row][campo]', dat_act[row][campo], typeof dat_act[row][campo])
+            //console.log('tableUpdate campo=', campo, 'dat_act[row][campo]', dat_act[row][campo], typeof dat_act[row][campo])
 
             if (This.value.View[tab_man].est_tabla[campo] &&
                 nom_campo != "recno" &&
@@ -928,7 +928,7 @@ export const tableUpdate = async (
                 nom_campo != "usu_cre" &&
                 //          nom_campo != "key_pri" &&
                 nom_campo != "timestamp" &&
-                (dat_vis.tip_llamada == "INSERT" || oldField == null ||
+                (dat_vis.tip_llamada == "INSERT" || (oldField == null && newField != null) ||
                     /*                    (typeof dat_act[row][campo] == "number" && old_dat[campo] !== dat_act[row][campo]) ||
                                         (typeof dat_act[row][campo] == "string" && old_dat[campo]?.trim() !== dat_act[row][campo].trim()) ||
                                         ((typeof dat_act[row][campo] != "string" && typeof dat_act[row][campo] != "number") && old_dat[campo] !== dat_act[row][campo])
@@ -938,8 +938,8 @@ export const tableUpdate = async (
             ) {
 
                 const tipo = This.value.View[tab_man].est_tabla[campo].tip_cam.toLowerCase();
-                // console.log("tableUpdate UPDATE campo=", campo, ' valor actual=', dat_act[row][campo], ' valor viejo=', old_dat[campo]);
-
+                // console.log("tableUpdate UPDATE campo=", campo, 'tipo=', tipo, ' valor actual=', dat_act[row][campo], ' valor viejo=', old_dat[campo]);
+                console.log("tableUpdate UPDATE campo=", campo, 'tipo=', tipo, ' valor actual=', newField, ' valor viejo=', oldField);
                 switch (true) {
                     // switch (typeof dat_act[row][campo]) {
                     case tipo == "number" ||

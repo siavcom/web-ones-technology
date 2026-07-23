@@ -22,8 +22,7 @@
                     <!--v-bind:Component="ref(Ele)"-->
                     <component :id="Id + 'modal_componentes_' + key + component.prop.Name"
                       :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                      :Registro="props.Registro" :prop="component.prop" :style="component.style"
-                      :position="component.position">
+                      :Registro="props.Registro" :prop="component.prop" :style="component.style">
 
                       <!--:style="component.style" :inputStyle="component.inputStyle"
                                                

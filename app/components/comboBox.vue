@@ -127,7 +127,7 @@
       <component :id="Id + '_component_' + compMain" v-for="(compMain) in This.main" :key="compMain"
         :is="impComponent(This[compMain].prop.BaseClass)" v-model:Value="This[compMain].prop.Value"
         :Registro="props.Registro" :prop="This[compMain].prop" :style="This[compMain].style"
-        :position="This[compMain].position" class="combo combo_class20">
+        class="combo combo_class20">
       </component>
     </div>
 
@@ -142,7 +142,7 @@
           <!--v-bind:Component="ref(Ele)"-->
           <component :id="Id + '_component_' + key + component.prop.Name" :is="impComponent(component.prop.BaseClass)"
             v-model:Value="component.prop.Value" v-model:Status="component.prop.Status" :Registro="props.Registro"
-            :prop="component.prop" :position="component.position" class="combo combo_class25">
+            :prop="component.prop" class="combo combo_class25">
             <!--:style="component.style" :inputStyle="component.inputStyle"
                                                
                       @click.capture="component.click()"-->

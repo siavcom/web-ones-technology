@@ -118,7 +118,6 @@ export class HELP extends CONTAINER {
     this.des_dat.prop.Value = ''
     this.has_dat.prop.Value = ''
 
-
     let fields = ''
     let or = ''
     for (let i = 0; i < this.fields.length; i++) {
@@ -178,16 +177,16 @@ export class HELP extends CONTAINER {
 
       // await this.Parent.valid()
       //this.Parent.prop.nextFocus = true
-      this.Parent.prop.ReadOnly = false
-      this.Parent.valid()
+
+      // this.Parent.valid()
 
       //this.Parent.prop.Focus = true
 
     }
 
-    this.Parent.Help = true
-    this.prop.Visible = false
-    this.Parent.prop.Focus = true
+    //   this.Parent.Help = true
+    //  this.prop.Visible = false
+    // this.Parent.prop.Focus = true
     this.bt_close.click()
     //this.browse.super.close()
   }
