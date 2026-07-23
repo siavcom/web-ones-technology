@@ -4,9 +4,9 @@
     <!-- UButton -->
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
       :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut"
-      class="imgbutton imgbutton_class2" @click.stop="click" :style="{ width: '100%' }">
+      class="imgbutton imgbutton_class2" @click.stop="click" :style="{ width: '100%', ...This.buttonFooterStyle }">
       <img :id="Id + '_img_'" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        :style="{ display: 'block', width: '100%' }" @click.stop="click" class="imgbutton imgbutton_class3" />
+        :style="{ display: 'block', width: '100%', ...This.buttonImgFooterStyle }" @click.stop="click" class="imgbutton imgbutton_class3" />
       <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
       <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
         class="imgbutton imgbutton_class4" :style="Styles.captionStyle">

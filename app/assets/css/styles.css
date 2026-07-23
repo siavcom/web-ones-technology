@@ -10,6 +10,7 @@ div.ThisForm {
 
 * {
   max-width: 100% !important;
+  box-sizing: border-box;
 }
 
 
@@ -530,9 +531,6 @@ section.formfooter_old {
   border: none;
 }
 
-.imgbutton_class2 img{
-  width: 42px !important;
-}
 
 .backGround {
   background-color: white !important;
@@ -567,24 +565,11 @@ section.formfooter_old {
   max-width: 100% !important;
 }
 
-.formfooter .imgbutton_class2{
-  background-color: transparent !important;
-  box-shadow: none !important;
-  cursor: pointer !important;
-  border:none !important;
-}
-
 .formfooter .imgbutton_class1{
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
   width: auto !important;
-}
-
-
-.formfooter .imgbutton_class2 img{
-  width: 35px !important;
-  height: 35px !important;
 }
 
 .formfooter .imgbutton_class1, #salir{

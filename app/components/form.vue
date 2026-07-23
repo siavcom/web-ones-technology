@@ -71,14 +71,13 @@
                   <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
                   <template v-else v-for="(block, key) in ThisForm.block" :key="key">
-                    <div :id="Id + 'block_divi_' + key" class="form form_class16" v-if="block.prop.Visible">
+                    <div :id="Id + 'block_divi_' + key" class="form form_class16" :style="block.containerStyle" v-if="block.prop.Visible">
                       <label :style="block.titleStyle" class="form form_class17"
                         v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                       <div :id="Id + 'block_' + key" :style="block.style" class="form form_class18">
                         <div v-for="(component, key) in block.component" :key="key"
-                          :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px"
+                          :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" :style="component.f19style" style="padding-bottom:2px"
                           class="responsive form form_class19">
-
                           <component v-if="component.prop" :id="Id + '_blockComponent_' + key + component.prop.Name"
                             :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                             :Registro="typeof component.Recno == 'number' ? component.Recno : 0" :prop="component.prop"
@@ -96,7 +95,7 @@
 
             <!--/template-->
             <!--template v-slot:footer  -->
-            <section class="formfooter form form_class20" :style="ThisForm.footerStyle">
+            <section class="formfooter form form_class21" :style="ThisForm.footerStyle">
               <!--Transition tag='div' -->
               <!-- <nuxt-img class='circle form form_class21'
                 :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"

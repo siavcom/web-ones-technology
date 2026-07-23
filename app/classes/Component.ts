@@ -173,7 +173,8 @@ export class COMPONENT {
 
 
   }
-
+  comboStyle = {}
+  
   captionStyle = {
     accept: "", //"image/png, image/jpeg, image/jpg"
 
@@ -193,6 +194,18 @@ export class COMPONENT {
     visibility: 'visible',
     width: "fit-content",
     alignContent: "flex-start" //"flex-end", //alignContent: "center",
+  }
+
+  buttonFooterStyle = {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    cursor: 'pointer',
+    border: 'none',
+  }
+
+  buttonImgFooterStyle = {
+    width: '32px',
+    height: '32px',
   }
 
   inputStyle = {
@@ -222,6 +235,10 @@ export class COMPONENT {
     border: '1px solid red',
     background: 'rgba(247, 230, 230, 1)',
     textTransform: 'none', //    none,capitalize,uppercase,lowercase
+  }
+
+  f19style = {
+    
   }
 
   style = {
@@ -287,6 +304,7 @@ export class COMPONENT {
       prop: {
         Visible: true
       },
+      containerStyle: {},
       style: {
         border: '1px solid rgb(0, 0, 0)',
         background: ' rgb(235,248,238)',
