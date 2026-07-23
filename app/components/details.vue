@@ -29,11 +29,8 @@
             <!-- v-bind:Component="ref(This[compHeader])"-->
             <component v-if="This[compHeader].prop && This[compHeader].prop.Position == 'header'"
               :is="impComponent(This[compHeader].prop.BaseClass)" v-model:Value="This[compHeader].prop.Value"
-              v-model:Status="This[compHeader].prop.Status" :ShowError="This[compHeader].prop.ShowError"
-              v-model:Key="This[compHeader].prop.Key"
               v-bind:Registro="!This[compHeader].Recno || This[compHeader].Recno == null ? 0 : This[compHeader].Recno"
               v-bind:prop="This[compHeader].prop" v-bind:style="This[compHeader].style"
-              v-bind:position="This[compHeader].position"
               @focus.capture="ejeEvento(This[compHeader].prop.Map + '.when()')"
               @click="ejeEvento(This[compHeader].prop.Map + '.click()')"></component>
           </div>
@@ -47,11 +44,9 @@
                v-bind:Component="ref(This[compMain])"    -->
             <component :is="impComponent(This[compMain].prop.BaseClass)"
               :class="This.prop.Name + '_' + This[compMain].prop.Name" v-model:Value="This[compMain].prop.Value"
-              v-model:Status="This[compMain].prop.Status" :ShowError="This[compMain].prop.ShowError"
-              v-model:Key="This[compMain].prop.Key"
               v-bind:Registro="!This[compMain].Recno || This[compMain].Recno == null ? 0 : This[compMain].Recno"
               v-bind:prop="This[compMain].prop" v-bind:style="This[compMain].style"
-              v-bind:position="This[compMain].position" @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
+              @focus.capture="ejeEvento(This[compMain].prop.Map + '.when()')"
               @click="ejeEvento(This[compMain].prop.Map + '.click()')"></component>
           </div>
           <!--/TransitionGroup-->
@@ -74,11 +69,8 @@
            v-bind:Component="ref(This[compFooter])"
           -->
             <component :is="impComponent(This[compFooter].prop.BaseClass)" v-model:Value="This[compFooter].prop.Value"
-              v-model:Status="This[compFooter].prop.Status" :ShowError="This[compFooter].prop.ShowError"
-              v-model:Key="This[compFooter].prop.Key"
               v-bind:Registro="!This[compFooter].Recno || This[compFooter].Recno == null ? 0 : This[compFooter].Recno"
               v-bind:prop="This[compFooter].prop" v-bind:style="This[compFooter].style"
-              v-bind:position="This[compFooter].position"
               @focus.capture="ejeEvento(This[compFooter].prop.Map + '.when()')"
               @click.stop.prevent="ejeEvento(This[compFooter].prop.Map + '.click()')"></component>
           </div>
@@ -175,11 +167,13 @@ const props = defineProps<{
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     textAlign: "left";
   };
+  /*
   position: {
     position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
     left: number;
     Top: number;
   };
+  */
   // db: any
 
 }>();

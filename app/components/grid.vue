@@ -52,7 +52,7 @@
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#"
                 style="height: auto;"><label>{{
                   item.recno
-                }}</label></td>
+                  }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name"
@@ -60,8 +60,8 @@
                 :headers="col.Name" :data-label="This[col.Name].prop.ColumnTextLabel">
 
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
-                  v-bind:Registro="item.recno" v-bind:Id="item.id" v-bind:prop="This[col.Name].prop"
-                  v-bind:position="This[col.Name].position" v-bind:style="This[col.Name].style"
+                  v-bind:Registro="item.recno" v-model:Value="This[col.Name].prop.Value"
+                  v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
                   @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
                 </textLabel>
 
@@ -69,10 +69,9 @@
                 <!--/Transition-->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno"
                   v-else-if="item.recno != null && item.recno > 0" :is="impComponent(This[col.Name].prop.BaseClass)"
-                  v-model:Value="This[col.Name].prop.Value" v-model:Key="This[col.Name].prop.Key"
+                  v-model:Value="This[col.Name].prop.Value"
                   v-bind:Registro="item.recno != null && item.recno > 0 ? item.recno : 0"
-                  v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
-                  v-bind:position="This[col.Name].position" tabindex="0"
+                  v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style" tabindex="0"
                   :style="{ 'width': This[col.Name].style.width, 'zIndex': This[col.Name].prop.ZIndex + 3 }">
                 </component>
                 <!--/div-->

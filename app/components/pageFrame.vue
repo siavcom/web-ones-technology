@@ -16,7 +16,7 @@
               <component :id="'modal_componentes_' + key + component.prop.Name"
                 :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
                 v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                :style="component.style" :position="component.position" @click.capture="component.click()">
+                :style="component.style" @click.capture="component.click()">
               </component>
 
             </div>
@@ -95,7 +95,7 @@ interface Props {
 
   prop: {};
   style: {};
-  position: {};
+  //position: {};
   pageFrame: [];
 }
 
@@ -174,12 +174,13 @@ const props = withDefaults(defineProps<Props>(), {
 
     // inputWidth: "inherit"
   },
+  /*
   position: {
     position: "left", //left,right,center,absolute. Si es absulute poner Value left y top
     left: 0,
     Top: 0,
   },
-
+*/
   pageFrame: [],
 
 })

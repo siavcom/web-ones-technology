@@ -141,28 +141,6 @@ const props = defineProps<{
   style: {};
 }>();
 
-/*
-
-const props = defineProps<{
- // Value: any;
-  Registro: number;  // Se pone para el manejo de grid
-
-  prop: {
-    RowSource: string;
-    Disabled: boolean;
-    Visible: boolean;
-    Label: string;
-  };
-  
-  position: {
-    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
-    left: number;
-    Top: number;
-  };
-
-  //Component: null;
-}>()
-*/
 // Valores componente padre
 const Component = toRef(() => props.prop.This)
 //console.log('editText Component=', Component.value)

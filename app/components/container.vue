@@ -18,7 +18,7 @@
               :style="{ 'padding-bottom': '2px', 'width': '100%' }">
               <component :id="Id + '_Ver_componentes_' + key + Ele.prop.Name" :is="impComponent(Ele.prop.BaseClass)"
                 v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
-                :style="Ele.style" :position="Ele.position"></component>
+                :style="Ele.style"></component>
             </div>
             <!-- @click.capture="Ele.click()"-->
           </div>
@@ -35,8 +35,7 @@
                 <!--v-bind:Component="ref(Ele)"-->
                 <component :id="'modal_componentes_' + key + component.prop.Name"
                   :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                  v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop"
-                  :position="component.position">
+                  v-model:Status="component.prop.Status" :Registro="props.Registro" :prop="component.prop">
                 </component>
                 <!-- @click.capture="component.click()"
                 :inputStyle="component.inputStyle"-->
