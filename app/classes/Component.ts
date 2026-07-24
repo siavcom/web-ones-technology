@@ -29,6 +29,15 @@ export class COMPONENT {
   estatus: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
   block: [] = [] // bloque del componentes
+  collapse: [] = [] // grupos colapsables con sus componentes
+  collapseContainer: any[] = [
+      // {
+        // title: 'Grupo de containers',
+        // open: true,
+        // style: {},
+        // elements: [this.block[2], this.block[3]]
+      // }
+  ] // grupos colapsables a nivel componente/forma
   Valid = ref([]) //Validaciones de componentes hijos
   ValidName = [] //Validaciones de componentes hijos
   refValid = -1
@@ -125,6 +134,7 @@ export class COMPONENT {
 
     Placeholder: "",
     Position: "main", // main, header , footer
+    Collapse: "", // Nombre del grupo collapse en el que participa el componente
 
     ReadOnly: false,
     RecordSource: "",
@@ -304,6 +314,14 @@ export class COMPONENT {
       prop: {
         Visible: true
       },
+      collapseContainer: [
+        // {
+          // title: 'Collapse interno',
+          // open: false,
+          // style: {},
+          // elements: [this.du2_isu, this.du3_isu]
+        // }
+      ],
       containerStyle: {},
       style: {
         border: '1px solid rgb(0, 0, 0)',
@@ -635,9 +653,9 @@ export class COMPONENT {
     }
 
     this.footer = footer.reverse();
+    this.main = main;
 
     this.header = header;
-    this.main = main;
 
     const arrayTot = headerElement.concat(mainElement);
 

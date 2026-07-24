@@ -15,7 +15,7 @@
         <slot name="componentes">
           <div :id="Id + '_componentes'" v-if="Divi" v-for="(Ver, key) in Divi" :key="Ver" :style="containerStyle">
             <div :id="Id + 'hor_componentes_' + key + Ele.prop.Name" v-for="(Ele) in Ver" :key="Ele"
-              :style="{ 'padding-bottom': '2px', 'width': '100%' }">
+              :style="{ 'padding-bottom': '2px', 'width': '100%' }" v-if="!isCollapseElement(Ele)">
               <component :id="Id + '_Ver_componentes_' + key + Ele.prop.Name" :is="impComponent(Ele.prop.BaseClass)"
                 v-model:Value="Ele.prop.Value" v-model:Status="Ele.prop.Status" :Registro="Ele.Recno" :prop="Ele.prop"
                 :style="Ele.style"></component>
@@ -31,7 +31,8 @@
             <div :id="'block_' + key" v-if="block.prop.Visible" :style="block.style">
               <label :style="block.titleStyle" v-if="block.prop.Visible && block.title">{{ block.title }}</label>
               <div v-for="(component, key) in block.component" :key="key"
-                :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px">
+                :id="'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px"
+                v-if="!isCollapseElement(component)">
                 <!--v-bind:Component="ref(Ele)"-->
                 <component :id="'modal_componentes_' + key + component.prop.Name"
                   :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
@@ -46,6 +47,37 @@
         </slot>
 
       </div>
+
+      <template v-if="collapseGroups && collapseGroups.length > 0">
+        <details
+          v-for="(group, groupKey) in collapseGroups"
+          :key="'container_collapse_' + groupKey"
+          :open="group.open ? true : false"
+          v-show="group.prop ? group.prop.Visible : true"
+          style="width: 100%; margin-top: 6px;"
+        >
+          <summary>{{ group.title ? group.title : 'Collapse' }}</summary>
+
+          <div :style="group.style ? group.style : {}">
+            <div
+              v-for="(component, componentKey) in group.component"
+              :key="'container_collapse_comp_' + groupKey + '_' + componentKey"
+              :id="Id + '_containerCollapse_' + groupKey + '_' + component.prop.Name"
+              style="padding-bottom:2px"
+            >
+              <component
+                v-if="component.prop"
+                :is="impComponent(component.prop.BaseClass)"
+                v-model:Value="component.prop.Value"
+                v-model:Status="component.prop.Status"
+                :Registro="typeof component.Recno == 'number' ? component.Recno : props.Registro"
+                :prop="component.prop"
+                :style="component.style"
+              />
+            </div>
+          </div>
+        </details>
+      </template>
       <!--/section-->
     </div>
     <!--/div-->
@@ -171,6 +203,77 @@ const Id = This.prop.Name + '_' + Math.floor(Math.random() * 1000).toString() //
 This.Id = Id
 //console.log('Container Name=', This.prop.Name, 'blocks=', This.block, 'Style=', divStyle)
 const Divi = ref(This.Divi)
+
+const collapseGroups = ref([])
+const collapseElementMap = ref({})
+
+const resolveCollapseGroups = () => {
+  const groups = This.collapseContainer && This.collapseContainer.length > 0
+    ? This.collapseContainer
+    : (This.collapse && This.collapse.length > 0 ? This.collapse : [])
+
+  const resolved = []
+  const elementMap = {}
+
+  for (const index in groups) {
+    const group = groups[index]
+    if (!group) {
+      continue
+    }
+
+    if (!group.prop) {
+      group.prop = { Visible: true }
+    }
+
+    const componentArray = []
+    const elements = group.elements && group.elements.length > 0 ? group.elements : []
+
+    for (const elementIndex in elements) {
+      const collapseElement = elements[elementIndex]
+      let componentRef = null
+      let componentName = ''
+
+      if (typeof collapseElement == 'string' && This[collapseElement]) {
+        componentRef = This[collapseElement]
+        componentName = collapseElement
+      }
+      else {
+        if (collapseElement && collapseElement.prop) {
+          componentRef = collapseElement
+          componentName = collapseElement.Name ? collapseElement.Name : collapseElement.prop.Name
+        }
+      }
+
+      if (componentRef && componentRef.prop) {
+        componentArray.push(componentRef)
+        if (componentName && componentName.length > 0) {
+          elementMap[componentName] = true
+        }
+      }
+    }
+
+    group.component = componentArray
+    resolved.push(group)
+  }
+
+  collapseGroups.value = resolved
+  collapseElementMap.value = elementMap
+}
+
+const isCollapseElement = (element) => {
+  if (!element) {
+    return false
+  }
+
+  const name = element.Name ? element.Name : (element.prop ? element.prop.Name : '')
+  if (!name || name.length == 0) {
+    return false
+  }
+
+  return collapseElementMap.value[name] == true
+}
+
+resolveCollapseGroups()
 
 /*
 const elementArray = []
