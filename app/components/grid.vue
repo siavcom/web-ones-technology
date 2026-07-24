@@ -57,15 +57,16 @@
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 :key="item.recno.toString() + col.Name"
                 :style='{ height: This[col.Name].style.height, padding: 0, textAlign: "-webkit-center" }'
-                :headers="col.Name" :data-label="This[col.Name].prop.ColumnTextLabel">
+                :headers="col.Name" :data-label="This[col.Name].prop.ColumnTextLabel"
+                @click="item.id == This.Row ? null : asignaRenglon(item.id, col.Name)">
 
                 <textLabel :id="Id + '_grid_textLabel_' + item.recno + '_' + col.Name" v-if="item.id != This.Row"
                   v-bind:Registro="item.recno" v-model:Value="This[col.Name].prop.Value"
-                  v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style"
-                  @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)" @focusout.stop>
+                  v-bind:prop="This[col.Name].prop" v-bind:style="This[col.Name].style" @focusout.stop>
+
                 </textLabel>
 
-                <!--   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
+                <!--  @click.stop="This.prop.ReadOnly ? null : asignaRenglon(item.id, col.Name)"                   @click.capture="asignaRenglon(`${This.prop.Map}.asignaRenglon(${item.id},'${col.Name}')`)" -->
                 <!--/Transition-->
                 <component :id="Id + '_grid_component_' + col.Name + '_' + item.recno"
                   v-else-if="item.recno != null && item.recno > 0" :is="impComponent(This[col.Name].prop.BaseClass)"
@@ -705,9 +706,10 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
         }
       }
     }
+    This.Row = Row;
     nextTick(() => {
       console.log('1.3 grid asignaRenglon This.Row=', This.Row, 'ColumnName=', Column.value, 'This.Recno=', This.Recno)
-      This.Row = Row;
+
       if (First > ' ')
         This[First].prop.Focus = true // Se posiciona el cursor en el componente no validado
 
@@ -1097,6 +1099,7 @@ const ChecaStatus = async () => {
 
     if (This[column].prop.Capture == true && (This[column].prop.Status != 'A' || !This[column].prop.Valid)) {
       //console.warn('Grid SaveTable No valid Column=', This[column].prop.Name)
+      MessageBox(This.prop.ErrorMessage + This[column].prop.ColumnTextLabel, 16, 'Error', 5000)
       This[column].prop.Focus = true
       return false
     }

@@ -125,6 +125,8 @@ const props = defineProps<{
   //Recno: 0;
   //Show: true;
   //Component: null;
+  Value: string | number | Date,
+  Registro: 0,
   prop: {
     ToolTipText: string;
     View: "";

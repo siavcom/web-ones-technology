@@ -156,8 +156,8 @@ This.show = ref(showVisible())
 */
 
 const click = async () => {
-  console.log('button click()', This.prop.Name, 'Disabled', This.prop.Disabled, 'ReadOnly', This.prop.ReadOnly)
-  if (This.prop.Disabled || This.prop.ReadOnly)
+  console.log('button click()', props.prop.Name, 'Disabled', props.prop.Disabled, 'ReadOnly', props.prop.ReadOnly)
+  if (props.prop.Disabled || props.prop.ReadOnly)
     return
   // Si esta en un grid checa sus estatus de todas las columnas
   if (!await checkGrid())
@@ -184,8 +184,13 @@ const onFocus = async () => {
     return
   inFocus = true
   ToolTipText.value = false  // Desactivamos el ToolTipText
+
   if (!This.prop.Disabled) {
-    This.Form.eventos.push(This.prop.Map + '.when()')
+    if (This.beforeWhen)
+      await This.beforeWhen()
+
+    This.prop.ReadOnly = !await This.when()
+
   }
 }
 

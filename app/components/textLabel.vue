@@ -19,9 +19,23 @@
       :style="Styles.inputStyle" readonly="true" @focus="nextElement()" v-model="Text" />
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text text_class2" type="datetime-local"
       :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
-    <imgButton class='button text text_class3' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
-      v-model:Value="This.prop.Value" v-model:Status="This.prop.Status"
-      :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop" :style="This.style" />
+    <!--imgButton class='button text text_class3' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
+      v-model:Value="This.prop.Value" :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop"
+      :style="This.style" click.prevent.stop /-->
+
+    <button :id="Id + 'telxLabel_button'" v-else-if="prop.BaseClass == 'imgButton'"
+      :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible" :disabled="true"
+      class="imgbutton imgbutton_class2" :style="{ width: '100%' }">
+      <img :id="Id + '_img_'" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
+        :style="{ display: 'block', width: '100%' }" class="imgbutton imgbutton_class3" />
+      <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
+      <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible"
+        class="imgbutton imgbutton_class4" :style="Styles.captionStyle">
+        {{ prop.Caption }}</label>
+    </button>
+
+
+
     <!--img class="img" fit='inside' :src="prop.Image" :alt="prop.Value" />
       <label v-if="Text != null && Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label </imgButton>-->
