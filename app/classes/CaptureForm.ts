@@ -45,7 +45,7 @@ export class captureForm extends FORM {
   /// //////////////////////////////////////////////////
 
   override async init() {
-
+    await super.init()
     const session = Session()
     const { id_con } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
@@ -306,10 +306,7 @@ export class captureForm extends FORM {
     await nextTick(() => {
 
       this.bt_modify.prop.Visible = true;
-      if (this.blockCapturaXml !== null) {
 
-        this.Bt_campos_xml.prop.Visible = true;
-      }
       if (this.prop.showDelete)
         this.bt_delete.prop.Visible = true;
       //this.bt_modify.prop.Focus = true;

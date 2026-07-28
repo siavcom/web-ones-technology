@@ -55,6 +55,9 @@ export class CONTAINER extends COMPONENT {
       this.style.bottom = '-5%'
       this.captionStyle.color = 'black'
 
+      this.style.height = 'fit-content'
+      this.style.width = 'fit-content'
+
     }
 
     /*let elementos = []

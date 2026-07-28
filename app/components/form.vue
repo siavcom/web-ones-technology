@@ -493,7 +493,8 @@ const mounted = ref(false)
  * 
  */
 
-onBeforeMount(async () => {
+// onBeforeMount(async () => {
+onMounted(async () => {
 
   //onMounted(async () => {
 
@@ -544,11 +545,23 @@ onBeforeMount(async () => {
  */
   //Valid = toRef(ThisForm, "Valid")
 
-  console.log('ThisForm onMounted  ', ThisForm)
+
   loading.value = false
+  if (ThisForm.onMounted)
+    await ThisForm.onMounted()
   ThisForm.afterMounted()
 
 })
+/////////////////
+/*
+onMounted(async (e) => {
+  // focusIn.value = 0
+
+  if (ThisForm.onMounted)
+    await ThisForm.onMounted()
+
+})
+*/
 
 onUnmounted(async () => {
 

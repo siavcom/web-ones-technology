@@ -54,9 +54,5 @@ export class ThisForm extends captureForm {
     // this.grid=[<<grid>>]
 
   }
-  async init() {
-    // <<init>>
-
-  }
 
 } // End ThisForm

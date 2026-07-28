@@ -29,12 +29,20 @@ export class bt_obtener extends IMGBUTTON {
     this.prop.Visible = false;
 
     let bloque = 0
-    for (bloque = 0; bloque < this.Form.block.length - 1; bloque++)
-      this.Form.block[bloque].prop.Visible = false
+    let resultado = null
+    for (bloque = 0; bloque < this.Form.block.length; bloque++)
+      if (this.Form.block[bloque].title != 'Resultado')
+        this.Form.block[bloque].prop.Visible = false
+      else {
+        this.Form.block[bloque].prop.Visible = true
+        resultado = this.Form.block[bloque]
+      }
+    debugger
 
-    bloque = this.Form.block.length - 2
 
-    this.Form.block[bloque].prop.Visible = true  // resultado
+    // bloque = this.Form.block.length - 2
+
+    //this.Form.block[bloque].prop.Visible = true  // resultado
 
     this.Form.report.bt_excel.prop.Visible = false;
     this.Form.report.bt_json.prop.Visible = false;
@@ -66,10 +74,13 @@ export class bt_obtener extends IMGBUTTON {
     const result = await SQLExec(query, "sqlresult");
 
     this.Form.report.displayBrowse.table.isLoading = false
+    console.log("bt_obtener reportForm result=", result)
+
 
     if (!result || result.length == 0) {
       closeProcessing("No data to show")
-      this.Form.block[bloque].prop.Visible = false  // resultado
+      resultado.prop.Visible = false
+      //this.Form.block[bloque].prop.Visible = false  // resultado
       this.prop.Visible = true
       await this.Form.report.bt_close.click();
 

@@ -58,8 +58,6 @@ export class ThisForm extends captureForm {
     this.grid = ['vi_cap_Players']
 
   }
-  async init() {
 
-  }
 
 } // End ThisForm

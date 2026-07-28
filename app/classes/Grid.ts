@@ -142,6 +142,29 @@ export class GRID extends COMPONENT {
     return this.prop.Valid;
   }
 
+  /**
+   * @description Valida si se puede editar una columna
+   * @param refColumn Referencia a la columna
+   * @returns Verdadero si se puede editar
+   */
+
+  async whenColumn(refColumn: void): Promise<boolean> {
+    const column = refColumn.value
+
+    if (!column.prop.updateKey)
+      return true;
+    const res = await currentValue('key_pri', this.prop.RecordSource)
+
+    // si ya esta capturado el registro no permite cambiarlo
+    if (res.key_pri && res.key_pri > 0) {
+      column.prop.Valid = true
+      return false
+    }
+
+    return true
+  }
+
+
   ////////////////////////////////////////
   // Metodo : Valid Column
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
@@ -152,19 +175,19 @@ export class GRID extends COMPONENT {
     //   console.log("Column valid refColumn=", refColumn)
     const column = refColumn.value
 
-    if (column.prop.updateKey) {
+    if (!column.prop.updateKey)
+      return true;
 
-      if (
-        typeof column.prop.Value == "string" &&
-        column.prop.Value.trim().length == 0
-      ) {
+    if (
+      typeof column.prop.Value == "string" &&
+      column.prop.Value.trim().length == 0
+    ) {
 
-        return false;
-      }
-      if (!(await this.validKey(column.prop.name, column.Recno))) {
-        //column.prop.ErrorMessage = this.prop.Messages[7];
-        return false;
-      }
+      return false;
+    }
+    if (!(await this.validKey(column.prop.name, column.Recno))) {
+      //column.prop.ErrorMessage = this.prop.Messages[7];
+      return false;
     }
 
     return true;

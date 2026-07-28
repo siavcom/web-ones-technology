@@ -425,6 +425,7 @@ export class COMPONENT {
           // this.Form.mPublic['lan_lan'] = ''
         }
       }
+
     }
 
     //console.log('Init TabIndex', this.Name, TabIndex,this)
@@ -540,6 +541,9 @@ export class COMPONENT {
       return a.Id - b.Id;
     });
 
+    await this.init()
+
+
     /////////////////////// Header ////////////////////////////////////
     // Obtenemos solo los elementos del Header
     const headerElement = await multiFilter(elements, { Position: "header" });
@@ -641,24 +645,27 @@ export class COMPONENT {
           this.footer
     );
 */
-    if (this.init) {
-
-      if (this.prop.Map == 'ThisForm' && this.Form.Params && this.Form.Params.length > 0) {
-        console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This.Form=', this.Form.Params)
-
-        if (this.Form.Params.length == 1)
-          await this.init(this.Form.Params[0]); // Corre el init principal
-        if (this.Form.Params.length == 2)
-          await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
-        if (this.Form.Params.length == 3)
-          await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
-
-      }
-      else {
-        await this.init(); // Corre el init principal
-      }
-      return TabIndex;
+    if (this.prop.Map !== 'ThisForm' && this.init) {
+      //  await this.init(); // Corre el init principal
+      /*
+            if (this.prop.Map == 'ThisForm' && this.Form.Params && this.Form.Params.length > 0) {
+              console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This.Form=', this.Form.Params)
+      
+              if (this.Form.Params.length == 1)
+                await this.init(this.Form.Params[0]); // Corre el init principal
+              if (this.Form.Params.length == 2)
+                await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
+              if (this.Form.Params.length == 3)
+                await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
+      
+            }
+            else {
+              await this.init(); // Corre el init principal
+            }
+            */
+      //return TabIndex;
     }
+    return TabIndex;
   }
   /**
    * Initializes the component.

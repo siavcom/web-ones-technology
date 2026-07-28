@@ -24,7 +24,7 @@ export class tip_con extends COMPONENT {
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "160px,0px";
-    this.style.width = "200px";
+
     this.style.marginLeft = "10px";
     this.inputStyle.height = '23px'
     this.inputStyle.width = '256px'
@@ -47,7 +47,7 @@ export class tip_con extends COMPONENT {
       this.Parent.des_dat.prop.Visible = true
       this.Parent.has_dat.prop.Visible = false
     }
-    return
+    return true
     /*    if (this.Parent.cam_dat.Type == 'string') {
           this.prop.ReadOnly = false
           return true

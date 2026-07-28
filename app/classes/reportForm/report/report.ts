@@ -36,8 +36,8 @@ export class report extends CONTAINER {
 
   constructor() {
     super()
-    this.prop.Disabled = true
-    this.prop.Visible = false
+    // this.prop.Disabled = true
+    // this.prop.Visible = false
     this.prop.BaseClass = 'container' //'details'
     this.prop.Caption = 'Reporte'
 
