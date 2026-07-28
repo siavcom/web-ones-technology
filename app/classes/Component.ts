@@ -34,6 +34,7 @@ export class COMPONENT {
       // {
         // title: 'Grupo de containers',
         // open: true,
+        // canOpen: true,  // false: no se puede abrir
         // style: {},
         // elements: [this.block[2], this.block[3]]
       // }
@@ -318,6 +319,7 @@ export class COMPONENT {
         // {
           // title: 'Collapse interno',
           // open: false,
+          // canOpen: true,  // false: no se puede abrir
           // style: {},
           // elements: [this.du2_isu, this.du3_isu]
         // }

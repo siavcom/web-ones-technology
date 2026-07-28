@@ -105,10 +105,11 @@
                               :key="'block_collapse_' + key + '_' + groupKey"
                               class="form form_class14"
                               v-show="group.prop ? group.prop.Visible : true"
-                              :open="group.open ? true : false"
+                              :open="(group.open && group.canOpen !== false) ? true : false"
+                              @toggle="handleCollapseToggle($event, group)"
                               style="width: 100%; margin-top: 6px;"
                             >
-                              <summary>{{ group.title ? group.title : 'Collapse' }}</summary>
+                              <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ group.title ? group.title : 'Collapse' }}</summary>
                               <div :style="group.style ? group.style : {}">
                                 <div
                                   v-for="(collapseComp, componentKey) in group.component"
@@ -142,10 +143,11 @@
                       :key="'form_collapse_' + groupKey"
                       class="form form_class14"
                       v-show="group.prop ? group.prop.Visible : true"
-                      :open="group.open ? true : false"
+                      :open="(group.open && group.canOpen !== false) ? true : false"
+                      @toggle="handleCollapseToggle($event, group)"
                       style="width: 100%; margin-top: 6px;"
                     >
-                      <summary>{{ group.title ? group.title : 'Collapse' }}</summary>
+                      <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ group.title ? group.title : 'Collapse' }}</summary>
                       <div :style="group.style ? group.style : {}">
                         <template v-for="(collapseItem, itemKey) in group.component" :key="'form_collapse_item_' + groupKey + '_' + itemKey">
                           <!-- Componente o CONTAINER -->
@@ -198,10 +200,11 @@
                                   :key="'form_collapse_block_collapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey"
                                   class="form form_class14"
                                   v-show="blockGroup.prop ? blockGroup.prop.Visible : true"
-                                  :open="blockGroup.open ? true : false"
+                                  :open="(blockGroup.open && blockGroup.canOpen !== false) ? true : false"
+                                  @toggle="handleCollapseToggle($event, blockGroup)"
                                   style="width: 100%; margin-top: 6px;"
                                 >
-                                  <summary>{{ blockGroup.title ? blockGroup.title : 'Collapse' }}</summary>
+                                  <summary :style="{ cursor: blockGroup.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ blockGroup.title ? blockGroup.title : 'Collapse' }}</summary>
                                   <div :style="blockGroup.style ? blockGroup.style : {}">
                                     <div
                                       v-for="(collapseComp, collapseCompKey) in blockGroup.component"
@@ -745,6 +748,10 @@ const resolveBlockCollapseMeta = (block: any): { groups: any[]; elementMap: Reco
       group.prop = { Visible: true }
     }
 
+    if (group.canOpen === undefined || group.canOpen === null) {
+      group.canOpen = true
+    }
+
     const groupComponents: any[] = []
     const groupElements = group.elements && group.elements.length > 0 ? group.elements : []
 
@@ -816,6 +823,10 @@ const resolveFormCollapseMeta = () => {
       group.prop = { Visible: true }
     }
 
+    if (group.canOpen === undefined || group.canOpen === null) {
+      group.canOpen = true
+    }
+
     const componentArray: any[] = []
     const elements = group.elements && group.elements.length > 0 ? group.elements : []
 
@@ -864,6 +875,12 @@ const isFormCollapseElement = (component: any): boolean => {
 
 const isFormCollapseBlock = (block: any): boolean => {
   return formCollapseBlockSet.value.has(block)
+}
+
+const handleCollapseToggle = (event: any, group: any) => {
+  if (group && group.canOpen === false) {
+    event.target.open = false
+  }
 }
 
 resolveFormCollapseMeta()

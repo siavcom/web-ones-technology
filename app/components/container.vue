@@ -52,11 +52,12 @@
         <details
           v-for="(group, groupKey) in collapseGroups"
           :key="'container_collapse_' + groupKey"
-          :open="group.open ? true : false"
+          :open="(group.open && group.canOpen !== false) ? true : false"
+          @toggle="(event: any) => { if (group.canOpen === false) { event.target.open = false } }"
           v-show="group.prop ? group.prop.Visible : true"
           style="width: 100%; margin-top: 6px;"
         >
-          <summary>{{ group.title ? group.title : 'Collapse' }}</summary>
+          <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ group.title ? group.title : 'Collapse' }}</summary>
 
           <div :style="group.style ? group.style : {}">
             <div
@@ -223,6 +224,10 @@ const resolveCollapseGroups = () => {
 
     if (!group.prop) {
       group.prop = { Visible: true }
+    }
+
+    if (group.canOpen === undefined || group.canOpen === null) {
+      group.canOpen = true
     }
 
     const componentArray = []
