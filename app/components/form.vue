@@ -58,45 +58,187 @@
 
                 <TransitionGroup name='detailForm'>
 
-                  <div :id="Id + '_' + compMain" v-if="ThisForm.block.length == 0" v-for="(compMain) in ThisForm.main"
-                    :key="compMain" :class="compMain" v-show='ThisForm[compMain].prop.Visible'
-                    class="form form_class14">
-                    <component v-if="ThisForm[compMain].prop.Visible"
-                      :is="impComponent(ThisForm[compMain].prop.BaseClass)"
-                      v-model:Value="ThisForm[compMain].prop.Value"
-                      :Registro="typeof ThisForm[compMain].Recno === 'number' ? ThisForm[compMain].Recno : 0"
-                      :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style" class="form form_class15" />
-                  </div>
+                  <template v-if="ThisForm.block.length == 0">
+                    <template v-for="(compMain) in ThisForm.main" :key="compMain">
+                      <div :id="Id + '_' + compMain"
+                        v-if="ThisForm[compMain].prop.Visible && !isFormCollapseElement(ThisForm[compMain])"
+                        :class="compMain" class="form form_class14">
+                        <component v-if="ThisForm[compMain].prop.Visible"
+                          :is="impComponent(ThisForm[compMain].prop.BaseClass)"
+                          v-model:Value="ThisForm[compMain].prop.Value"
+                          :Registro="typeof ThisForm[compMain].Recno === 'number' ? ThisForm[compMain].Recno : 0"
+                          :prop="ThisForm[compMain].prop" :style="ThisForm[compMain].style" class="form form_class15" />
+                      </div>
+                    </template>
+                  </template>
+
                   <!--v-model:Status="ThisForm[compMain].prop.Status"-->
                   <!-------------------- Bloques contenedores de componentes ------------------------------------------>
 
-                  <template v-else v-for="(block, key) in ThisForm.block" :key="key">
-                    <div :id="Id + 'block_divi_' + key" class="form form_class16" v-if="block.prop.Visible">
-                      <label :style="block.titleStyle" class="form form_class17"
-                        v-if="block.title && block.prop.Visible">{{ block.title }}</label>
-                      <div :id="Id + 'block_' + key" :style="block.style" class="form form_class18">
-                        <div v-for="(component, key) in block.component" :key="key"
-                          :id="Id + 'modal_hor_componentes_' + key + component.prop.Name" style="padding-bottom:2px"
-                          class="responsive form form_class19">
+                  <template v-else>
+                    <template v-for="(block, key) in ThisForm.block" :key="key">
+                      <div :id="Id + 'block_divi_' + key" class="form form_class16" :style="block.containerStyle"
+                        v-if="block.prop.Visible && !isFormCollapseBlock(block)">
+                        <label :style="block.titleStyle" class="form form_class17"
+                          v-if="block.title && block.prop.Visible">{{ block.title }}</label>
+                        <div :id="Id + 'block_' + key" :style="block.style" class="form form_class18">
+                          <template v-for="(blockComp, key) in block.component" :key="key">
+                            <div
+                              :id="Id + 'modal_hor_componentes_' + key + blockComp.prop.Name"
+                              :style="blockComp.f19style"
+                              style="padding-bottom:2px"
+                              v-if="!isBlockCollapseElement(block, blockComp)"
+                              class="responsive form form_class19"
+                            >
+                              <component v-if="blockComp.prop" :id="Id + '_blockComponent_' + key + blockComp.prop.Name"
+                                :is="impComponent(blockComp.prop.BaseClass)" v-model:Value="blockComp.prop.Value"
+                                :Registro="typeof blockComp.Recno == 'number' ? blockComp.Recno : 0" :prop="blockComp.prop"
+                                :style="blockComp.style" class="form form_class20">
+                              </component>
+                              <!-- v-model:Status="component.prop.Status"-->
+                            </div>
+                          </template>
 
-                          <component v-if="component.prop" :id="Id + '_blockComponent_' + key + component.prop.Name"
-                            :is="impComponent(component.prop.BaseClass)" v-model:Value="component.prop.Value"
-                            :Registro="typeof component.Recno == 'number' ? component.Recno : 0" :prop="component.prop"
-                            :style="component.style" class="form form_class20">
-                          </component>
-                          <!-- v-model:Status="component.prop.Status"-->
+                          <template v-if="getBlockCollapseGroups(block).length > 0">
+                            <details
+                              v-for="(group, groupKey) in getBlockCollapseGroups(block)"
+                              :key="'block_collapse_' + key + '_' + groupKey"
+                              class="form form_class14"
+                              v-show="group.prop ? group.prop.Visible : true"
+                              :open="(group.open && group.canOpen !== false) ? true : false"
+                              @toggle="handleCollapseToggle($event, group)"
+                              style="width: 100%; margin-top: 6px;"
+                            >
+                              <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ group.title ? group.title : 'Collapse' }}</summary>
+                              <div :style="group.style ? group.style : {}">
+                                <div
+                                  v-for="(collapseComp, componentKey) in group.component"
+                                  :key="'block_collapse_comp_' + key + '_' + groupKey + '_' + componentKey"
+                                  :id="Id + '_blockCollapse_' + key + '_' + groupKey + '_' + collapseComp.prop.Name"
+                                  style="padding-bottom:2px"
+                                  class="responsive form form_class19"
+                                >
+                                  <component
+                                    v-if="collapseComp.prop"
+                                    :is="impComponent(collapseComp.prop.BaseClass)"
+                                    v-model:Value="collapseComp.prop.Value"
+                                    :Registro="typeof collapseComp.Recno == 'number' ? collapseComp.Recno : 0"
+                                    :prop="collapseComp.prop"
+                                    :style="collapseComp.style"
+                                    class="form form_class20"
+                                  />
+                                </div>
+                              </div>
+                            </details>
+                          </template>
                         </div>
                       </div>
-                    </div>
+                    </template>
                   </template>
                   <!------------------------------------------------------------->
+
+                  <template v-if="formCollapseGroups.length > 0">
+                    <details
+                      v-for="(group, groupKey) in formCollapseGroups"
+                      :key="'form_collapse_' + groupKey"
+                      class="form form_class14"
+                      v-show="group.prop ? group.prop.Visible : true"
+                      :open="(group.open && group.canOpen !== false) ? true : false"
+                      @toggle="handleCollapseToggle($event, group)"
+                      style="width: 100%; margin-top: 6px;"
+                    >
+                      <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ group.title ? group.title : 'Collapse' }}</summary>
+                      <div :style="group.style ? group.style : {}">
+                        <template v-for="(collapseItem, itemKey) in group.component" :key="'form_collapse_item_' + groupKey + '_' + itemKey">
+                          <!-- Componente o CONTAINER -->
+                          <div
+                            v-if="collapseItem.prop && collapseItem.prop.BaseClass"
+                            :id="Id + '_formCollapse_component_' + groupKey + '_' + itemKey + '_' + collapseItem.prop.Name"
+                            style="padding-bottom:2px"
+                            class="responsive form form_class19"
+                          >
+                            <component
+                              v-if="collapseItem.prop"
+                              :is="impComponent(collapseItem.prop.BaseClass)"
+                              v-model:Value="collapseItem.prop.Value"
+                              :Registro="typeof collapseItem.Recno === 'number' ? collapseItem.Recno : 0"
+                              :prop="collapseItem.prop"
+                              :style="collapseItem.style"
+                              class="form form_class20"
+                            />
+                          </div>
+
+                          <!-- Bloque / Container -->
+                          <div
+                            v-else-if="collapseItem.component"
+                            :id="Id + '_formCollapse_block_divi_' + groupKey + '_' + itemKey"
+                            class="form form_class16"
+                            :style="collapseItem.containerStyle"
+                            v-show="collapseItem.prop ? collapseItem.prop.Visible : true"
+                          >
+                            <label :style="collapseItem.titleStyle" class="form form_class17" v-if="collapseItem.title && collapseItem.prop.Visible">{{ collapseItem.title }}</label>
+                            <div :id="Id + '_formCollapse_block_' + groupKey + '_' + itemKey" :style="collapseItem.style" class="form form_class18">
+                              <template v-for="(blockComp, blockCompKey) in collapseItem.component" :key="blockCompKey">
+                                <div
+                                  :id="Id + '_formCollapse_modal_hor_componentes_' + groupKey + '_' + itemKey + '_' + blockCompKey + blockComp.prop.Name"
+                                  :style="blockComp.f19style"
+                                  style="padding-bottom:2px"
+                                  v-if="!isBlockCollapseElement(collapseItem, blockComp)"
+                                  class="responsive form form_class19"
+                                >
+                                  <component v-if="blockComp.prop" :id="Id + '_formCollapse_blockComponent_' + groupKey + '_' + itemKey + '_' + blockCompKey + blockComp.prop.Name"
+                                    :is="impComponent(blockComp.prop.BaseClass)" v-model:Value="blockComp.prop.Value"
+                                    :Registro="typeof blockComp.Recno == 'number' ? blockComp.Recno : 0" :prop="blockComp.prop"
+                                    :style="blockComp.style" class="form form_class20">
+                                  </component>
+                                </div>
+                              </template>
+
+                              <template v-if="getBlockCollapseGroups(collapseItem).length > 0">
+                                <details
+                                  v-for="(blockGroup, blockGroupKey) in getBlockCollapseGroups(collapseItem)"
+                                  :key="'form_collapse_block_collapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey"
+                                  class="form form_class14"
+                                  v-show="blockGroup.prop ? blockGroup.prop.Visible : true"
+                                  :open="(blockGroup.open && blockGroup.canOpen !== false) ? true : false"
+                                  @toggle="handleCollapseToggle($event, blockGroup)"
+                                  style="width: 100%; margin-top: 6px;"
+                                >
+                                  <summary :style="{ cursor: blockGroup.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ blockGroup.title ? blockGroup.title : 'Collapse' }}</summary>
+                                  <div :style="blockGroup.style ? blockGroup.style : {}">
+                                    <div
+                                      v-for="(collapseComp, collapseCompKey) in blockGroup.component"
+                                      :key="'form_collapse_block_collapse_comp_' + groupKey + '_' + itemKey + '_' + blockGroupKey + '_' + collapseCompKey"
+                                      :id="Id + '_formCollapse_blockCollapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey + '_' + collapseComp.prop.Name"
+                                      style="padding-bottom:2px"
+                                      class="responsive form form_class19"
+                                    >
+                                      <component
+                                        v-if="collapseComp.prop"
+                                        :is="impComponent(collapseComp.prop.BaseClass)"
+                                        v-model:Value="collapseComp.prop.Value"
+                                        :Registro="typeof collapseComp.Recno == 'number' ? collapseComp.Recno : 0"
+                                        :prop="collapseComp.prop"
+                                        :style="collapseComp.style"
+                                        class="form form_class20"
+                                      />
+                                    </div>
+                                  </div>
+                                </details>
+                              </template>
+                            </div>
+                          </div>
+                        </template>
+                      </div>
+                    </details>
+                  </template>
                 </TransitionGroup>
               </slot>
             </section>
 
             <!--/template-->
             <!--template v-slot:footer  -->
-            <section class="formfooter form form_class20" :style="ThisForm.footerStyle">
+            <section class="formfooter form form_class21" :style="ThisForm.footerStyle">
               <!--Transition tag='div' -->
               <!-- <nuxt-img class='circle form form_class21'
                 :src="ThisForm.prop.Status == 'A' ? '/Iconos/svg/circle-green.svg' : '/Iconos/svg/circle-red.svg'"
@@ -534,6 +676,8 @@ onMounted(async () => {
           }
           */
 
+      resolveFormCollapseMeta() // Reconstruye collapses definidos en el init
+
       mounted.value = true // Se incializo todo el arbol de componentes 
 
     });
@@ -586,6 +730,173 @@ const NextTick = (ins: string) => {
   console.log('NextTick', ins)
   nextTick(function () { waitEval(ins) });
 }
+
+const blockCollapseCache = new WeakMap<object, { groups: any[]; elementMap: Record<string, boolean> }>()
+
+const getComponentName = (component: any): string => {
+  if (!component) return ''
+  if (component.Name && typeof component.Name == 'string') return component.Name
+  if (component.prop && component.prop.Name && typeof component.prop.Name == 'string') return component.prop.Name
+  return ''
+}
+
+const resolveBlockCollapseMeta = (block: any): { groups: any[]; elementMap: Record<string, boolean> } => {
+  if (!block || typeof block != 'object') {
+    return { groups: [], elementMap: {} }
+  }
+
+  if (blockCollapseCache.has(block)) {
+    return blockCollapseCache.get(block) as { groups: any[]; elementMap: Record<string, boolean> }
+  }
+
+  const groups = block.collapseContainer && block.collapseContainer.length > 0 ? block.collapseContainer : []
+  const resolvedGroups: any[] = []
+  const elementMap: Record<string, boolean> = {}
+
+  for (const groupIndex in groups) {
+    const group = groups[groupIndex]
+    if (!group) continue
+
+    if (!group.prop) {
+      group.prop = { Visible: true }
+    }
+
+    if (group.canOpen === undefined || group.canOpen === null) {
+      group.canOpen = true
+    }
+
+    const groupComponents: any[] = []
+    const groupElements = group.elements && group.elements.length > 0 ? group.elements : []
+
+    for (const elementIndex in groupElements) {
+      const collapseElement = groupElements[elementIndex]
+      let componentRef: any = null
+
+      if (typeof collapseElement == 'string') {
+        for (const blockCompIndex in block.component) {
+          const blockComp = block.component[blockCompIndex]
+          if (getComponentName(blockComp) == collapseElement) {
+            componentRef = blockComp
+            break
+          }
+        }
+      }
+      else if (collapseElement && collapseElement.prop) {
+        componentRef = collapseElement
+      }
+
+      if (componentRef && componentRef.prop) {
+        groupComponents.push(componentRef)
+        const componentName = getComponentName(componentRef)
+        if (componentName.length > 0) {
+          elementMap[componentName] = true
+        }
+      }
+    }
+
+    group.component = groupComponents
+    if (group.component.length > 0) {
+      resolvedGroups.push(group)
+    }
+  }
+
+  const meta = { groups: resolvedGroups, elementMap }
+  blockCollapseCache.set(block, meta)
+  return meta
+}
+
+const getBlockCollapseGroups = (block: any): any[] => {
+  return resolveBlockCollapseMeta(block).groups
+}
+
+const isBlockCollapseElement = (block: any, component: any): boolean => {
+  const compName = getComponentName(component)
+  if (compName.length == 0) return false
+  return resolveBlockCollapseMeta(block).elementMap[compName] == true
+}
+
+const formCollapseGroups = ref<any[]>([])
+const formCollapseComponentSet = ref<Set<any>>(new Set())
+const formCollapseBlockSet = ref<Set<any>>(new Set())
+
+const resolveFormCollapseMeta = () => {
+  const groups = ThisForm.collapseContainer && ThisForm.collapseContainer.length > 0
+    ? ThisForm.collapseContainer
+    : []
+
+  const resolved: any[] = []
+  const componentSet = new Set<any>()
+  const blockSet = new Set<any>()
+
+  for (const groupIndex in groups) {
+    const group = groups[groupIndex]
+    if (!group) continue
+
+    if (!group.prop) {
+      group.prop = { Visible: true }
+    }
+
+    if (group.canOpen === undefined || group.canOpen === null) {
+      group.canOpen = true
+    }
+
+    const componentArray: any[] = []
+    const elements = group.elements && group.elements.length > 0 ? group.elements : []
+
+    for (const elementIndex in elements) {
+      const collapseElement = elements[elementIndex]
+      let componentRef: any = null
+
+      if (typeof collapseElement == 'number' && ThisForm.block && ThisForm.block[collapseElement]) {
+        componentRef = ThisForm.block[collapseElement]
+        blockSet.add(componentRef)
+      }
+      else if (typeof collapseElement == 'string' && ThisForm[collapseElement]) {
+        componentRef = ThisForm[collapseElement]
+        componentSet.add(componentRef)
+      }
+      else if (collapseElement && typeof collapseElement == 'object') {
+        if (collapseElement.component !== undefined) {
+          componentRef = collapseElement
+          blockSet.add(componentRef)
+        }
+        else if (collapseElement.prop) {
+          componentRef = collapseElement
+          componentSet.add(componentRef)
+        }
+      }
+
+      if (componentRef && componentRef.prop) {
+        componentArray.push(componentRef)
+      }
+    }
+
+    group.component = componentArray
+    if (group.component.length > 0) {
+      resolved.push(group)
+    }
+  }
+
+  formCollapseGroups.value = resolved
+  formCollapseComponentSet.value = componentSet
+  formCollapseBlockSet.value = blockSet
+}
+
+const isFormCollapseElement = (component: any): boolean => {
+  return formCollapseComponentSet.value.has(component)
+}
+
+const isFormCollapseBlock = (block: any): boolean => {
+  return formCollapseBlockSet.value.has(block)
+}
+
+const handleCollapseToggle = (event: any, group: any) => {
+  if (group && group.canOpen === false) {
+    event.target.open = false
+  }
+}
+
+resolveFormCollapseMeta()
 
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

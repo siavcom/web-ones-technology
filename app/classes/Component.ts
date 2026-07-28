@@ -29,6 +29,16 @@ export class COMPONENT {
   estatus: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
   block: [] = [] // bloque del componentes
+  collapse: [] = [] // grupos colapsables con sus componentes
+  collapseContainer: any[] = [
+      // {
+        // title: 'Grupo de containers',
+        // open: true,
+        // canOpen: true,  // false: no se puede abrir
+        // style: {},
+        // elements: [this.block[2], this.block[3]]
+      // }
+  ] // grupos colapsables a nivel componente/forma
   Valid = ref([]) //Validaciones de componentes hijos
   ValidName = [] //Validaciones de componentes hijos
   refValid = -1
@@ -125,6 +135,7 @@ export class COMPONENT {
 
     Placeholder: "",
     Position: "main", // main, header , footer
+    Collapse: "", // Nombre del grupo collapse en el que participa el componente
 
     ReadOnly: false,
     RecordSource: "",
@@ -173,7 +184,8 @@ export class COMPONENT {
 
 
   }
-
+  comboStyle = {}
+  
   captionStyle = {
     accept: "", //"image/png, image/jpeg, image/jpg"
 
@@ -193,6 +205,18 @@ export class COMPONENT {
     visibility: 'visible',
     width: "fit-content",
     alignContent: "flex-start" //"flex-end", //alignContent: "center",
+  }
+
+  buttonFooterStyle = {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    cursor: 'pointer',
+    border: 'none',
+  }
+
+  buttonImgFooterStyle = {
+    width: '32px',
+    height: '32px',
   }
 
   inputStyle = {
@@ -222,6 +246,10 @@ export class COMPONENT {
     border: '1px solid red',
     background: 'rgba(247, 230, 230, 1)',
     textTransform: 'none', //    none,capitalize,uppercase,lowercase
+  }
+
+  f19style = {
+    
   }
 
   style = {
@@ -287,6 +315,16 @@ export class COMPONENT {
       prop: {
         Visible: true
       },
+      collapseContainer: [
+        // {
+          // title: 'Collapse interno',
+          // open: false,
+          // canOpen: true,  // false: no se puede abrir
+          // style: {},
+          // elements: [this.du2_isu, this.du3_isu]
+        // }
+      ],
+      containerStyle: {},
       style: {
         border: '1px solid rgb(0, 0, 0)',
         background: ' rgb(235,248,238)',
@@ -621,9 +659,9 @@ export class COMPONENT {
     }
 
     this.footer = footer.reverse();
+    this.main = main;
 
     this.header = header;
-    this.main = main;
 
     const arrayTot = headerElement.concat(mainElement);
 

@@ -363,7 +363,8 @@ const openLayerZIndex = 12000
 const comboStyle = reactive({
   height: 'fit-content',
   width: Styles.inputStyle.width,    //'fit-content',
-  zIndex: zIndex.value
+  zIndex: zIndex.value,
+  ...This.comboStyle
 })
 const toggleStyle = reactive({
   maxHeight: Styles.style.fontSize,
@@ -2199,30 +2200,15 @@ const handler = (event) => {
 <style scoped>
 /*  elemento click check*/
 .toggleImagen {
-
   border-radius: 20%;
   border: 1px rgb(0, 5, 2);
-
   vertical-align: bottom;
   border-style: solid;
   border-color: black;
-
   margin-left: 1px;
   margin-top: .5%;
-
   box-shadow: black 0px 1px 1px 0, 0 1px 1px 0;
   background: #76a184;
-  /*background: #76a184;   
-  border: rgb(0, 5, 2);
-  box-shadow: 0px 1px 1px 0, 0 1px 1px 0;
-*/
-
-  max-height: fit-content
-    /*height: 93% */
-    /* margin-bottom: 5px;
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px;*/
 }
 
 .multiSelect {
@@ -2288,7 +2274,7 @@ div.toggle {
   width: 100%;
   top: 20px;
   z-index: v-bind('toggleZIndex');
-  min-width: 350px !important;
+  min-width: 200px !important;
   max-height: 400px;
 }
 
