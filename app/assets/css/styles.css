@@ -41,7 +41,7 @@ div.backGround {
   /* opacity: 0.5;*/
 }
 
-.logoWebOnes{
+.logoWebOnes {
   width: 150px !important;
   height: 70px !important;
   object-fit: contain !important;
@@ -396,7 +396,7 @@ body.combo-dropdown-open .formfooter {
   pointer-events: none !important;
 }
 
-body.combo-dropdown-open .formfooter > * {
+body.combo-dropdown-open .formfooter>* {
   visibility: hidden !important;
 }
 
@@ -519,18 +519,24 @@ section.formfooter_old {
 
 /* =============== Raul vistas ======================  */
 
-.controles img{
+.controles img {
   cursor: pointer;
   width: 30px;
   height: 30px;
 }
 
-.imgbutton_class2{
+.imgbutton_class2 {
   display: inline-block !important;
   background-color: white;
   border: none;
 }
 
+<<<<<<< HEAD
+=======
+.imgbutton_class2 img {
+  width: 42px !important;
+}
+>>>>>>> 74c195acf8d9769ac55de84e0f4b82c31b1fefba
 
 .backGround {
   background-color: white !important;
@@ -540,23 +546,28 @@ section.formfooter_old {
   margin: 2px 0;
 }
 
-.form_class18, .form_class11, .formheader{
+.form_class18,
+.form_class11,
+.formheader {
   border: none !important;
 }
 
-.formfooter{
+.formfooter {
   justify-content: space-between !important;
 }
 
-#salir, .toggleImagen, button{
+#salir,
+.toggleImagen,
+button {
   cursor: pointer;
 }
 
-.formfooter .form_class23, .formfooter #salir{
+.formfooter .form_class23,
+.formfooter #salir {
   margin-right: 10px !important;
 }
 
-.LoginForm .form input{
+.LoginForm .form input {
   height: 30px !important;
   min-height: 30px !important;
   max-height: 30px !important;
@@ -565,151 +576,191 @@ section.formfooter_old {
   max-width: 100% !important;
 }
 
-.formfooter .imgbutton_class1{
+.formfooter .imgbutton_class2 {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  border: none !important;
+}
+
+.formfooter .imgbutton_class1 {
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
   width: auto !important;
 }
 
-.formfooter .imgbutton_class1, #salir{
+
+.formfooter .imgbutton_class2 img {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.formfooter .imgbutton_class1,
+#salir {
   height: 40px !important;
   width: 40px !important;
 }
 
-.form_class16{
+.form_class16 {
   text-align: left;
 }
-.form_class6{
+
+.form_class6 {
   margin: 2px auto;
 }
-.form_class7 .form_class8{
+
+.form_class7 .form_class8 {
   font-size: 20px;
 }
-.form_class17{
+
+.form_class17 {
   margin-bottom: 2px;
   display: block;
   text-align: left !important;
 }
 
-.form_class19{
+.form_class19 {
   /* overflow-x:scroll */
 }
 
-.backGround{
+.backGround {
   box-sizing: border-box;
 }
 
 
 @media(max-width: 550px) {
-  .gridTable{
+  .gridTable {
     width: 100% !important;
   }
 
-  #grid_tablas_234_grid_tbody > tr{
+  #grid_tablas_234_grid_tbody>tr {
     background-color: transparent !important;
   }
 
-  .form_class17{
+  .form_class17 {
     padding: 10px 5px;
     background-color: #7aac67;
     color: white !important;
     font-size: 1.2rem !important;
   }
 
-  .renNumber{
+  .renNumber {
     flex-direction: row !important;
   }
 
   .gridDatos td {
-  display: flex;
-  flex-direction: column;
-}
+    display: flex;
+    flex-direction: column;
+  }
 
-  
+
   .gridDatos td * {
     width: 100%;
     max-width: 100%;
   }
 
-  .renNumber label{
+  .renNumber label {
     text-align: left !important;
   }
 
-  .tabla, .table.gridTable tr{
+  .tabla,
+  .table.gridTable tr {
     border: none !important;
   }
 
-  #webOnes{
+  #webOnes {
     display: none;
   }
 
-  .form_class4, .form_class2, .form_class3, .form_class1, .form_class11, .form_class18{
+  .form_class4,
+  .form_class2,
+  .form_class3,
+  .form_class1,
+  .form_class11,
+  .form_class18 {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
 
-  .form_class8{
+  .form_class8 {
     font-size: 18px !important;
   }
 
   .form_class16 {
     width: 100% !important;
     margin-top: 10px !important;
-    margin:auto;
+    margin: auto;
   }
-  .form_class18{
+
+  .form_class18 {
     width: 100% !important;
     padding: 0px !important;
   }
 
-  .form_class19, .form_class20, .combo, .edit, .text{
+  .form_class19,
+  .form_class20,
+  .combo,
+  .edit,
+  .text {
     width: 100% !important;
   }
 
-  .checkbox.text, .checkbox.edit_class8{
+  .checkbox.text,
+  .checkbox.edit_class8 {
     width: 30px !important;
   }
 
-  .combo_class10, .edit_class3, .edit_class8, .text_class4, .edit_class8{
+  .combo_class10,
+  .edit_class3,
+  .edit_class8,
+  .text_class4,
+  .edit_class8 {
     padding: 5px 2px !important;
     margin-bottom: 5px !important;
   }
 
-  .edit_class12{
+  .edit_class12 {
     margin-left: 0 !important;
   }
 
-  .combo_class10, .edit_class3, .edit_class8, .text_class4, .text_class2{
+  .combo_class10,
+  .edit_class3,
+  .edit_class8,
+  .text_class4,
+  .text_class2 {
     background-color: transparent !important;
     border: 1px solid #8080805c !important;
     box-shadow: none !important;
-    padding: 5px !important !important;
+    padding: 5px !important;
     font-size: 15px !important;
-    margin:0px;
+    margin: 0px;
   }
 
-  .div.divi{
+  .div.divi {
     margin: 0px !important;
     height: auto !important;
   }
 
-  span.text_class2{
+  span.text_class2 {
     border: none !important;
   }
 
-  input, span.text, label, div{
+  input,
+  span.text,
+  label,
+  div {
     font-size: 16px !important;
   }
 
-  div div div input{
+  div div div input {
     height: 30px !important;
     max-height: 30px !important;
     box-sizing: border-box;
   }
 
-  .toggleImagen{
+  .toggleImagen {
     max-height: 20px;
     margin-top: auto;
     width: 25px !important;
@@ -718,15 +769,18 @@ section.formfooter_old {
     height: 30px;
     min-height: 25px;
   }
+
   .imgbutton_class1 {
     background-color: transparent !important;
     box-shadow: none !important;
   }
-  .imgbutton_class2{
+
+  .imgbutton_class2 {
     width: 40px !important;
     cursor: pointer;
   }
-  .modal-container{
+
+  .modal-container {
     width: 80% !important;
     background-color: white !important;
     border: none !important;
@@ -734,58 +788,67 @@ section.formfooter_old {
     margin-right: auto !important;
     left: auto;
   }
-  .modal-body div div{
+
+  .modal-body div div {
     /* background-color: transparent !important; */
     border: none !important;
     box-shadow: none !important;
   }
 
-  .modal-body .edit_class1, .modal-body .combo_class1{
+  .modal-body .edit_class1,
+  .modal-body .combo_class1 {
     margin-left: 0px !important;
   }
-  .modal-body button{
+
+  .modal-body button {
     cursor: pointer !important;
   }
 
-  .formfooter .imgbutton_class2 label{
+  .formfooter .imgbutton_class2 label {
     display: none !important;
   }
-  .formfooter div, .formfooter button, .formfooter img{
+
+  .formfooter div,
+  .formfooter button,
+  .formfooter img {
     width: 40px !important;
     object-fit: contain !important;
     margin-right: 5px !important;
     margin-top: 5px !important;
   }
 
-  .formfooter button, .formfooter img{
+  .formfooter button,
+  .formfooter img {
     cursor: pointer !important;
   }
 
-  .formfooter div, .formfooter button{
+  .formfooter div,
+  .formfooter button {
     background-color: transparent !important;
     border: none !important;
   }
 
-  .formfooter{
+  .formfooter {
     align-items: center !important;
     padding: 10px 0;
     flex-wrap: wrap;
     justify-content: space-around !important;
   }
 
-  table{
+  table {
     width: 100%;
     table-layout: fixed;
   }
 
-  .form_class14{
+  .form_class14 {
     width: 100% !important;
   }
 
-  div.toggle{
+  div.toggle {
     top: 40px !important;
   }
-  .combo_class12.columContainer{
+
+  .combo_class12.columContainer {
     background-color: white !important;
   }
 }

@@ -48,6 +48,7 @@ export class GRID extends COMPONENT {
     this.prop.OkMessage = 'Actualización exitosa'
     this.prop.headerHeight = "30px";
     this.prop.Rows = 10;   // renglones de la grid por defecto
+    this.prop.ErrorMessage = 'No esta validada la columna '
 
     this.style.width = '-moz-available' //"max-content"
     //this.style.minHeight = "120px";
@@ -312,6 +313,9 @@ export class GRID extends COMPONENT {
   // vis_cap: Vista de captura
   /////////////////////////////////
   async saveTable(oneRow?: boolean) {
+    if (await recCount(this.prop.RecordSource) == 0) {
+      return true
+    }
 
     this.Row = -1
     if (oneRow == undefined)

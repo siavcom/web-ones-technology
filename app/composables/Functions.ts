@@ -954,8 +954,10 @@ export const dayToMilliseconds = (day: number, Type?: string): number => {
  * @returns {string} - A new date string with the specified days added.
  */
 export function addDay(dateString: string, dias: number): string {
+  console.trace('addDay date=', dateString, 'dias=', dias);
   const fechaActual = new Date(dateString);
   const fechaMilisegundos = fechaActual.getTime() + (dias * 24 * 60 * 60 * 1000);
+
   return new Date(fechaMilisegundos).toISOString().slice(0, 10); // ISOString es formato 'AAAA-MM-DD'
 }
 
