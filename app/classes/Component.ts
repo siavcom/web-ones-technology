@@ -248,6 +248,8 @@ export class COMPONENT {
     textTransform: 'none', //    none,capitalize,uppercase,lowercase
   }
 
+  f14style = {}
+
   f19style = {
     
   }

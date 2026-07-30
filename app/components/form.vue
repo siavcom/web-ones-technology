@@ -62,7 +62,8 @@
                     <template v-for="(compMain) in ThisForm.main" :key="compMain">
                       <div :id="Id + '_' + compMain"
                         v-if="ThisForm[compMain].prop.Visible && !isFormCollapseElement(ThisForm[compMain])"
-                        :class="compMain" class="form form_class14">
+                        :class="compMain" class="form form_class14"
+                        :style="ThisForm[compMain].f14style">
                         <component v-if="ThisForm[compMain].prop.Visible"
                           :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                           v-model:Value="ThisForm[compMain].prop.Value"
@@ -104,6 +105,7 @@
                               v-for="(group, groupKey) in getBlockCollapseGroups(block)"
                               :key="'block_collapse_' + key + '_' + groupKey"
                               class="form form_class14"
+                              :style="group.f14style"
                               v-show="group.prop ? group.prop.Visible : true"
                               :open="(group.open && group.canOpen !== false) ? true : false"
                               @toggle="handleCollapseToggle($event, group)"
@@ -142,6 +144,7 @@
                       v-for="(group, groupKey) in formCollapseGroups"
                       :key="'form_collapse_' + groupKey"
                       class="form form_class14"
+                      :style="group.f14style"
                       v-show="group.prop ? group.prop.Visible : true"
                       :open="(group.open && group.canOpen !== false) ? true : false"
                       @toggle="handleCollapseToggle($event, group)"
@@ -199,6 +202,7 @@
                                   v-for="(blockGroup, blockGroupKey) in getBlockCollapseGroups(collapseItem)"
                                   :key="'form_collapse_block_collapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey"
                                   class="form form_class14"
+                                  :style="blockGroup.f14style"
                                   v-show="blockGroup.prop ? blockGroup.prop.Visible : true"
                                   :open="(blockGroup.open && blockGroup.canOpen !== false) ? true : false"
                                   @toggle="handleCollapseToggle($event, blockGroup)"
