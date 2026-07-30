@@ -31,13 +31,13 @@ export class COMPONENT {
   block: [] = [] // bloque del componentes
   collapse: [] = [] // grupos colapsables con sus componentes
   collapseContainer: any[] = [
-      // {
-        // title: 'Grupo de containers',
-        // open: true,
-        // canOpen: true,  // false: no se puede abrir
-        // style: {},
-        // elements: [this.block[2], this.block[3]]
-      // }
+    // {
+    // title: 'Grupo de containers',
+    // open: true,
+    // canOpen: true,  // false: no se puede abrir
+    // style: {},
+    // elements: [this.block[2], this.block[3]]
+    // }
   ] // grupos colapsables a nivel componente/forma
   Valid = ref([]) //Validaciones de componentes hijos
   ValidName = [] //Validaciones de componentes hijos
@@ -185,7 +185,7 @@ export class COMPONENT {
 
   }
   comboStyle = {}
-  
+
   captionStyle = {
     accept: "", //"image/png, image/jpeg, image/jpg"
 
@@ -249,7 +249,7 @@ export class COMPONENT {
   }
 
   f19style = {
-    
+
   }
 
   style = {
@@ -317,11 +317,11 @@ export class COMPONENT {
       },
       collapseContainer: [
         // {
-          // title: 'Collapse interno',
-          // open: false,
-          // canOpen: true,  // false: no se puede abrir
-          // style: {},
-          // elements: [this.du2_isu, this.du3_isu]
+        // title: 'Collapse interno',
+        // open: false,
+        // canOpen: true,  // false: no se puede abrir
+        // style: {},
+        // elements: [this.du2_isu, this.du3_isu]
         // }
       ],
       containerStyle: {},
@@ -414,6 +414,7 @@ export class COMPONENT {
     }
 
   }
+  /************************* Init ************************************* */
 
   /**
    * Init Component
@@ -463,7 +464,6 @@ export class COMPONENT {
           // this.Form.mPublic['lan_lan'] = ''
         }
       }
-
     }
 
     //console.log('Init TabIndex', this.Name, TabIndex,this)
@@ -579,9 +579,6 @@ export class COMPONENT {
       return a.Id - b.Id;
     });
 
-    await this.init()
-
-
     /////////////////////// Header ////////////////////////////////////
     // Obtenemos solo los elementos del Header
     const headerElement = await multiFilter(elements, { Position: "header" });
@@ -659,9 +656,9 @@ export class COMPONENT {
     }
 
     this.footer = footer.reverse();
-    this.main = main;
 
     this.header = header;
+    this.main = main;
 
     const arrayTot = headerElement.concat(mainElement);
 
@@ -683,28 +680,30 @@ export class COMPONENT {
           this.footer
     );
 */
-    if (this.prop.Map !== 'ThisForm' && this.init) {
-      //  await this.init(); // Corre el init principal
-      /*
-            if (this.prop.Map == 'ThisForm' && this.Form.Params && this.Form.Params.length > 0) {
-              console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This.Form=', this.Form.Params)
-      
-              if (this.Form.Params.length == 1)
-                await this.init(this.Form.Params[0]); // Corre el init principal
-              if (this.Form.Params.length == 2)
-                await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
-              if (this.Form.Params.length == 3)
-                await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
-      
-            }
-            else {
-              await this.init(); // Corre el init principal
-            }
-            */
-      //return TabIndex;
+
+    // no cambiar la  posicion  por que los reportes dejan de funcionar
+    if (this.prop.Map == 'ThisForm' && this.Form.Params) { // && this.Form.Params && this.Form.Params.length > 0) {
+
+      console.log("ThisForm Params=", this.Form.Params, ",Dialect=", Public.value.dialect, 'Public.value=', Public.value);
+
+      //   await this.init(); // Corre el init principal
+      if (this.Form.Params.length == 1)
+        await this.init(this.Form.Params[0]); // Corre el init principal
+      if (this.Form.Params.length == 2)
+        await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
+      if (this.Form.Params.length == 3)
+        await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
+
+    }
+    else {
+      await this.init(); // Corre el init principal (no quitar await)
     }
     return TabIndex;
+
   }
+
+  /***************************************************************** */
+
   /**
    * Initializes the component.
    *
@@ -761,8 +760,15 @@ export class COMPONENT {
   public async click() { }
 
   /**
+   * @description : Antes de hacer el when
+   */
+
+  async beforeWhen() {
+  }
+
+  /**
    * When VFP
-   * Descripcion: Cuando recibe el foco el componente
+   * @descripcion: Cuando recibe el foco el componente
    * 
    * @returns boolean true si el componente puede recibir el foco, false en caso contrario
    */

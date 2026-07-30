@@ -55,8 +55,6 @@ export class bt_pdf extends IMGBUTTON {
 
     this.Form.bt_obtener.prop.Visible = false
 
-    this.Form.report.prop.Disabled = false
-
     // this.Form.report.displayBrowse.table.isLoading = true; // indicadorm de caqrga
     const query = await this.Form.gen_query()
 

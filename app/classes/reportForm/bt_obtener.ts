@@ -30,14 +30,8 @@ export class bt_obtener extends IMGBUTTON {
 
     let bloque = 0
     let resultado = null
-    for (bloque = 0; bloque < this.Form.block.length; bloque++)
-      if (this.Form.block[bloque].title != 'Resultado')
-        this.Form.block[bloque].prop.Visible = false
-      else {
-        this.Form.block[bloque].prop.Visible = true
-        resultado = this.Form.block[bloque]
-      }
-    debugger
+
+
 
 
     // bloque = this.Form.block.length - 2
@@ -48,24 +42,38 @@ export class bt_obtener extends IMGBUTTON {
     this.Form.report.bt_json.prop.Visible = false;
 
     this.Form.report.displayPdf.prop.Source = "";
+    this.Form.report.displayPdf.prop.Visible = false
     const main = this.Form.main
 
     // this.Form.queryPri.prop.Visible = false
     this.Form.queryUsu.prop.Visible = false
     this.Form.queryGen.prop.Visible = false
     this.Form.reportFields.prop.Visible = false
-
-    for (let i = 0; i < main.length; i++) {
-      if (!this.Form[main[i]].prop.Disabled)
-        this.Form[main[i]].prop.Visible = false
-    }
-
+    /*
+        for (let i = 0; i < main.length; i++) {
+          if (!this.Form[main[i]].prop.Disabled)
+            this.Form[main[i]].prop.Visible = false
+        }
+    */
     this.Form.bt_pdf.prop.Visible = false;
 
     //   const ins_sql = await this.Form.gen_query()
 
+    this.Form.report.displayBrowse.prop.Visible = true;
+
     this.Form.report.prop.Visible = true;
     this.Form.report.prop.Disabled = false;
+    for (bloque = 0; bloque < this.Form.block.length; bloque++)
+      if (this.Form.block[bloque].title != 'Campos de reporte' && this.Form.block[bloque].prop.title != 'Datos envio') {
+
+        if (this.Form.block[bloque].title != 'Resultado')
+          this.Form.block[bloque].prop.Visible = false
+        else {
+          this.Form.block[bloque].prop.Visible = true
+          resultado = this.Form.block[bloque]
+        }
+      }
+
 
     this.Form.report.displayBrowse.table.isLoading = true;
 
@@ -76,7 +84,6 @@ export class bt_obtener extends IMGBUTTON {
     this.Form.report.displayBrowse.table.isLoading = false
     console.log("bt_obtener reportForm result=", result)
 
-
     if (!result || result.length == 0) {
       closeProcessing("No data to show")
       resultado.prop.Visible = false
@@ -86,16 +93,17 @@ export class bt_obtener extends IMGBUTTON {
 
       return;
     }
-    closeProcessing()
 
-    // console.log("bt_obtener", "Form.block=", this.Form.block);
+
+    closeProcessing()
     // const i = this.Form.block.length - 1
 
     this.Form.report.displayBrowse.prop.RowSource = "sqlresult";
-    this.Form.report.displayBrowse.prop.Visible = true;
-
+    console.log("bt_obtener this.Form.report==>", this.Form.report);
     // console.log('bt_obtener asigno RowSource',this.Parent.report)
     this.Form.report.bt_excel.prop.Visible = true;
     this.Form.report.bt_json.prop.Visible = true;
+
+
   }
 }

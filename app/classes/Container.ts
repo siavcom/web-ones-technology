@@ -59,22 +59,6 @@ export class CONTAINER extends COMPONENT {
 
     }
 
-    /*let elementos = []
-    for (let i = 0; i < this.elements.length; i++) {
-      const Name = this.elements[i].Name
-      elementos.push(Name)
-    }
-    /*
-    console.log('Init Container', this.Name, 'Elements=', elementos)
-    /*
-        let elementos = []
-        // sumanos todos los componentes en uno solo
-        elementos = elementos.concat(this.header)
-        elementos = elementos.concat(this.main)
-        elementos = elementos.concat(this.footer)
-        console.log('Init Container', this.Name, 'Elementos=', elementos)
-    */
-    // recorremos todos los componentes
 
     for (let i = 0; i < this.elements.length; i++) {
 
@@ -116,7 +100,7 @@ export class CONTAINER extends COMPONENT {
 
     }
 
-    // console.log('Container ', this.prop.Name, 'componentes=', this.Divi)
+    console.log(' ', this.prop.Name, 'componentes=', this.Divi)
 
   }
 

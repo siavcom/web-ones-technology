@@ -215,65 +215,141 @@ watch(
 ///////////////////////////
 
 watch(
-  () => props.prop.RowSource,
+  () => This.prop.RowSource, //  props.prop.RowSource,
   async (new_val, old_val) => {
-    // console.log('browseLite watch RowSource===>', new_val, props.prop.RowSource)
-    console.log('browseLite table', table.columns, 'This.table.columns', This.table.columns)
 
-    //table.columns = []
-    table.rows = []
-    table.oriRows = []
-    table.totalRecordCount = 0
-    table.filters = {}
+    await renderTable()
 
-    if (new_val == '') {
-      return
-
-    } else {
-      // obtiene el primer registro para obtener logitudes y descripcion de variables
-      const result = await This.Form.db.localAlaSql('select * from ' + props.prop.RowSource + ' limit 1')
-      if (result.length > 0 && table.columns.length == 0) {
-
-        const Id = {
-          label: 'Id',
-          field: 'recno',
-          isKey: true,
-          width: '40px',
-          sortable: true,
-        }
-        table.columns.push(Id)
-
-        // genera el header 
-
-        for (const field in result[0]) {
-
-          let width = '16'
-          if (typeof result[0][field] == 'string') {
-            const long = result[0][field].length * 13
-            // console.log('browseLite field long', long.toString() + 'px')
-            width = long.toString() + 'px'
+    /*
+        
+        if (new_val == '') {
+          return
+        
+        
+          // console.log('browseLite watch RowSource===>', new_val, props.prop.RowSource)
+          console.log('browseLite table', table.columns, 'This.table.columns', This.table.columns)
+    
+          //table.columns = []
+          table.rows = []
+          table.oriRows = []
+          table.totalRecordCount = 0
+          table.filters = {}
+    
+          if (new_val == '') {
+            return
+    
+          } else {
+            // obtiene el primer registro para obtener logitudes y descripcion de variables
+            const result = await localAlaSql('select * from ' + props.prop.RowSource + ' limit 1')
+            if (result.length > 0 && table.columns.length == 0) {
+    
+              const Id = {
+                label: 'Id',
+                field: 'recno',
+                isKey: true,
+                width: '40px',
+                sortable: true,
+              }
+              table.columns.push(Id)
+    
+              // genera el header 
+    
+              for (const field in result[0]) {
+    
+                let width = '16'
+                if (typeof result[0][field] == 'string') {
+                  const long = result[0][field].length * 13
+                  // console.log('browseLite field long', long.toString() + 'px')
+                  width = long.toString() + 'px'
+                }
+                const column = {
+                  label: field,
+                  field: field,
+                  width: width,
+                  sortable: true,
+                }
+    
+                table.columns.push(column)
+    
+              }
+    
+              // await doSearch(0, 10, 'id', 'asc') // busca los primeros datos
+            }
+            table.columns[0].isKey = true
+            const field = table.columns[0].field
+            await doSearch(0, 10, field, 'asc') // busca los primeros datos
+    
           }
-          const column = {
-            label: field,
-            field: field,
-            width: width,
-            sortable: true,
-          }
-
-          table.columns.push(column)
-
-        }
-
-        // await doSearch(0, 10, 'id', 'asc') // busca los primeros datos
-      }
-      table.columns[0].isKey = true
-      const field = table.columns[0].field
-      await doSearch(0, 10, field, 'asc') // busca los primeros datos
-
-    }
+        }*/
   },
   { deep: false }
 );
+
+const renderTable = async () => {
+  // console.log('browseLite watch RowSource===>', new_val, props.prop.RowSource)
+
+  console.log('browseLite table', table.columns, 'This.table.columns', This.table.columns)
+
+  if (This.prop.RowSource == '')
+    return
+
+
+  //table.columns = []
+  table.rows = []
+  table.oriRows = []
+  table.totalRecordCount = 0
+  table.filters = {}
+
+  // obtiene el primer registro para obtener logitudes y descripcion de variables
+  const result = await localAlaSql('select * from ' + props.prop.RowSource + ' limit 1')
+  if (result.length > 0 && table.columns.length == 0) {
+
+    const Id = {
+      label: 'Id',
+      field: 'recno',
+      isKey: true,
+      width: '40px',
+      sortable: true,
+    }
+    table.columns.push(Id)
+
+    // genera el header 
+
+    for (const field in result[0]) {
+
+      let width = '16'
+      if (typeof result[0][field] == 'string') {
+        const long = result[0][field].length * 13
+        // console.log('browseLite field long', long.toString() + 'px')
+        width = long.toString() + 'px'
+      }
+      const column = {
+        label: field,
+        field: field,
+        width: width,
+        sortable: true,
+      }
+
+      table.columns.push(column)
+
+    }
+
+    // await doSearch(0, 10, 'id', 'asc') // busca los primeros datos
+
+    table.columns[0].isKey = true
+    const field = table.columns[0].field
+    await doSearch(0, 10, field, 'asc') // busca los primeros datos
+
+  }
+
+  console.log('browseLite renderTable')
+}
+
+
+
+
+
+
 
 const doSearch = async (offset: number, limit: number, order: string, sort: string) => {
   console.log('browseLite doSearch llenara los datos')

@@ -24,7 +24,7 @@ export class FORM extends COMPONENT {
   Development = false; // desarrollo
   //dialect = "MSSQL";
   language = false
-  Recno = ref(999999999)
+  //Recno = ref(0)
 
   headerStyle = {
     display: 'flex',
@@ -86,6 +86,7 @@ export class FORM extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
+    this.Recno = ref(0)
     this.prop.BaseClass = "Form";
     this.Sql = this.db;
 
@@ -158,6 +159,7 @@ if (router.query.params) {
   }
 
 
+  /*
   /////////////////////////////////////////
   // init Mounted
   ////////////////////////////////////
@@ -181,6 +183,9 @@ if (router.query.params) {
 
     console.log("ThisForm :", this.prop.Name, 'Params=', this.Form.Params, "dialect=", Public.value.dialect, 'Public.value=', Public.value);
   }
+
+*/
+
   /**
     * @description
     * Es llamado despues de que el componente es desmontado.
