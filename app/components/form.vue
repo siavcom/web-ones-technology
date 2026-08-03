@@ -62,7 +62,7 @@
                     <template v-for="(compMain) in ThisForm.main" :key="compMain">
                       <div :id="Id + '_' + compMain"
                         v-if="ThisForm[compMain].prop.Visible && !isFormCollapseElement(ThisForm[compMain])"
-                        :class="compMain" class="form form_class14">
+                        :class="compMain" class="form form_class14" :style="ThisForm[compMain].f14style">
                         <component v-if="ThisForm[compMain].prop.Visible"
                           :is="impComponent(ThisForm[compMain].prop.BaseClass)"
                           v-model:Value="ThisForm[compMain].prop.Value"
@@ -98,7 +98,7 @@
                           <template v-if="getBlockCollapseGroups(block).length > 0">
                             <details v-for="(group, groupKey) in getBlockCollapseGroups(block)"
                               :key="'block_collapse_' + key + '_' + groupKey" class="form form_class14"
-                              v-show="group.prop ? group.prop.Visible : true"
+                              :style="group.f14style" v-show="group.prop ? group.prop.Visible : true"
                               :open="(group.open && group.canOpen !== false) ? true : false"
                               @toggle="handleCollapseToggle($event, group)" style="width: 100%; margin-top: 6px;">
                               <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{
@@ -124,7 +124,7 @@
 
                   <template v-if="formCollapseGroups.length > 0">
                     <details v-for="(group, groupKey) in formCollapseGroups" :key="'form_collapse_' + groupKey"
-                      class="form form_class14" v-show="group.prop ? group.prop.Visible : true"
+                      class="form form_class14" :style="group.f14style" v-show="group.prop ? group.prop.Visible : true"
                       :open="(group.open && group.canOpen !== false) ? true : false"
                       @toggle="handleCollapseToggle($event, group)" style="width: 100%; margin-top: 6px;">
                       <summary :style="{ cursor: group.canOpen !== false ? 'pointer' : 'not-allowed' }">{{ group.title ?
@@ -169,13 +169,17 @@
                               <template v-if="getBlockCollapseGroups(collapseItem).length > 0">
                                 <details v-for="(blockGroup, blockGroupKey) in getBlockCollapseGroups(collapseItem)"
                                   :key="'form_collapse_block_collapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey"
-                                  class="form form_class14" v-show="blockGroup.prop ? blockGroup.prop.Visible : true"
+                                  <<<<<<< HEAD class="form form_class14"
+                                  v-show="blockGroup.prop ? blockGroup.prop.Visible : true"=======class="form form_class14"
+                                  :style="blockGroup.f14style"
+                                  v-show="blockGroup.prop ? blockGroup.prop.Visible : true">>>>>>>
+                                  d8000efd61564d332a21e50ab69b5f227abde504
                                   :open="(blockGroup.open && blockGroup.canOpen !== false) ? true : false"
                                   @toggle="handleCollapseToggle($event, blockGroup)"
                                   style="width: 100%; margin-top: 6px;">
                                   <summary
                                     :style="{ cursor: blockGroup.canOpen !== false ? 'pointer' : 'not-allowed' }">{{
-                                      blockGroup.title ?blockGroup.title : 'Collapse' }}</summary>
+                                      blockGroup.title ? blockGroup.title : 'Collapse' }}</summary>
                                   <div :style="blockGroup.style ? blockGroup.style : {}">
                                     <div v-for="(collapseComp, collapseCompKey) in blockGroup.component"
                                       :key="'form_collapse_block_collapse_comp_' + groupKey + '_' + itemKey + '_' + blockGroupKey + '_' + collapseCompKey"

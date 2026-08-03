@@ -70,8 +70,9 @@ const publico = reactive({
     // Otros
     help_url: "", servidor_url: "", sw_imp: false, //,sw_impuesto
     lan_lan: "", // Lenguaje del frontend
-    dialect: "MSSQL",
-    var_cap: '0'
+    dialect: "mssql", // Dialecto de la base de datos (mssql,postgres)
+    var_cap: '0',
+    usu_log: "",
 
     //  },
 })

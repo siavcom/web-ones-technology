@@ -208,18 +208,19 @@ export class GRID extends COMPONENT {
         const comillas = this[column].prop.Type == "number" ? "" : "'";
         where =
           where +
-          "trim(" +
-          this[column].prop.ControlSource.trim() +
-          ")=" +
-          comillas +
-          this[column].prop.Value +
-          comillas +
+            this[column].prop.Type == "number" ? "" : "trim(" +
+              this[column].prop.ControlSource.trim() +
+              this[column].prop.Type == "number" ? "" : ")" +
+              "=" +
+              comillas +
+              this[column].prop.Value +
+              comillas +
           " and ";
       }
     }
     where = where + ` recno<>${Recno} `;
     const select = `select count(recno) as existe from ${this.prop.RecordSource} ${where} `;
-    console.log("Grid  validKeys select=", await localAlaSql(`select * from ${this.prop.RecordSource} ${where}`));
+    console.log("Grid  validKeys select=", `select * from ${this.prop.RecordSource} ${where}`);
     const data = await localSql(select);
     console.log("Grid  validKeys select", select, 'data=', data);
     if (data[0].existe && data[0].existe >= 1) return false;

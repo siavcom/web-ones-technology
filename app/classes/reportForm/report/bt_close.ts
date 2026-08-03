@@ -34,7 +34,8 @@ export class bt_close extends IMGBUTTON {
     let bloque = 0
     for (bloque = 0; bloque < this.Form.block.length; bloque++)
       if (this.Form.block[bloque].title != 'Campos de reporte' && this.Form.block[bloque].prop.title != 'Datos envio') {
-        if (this.Form.block[bloque].title != 'Resultado' && this.Form.block[bloque].title != 'Campos de reporte')
+
+        if (this.Form.block[bloque].title != 'Resultado' && this.Form.block[bloque].title != 'Campos de reporte' && !this.Form.block[bloque].prop.Disabled)
           this.Form.block[bloque].prop.Visible = true
         else
           this.Form.block[bloque].prop.Visible = false

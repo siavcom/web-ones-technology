@@ -106,7 +106,7 @@ export class HELP extends CONTAINER {
 
 
   async open() {
-
+    debugger
     this.Parent.prop.ShowError = false
     this.Parent.prop.ReadOnly = true
     this.Parent.prop.Valid = true
