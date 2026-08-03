@@ -515,7 +515,7 @@ function multiFilter(array, filters) {
 }
 */
 
-const filter = async (filters?: {}, limit: number) => {
+const filter = async (filters?: {}, limit?: number) => {
 
   const filtro = {}
   if (!filters)
