@@ -58,8 +58,6 @@ export class ThisForm extends captureForm {
     this.grid = ['']
 
   }
-  async init() {
 
-  }
 
 } // End ThisForm

@@ -89,9 +89,11 @@ const pageOptions = [
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
-
-  Value: string | number | Date;
-  Registro: number;  // Se pone para el manejo de grid
+  //Recno: 0;
+  Value: any;
+  Registro: 0;
+  id: string;
+  //Show: false;
   prop: {
 
     This: null;
@@ -138,9 +140,48 @@ const props = defineProps<{
 
     //compAddress: any;
   };
-  style: {};
+  // inputStyle: {};
+  style: {
+    background: "white";
+    padding: "5px"; // Relleno
+    color: "#b94295";
+    width: "500px";
+    height: "30px";
+    maxHeight: "auto"
+    fontFamily: "Arial";
+    fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
+    textAlign: "left";
+  };
+  position: {
+    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
+    left: number;
+    Top: number;
+  };
+  //db: any
 }>();
 
+/*
+
+const props = defineProps<{
+ // Value: any;
+  Registro: number;  // Se pone para el manejo de grid
+
+  prop: {
+    RowSource: string;
+    Disabled: boolean;
+    Visible: boolean;
+    Label: string;
+  };
+  
+  position: {
+    position: "left"; //left,right,center,absolute. Si es absulute poner Value left y top
+    left: number;
+    Top: number;
+  };
+
+  //Component: null;
+}>()
+*/
 // Valores componente padre
 const Component = toRef(() => props.prop.This)
 //console.log('editText Component=', Component.value)
@@ -439,7 +480,7 @@ function multiFilter(array, filters) {
 }
 */
 
-const filter = async (filters?: {}, limit?: number) => {
+const filter = async (filters?: {}, limit: number) => {
 
   const filtro = {}
   if (!filters)

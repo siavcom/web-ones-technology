@@ -376,6 +376,12 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
     if (!mem) {
         mem = {};
     }
+    let columnFilter = '';
+
+    if (mem.columnFilter) {
+        columnFilter = mem.columnFilter;
+        delete mem.columnFilter;
+    }
 
     const m = { ...mem };
     if (!alias) {
@@ -481,6 +487,18 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
                 return false;
             }
         }
+
+        if (columnFilter.length > 0) {
+            if (This.value.View[alias].exp_where.trim().length > 0) {
+                This.value.View[alias].exp_where = '(' + This.value.View[alias].exp_where.trim() + ')' + ' AND ' + columnFilter;
+
+            } else {
+                This.value.View[alias].exp_where = columnFilter;
+            }
+        }
+
+
+
         if (This.value.View[alias].exp_where != 'null' && This.value.View[alias].exp_where.trim().length > 0) {
 
             const val_eval = "`" + This.value.View[alias].exp_where.trim() + "`";
@@ -552,7 +570,7 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
     //console.log('Db  use dat_vis========>', dat_vis)
 
     try {
-        //console.log("1 Db Use Axios =====>", dat_vis); // .data
+        console.log("1 Db Use Axios =====>", dat_vis); // .data
         // This.value.View[alias].m = m; // Variables m para hacer requery
 
         const data = await axiosCall(dat_vis);

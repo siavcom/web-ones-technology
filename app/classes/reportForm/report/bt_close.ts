@@ -32,25 +32,32 @@ export class bt_close extends IMGBUTTON {
   override async click() {
 
     let bloque = 0
-    for (bloque = 0; bloque < this.Form.block.length - 2; bloque++)
-      if (!this.Form.block[bloque].prop.Disabled)
-        this.Form.block[bloque].prop.Visible = true
+    for (bloque = 0; bloque < this.Form.block.length; bloque++)
+      if (this.Form.block[bloque].title != 'Campos de reporte' && this.Form.block[bloque].prop.title != 'Datos envio') {
 
-    bloque = this.Form.block.length - 1
-    this.Form.block[bloque].prop.Visible = false  // reportFields
-    this.Form.block[bloque - 1].prop.Visible = false  // resultado
+        if (this.Form.block[bloque].title != 'Resultado' && this.Form.block[bloque].title != 'Campos de reporte' && !this.Form.block[bloque].prop.Disabled)
+          this.Form.block[bloque].prop.Visible = true
+        else
+          this.Form.block[bloque].prop.Visible = false
+      }
 
+    /*
+        bloque = this.Form.block.length - 1
+      this.Form.block[bloque].prop.Visible = false  // reportFields
+      this.Form.block[bloque - 1].prop.Visible = false  // resultado
+  */
+    /*  
     const main = this.Form.main
-    // console.log('bt_close main=', main)
-    const ThisForm = this.Form
-    for (let i = 0; i < main.length; i++) {
-      if (ThisForm[main[i]].prop.Name != "translateContainer" && !ThisForm[main[i]].prop.Disabled)
-        ThisForm[main[i]].prop.Visible = true
-    }
-
-    this.Form.report.prop.Disabled = true
-    this.Form.report.prop.Visible = false
-
+        // console.log('bt_close main=', main)
+        const ThisForm = this.Form
+        for (let i = 0; i < main.length; i++) {
+          if (ThisForm[main[i]].prop.Name != "translateContainer" && !ThisForm[main[i]].prop.Disabled)
+            ThisForm[main[i]].prop.Visible = true
+        }
+    
+        this.Form.report.prop.Disabled = true
+        this.Form.report.prop.Visible = false
+    */
     this.Parent.displayBrowse.prop.RowSource = ''
     //  this.Form.report.browse.prop.Visible = false
 
@@ -74,6 +81,15 @@ export class bt_close extends IMGBUTTON {
 
     if (!this.Form.bt_pdf.prop.Disabled)
       this.Form.bt_pdf.prop.Visible = true
+
+    if (this.Form.bt_whatsApp.prop)
+      this.Form.bt_whatsApp.prop.Visible = false
+
+    if (this.Form.bt_timbra.prop)
+      this.Form.bt_timbra.prop.Visible = false
+
+    if (this.Form.bt_email.prop)
+      this.Form.bt_email.prop.Visible = false
 
     await this.Form.tip_con.interactiveChange()
 

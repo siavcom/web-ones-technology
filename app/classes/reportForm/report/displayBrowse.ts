@@ -9,9 +9,10 @@
 import { BROWSE } from "@/classes/Browse"
 
 export class displayBrowse extends BROWSE {
+  /*
   constructor() {
     super();
     this.prop.Visible = false;
 
-  }
+  }*/
 }

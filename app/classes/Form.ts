@@ -24,7 +24,7 @@ export class FORM extends COMPONENT {
   Development = false; // desarrollo
   //dialect = "MSSQL";
   language = false
-  Recno = ref(999999999)
+  //Recno = ref(0)
 
   headerStyle = {
     display: 'flex',
@@ -86,6 +86,7 @@ export class FORM extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
+    this.Recno = ref(0)
     this.prop.BaseClass = "Form";
     this.Sql = this.db;
 
@@ -110,6 +111,8 @@ export class FORM extends COMPONENT {
     //    this.style.maxHeight='920px'
 
     // asigna los parametros de la llamada a esta forma (VFP parameters)
+
+    /*
     const router = useRoute();
     const { params } = useRoute();
 
@@ -124,18 +127,19 @@ export class FORM extends COMPONENT {
       this.Params.push(param);
     }
 
-    if (router.query.params) {
+
+if (router.query.params) {
       // this.params=eval('['+router.query.params+']')
     }
-
+*/
 
     initSql(ref(this))  // Inicializa la conexion al SQLServer
 
     this.mPublic = { ...Public.value }
 
     //this.dialect = Public.value.dialect
-    console.log("ThisForm :", this.prop.Name, "dialect=", Public.value.dialect, 'this.mPublic=', this.mPublic);
-    openForm(this);
+
+    openForm(this); // sql composables 
 
   }
 
@@ -154,33 +158,33 @@ export class FORM extends COMPONENT {
     }
   }
 
-  /*   /////////////////////////////////////////
-    // After Mounted
-    ////////////////////////////////////
-    public override async onMounted_old() {
-      this.prop.Status = "A";
-  
-      const m = {
-        for_lan: this.prop.Name,
-        lan_lan: this.mPublic.lan_lan ? this.mPublic.lan_lan : '   '
-      }
-  
-      console.log("Form :", this.Name, "m=", m);
-  
-      // Si hay lenguaje y existe una traduccion   
-      if (m.lan_lan > '   ' && await this.Sql.use('vi_cap_db_languages', m)) {
-        this.language = true
-  
-        super.afterMounted();
-  
-      }
-      //await SQLExec(`select map_lan,wor_lan,tra_lan from vi_cap_db_languages \
-      //  where lan_lan='${m.lan_lan}' and for_lan='${m.for_lan}' `, 'language'))
-  
-  
-  
+
+  /*
+  /////////////////////////////////////////
+  // init Mounted
+  ////////////////////////////////////
+  public override async init() {
+
+    const router = useRoute();
+    const { params } = useRoute();
+    console.log('ThisForm router=', router)
+
+    for (const par in router.query) {
+      let param = router.query[par]
+      param = param.trim().replaceAll('´', "")
+      if (left(param, 1) == "'")
+        param = param.replace("'", "")
+      if (right(param, 1) == "'")
+        param = param.replace("'", "")
+
+      this.Params.push(param);
+
     }
-   */
+
+    console.log("ThisForm :", this.prop.Name, 'Params=', this.Form.Params, "dialect=", Public.value.dialect, 'Public.value=', Public.value);
+  }
+
+*/
 
   /**
     * @description

@@ -103,7 +103,7 @@ export class bt_aceptar extends IMGBUTTON {
     }
 
     let ins_sql = `select ${fields} from ${this.Parent.prop.RecordSource}  ${where.trim() === 'where' ? '' : where}`
-
+    console.log('Help ins_sql=', ins_sql)
     if (this.Parent.prop.localBrowse) {
       await localAlaSql(` DROP TABLE IF EXISTS browse`)
       const data = await localAlaSql(ins_sql)
@@ -114,7 +114,7 @@ export class bt_aceptar extends IMGBUTTON {
     // console.log("help aceptar select=", `select ${fields}  from ${this.Parent.prop.RecordSource}  ${where}`)
     //const res = await this.Sql.localAlaSql(`select * from browse limit 1`)
     const res = await localAlaSql(`select * from browse limit 1`)
-    console.log("help aceptar res=", res)
+
     if (!res || res.length === 0) {
       MessageBox("No data")
       return await this.Parent.bt_close.click()

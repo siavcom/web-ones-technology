@@ -141,6 +141,29 @@ export class GRID extends COMPONENT {
     return this.prop.Valid;
   }
 
+  /**
+   * @description Valida si se puede editar una columna
+   * @param refColumn Referencia a la columna
+   * @returns Verdadero si se puede editar
+   */
+
+  async whenColumn(refColumn: void): Promise<boolean> {
+    const column = refColumn.value
+
+    if (!column.prop.updateKey)
+      return true;
+    const res = await currentValue('key_pri', this.prop.RecordSource)
+
+    // si ya esta capturado el registro no permite cambiarlo
+    if (res.key_pri && res.key_pri > 0) {
+      column.prop.Valid = true
+      return false
+    }
+
+    return true
+  }
+
+
   ////////////////////////////////////////
   // Metodo : Valid Column
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
@@ -151,19 +174,19 @@ export class GRID extends COMPONENT {
     //   console.log("Column valid refColumn=", refColumn)
     const column = refColumn.value
 
-    if (column.prop.updateKey) {
+    if (!column.prop.updateKey)
+      return true;
 
-      if (
-        typeof column.prop.Value == "string" &&
-        column.prop.Value.trim().length == 0
-      ) {
+    if (
+      typeof column.prop.Value == "string" &&
+      column.prop.Value.trim().length == 0
+    ) {
 
-        return false;
-      }
-      if (!(await this.validKey(column.prop.name, column.Recno))) {
-        //column.prop.ErrorMessage = this.prop.Messages[7];
-        return false;
-      }
+      return false;
+    }
+    if (!(await this.validKey(column.prop.name, column.Recno))) {
+      //column.prop.ErrorMessage = this.prop.Messages[7];
+      return false;
     }
 
     return true;
@@ -184,18 +207,19 @@ export class GRID extends COMPONENT {
         const comillas = this[column].prop.Type == "number" ? "" : "'";
         where =
           where +
-          "trim(" +
-          this[column].prop.ControlSource.trim() +
-          ")=" +
-          comillas +
-          this[column].prop.Value +
-          comillas +
+            this[column].prop.Type == "number" ? "" : "trim(" +
+              this[column].prop.ControlSource.trim() +
+              this[column].prop.Type == "number" ? "" : ")" +
+              "=" +
+              comillas +
+              this[column].prop.Value +
+              comillas +
           " and ";
       }
     }
     where = where + ` recno<>${Recno} `;
     const select = `select count(recno) as existe from ${this.prop.RecordSource} ${where} `;
-    console.log("Grid  validKeys select=", await localAlaSql(`select * from ${this.prop.RecordSource} ${where}`));
+    console.log("Grid  validKeys select=", `select * from ${this.prop.RecordSource} ${where}`);
     const data = await localSql(select);
     console.log("Grid  validKeys select", select, 'data=', data);
     if (data[0].existe && data[0].existe >= 1) return false;

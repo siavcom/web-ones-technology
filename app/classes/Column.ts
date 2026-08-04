@@ -61,7 +61,17 @@ export class COLUMN extends COMPONENT {
     }
   }
 
+  override async when() {
+    return await this.Parent.whenColumn(ref(this));
+  }
+
   override async valid() {
     return await this.Parent.validColumn(ref(this));
   }
+
+
+
+
+
+
 }

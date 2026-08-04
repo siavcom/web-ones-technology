@@ -178,6 +178,7 @@ export class reportForm extends FORM {
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
 
   data_detailBlock: number = 0;
+  blockResultado: any = null;
   constructor(num_blocks: number) {
     super();
 
@@ -271,6 +272,7 @@ export class reportForm extends FORM {
     this.block[i].title = 'Resultado'
     this.block[i].prop.Visible = false
 
+
     i++
     this.data_detailBlock = i
     this.block[i] = structuredClone(this.container)
@@ -283,10 +285,10 @@ export class reportForm extends FORM {
 
   }
 
-  public override async init() {
+  public async init_new() {
 
-    // this.var_ord.prop.RowSource = `select ref_dat,cam_dat from vi_cap_comedat where nom_tab='${this.tab_ord}' order by con_dat`;
-    // this.var_ord.prop.RowSourceType = 3;
+    //await super.init()
+
 
     //this.queryPri.prop.Disabled = true;
     this.queryUsu.prop.Disabled = true;
@@ -297,6 +299,7 @@ export class reportForm extends FORM {
     // vi_schema_views nos trae los campos que podemos utilizar en las condiciones
     const vis_rep = this.vis_rep;
 
+    console.log('init_new vis_rep=', vis_rep)
     await SQLExec(
       `select ref_dat,cam_dat,tip_dat, CASE \
                         WHEN lower(cam_dat)='key_pri' or lower(cam_dat)='timestamp' or \ 
@@ -310,7 +313,7 @@ export class reportForm extends FORM {
     );
 
     if (!View.camposView || View.camposView.recCount == 0) {
-      MessageBox("No existe la vista Sql :" + vis_rep, 16, "Error  ");
+      MessageBox("No existe la vista Sql Server :" + vis_rep, 16, "Error  ");
 
       return;
     }
@@ -357,7 +360,7 @@ export class reportForm extends FORM {
 
     }
 
-    await this.open()
+    //await this.open()
     return
 
   }
@@ -638,11 +641,8 @@ export class reportForm extends FORM {
     return data;
   }
 
-  async open() {
-
-    //    this.des_dat.prop.Value = ''
-    //    this.has_dat.prop.Value = ''
-
+  override async afterMounted() {   // open()
+    await this.init_new()
     let fields = ''
     let or = ''
     for (let i = 0; i < this.fields.length; i++) {
@@ -677,7 +677,7 @@ export class reportForm extends FORM {
     this.var_ord.prop.RowSourceType = 2; //1-Value, 2-Alias, 5-Array = 2
 
     // await this.var_ord.interactiveChange()
-    console.log("1) open <<<<<<<<<<<<<<<<<<<<<<<reportForm>>>>>>>>>>>>>>>>> obtData Public= ", Public.value);
+
   }
 
   // desconectamos el servidor web-sockets al cerrar

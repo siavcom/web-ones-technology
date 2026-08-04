@@ -189,6 +189,7 @@ export class COMPONENT {
 
   }
   comboStyle = {}
+
   styleControlesFiltro = {
     display: 'flex',
     justifyContent: 'space-around',
@@ -426,6 +427,7 @@ export class COMPONENT {
     }
 
   }
+  /************************* Init ************************************* */
 
   /**
    * Init Component
@@ -667,9 +669,9 @@ export class COMPONENT {
     }
 
     this.footer = footer.reverse();
-    this.main = main;
 
     this.header = header;
+    this.main = main;
 
     const arrayTot = headerElement.concat(mainElement);
 
@@ -691,25 +693,30 @@ export class COMPONENT {
           this.footer
     );
 */
-    if (this.init) {
 
-      if (this.prop.Map == 'ThisForm' && this.Form.Params && this.Form.Params.length > 0) {
-        console.log('Component init Name=', this.Name, 'Map=', this.prop.Map, 'This.Form=', this.Form.Params)
+    // no cambiar la  posicion  por que los reportes dejan de funcionar
+    if (this.prop.Map == 'ThisForm' && this.Form.Params) { // && this.Form.Params && this.Form.Params.length > 0) {
 
-        if (this.Form.Params.length == 1)
-          await this.init(this.Form.Params[0]); // Corre el init principal
-        if (this.Form.Params.length == 2)
-          await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
-        if (this.Form.Params.length == 3)
-          await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
+      console.log("ThisForm Params=", this.Form.Params, ",Dialect=", Public.value.dialect, 'Public.value=', Public.value);
 
-      }
-      else {
-        await this.init(); // Corre el init principal
-      }
-      return TabIndex;
+      //   await this.init(); // Corre el init principal
+      if (this.Form.Params.length == 1)
+        await this.init(this.Form.Params[0]); // Corre el init principal
+      if (this.Form.Params.length == 2)
+        await this.init(this.Form.Params[0], this.Form.Params[1]); // Corre el init principal
+      if (this.Form.Params.length == 3)
+        await this.init(this.Form.Params[0], this.Form.Params[1], this.Form.Params[2]); // Corre el init principal
+
     }
+    else {
+      await this.init(); // Corre el init principal (no quitar await)
+    }
+    return TabIndex;
+
   }
+
+  /***************************************************************** */
+
   /**
    * Initializes the component.
    *
@@ -766,8 +773,15 @@ export class COMPONENT {
   public async click() { }
 
   /**
+   * @description : Antes de hacer el when
+   */
+
+  async beforeWhen() {
+  }
+
+  /**
    * When VFP
-   * Descripcion: Cuando recibe el foco el componente
+   * @descripcion: Cuando recibe el foco el componente
    * 
    * @returns boolean true si el componente puede recibir el foco, false en caso contrario
    */

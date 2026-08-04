@@ -1,4 +1,3 @@
-
 //////////////////////////////////////////////
 // This Form was generated automatically by web-ones-technology
 // @baseClass  : help
@@ -53,9 +52,8 @@ export class HELP extends CONTAINER {
     this.prop.Visible = false
     this.prop.Disabled = true
     this.prop.RecordSource = '' // La tabla de la cual queremos obtener los datos
-    this.style.height = 'fit-content'
-    this.style.width = 'auto'
-
+    // this.style.height = 'fit-content'
+    // this.style.width = 'fit-content'
     this.block[0] = {
       component: {
         [0]: this.cam_dat,
@@ -76,7 +74,7 @@ export class HELP extends CONTAINER {
         boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
         padding: '10px',
         // display: 'inline-flex',
-        width: '-moz-available'
+        width: ' fit-content'
       },
       title: '',
 
@@ -105,7 +103,6 @@ export class HELP extends CONTAINER {
     this.browse.prop.TabIndex = 8.6
     this.prop.oneClick = true
   }
-
 
   async open() {
 

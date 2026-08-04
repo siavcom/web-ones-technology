@@ -12,7 +12,7 @@ export class displayPdf extends COMPONENT {
   constructor() {
     super();
     this.prop.BaseClass = "embedPdf";
-    this.prop.Visible = false;
+    //this.prop.Visible = false;
     this.style.height = "auto";
     this.style.width = "100%"; //1100px
     this.style.minWidth = "1200px";
