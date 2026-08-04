@@ -26,6 +26,7 @@ export class captureForm extends FORM {
     this.style.width = "-moz-available";
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
     this.prop.showDelete = true
+
     //this.prop.Messages[100] = 'Grabamos datos'
     //this.prop.Messages[101] = 'Borramos los datos'
     // asignamos los Recno de los componentes de main 
@@ -164,7 +165,7 @@ export class captureForm extends FORM {
     if (this.prop.showDelete)
       this.Form.bt_delete.prop.Visible = false;
 
-    this.Form.bt_modify.prop.Visible = false;
+    //this.Form.bt_modify.prop.Visible = false;
     if (this.blockCapturaXml !== null) {
       this.Bt_campos_xml.prop.Visible = false;
     }
@@ -413,7 +414,7 @@ export class captureForm extends FORM {
       super();
       // this.prop.Name = "bt_save";
       this.prop.Position = "footer";
-      this.prop.ToolTipText = 'Graba los datos del documento '
+      this.prop.ToolTipText = 'Graba datos '
       this.prop.Image = "/Iconos/svg/accept.svg";
 
       this.style.width = "82px";
@@ -447,7 +448,7 @@ export class captureForm extends FORM {
     if (this.prop.RecordSource.length < 2)
       return false
 
-    this.prop.Visible = false;
+    this.bt_save.prop.Visible = false;
 
     let resultado = false
 
@@ -466,10 +467,9 @@ export class captureForm extends FORM {
     await nextTick()
     //const Registro = await goto(0, this.prop.RecordSource)
 
-    const bt_delete = this.bt_delete.prop.Visible
     this.bt_delete.prop.Visible = false;
 
-    if (this.prop.autoUpdate || await MessageBox(this.Form.bt_save.prop.Caption, 4, "") == 6) {
+    if (this.prop.autoUpdate || await MessageBox(this.bt_save.prop.ToolTipText, 4, "") == 6) {
 
       const result = await tableUpdate(
         0,
@@ -496,9 +496,10 @@ export class captureForm extends FORM {
       }
     }
     this.Form.bt_save.prop.Visible = true;
+    debugger
     const key_pri = await scatter(['key_pri'], this.prop.RecordSource)
     if (key_pri > 0)
-      this.Form.bt_delete.prop.Visible = bt_delete
+      this.Form.bt_delete.prop.Visible = true
     return resultado;
   }
 
@@ -582,14 +583,14 @@ export class captureForm extends FORM {
     // if (!await this.inDelete())
     //   return
 
-    this.Form.bt_modify.prop.Visible = false;
+    // this.Form.bt_modify.prop.Visible = false;
     if (this.blockCapturaXml !== null)
       this.Bt_campos_xml.prop.Visible = false;
 
     this.bt_save.prop.Visible = false;
     this.bt_delete.prop.Visible = false;
 
-    if ((await MessageBox(this.Form.bt_delete.prop.Caption, 4, "")) === 6) {
+    if ((await MessageBox(this.bt_delete.prop.ToolTipText, 4, "")) === 6) {
       console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
       const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
 
@@ -604,7 +605,7 @@ export class captureForm extends FORM {
       await this.requery(this.prop.RecordSource, m.key_pri, true)
 
     }
-    this.Form.bt_modify.prop.Visible = true;
+    // this.Form.bt_modify.prop.Visible = true;
     if (this.blockCapturaXml !== null)
       this.Form.Bt_campos_xml.prop.Visible = true;
     this.bt_save.prop.Visible = true;

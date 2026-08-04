@@ -75,6 +75,8 @@ export class COMPONENT {
     Enabled: true,
     ErrorMessage: "--INVALID DATA--",
     First: false,
+    FieldFilter: '',
+    FilterOperator: 'AND',
     Focus: false,
     Format: "", //"ke" tipo fecha seleccionada al input
 
@@ -154,10 +156,12 @@ export class COMPONENT {
     Suffix: "",
 
     TabIndex: 0,
+
     Tag: "",
     textLabel: "",
     This: null,
     ToolTipText: "",
+    tools: [],
     Type: "text",  // text, number, date, time, checKBox
     UpdateMessage: 'Actualizamos',
     updateKey: false, // true when this component is a field index for a table select , update or delete
@@ -186,6 +190,13 @@ export class COMPONENT {
   }
   comboStyle = {}
 
+  styleControlesFiltro = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    margin: '30px auto',
+    flexWrap: 'wrap'
+  }
   captionStyle = {
     accept: "", //"image/png, image/jpeg, image/jpg"
 

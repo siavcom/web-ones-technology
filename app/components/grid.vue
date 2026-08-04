@@ -176,7 +176,21 @@
         </div>
         -->
       </div>
-
+      <template v-if="This.prop.tools.length > 0">
+        <div :id="Id + '_tools'" class="tools" :style="This.styleControlesFiltro">
+          <div v-for="comp in This.prop.tools" :key="comp" :id="Id + '_tool_' + comp" >
+            <component
+              :is="impComponent(This[comp].prop.BaseClass)"
+              v-model:Value="This[comp].prop.Value"
+              v-model:Status="This[comp].prop.Status"
+              v-model:ShowError="This[comp].prop.ShowError"
+              v-bind:prop="This[comp].prop"
+              v-bind:style="This[comp].style"
+              v-bind:Registro="This[comp].Recno || 0">
+            </component>
+          </div>
+        </div>
+      </template>
     </div> <!--/form-->
 
   </div>
@@ -658,6 +672,17 @@ watch(
   },
   { deep: false }
 );
+
+// Watcher individual para cada filtro
+for (const compName of This.prop.tools) {
+  watch(
+    () => This[compName].prop.Value,
+    async (newVal, oldVal) => {
+      await This.applyFilters();
+    },
+    { deep: true }
+  );
+}
 
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal
