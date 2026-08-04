@@ -169,11 +169,8 @@
                               <template v-if="getBlockCollapseGroups(collapseItem).length > 0">
                                 <details v-for="(blockGroup, blockGroupKey) in getBlockCollapseGroups(collapseItem)"
                                   :key="'form_collapse_block_collapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey"
-                                  <<<<<<< HEAD class="form form_class14"
-                                  v-show="blockGroup.prop ? blockGroup.prop.Visible : true"=======class="form form_class14"
-                                  :style="blockGroup.f14style"
-                                  v-show="blockGroup.prop ? blockGroup.prop.Visible : true">>>>>>>
-                                  d8000efd61564d332a21e50ab69b5f227abde504
+                                  class="form form_class14" :style="blockGroup.f14style"
+                                  v-show="blockGroup.prop ? blockGroup.prop.Visible : true"
                                   :open="(blockGroup.open && blockGroup.canOpen !== false) ? true : false"
                                   @toggle="handleCollapseToggle($event, blockGroup)"
                                   style="width: 100%; margin-top: 6px;">
@@ -374,10 +371,6 @@ const password = ref('')
 ThisForm.user = user.value
 ThisForm.nom_emp = nom_emp.value
 ThisForm.fpo_pge = fpo_pge.value
-
-const router = useRouter();
-
-ThisForm.params = router.currentRoute.value.query  // Obtiene los Parametros de la URL
 
 const loading = ref(true)
 
@@ -604,10 +597,9 @@ const mounted = ref(false)
  * 
  */
 
-// onBeforeMount(async () => {
-onMounted(async () => {
+//onBeforeMount(async () => {
 
-  //onMounted(async () => {
+onMounted(async () => {
 
   await Init.Init()
     .then(() => {
@@ -633,6 +625,7 @@ onMounted(async () => {
 
       }
 
+
       const router = useRoute();
       const { params } = useRoute();
 
@@ -647,8 +640,7 @@ onMounted(async () => {
         ThisForm.Params.push(param);
 
       }
-      console.log('ThisForm router=', router, 'Params=', ThisForm.Params)
-
+      //  console.log('ThisForm.estatus', ThisForm.estatus, 'ThisForm.Params=', ThisForm.Params)
 
       await ThisForm.Init()  // Se enlaza al Init Principal de la Forma base
       /*
@@ -673,23 +665,11 @@ onMounted(async () => {
  */
   //Valid = toRef(ThisForm, "Valid")
 
-
+  console.log('ThisForm onMounted  ', ThisForm.prop.Name, 'Params=', ThisForm.Params)
   loading.value = false
-  if (ThisForm.onMounted)
-    await ThisForm.onMounted()
   ThisForm.afterMounted()
 
 })
-/////////////////
-/*
-onMounted(async (e) => {
-  // focusIn.value = 0
-
-  if (ThisForm.onMounted)
-    await ThisForm.onMounted()
-
-})
-*/
 
 onUnmounted(async () => {
 
