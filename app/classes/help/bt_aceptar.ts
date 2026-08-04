@@ -103,7 +103,7 @@ export class bt_aceptar extends IMGBUTTON {
     }
 
     let ins_sql = `select ${fields} from ${this.Parent.prop.RecordSource}  ${where.trim() === 'where' ? '' : where}`
-
+    console.log('Help ins_sql=', ins_sql)
     if (this.Parent.prop.localBrowse) {
       await localAlaSql(` DROP TABLE IF EXISTS browse`)
       const data = await localAlaSql(ins_sql)
