@@ -23,6 +23,7 @@
             <tr style="font-size: 13px">
               <th> </th>
               <th :id="Id + '_grid_th_column_header' + column.Name" v-for="column in This.elements" :key="column.Id"
+                v-show="This[column.Name].prop.Visible && !This[column.Name].prop.FieldFilter"
                 :style="This[column.Name].headerStyle">
                 <!--Header       :
                 { height: prop.headerHeight, lineHeight: '11px', textAlign: '-moz-center' }
@@ -55,6 +56,7 @@
                   }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
+                v-show="This[col.Name].prop.Visible && !This[col.Name].prop.FieldFilter"
                 :key="item.recno.toString() + col.Name"
                 :style='{ height: This[col.Name].style.height, padding: 0, textAlign: "-webkit-center" }'
                 :headers="col.Name" :data-label="This[col.Name].prop.ColumnTextLabel"
