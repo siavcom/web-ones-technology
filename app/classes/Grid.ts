@@ -49,7 +49,6 @@ export class GRID extends COMPONENT {
     this.prop.headerHeight = "30px";
     this.prop.Rows = 10;   // renglones de la grid por defecto
     this.prop.ErrorMessage = 'No esta validada la columna '
-
     this.style.width = '-moz-available' //"max-content"
     //this.style.minHeight = "120px";
     //this.style.minHeight = "fit-content";
@@ -393,5 +392,51 @@ export class GRID extends COMPONENT {
     } //Fin else
   */
 
+  }
+
+  public async applyFilters() {
+    if (this.prop.RecordSource.length < 2) return;
+
+    const conditions = [];
+    const m = { columnFilter: '' }
+    let validFilterCount = 0; // contador de filtros con valor
+
+    for (const compName of this.prop.tools) {
+      const comp = this[compName];
+      if (comp && comp.prop.Value.trim() !== '' && comp.prop.Value !== null && comp.prop.Value !== undefined) {
+        const field = comp.prop.FieldFilter.split('.').pop();
+        const operator = comp.prop.FilterOperator || 'AND';
+        m[compName] = comp.prop.Value;
+
+        if (comp.prop.Type === 'number') {
+          // Primer filtro válido sin operador, los demás con su operador
+          if (validFilterCount === 0) {
+            conditions.push(`${field} = ${comp.prop.Value}`);
+          } else {
+            conditions.push(`${operator} ${field} = ${comp.prop.Value}`);
+          }
+        } else {
+          if (validFilterCount === 0) {
+            conditions.push(`${field} = '${comp.prop.Value}'`);
+          } else {
+            conditions.push(`${operator} ${field} = '${comp.prop.Value}'`);
+          }
+        }
+        validFilterCount++;
+      }
+    }
+
+    m.columnFilter = conditions.length > 0 ? conditions.join(' ') : '';
+
+    if (m.columnFilter.length < 1)
+      delete m.columnFilter;
+
+    console.log(['hola mundo', m])
+    await use(this.prop.RecordSource, m);
+
+    const rs = this.prop.RecordSource;
+    this.prop.RecordSource = '';
+    await nextTick();
+    this.prop.RecordSource = rs;
   }
 }

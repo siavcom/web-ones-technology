@@ -31,13 +31,13 @@ export class COMPONENT {
   block: [] = [] // bloque del componentes
   collapse: [] = [] // grupos colapsables con sus componentes
   collapseContainer: any[] = [
-      // {
-        // title: 'Grupo de containers',
-        // open: true,
-        // canOpen: true,  // false: no se puede abrir
-        // style: {},
-        // elements: [this.block[2], this.block[3]]
-      // }
+    // {
+    // title: 'Grupo de containers',
+    // open: true,
+    // canOpen: true,  // false: no se puede abrir
+    // style: {},
+    // elements: [this.block[2], this.block[3]]
+    // }
   ] // grupos colapsables a nivel componente/forma
   Valid = ref([]) //Validaciones de componentes hijos
   ValidName = [] //Validaciones de componentes hijos
@@ -75,6 +75,8 @@ export class COMPONENT {
     Enabled: true,
     ErrorMessage: "--INVALID DATA--",
     First: false,
+    FieldFilter: '',
+    FilterOperator: 'AND',
     Focus: false,
     Format: "", //"ke" tipo fecha seleccionada al input
 
@@ -154,10 +156,12 @@ export class COMPONENT {
     Suffix: "",
 
     TabIndex: 0,
+
     Tag: "",
     textLabel: "",
     This: null,
     ToolTipText: "",
+    tools: [],
     Type: "text",  // text, number, date, time, checKBox
     UpdateMessage: 'Actualizamos',
     updateKey: false, // true when this component is a field index for a table select , update or delete
@@ -185,7 +189,13 @@ export class COMPONENT {
 
   }
   comboStyle = {}
-  
+  styleControlesFiltro = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    margin: '30px auto',
+    flexWrap: 'wrap'
+  }
   captionStyle = {
     accept: "", //"image/png, image/jpeg, image/jpg"
 
@@ -251,7 +261,7 @@ export class COMPONENT {
   f14style = {}
 
   f19style = {
-    
+
   }
 
   style = {
@@ -319,11 +329,11 @@ export class COMPONENT {
       },
       collapseContainer: [
         // {
-          // title: 'Collapse interno',
-          // open: false,
-          // canOpen: true,  // false: no se puede abrir
-          // style: {},
-          // elements: [this.du2_isu, this.du3_isu]
+        // title: 'Collapse interno',
+        // open: false,
+        // canOpen: true,  // false: no se puede abrir
+        // style: {},
+        // elements: [this.du2_isu, this.du3_isu]
         // }
       ],
       containerStyle: {},
