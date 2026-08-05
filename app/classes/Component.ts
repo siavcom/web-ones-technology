@@ -700,6 +700,8 @@ export class COMPONENT {
       console.log("ThisForm Params=", this.Form.Params, ",Dialect=", Public.value.dialect, 'Public.value=', Public.value);
 
       //   await this.init(); // Corre el init principal
+      if (this.Form.Params.length == 0)
+        await this.init(); // Corre el init principal
       if (this.Form.Params.length == 1)
         await this.init(this.Form.Params[0]); // Corre el init principal
       if (this.Form.Params.length == 2)
