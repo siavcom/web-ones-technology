@@ -423,7 +423,7 @@ export class GRID extends COMPONENT {
 
     const conditions = [];
     const m = { columnFilter: '' }
-    let validFilterCount = 0; // contador de filtros con valor
+    let validFilterCount = 0;
 
     for (const compName of this.prop.tools) {
       const comp = this[compName];
@@ -433,7 +433,6 @@ export class GRID extends COMPONENT {
         m[compName] = comp.prop.Value;
 
         if (comp.prop.Type === 'number') {
-          // Primer filtro válido sin operador, los demás con su operador
           if (validFilterCount === 0) {
             conditions.push(`${field} = ${comp.prop.Value}`);
           } else {
@@ -455,7 +454,7 @@ export class GRID extends COMPONENT {
     if (m.columnFilter.length < 1)
       delete m.columnFilter;
 
-    console.log(['hola mundo', m])
+    console.log('m antes de use:', m);
     await use(this.prop.RecordSource, m);
 
     const rs = this.prop.RecordSource;
