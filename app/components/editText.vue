@@ -543,7 +543,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           displayError.value = true
           This.prop.ShowError = true
 
-
+          ValidStyle()
           if (Type == 'checkbox')
             checkValue.value = This.prop.Value == 1 ? true : false
           This.prop.Status = 'A'
@@ -1037,7 +1037,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   const char = +$event.keyCode
   const key = $event.key
   const Type = propType.value
-  console.log('char', char, 'key', key)
+  // console.log('char', char, 'key', key)
   if (key == 'Tab' || char == 13) {
     console.log('Tab or Enter pressed Name', This.prop.Name, 'Value=', Value.value)
     return
@@ -1085,7 +1085,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
   */
 
   This.keyPress(char)
-  console.log('3)>>>>>KeyDown===>', char, 'Type=', Type, 'Value=', Value.value)
+  // console.log('3)>>>>>KeyDown===>', char, 'Type=', Type, 'Value=', Value.value)
 
 }
 

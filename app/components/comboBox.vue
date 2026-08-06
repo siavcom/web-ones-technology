@@ -1057,7 +1057,7 @@ const onFocus = async (click?: boolean) => {
   // No se permite el focus si es solo lectura
 
   ToolTipText.value = false  // apaga tooltip
-  //console.log('1) onFocus', This.prop.Name, focusIn.value)
+  console.log('1) comboBox onFocus', This.prop.Name, 'This.prop.Valid=', This.prop.Valid)
   // Es su primer focus
 
   if (!firstFocus) {  // Primer focus
@@ -1693,10 +1693,14 @@ watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
     console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value watchPropValue=', watchPropValue, 'focusIn=', focusIn)
     if (watchPropValue == true) return
+
+    // 6/Ags/2026 .- Se quira porque cuando obtenia el foco y el componente anterior cambiaba el valor de este componente 
+    //               No actualizaba el valor porque ya tenia el foco
     if (focusIn == true) {// Si tiene el foco deshabilita el watch
       //sw_emitValue = false 19/Feb/2026
-      return
+      //  return
     }
 
     // console.log('ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
@@ -1715,7 +1719,7 @@ watch(
         }
       }
     }
-    console.log('>>>>>>>>>>>>>>Fin ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    //console.log('>>>>>>>>>>>>>>Fin ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
   },
   { deep: true }
 )

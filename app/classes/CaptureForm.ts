@@ -415,7 +415,7 @@ export class captureForm extends FORM {
       // this.prop.Name = "bt_save";
       this.prop.Position = "footer";
       this.prop.ToolTipText = 'Graba datos '
-      this.prop.Image = "/Iconos/svg/accept.svg";
+      this.prop.Image = "/Iconos/svg/save-color1.svg";
 
       this.style.width = "82px";
       this.prop.Visible = false;
@@ -496,7 +496,7 @@ export class captureForm extends FORM {
       }
     }
     this.Form.bt_save.prop.Visible = true;
-    debugger
+
     const key_pri = await scatter(['key_pri'], this.prop.RecordSource)
     if (key_pri > 0)
       this.Form.bt_delete.prop.Visible = true
