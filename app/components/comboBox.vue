@@ -382,8 +382,22 @@ const toggleViewport = reactive({
 const useViewportLayer = ref(false)
 
 const toggleLayerStyle = computed(() => {
+  // Calcular sumatoria de los width de las columnas
+  const totalWidth = width.reduce((sum, w) => {
+    const numValue = parseFloat(w);
+    const unit = w.replace(/[0-9.]/g, '') || 'px';
+    const currentNumValue = parseFloat(sum);
+    const currentUnit = sum.replace(/[0-9.]/g, '') || 'px';
+    
+    if (unit === currentUnit) {
+      return (currentNumValue + numValue) + unit;
+    }
+    // Si son diferentes unidades, usar la primera unidad encontrada
+    return (currentNumValue + numValue) + currentUnit;
+  }, '0px');
+
   if (!useViewportLayer.value) {
-    return { width: 'auto' }
+    return { width: `${totalWidth} !important`, minWidth: `${totalWidth} !important`, maxWidth: `${totalWidth} !important` }
   }
 
   return {
@@ -391,6 +405,7 @@ const toggleLayerStyle = computed(() => {
     left: toggleViewport.left,
     top: toggleViewport.top,
     width: toggleViewport.width,
+    minWidth: totalWidth,
     minHeight: '0px',
     maxHeight: toggleViewport.maxHeight,
     overflowY: 'auto',
