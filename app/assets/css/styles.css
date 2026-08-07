@@ -320,46 +320,19 @@ input[class="number_old"] {
   left: 0;
 }
 
-/*
-.blinking{
-  animation:blinkingText 1.2s infinite;
-}
-@keyframes blinkingText{
-  0%{     color: #000;    }
-  49%{    color: #000; }
-  60%{    color: transparent; }
-  99%{    color:transparent;  }
-  100%{   color: #000;    }
-}
-*/
 
-/* Erorr text */
 .errorText {
-  /* height: fit-content; */
-  /*visibility: visible; */
   background-color: rgb(255, 255, 255);
   color: rgb(245, 9, 9);
   text-align: center;
-  /* padding: 5px 0;*/
   border-radius: 3px;
-  /*border-color: #f10c0c;*/
-
-  /* Position */
   position: absolute;
-  /*bottom: 50%; */
   border-style: double;
   z-index: 999;
-
-  /* arrow*/
   content: " ";
-  /*left: 64px;*/
-  bottom: 45px;
+  bottom: 0;
+  right: 0;
   border-width: 0 px;
-  /*border-style: solid; */
-  /*background-color: transparent;*/
-  /* border-color: #555 transparent transparent transparent; */
-
-  /* Fade in tooltip */
   min-width: max-content;
   opacity: 0.9;
   transition: opacity 0.2s ease;
