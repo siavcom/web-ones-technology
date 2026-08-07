@@ -454,7 +454,7 @@ export class GRID extends COMPONENT {
     if (m.columnFilter.length < 1)
       delete m.columnFilter;
 
-    console.log('m antes de use:', m);
+    console.log('valor de m antes de use:', m);
     await use(this.prop.RecordSource, m);
 
     const rs = this.prop.RecordSource;
