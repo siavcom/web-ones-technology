@@ -1386,7 +1386,7 @@ watch(
 /////////////////////////////////////////////////////////////////////
 // change checkValue.value
 /////////////////////////////////////////////////////////////////
-const { pause, resume, stop } = watch(
+watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
     if (watchCheckValue.value) {
@@ -1398,8 +1398,6 @@ const { pause, resume, stop } = watch(
       return
 
     await onFocus()
-
-
     if (This.prop.ReadOnly) {
 
       if (new_val != old_val) {

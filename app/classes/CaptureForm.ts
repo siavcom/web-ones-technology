@@ -403,6 +403,123 @@ export class captureForm extends FORM {
       }
     } // fin metodo
   */
+
+
+  /**********************************  Delete Record **********************/
+  /**
+   * @Method : bt_delete
+   * @Description : Boton para borrar los datos de la forma
+   */
+
+  public bt_delete = new (class extends IMGBUTTON {
+    constructor() {
+      super();
+      this.prop.Name = "bt_delete";
+      this.prop.ToolTipText = "Borra datos";
+
+      this.prop.Position = "footer";
+      this.prop.Visible = false;
+
+      this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
+      // this.prop.TabIndex= 21
+
+      this.style.width = "82px";
+    } // Fin constructor
+
+    override async click() {
+      return this.Parent.bt_deleteClick()
+    }
+
+  });
+
+  /**
+   * @Method : bt_deleteClick
+   * @Description : Click del boton para borrar los datos de la forma
+   */
+  public async bt_deleteClick() {
+    if (this.prop.Disabled)
+      return;
+
+    // if (!await this.inDelete())
+    //   return
+
+    // this.Form.bt_modify.prop.Visible = false;
+    if (this.blockCapturaXml !== null)
+      this.Bt_campos_xml.prop.Visible = false;
+
+    this.bt_save.prop.Visible = false;
+    this.bt_delete.prop.Visible = false;
+
+    if ((await MessageBox(this.bt_delete.prop.ToolTipText, 4, "")) === 6) {
+      console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
+      const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
+
+      if (result) {
+        this.Recno = 0  // Ponemos en 0 el recno para borrar los datos
+        //            await this.refreshComponent();
+        MessageBox("Datos borrados");
+        this.First.setFocus()  // hacemos focon en el primer elemento
+        return true
+      }
+      const m = await currentValue('*', this.prop.RecordSource)
+      await this.requery(this.prop.RecordSource, m.key_pri, true)
+
+    }
+    // this.Form.bt_modify.prop.Visible = true;
+    if (this.blockCapturaXml !== null)
+      this.Form.Bt_campos_xml.prop.Visible = true;
+    this.bt_save.prop.Visible = true;
+    this.bt_delete.prop.Visible = true;
+    return false
+  }
+
+
+  /**********************************  modify Record **********************/
+
+  /**
+   * @Method : bt_modify
+   * @Description : Modifca los datos de la forma
+   */
+
+  public bt_modify = new (class extends IMGBUTTON {
+    constructor() {
+      super();
+      //this.prop.Name = "bt_modify";
+      this.prop.ToolTipText = "Modifica datos";
+      this.prop.BaseClass = "imgButton";
+      this.prop.Position = "footer";
+      this.prop.Visible = false;
+
+      this.prop.Image = "/Iconos/svg/update-content.svg";
+      // this.prop.TabIndex= 21
+
+      this.style.width = "76px";
+    } // Fin constructor
+
+    override async click() {
+      return this.Parent.bt_modifyClick()
+    }
+  })
+
+  public async bt_modifyClick() {
+
+    this.bt_modify.prop.Visible = false
+
+    for (const comp of this.Form.main) {
+      if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
+        this[comp].prop.ReadOnly = false
+      }
+    }
+    await nextTick()
+    if (this.prop.showDelete)
+      this.bt_delete.prop.Visible = true;
+    this.Form.bt_save.prop.Visible = true
+    if (this.blockCapturaXml !== null)
+      this.Bt_campos_xml.prop.Visible = true
+    return
+  }
+
+  /**********************************  Save Record **********************/
   /**
    * @description : Boton para grabar los datos de la forma
    * @note : 
@@ -503,118 +620,8 @@ export class captureForm extends FORM {
     return resultado;
   }
 
-  /**
-   * @Method : bt_modify
-   * @Description : Modifca los datos de la forma
-   */
-
-  public bt_modify = new (class extends IMGBUTTON {
-    constructor() {
-      super();
-      //this.prop.Name = "bt_modify";
-      this.prop.ToolTipText = "Modifica datos";
-      this.prop.BaseClass = "imgButton";
-      this.prop.Position = "footer";
-      this.prop.Visible = false;
-
-      this.prop.Image = "/Iconos/svg/update-content.svg";
-      // this.prop.TabIndex= 21
-
-      this.style.width = "76px";
-    } // Fin constructor
-
-    override async click() {
-      return this.Parent.bt_modifyClick()
-    }
-  })
-
-  public async bt_modifyClick() {
-
-    this.bt_modify.prop.Visible = false
-
-    for (const comp of this.Form.main) {
-      if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
-        this[comp].prop.ReadOnly = false
-      }
-    }
-    await nextTick()
-    if (this.prop.showDelete)
-      this.bt_delete.prop.Visible = true;
-    this.Form.bt_save.prop.Visible = true
-    if (this.blockCapturaXml !== null)
-      this.Bt_campos_xml.prop.Visible = true
-    return
-  }
-
-  /**
-   * @Method : bt_delete
-   * @Description : Boton para borrar los datos de la forma
-   */
-
-  public bt_delete = new (class extends IMGBUTTON {
-    constructor() {
-      super();
-      this.prop.Name = "bt_delete";
-      this.prop.ToolTipText = "Borra datos";
-
-      this.prop.Position = "footer";
-      this.prop.Visible = false;
-
-      this.prop.Image = "/Iconos/svg/delete-color.svg"; // bx-eraser.svg";
-      // this.prop.TabIndex= 21
-
-      this.style.width = "82px";
-    } // Fin constructor
-
-    override async click() {
-      return this.Parent.bt_deleteClick()
-    }
-
-  });
-
-  /**
-   * @Method : bt_deleteClick
-   * @Description : Click del boton para borrar los datos de la forma
-   */
-  public async bt_deleteClick() {
-    if (this.prop.Disabled)
-      return;
-
-    // if (!await this.inDelete())
-    //   return
-
-    // this.Form.bt_modify.prop.Visible = false;
-    if (this.blockCapturaXml !== null)
-      this.Bt_campos_xml.prop.Visible = false;
-
-    this.bt_save.prop.Visible = false;
-    this.bt_delete.prop.Visible = false;
-
-    if ((await MessageBox(this.bt_delete.prop.ToolTipText, 4, "")) === 6) {
-      console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
-      const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
-
-      if (result) {
-        this.Recno = 0  // Ponemos en 0 el recno para borrar los datos
-        //            await this.refreshComponent();
-        MessageBox("Datos borrados");
-        this.First.setFocus()  // hacemos focon en el primer elemento
-        return true
-      }
-      const m = await currentValue('*', this.prop.RecordSource)
-      await this.requery(this.prop.RecordSource, m.key_pri, true)
-
-    }
-    // this.Form.bt_modify.prop.Visible = true;
-    if (this.blockCapturaXml !== null)
-      this.Form.Bt_campos_xml.prop.Visible = true;
-    this.bt_save.prop.Visible = true;
-    this.bt_delete.prop.Visible = true;
-    return false
-  }
-
   //////////////////////////
-  async requery() {
+  override async requery() {
 
     this.Recno = 0
     MessageBox("Error al actualizar/borrar Datos", 16);
