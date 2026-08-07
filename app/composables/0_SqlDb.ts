@@ -488,20 +488,19 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
             }
         }
 
+        let exp_where = This.value.View[alias].exp_where
         if (columnFilter.length > 0) {
-            if (This.value.View[alias].exp_where.trim().length > 0) {
-                This.value.View[alias].exp_where = '(' + This.value.View[alias].exp_where.trim() + ')' + ' AND ' + columnFilter;
+            if (exp_where.trim().length > 0) {
+                exp_where = '(' + exp_where + ')' + ' AND ' + columnFilter;
 
             } else {
-                This.value.View[alias].exp_where = columnFilter;
+                exp_where = columnFilter;
             }
         }
 
+        if (exp_where != 'null' && exp_where.trim().length > 0) {
 
-
-        if (This.value.View[alias].exp_where != 'null' && This.value.View[alias].exp_where.trim().length > 0) {
-
-            const val_eval = "`" + This.value.View[alias].exp_where.trim() + "`";
+            const val_eval = "`" + exp_where + "`";
 
             try {
                 exp_whe = eval(val_eval);

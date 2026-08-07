@@ -418,11 +418,14 @@ export class GRID extends COMPONENT {
 
   }
 
-  public async applyFilters() {
+  public async applyFilters(mem?: {}) {
+    const m = mem ? mem : {}
+
     if (this.prop.RecordSource.length < 2) return;
 
     const conditions = [];
-    const m = { columnFilter: '' }
+    m.columnFilter = ''
+
     let validFilterCount = 0;
 
     for (const compName of this.prop.tools) {

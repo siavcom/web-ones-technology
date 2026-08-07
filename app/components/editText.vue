@@ -286,7 +286,8 @@ const containerStyle = reactive({ ...This.containerStyle })
 
 const invalidInputStyle = reactive({ ...This.invalidInputStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
-
+const watchCheckValue = ref(false)
+let contador = 0
 //let RecNumber = 0
 const Styles = reactive(
   {
@@ -699,7 +700,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (checkValue.value != check) {
         checkValue.value = check
         // console.log('emitValue editText checkbox Name', props.prop.Name, 'Value=', Value.value, 'checkValue=', checkValue.value)
-        emit("update:checkValue", checkValue)
+        if (checkValue.value != This.prop.Value)
+          emit("update:checkValue", checkValue)
       }
       break;
 
@@ -1183,7 +1185,7 @@ const onFocus = async () => {
   onlyRead.value = false
   if (firstFocus == false) {  // Primer focus
 
-    if (!await ChecaStatus()) { // si algun estatus de al gun componente esta en Proceso
+    if (!await ChecaStatus()) { // si algun estatus de algun componente esta en Proceso
       firstFocus = true
       onlyRead.value = true // Pone por mientras solo de lectura
       return
@@ -1384,11 +1386,32 @@ watch(
 /////////////////////////////////////////////////////////////////////
 // change checkValue.value
 /////////////////////////////////////////////////////////////////
-watch(
+const { pause, resume, stop } = watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
+    if (watchCheckValue.value) {
+      return
+    }
+
+    watchCheckValue.value = true
     if (watchPropValue)
       return
+
+    await onFocus()
+
+
+    if (This.prop.ReadOnly) {
+
+      if (new_val != old_val) {
+        await emitValue(true)
+      }
+
+      //  readOnlyCheck.value = true
+      //  checkValue.value = old_val == true ? 1 : 0
+      watchCheckValue.value = false
+
+      return
+    }
 
     if (new_val != old_val) {
 
@@ -1404,6 +1427,7 @@ watch(
             }
       */
     }
+    watchCheckValue.value = false
   },
   { deep: false }
 );

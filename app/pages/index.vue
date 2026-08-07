@@ -14,10 +14,10 @@
     </div>
 
     <div>
-      <a href="https://vuejs.org/">VUE 3,</a>
+      <a href="https://vuejs.org/">VUE {{ version }},</a>
     </div>
     <div>
-      <a href="https://nuxt.com/">NUXT 3 for front-end Framework,</a>
+      <a href="https://nuxt.com/">NUXT {{ nuxtVersion }} for front-end Framework,</a>
     </div>
     <div>
       <a href="https://nodejs.org/en/">NODE,</a>
@@ -89,9 +89,10 @@
 
 <script setup lang="ts">
 import { version } from 'vue';
+import { version as nuxtVersion } from 'nuxt/package.json'
+//import { getNuxtVersion } from '@nuxt/kit'
 const VueVersion = ref(version)
-const NuxtVersion = ref(4)
-
+const NuxtVersion = nuxtVersion
 //console.log('Vue Version', version, nuxtApp.nuxt.version);
 </script>
 
