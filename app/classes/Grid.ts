@@ -205,16 +205,9 @@ export class GRID extends COMPONENT {
         if (name != column && !this[column].Valid) return true;
 
         const comillas = this[column].prop.Type == "number" ? "" : "'";
-        where =
-          where +
-            this[column].prop.Type == "number" ? "" : "trim(" +
-              this[column].prop.ControlSource.trim() +
-              this[column].prop.Type == "number" ? "" : ")" +
-              "=" +
-              comillas +
-              this[column].prop.Value +
-              comillas +
-          " and ";
+        const trimStart = this[column].prop.Type == "number" ? "" : "trim(";
+        const trimEnd = this[column].prop.Type == "number" ? "" : ")";
+        where = where + trimStart + this[column].prop.ControlSource.trim() + trimEnd + "=" + comillas + this[column].prop.Value + comillas + " and ";
       }
     }
     where = where + ` recno<>${Recno} `;
@@ -320,13 +313,13 @@ export class GRID extends COMPONENT {
 
     if (force || await MessageBox(this.prop.DeleteMessage, 4, '') == 6) {
       this.prop.Status = 'A'
-      const result = await deleteSqlRow(recno, this.prop.RecordSource);
-      console.log('deleteRow result=', result)
-      // await restableceStatus()
-      if (result) {
-        this.Row = -1;
-        return true;
-      }
+      console.log(['hola mundo', recno, this.prop.RecordSource])
+      // const result = await deleteSqlRow(recno, this.prop.RecordSource);
+      // console.log('deleteRow result=', result)
+      // if (result) {
+      // this.Row = -1;
+      // return true;
+      // }
     }
     return false
   }
