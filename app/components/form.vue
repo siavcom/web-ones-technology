@@ -446,9 +446,9 @@ watch(
 
 // Checa todas las validaciones que tienen todos los componentes el form 
 
-watch(Valid, async (new_val) => {
+watch(ThisForm.Valid, async (new_val) => {
 
-  //  console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
+  // console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
   if (ThisForm.prop.BaseClass.toLowerCase() !== 'captureform')
     return
 
@@ -467,31 +467,34 @@ watch(Valid, async (new_val) => {
         Componente.prop.BaseClass.toUpperCase() == 'COMBOBOX')) {
       ///////////////
       let sw_found = false
+
       for (let I = 0; I < ThisForm.block.length && !sw_found; I++) {
 
         if (ThisForm.block[I].component) { // bloques horizontales
 
           for (let J = 0; J < ThisForm.block[I].component.length && !sw_found; J++) {
-            console.log('============ Componente no validado invisible =========> ', ThisForm.block[I].component[J])
+            console.log('============Block Componente no validado invisible =========> ', ThisForm.block[I].component[J])
             if (ThisForm.block[I].component[J].prop.Visible == false && ThisForm.block[I].component[J].prop.Name == Componente.prop.Name) { // Aqui se podria hacer algo con el block
               sw_found = true
-              console.log('============ Componente no validado invisible =========> ', comp, I, J)
+              console.log('============ Block Componente no validado invisible =========> ', comp, I, J)
 
-              break
+              return
             }
           }
 
         } else {
           // bloques verticales
           if (ThisForm.block[I].prop.Visible == false && ThisForm.block[I].prop.Name == Componente.prop.Name) {
-            console.log('============  Componente no validado invisible =========> bloque=', I)
+            console.log('============  Block Componente no validado invisible =========> bloque=', I)
             sw_found = true
-            break
+            return
           }
         }
 
 
       }
+      console.warn('============Main Componente no validado =========> ', comp, Componente.prop.Valid)
+      return
       /* if (!sw_found) {
  
          ////////////////////
@@ -517,11 +520,14 @@ watch(Valid, async (new_val) => {
   // if (ThisForm.prop.Status == 'A')
   //ThisForm.bt_save.prop.Visible = true
 
-  if (ThisForm.prop.autoUpdate)
-    ThisForm.bt_saveClick()
-  else
-    ThisForm.bt_save.prop.Visible = true
-
+  nextTick(() => {
+    if (ThisForm.prop.autoUpdate == true)
+      ThisForm.bt_saveClick()
+    else {
+      ThisForm.bt_save.prop.Visible = true
+      console.log('2 Watch Valid bt_save=', ThisForm.bt_save)
+    }
+  })
 },
   { deep: true }); //, flush: 'post'
 
@@ -597,7 +603,31 @@ const mounted = ref(false)
  * 
  */
 
-//onBeforeMount(async () => {
+onBeforeMount(async () => {
+
+  console.log('ThisForm oBeforeMount  ', ThisForm.prop.Name, 'Params=', ThisForm.Params)
+
+  for (const componente in ThisForm) {
+    if (ThisForm[componente] !== undefined && ThisForm[componente] !== null) {
+
+      if (
+        ThisForm[componente].prop &&       // Si tiene propiedades
+        ThisForm[componente].prop.Capture &&  // Si es componente de captura
+        ThisForm[componente].prop.Capture == true
+      ) {
+        //console.log('Form asigna ref a componente=',componente)
+        // if (ThisForm[componente].Ref)
+        // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
+        ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
+        // Se quita el toRef para que quede con reactividad
+        //ThisForm.estatus[componente] = ThisForm[componente].prop.Status // stack de estatus de componentes
+      }
+    }
+
+  }
+
+
+})
 
 onMounted(async () => {
 
@@ -605,27 +635,27 @@ onMounted(async () => {
     .then(() => {
     })
     .finally(async () => {
-
-      for (const componente in ThisForm) {
-        if (ThisForm[componente] !== undefined && ThisForm[componente] !== null) {
-
-          if (
-            ThisForm[componente].prop &&       // Si tiene propiedades
-            ThisForm[componente].prop.Capture &&  // Si es componente de captura
-            ThisForm[componente].prop.Capture == true
-          ) {
-            //console.log('Form asigna ref a componente=',componente)
-            // if (ThisForm[componente].Ref)
-            // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
-            ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
-            // Se quita el toRef para que quede con reactividad
-            //ThisForm.estatus[componente] = ThisForm[componente].prop.Status // stack de estatus de componentes
-          }
-        }
-
-      }
-
-
+      /*
+            for (const componente in ThisForm) {
+              if (ThisForm[componente] !== undefined && ThisForm[componente] !== null) {
+      
+                if (
+                  ThisForm[componente].prop &&       // Si tiene propiedades
+                  ThisForm[componente].prop.Capture &&  // Si es componente de captura
+                  ThisForm[componente].prop.Capture == true
+                ) {
+                  //console.log('Form asigna ref a componente=',componente)
+                  // if (ThisForm[componente].Ref)
+                  // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
+                  ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
+                  // Se quita el toRef para que quede con reactividad
+                  //ThisForm.estatus[componente] = ThisForm[componente].prop.Status // stack de estatus de componentes
+                }
+              }
+      
+            }
+      
+      */
       const router = useRoute();
       const { params } = useRoute();
 
