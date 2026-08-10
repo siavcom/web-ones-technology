@@ -314,12 +314,12 @@ export class GRID extends COMPONENT {
     if (force || await MessageBox(this.prop.DeleteMessage, 4, '') == 6) {
       this.prop.Status = 'A'
       console.log(['hola mundo', recno, this.prop.RecordSource])
-      // const result = await deleteSqlRow(recno, this.prop.RecordSource);
-      // console.log('deleteRow result=', result)
-      // if (result) {
-      // this.Row = -1;
-      // return true;
-      // }
+      const result = await deleteSqlRow(recno, this.prop.RecordSource);
+      console.log('deleteRow result=', result)
+      if (result) {
+        this.Row = -1;
+        return true;
+      }
     }
     return false
   }
