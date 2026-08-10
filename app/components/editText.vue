@@ -544,6 +544,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           displayError.value = true
           This.prop.ShowError = true
 
+          setTimeout(() => {
+            displayError.value = false
+            This.prop.ShowError = false
+          }, 5000)
+
           ValidStyle()
           if (Type == 'checkbox')
             checkValue.value = This.prop.Value == 1 ? true : false

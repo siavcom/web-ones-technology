@@ -326,7 +326,7 @@ input[class="number_old"] {
   color: rgb(245, 9, 9);
   text-align: center;
   border-radius: 3px;
-  position: absolute;
+  position: static;
   border-style: double;
   z-index: 999;
   content: " ";
