@@ -5,6 +5,11 @@
 // Ult.Mod  :  10/Julio/2023
 /////////////////////////////////////////////
 
+interface TableValidation {
+  tables: string[];
+  columns: string[];
+}
+
 import { COMPONENT } from "@/classes/Component";
 export class GRID extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
@@ -313,7 +318,6 @@ export class GRID extends COMPONENT {
 
     if (force || await MessageBox(this.prop.DeleteMessage, 4, '') == 6) {
       this.prop.Status = 'A'
-      console.log(['hola mundo', recno, this.prop.RecordSource])
       const result = await deleteSqlRow(recno, this.prop.RecordSource);
       console.log('deleteRow result=', result)
       if (result) {
@@ -459,5 +463,25 @@ export class GRID extends COMPONENT {
     this.prop.RecordSource = '';
     await nextTick();
     this.prop.RecordSource = rs;
+  }
+
+  async validData(validations: TableValidation[]) {
+    const conditions = validations.map(v => {
+      // Construir condiciones de columnas (AND entre columnas)
+      const columnConditions = v.columns.map(col => {
+        const value = this[col]?.prop.Value;
+        return `${col} = '${value}'`;
+      }).join(' AND ');
+
+      const tableConditions = v.tables.map(table => {
+        return `EXISTS (SELECT 1 FROM ${table} WHERE ${columnConditions})`;
+      }).join(' OR ');
+
+      return tableConditions;
+    }).join(' OR ');
+
+    const sql = `SELECT 1 as existe WHERE ${conditions}`;
+    const result = await SQLExec(sql);
+    return result.length > 0;
   }
 }
