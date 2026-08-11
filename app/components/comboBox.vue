@@ -1219,6 +1219,7 @@ const toggleFocus = async () => {
 */
 
 const ChecaStatus = async () => {
+  await Delay(100)
 
   // Si esta en un contenedor grid
   /*  if (This.Parent && This.Parent.prop.BaseClass == "grid") {
