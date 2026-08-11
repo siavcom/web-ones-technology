@@ -1837,7 +1837,17 @@ interface TableValidation {
   columns: string[];
 }
 
-export async function validData(validations: TableValidation[], values: Record<string, any>) {
+/**
+ * 
+ * @param validations Objeto {} con dos arreglos :
+ *                   tables :Arreglo con tablas donde validar
+ *                   columns :campos en cada tablas a validar
+ * @description Generacion del script SQL para buscar su valor en múltiples tablas
+ * @param values SQL script
+ * @returns 
+ */
+
+export async function existsInTable(validations: TableValidation[], values: Record<string, any>) {
   const conditions = validations.map(v => {
     const columnConditions = v.columns.map(col => {
       const value = values[col];

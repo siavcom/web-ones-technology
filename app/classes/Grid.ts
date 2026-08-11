@@ -465,7 +465,7 @@ export class GRID extends COMPONENT {
     this.prop.RecordSource = rs;
   }
 
-  async validData(validations: TableValidation[]) {
+  async existsInTable(validations: TableValidation[]) {
     const conditions = validations.map(v => {
       // Construir condiciones de columnas (AND entre columnas)
       const columnConditions = v.columns.map(col => {
