@@ -123,12 +123,12 @@
     <img :id="Id + '_help'"
       v-if="!This.prop.ReadOnly && !This.prop.Disabled && prop.Help && This.prop.InputProp.Visible"
       class='help_icon edit edit_class9' src="/Iconos/svg/lupa.svg" :style=helpStyle @click.prevent="clickHelp()" />
-    <div :id="Id + '_error'" class="errorText edit edit_class10" v-show="displayError">{{
+    <small :id="Id + '_error'" class="errorText edit edit_class10" v-show="displayError">{{
       This.prop.ErrorMessage.toString().length >= 1 ?
         This.prop.ErrorMessage
         :
         '--- Invalid Input ---'
-    }}</div>
+    }}</small>
 
     <!--Compponentes que no estan en bloque-->
 

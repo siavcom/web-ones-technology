@@ -326,17 +326,27 @@ input[class="number_old"] {
   color: rgb(245, 9, 9);
   text-align: center;
   border-radius: 3px;
-  position: static;
+  position: absolute;
   border-style: double;
   z-index: 999;
   content: " ";
-  bottom: 0;
-  right: 0;
+  bottom: 17px;
+  left: 0px;
   border-width: 0 px;
   min-width: max-content;
   opacity: 0.9;
   transition: opacity 0.2s ease;
-  animation: blinkingText 1.2s infinite;
+}
+
+.errorText::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: rgb(245, 9, 9) transparent transparent transparent;
 }
 
 @keyframes blinkingText {
