@@ -17,10 +17,10 @@ export class emp_emp extends COMPONENT {
     this.Form = this.Parent;
     this.prop.BaseClass = "comboBox";
     this.prop.Caption = "Company/Empresa";
-    this.prop.Capture = true;
+
     this.prop.RowSourceType = 5; // 1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
-    this.prop.Style = 2;
+    // this.prop.Style = 2;
     this.prop.BoundColumn = 1;
     this.prop.RowSource = [[""], [""]];
     this.prop.ColumnWidths = "100px,300px";

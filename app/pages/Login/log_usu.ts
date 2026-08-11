@@ -15,11 +15,10 @@ export class log_usu extends COMPONENT {
   constructor() {
     super();
     this.Form = this.Parent;
-    this.prop.BaseClass = "editText";
     //this.prop.Value = ''
     this.prop.ToolTipText = "user@company";
     this.prop.Caption = "Username/Usuario";
-    this.prop.Type = "text";
+
     this.prop.Placeholder = "usname@company/usuario@empresa";
     this.style.width = "auto";
     this.inputStyle.width = "230px";

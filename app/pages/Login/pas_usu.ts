@@ -12,7 +12,6 @@ export class pas_usu extends COMPONENT {
   constructor() {
     super();
     this.Form = this.Parent;
-    this.prop.BaseClass = "editText";
     this.prop.Caption = "Password/Contraseña";
     this.prop.Type = "password";
     this.prop.Capture = false;

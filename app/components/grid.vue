@@ -53,7 +53,7 @@
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#"
                 style="height: auto;"><label>{{
                   item.recno
-                  }}</label></td>
+                }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 v-show="This[col.Name].prop.Visible && !This[col.Name].prop.FieldFilter"
@@ -361,9 +361,10 @@ const loadGrid = async () => {
 
   if (Sql.View[This.prop.RecordSource]) {
     await loadData()
-    console.log('loadGrid This.prop.RecordSource=', Sql.View[This.prop.RecordSource].recnoVal.length)
+
     if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.ReadOnly == false && This.prop.addRow)  // No hay renglones
-      appendRow()
+      console.log('loadGrid appendRow This.prop.RecordSource=', This.prop.RecordSource)
+    appendRow()
     /*
         else
           loadData()
