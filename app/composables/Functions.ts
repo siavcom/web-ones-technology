@@ -1828,3 +1828,30 @@ export async function consoleLog(
   console.log(men1, men2, men3, men4, men5, men6, men7, men8, men9, men10);
   return;
 }
+
+//////////////////////////////////////////////
+// Validación de datos en múltiples tablas
+//////////////////////////////////////////////
+interface TableValidation {
+  tables: string[];
+  columns: string[];
+}
+
+export async function validData(validations: TableValidation[], values: Record<string, any>) {
+  const conditions = validations.map(v => {
+    const columnConditions = v.columns.map(col => {
+      const value = values[col];
+      return `${col} = '${value}'`;
+    }).join(' AND ');
+
+    const tableConditions = v.tables.map(table => {
+      return `EXISTS (SELECT 1 FROM ${table} WHERE ${columnConditions})`;
+    }).join(' OR ');
+
+    return tableConditions;
+  }).join(' OR ');
+
+  const sql = `SELECT 1 as existe WHERE ${conditions}`;
+  const result = await SQLExec(sql);
+  return result.length > 0;
+}
