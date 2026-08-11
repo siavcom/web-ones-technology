@@ -454,8 +454,10 @@ export class GRID extends COMPONENT {
     if (m.columnFilter.length < 1)
       delete m.columnFilter;
 
-    console.log('valor de m antes de use:', m);
-    his.Sql.use(this.prop.RecordSource, m);
+    console.log('Grid applyFilters m=', m)
+
+    await use(this.prop.RecordSource, m);
+    //  console.log('Grid RecordSource=:', this.prop.RecordSource, 'Valores', await localAlaSql(`Select * from last.${this.prop.RecordSource}`));
 
     const rs = this.prop.RecordSource;
     this.prop.RecordSource = '';

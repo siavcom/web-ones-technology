@@ -1,15 +1,3 @@
-<!--
-----------------------------------------------------------------------------------------------
-              Killo Soft
- ----------------------------------------------------------------------------------------------
- Autor    	: ElFerBlocks
- Sistema  	: Web-Ones  							Version : 1.0  VUE
- Programa 	: EditBox    		Mnemo   : editText.vue
- Ult.Mod :   11/Marzo/2025 se agrego el siguiente if
- Objeto		: VUE
- Comentarios	: Componente de edicion de texto
- ----------------------------------------------------------------------------------------------
--->
 <template>
   <!--div v-if="prop.MultiSelect">Selected: {{ List }}</div-->
   <!--Se necesita el siguiente div para que funcione el siguiente v-show-->
@@ -157,8 +145,21 @@
 
 </template>
 
-<script setup lang="ts">
 
+<script setup lang="ts">
+/*
+--------------------------------------------------------------------------------------------
+              Killo Soft
+ ----------------------------------------------------------------------------------------------
+ Autor    	: ElFerBlocks
+ Sistema  	: Web-Ones  							Version : 1.0  VUE
+ Programa 	: EditBox    		Mnemo   : editText.vue
+ Ult.Mod :   11/Marzo/2025 se agrego el siguiente if
+             10/Ags/2026 .- Se cambia Value.value por This.prop.Value
+ Objeto		: VUE
+ Comentarios	: Componente de edicion de texto
+ ----------------------------------------------------------------------------------------------
+--*/
 // "update:Key", "update:Focus"
 
 const emit = defineEmits(["update", "update:Value", "update:Valid", "update:Status", "update:displayText"]) //, "update:Ref", "update:Recno",
@@ -388,7 +389,7 @@ const toggleLayerStyle = computed(() => {
     const unit = w.replace(/[0-9.]/g, '') || 'px';
     const currentNumValue = parseFloat(sum);
     const currentUnit = sum.replace(/[0-9.]/g, '') || 'px';
-    
+
     if (unit === currentUnit) {
       return (currentNumValue + numValue) + unit;
     }
@@ -620,7 +621,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     // Si no viene del watch This.prop.Value
     let Valor = Value.value
 
-    console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor, 'Registro=', props.Registro)
+    // console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor, 'Registro=', props.Registro)
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
       console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor)
       await updateCampo(Valor, props.prop.ControlSource, props.Registro)
@@ -710,7 +711,10 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
       }
     } else  // si no hay controlSource
+    {
+      //   This.prop.Value = Value.value
       This.prop.Valid = true
+    }
 
   }
 
@@ -733,10 +737,17 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     await This.onChangeValue(ref(Styles))
   }
 
+
+  //console.log('combobox emit despues de asignaValor This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+
   //nextTick(function () {
+
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:displayText", displayText.value); // actualiza el valor Value en el componente padre
-  emit("update") // emite un update en el componente padre
+
+  // console.log('combobox despues emit  de asignaValor This.prop.Value=', This.prop.Value, 'Value.value=', Value.value)
+
+  //  emit("update") // emite un update en el componente padre
   //})
   // })
   // console.log('emitValue ComboBox Name=', props.prop.Name, 'This.prop.Value=', This.prop.Value, 'displaytext=', displayText.value)
@@ -764,7 +775,6 @@ const asignaValor = async () => {
     for (let i = 0; i < columnas.length && !found; i++) {
       //  console.log('Buscando Valor comboBox Name=', props.prop.Name, 'i=', i, 'columnas=', columnas[i].value, 'Value.value=', Value.value)
 
-      //if (columnas && columnas[0]) {
       if ((typeof columnas[i].value == 'string' && typeof Value.value == 'string' && Value.value.trim() == columnas[i].value.trim()) ||
         Value.value == columnas[i].value) {
 
@@ -778,16 +788,16 @@ const asignaValor = async () => {
     }
 
     if (!found && columnas.length > 0) { // No se encontro el valor , asignara el primer valor
-
-      Value.value = columnas[0].value
+      //Value.value = columnas[0].value
+      This.prop.Value = columnas[0].value // 10/Ags/2026 .- Se cambia Value.value por This.prop.Value
       displayText.value = typeof columnas[0]['text'][0] == 'string' ? columnas[0]['text'][0].trim() : columnas[0]['text'][0]
-      // console.log('1.7) comboBox Name=', props.prop.Name, 'found= ', found, 'Value=', Value.value)
+      //   console.log('1.7) comboBox Name=', props.prop.Name, 'found= ', found, 'Value=', Value.value)
       // await This.Form.db.updateCampo(Value.value, props.prop.ControlSource, props.Registro)
 
     }
   }
   swInit = false
-
+  //console.log('Fin)  asignaValor comboBox Name=', This.prop.Name, 'Value.value=', Value.value)
 }
 
 const toggleClick = async () => {
@@ -2111,9 +2121,11 @@ onMounted(async () => {
 
   }
 
+
+  console.log('===================== Antes de render ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
   await renderComboBox(true) // lee los datos del combo
 
-  console.log(' ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
+  console.log('================= Despues de render  ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
 
   //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
 

@@ -75,8 +75,7 @@ export class COMPONENT {
     Enabled: true,
     ErrorMessage: "--INVALID DATA--",
     First: false,
-    FieldFilter: '',
-    FilterOperator: 'AND',
+
     Focus: false,
     Format: "", //"ke" tipo fecha seleccionada al input
 
