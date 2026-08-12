@@ -3400,6 +3400,7 @@ export const bof = async (alias?: string) => {
  * @returns {any} The value of the specified field if it exists, otherwise returns false.
  */
 
+/*
 export const oldValue = async (field: string, alias?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     const punto = field.indexOf('.')
@@ -3420,9 +3421,41 @@ export const oldValue = async (field: string, alias?: string) => {
     return null
 }
 
+*/
+
+
+
 /**
- * @description Retrieves the current value of a remote view for the current record number.
- * @param field - The name of the field to retrieve the value for, or an array of field names.
+ * @description - Retrieves the original fields values of a remote view after commit changes.
+ * @param fields - The name of the field/s to retrieve the value separated by comma (,). 
+ * @param alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
+ * @returns - The value of the specified field if it exists, otherwise returns null
+ */
+
+export const oldValue = async (fields: string | Array<string>, aliasTable?: string) => {
+    const { This } = toRefs(state) // Hace referencia al valor inicial
+
+    const punto = fields.indexOf('.')
+    if (!aliasTable) {
+        if (punto >= 1) {
+            aliasTable = fields.slice(0, punto)
+        } else
+            aliasTable = This.value.are_tra[This.value.num_are - 1];
+    }
+
+    if (punto >= 0)
+        fields = fields.replaceAll(aliasTable + '.', ' ')
+    //slice(punto + 1)
+
+    aliasTable = 'last.' + aliasTable
+
+    return await currentValue(fields, aliasTable)
+}
+
+
+/**
+ * @description Retrieves the current fields values of a remote view for the current record number.
+ * @param field - The name of the field/s to retrieve the value separated by comma (,). 
  * @param alias - Optional alias for the table. If not provided, the last alias in the area of work will be used.
  * @returns The value of the specified field if it exists, otherwise returns false.
  */
@@ -3434,7 +3467,12 @@ export const currentValue = async (field: string | Array<string>, aliasTable?: s
         aliasTable = This.value.are_tra[This.value.num_are - 1];
     }
     let data = {}
-    data = await goto(0, aliasTable) // Obtenemos el registro actual
+
+    if (aliasTable?.slice(0, 4) === 'last')
+        data = await goto(0, aliasTable, true) // Obtenemos el registro actual    
+    else
+        data = await goto(0, aliasTable) // Obtenemos el registro actual
+
     // console.log('currentValue Alias=', aliasTable, 'data=', data)
     if (data == null || data == {})
         return {}
