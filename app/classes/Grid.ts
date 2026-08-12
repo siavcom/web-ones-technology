@@ -38,15 +38,16 @@ export class GRID extends COMPONENT {
     this.prop.RecordSource = "";
     this.prop.Row = 0; // Renglon donde esta posicionado la captura del grid
     this.prop.Caption = "Grid de datos";
-    this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
+    // this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
+
     this.prop.addRow = false; // Si es verdadero aumenta renglon automaticamente
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
-    this.prop.Visible = false;
 
     this.prop.showAddButton = true; // Si es verdadero muestra el boton de agregar
     this.prop.showDeleteButton = true; // Si es verdadero muestra el boton de borrar
     this.prop.showSaveButton = true; // Si es verdadero muestra el boton de grabar
-    this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
+
+    this.prop.Visible = false;
     this.prop.UpdateMessage = "Grabamos datos";
     this.prop.DeleteMessage = "Borramos renglon";
     this.prop.ErrorMessage = 'Datos no actualizados '
