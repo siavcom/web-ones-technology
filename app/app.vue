@@ -640,7 +640,7 @@ const obtSubMenu = (system: string) => {
 }
 
 /// //////////////////////////////////////
-// Preserva variables GET al navegar
+// Preserva variables GET al navegar y recarga si cambia el mismo path
 /// ///////////////////////////////////////
 const getFullPath = (path: any) => {
   const route = useRoute();
@@ -648,6 +648,21 @@ const getFullPath = (path: any) => {
   
   if (route.query && Object.keys(route.query).length > 0) {
     fullPath.query = { ...route.query, ...(path.query || {}) };
+  }
+  
+  // Verificar si es el mismo path pero con diferentes query params
+  if (route.path === fullPath.path) {
+    const currentQuery = JSON.stringify(route.query);
+    const newQuery = JSON.stringify(fullPath.query || {});
+    
+    // Si las query params son diferentes, recargar la página
+    if (currentQuery !== newQuery) {
+      const url = fullPath.path + (Object.keys(fullPath.query || {}).length > 0 
+        ? '?' + new URLSearchParams(fullPath.query as any).toString() 
+        : '');
+      window.location.href = url;
+      return fullPath;
+    }
   }
   
   return fullPath;
