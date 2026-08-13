@@ -640,10 +640,9 @@ const obtSubMenu = (system: string) => {
 }
 
 /// //////////////////////////////////////
-// Preserva variables GET al navegar y recarga si cambia el mismo path
+// Preserva variables GET al navegar
 /// ///////////////////////////////////////
 const getFullPath = (path: any) => {
-  console.log(['este es mi path', path])
   const route = useRoute();
   const fullPath = { ...path };
   
@@ -651,39 +650,7 @@ const getFullPath = (path: any) => {
     fullPath.query = { ...route.query, ...(path.query || {}) };
   }
   
-  // Verificar si es el mismo path pero con diferentes query params
-  if (route.path === fullPath.path) {
-    const currentQuery = route.query || {};
-    const newQuery = fullPath.query || {};
-    
-    // Comparar las keys y valores individualmente
-    const currentKeys = Object.keys(currentQuery).sort();
-    const newKeys = Object.keys(newQuery).sort();
-    
-    // Si tienen diferente número de keys o las keys son diferentes
-    if (currentKeys.length !== newKeys.length || 
-        currentKeys.join(',') !== newKeys.join(',')) {
-      reloadPage(fullPath);
-      return fullPath;
-    }
-    
-    // Comparar valores de cada key
-    for (const key of currentKeys) {
-      if (String(currentQuery[key]) !== String(newQuery[key])) {
-        reloadPage(fullPath);
-        return fullPath;
-      }
-    }
-  }
-  
   return fullPath;
-}
-
-const reloadPage = (fullPath: any) => {
-  const url = fullPath.path + (Object.keys(fullPath.query || {}).length > 0 
-    ? '?' + new URLSearchParams(fullPath.query as any).toString() 
-    : '');
-  window.location.href = url;
 }
 
 /// //////////////////////////////////////////////////////
