@@ -37,7 +37,7 @@
                   <li v-if="!(isLoggedIn && menuItem.path && menuItem.path.path === '/Login')">
                     <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
                     <div @click="obtSubMenu(menuItem.system)">
-                      <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                      <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
                         @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
                         <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
                           :class="menuItem.icon" />
@@ -169,6 +169,7 @@
 
 // Utilizacion de Pinia 
 import { storeToRefs } from 'pinia'
+import { useRoute } from '#imports'
 
 /*
 interface Props_interface {
@@ -636,6 +637,20 @@ const obtSubMenu = (system: string) => {
     isOpen.value = true
     // console.log('SubMenu menu ====> subMen=', Man, Rep.Pro)
   }
+}
+
+/// //////////////////////////////////////
+// Preserva variables GET al navegar
+/// ///////////////////////////////////////
+const getFullPath = (path: any) => {
+  const route = useRoute();
+  const fullPath = { ...path };
+  
+  if (route.query && Object.keys(route.query).length > 0) {
+    fullPath.query = { ...route.query, ...(path.query || {}) };
+  }
+  
+  return fullPath;
 }
 
 /// //////////////////////////////////////////////////////
