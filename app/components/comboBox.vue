@@ -635,13 +635,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     if (!isValid) {
       //   console.log('1.1) comboBox emitValue() Name', props.prop.Name, 'Value=', Valor)
-      await This.interactiveChange()
+      This.prop.Valid = await This.interactiveChange()
       //This.prop.Valid = false
       inputBuffer.value = ''
       //      This.prop.Valid = false
       const newValue = This.prop.Value
 
-      if (!await This.valid()) {
+      if (!This.prop.Valid && !await This.valid()) {
 
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
         displayError.value = true
