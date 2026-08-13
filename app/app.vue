@@ -38,6 +38,7 @@
                     <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
                     <div @click="obtSubMenu(menuItem.system)">
                       <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
+                        :key="getLinkKey(menuItem.path)"
                         @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
                         <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
                           :class="menuItem.icon" />
@@ -57,6 +58,7 @@
                       <template v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
                         <li>
                           <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
+                            :key="getLinkKey(menuItem.path)"
                             @click="titleName = menuItem.name; isOpen = false">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                           </NuxtLink>
@@ -77,6 +79,7 @@
                       <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                         <li>
                           <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
+                            :key="getLinkKey(menuItem.path)"
                             @click="titleName = menuItem.name; isOpen = false">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                           </NuxtLink>
@@ -98,6 +101,7 @@
                         <ul v-for="(menuItem, index) in subItemsPro">
                           <li>
                             <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
+                              :key="getLinkKey(menuItem.path)"
                               @click="titleName = menuItem.name; isOpen = false">
                               <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                             </NuxtLink>
@@ -651,6 +655,12 @@ const getFullPath = (path: any) => {
   }
   
   return fullPath;
+}
+
+const getLinkKey = (path: any) => {
+  const fullPath = getFullPath(path);
+  const queryStr = fullPath.query ? JSON.stringify(fullPath.query) : '';
+  return `${fullPath.path}-${queryStr}`;
 }
 
 /// //////////////////////////////////////////////////////
