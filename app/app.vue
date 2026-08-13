@@ -56,7 +56,7 @@
                       </li>
                       <template v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
                         <li>
-                          <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                          <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
                             @click="titleName = menuItem.name; isOpen = false">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                           </NuxtLink>
@@ -76,7 +76,7 @@
                       </li>
                       <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                         <li>
-                          <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                          <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
                             @click="titleName = menuItem.name; isOpen = false">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                           </NuxtLink>
@@ -97,7 +97,7 @@
                       <li v-if="isPro" :key="index">
                         <ul v-for="(menuItem, index) in subItemsPro">
                           <li>
-                            <NuxtLink :to="menuItem.path" :target="menuItem.target"
+                            <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
                               @click="titleName = menuItem.name; isOpen = false">
                               <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
                             </NuxtLink>
