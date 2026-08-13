@@ -660,7 +660,8 @@ const getFullPath = (path: any) => {
 const getLinkKey = (path: any) => {
   const fullPath = getFullPath(path);
   const queryStr = fullPath.query ? JSON.stringify(fullPath.query) : '';
-  return `${fullPath.path}-${queryStr}`;
+  const timestamp = Date.now();
+  return `${fullPath.path}-${queryStr}-${timestamp}`;
 }
 
 /// //////////////////////////////////////////////////////
