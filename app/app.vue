@@ -37,13 +37,11 @@
                   <li v-if="!(isLoggedIn && menuItem.path && menuItem.path.path === '/Login')">
                     <!--li @click="menuItem.link=='#' ? routerPush(menuItem.path) : null"-->
                     <div @click="obtSubMenu(menuItem.system)">
-                      <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
-                        :key="getLinkKey(menuItem.path)"
-                        @click="titleName = menuItem.name; isOpen = menuItem.name == 'Login' ? true : false">
+                      <a href="#" @click.prevent="handleMenuNavigate(menuItem)">
                         <nuxt-img class="bx" v-if="menuItem.icon.length > 0" :src="menuItem.icon"
                           :class="menuItem.icon" />
                         <span class="links_name">{{ menuItem.name }}</span>
-                      </NuxtLink>
+                      </a>
                       <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                     </div>
                     <ul class="sub-menu-Mantenance"
@@ -57,11 +55,9 @@
                       </li>
                       <template v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
                         <li>
-                          <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
-                            :key="getLinkKey(menuItem.path)"
-                            @click="titleName = menuItem.name; isOpen = false">
+                          <a href="#" @click.prevent="handleSubMenuNavigate(menuItem)">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
-                          </NuxtLink>
+                          </a>
 
                           <!-- Hiperlink Tag  a :href="menuItem.link"-->
                           <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
@@ -78,11 +74,9 @@
                       </li>
                       <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
                         <li>
-                          <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
-                            :key="getLinkKey(menuItem.path)"
-                            @click="titleName = menuItem.name; isOpen = false">
+                          <a href="#" @click.prevent="handleSubMenuNavigate(menuItem)">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
-                          </NuxtLink>
+                          </a>
 
                           <!-- Hiperlink Tag  a :href="menuItem.link"-->
                           <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
@@ -100,11 +94,9 @@
                       <li v-if="isPro" :key="index">
                         <ul v-for="(menuItem, index) in subItemsPro">
                           <li>
-                            <NuxtLink :to="getFullPath(menuItem.path)" :target="menuItem.target"
-                              :key="getLinkKey(menuItem.path)"
-                              @click="titleName = menuItem.name; isOpen = false">
+                            <a href="#" @click.prevent="handleSubMenuNavigate(menuItem)">
                               <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
-                            </NuxtLink>
+                            </a>
 
                             <!-- Hiperlink Tag  a :href="menuItem.link"-->
                             <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
@@ -173,7 +165,7 @@
 
 // Utilizacion de Pinia 
 import { storeToRefs } from 'pinia'
-import { useRoute } from '#imports'
+import { useRoute, useRouter } from '#imports'
 
 /*
 interface Props_interface {
@@ -657,11 +649,32 @@ const getFullPath = (path: any) => {
   return fullPath;
 }
 
-const getLinkKey = (path: any) => {
+const navigateToPath = (path: any) => {
+  const router = useRouter();
+  const route = useRoute();
   const fullPath = getFullPath(path);
-  const queryStr = fullPath.query ? JSON.stringify(fullPath.query) : '';
-  const timestamp = Date.now();
-  return `${fullPath.path}-${queryStr}-${timestamp}`;
+  
+  // Si es el mismo path, forzar recarga completa
+  if (route.path === fullPath.path) {
+    const url = fullPath.path + (Object.keys(fullPath.query || {}).length > 0 
+      ? '?' + new URLSearchParams(fullPath.query as any).toString() 
+      : '');
+    window.location.href = url;
+  } else {
+    router.push(fullPath);
+  }
+}
+
+const handleMenuNavigate = (menuItem: any) => {
+  titleName.value = menuItem.name;
+  isOpen.value = menuItem.name == 'Login' ? true : false;
+  navigateToPath(menuItem.path);
+}
+
+const handleSubMenuNavigate = (menuItem: any) => {
+  titleName.value = menuItem.name;
+  isOpen.value = false;
+  navigateToPath(menuItem.path);
 }
 
 /// //////////////////////////////////////////////////////
