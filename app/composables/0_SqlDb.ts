@@ -573,6 +573,7 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
         // This.value.View[alias].m = m; // Variables m para hacer requery
 
         const data = await axiosCall(dat_vis);
+        //  console.log("2 Db Use Axios  result=====>", data); // .data
 
         if (data.length) {
             // No hubo error

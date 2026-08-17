@@ -29,7 +29,7 @@ export class baseClass extends COLUMN {
     this.prop.BoundColumn = 2;
     this.prop.Value = "E";
     // this.style.zIndex = 2
-    this.prop.ColumnWidths = "95%,0%";
+    this.prop.ColumnWidths = "256px,36px";
     this.style.width = "100px"; /* width/height  - initial value: auto */
   }
 
