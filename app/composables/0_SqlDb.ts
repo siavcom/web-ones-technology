@@ -1311,6 +1311,8 @@ export const appendBlank = async (alias?: string, m?: {}) => {
     valores.recno = recno;
     //console.log( "Db DataBAse Insert now  alaSql=====>",        alias,        await localAlaSql(`select * from  last.${alias} `)    );
     alasql('USE now;')
+
+    console.log('appendblank valores=', valores, 'ThisForm=', ThisForm)
     return valores;
 
     /* locaDb
@@ -3447,9 +3449,7 @@ export const oldValue = async (fields: string | Array<string>, aliasTable?: stri
         fields = fields.replaceAll(aliasTable + '.', ' ')
     //slice(punto + 1)
 
-    aliasTable = 'last.' + aliasTable
-
-    return await currentValue(fields, aliasTable)
+    return await currentValue(fields, aliasTable, true)
 }
 
 
@@ -3460,7 +3460,7 @@ export const oldValue = async (fields: string | Array<string>, aliasTable?: stri
  * @returns The value of the specified field if it exists, otherwise returns false.
  */
 
-export const currentValue = async (field: string | Array<string>, aliasTable?: string) => {
+export const currentValue = async (field: string | Array<string>, aliasTable?: string, last?: boolean) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
     if (!aliasTable) {
@@ -3468,8 +3468,8 @@ export const currentValue = async (field: string | Array<string>, aliasTable?: s
     }
     let data = {}
 
-    if (aliasTable?.slice(0, 4) === 'last')
-        data = await goto(0, aliasTable, true) // Obtenemos el registro actual    
+    if (aliasTable?.slice(0, 4) === 'last' || last)
+        data = await goto(0, aliasTable, true) // Obtenemos el registro actual last  
     else
         data = await goto(0, aliasTable) // Obtenemos el registro actual
 
