@@ -456,6 +456,13 @@ export class GRID extends COMPONENT {
     if (m.columnFilter.length < 1)
       delete m.columnFilter;
 
+    // Eliminar propiedades de filtros del objeto m para evitar conflictos
+    for (const compName of this.prop.tools) {
+      if (m[compName] !== undefined) {
+        delete m[compName];
+      }
+    }
+
     console.log('Grid applyFilters m=', m)
 
     await use(this.prop.RecordSource, m);

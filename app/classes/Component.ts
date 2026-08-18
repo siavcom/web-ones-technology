@@ -161,6 +161,7 @@ export class COMPONENT {
     This: null,
     ToolTipText: "",
     tools: [],
+    toolsCaption: "Filtros",
     Type: "text",  // text, number, date, time, checKBox
     UpdateMessage: 'Actualizamos',
     updateKey: false, // true when this component is a field index for a table select , update or delete
