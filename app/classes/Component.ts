@@ -195,7 +195,11 @@ export class COMPONENT {
     justifyContent: 'space-around',
     alignItems: 'center',
     margin: '30px auto',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    backgroundColor: 'rgb(229, 247, 244)',
+    padding: '10px 5px',
+    borderRadius: '0px',
+    border: '1px solid black'
   }
   captionStyle = {
     accept: "", //"image/png, image/jpeg, image/jpg"
@@ -692,7 +696,7 @@ export class COMPONENT {
           "footer=",
           this.footer
     );
-*/
+  */
 
     // no cambiar la  posicion  por que los reportes dejan de funcionar
     if (this.prop.Map == 'ThisForm' && this.Form.Params) { // && this.Form.Params && this.Form.Params.length > 0) {
