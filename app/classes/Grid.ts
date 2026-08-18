@@ -3,6 +3,7 @@
 // @author: Fernando Cuadras Angulo
 // Creacion : Febrero/2022
 // Ult.Mod  :  10/Julio/2023
+//             18/Ags/2026 .-Se comenta this.Row = -1 en saveTable
 /////////////////////////////////////////////
 
 interface TableValidation {
@@ -338,7 +339,7 @@ export class GRID extends COMPONENT {
       return true
     }
 
-    this.Row = -1
+    // this.Row = -1  18/Ags/2026 .-Se comenta 
     if (oneRow == undefined)
       oneRow = false
 

@@ -11,7 +11,6 @@ export class bt_gen_all_models extends IMGBUTTON {
 
     this.prop.BaseClass = 'imgButton'
     this.prop.Position = 'footer'
-    this.prop.Tooltip = " Actualiza TODOS los sequelize MODELS"
     this.prop.ToolTipText = 'Generate/Update ALL sequelize MODEL in Back-End-Server'
     this.prop.Visible = false
     this.prop.Image = "/Iconos/svg/data-modelling.svg"
