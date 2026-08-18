@@ -180,6 +180,9 @@
       </div>
       <template v-if="This.prop.tools.length > 0">
         <div :id="Id + '_tools'" class="tools" :style="This.styleControlesFiltro">
+          <h3 v-if="This.prop.toolsCaption" :style="{ textAlign:'center', width:'100%', fontSize: '14px', fontWeight: 'bold', color: '#333' }">
+            {{ This.prop.toolsCaption }}
+          </h3>
           <div v-for="comp in This.prop.tools" :key="comp" :id="Id + '_tool_' + comp">
             <component :is="impComponent(This[comp].prop.BaseClass)" v-model:Value="This[comp].prop.Value"
               v-model:Status="This[comp].prop.Status" v-model:ShowError="This[comp].prop.ShowError"

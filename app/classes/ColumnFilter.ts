@@ -16,5 +16,6 @@ export class COLUMNFILTER extends COMPONENT {
     this.prop.Capture = false;
     this.prop.FieldFilter = '' // controlSource del filtro (tabla.field)
     this.prop.FilterOperator = 'AND';
+    this.prop.toolsCaption = 'Filtros de búsqueda'
   }
 }
