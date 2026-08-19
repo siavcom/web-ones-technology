@@ -28,7 +28,7 @@ export class nom_ind extends COMPONENT {
     this.prop.ReadOnly = false;
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 1;
-    this.prop.ColumnWidths = "50%,50%";
+    this.prop.ColumnWidths = "256px,256px";
     this.prop.Visible = false;
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     //this.style.zIndex=3

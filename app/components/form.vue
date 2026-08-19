@@ -567,12 +567,23 @@ const ejeEventos = async () => {
 
 const clickSalir = async () => {
 
+  const router = useRoute();
+  console.log('Exit router ', router)
+
+
   if (ThisForm.salir.click())
     await ThisForm.salir.click()
   else
     if (await MessageBox("Salimos de la forma", 4, '') == 6) {
-
-      window.history.back()
+      const routerName = router.name
+      router.removeRoute(routerName)
+      const path = {
+        path: '/',
+        params: {},
+        query: {}
+      }
+      router.push(path)
+      //  window.history.back()
       // window.close() // cierra la forma history.back(); // regresa forma anterior
     }
 }

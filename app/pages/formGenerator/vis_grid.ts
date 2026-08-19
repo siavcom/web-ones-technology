@@ -28,7 +28,7 @@ export class vis_grid extends COMPONENT {
 
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.ColumnWidths = "80%,30%";
+    this.prop.ColumnWidths = "356px,256px";
     this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
     this.inputStyle.width = "400px";
     this.style.width = "600px";

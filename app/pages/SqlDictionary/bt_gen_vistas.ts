@@ -12,7 +12,7 @@ export class bt_gen_vistas extends IMGBUTTON {
     this.prop.Position = "footer";
     this.prop.ToolTipText = "Generate/Update SQL-Server views";
     this.prop.Visible = false;
-    this.prop.Tooltip = "Actualiza SQLServer views";
+
     this.prop.TabIndex = 4;
     this.prop.Image = "/Iconos/svg/view-eye.svg";
     this.style.width = "79px";

@@ -9,9 +9,6 @@
 // Clase base
 ///////////////////////////////////////
 
-import { COMPONENT } from "@/classes/Component";
-//import { nextTick } from 'vue';
-
 export class tab_form extends COMPONENT {
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -20,23 +17,19 @@ export class tab_form extends COMPONENT {
     this.prop.BaseClass = "comboBox";
     this.prop.Visible = true;
     this.prop.Caption = "Tabla de captura para el form";
-    this.prop.Capture = true; // al quitarlo, quito reactividad oJo
     this.prop.Valid = false;
-    this.prop.ErrorMessage = "";
-    this.prop.Value = "";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
     this.prop.RowSource = '' //      "select des_tab,nom_tab from vi_cap_cometab order by nom_tab";
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
-    this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
-    this.prop.ColumnWidths = "350px,125px";
-    this.inputStyle.width = "250px";
-    this.style.width = "580px";
+    // this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
+    this.prop.ColumnWidths = "350px,256px";
+    this.inputStyle.width = "512px";
     this.prop.Visible = false;
 
     this.inputStyle.fontSize = "17px";
     this.inputStyle.fontWeight = "bold";
-    this.inputStyle.width = "350px";
+
     this.style.fontSize = "17px";
     this.style.fontWeight = "bold";
 

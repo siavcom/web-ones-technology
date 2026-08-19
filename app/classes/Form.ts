@@ -151,6 +151,21 @@ if (router.query.params) {
     public async click() {
       if (await MessageBox("Salimos de la forma", 4, '') == 6) {
 
+        const router = useRoute();
+        const routerName = router.name
+        console.log('Salir routes', router)
+
+        //router.removeRoute(routerName)
+        const path = {
+          path: '/',
+          params: {},
+          query: {}
+        }
+        //router.push(path)
+
+
+
+
         window.history.back()
         // window.close() // cierra la forma history.back(); // regresa forma anterior
       }
