@@ -483,6 +483,11 @@ section.formmain_old {
   z-index: 1;
 }
 
+
+#ThisForm_388_blockComponent_0CONTENEDOR_XML{
+  width: 100% !important;
+}
+
 section.formfooter_old {
   display: flex;
   /*  flex;*/
