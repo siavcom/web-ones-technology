@@ -498,6 +498,7 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
             }
         }
 
+        console.log("use exp_where", exp_where);
         if (exp_where != 'null' && exp_where.trim().length > 0) {
 
             const val_eval = "`" + exp_where + "`";

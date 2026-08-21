@@ -19,9 +19,10 @@ export class GRID extends COMPONENT {
   Row = -1;
   Column = ""; // Columna actual
   // autoLoad=false
-  // declare variable:string='Hola'
+  displayTop = false
+  displayBotton = false
+  displayCurrent = false
 
-  //elements = [{}]
   rowStyleActive = {
     backgroundColor: 'antiquewhite'
   }

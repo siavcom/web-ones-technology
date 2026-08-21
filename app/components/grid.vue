@@ -53,7 +53,7 @@
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#"
                 style="height: auto;"><label>{{
                   item.recno
-                  }}</label></td>
+                }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 v-show="This[col.Name].prop.Visible && !This[col.Name].prop.FieldFilter"
@@ -180,7 +180,8 @@
       </div>
       <template v-if="This.prop.tools.length > 0">
         <div :id="Id + '_tools'" class="tools" :style="This.styleControlesFiltro">
-          <h3 v-if="This.prop.toolsCaption" :style="{ textAlign:'center', width:'100%', fontSize: '14px', fontWeight: 'bold', color: '#333' }">
+          <h3 v-if="This.prop.toolsCaption"
+            :style="{ textAlign: 'center', width: '100%', fontSize: '14px', fontWeight: 'bold', color: '#333' }">
             {{ This.prop.toolsCaption }}
           </h3>
           <div v-for="comp in This.prop.tools" :key="comp" :id="Id + '_tool_' + comp">
@@ -686,6 +687,22 @@ for (const compName of This.prop.tools) {
     { deep: true }
   );
 }
+
+watch(
+  () => This.displayBotton,
+  async (new_data) => {
+    if (new_data == true)
+      last()
+  })
+
+
+watch(
+  () => This.displayTop,
+  async (new_data) => {
+    if (new_data == true)
+      first()
+  })
+
 
 ////////////////////////////////
 // Aumenta la pila de eventos a ejecutar de la forma principal

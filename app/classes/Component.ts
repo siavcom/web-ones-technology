@@ -763,7 +763,9 @@ export class COMPONENT {
   // Descripcion: Cuando cambia el valor interactivo (spiner, checkBox)
   ////////////////////////////////////////////////////////////////////
 
-  public async interactiveChange() { }
+  public async interactiveChange() {
+    return true
+  }
 
   /////////////////////////////////////////////////////////////////////
   // Click
