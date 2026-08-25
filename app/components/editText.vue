@@ -1394,24 +1394,33 @@ watch(
 watch(
   () => checkValue.value, //props.prop.Value, //Value.value,
   async (new_val: any, old_val: any) => {
-    if (watchCheckValue.value) {
-      return
-    }
 
-    watchCheckValue.value = true
+
+    //    24/Ags/2026 .- Se quita 
+    //    if (watchCheckValue.value) {
+    //           return
+    //    }
+    //   
+    //   
+    //   watchCheckValue.value = true 
+    //   
+    //   
+
     if (watchPropValue)
       return
 
+    // console.log('1) watchCheckValue ReadOnly=', This.prop.ReadOnly)
     await onFocus()
+
+    // console.log('2) watchCheckValue ReadOnly=', This.prop.ReadOnly)
     if (This.prop.ReadOnly) {
 
       if (new_val != old_val) {
         await emitValue(true)
       }
 
-      //  readOnlyCheck.value = true
-      //  checkValue.value = old_val == true ? 1 : 0
-      watchCheckValue.value = false
+
+      // watchCheckValue.value = false 24/Ags/2026
 
       return
     }
@@ -1430,7 +1439,8 @@ watch(
             }
       */
     }
-    watchCheckValue.value = false
+
+    // watchCheckValue.value = false 24/Ags/2026
   },
   { deep: false }
 );

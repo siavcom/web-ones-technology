@@ -248,7 +248,7 @@ export class captureForm extends FORM {
 
     if (data === null) {       // No hay datos
       for (const comp of this.main) {
-        if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey) {
+        if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey && this.Form[comp].prop.BaseClass.toLowerCase() !== 'textlabel') {
           this.Form[comp].prop.Valid = false // Apaga validaciones 
           this.Form[comp].prop.ReadOnly = false // Permite captura
         }

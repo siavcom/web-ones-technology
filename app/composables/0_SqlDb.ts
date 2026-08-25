@@ -3436,22 +3436,27 @@ export const oldValue = async (field: string, alias?: string) => {
  * @returns - The value of the specified field if it exists, otherwise returns null
  */
 
-export const oldValue = async (fields: string | Array<string>, aliasTable?: string) => {
+export const oldValue = async (field: string | Array<string>, aliasTable?: string) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
 
-    const punto = fields.indexOf('.')
+    const punto = field.indexOf('.')
     if (!aliasTable) {
         if (punto >= 1) {
-            aliasTable = fields.slice(0, punto)
+            aliasTable = field.slice(0, punto)
         } else
             aliasTable = This.value.are_tra[This.value.num_are - 1];
     }
 
     if (punto >= 0)
-        fields = fields.replaceAll(aliasTable + '.', ' ')
+        field = field.replaceAll(aliasTable + '.', ' ')
     //slice(punto + 1)
 
-    return await currentValue(fields, aliasTable, true)
+    const res = await currentValue(field, aliasTable, true)
+    if (Object.keys(res).length === 0)
+        return null
+
+    return res[field]
+
 }
 
 

@@ -712,6 +712,9 @@ watch(
 //const asignaRenglon = (newEvento: string) => {
 const asignaRenglon = async (Row: number, ColumnName: string) => {
   //console.log('grid asignaRenglon', Row, ColumnName, 'Recno=', This.Recno, 'RecordSource=', This.prop.RecordSource)
+  if (This.asignaRenglon)
+    await This.asignaRenglon(Row, ColumnName)
+
   if (This.prop.ReadOnly) return
 
   if (This.Row == Row)
@@ -1142,7 +1145,15 @@ const ChecaStatus = async () => {
     const column = This.elements[i].Name;
     // Si es campo de captura
 
-    if (This[column].prop.Capture == true && (This[column].prop.Status != 'A' || !This[column].prop.Valid)) {
+
+    if (This[column].prop.Status != 'A' ||
+      (!This[column].prop.Disabled &&
+        !This[column].prop.ReadOnly &&
+        This[column].prop.Visible &&
+        This[column].prop.Capture &&
+        !This[column].prop.Valid &&
+        (This[column].prop.BaseClass.toUpperCase() == 'EDITTEXT' ||
+          This[column].prop.BaseClass.toUpperCase() == 'COMBOBOX'))) {
       //console.warn('Grid SaveTable No valid Column=', This[column].prop.Name)
       MessageBox(This.prop.ErrorMessage + This[column].prop.ColumnTextLabel, 16, 'Error', 5000)
       This[column].prop.Focus = true

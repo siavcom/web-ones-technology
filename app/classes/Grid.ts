@@ -384,7 +384,11 @@ export class GRID extends COMPONENT {
   // Graba Renglon
   //
   /////////////////////////////////
-  async saveRow(columnName?: string) {
+  async saveRow(recno?: string) {
+
+    if (recno) {
+      await goto(recno, this.prop.RecordSource)
+    }
 
     /*    if (await MessageBox(this.prop.UpdateMessage, 4, "") != 6)
           return false

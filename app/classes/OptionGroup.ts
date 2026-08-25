@@ -77,11 +77,13 @@ export class OPTIONGROUP extends COMPONENT {
       if (item.prop.OptionNumber == this.prop.Value) {
         if (item.prop.Value == 0) {
           item.prop.Value = 1
+          item.prop.ReadOnly = true
         }
       }
-      else
-        if (item.prop.Value == 1)
-          item.prop.Value = 0;  // marca el seleccionado     
+      else {
+        item.prop.Value = 0;  // marca el seleccionado     
+        item.prop.ReadOnly = false
+      }
     }
   }
 

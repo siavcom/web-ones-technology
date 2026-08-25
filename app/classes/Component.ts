@@ -265,9 +265,7 @@ export class COMPONENT {
 
   f14style = {}
 
-  f19style = {
-
-  }
+  f19style = {}
 
   style = {
     //display: "flex", "inline-block"
