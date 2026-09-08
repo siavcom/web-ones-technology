@@ -189,7 +189,7 @@ export class COMPONENT {
 
   }
   comboStyle = {}
-
+  actionsStyle = {}
   styleControlesFiltro = {
     display: 'flex',
     justifyContent: 'space-around',
