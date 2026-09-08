@@ -203,6 +203,28 @@
             </section>
 
             <!--/template-->
+            <!-- Sección de acciones -->
+            <section class="formactions form form_class21" :style="ThisForm.actionsStyle"
+              v-if="ThisForm.prop.actions && ThisForm.prop.actions.length > 0">
+              <slot name="actions" class="form form_class22">
+                <h3 v-if="ThisForm.prop.actionsCaption"
+                  :style="{ textAlign:'center', width:'100%', fontSize: '14px', fontWeight: 'bold', color: '#333' }">
+                  {{ ThisForm.prop.actionsCaption }}
+                </h3>
+                <div style="display:flex; justify-content: space-between;">
+                  <template :id="'Form_actions_' + compAction" v-for="(compAction) in ThisForm.prop.actions" :key="compAction">
+                    <div v-if="ThisForm[compAction].prop.Visible" :class="compAction" class="form  form_class23">
+                      <component :is="impComponent(ThisForm[compAction].prop.BaseClass)"
+                        v-model:Value="ThisForm[compAction].prop.Value"
+                        :Registro="ThisForm[compAction].Recno && !ThisForm[compAction].Recno.isNaN(NaN) ? ThisForm[compAction].Recno : 0"
+                        :prop="ThisForm[compAction].prop" :style="ThisForm[compAction].style"
+                        class="form form_class24" />
+                    </div>
+                  </template>
+                </div>
+              </slot>
+            </section>
+
             <!--template v-slot:footer  -->
             <section class="formfooter form form_class21" :style="ThisForm.footerStyle">
               <!--Transition tag='div' -->
@@ -215,8 +237,8 @@
               v-bind:db="ref(ThisForm.db)"
                 -->
                 <div style="display:flex; justify-content: space-between;">
-                  <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer">
-                    <div v-if="ThisForm[compFooter].prop.Visible" :class="compFooter" class="form  form_class23">
+                  <template :id="'Form_footer_' + compFooter" v-for="(compFooter) in ThisForm.footer" :key="compFooter">
+                    <div v-if="ThisForm[compFooter].prop.Visible && (!ThisForm.prop.actions || !ThisForm.prop.actions.includes(compFooter))" :class="compFooter" class="form  form_class23">
                       <component :is="impComponent(ThisForm[compFooter].prop.BaseClass)"
                         v-model:Value="ThisForm[compFooter].prop.Value"
                         :Registro="ThisForm[compFooter].Recno && !ThisForm[compFooter].Recno.isNaN(NaN) ? ThisForm[compFooter].Recno : 0"

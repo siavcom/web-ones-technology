@@ -29,6 +29,7 @@ import image from '@/components/image.vue'
 import form from '@/components/form.vue'
 import modalContainer from '@/components/modalContainer.vue'
 import miniBrowse from '@/components/miniBrowse.vue'
+import optionGroup from '@/components/optionGroup.vue'
 
 // Sweetalert 2
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -1738,6 +1739,9 @@ export function impComponent(name: string): object {
     }
     case 'minibrowse': {
       return miniBrowse
+    }
+    case 'optiongroup': {
+      return optionGroup
     }
     default: {
       return editText
