@@ -83,10 +83,10 @@
                           v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                         <div :id="Id + 'block_' + key" :style="block.style" class="form form_class18">
                           <template v-for="(blockComp, key) in block.component" :key="key">
-                            <div :id="Id + 'modal_hor_componentes_' + key + blockComp.prop.Name"
-                              :style="blockComp.f19style" style="padding-bottom:2px"
-                              v-if="!isBlockCollapseElement(block, blockComp)" class="responsive form form_class19">
-                              <component v-if="blockComp.prop" :id="Id + '_blockComponent_' + key + blockComp.prop.Name"
+                            <div :id="Id + 'modal_hor_componentes_' + key + (blockComp && blockComp.prop ? blockComp.prop.Name : '')"
+                              :style="blockComp ? blockComp.f19style : {}" style="padding-bottom:2px"
+                              v-if="blockComp && !isBlockCollapseElement(block, blockComp)" class="responsive form form_class19">
+                              <component v-if="blockComp.prop" :id="Id + '_blockComponent_' + key + (blockComp.prop ? blockComp.prop.Name : '')"
                                 :is="impComponent(blockComp.prop.BaseClass)" v-model:Value="blockComp.prop.Value"
                                 :Registro="typeof blockComp.Recno == 'number' ? blockComp.Recno : 0"
                                 :prop="blockComp.prop" :style="blockComp.style" class="form form_class20">
@@ -106,7 +106,7 @@
                               <div :style="group.style ? group.style : {}">
                                 <div v-for="(collapseComp, componentKey) in group.component"
                                   :key="'block_collapse_comp_' + key + '_' + groupKey + '_' + componentKey"
-                                  :id="Id + '_blockCollapse_' + key + '_' + groupKey + '_' + collapseComp.prop.Name"
+                                  :id="Id + '_blockCollapse_' + key + '_' + groupKey + '_' + (collapseComp && collapseComp.prop ? collapseComp.prop.Name : '')"
                                   style="padding-bottom:2px" class="responsive form form_class19">
                                   <component v-if="collapseComp.prop" :is="impComponent(collapseComp.prop.BaseClass)"
                                     v-model:Value="collapseComp.prop.Value"
@@ -153,12 +153,12 @@
                               :style="collapseItem.style" class="form form_class18">
                               <template v-for="(blockComp, blockCompKey) in collapseItem.component" :key="blockCompKey">
                                 <div
-                                  :id="Id + '_formCollapse_modal_hor_componentes_' + groupKey + '_' + itemKey + '_' + blockCompKey + blockComp.prop.Name"
-                                  :style="blockComp.f19style" style="padding-bottom:2px"
-                                  v-if="!isBlockCollapseElement(collapseItem, blockComp)"
+                                  :id="Id + '_formCollapse_modal_hor_componentes_' + groupKey + '_' + itemKey + '_' + blockCompKey + (blockComp && blockComp.prop ? blockComp.prop.Name : '')"
+                                  :style="blockComp ? blockComp.f19style : {}" style="padding-bottom:2px"
+                                  v-if="blockComp && !isBlockCollapseElement(collapseItem, blockComp)"
                                   class="responsive form form_class19">
                                   <component v-if="blockComp.prop"
-                                    :id="Id + '_formCollapse_blockComponent_' + groupKey + '_' + itemKey + '_' + blockCompKey + blockComp.prop.Name"
+                                    :id="Id + '_formCollapse_blockComponent_' + groupKey + '_' + itemKey + '_' + blockCompKey + (blockComp.prop ? blockComp.prop.Name : '')"
                                     :is="impComponent(blockComp.prop.BaseClass)" v-model:Value="blockComp.prop.Value"
                                     :Registro="typeof blockComp.Recno == 'number' ? blockComp.Recno : 0"
                                     :prop="blockComp.prop" :style="blockComp.style" class="form form_class20">
@@ -180,7 +180,7 @@
                                   <div :style="blockGroup.style ? blockGroup.style : {}">
                                     <div v-for="(collapseComp, collapseCompKey) in blockGroup.component"
                                       :key="'form_collapse_block_collapse_comp_' + groupKey + '_' + itemKey + '_' + blockGroupKey + '_' + collapseCompKey"
-                                      :id="Id + '_formCollapse_blockCollapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey + '_' + collapseComp.prop.Name"
+                                      :id="Id + '_formCollapse_blockCollapse_' + groupKey + '_' + itemKey + '_' + blockGroupKey + '_' + (collapseComp && collapseComp.prop ? collapseComp.prop.Name : '')"
                                       style="padding-bottom:2px" class="responsive form form_class19">
                                       <component v-if="collapseComp.prop"
                                         :is="impComponent(collapseComp.prop.BaseClass)"
