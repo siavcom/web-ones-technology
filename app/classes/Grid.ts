@@ -34,6 +34,7 @@ export class GRID extends COMPONENT {
   constructor() {
     super();
     //this.Name = "Grid";
+
     this.prop.ColumnCount = 1;
     this.prop.BaseClass = "grid";
     this.prop.Capture = false;

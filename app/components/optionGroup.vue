@@ -15,7 +15,7 @@
         {{ opt.prop.Caption }}
       </label>
     </div>
-  </div>
+  </div>``
 </template>
 
 <script setup lang="ts">

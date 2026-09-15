@@ -781,8 +781,11 @@ const resolveBlockCollapseMeta = (block: any): { groups: any[]; elementMap: Reco
   const elementMap: Record<string, boolean> = {}
 
   for (const groupIndex in groups) {
-    const group = groups[groupIndex]
+    let group = groups[groupIndex]
     if (!group) continue
+
+    group = reactive(group)
+    groups[groupIndex] = group
 
     if (!group.prop) {
       group.prop = { Visible: true }
@@ -856,8 +859,11 @@ const resolveFormCollapseMeta = () => {
   const blockSet = new Set<any>()
 
   for (const groupIndex in groups) {
-    const group = groups[groupIndex]
+    let group = groups[groupIndex]
     if (!group) continue
+
+    group = reactive(group)
+    groups[groupIndex] = group
 
     if (!group.prop) {
       group.prop = { Visible: true }
