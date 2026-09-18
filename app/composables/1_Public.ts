@@ -13,7 +13,7 @@ const publico = reactive({
     an1_pge: 0, an2_pge: 0, an3_pge: 0, tiv_pge: "", fde_pge: 0, ine_pge: "",
     ctc_pge: "", ctp_pge: "", dct_pge: "", mos_pge: "", pva_pge: "",
     li1_pge: 0, li2_pge: 0, li3_pge: 0, li4_pge: 0, li5_pge: 0, // impuestos
-    cl1_sat: "", cl2_sat: "", cl3_sat: "", cl4_sat: "", cl5_sat: "", // claves de impuesto segun el sat
+    // cl1_sat: "", cl2_sat: "", cl3_sat: "", cl4_sat: "", cl5_sat: "", // claves de impuesto segun el sat
     po1_pge: 0, po2_pge: 0, po3_pge: 0, po4_pge: 0, po5_pge: 0, // porcentajes de vendedores
     cpa_pge: "", cdi_pge: "", va1_pge: 0,
     va2_pge: 0, va3_pge: 0, va4_pge: 0, va5_pge: 0, de1_pge: "", de2_pge: "",

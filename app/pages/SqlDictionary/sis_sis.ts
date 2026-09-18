@@ -81,13 +81,13 @@ export class sis_sis extends COMPONENT {
         this.Form.nom_tab.prop.Visible = false
         this.Form.bt_aceptar.prop.Visible = false;
       }
-      return
+      return true
     }
     this.Form.bt_aceptar.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     this.Form.bt_aceptar.prop.Visible = true;
 
     //  this.Form.dic_dat.when(true)
-    return;
+    return true
   }
   override async when() {
     this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql, 5-Array

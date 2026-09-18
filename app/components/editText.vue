@@ -167,7 +167,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" vapor>
 //<script setup lang="ts" vapor>
 
 /*
@@ -500,8 +500,8 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     }
 
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
+      // console.log('editText update campo=', props.prop.ControlSource, 'Value=', newValor)
       const Recno = props.Registro
-
       await updateCampo(Type == 'number' ? +newValor : newValor, props.prop.ControlSource, Recno)
       //console.log('----------- 1) editText emitValue() !readCam Name=', props.prop.Name, 'newValor=', newValor)
       // Value.value = Valor
@@ -537,9 +537,12 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
         const newValue = This.prop.Value
 
+        console.log('=====>  editText update campo=', props.prop.ControlSource, 'readOnly=', This.prop.ReadOnly, 'no Validado ')
+        This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
-          if (This.prop.Valid)
-            This.prop.Valid = false
+
+          //if (This.prop.Valid)
+          //  This.prop.Valid = false
 
           displayError.value = true
           This.prop.ShowError = true
@@ -718,7 +721,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       if (Value.value != null && Value.value.trim().length > 5) {
         try {
           currentJson.value = JSON.parse(Value.value)
-          console.log('editText Json Name', props.prop.Name, 'currentJson Value=', currentJson.value)
+          // console.log('editText Json Name', props.prop.Name, 'currentJson Value=', currentJson.value)
 
         } catch (error) {
           await MessageBox('Error Invalid Json  :' + Value.value, 16, 'Error')
@@ -887,11 +890,8 @@ const lostFocus = async (fromReturn: number) => {
     return
   }
 
-  if (This.prop.Name == 'ndo_doc') {
-
-    // This.prop.Value = Value.value
-    console.log('1.1) lostFocus', This.prop.Name, 'Value=', Value.value)
-  }
+  // This.prop.Value = Value.value
+  console.log('1.1) lostFocus', This.prop.Name, 'Value=', Value.value)
 
   await asignaValue()
   // sw_emitValue = false 19/Feb/2026

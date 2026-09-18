@@ -20,7 +20,7 @@ export class nom_ind extends COMPONENT {
     this.prop.Visible = false;
     this.prop.Caption = "Indices de la Tabla";
     this.prop.Capture = true; // al quitarlo, quito reactividad oJo
-    this.prop.Valid = false;
+
     this.prop.ErrorMessage = "";
     this.prop.Value = "";
     this.prop.RowSourceType = 0; //1-Value, 2-Alias,3-sql 5-Array
@@ -30,11 +30,11 @@ export class nom_ind extends COMPONENT {
     this.prop.BoundColumn = 1;
     this.prop.ColumnWidths = "256px,256px";
     this.prop.Visible = false;
-    this.prop.Style = "2"; //0=DropDown Combo 2=DropDown List
+    this.prop.Style = 2; //0=DropDown Combo 2=DropDown List
     //this.style.zIndex=3
   }
 
-  public async when() {
+  override async when() {
     this.Form.bt_gen_forma.prop.Visible = false;
     this.Form.grid_form.prop.Visible = false;
     this.Form.grid_columns.prop.Visible = false;

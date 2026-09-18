@@ -792,8 +792,10 @@ export const tableUpdate = async (
         where = `WHERE recno=${recno}`;
         where_del = ` WHERE Viejo.recno=${recno} and Viejo.key_pri>0`;
     }
-
-    Processing()  // Mensaje de procesamiento
+    if (updateType != 0)
+        Processing()  // Mensaje de procesamiento
+    //else
+    //  alert(`Data uodate`)
 
     // lee los datos originales haciendo un LEFT OUTER a los datos nuevos
     const data = await localAlaSql(` 
@@ -1174,8 +1176,10 @@ export const tableUpdate = async (
     */
     // Regenera recnoVal en caso de insercion de datos y solo sea un registro
     alasql('USE now;')
-    if (sw_val)
-        closeProcessing()
+    if (sw_val && updateType != 0) {
+        const timer = updateType ? 10 : 30
+        closeProcessing('success', timer)
+    }
     //    else
     //        closeProcessing('Error')
 

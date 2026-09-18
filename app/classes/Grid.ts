@@ -34,6 +34,7 @@ export class GRID extends COMPONENT {
   constructor() {
     super();
     //this.Name = "Grid";
+
     this.prop.ColumnCount = 1;
     this.prop.BaseClass = "grid";
     this.prop.Capture = false;
@@ -42,6 +43,7 @@ export class GRID extends COMPONENT {
     this.prop.Caption = "Grid de datos";
     // this.prop.SqlUpdate = false; //Si es verdadero actualiza automaticamente
 
+    this.prop.autoLoad = false
     this.prop.addRow = false; // Si es verdadero aumenta renglon automaticamente
     this.prop.autoUpdate = false; // Si es verdadero actualiza automaticamente
 
@@ -56,6 +58,8 @@ export class GRID extends COMPONENT {
     this.prop.OkMessage = 'Actualización exitosa'
     this.prop.headerHeight = "30px";
     this.prop.Rows = 10;   // renglones de la grid por defecto
+    // this.prop.CurrentPage = 0 // Pagina actualmente desplegada
+
     this.prop.ErrorMessage = 'No esta validada la columna '
     this.style.width = '-moz-available' //"max-content"
     //this.style.minHeight = "120px";
@@ -399,7 +403,8 @@ export class GRID extends COMPONENT {
       this.prop.RecordSource
     );
     if (resultado) { //actualizacion con exito
-      MessageBox(this.prop.OkMessage);
+      if (!this.prop.autoUpdate)
+        MessageBox(this.prop.OkMessage);
 
       return true;
     }

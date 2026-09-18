@@ -50,7 +50,7 @@ export class sis_sis extends COMPONENT {
   async when() {
     this.Form.tab_form.prop.Visible = false;
     this.Form.tab_grid.prop.Visible = false;
-    this.Form.nom_for.prop.Visible = false;
+    this.Form.nom_for.prop.Visible = true;
     this.Form.bt_aceptar.prop.Visible = false;
 
     return true
@@ -72,13 +72,13 @@ export class sis_sis extends COMPONENT {
     this.Form.tab_grid.prop.Visible = false;
     if (this.Form.tip_for.prop.Value == "C" || this.Form.tip_for.prop.Value == "F") {
 
-      this.Form.tab_form.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`
+      this.Form.tab_form.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by nom_tab`
       //    this.Form.tab_form.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql 5-Array
       this.Form.tab_form.prop.Visible = true;
     }
 
     if (this.Form.tip_for.prop.Value == "C" || this.Form.tip_for.prop.Value == "G") {
-      this.Form.tab_grid.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by sis_sis,nom_tab`
+      this.Form.tab_grid.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by nom_tab`
       this.Form.tab_grid.prop.Visible = true;
 
     }

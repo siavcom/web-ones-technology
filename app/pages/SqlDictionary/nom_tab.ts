@@ -53,6 +53,7 @@ export class nom_tab extends COMPONENT {
     this.Form.bt_gen_vistas.prop.Visible = false;
     this.Form.bt_aceptar.prop.Tooltip = this.Form.bt_aceptar.prop.Messages[17][0]; // "Aceptar";
     this.Form.bt_aceptar.prop.Visible = true;
+    return true
 
   }
 

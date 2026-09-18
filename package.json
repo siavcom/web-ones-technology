@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "overrides": {
-    "vue": "latest"
+    "vue": "latest",
+    "vue-router": "^5.0.3"
   },
   "scripts": {
     "build": "nuxt build",
@@ -13,37 +14,36 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/kit": "4.4.8",
-    "@pinia/nuxt": "^0.11.2",
+    "@nuxt/kit": "^4.4.8",
+    "@pinia/nuxt": "^1.0.2",
     "@point-of-sale/receipt-printer-encoder": "^3.0.3",
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
     "maska": "^3.2.0",
-    "mssql": "^12.5.2",
-    "nuxt": "4.4.8",
-    "pinia": "^3.0.3",
+    "mssql": "^12.7.0",
+    "nuxt": "^4.4.5",
+    "pinia": "^4.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
     "postgres": "^3.4.9",
     "qrcode": "^1.5.4",
-    "tedious": "^19.2.1",
+    "tedious": "^19.2.2",
     "vue-imask": "^7.6.1",
     "vue-sweetalert2": "^5.0.11",
-    "whatsapp-web.js": "^1.34.7",
+    "whatsapp-web.js": "^1.34.2",
     "xlsx": "^0.18.5",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@nuxt/image": "^2.0.0",
-    "@nuxt/ui": "^4.7.1",
     "@types/mssql": "^12.3.0",
-    "@vueuse/core": "^14.3.0",
-    "@vueuse/integrations": "^14.3.0",
-    "@vueuse/nuxt": "^14.3.0",
-    "@zip.js/zip.js": "^2.8.26",
-    "alasql": "^4.17.2",
-    "axios": "^1.15.1",
+    "@vueuse/core": "^14.4.0",
+    "@vueuse/integrations": "^14.4.0",
+    "@vueuse/nuxt": "^14.4.0",
+    "@zip.js/zip.js": "^2.8.54",
+    "alasql": "^4.18.0",
+    "axios": "^1.19.0",
     "nuxt-nodemailer": "^1.1.4",
     "nuxt-security": "^2.5.1",
-    "nuxt-socket-io": "^3.0.13"
+    "nuxt-socket-io": "^3.0.10"
   }
 }

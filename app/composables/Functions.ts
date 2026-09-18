@@ -1298,14 +1298,15 @@ export function Processing(texto?: string) {
  * @description : Cierra el mensaje de processing y muestra un mensaje de éxito o error.
  * @param texto - Texto a mostrar en la alerta.
  */
-export function closeProcessing(texto?: string) {
+export function closeProcessing(texto?: string, timer?: number) {
+  if (!timer) timer = 10;
   if (!texto) texto = 'Success'
   Swal.close(); // Close the processing alert first
   Swal.fire({
     icon: 'success',
     title: texto,
     text: texto.toLowerCase() == 'success' ? 'The operation completed successfully' : 'The operation completed with errors',
-    timer: 750
+    timer: 50
   });
 }
 

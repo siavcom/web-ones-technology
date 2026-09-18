@@ -53,7 +53,7 @@
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#"
                 style="height: auto;"><label>{{
                   item.recno
-                }}</label></td>
+                  }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 v-show="This[col.Name].prop.Visible && !This[col.Name].prop.FieldFilter"
@@ -344,17 +344,7 @@ const emitValue = async () => {
 };
 
 
-/////////////////////////////////////////////////////////////////////
-// KeyPress
-// Descripcion: Cada tecla que se presiona en el input
-/////////////////////////////////////////////////////////////////
 
-const keyPress = ($event) => {
-  // <input       @keypress="keyPress($event)"
-  const key = $event.charCode
-  emit("update:Key", Key)
-  Key.value = key
-}
 
 const loadGrid = async () => {
   // inicializamos scroll
@@ -468,6 +458,8 @@ watch(
   () => compValid,
   async (new_val, old_val) => {
     //  console.log('2).0 3.3 -- Grid watch compValid', 'Row=', This.Row)
+
+
     if (This.Row < 0) return
     for (const comp in compValid) { // Recorre todos los estatus del grid
       if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && !This[comp].prop.ReadOnly && This[comp].prop.Visible && This[comp].prop.Valid == false) { // Si alguno no esta validado
@@ -476,6 +468,24 @@ watch(
       }
       This.prop.Valid = true
     }
+
+
+    let ColumnActive = ''
+    ColumnActive = This.Column     //.value
+    /*
+        const ControlSource = This[ColumnActive].prop.ControlSource
+        //console.log('2).0 3.3 -- Grid watch RecordSource=', ControlSource)
+        if (ControlSource.length == 0)
+          return
+    
+        const pos = ControlSource.indexOf(".") + 1;
+        if (pos == 1) {
+          return;
+        } // si no hay definida vista
+    
+    
+    */
+
     console.log('========================Grid todo Validado========================')
     // Buca el recno de este renglon 
 
@@ -487,19 +497,8 @@ watch(
     const Recno = res.recno
 
     //console.log('2).0 3.3 -- Grid watch compValid ColumnActive=', Column.value)
-    let ColumnActive = ''
-    ColumnActive = This.Column     //.value
-    const ControlSource = This[ColumnActive].prop.ControlSource
-    //console.log('2).0 3.3 -- Grid watch RecordSource=', ControlSource)
-    if (ControlSource.length == 0)
-      return
 
-    const pos = ControlSource.indexOf(".") + 1;
-    if (pos == 1) {
-      return;
-    } // si no hay definida vista
-
-    const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
+    // const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = This.prop.RecordSource
     await goto(Recno, tabla)
 
@@ -524,8 +523,8 @@ watch(
 
     } else {// Si no tiene key_pri graba renglon
     */
-    const data = await currentValue(['key_pri'], tabla)
-    if (await This.saveRow()) {
+    const data = await currentValue('key_pri,recno', tabla)
+    if (await This.saveRow(Recno)) {
       await goto(Recno, tabla)
       if (data.key_pri > 0) { // Si es un renglon que ya exite en la base de datos
         return
@@ -854,7 +853,9 @@ const loadData = async (Pos?: number) => {
 
     // console.log('2) Grid loadData()  RecordSource=', props.prop.RecordSource, 'recnoVal=', View[props.prop.RecordSource].recnoVal)
     // scroll.dataPage = []
-    for (let i = 0; i < Rows; i++) {
+
+    let i = 0
+    for (i = 0; i < Rows; i++) {
       const elementNo = ((scroll.page) * Rows) + i
       if (View[props.prop.RecordSource].recnoVal[elementNo]) {
         scroll.dataPage[i] = Sql.View[props.prop.RecordSource].recnoVal[elementNo]
@@ -864,21 +865,30 @@ const loadData = async (Pos?: number) => {
 
       else {  // borra los elementos que ya no existen
         //    scroll.dataPage.slice(i, Rows - 1 - i)
-        if (i == 0) { // No hay datos, le asigna el ultimo elemento
-          scroll.dataPage[i] = View[props.prop.RecordSource].recnoVal[elementNo - 1]
-          scroll.dataPage.length = 1 // Solo dejamos  el ultimo elemento
-
-        } else {
-
-          scroll.dataPage.length = i // Borramos todos los elementos restantes
-        }
+        //debugger
+        scroll.dataPage.length = i // Borramos todos los elementos restantes
         scroll.bottom = true
+        /*
+                if (i == 0) { // No hay datos, le asigna el ultimo elemento
+                  scroll.dataPage[i] = View[props.prop.RecordSource].recnoVal[elementNo - 1]
+                  scroll.dataPage.length = 1 // Solo dejamos  el ultimo elemento
+        
+                } else {
+        
+                  scroll.dataPage.length = i // Borramos todos los elementos restantes
+                }
+                */
 
         break
       }
 
     }
-    // console.log('3) loadData() RowNumber=', RowNumber, 'scroll.dataPage=', scroll.dataPage, 'SQL', Sql.View[props.prop.RecordSource].recnoVal)
+
+    if (!scroll.bottom && !View[props.prop.RecordSource].recnoVal[((scroll.page) * Rows) + i])
+      scroll.bottom = true
+
+
+    console.log('3) loadData() RowNumber=', RowNumber, 'I=', i)
 
     This.prop.Valid = true
     if (RowInsert)
@@ -893,7 +903,7 @@ const loadData = async (Pos?: number) => {
   restableceStatus()
   This.Form.prop.Status = 'A'
   scroll.controls = true
-  console.log('Fin Grid loadData() RecordSource=', props.prop.RecordSource, 'This.Row=', This.Row)
+  console.log('loadData() RecordSource=', props.prop.RecordSource, 'This.Row=', This.Row)
 
 }
 
@@ -959,7 +969,6 @@ const next = async () => {
   if (scroll.bottom) return
   scroll.page++
   loadData()
-
 }
 
 /**

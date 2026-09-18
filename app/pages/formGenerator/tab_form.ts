@@ -36,7 +36,7 @@ export class tab_form extends COMPONENT {
     // this.style.zIndex = 4
   }
 
-  public async when() {
+  override async when() {
     this.Form.nom_ind.prop.RowSourceType = 0;
     this.Form.bt_gen_forma.prop.Visible = false;
     this.Form.grid_form.prop.Visible = false;
@@ -44,16 +44,18 @@ export class tab_form extends COMPONENT {
     return true;
   }
 
-  public async valid() {
+  override  async interactiveChange() {
+
     //    this.Form.nom_ind.prop.RowSourceType = 0
     //    await SQLExec(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
     //    this.Form.nom_ind.prop.RowSourceType = 2
 
     this.Form.vis_form.prop.RowSourceType = 0;
-    const nom_tab = this.prop.Value.trim();
-    this.Form.vis_form.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis where nom_tab='${nom_tab}' `;
+    const nom_tab = this.prop.Value?.trim() || '';
+    this.Form.vis_form.prop.RowSource = `select des_vis,nom_vis from vi_cap_comevis where nom_tab='${nom_tab}' order by nom_vis`;
     this.Form.vis_form.prop.RowSourceType = 3;
     this.Form.vis_form.prop.Visible = true;
+    this.Form.nom_ind.prop.Visible = true;
 
     return true;
   }

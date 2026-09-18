@@ -58,7 +58,7 @@ export class tab_grid extends COMPONENT {
     return true;
   }
 
-  public async valid() {
+  override async interactiveChange() {
     //    this.Form.nom_ind.prop.RowSourceType = 0
     //    await SQLExec(`select nom_ind,exp_ind from vi_cap_comeind where nom_tab='${this.prop.Value}' `, 'vi_cap_comeind')
     //    this.Form.nom_ind.prop.RowSourceType = 2

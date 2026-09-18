@@ -28,8 +28,6 @@ export class bt_aceptar extends IMGBUTTON {
 
   override async click() {
 
-    if (this.prop.Disabled) return;
-
     this.prop.Disabled = true;
 
     if (this.Form.nom_for.prop.Value.trim() == "") {

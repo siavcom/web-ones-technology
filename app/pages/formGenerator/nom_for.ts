@@ -28,14 +28,14 @@ export class nom_for extends COMPONENT {
     this.style.width = '500px'
   }
 
-  public async when() {
+  override async when() {
     // public setFocus = async () => {
     //  this.Form.nom_tab.prop.Visible= false
     this.Form.bt_gen_forma.prop.Visible = false
     return true
   }
 
-  public async valid() {
+  override async valid() {
     this.prop.Value = this.prop.Value.replaceAll(' ', '')
     if (this.prop.Value.length == 0)
       return false

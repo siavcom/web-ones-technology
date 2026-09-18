@@ -1269,7 +1269,7 @@ Developed on Linux (Ubuntu 22.04, 24.04) and Windows 10
 
 Node requirements: See Nuxt documentation https://nuxt.com/docs/getting-started/installation  
 
-The app directory contains 33,048 lines of effective code after excluding blank lines, representing a considerable-sized project with a good code density (83.9% of the lines contain code).
+The app directory contains 22,536 línes of effective code after excluding blank lines, representing a considerable-sized project with a good code density (83.9% of the lines contain code).
 
 👨‍💻 About
 I'm an experienced Fox programmer (since 1981) with extensive experience designing and programming using VFP, MSSQL, and PostgreSQL databases.  
@@ -1285,9 +1285,9 @@ LinkedIn: https://www.linkedin.com/in/fernando-cuadras-846a20102/
 Microsoft Teams & Email: siavcom@hotmail.com
 
 Team
-Lupita Sotelo - Reports and SQL design
+Lupita Sotelo - Reports and SQL design and programing
 
-Raul Castro - HTML and CSS design
+Raul Castro - HTML and CSS design and programing 
 
 Resources
 Website: http://www.web-ones.technology.xyz

@@ -38,18 +38,31 @@ export default defineNuxtConfig({
   // para que vite los acepte
   vite: {
     optimizeDeps: { // Se sugirio agregar esto para evitar el error de dependencias
-      include: [
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (id.includes('node_modules')) {
+                // Group all node_modules dependencies into a vendor chunk
+                return 'vendor';
+              }
+            }
+          }
+        }
+      },
+/*      include: [
+        '@vueuse/integrations/useQRCode',
+        'alasql', // CJS
+        'axios',
+        'maska/vue',
         'socket.io-client',
         'sweetalert2',
-        'maska/vue',
-        '@vueuse/integrations/useQRCode',
+        'vue-imask',
         'xml-js', // CJS
-        'axios',
-        'alasql', // CJS
-        'vue-imask'
       ]
-    },  
-  
+*/
+    },
+
     /////// incluir estas dos lineas para correr nuxt 3.17 y 4.0 en dev /////////////////////////
     /////// quitarlas al compilar para producción //////////////////////////////////////////////
     //  optimizeDeps: { exclude: ['axios', 'form-data'] },
@@ -61,12 +74,13 @@ export default defineNuxtConfig({
     },
     server: {
       fs: { // Permite el acceso a los archivos del servidor
-        allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
+        // allow: ['/siavcom/desarrollo/desarrolloweb/Vue/web-ones/'],
       },
     },
     esbuild: {
       keepNames: true,   // Keeps the original class and method names (doesn't obfuscate them). Don't remove it. (problem nuxt >=3.15)
       pure: ['console.log', 'console.error', 'console.warn', 'console.debug', 'console.trace'], // en el compilado, no incluye estas instrucciones
+
     }
   },
 
@@ -77,8 +91,10 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
     //'nuxt-socket-io',
     `@vueuse/nuxt`,
-    'nuxt-nodemailer'
+    'nuxt-nodemailer',
+    // "nuxt-security"
   ],
+
   /*io: {
     // module options
     sockets: [{
@@ -89,7 +105,7 @@ export default defineNuxtConfig({
   },*/
 
 
-  // 23/Oct/2024 Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
+  // 23/Oct/2024Se puso para quitar error  [vite-node] [ERR_LOAD_URL] pinia-plugin-persistedstate
   //build: {
   //  transpile: ['pinia-plugin-persistedstate'],
   // },
@@ -112,20 +128,23 @@ export default defineNuxtConfig({
     experimental: {
       websocket: true // Enable experimental WebSocket support in Nitro
     },
+    devProxy: {
+      '/sw.js': { target: '/sw.js' }
+    }
   },
 
   // Variables de entorno 
   runtimeConfig: {
     // The private keys which are only available server-side
     basculaServer: 'my-secret-key',
-    webOnesServer: '/sistemas/web-ones/public', // directorio de configuracion de empresas
-    sqlNitro: false, // utiliza Nitro server desde nuxt 
+    webOnesServer: '/sistemas/web-ones/public',
+    sqlNitro: true,
     // Keys within public are also exposed client-side
     public: {
-      //  bascula: ['scale.freeddns.org:3010'],
+      //  bascula: ['sample.org:3010'],
       // whatsAppServer: ['127.0.0.1:3000']
     },
   },
 
-  compatibilityDate: '2024-10-02',
+  compatibilityDate: '2026-07-31',
 })
