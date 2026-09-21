@@ -819,9 +819,9 @@ button {
     width: 100% !important;
   }
 
-  div.toggle {
-    top: 40px !important;
-  }
+  /* div.toggle { */
+    /* top: 40px !important; */
+  /* } */
 
   .combo_class12.columContainer {
     background-color: white !important;

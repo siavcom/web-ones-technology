@@ -499,4 +499,15 @@ export class GRID extends COMPONENT {
     const result = await SQLExec(sql);
     return result.length > 0;
   }
+
+  update_columns_controlSource(alias) {
+    // Actualizar ControlSource de las columnas al nuevo alias
+    for (const col of this.elements) {
+      const comp = this[col.Name]
+      if (comp && comp.prop && comp.prop.ControlSource) {
+        const fieldName = comp.prop.ControlSource.split('.').pop()
+        comp.prop.ControlSource = `${alias}.${fieldName}`
+      }
+    }
+  }
 }
