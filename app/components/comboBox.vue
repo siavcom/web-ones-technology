@@ -55,34 +55,36 @@
       <!--Valor seleccionado click-->
 
       <!--div :id="Id + '_div'" v-show="!prop.ReadOnly && !prop.Disabled"-->
-      <div :id="Id + '_toggle'" class="combo combo_class11 toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
-        :style="toggleLayerStyle">
-        <!--CheckBox -->
-        <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
-          class="combo combo_class12 columContainer" @focusout="toggle = !toggle" :style="columnContainer">
-          <!--Columnas -->
+      <teleport to="body">
+        <div :id="Id + '_toggle'" class="combo combo_class11 toggle" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
+          :style="toggleLayerStyle">
+          <!--CheckBox -->
+          <div :id="Id + '_columncontainer'" v-if="toggle && !prop.ReadOnly && !prop.Disabled"
+            class="combo combo_class12 columContainer" @focusout="toggle = !toggle" :style="columnContainer">
+            <!--Columnas -->
 
-          <template v-for="row in filteredColumnas" :key="row.valueIndex">
-            <div :id="Id + '_options_' + row.valueIndex" class="combo combo_class13 option" @mouseover="hover = true"
-              @mouseleave="hover = false" @click.stop="validClick(row.valueIndex)" :disabled="prop.ReadOnly" :style="{
-                'background-color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? '#7aac67' : 'white',
-                'color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? 'white' : 'black'
-              }">
-              <!--Imprime Columnas -->
-              <div :id="Id + '_columns_' + row.valueIndex + '_col_' + col" class="combo combo_class14 columna"
-                :disabled="prop.ReadOnly" v-for="(text, col) in row.option.text" :key="col" :style="{
-                  'width': width[col], 'text-align': 'left',
-                  'z-index': toggleZIndex, 'height': inputStyle.height,
-
+            <template v-for="row in filteredColumnas" :key="row.valueIndex">
+              <div :id="Id + '_options_' + row.valueIndex" class="combo combo_class13 option" @mouseover="hover = true"
+                @mouseleave="hover = false" @click.stop="validClick(row.valueIndex)" :disabled="prop.ReadOnly" :style="{
+                  'background-color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? '#7aac67' : 'white',
+                  'color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? 'white' : 'black'
                 }">
-                <label :id="Id + '_columnslabel_' + row.valueIndex + '_col_' + col"
-                  class="combo combo_class15 optionLabel" v-text="text" :style:="columncaptionStyle" />
-              </div>
+                <!--Imprime Columnas -->
+                <div :id="Id + '_columns_' + row.valueIndex + '_col_' + col" class="combo combo_class14 columna" style="cursor:pointer"
+                  :disabled="prop.ReadOnly" v-for="(text, col) in row.option.text" :key="col" :style="{
+                    'width': width[col], 'text-align': 'left',
+                    'z-index': toggleZIndex, 'height': inputStyle.height,
 
-            </div>
-          </template>
+                  }">
+                  <label :id="Id + '_columnslabel_' + row.valueIndex + '_col_' + col"
+                    class="combo combo_class15 optionLabel" v-text="text" :style:="columncaptionStyle" />
+                </div>
+
+              </div>
+            </template>
+          </div>
         </div>
-      </div>
+      </teleport>
       <!--toggle click.prevent -->
       <nuxt-img :id="Id + '_toggle_img'" class="combo combo_class16 toggleImagen" :style="toggleStyle"
         v-show="!This.prop.ReadOnly && !This.prop.Disabled"
@@ -411,7 +413,7 @@ const toggleLayerStyle = computed(() => {
     maxHeight: toggleViewport.maxHeight,
     overflowY: 'auto',
     overflowX: 'auto',
-    zIndex: openLayerZIndex + 1
+    zIndex: 12001
   }
 })
 
@@ -538,7 +540,8 @@ const updateToggleViewportPosition = async () => {
 
   const isGridByParent = !!(This && This.Parent && This.Parent.BaseClass == 'grid')
   const isGridByDom = !!(combo.closest('td') && combo.closest('.tabla'))
-  useViewportLayer.value = isGridByParent || isGridByDom
+  // Fuerza siempre viewport layer para evitar stacking context
+  useViewportLayer.value = true
 
   if (!useViewportLayer.value)
     return
@@ -565,6 +568,11 @@ const handleViewportChange = () => {
   updateToggleViewportPosition()
 }
 
+const closeOtherCombos = (e: Event) => {
+  if ((e as CustomEvent).detail !== Id && toggle.value)
+    toggle.value = false
+}
+
 const setBodyComboDropdownOpen = (open: boolean) => {
   if (typeof document == 'undefined' || !document.body)
     return
@@ -583,6 +591,9 @@ const setBodyComboDropdownOpen = (open: boolean) => {
     document.body.classList.add('combo-dropdown-open')
   else
     document.body.classList.remove('combo-dropdown-open')
+
+  if (open)
+    window.dispatchEvent(new CustomEvent('combo-dropdown-opened', { detail: Id }))
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -2059,6 +2070,7 @@ const ReadOnlyWatch = () => {
 //const init = async () => {
 
 onMounted(async () => {
+  window.addEventListener('combo-dropdown-opened', closeOtherCombos)
   thisElement = document.getElementById(Id)  // Obtiene el id de este componente en el DOM
   //  console.log('1) comboBox onMounted  Name=', This.prop.Name)
 
@@ -2160,6 +2172,7 @@ onBeforeMount(async () => {
 
 onUnmounted(async () => {
 
+  window.removeEventListener('combo-dropdown-opened', closeOtherCombos)
   window.removeEventListener('mousedown', myClick); // <div>
   window.removeEventListener('scroll', handleViewportChange, true)
   window.removeEventListener('resize', handleViewportChange)
@@ -2176,12 +2189,12 @@ onUnmounted(async () => {
 //////////////////////////////////////////////////////////////////////
 
 function myClick(e) {
-  // console.log('myClick ComboBox focus in and out ',e.target)
-  // to remove
-
-  // console.log(This.prop.Name, '1) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
-
   const clickedEl = e.target;
+  const toggleEl = document.getElementById(Id + '_toggle')
+
+  // Si el click fue dentro del dropdown (teleportado al body) no cerrar
+  if (toggleEl && toggleEl.contains(clickedEl))
+    return
 
   if (This.prop.Disabled || !This.prop.Visible) {
     if (RefCombo && RefCombo.value != null && !RefCombo.value.contains(clickedEl))
@@ -2190,10 +2203,7 @@ function myClick(e) {
       return
   }
 
-  //console.log(This.prop.Name, '2) ComboBox focus  out sw_focus=', sw_focus.value, RefCombo.value)
-
   if (RefCombo && RefCombo.value != null) {
-
     if (!RefCombo.value.contains(clickedEl)) {
       sw_focus.value = false
       focusIn = false
@@ -2201,7 +2211,6 @@ function myClick(e) {
         toggle.value = false
       }
     }
-
   }
 }
 
@@ -2303,7 +2312,6 @@ div.toggle {
   overflow: hidden;
   overflow-y: auto;
   width: 100%;
-  top: 20px;
   z-index: v-bind('toggleZIndex');
   min-width: 200px !important;
   max-height: 400px;
