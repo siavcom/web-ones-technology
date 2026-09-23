@@ -8,7 +8,6 @@
 import { IMGBUTTON } from "@/classes/imgButton";
 import { FORM } from "@/classes/Form";
 
-import { provide, watch } from 'vue';
 
 export class captureForm extends FORM {
   public gridCaptura: [] = [];

@@ -23,7 +23,7 @@ export class emp_emp extends COMPONENT {
     // this.prop.Style = 2;
     this.prop.BoundColumn = 1;
     this.prop.RowSource = [[""], [""]];
-    this.prop.ColumnWidths = "100px,300px";
+    this.prop.ColumnWidths = "150px,150px";
     this.prop.TabIndex = 1;
     // this.style.zIndex = 2;
     this.style.width = "auto";

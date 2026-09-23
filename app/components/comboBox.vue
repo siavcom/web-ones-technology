@@ -277,6 +277,10 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+
+captionStyle.fontFamily = 'Avenir, Helvetica, Arial, sans-serif'
+inputStyle.fontFamily = 'Avenir, Helvetica, Arial, sans-serif'
+divStyle.fontFamily = 'Avenir, Helvetica, Arial, sans-serif'
 const containerStyle = reactive({ ...Este.containerStyle })
 const readOnlyInputStyle = reactive({ ...This.readOnlyInputStyle })
 let firstFocus = false
@@ -408,12 +412,13 @@ const toggleLayerStyle = computed(() => {
     left: toggleViewport.left,
     top: toggleViewport.top,
     width: toggleViewport.width,
-    minWidth: totalWidth,
+    minWidth: `${totalWidth} !important`,
     minHeight: '0px',
     maxHeight: toggleViewport.maxHeight,
     overflowY: 'auto',
     overflowX: 'auto',
-    zIndex: 12001
+    zIndex: 12001,
+    fontFamily: 'Avenir, Helvetica, Arial, sans-serif'
   }
 })
 
