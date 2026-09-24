@@ -26,6 +26,7 @@
     "pinia-plugin-persistedstate": "^4.5.0",
     "postgres": "^3.4.9",
     "qrcode": "^1.5.4",
+    "sequelize": "^6.37.8",
     "tedious": "^19.2.2",
     "vue-imask": "^7.6.1",
     "vue-sweetalert2": "^5.0.11",

@@ -181,7 +181,7 @@ export class GRID extends COMPONENT {
   // Descripcion : Valida una columna. Si es un campo key y si no esta repetido en la forma
   /////////////////////////////////////////////////////
 
-  public async validColumn(refColumn: void): Promise<boolean> {
+  public async validColumn(refColumn: void, errorMessage?: string): Promise<boolean> {
     //const column = this[name];
     //   console.log("Column valid refColumn=", refColumn)
     const column = refColumn.value
@@ -196,7 +196,7 @@ export class GRID extends COMPONENT {
 
       return false;
     }
-    if (!(await this.validKey(column.prop.name, column.Recno))) {
+    if (!(await this.validKey(column.prop.name, column.Recno, errorMessage))) {
       //column.prop.ErrorMessage = this.prop.Messages[7];
       return false;
     }
@@ -204,7 +204,7 @@ export class GRID extends COMPONENT {
     return true;
   }
 
-  async validKey(name: string, Recno: number) {
+  async validKey(name: string, Recno: number, errorMessage?: string) {
     //  if (this.prop.Valid) return true;
     console.log("validKeys Recno=", Recno);
     //const View = this.Form.Sql.View[this.prop.RecordSource];
@@ -227,7 +227,12 @@ export class GRID extends COMPONENT {
     console.log("Grid  validKeys select=", `select * from ${this.prop.RecordSource} ${where}`);
     const data = await localSql(select);
     console.log("Grid  validKeys select", select, 'data=', data);
-    if (data[0].existe && data[0].existe >= 1) return false;
+    if (data[0].existe && data[0].existe >= 1) {
+      if (!errorMessage)
+        errorMessage = 'Existing record'
+      MessageBox(errorMessage, 0, '', 3000)
+      return false;
+    }
 
     return true;
   }

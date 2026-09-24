@@ -991,7 +991,7 @@ export const tableUpdate = async (
                         //              valor = valor.slice(0, 24);
 
                         m[campo] = valor;
-                        //   console.log("UPDATE fecha=", m[campo]);
+                        console.log("UPDATE fecha=", m[campo]);
 
                         break;
                     //   2024-01-15T10:22:7
