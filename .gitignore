@@ -27,7 +27,7 @@ app/classes/Siavcom
 app/composables/comeutl.ts
 app/composables/contutl.ts
 
-app/pages/INV
+#app/pages/INV
 app/pages/CXC
 app/pages/CXP
 
