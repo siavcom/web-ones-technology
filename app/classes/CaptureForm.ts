@@ -134,7 +134,7 @@ export class captureForm extends FORM {
   /// /////////////////////////////////////
 
   async beforeWhenComponent(Comp: undefined) {
-    const thisComp = Comp.value
+    // const thisComp = Comp.value
     if (this.Recno != 0)
       this.Recno = 0
 
@@ -145,15 +145,16 @@ export class captureForm extends FORM {
         this.First = Comp
 
       if (Comp.prop.Capture && !Comp.prop.updateKey) {
-        // console.log('Componente>>>>>>>>>=', Comp.prop.Name, Comp.prop.Capture, 'Key=', Comp.prop.updateKey)
+        console.log('Componente>>>>>>>>>=', Comp.prop.Name, '=', Comp)
         Comp.prop.ReadOnly = true
 
-        if (typeof Comp.prop.Value == 'string')
-          if (Comp.prop.Value != '')
-            Comp.prop.Value = ''
-          else
-            if (Comp.prop.Value != 0)
-              Comp.prop.Value = 0
+        if (Comp.prop.ControlSource.search(this.prop.RecordSource))
+          if (typeof Comp.prop.Value == 'string')
+            if (Comp.prop.Value != '')
+              Comp.prop.Value = ''
+            else
+              if (Comp.prop.Value != 0)
+                Comp.prop.Value = 0
 
       }
 
@@ -507,6 +508,7 @@ export class captureForm extends FORM {
     for (const comp of this.Form.main) {
       if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
         this[comp].prop.ReadOnly = false
+        console.log('bt_modifyClick comp=', comp, '=', this[comp])
       }
     }
     await nextTick()

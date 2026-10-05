@@ -47,6 +47,7 @@ export class HELP extends CONTAINER {
     this.prop.oneClick = true
     this.prop.BaseClass = 'modalContainer'
     this.prop.Where = ''
+    this.prop.Filter = ''
     this.prop.localBrowse = false
 
     this.prop.Visible = false
@@ -105,6 +106,9 @@ export class HELP extends CONTAINER {
   }
 
   async open() {
+
+    if (this.prop.Filter != '')
+      this.prop.Where = this.prop.Filter + ' and ' + this.prop.Where
 
     this.Parent.prop.ShowError = false
     this.Parent.prop.ReadOnly = true

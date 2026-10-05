@@ -10,6 +10,9 @@
  * @export
  * @class COMPONENT
  */
+const RefReadOnly = ref(false)
+const RefDisabled = ref(false)
+
 export class COMPONENT {
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent = {}; //this.Dom.ctx; // Contexto
@@ -49,7 +52,6 @@ export class COMPONENT {
   sw_translate = true
   Id = ''
   containerId: string = ''
-
   Value: string | number | boolean | Date | null | [] | {} = ''
   prop = {
     autoLoad: false,
@@ -393,7 +395,8 @@ export class COMPONENT {
   public asignaRecno() {
     if (this.prop.Name == 'translateContainer')
       return
-
+    this.prop.ReadOnly = RefReadOnly
+    this.prop.Disabled = RefDisabled
     if (this.prop.RecordSource == '') {
       const pos = this.prop.ControlSource.indexOf(".") + 1;
       if (pos == 1) {
@@ -412,13 +415,16 @@ export class COMPONENT {
       if (Comp && Comp.prop && Comp.prop.Name != 'translateContainer'
         && !Comp.prop.updateKey && Comp.prop.ControlSource
         && (Comp.prop.BaseClass.toLowerCase() == "edittext" || Comp.prop.BaseClass.toLowerCase() == 'combobox' || Comp.prop.BaseClass.toLowerCase() == 'base64' || Comp.prop.BaseClass.toLowerCase() == 'textlabel')
-        && Comp.prop.ControlSource.length > 0
-        && Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0) {
+        && Comp.prop.ControlSource.length > 0) {
         // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
-        Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+        if (Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0)
+          Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+
+        Comp.prop.ReadOnly = RefReadOnly //  ref(this.prop.ReadOnly)
+        Comp.prop.Disabled = RefDisabled //ref(this.prop.Disabled)
+        Comp.captionStyle.background = ref(this.captionStyle.background)
 
         // Si el componente es de captura de datos de un Form o grid, lo aumenta a arreglo de validaciones
-
         if (Comp.prop.Capture) {
           this.Valid.value.push(ref(this[comp].prop.Valid))
           this.ValidName[this.Valid.value.length - 1] = this[comp].prop.Name

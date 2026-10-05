@@ -2684,10 +2684,13 @@ return false;
  */
 export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
-    if (
-        !(This.value.session?.id_con > " ") ||
-        This.value.session?.user == "" ||
-        This.value.session?.nom_emp == ""
+
+    let numInt = 0
+
+    while (
+        (!(This.value.session?.id_con > " ") ||
+            This.value.session?.user == "" ||
+            This.value.session?.nom_emp == "") && numInt < 0
     ) {
         console.trace(
             "Data bases session =======>",
@@ -2695,6 +2698,13 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
             This.value.session.user,
             This.value.session.nom_emp
         );
+        numInt++
+        sleep(1000); // espera 1 segundo
+    }
+
+    if ((!(This.value.session?.id_con > " ") ||
+        This.value.session?.user == "" ||
+        This.value.session?.nom_emp == "") || numInt >= 3) {
 
         errorAlert("Back End error : Session not active");
         //MessageBox("Back End error", 16, "SQL Error Open");
