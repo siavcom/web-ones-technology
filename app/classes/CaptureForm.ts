@@ -184,6 +184,8 @@ export class captureForm extends FORM {
    */
   async validKeyComponent(Comp: undefined, mem?: {}) {
     // console.log('validKey meme=', mem)
+    if (this.Recno != 0)
+      this.Recno = 0
 
     if (this.sw_update && this.Form.bt_save.prop.Visible)
       await this.Form.bt_save.click()
@@ -238,9 +240,6 @@ export class captureForm extends FORM {
     //  if (!data || data == '400') { return false } // Hubo error al leer los datos
     this.noData = false;
 
-    // 29 Ags 2024     let Recno = 0;
-    if (this.Recno != 0)
-      this.Recno = 0
 
     // console.log('Valid RecordSource=', this.prop.RecordSource, 'Recno', this.Recno, 'This=', this)
 
@@ -451,7 +450,7 @@ export class captureForm extends FORM {
     this.bt_delete.prop.Visible = false;
 
     if ((await MessageBox(this.bt_delete.prop.ToolTipText, 4, "")) === 6) {
-      console.log("borra registro", this.Form.prop.RecordSource, this.Recno);
+
       const result = await deleteSql(this.Recno, this.prop.RecordSource, true);
 
       if (result) {

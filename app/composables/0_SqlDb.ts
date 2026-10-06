@@ -2687,7 +2687,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
 
     let numInt = 0
 
-    while (
+    if (
         (!(This.value.session?.id_con > " ") ||
             This.value.session?.user == "" ||
             This.value.session?.nom_emp == "") && numInt < 0

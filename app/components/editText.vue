@@ -1476,7 +1476,7 @@ watch(
 
     await emitValue(true)
     //29/Oct/2025 -- Se quita, daba problema en el grid
-    //This.Recno = props.Registro
+
     This.recnoChange()
   },
   { deep: true }
@@ -1940,7 +1940,7 @@ if (!This.prop.RefValue == null)
 
   await emitValue(true)
 
-  This.Recno = props.Registro
+  // 5/Oct/2026  This.Recno = props.Registro
 
   if (typeof Value.value == 'number')
     oldVal = Value.value.toString()   // asignamos el valor viejo  
