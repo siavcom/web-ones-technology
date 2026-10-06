@@ -72,6 +72,7 @@ const publico = reactive({
     lan_lan: "", // Lenguaje del frontend
     dialect: "MSSQL",
     var_cap: '0',
+    ven_ven:0,
     usu_log: "",
     usu_nom: ""
 

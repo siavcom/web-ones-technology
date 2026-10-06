@@ -444,7 +444,7 @@ export class GRID extends COMPONENT {
 
     for (const compName of this.prop.tools) {
       const comp = this[compName];
-      if (comp && comp.prop.Value.trim() !== '' && comp.prop.Value !== null && comp.prop.Value !== undefined) {
+      if (comp && comp.prop.Value > '             ' && comp.prop.Value !== null && comp.prop.Value !== undefined) {
         const field = comp.prop.FieldFilter.split('.').pop();
         const operator = comp.prop.FilterOperator || 'AND';
         m[compName] = comp.prop.Value;

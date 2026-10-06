@@ -16,17 +16,17 @@ export class CAPTURECOMPONENT extends COMPONENT {
   // sw_when:boolean=false
   constructor() {
     super();
-    this.prop.ReadOnly = true;
     this.prop.ValidOnRead = true;
     this.prop.Capture = true
     this.prop.Valid = false
     this.prop.updateKey = false
-
   }
 
   public async init(): Promise<void> {
     if (this.prop.updateKey == true)
-      this.prop.ReadOnly = false;
+      this.prop.ReadOnly = false
+    else
+      this.prop.ReadOnly = true
 
   }
 
