@@ -22,13 +22,13 @@ export class COMPONENT {
   //Ref: null | undefined;
   Show: true = true;
   Index!: number;
-  header: [] = []; // elementos que tiene el componente en header
-  main: [] = []; // elementos que tiene el componente en main
-  footer: [] = []; // elementos que tiene el componente en footer
-  elements: [] = []; // elementos que tiene el componente
+  header: any[] = []; // elementos que tiene el componente en header
+  main: any[] = []; // elementos que tiene el componente en main
+  footer: any[] = []; // elementos que tiene el componente en footer
+  elements: any[] = []; // elementos que tiene el componente
   estatus: {} = {}; // status de todos los hijos del componente
   Position: [] = []; // Posicion del componente
-  block: [] = [] // bloque del componentes
+  block: any[] = [] // bloque del componentes
   collapse: [] = [] // grupos colapsables con sus componentes
   collapseContainer: any[] = [
     // {
