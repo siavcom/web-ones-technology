@@ -186,8 +186,12 @@ export class GRID extends COMPONENT {
     //   console.log("Column valid refColumn=", refColumn)
     const column = refColumn.value
 
+
     if (!column.prop.updateKey)
       return true;
+
+    if (column.prop.ReadOnly)
+      return true
 
     if (
       typeof column.prop.Value == "string" &&

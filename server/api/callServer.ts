@@ -27,7 +27,8 @@ const item = await storage.getItem('some:key');
 /////////////  librerias sql server ///////////////
 //import MSSQL from "tedious"  //MSSQL
 import MSSQL from "mssql";
-import postgres from 'postgres'
+import { Pool as postgres, QueryResult } from 'pg'  // se tuvo que instalar • npm i -D @types/pg para que funcionara
+
 
 //import fs from '@/node_modules/file-system/file-system.js';
 
@@ -50,7 +51,7 @@ const sqlNitro = config.sqlNitro
 
 let empresasJson = {}
 
-let SQLServer: postgres.Sql<{}> | null
+//let SQLServer: postgres.Sql<{}> | null
 
 let serverConfig = {}
 let sqlConfig = {}
@@ -142,21 +143,35 @@ export default defineEventHandler(async (event) => {
       }
 
     }
+    // aqui me quede
 
-    if (connections[id_con].dialect === 'posgres') {
+    if (connections[id_con].dialect === 'postgres') {
+      const client = await sqlPool[id_con].connect()
+      /*
+            const queryConfig = {
+              text: sqlQuery,
+              rowMode: "array"     // <- Le dice a pg que devuelva las filas como arreglos
+            };
+      */
 
       try {
-        result = sqlPool[id_con].query(sqlQuery)
-        // result = sqlPool[id_con]`${sqlQuery}`
-        return result
+        result = await client.query(sqlQuery) as unknown as QueryResult[]
+
+        const mssqlStructure = Array.isArray(result)
+          ? result.map(resultObj => resultObj.rows)  // Si son múltiples consultas separadas por ';'
+          : [result.rows];
+
+
+        console.log('========En postgres hay que regresar el objeto Rows', mssqlStructure)
+        return mssqlStructure
         // Example: const result = await SQLServer(sqlQuery);
       } catch (err) {
-        console.error('Error de conexión:', err);
+        console.error('*********************Error ************************SQL Server Error de ejecucion:', err);
         return err
       }
     }
 
-    console.log('SQLExec result=', result)
+    //  console.log('SQLExec result=', result)
     // return result;
   }
 
@@ -248,11 +263,9 @@ export default defineEventHandler(async (event) => {
           //   await storage.setItem(mailServer:mailServer);
 
           const mailServerKey = `mail:${nombreEmpresa}`
-          console.log('1)  callServer >>>>>>>>>>   server key=' + mailServerKey, await useStorage().getItem(mailServerKey));
+          // console.log('1)  callServer >>>>>>>>>>   server key=' + mailServerKey, await useStorage().getItem(mailServerKey));
 
           await useStorage().setItem(mailServerKey, mailServer)
-
-
 
           //await useStorage().setItem('mail:Server', mailServer)
           //        console.log('2)  >>>>>>>>>>serverConfig=', await useStorage().getItem('mail:Server'))
@@ -263,13 +276,13 @@ export default defineEventHandler(async (event) => {
           sqlConfig.password = body.password
           let data: any = []
 
-          //console.log('2)  >>>>>>>>>>iniEmp leeEmp sqlConfig=', sqlConfig)
+          console.log('2)  >>>>>>>>>>iniEmp leeEmp sqlConfig=', sqlConfig)
 
           if (sqlConfig.dialect == 'mssql') {
             sqlPool[id_con] = await MSSQL.connect(sqlConfig);
           }
-          if (sqlConfig.dialect == 'posgres') {
-            sqlPool[id_con] = await postgres(sqlConfig)
+          if (sqlConfig.dialect == 'postgres') {
+            sqlPool[id_con] = new postgres(sqlConfig)
           }
 
           connections[id_con] = {
@@ -279,14 +292,14 @@ export default defineEventHandler(async (event) => {
           }
           await useStorage().setItem(con_id, connections[id_con]) // guardamos la conexion
 
-          console.log('1)  >>>>>>>>>>iniEmp leeEmp sqlConfig poolConnections=', connections)
+          console.log('1)  >>>>>>>>>>iniEmp leeEmp sqlConfig sqlPool[id_con]=', sqlPool[id_con])
 
           //console.log('Test1====', await SqlExec(" select top 10 nom_doi from man_comedoi where cla_isu='LOGO' ", user))
 
           let query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=1 `
           data = await SqlExec(query, id_con)
 
-          // console.log('1) data=', data[0][0].nom_doi)
+          //console.log('2) >>>>>>>>>>>>>>>>> data=', data[0][0])
           if (!data[0][0] || !
             data[0][0].arc_doi || data[0][0].arc_doi.length == 0) {
             query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=0 `
@@ -299,6 +312,7 @@ export default defineEventHandler(async (event) => {
           if (data[0][0] && data[0][0].arc_doi && data[0][0].arc_doi.length >= 10) {
             const tipArchivo = data[0][0].arc_doi.trim().slice(-3)
             result.logoEmp = `data:image/${tipArchivo};base64,` + data[0][0].arc_doi
+            // console.log('2) Return >>>>>>>>>>iniEmp Executa query=', query, 'result=', result)
             return result
           }
           // El logo se obtiene del servidor si no se encuentra en la base de datos
