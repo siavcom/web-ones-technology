@@ -45,9 +45,13 @@ export class nom_tab extends COMPONENT {
     this.Form.grid_datos.prop.Visible = false;
     this.Form.grid_vistas.prop.Visible = false;
     this.Form.grid_indices.prop.Visible = false;
-    await this.Form.db.useNodata("vi_cap_comedat");
-    await this.Form.db.useNodata("vi_cap_comeind");
-    await this.Form.db.useNodata("vi_cap_comevis");
+
+    await useNodata("vi_cap_comedat");
+    await useNodata("vi_cap_comeind");
+    console.log('1) *****************************************interctive nom_tab')
+    //await useNodata("vi_cap_comevis");
+    console.log('2) ***************************************interctive nom_tab')
+
     this.Form.bt_gen_model.prop.Visible = false;
     this.Form.bt_gen_indices.prop.Visible = false;
     this.Form.bt_gen_vistas.prop.Visible = false;

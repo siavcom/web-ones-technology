@@ -162,7 +162,7 @@ export default defineEventHandler(async (event) => {
           : [result.rows];
 
 
-        console.log('========En postgres hay que regresar el objeto Rows', mssqlStructure)
+        //  console.log('========En postgres hay que regresar el objeto Rows', mssqlStructure)
         return mssqlStructure
         // Example: const result = await SQLServer(sqlQuery);
       } catch (err) {

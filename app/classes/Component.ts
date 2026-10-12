@@ -401,8 +401,8 @@ export class COMPONENT {
     if (this.prop.Name == 'translateContainer')
       return
 
-    this.prop.ReadOnly = RefReadOnly
-    this.prop.Disabled = RefDisabled
+    //this.prop.ReadOnly = RefReadOnly
+    //this.prop.Disabled = RefDisabled
     this.Recno = RefRecno
 
 
@@ -440,8 +440,8 @@ export class COMPONENT {
           //Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
           Comp.Recno = RefRecno // ref(this.Recno)  // asignamos el recno de c/componente de la forma
 
-        Comp.prop.ReadOnly = RefReadOnly //  ref(this.prop.ReadOnly)
-        Comp.prop.Disabled = RefDisabled //ref(this.prop.Disabled)
+        //Comp.prop.ReadOnly = RefReadOnly //  ref(this.prop.ReadOnly)
+        // Comp.prop.Disabled = RefDisabled //ref(this.prop.Disabled)
         Comp.captionStyle.background = ref(this.captionStyle.background)
 
         //console.log('4) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, 'Recno=', Comp.Recno, 'ReadOnly=', Comp.prop.ReadOnly, 'Disabled=', Comp.prop.Disabled)
