@@ -70,8 +70,9 @@
                   'color': activeOptionIndex == row.valueIndex || compareOptionText(displayText) == compareOptionText(row.option.text[0]) ? 'white' : 'black'
                 }">
                 <!--Imprime Columnas -->
-                <div :id="Id + '_columns_' + row.valueIndex + '_col_' + col" class="combo combo_class14 columna" style="cursor:pointer"
-                  :disabled="prop.ReadOnly" v-for="(text, col) in row.option.text" :key="col" :style="{
+                <div :id="Id + '_columns_' + row.valueIndex + '_col_' + col" class="combo combo_class14 columna"
+                  style="cursor:pointer" :disabled="prop.ReadOnly" v-for="(text, col) in row.option.text" :key="col"
+                  :style="{
                     'width': width[col], 'text-align': 'left',
                     'z-index': toggleZIndex, 'height': inputStyle.height,
 

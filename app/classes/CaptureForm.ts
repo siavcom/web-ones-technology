@@ -416,7 +416,6 @@ export class captureForm extends FORM {
       super();
       this.prop.Name = "bt_delete";
       this.prop.ToolTipText = "Borra datos";
-
       this.prop.Position = "footer";
       this.prop.Visible = false;
 

@@ -224,6 +224,10 @@ export class COMPONENT {
     alignContent: "flex-start" //"flex-end", //alignContent: "center",
   }
 
+  footerStyle = {
+    alignItems: 'center !important'
+  }
+
   buttonFooterStyle = {
     backgroundColor: 'transparent',
     boxShadow: 'none',

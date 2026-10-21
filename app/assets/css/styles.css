@@ -484,7 +484,7 @@ section.formmain_old {
 }
 
 
-#ThisForm_388_blockComponent_0CONTENEDOR_XML{
+#ThisForm_388_blockComponent_0CONTENEDOR_XML {
   width: 100% !important;
 }
 
@@ -535,6 +535,7 @@ section.formfooter_old {
 
 .formfooter {
   justify-content: space-between !important;
+  align-items: center !important;
 }
 
 #salir,
@@ -820,7 +821,7 @@ button {
   }
 
   /* div.toggle { */
-    /* top: 40px !important; */
+  /* top: 40px !important; */
   /* } */
 
   .combo_class12.columContainer {
