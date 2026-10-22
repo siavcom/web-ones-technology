@@ -74,7 +74,8 @@ export class nco_que extends COMPONENT {
     };
 
     const RecordSource = this.Parent.Grid.prop.RecordSource;
-    //console.log('nco_que vi_cap_db_query=', await localAlaSql("select * From vi_cap_db_query order by nco_que,ren_que"))
+    //  debugger
+    //  console.log('nco_que vi_cap_db_query=', await localAlaSql("select * From vi_cap_db_query order by nco_que,ren_que"))
 
     const ins_sql = `select * From vi_cap_db_query \
           where nco_que=${q.nco_que} and trim(usu_que)='${q.usu_que}' order by ren_que`;

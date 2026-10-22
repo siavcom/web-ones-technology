@@ -15,17 +15,22 @@ export class OPTIONGROUP extends COMPONENT {
   constructor() {
     super();
     this.prop.Type = "number";
-    this.style.alignContent = "flex-start" //"flex-end",
-    this.inputStyle.visibility = 'collapse';
-    this.style.borderRadius = '1.5%'
-    this.style.padding = '3%'
-    // this.style.width = 'max-content'
-    this.style.border = '1px solid black';
+    this.style.display = "flex"
+    this.style.alignItems = "flex-start" //"flex-end",
     this.style.padding = '.1px';
-    this.style.borderRadius = '3px';
-    this.prop.Value = 1
+
+    //this.inputStyle.visibility = 'collapse';  provoca que no aparesca en ciertos casos
+    //this.style.borderRadius = '1.5%'
+    // this.style.padding = '3%'
+    // this.style.width = 'max-content'
+
+    this.inputStyle.boxShadow = 'none',
+      //   this.style.borderRadius = '3px';
+      this.prop.Value = 1
     this.containerStyle.display = 'flex'
     this.containerStyle.flexWrap = 'wrap'
+    //this.style.border = '1px solid black';
+    this.style.border = "none"
   }
 
   addOption() {
@@ -69,7 +74,7 @@ export class OPTIONGROUP extends COMPONENT {
       return;
     }
   */
-  public override async afterMounted() {
+  public override async onChangeValue() {
 
     for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
       const item = this.options[i]

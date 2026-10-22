@@ -537,7 +537,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
         const newValue = This.prop.Value
 
-        console.log('=====>  editText update campo=', props.prop.ControlSource, 'readOnly=', This.prop.ReadOnly, 'no Validado ')
+        //  console.log('=====>  editText update campo=', props.prop.ControlSource, 'readOnly=', This.prop.ReadOnly, 'no Validado ')
         This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
 

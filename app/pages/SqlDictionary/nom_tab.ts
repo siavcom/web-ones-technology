@@ -16,10 +16,9 @@ export class nom_tab extends COMPONENT {
     this.prop.BaseClass = "comboBox";
 
     this.prop.Tooltip = "Tablas del SQL Server";
-    this.prop.Capture = true;
+
     this.prop.Value = "COMETAB";
     this.prop.RowSourceType = 0; // 3   1-Value, 2-Alias,3-sql 5-Array
-    this.prop.RowSource = '' // "select des_tab,nom_tab,sis_sis from vi_cap_cometab order by sis_sis,nom_tab";
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "200px,150px,150px";
@@ -48,9 +47,9 @@ export class nom_tab extends COMPONENT {
 
     await useNodata("vi_cap_comedat");
     await useNodata("vi_cap_comeind");
-    console.log('1) *****************************************interctive nom_tab')
+    //  console.log('1) *****************************************interctive nom_tab')
     //await useNodata("vi_cap_comevis");
-    console.log('2) ***************************************interctive nom_tab')
+    //    console.log('2) ***************************************interctive nom_tab')
 
     this.Form.bt_gen_model.prop.Visible = false;
     this.Form.bt_gen_indices.prop.Visible = false;

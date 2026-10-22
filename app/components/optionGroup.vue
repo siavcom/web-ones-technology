@@ -1,21 +1,19 @@
 <template>
-  <div :id="Id + '_component'" class="divi radio radio_class1" :style="Styles.style"
-    v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <span :id="Id + '_label'" class="etiqueta radio radio_class2" v-if="This.prop.Caption"
-      :style="Styles.captionStyle">
+  <div :id="Id + '_component'" class="divi radio radio_class1" :style="Styles.style" v-show="This.prop.Visible"
+    @click.middle.stop="middleClick()">
+    <span :id="Id + '_label'" class="etiqueta radio radio_class2" v-if="This.prop.Caption" :style="Styles.captionStyle">
       {{ This.prop.Caption }}
     </span>
     <div :id="Id + '_options'" class="radio radio_class3" :style="This.containerStyle">
       <label v-for="opt in optionList" :key="opt.prop.OptionNumber" class="radio radio_class4"
         :style="Styles.inputStyle">
-        <input :id="Id + '_opt_' + opt.prop.OptionNumber" :name="Id" type="radio"
-          :value="opt.prop.OptionNumber" v-model="Value"
-          :disabled="This.prop.ReadOnly || This.prop.Disabled || opt.prop.ReadOnly"
-          class="radio radio_class5" @change="onChange" />
+        <input :id="Id + '_opt_' + opt.prop.OptionNumber" :name="Id + opt.prop.OptionNumber" type="radio"
+          :value="opt.prop.OptionNumber" v-model="Value" :disabled="This.prop.ReadOnly || This.prop.Disabled"
+          class="radio radio_class5" @click="opt.click()" @change="onChange" />
         {{ opt.prop.Caption }}
       </label>
     </div>
-  </div>``
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -58,7 +56,7 @@ const Value = computed({
 
 const onChange = () => {
   This.prop.Value = +Value.value
-  This.afterMounted()
+  This.onChangeValue()
   emit('update:Value', This.prop.Value)
   emit('update:Status', 'A')
   emit('update')

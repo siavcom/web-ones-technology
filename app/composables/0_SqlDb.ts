@@ -373,6 +373,8 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
     }
 
     nom_vis = nom_vis.trim();
+
+
     if (!mem) {
         mem = {};
     }
@@ -2912,7 +2914,7 @@ export const localAlaSql = async (ins_sql: string, datos?: any) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     await alasql('USE now ;')
 
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>localAlaSql ins_sql=', ins_sql)//, await localAlaSql('show tables'))
+    //  console.log('>>>>>>>>>>>>>>>>>>>>>>>>localAlaSql ins_sql=', ins_sql)//, await localAlaSql('show tables'))
     try {
 
         if (!datos) {

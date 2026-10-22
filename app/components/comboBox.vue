@@ -349,7 +349,7 @@ const hover = ref(false)
 
 const displayError = ref(false)
 const sw_focus = ref(false)
-
+/*
 if (MultiSelect.value) {
   if (!Styles.style.borderStyle)
     Styles.style.borderStyle = "solid"
@@ -361,6 +361,7 @@ if (MultiSelect.value) {
   if (!Styles.style.borderWidth)
     Styles.style.borderWidth = '1px'
 }
+*/
 
 if (Styles.style.width == 'auto')
   Styles.style.width = 'fit-content'
@@ -1086,6 +1087,71 @@ const clickHelp = async () => {
   focusIn = false
 
 }
+
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun su validacion llamado por watchers
+////////////////////////////////////////////////////////
+const ValidStyle = (forReadOnly?: boolean) => {
+  const estilo = This.inputStyle
+  const invalid = This.invalidInputStyle
+
+  if (!forReadOnly)
+    ReadOnlyStyle()
+
+  if (This.prop.ReadOnly) {
+    return
+  }
+
+
+  Styles.inputStyle.background = estilo.background
+  Styles.inputStyle.opacity = estilo.opacity
+
+  if (This.prop.Valid) {
+    // console.log('watch VALID This.prop.Valid Name=', props.prop.Name)
+    Styles.inputStyle.border = estilo.border
+    Styles.inputStyle.background = estilo.background
+    if (This.Parent.Valid[This.refValid] && !This.Parent.Valid[This.refValid].value) // predemos el arreglo de validaciones para el watch
+      This.Parent.Valid[This.refValid].value = true   // 
+
+  } else {
+
+    Styles.inputStyle.border = invalid.border
+    Styles.inputStyle.background = invalid.background
+    //   console.log('watch VALID This.prop.Valid Name=', props.prop.Name, 'Border', Styles.inputStyle.border)
+    if (This.Parent.Valid[This.refValid] && This.Parent.Valid[This.refValid].value) //  This.Parent.prop.BaseClass == 'Form' predemos el arreglo de validaciones para el watch
+      This.Parent.Valid[This.refValid].value = false
+  }
+
+}
+
+////////////////////////////////////////////////////////
+// Cambia el estilo del input segun si es de solo lectura
+////////////////////////////////////////////////////////
+const ReadOnlyStyle = () => {
+
+  if (This.prop.ReadOnly) {
+    //      Styles.inputStyle = { ...This.readOnlyInputStyle }
+    Styles.inputStyle.background = readOnlyInputStyle.background
+    Styles.inputStyle.opacity = readOnlyInputStyle.opacity
+    displayError.value = false // Apagamos mensaje de error
+    containerStyle.pointerEvents = 'none'
+    containerStyle.opacity = '0.7'
+
+  }
+  else {
+    //Styles.inputStyle = { ...This.inputStyle }
+    Styles.inputStyle.background = This.inputStyle.background
+    Styles.inputStyle.opacity = This.inputStyle.opacity
+    containerStyle.pointerEvents = 'auto'
+    containerStyle.opacity = '1'
+
+    //ValidStyle(true)
+  }
+}
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////
@@ -1938,6 +2004,8 @@ watch(
   () => This.prop.Valid, //props.prop.Value, //Value.value,
   async (new_val: boolean, old_val: boolean) => {
     ValidWatch()
+    ValidStyle()
+
   },
   { deep: false }
 );
