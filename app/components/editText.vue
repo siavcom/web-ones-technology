@@ -1911,8 +1911,11 @@ onMounted(async (e) => {
     */
   }
 
+  /*
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
     Styles.inputStyle.maxHeight = Styles.style.fontSize
+  */
+
   if (propType.value == 'number')
     Styles.inputStyle.textAlign = 'right'
 
