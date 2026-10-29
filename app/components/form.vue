@@ -83,10 +83,13 @@
                           v-if="block.title && block.prop.Visible">{{ block.title }}</label>
                         <div :id="Id + 'block_' + key" :style="block.style" class="form form_class18">
                           <template v-for="(blockComp, key) in block.component" :key="key">
-                            <div :id="Id + 'modal_hor_componentes_' + key + (blockComp && blockComp.prop ? blockComp.prop.Name : '')"
+                            <div
+                              :id="Id + 'modal_hor_componentes_' + key + (blockComp && blockComp.prop ? blockComp.prop.Name : '')"
                               :style="blockComp ? blockComp.f19style : {}" style="padding-bottom:2px"
-                              v-if="blockComp && !isBlockCollapseElement(block, blockComp)" class="responsive form form_class19">
-                              <component v-if="blockComp.prop" :id="Id + '_blockComponent_' + key + (blockComp.prop ? blockComp.prop.Name : '')"
+                              v-if="blockComp && !isBlockCollapseElement(block, blockComp)"
+                              class="responsive form form_class19">
+                              <component v-if="blockComp.prop"
+                                :id="Id + '_blockComponent_' + key + (blockComp.prop ? blockComp.prop.Name : '')"
                                 :is="impComponent(blockComp.prop.BaseClass)" v-model:Value="blockComp.prop.Value"
                                 :Registro="typeof blockComp.Recno == 'number' ? blockComp.Recno : 0"
                                 :prop="blockComp.prop" :style="blockComp.style" class="form form_class20">

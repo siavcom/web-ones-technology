@@ -36,15 +36,10 @@ export class IMGBUTTON extends COMPONENT {
     this.style.alignContent = 'normal'
 
     Object.assign(this.style, {
-      background: 'white',
       color: 'black',
       width: "72px",
       height: "auto",
-      borderRadius: '10%',
-      boxShadow: "0 4px 8px 0, 0 6px 20px 0",
       boxSizing: "border-box",
-      backgroundColor: "floralwhite"
-
     })
 
   }

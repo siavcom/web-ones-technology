@@ -44,16 +44,18 @@
                       </a>
                       <span class="tooltip">{{ menuItem.tooltip || menuItem.name }}</span>
                     </div>
-                    <ul class="sub-menu-Mantenance"
+                    <ul class="sub-menu-Mantenance" :class="{ 'sub-menu-expanded': activeSubMenu === 'maintenance' }"
                       v-show="isOpen && subMen && subItemsMan.length > 0 && subItemsMan[0].system === menuItem.system"
                       :style="{ 'color': 'chartreuse' }">
 
-                      <li @click="isMan = !isMan">
+                      <li @click="toggleSubMenu('maintenance')">
                         <span class="links_options">{{ Props.maintenance
-                        }}</span>
-                        <nuxt-img class="ico" :src="isMan ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
+                          }}</span>
+                        <nuxt-img class="ico"
+                          :src="activeSubMenu === 'maintenance' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
-                      <template v-for="(menuItem, index) in subItemsMan" v-if="isMan" :key="index">
+                      <template v-for="(menuItem, index) in subItemsMan" v-if="activeSubMenu === 'maintenance'"
+                        :key="index">
                         <li>
                           <a href="#" @click.prevent="handleSubMenuNavigate(menuItem)">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
@@ -65,14 +67,15 @@
 
                       </template>
                     </ul>
-                    <ul class="sub-menu-Reports"
+                    <ul class="sub-menu-Reports" :class="{ 'sub-menu-expanded': activeSubMenu === 'reports' }"
                       v-show="isOpen && subMen && subItemsRep.length > 0 && subItemsRep[0].system === menuItem.system"
                       :style="{ 'color': 'chartreuse' }">
-                      <li text-align="end" @click="isRep = !isRep">
+                      <li text-align="end" @click="toggleSubMenu('reports')">
                         <span style="text-align:end" class="links_options">{{ Props.reports }}</span>
-                        <nuxt-img class="ico" :src="isRep ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
+                        <nuxt-img class="ico"
+                          :src="activeSubMenu === 'reports' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
-                      <span v-for="(menuItem, index) in subItemsRep" v-if="isRep" :key="index">
+                      <span v-for="(menuItem, index) in subItemsRep" v-if="activeSubMenu === 'reports'" :key="index">
                         <li>
                           <a href="#" @click.prevent="handleSubMenuNavigate(menuItem)">
                             <span class="links_name" :style="{ 'color': 'chartreuse' }">{{ menuItem.name }}</span>
@@ -83,15 +86,16 @@
                         </li>
                       </span>
                     </ul>
-                    <ul class="sub-menu-Process"
+                    <ul class="sub-menu-Process" :class="{ 'sub-menu-expanded': activeSubMenu === 'process' }"
                       v-show="isOpen && subMen && subItemsPro.length > 0 && subItemsPro[0].system === menuItem.system"
                       :style="{ 'color': 'chartreuse' }">
-                      <li text-align="end" @click="isPro = !isPro">
+                      <li text-align="end" @click="toggleSubMenu('process')">
                         <span class="links_options">{{ Props.process }}</span>
 
-                        <nuxt-img class="ico" :src="isPro ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
+                        <nuxt-img class="ico"
+                          :src="activeSubMenu === 'process' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
-                      <li v-if="isPro" :key="index">
+                      <li v-if="activeSubMenu === 'process'" :key="index">
                         <ul v-for="(menuItem, index) in subItemsPro">
                           <li>
                             <a href="#" @click.prevent="handleSubMenuNavigate(menuItem)">
@@ -346,9 +350,8 @@ let subItemsRep = reactive([])
 let subItemsPro = reactive([])
 
 const subMen = ref(false)
-const isMan = ref(false)
-const isRep = ref(false)
-const isPro = ref(false)
+const activeSubMenu = ref<'maintenance' | 'reports' | 'process' | null>(null)
+
 
 // Idicamos si ya esta firmado
 
@@ -562,9 +565,7 @@ const obtSubMenu = (system: string) => {
   isOpen.value = true
   // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
-  isMan.value = false
-  isRep.value = false
-  isPro.value = false
+  activeSubMenu.value = null
 
   subItemsMan.length = 0 // borramos subItems
   subItemsRep.length = 0 // borramos subItems
@@ -635,17 +636,21 @@ const obtSubMenu = (system: string) => {
   }
 }
 
+const toggleSubMenu = (subMenu: 'maintenance' | 'reports' | 'process') => {
+  activeSubMenu.value = activeSubMenu.value === subMenu ? null : subMenu
+}
+
 /// //////////////////////////////////////
 // Preserva variables GET al navegar
 /// ///////////////////////////////////////
 const getFullPath = (path: any) => {
   const route = useRoute();
   const fullPath = { ...path };
-  
+
   if (route.query && Object.keys(route.query).length > 0) {
     fullPath.query = { ...route.query, ...(path.query || {}) };
   }
-  
+
   return fullPath;
 }
 
@@ -653,11 +658,11 @@ const navigateToPath = (path: any) => {
   const router = useRouter();
   const route = useRoute();
   const fullPath = getFullPath(path);
-  
+
   // Si es el mismo path, forzar recarga completa
   if (route.path === fullPath.path) {
-    const url = fullPath.path + (Object.keys(fullPath.query || {}).length > 0 
-      ? '?' + new URLSearchParams(fullPath.query as any).toString() 
+    const url = fullPath.path + (Object.keys(fullPath.query || {}).length > 0
+      ? '?' + new URLSearchParams(fullPath.query as any).toString()
       : '');
     window.location.href = url;
   } else {
@@ -803,6 +808,17 @@ body {
   position: relative;
   cursor: pointer;
   margin-left: 10px;
+}
+
+.sidebar li ul.sub-menu-expanded {
+  background-color: rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
+  padding: 2px;
+}
+
+.sidebar li ul.sub-menu-expanded span {
+  color: black !important
 }
 
 .sidebar li ul li img {
