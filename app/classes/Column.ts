@@ -1,5 +1,5 @@
 //////////////////////////////////////////////
-// Clase : Celda de un gridd
+// Clase : Celda de un grid
 // @author: Fernando Cuadras Angulo
 // Creacion : Noviembre/2021
 // Ult.Mod  : Agosto/2025

@@ -374,6 +374,8 @@ export const use = async (nom_vis: string, mem?: {}, alias?: string, order?: str
     }
 
     nom_vis = nom_vis.trim();
+
+
     if (!mem) {
         mem = {};
     }
@@ -2354,7 +2356,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
                 case tip_cam == "DATETIME" || tip_cam == "TIME":
                     campo = campo + ' STRING(16)';
                     break;
-                case campo == "timestamp":
+                case campo == "timestamp" && Public.value.dialect == 'mssql':
                     campo = campo + ' JSON';
                     break;
                 default:
@@ -2383,6 +2385,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + '; ')
 
             // 19/Ene/2026
+            console.log('genera tabla alias', alias, 'des_tab=', des_tab)
             await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
             await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
             await localAlaSql("USE last ;" + des_tab);
@@ -2688,7 +2691,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
 
     let numInt = 0
 
-    while (
+    if (
         (!(This.value.session?.id_con > " ") ||
             This.value.session?.user == "" ||
             This.value.session?.nom_emp == "") && numInt < 0
@@ -2912,7 +2915,9 @@ export const localAlaSql = async (ins_sql: string, datos?: any) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     await alasql('USE now ;')
 
+    //  console.log('>>>>>>>>>>>>>>>>>>>>>>>>localAlaSql ins_sql=', ins_sql)//, await localAlaSql('show tables'))
     try {
+
         if (!datos) {
             const data = await alasql(ins_sql);
             alasql('USE now ;')

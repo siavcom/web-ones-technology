@@ -256,11 +256,10 @@ export class reportForm extends FORM {
     this.block[i] = structuredClone(this.container)
     this.block[i].component = {
       [0]: this.reportFields,
-
     }
-
     this.block[i].title = 'Campos de reporte'
-    this.block[i].prop.Visible = false
+    this.block[i].prop.Visible = true
+
 
     i++
 
@@ -341,7 +340,7 @@ export class reportForm extends FORM {
     // Query Usuario
 
     await this.asignaRecordSource("queryUsu", "query_user");
-    this.queryUsu.usu_que = this.Sql.session.user;
+    this.queryUsu.usu_que = Public.value.log_usu // this.Sql.session.user;
     this.queryUsu.prop.Caption =
       "Por usuario :" + this.queryUsu.usu_que;
 
@@ -353,12 +352,9 @@ export class reportForm extends FORM {
     //console.log('query_usu RecordSource=', this.queryUsu.Grid.prop.RecordSource)
     //console.log('query_gen RecordSource=', this.queryGen.Grid.prop.RecordSource)
 
-
-
-    if (this.Sql.session.user == "sa") {
+    if (Public.value.log_usu.trim() == "ADMIN")
       this.reportFields.prop.Visible = true;
 
-    }
 
     //await this.open()
     return
@@ -372,6 +368,9 @@ export class reportForm extends FORM {
       par_prg: this.Params[0] ? this.Params[0] : " ",
       nom_tab: this.vis_rep,
     };
+
+
+
     await use("vi_cap_db_query", m); // todos los querys del reporte
 
   }
@@ -417,7 +416,7 @@ export class reportForm extends FORM {
         usu_que: this[tip_con].usu_que,
         nco_que: this[tip_con].nco_que.prop.Value,
       };
-      await this.Sql.localClone("vi_cap_db_query", tabla, filter);
+      await localClone("vi_cap_db_query", tabla, filter);
     }
 
     const ins_sql = `select * from ${tabla} where nco_que=${nco_que} order by ren_que`;

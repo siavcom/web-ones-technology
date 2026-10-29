@@ -10,10 +10,13 @@
  * @export
  * @class COMPONENT
  */
+import { ref, toRef } from 'vue'
 const RefReadOnly = ref(false)
 const RefDisabled = ref(false)
+const RefRecno = ref(0)
 
 export class COMPONENT {
+
   Name: string; // =(typeof this.constructor.name =="string") ? this.constructor.name :'Undefined'   //.toLowerCase()
   Parent = {}; //this.Dom.ctx; // Contexto
 
@@ -21,7 +24,10 @@ export class COMPONENT {
   //Name = 'component'  // Se pone aqui el name para que en el html poder hacer refere
   //name = this.Name
   Sql: any = {};
-  Recno: number; // ref(0)
+  Recno: number = 0 // ref(0)
+  ReadOnly: boolean = false
+  Disabled: boolean = false
+
   //Ref: null | undefined;
   Show: true = true;
   Index!: number;
@@ -284,7 +290,10 @@ export class COMPONENT {
     borderRadius: "", //"2px",
     color: 'black',// "#b94295", //"#b94295", // '#872169', //    
     cols: "60",
-    display: "inline-flex",
+    // display: "inline-flex", se cambia 20/Octubre
+    display: 'flex',
+    alignItems: "flex-start",
+    // Termna modificacion 20/Octubre
     flexGrow: "0" /* do not grow   - initial value: 0 */,
     flexShrink: "0" /* do not shrink - initial value: 1 */,
     flexBasis: "auto" /* width/height  - initial value: auto */,
@@ -293,6 +302,7 @@ export class COMPONENT {
     fontFamily: "Arial",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     height: "99%",     // 95%
+    justifyContent: 'space-between',
     maxHeight: "auto",
     marginLeft: "2px", //5px
     maxWidth: "auto",
@@ -304,8 +314,10 @@ export class COMPONENT {
     width: "auto",          //"max-content",      // 95%
     wordWrap: "break-word", // Parte las palabras
     zIndex: 1, // profundidad
+    placeContent: 'normal'
 
   };
+  /*
   classCss = {
     1: 'sm:w-full px-2 py-1',
     label: 'text-sm text-slate-700 tracking-tight',
@@ -316,7 +328,7 @@ export class COMPONENT {
     inputError: 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100',
     toggle: ''
   }
-
+*/
   position = {
     position: "left",
     width: "auto",
@@ -376,7 +388,6 @@ export class COMPONENT {
   constructor() {
     this.Name = this.constructor.name;
     this.prop.Name = this.Name; //21/abril/2024
-    this.Recno = 0;
     this.prop.This = this;
     this.inputStyle.cols = 100 // textArea cols
     this.prop.Rows = 5 // textArea rows
@@ -397,11 +408,17 @@ export class COMPONENT {
    * 
    * @returns {Promise<void>}
    */
-  public asignaRecno() {
+  public asignaRecno(linked?: boolean) {
     if (this.prop.Name == 'translateContainer')
       return
-    this.prop.ReadOnly = RefReadOnly
-    this.prop.Disabled = RefDisabled
+
+    if (linked) {
+      this.prop.ReadOnly = RefReadOnly
+      this.prop.Disabled = RefDisabled
+    }
+    this.Recno = RefRecno
+
+
     if (this.prop.RecordSource == '') {
       const pos = this.prop.ControlSource.indexOf(".") + 1;
       if (pos == 1) {
@@ -422,13 +439,27 @@ export class COMPONENT {
         && (Comp.prop.BaseClass.toLowerCase() == "edittext" || Comp.prop.BaseClass.toLowerCase() == 'combobox' || Comp.prop.BaseClass.toLowerCase() == 'base64' || Comp.prop.BaseClass.toLowerCase() == 'textlabel')
         && Comp.prop.ControlSource.length > 0) {
         // console.log('3) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, Comp.prop.ControlSource, Comp.prop.ControlSource.search(this.prop.RecordSource))
-        if (Comp.prop.ControlSource.search(this.prop.RecordSource) >= 0)
-          Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
 
-        Comp.prop.ReadOnly = RefReadOnly //  ref(this.prop.ReadOnly)
-        Comp.prop.Disabled = RefDisabled //ref(this.prop.Disabled)
+        let RecordSource = this.prop.RecordSource.trim()
+        if (RecordSource.length == 0) {
+          const pos = Comp.prop.ControlSource.indexOf(".");
+          if (pos > 0) {
+            RecordSource = Comp.prop.ControlSource.slice(0, pos)
+          }
+        }
+
+
+        if (Comp.prop.ControlSource.search(RecordSource) >= 0)
+          //Comp.Recno = ref(this.Recno)  // asignamos el recno de c/componente de la forma
+          Comp.Recno = RefRecno // ref(this.Recno)  // asignamos el recno de c/componente de la forma
+
+        if (linked) {
+          Comp.prop.ReadOnly = RefReadOnly //  ref(this.prop.ReadOnly)
+          Comp.prop.Disabled = RefDisabled //ref(this.prop.Disabled)
+        }
         Comp.captionStyle.background = ref(this.captionStyle.background)
 
+        //console.log('4) Asignado recno por referencia al padre ', this.prop.Name, 'Componente=', Comp.prop.Name, 'Recno=', Comp.Recno, 'ReadOnly=', Comp.prop.ReadOnly, 'Disabled=', Comp.prop.Disabled)
         // Si el componente es de captura de datos de un Form o grid, lo aumenta a arreglo de validaciones
         if (Comp.prop.Capture) {
           this.Valid.value.push(ref(this[comp].prop.Valid))

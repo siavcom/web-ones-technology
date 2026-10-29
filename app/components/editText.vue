@@ -167,7 +167,7 @@
   </div>
 </template>
 
-<script setup lang="ts" vapor>
+<script setup lang="ts">
 //<script setup lang="ts" vapor>
 
 /*
@@ -469,7 +469,10 @@ inherit	Inherits this property from its parent element. Read about inherit
 /////////////////////////////////////////////////////////////////
 const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string) => {
 
+
+
   const Type = propType.value
+
   // false,false,Value
   // console.log('editText emitValue() readCam=', readCam, 'isValid=', isValid, 'Valor=', Valor, 'Value.value=', Value.value)
   const ControlSource = props.prop.ControlSource
@@ -537,7 +540,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
         const newValue = This.prop.Value
 
-        console.log('=====>  editText update campo=', props.prop.ControlSource, 'readOnly=', This.prop.ReadOnly, 'no Validado ')
+        //  console.log('=====>  editText update campo=', props.prop.ControlSource, 'readOnly=', This.prop.ReadOnly, 'no Validado ')
         This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
 
@@ -593,7 +596,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
     //    This.prop.Valid = true
 
     if (props.Registro == 0 || ControlSource.length == 0) { // limpia value
-      let defaultValue = ''
+
       if (ControlSource.length > 0 || props.prop.Value == null) {
 
         switch (Type) {
@@ -613,8 +616,13 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
           default:
             Value.value = ''
         }
+        console.log('1) editText Name=', This.prop.Name, ' Type=', Type, 'Value=', props.prop.Value, This.prop.Value)
+
+
       } else {
         Value.value = props.prop.Value // asignamos valor al Value.value
+        console.log('2) editText Name=', This.prop.Name, ' Type=', Type, 'Value=', props.prop.Value, This.prop.Value)
+
       }
 
     }
@@ -1476,7 +1484,7 @@ watch(
 
     await emitValue(true)
     //29/Oct/2025 -- Se quita, daba problema en el grid
-    //This.Recno = props.Registro
+
     This.recnoChange()
   },
   { deep: true }
@@ -1895,8 +1903,8 @@ onMounted(async (e) => {
   thisElement = document.getElementById(Id) // Obtiene el id de este componente en el DOM
 
   styleAssing()
+  console.log('0) editText Name=', This.prop.Name, 'Value=', props.prop.Value, This.prop.Value)
 
-  console.log('editText mounted propType.value=', propType.value)
   if (propType.value == 'number') {
 
     if (typeof This.prop.Value === 'string') {
@@ -1911,8 +1919,11 @@ onMounted(async (e) => {
     */
   }
 
+  /*
   if (propType.value == 'text' || propType.value == 'number' || propType.value == 'checkbox')
     Styles.inputStyle.maxHeight = Styles.style.fontSize
+  */
+
   if (propType.value == 'number')
     Styles.inputStyle.textAlign = 'right'
 
@@ -1940,7 +1951,7 @@ if (!This.prop.RefValue == null)
 
   await emitValue(true)
 
-  This.Recno = props.Registro
+  // 5/Oct/2026  This.Recno = props.Registro
 
   if (typeof Value.value == 'number')
     oldVal = Value.value.toString()   // asignamos el valor viejo  

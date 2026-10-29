@@ -15,11 +15,12 @@ export class option extends COMPONENT {
     super();
     this.prop.Type = "checkBox";
     this.prop.OptionNumber = OptionNumber; // Posicion dentro del optionGroup
-    this.prop.Value = 0
-    this.inputStyle.color = 'black';
-    this.inputStyle.textAlign = 'center';
-    this.inputStyle.appearance = 'none';
-
+    //  this.prop.Value = 0
+    // this.inputStyle.color = 'black';
+    // this.inputStyle.textAlign = 'center';
+    // this.inputStyle.appearance = 'none';
+    this.prop.ReadOnly = false
+    this.prop.Disabled = false
     if (OptionNumber == 1)
       this.prop.Value = 1
     else

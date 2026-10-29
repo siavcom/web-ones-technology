@@ -30,6 +30,8 @@ export class CONTAINER extends COMPONENT {
     this.style.background = 'rgb(235,248,238)'
 
     this.style.left = '1%'
+
+    this.containerStyle.marginRight = '10px'
     this.containerStyle.display = 'flex'
     this.containerStyle.flexWrap = 'wrap'
     this.containerStyle.width = 'min-content'

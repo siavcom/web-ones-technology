@@ -184,10 +184,14 @@ export class GRID extends COMPONENT {
   public async validColumn(refColumn: void, errorMessage?: string): Promise<boolean> {
     //const column = this[name];
     //   console.log("Column valid refColumn=", refColumn)
+
     const column = refColumn.value
 
     if (!column.prop.updateKey)
       return true;
+
+    if (column.prop.ReadOnly)
+      return true
 
     if (
       typeof column.prop.Value == "string" &&
@@ -196,7 +200,8 @@ export class GRID extends COMPONENT {
 
       return false;
     }
-    if (!(await this.validKey(column.prop.name, column.Recno, errorMessage))) {
+
+    if (!(await this.validKey(column.prop.name, this.Recno, errorMessage))) {
       //column.prop.ErrorMessage = this.prop.Messages[7];
       return false;
     }

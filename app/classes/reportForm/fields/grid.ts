@@ -1,7 +1,7 @@
 //////////////////////////////////////////////
 // @baseClass  : Grid
 // @class : table
-// Description : Campos en losreportes por pantalla
+// Description : Campos en los reportes por pantalla
 // @author: El Fer Blocks
 // Creation : 2023-10-16
 // Update Date  : 16/Octubre/2023

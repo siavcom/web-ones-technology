@@ -25,7 +25,7 @@ export class log_usu extends COMPONENT {
 
     this.style.color = "black";
     this.style.fontWeight = "bold";
-    this.style.fontSize = "15px";
+    this.style.fontSize = "17px";
     this.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
 
     this.prop.TabIndex = 2;

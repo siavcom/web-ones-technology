@@ -49,7 +49,7 @@ export class bt_aceptar extends IMGBUTTON {
   } // Fin constructor
 
   override async click() {
-    const m = { nom_tab: this.Form.nom_tab.prop.Value };
+    const m = { nom_tab: this.Form.nom_tab.prop.Value.toLowerCase().trim() };
 
     if (!this.prop.Visible) {
       console.log('============>  bt_aceptar disabled')
@@ -164,9 +164,9 @@ export class bt_aceptar extends IMGBUTTON {
         }
 
         this.Form.prop.Status = "A";
-        await this.Form.db.useNodata("vi_cap_comedat");
-        await this.Form.db.useNodata("vi_cap_comeind");
-        await this.Form.db.useNodata("vi_cap_comevis");
+        await useNodata("vi_cap_comedat");
+        await useNodata("vi_cap_comeind");
+        await useNodata("vi_cap_comevis");
         this.Form.grid_datos.prop.Visible = false;
         this.Form.grid_indices.prop.Visible = false;
         this.Form.grid_vistas.prop.Visible = false;
@@ -195,9 +195,7 @@ export class bt_aceptar extends IMGBUTTON {
         if (this.Form.dic_dat.prop.Value == "D") {
           this.Form.grid_datos.prop.Status = "A";
           this.Form.grid_datos.RecordSource = '';
-          await this.Form.db.use("vi_cap_comedat ", m, "vi_cap_comedat", [
-            "con_dat",
-          ]);
+          await use("vi_cap_comedat ", m, "vi_cap_comedat", ["con_dat"]);
           this.Form.grid_datos.RecordSource = 'vi_cap_comedat';
 
           if ((await recCount("vi_cap_comedat")) == 0) {
