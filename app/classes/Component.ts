@@ -225,14 +225,15 @@ export class COMPONENT {
   }
 
   footerStyle = {
-    alignItems: 'center !important'
+    alignItems: 'center !important',
+    justifyContent: 'space-between !important'
   }
 
   buttonFooterStyle = {
-    backgroundColor: 'transparent',
-    boxShadow: 'none',
-    cursor: 'pointer',
-    border: 'none',
+    backgroundColor: 'transparent !important',
+    boxShadow: 'none !important',
+    cursor: 'pointer !important',
+    border: 'none !important'
   }
 
   buttonImgFooterStyle = {

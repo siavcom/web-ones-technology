@@ -68,7 +68,7 @@ export class FORM extends COMPONENT {
   footerStyle = {
     display: 'flex',
     alignItems: 'last baseline',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     height: 'fit-content',
     backgroundColor: '#c8e0ce',
     border: '1px solid rgb(0, 0, 0)',
