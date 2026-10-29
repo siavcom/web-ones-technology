@@ -16,6 +16,7 @@ import { xml2js, xml2json } from 'xml-js'
 import axios from "axios";
 import alasql from "alasql";
 import { storeToRefs } from "pinia";
+import { useRouter } from "#imports";
 
 //import { query } from "~/classes/queryGen/query";
 

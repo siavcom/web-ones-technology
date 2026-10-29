@@ -11,14 +11,14 @@
       }}</span>
 
     <input :id="Id + '_checkBox'" v-if="prop.Type == 'checkBox'" class="checkbox text text_class2" type="checkBox"
-      :style=Styles.inputStyle :checked="checkValue" readonly="true" @focus="nextElement()" />
+      :style=Styles.inputStyle :title="This.prop.ToolTipText" :checked="checkValue" readonly="true" @focus="nextElement()" />
 
     <input :id="Id + '_json'" v-else-if="prop.Type == 'json'" class="text text text_class2" value='Data'
-      :style="Styles.inputStyle" readonly="true" @focus="nextElement()" />
+      :style="Styles.inputStyle" :title="This.prop.ToolTipText" readonly="true" @focus="nextElement()" />
     <input :id="Id + '_date'" v-else-if="prop.Type == 'date'" class="text text_class2" type="date"
-      :style="Styles.inputStyle" readonly="true" @focus="nextElement()" v-model="Text" />
+      :style="Styles.inputStyle" :title="This.prop.ToolTipText" readonly="true" @focus="nextElement()" v-model="Text" />
     <input :id="Id + '_datetime'" v-else-if="prop.Type == 'datetime'" class="text text_class2" type="datetime-local"
-      :style="Styles.inputStyle" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
+      :style="Styles.inputStyle" :title="This.prop.ToolTipText" :format="This.prop.Format" readonly="true" @focus="nextElement()" v-model="Text" />
     <!--imgButton class='button text text_class3' :id="Id + '_imgButton'" v-else-if="prop.BaseClass == 'imgButton'"
       v-model:Value="This.prop.Value" :Registro="typeof This.Recno == 'number' ? This.Recno : 0" :prop="This.prop"
       :style="This.style" click.prevent.stop /-->
@@ -40,7 +40,7 @@
       <label v-if="Text != null && Text.length > 0"
         :style="{ 'word-wrap': 'break-word', 'font-size': style.fontSize, 'color': style.color }">{{ Text }}</label </imgButton>-->
 
-    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :style="Styles.inputStyle"
+    <input :id="Id + '_text'" v-else v-show="prop.Visible && Text != null" type="text" :title="This.prop.ToolTipText" :style="Styles.inputStyle"
       readonly="true" @focus="nextElement()" v-model="Text" class="text text_class4" />
 
     <div v-if="Type != 'imgButton' && prop.Image > '    '" class="text text_class5">
