@@ -22,7 +22,7 @@ export class pas_usu extends COMPONENT {
     this.prop.ErrorMessage = "Invalid password/Contraseña invalida";
     this.style.color = "black";
     this.style.fontWeight = "bold";
-    this.style.fontSize = "15px";
+    this.style.fontSize = "17px";
     this.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
 
   }

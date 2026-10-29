@@ -50,7 +50,7 @@
     <!--         ComboBox NOT MultiSelect      -->
     <div :id="Id + '_selectOne'" v-else class="combo combo_class9 comboBox text" ref="RefCombo" :style='comboStyle'>
       <input :id="Id" class="combo combo_class10 text" :style="Styles.inputStyle" :disabled="prop.Disabled"
-        :readonly="prop.ReadOnly || onlyRead" :value="displayText" :tabindex="prop.TabIndex" ref="Ref"
+        :readonly="prop.ReadOnly || onlyRead" :value="displayText" :tabindex="prop.TabIndex" ref="RefInput"
         @keydown="keyDown" @focus.prevent="onFocus()" @focusout="onInputFocusOut" />
       <!--Valor seleccionado click-->
 
@@ -339,6 +339,7 @@ const width = reactive(['60%', '20%', '20%']);
 
 //const ReadOnly = ref(props.prop.ReadOnly)
 //const Ref = ref(null)
+const RefInput = ref(null)
 const RefCombo = ref(null)
 
 const Status = ref(props.prop.Status);
@@ -2168,7 +2169,7 @@ onMounted(async () => {
          Styles.style.zIndex = 100
    */
 
-    Styles.inputStyle.maxHeight = Styles.inputStyle.fontSize
+    // Styles.inputStyle.maxHeight = Styles.inputStyle.fontSize
 
     if (Styles.inputStyle.width.search("px") > 0) {
       textWidth = +Styles.inputStyle.width.replaceAll('px', '') - 30
@@ -2194,15 +2195,23 @@ onMounted(async () => {
     }
 
     // asina tamaño de la imagen toogle
+    /*
+        if (toggleStyle.maxHeight == 'auto')
+          toggleStyle.maxHeight = '13px'
+    
+        if (toggleStyle.maxHeight.search("px") > 0) {
+          const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 3
+          toggleStyle.maxHeight = textWidth.toString() + 'px'
+          toggleStyle.height = toggleStyle.maxHeight
+        }
+    */
+    if (!MultiSelect.value) {
 
-    if (toggleStyle.maxHeight == 'auto')
-      toggleStyle.maxHeight = '13px'
-
-    if (toggleStyle.maxHeight.search("px") > 0) {
-      const textWidth = +toggleStyle.maxHeight.replaceAll('px', '') + 3
-      toggleStyle.maxHeight = textWidth.toString() + 'px'
-      toggleStyle.height = toggleStyle.maxHeight
+      toggleStyle.height = RefInput.value.offsetHeight + 'px' //.getBoundingClientRect() //  
+      toggleStyle.maxHeight = toggleStyle.height
+      // console.log('Altura input toggleStyle=', toggleStyle)
     }
+    console.log('Altura input Height=', RefInput.value.offsetHeight)
     //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
   }

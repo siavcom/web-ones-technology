@@ -290,6 +290,7 @@ export class captureForm extends FORM {
 
     //this.sw_update = false
     console.log('validKeyComponent data=', data)
+    //debugger
     this.Recno = data.recno;
     this.prop.Status = 'P'
     for (const comp of this.main) {
@@ -297,7 +298,7 @@ export class captureForm extends FORM {
 
       CompCap.prop.ShowError = false
       CompCap.prop.Valid = true
-      if (!CompCap.prop.updateKey)
+      if (!CompCap.prop.updateKey && CompCap.prop.BaseClass.toLowerCase() != 'textlabel')
         CompCap.prop.ReadOnly = true
 
     }

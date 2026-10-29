@@ -14,9 +14,9 @@ export class cam_dat extends COLUMN {
   //  constructor(parent: Record<string, never>) {
   constructor() {
     super();
-    this.prop.Order = 2;
+    //  this.prop.Order = 2;
     this.prop.ColumnTextLabel = "Campo";
-    this.prop.BaseClass = "editText";
+    //   this.prop.BaseClass = "editText";
     this.prop.ControlSource = "vi_cap_comedat.cam_dat";
     this.prop.Placeholder = "Nombre del campo";
     this.prop.ToolTipText = "Nombre del campo";
@@ -48,6 +48,7 @@ export class cam_dat extends COLUMN {
     else
       this.prop.ReadOnly = false;
 
+    this.old_value = this.prop.Value
     return !this.prop.ReadOnly
   }
 
@@ -55,17 +56,20 @@ export class cam_dat extends COLUMN {
     if (!this.prop.When) return true;
     if (this.prop.Value.trim().length == 0) return false;
 
-    this.prop.Value = this.prop.Value.toLowerCase().replaceAll(' ', '');
+    const cam_dat = this.prop.Value.toLowerCase().replaceAll(' ', '');
 
-    const valor = this.prop.Value.trim()
-    const recno = this.Recno;
-    const data = await this.Form.db.localSql(
-      `select count(key_pri) as existe from vi_cap_comedat where trim(lower(cam_dat))="${valor}" and recno<>${recno}`
+    const valor = await currentValue('recno', 'vi_cap_comedat')
+    const recno = valor.recno;
+
+    const data = await localSql(
+      `select count(key_pri) as existe from vi_cap_comedat where trim(lower(cam_dat))="${cam_dat}" and recno<>${recno}`
     );
     if (data[0].existe > 0) {
-      this.prop.Value = "";
+      this.prop.Value = this.old_value;
+      //await nextTick()
       return false;
     }
+    this.prop.Value = cam_dat
     return true;
   }
 }

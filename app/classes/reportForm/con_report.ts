@@ -8,9 +8,9 @@
 ///////////////////////////////////////
 // Clase base
 ///////////////////////////////////////
-import { COLUMN } from '@/classes/Column'
+//import { COLUMN } from '@/classes/Column'
 
-export class con_report extends COLUMN {
+export class con_report extends COMPONENT {
 
     //  constructor(parent: Record<string, never>) {
     constructor() {

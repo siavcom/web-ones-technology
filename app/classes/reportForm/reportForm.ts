@@ -256,11 +256,10 @@ export class reportForm extends FORM {
     this.block[i] = structuredClone(this.container)
     this.block[i].component = {
       [0]: this.reportFields,
-
     }
-
     this.block[i].title = 'Campos de reporte'
-    this.block[i].prop.Visible = false
+    this.block[i].prop.Visible = true
+
 
     i++
 
@@ -352,8 +351,6 @@ export class reportForm extends FORM {
     //console.log('query_pri RecordSource=', this.queryPri.Grid.prop.RecordSource)
     //console.log('query_usu RecordSource=', this.queryUsu.Grid.prop.RecordSource)
     //console.log('query_gen RecordSource=', this.queryGen.Grid.prop.RecordSource)
-
-
 
     if (Public.value.log_usu.trim() == "ADMIN")
       this.reportFields.prop.Visible = true;
