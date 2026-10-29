@@ -44,23 +44,9 @@ export class option extends COMPONENT {
   ///////////////////////////////////////////
 
   override async click() { // Pone en el valor del padre el numero de opcion seleccionado
-
-    if (this.prop.Value == 1 && this.Parent.prop.Value != this.prop.OptionNumber)
-      this.Parent.prop.Value = this.prop.OptionNumber
-
+    this.prop.Value = 1;  // marca el seleccionado     
     this.prop.ReadOnly = true
-    const thisForm = this.Parent
-
-    for (let i = 1; i < thisForm.options.length; i++) {   // apaga los demas checkbox
-      const item = thisForm.options[i]
-      if (item.prop.OptionNumber != this.prop.OptionNumber) {
-        item.prop.ReadOnly = false
-        item.prop.Value = 0;  // marca el seleccionado     
-
-        //      item.inputStyle.background = 'radial-gradient(circle at center, #f2f2f2 50%, transparent 50%)';
-      }
-    }
-
+    console.log("option Raul:", this.prop.Value)
   }
 
 }
