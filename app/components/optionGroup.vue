@@ -9,7 +9,7 @@
         :style="Styles.inputStyle">
         <input :id="Id + '_opt_' + opt.prop.OptionNumber" :name="Id + opt.prop.OptionNumber" type="radio"
           :value="opt.prop.OptionNumber" v-model="Value" :disabled="This.prop.ReadOnly || This.prop.Disabled"
-          class="radio radio_class5" @click="opt.click()" @change="onChange" />
+          class="radio radio_class5" @change="onChange" @click="opt.click()" />
         {{ opt.prop.Caption }}
       </label>
     </div>
@@ -46,6 +46,7 @@ This.prop.htmlId = Id
 
 const optionList = computed(() => This.options.filter((o: any) => o && o.prop))
 
+
 const Value = computed({
   get: () => This.prop.Value,
   set: (val: string | number) => {
@@ -53,6 +54,23 @@ const Value = computed({
     emit('update:Value', This.prop.Value)
   }
 })
+
+
+/*
+const Value = ref(1)
+
+
+watch(
+  () => This.prop.Value,
+  () => {
+    Value.value=This.prop.Value
+  },
+  { deep: false }
+);
+
+*/
+
+
 
 const onChange = () => {
   This.prop.Value = +Value.value
