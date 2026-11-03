@@ -329,7 +329,7 @@ export const Session = defineStore(
             // const result = await axios.post(url.value + "sql", dat_vis);
 
             socket.emit("sql async", dat_vis, (data) => {
-              console.log("1) Pinia Public.value=", Public.value);
+              console.log("1) storagePinia data", data[0]);
               if (data && data.length > 0) {
                 Var.value = data[0];
 
@@ -362,38 +362,40 @@ export const Session = defineStore(
                 }
 
                 Public.value.dialect = dialect.value.toLowerCase()
-                Public.value.des_mon1[1] = Var.value.de1_pge
-                Public.value.des_mon1[2] = Var.value.de2_pge
-                Public.value.des_mon1[3] = Var.value.de3_pge
-                Public.value.des_mon1[4] = Var.value.de4_pge
-                Public.value.des_mon1[5] = Var.value.de5_pge
+                if (Var.value.de1_pge) {
+                  Public.value.des_mon1[1] = Var.value.de1_pge
+                  Public.value.des_mon1[2] = Var.value.de2_pge
+                  Public.value.des_mon1[3] = Var.value.de3_pge
+                  Public.value.des_mon1[4] = Var.value.de4_pge
+                  Public.value.des_mon1[5] = Var.value.de5_pge
 
-                Public.value.pro_mon1[1] = Var.value.pr1_pge
-                Public.value.pro_mon1[2] = Var.value.pr2_pge
-                Public.value.pro_mon1[3] = Var.value.pr3_pge
-                Public.value.pro_mon1[4] = Var.value.pr4_pge
-                Public.value.pro_mon1[5] = Var.value.pr5_pge
+                  Public.value.pro_mon1[1] = Var.value.pr1_pge
+                  Public.value.pro_mon1[2] = Var.value.pr2_pge
+                  Public.value.pro_mon1[3] = Var.value.pr3_pge
+                  Public.value.pro_mon1[4] = Var.value.pr4_pge
+                  Public.value.pro_mon1[5] = Var.value.pr5_pge
 
-                Public.value.des_imp1[0] = Var.value.di0_pge
-                Public.value.des_imp1[1] = Var.value.di1_pge
-                Public.value.des_imp1[2] = Var.value.di2_pge
-                Public.value.des_imp1[3] = Var.value.di3_pge
-                Public.value.des_imp1[4] = Var.value.di4_pge
-                Public.value.des_imp1[5] = Var.value.di5_pge
-                /*
-                                Var.value.des_imp1[0] = Var.value.di0_pge
-                                Var.value.des_imp1[1] = Var.value.di1_pge
-                                Var.value.des_imp1[2] = Var.value.di2_pge
-                                Var.value.des_imp1[3] = Var.value.di3_pge
-                                Var.value.des_imp1[4] = Var.value.di4_pge
-                                Var.value.des_imp1[5] = Var.value.di5_pge
-                */
-                //        dec_mon1: ["", "", "", "", ""],
-                Public.value.val_mon1[1] = Var.value.va1_pge
-                Public.value.val_mon1[2] = Var.value.va2_pge
-                Public.value.val_mon1[3] = Var.value.va3_pge
-                Public.value.val_mon1[4] = Var.value.va4_pge
-                Public.value.val_mon1[5] = Var.value.va5_pge
+                  Public.value.des_imp1[0] = Var.value.di0_pge
+                  Public.value.des_imp1[1] = Var.value.di1_pge
+                  Public.value.des_imp1[2] = Var.value.di2_pge
+                  Public.value.des_imp1[3] = Var.value.di3_pge
+                  Public.value.des_imp1[4] = Var.value.di4_pge
+                  Public.value.des_imp1[5] = Var.value.di5_pge
+                  /*
+                                  Var.value.des_imp1[0] = Var.value.di0_pge
+                                  Var.value.des_imp1[1] = Var.value.di1_pge
+                                  Var.value.des_imp1[2] = Var.value.di2_pge
+                                  Var.value.des_imp1[3] = Var.value.di3_pge
+                                  Var.value.des_imp1[4] = Var.value.di4_pge
+                                  Var.value.des_imp1[5] = Var.value.di5_pge
+                  */
+                  //        dec_mon1: ["", "", "", "", ""],
+                  Public.value.val_mon1[1] = Var.value.va1_pge
+                  Public.value.val_mon1[2] = Var.value.va2_pge
+                  Public.value.val_mon1[3] = Var.value.va3_pge
+                  Public.value.val_mon1[4] = Var.value.va4_pge
+                  Public.value.val_mon1[5] = Var.value.va5_pge
+                }
                 /*
                                 Var.value.val_mon1[1] = Var.value.va1_pge
                                 Var.value.val_mon1[2] = Var.value.va2_pge
