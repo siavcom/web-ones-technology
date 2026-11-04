@@ -3,8 +3,8 @@
      28/Jun/2026 .-Se quita el spqm y se cambia por <div style="display: inline-block;"
                   el display inline-block permite que los elementos que contiene el div, parreczcan seguidos de el
     -->
-  <div style="display: inline-block;" :id="Id + '_component'" class=" divi inputDivi edit edit_class1"
-    :title="This.prop.ToolTipText" :style="Styles.style" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
+  <div :style="Styles.style" :id="Id + '_component'" class=" divi inputDivi edit edit_class1"
+    :title="This.prop.ToolTipText" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
     <span :id="Id + '_label'" class="etiqueta edit edit_class2" v-if="prop.Caption.length > 0"
       :style="Styles.captionStyle">{{
         prop.Caption }}
@@ -296,6 +296,8 @@ const Styles = reactive(
     style: divStyle,
     //invalidInputStyle: invalidInputStyle
   })
+
+
 
 const helpStyle = {
   // position: 'absolute',
@@ -1983,6 +1985,8 @@ onBeforeMount(async () => {
 onUnmounted(async () => {
   if (This.onUnmounted) await This.onUnmounted()
 })
+
+
 
 </script>
 <style scoped>

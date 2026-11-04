@@ -46,7 +46,6 @@ export class option extends COMPONENT {
   override async click() { // Pone en el valor del padre el numero de opcion seleccionado
     this.prop.Value = 1;  // marca el seleccionado     
     this.prop.ReadOnly = true
-    console.log("option Raul:", this.prop.Value)
   }
 
 }

@@ -294,8 +294,6 @@ export class COMPONENT {
     display: 'flex',
     alignItems: "flex-start",
     // Termna modificacion 20/Octubre
-    flexGrow: "0" /* do not grow   - initial value: 0 */,
-    flexShrink: "0" /* do not shrink - initial value: 1 */,
     flexBasis: "auto" /* width/height  - initial value: auto */,
     flexWrap: "wrap",
     fontWeight: "normal",

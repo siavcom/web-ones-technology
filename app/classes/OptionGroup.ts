@@ -53,6 +53,5 @@ export class OPTIONGROUP extends COMPONENT {
       item.prop.Value = 0;  // marca el seleccionado     
       item.prop.ReadOnly = false
     }
-    console.log("optionGroup Raul:", this.prop.Value)
   }
 }
