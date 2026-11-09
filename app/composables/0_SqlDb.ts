@@ -3336,7 +3336,7 @@ export const goto = async (despla: string | number, area?: string, lastDatabase?
         // recno = This.value.View[alias].recno;
         recno = This.View[alias].recno;
     data = await localAlaSql(`SELECT * FROM ${table}  where recno=?`, recno);
-    //console.log('sql goto alias=', alias, ' recno=', recno, 'data=', data)
+    console.log('sql goto alias=', table, ' recno=', recno, 'data=', data)
 
     await alasql('USE now;')
     if (data.length == 0) {
@@ -3472,6 +3472,8 @@ export const oldValue = async (field: string | Array<string>, aliasTable?: strin
     //slice(punto + 1)
 
     const res = await currentValue(field, aliasTable, true)
+
+    console.log('oldValue aliasTable=', aliasTable, 'field=', field, 'res=', res, 'object.keys(res).length=', Object.keys(res).length)
     if (Object.keys(res).length === 0)
         return null
 
@@ -3500,7 +3502,7 @@ export const currentValue = async (field: string | Array<string>, aliasTable?: s
     else
         data = await goto(0, aliasTable) // Obtenemos el registro actual
 
-    // console.log('currentValue Alias=', aliasTable, 'data=', data)
+    console.log('currentValue Alias=', aliasTable, 'last', last, 'field=', field, 'data=', data)
     if (data == null || data == {})
         return {}
     // if (Object.keys(data).length === 0) // No hay datos en el objeto
@@ -3518,6 +3520,11 @@ export const currentValue = async (field: string | Array<string>, aliasTable?: s
 
     if (typeof field === 'string')
         fields = field.split(',')
+
+    for (const i in fields)
+        fields[i] = fields[i].trim()
+
+    console.log('2) currentValue Alias=', aliasTable, 'last', last, 'fields=', fields)
 
     for (const campo in data) {
         // console.log('campo=', campo, 'fields=', fields.includes(campo))

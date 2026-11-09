@@ -50,7 +50,7 @@
 
                       <li @click="toggleSubMenu('maintenance')">
                         <span class="links_options">{{ Props.maintenance
-                          }}</span>
+                        }}</span>
                         <nuxt-img class="ico"
                           :src="activeSubMenu === 'maintenance' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
@@ -817,8 +817,9 @@ body {
   padding: 2px;
 }
 
+/* Cambio de color de los submenus */
 .sidebar li ul.sub-menu-expanded span {
-  color: black !important
+  color: rgb(236, 240, 236) !important
 }
 
 .sidebar li ul li img {

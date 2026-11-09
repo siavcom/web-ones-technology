@@ -1,15 +1,18 @@
 <template>
   <div :id="Id + '_component'" class="divi_imgButton imgbutton imgbutton_class1" :title="This.prop.ToolTipText"
-    :style="Styles.style" v-show="This.prop.Visible" @click.middle.stop="middleClick()">
-    <!-- UButton -->
+    :style="Styles.style" v-show="This.prop.Visible" @click="click">
+    <!-- UButton  
+      class="imgbutton imgbutton_class2" @click.stop="click()" :style="{ width: '100%', ...This.buttonFooterStyle }">
+     :style="{ display: 'block', width: '100%', ...This.buttonImgFooterStyle 
+    
+    -->
     <button :id="Id" :label="prop.Image.trim() == '' ? prop.Caption : ''" v-show="prop.Visible"
       :disabled="prop.ReadOnly || prop.Disabled" :tabindex="prop.TabIndex" @focus="onFocus" @focusout="focusOut"
-      class="imgbutton imgbutton_class2" @click.stop="click()" :style="{ width: '100%', ...This.buttonFooterStyle }">
+      class="imgbutton imgbutton_class2" @click.stop="click()" :style="buttonStyle">
       <img :id="Id + '_img_'" v-if="prop.Image.length > 0" :src="prop.Image" :alt="prop.Value"
-        :style="{ display: 'block', width: '100%', ...This.buttonImgFooterStyle }" @click.stop="click"
-        class="imgbutton imgbutton_class3" />
+        class="imgbutton imgbutton_class3" :style="imgButtonStyle" />
       <!--{{ prop.Image.length == 0 ? prop.Caption : '' }}-->
-      <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible" @click.stop="click"
+      <label :id="Id + '_label_'" v-if="prop.Caption.length > 0" word-wrap: v-show="prop.Visible"
         class="imgbutton imgbutton_class4" :style="Styles.captionStyle">
         {{ prop.Caption }}</label>
     </button>
@@ -105,6 +108,8 @@ const Este = props.prop.This
 const captionStyle = reactive({ ...Este.captionStyle })
 const inputStyle = reactive({ ...Este.inputStyle })
 const divStyle = reactive({ ...Este.style })
+const buttonStyle = reactive({ ...Este.buttonStyle })
+const imgButtonStyle = reactive({ ...Este.imgButtonStyle })
 
 let inFocus = false
 /*
@@ -321,11 +326,3 @@ const handler = (event) => {
 
 */
 </script>
-<style scoped>
-.img {
-  /*filter: invert(1);
-transform: scale(2) translate(0px, 10px);*/
-  display: block;
-  width: 100%;
-}
-</style>

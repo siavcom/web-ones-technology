@@ -138,7 +138,8 @@ export default defineEventHandler(async (event) => {
         // console.log('1) ========================SQLExec ====================== result=', result.recordsets[0][0])
         return result.recordsets;
       } catch (err) {
-        console.error('Error de conexión:', err);
+
+        console.error('ERROR MSSQL NITRO SERVER :', sqlQuery, err);
         return err
       }
 
@@ -166,7 +167,7 @@ export default defineEventHandler(async (event) => {
         return mssqlStructure
         // Example: const result = await SQLServer(sqlQuery);
       } catch (err) {
-        console.error('*********************Error ************************SQL Server Error de ejecucion:', err);
+        console.error('MSSQL NITRO SERVER :SQL Server Error de ejecucion:', err);
         return err
       }
     }
@@ -182,6 +183,9 @@ export default defineEventHandler(async (event) => {
 
   //const path = '/sistemas/web-ones/public'
   const body = await readBody(event)
+
+  console.log('0) >>>>>>>>>>>>>>>>callServer body=', body)
+
   const call = body.call  // obtiene el tipo de llamada
   let con_id = ''
   if (body.user)
@@ -236,7 +240,7 @@ export default defineEventHandler(async (event) => {
     case 'iniEmpresa':
       //  const config = useRuntimeConfig()
 
-      console.log('>>>>>>>>>>>>>>>>callServer sqlNitro=', sqlNitro)
+      console.log('1) >>>>>>>>>>>>>>>>callServer sqlNitro=', sqlNitro)
       if (sqlNitro) {
         const empresa = body.empresa
 
@@ -255,9 +259,12 @@ export default defineEventHandler(async (event) => {
 
         try {  // Lee el archivo de configuración del SQLServer de la empresa
           let leeEmp = await fs.readFile(path + '/' + nombreEmpresa + '/config.json', "utf-8")
+          console.log('2)>>>>>>>>>>>>>>>callServer leeEmp=', leeEmp)
 
           serverConfig = JSON.parse(leeEmp)
+
           sqlConfig = serverConfig.sqlConfig
+          console.log('2.3)  >>>>>>>>>> sqlConfig=', sqlConfig)
           const mailServer = serverConfig.mailServer ? serverConfig.mailServer : '{}'
           // Save a value
           //   await storage.setItem(mailServer:mailServer);
@@ -272,11 +279,13 @@ export default defineEventHandler(async (event) => {
 
           //const serverConfig = JSON.parse(leeEmp)
 
-          sqlConfig.user = user.trim()
+          console.log('2.5)  >>>>>>>>>> sqlConfig=', sqlConfig)
+          const siavcom = sqlConfig.siavcom ? true : false
+          sqlConfig.user = body.user.trim() //user.trim()
           sqlConfig.password = body.password
           let data: any = []
 
-          console.log('2)  >>>>>>>>>>iniEmp leeEmp sqlConfig=', sqlConfig)
+          console.log('3)  >>>>>>>>>>iniEmp leeEmp sqlConfig=', sqlConfig)
 
           if (sqlConfig.dialect == 'mssql') {
             sqlPool[id_con] = await MSSQL.connect(sqlConfig);
@@ -295,25 +304,26 @@ export default defineEventHandler(async (event) => {
           console.log('1)  >>>>>>>>>>iniEmp leeEmp sqlConfig sqlPool[id_con]=', sqlPool[id_con])
 
           //console.log('Test1====', await SqlExec(" select top 10 nom_doi from man_comedoi where cla_isu='LOGO' ", user))
-
-          let query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=1 `
-          data = await SqlExec(query, id_con)
-
-          //console.log('2) >>>>>>>>>>>>>>>>> data=', data[0][0])
-          if (!data[0][0] || !
-            data[0][0].arc_doi || data[0][0].arc_doi.length == 0) {
-            query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=0 `
+          if (siavcom) {
+            let query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=1 `
             data = await SqlExec(query, id_con)
-            //  console.log('2) data=', data[0][0].nom_doi)
-            // console.log('2) XXXXX  LeeLogo Logo[0][0] 1 =', data[0][0])
-          }
 
-          // El data se obtiene de la base de datos
-          if (data[0][0] && data[0][0].arc_doi && data[0][0].arc_doi.length >= 10) {
-            const tipArchivo = data[0][0].arc_doi.trim().slice(-3)
-            result.logoEmp = `data:image/${tipArchivo};base64,` + data[0][0].arc_doi
-            // console.log('2) Return >>>>>>>>>>iniEmp Executa query=', query, 'result=', result)
-            return result
+            //console.log('2) >>>>>>>>>>>>>>>>> data=', data[0][0])
+            if (!data[0][0] || !
+              data[0][0].arc_doi || data[0][0].arc_doi.length == 0) {
+              query = `select arc_doi,nom_doi from man_comedoi where cla_isu='LOGO' and tip_doi='F' and con_doi=0 `
+              data = await SqlExec(query, id_con)
+              //  console.log('2) data=', data[0][0].nom_doi)
+              // console.log('2) XXXXX  LeeLogo Logo[0][0] 1 =', data[0][0])
+            }
+
+            // El data se obtiene de la base de datos
+            if ((data[0][0] && data[0][0].arc_doi && data[0][0].arc_doi.length >= 10)) {
+              const tipArchivo = data[0][0].arc_doi.trim().slice(-3)
+              result.logoEmp = `data:image/${tipArchivo};base64,` + data[0][0].arc_doi
+              // console.log('2) Return >>>>>>>>>>iniEmp Executa query=', query, 'result=', result)
+              return result
+            }
           }
           // El logo se obtiene del servidor si no se encuentra en la base de datos
           if (empresasJson[empresa] && empresasJson[empresa].logoEmp && empresasJson[empresa].logoEmp.length > 0) {

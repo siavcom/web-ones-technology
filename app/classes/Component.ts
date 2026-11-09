@@ -235,14 +235,14 @@ export class COMPONENT {
     justifyContent: 'space-between !important'
   }
 
-  buttonFooterStyle = {
+  buttonStyle = {
     backgroundColor: 'transparent !important',
     boxShadow: 'none !important',
     cursor: 'pointer !important',
     border: 'none !important'
   }
 
-  buttonImgFooterStyle = {
+  imgButtonStyle = {
     width: '32px',
     height: '32px',
   }

@@ -72,13 +72,15 @@ export class var_ord extends COMPONENT {
     }
 
     const data = await localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where trim(cam_dat)='${this.prop.Value.trim()}'`)
-    console.log('interactiveChange var_ord', `select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value.trim()}'`, data)
+
     const tip_dat = data[0].tip_dat
     const lon_dat = data[0].lon_dat > 30 ? 30 : data[0].lon_dat
 
     let Type = 'text'
     let des_Value = this.Form.fields[num_dat][2] ? eval(this.Form.fields[num_dat][2]) : ''
     let has_Value = this.Form.fields[num_dat][3] ? eval(this.Form.fields[num_dat][3]) : ''
+
+    //console.log('var_ord when des_Value=', des_Value, ' has_Value=', has_Value, ' tip_dat=', tip_dat.slice(0, 3), ' lon_dat=', lon_dat)
 
     if (tip_dat == 'smallint' ||
       tip_dat.slice(0, 3) == 'int' ||
@@ -109,8 +111,8 @@ export class var_ord extends COMPONENT {
       this.Form.has_dat.prop.Value = await dateTimeToSql(has_Value)
     }
 
-    if (tip_dat == 'char' ||
-      tip_dat == 'varchar' ||
+    if (tip_dat.slice(0, 4) == 'char' ||
+      tip_dat.slice(0, 7) == 'varchar' ||
       tip_dat == 'text' ||
       tip_dat == 'string'
     ) {
