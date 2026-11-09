@@ -13,7 +13,6 @@ import { COMPONENT } from "@/classes/Component";
 export class has_dat extends COMPONENT {
   constructor() {
     super();
-    this.prop.BaseClass = "editText";
     this.prop.Caption = "Y ";
     this.prop.MaxLength = 30;
     this.prop.Value = " ";

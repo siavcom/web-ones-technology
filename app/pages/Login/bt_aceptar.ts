@@ -16,7 +16,13 @@ export class bt_aceptar extends IMGBUTTON {
 
     this.prop.BaseClass = "imgButton";
     // this.prop.Caption = "Enter/Entrar";
-    this.style.width = "64px";
+    this.style.width = "48px";
+    //this.buttonStyle.width = "48px";
+    this.imgButtonStyle.width = "52px";
+    this.imgButtonStyle.height = "52px";
+
+    //this.style.height = "64px";
+
     this.prop.TabIndex = 4;
     this.prop.Image = "/Iconos/svg/accept.svg";
   }

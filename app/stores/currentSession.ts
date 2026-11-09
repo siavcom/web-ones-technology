@@ -411,7 +411,7 @@ export const Session = defineStore(
                 }
               }
 
-              // console.log("2)Pinia Public.value=", Public.value, 'Var.value', Var.value);
+              console.log("2)Pinia Public.value=", Public.value, 'Var.value', Var.value);
 
             }
 

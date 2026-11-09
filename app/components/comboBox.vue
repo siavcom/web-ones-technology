@@ -642,9 +642,9 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     // console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor, 'Registro=', props.Registro)
     if (props.Registro > 0 && props.prop.ControlSource && props.prop.ControlSource.length > 2) {
-      console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor)
       await updateCampo(Valor, props.prop.ControlSource, props.Registro)
     }
+
 
     // actualiza el valor Value en el componente padre para interactive change tenga el valor This.prop.Value
     This.prop.Value = Value.value
@@ -652,6 +652,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
     if (isValid == undefined)
       isValid = false
 
+    // console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor, 'isValid=', isValid, 'This.prop.Value=', This.prop.Value, 'displayText=', displayText.value)
     if (!isValid) {
       This.prop.Valid = false
       //const Valid_1 =
