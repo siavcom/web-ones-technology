@@ -140,7 +140,6 @@
       </div>
 
       <div class="mainForm">
-
         <NuxtLayout name='header' :logoEmp="logoEmp" :nomEmp="nom_emp" :titleName="titleName" :fpo_pge="fpo_pge"
           :user="user" />
         <NuxtLayout name='default'>
