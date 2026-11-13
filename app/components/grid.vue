@@ -53,7 +53,7 @@
               <td v-if="item" :id="Id + '_grid_td_row' + item.recno" class='renNumber' data-label="#"
                 style="height: auto;"><label>{{
                   item.recno
-                  }}</label></td>
+                }}</label></td>
               <!-------------  Columnas  ------------------------->
               <td v-if="item" :id="Id + '_grid_td_column_' + item.recno + '_' + col.Name" v-for="col in This.elements"
                 v-show="This[col.Name].prop.Visible && !This[col.Name].prop.FieldFilter"
@@ -459,16 +459,18 @@ watch(
   async (new_val, old_val) => {
     //  console.log('2).0 3.3 -- Grid watch compValid', 'Row=', This.Row)
 
+    if (This.Row < 0) return  // No hay renglon posicionado
 
-    if (This.Row < 0) return
     for (const comp in compValid) { // Recorre todos los estatus del grid
-      if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && !This[comp].prop.ReadOnly && This[comp].prop.Visible && This[comp].prop.Valid == false) { // Si alguno no esta validado
+      if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') &&
+        !This[comp].prop.Disabled && !This[comp].prop.ReadOnly &&
+        This[comp].prop.Visible &&
+        This[comp].prop.Valid == false) { // Si alguno no esta validado
         console.warn('>>>>>> Grid watch compValid Columna = ', comp, compValid[comp], 'ClaseBase=', This[comp].prop.BaseClass.toUpperCase(), 'Disabled=', This[comp].prop.Disabled, 'Visible=', This[comp].prop.Visible, 'Valid=', This[comp].prop.Valid)
         return
       }
-      This.prop.Valid = true
+      //  This.prop.Valid = true
     }
-
 
     let ColumnActive = ''
     ColumnActive = This.Column     //.value
@@ -486,50 +488,33 @@ watch(
     
     */
 
-    console.log('========================Grid todo Validado========================')
+    console.log('========================Grid todo Validado       Row=', This.Row)
     // Buca el recno de este renglon 
 
     console.log('Grid watch Todo validado scroll.dataPage=', scroll.dataPage)
     const LastRecno = scroll.dataPage[scroll.dataPage.length - 1].recno
 
     // Busca que Recno tiene el This.Row donde esta posicionado el grid
-    const res = scroll.dataPage.find((ele) => ele.id == This.Row);
+    const res = scroll.dataPage.find((ele) => ele.id == This.Row)
+    debugger
+    console.log('========================Grid todo Validado     res=', res)
+
     const Recno = res.recno
 
     //console.log('2).0 3.3 -- Grid watch compValid ColumnActive=', Column.value)
 
     // const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = This.prop.RecordSource
-    await goto(Recno, tabla)
+    // 10 Nov 2026  await goto(Recno, tabla)
 
-
-    // const table = await currentValue('key_pri', tabla)
-
-    //console.log('3) 3.3.2 saveRow Grid watch compValid tabla=', tabla, 'campo=', campo)
-    /*
-    if (table.key_pri > 0) {
-      const Now = await localAlaSql(`select ${campo} from now.${tabla} where recno=${Recno}`)
-      const Last = await localAlaSql(`select ${campo} from last.${tabla} where recno=${Recno}`)
-      // if (Now.length == 0 || last.length == 0) return
-
-      if (Last.length == 0 || Now[0][campo] !== Last[0][campo]) {
-        // console.log('<<<<<Grabara renglon>>>> 3.3.4 saveRow Grid watch compValid ColumnName=', ColumnActive)
-
-        if (!await This.saveRow(ColumnActive)) {
-          This[ColumnActive].prop.Valid = false
-          This[ColumnActive].prop.ShowError = true
-        }
-      }
-
-    } else {// Si no tiene key_pri graba renglon
-    */
-    const data = await currentValue('key_pri,recno', tabla)
+    //   const data = await currentValue('key_pri,recno', tabla)
     if (await This.saveRow(Recno)) {
-      await goto(Recno, tabla)
-      if (data.key_pri > 0) { // Si es un renglon que ya exite en la base de datos
-        return
-      }
-
+      /*
+          await goto(Recno, tabla)
+          if (data.key_pri > 0) { // Si es un renglon que ya exite en la base de datos
+            return
+          }
+    */
       if (LastRecno === Recno && This.prop.addRow) { // Si esta en el ultimo renglon de la tabla de captura
         This.appendRow()
 
@@ -549,23 +534,27 @@ watch(
 
     if (data.key_pri > 0) { // Si es un renglon que ya esxite en la base de datos
 
-      This[ColumnActive].prop.Valid = false
+      //   This[ColumnActive].prop.Valid = false
       This[ColumnActive].prop.Focus = true
       // This[ColumnActive].prop.ControlSource = ControlSource
       return
     }
 
     // apagamos todas las validaciones
-    let First = ''
+    //    let First = ''
     for (const comp in compValid) { // Recorre todos los estatus del grid
-      if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') && !This[comp].prop.Disabled && !This[comp].prop.ReadOnly && This[comp].prop.Visible) { // Si alguno no esta validado
-        if (First == '')
-          First = comp
-        This[comp].prop.Valid = false
+
+      if ((This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX') &&
+        !This[comp].prop.Disabled && !This[comp].prop.ReadOnly && This[comp].prop.Visible) { // Si alguno no esta validado
+        This[comp].prop.Focus = true
+        return
+        //    if (First == '')
+        //        First = comp
+        // This[comp].prop.Valid = false
       }
     }
 
-    This[First].prop.Focus = true
+
     //   This.prop.Valid = true
     //console.log('------>>>>>>  Grid watch compValid Vaid=', This.prop.Valid, 'Row=', This.Row,)
   },

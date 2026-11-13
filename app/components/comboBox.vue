@@ -376,11 +376,11 @@ const comboStyle = reactive({
   zIndex: zIndex.value,
   ...This.comboStyle
 })
-const toggleStyle = reactive({
+const toggleStyle = {
   maxHeight: Styles.style.fontSize,
   height: Styles.style.fontSize,
   marginTop: 'auto'
-})
+}
 
 const toggleViewport = reactive({
   left: '0px',
@@ -654,14 +654,18 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
 
     // console.log('comboBox emitValue() Name', props.prop.Name, 'Valor=', Valor, 'isValid=', isValid, 'This.prop.Value=', This.prop.Value, 'displayText=', displayText.value)
     if (!isValid) {
-      This.prop.Valid = false
+      // Se comenta 11 Nov 2026   This.prop.Valid = false
       //const Valid_1 =
-      await This.interactiveChange()
+      if (!await This.interactiveChange()) {
+        displayError.value = true
+        This.prop.displayError = true
+        return
+      }
+
       inputBuffer.value = ''
       //      This.prop.Valid = false
       const newValue = This.prop.Value
 
-      // if (!Valid_1 || !await This.valid()) {
       if (!await This.valid()) {
 
         // console.log('1) !Valid editText emitValue() Name', props.prop.Name, 'This.valid= false')
@@ -700,14 +704,16 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
       let sw_dat = false
       for (const campo in data) {
 
-        //   if (campo == 'key_pri' && data.key_pri > 0)
-        //     This.prop.Valid = true
-
         if (campo != 'key_pri') {
           sw_dat = true
 
           This.prop.Valid = true// ya se capturo algo , se apaga Valid
-          Value.value = data[campo]
+          if (typeof data[campo] == 'number')
+            Value.value = +data[campo] // se regresaraq el valor con emi al v-model:Value
+          else
+            Value.value = data[campo] // se regresaraq el valor con emi al v-model:Value
+
+          //          Value.value = data[campo]
           //console.log('comboBox emitValue readCampo ', props.Registro, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value)
 
           if (!isValid) {
@@ -715,6 +721,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean) => {
           }
         }
         else {
+          This.prop.Valid = data.key_pri > 0 ? true : false
           /* se quito 23/Feb/2026
                     if (data.key_pri > 0)
                       This.prop.Valid = true
@@ -1802,8 +1809,8 @@ watch(
 watch(
   () => This.prop.Value, //This.prop.Value, //props.prop.Value, //Value.value,
   async (new_val, old_val) => {
-    console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
-    console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value watchPropValue=', watchPropValue, 'focusIn=', focusIn)
+    // console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value Name=', This.prop.Name, 'Value=', Value.value, 'New=', new_val, 'Old=', old_val)
+    // console.trace('>>>>>>>>>>>>>>Inicio ComboBox Watch Value watchPropValue=', watchPropValue, 'focusIn=', focusIn)
     if (watchPropValue == true) return
 
     // 6/Ags/2026 .- Se quira porque cuando obtenia el foco y el componente anterior cambiaba el valor de este componente 
@@ -2212,16 +2219,16 @@ onMounted(async () => {
       toggleStyle.maxHeight = toggleStyle.height
       // console.log('Altura input toggleStyle=', toggleStyle)
     }
-    console.log('Altura input Height=', RefInput.value.offsetHeight)
+    // console.log('Altura input Height=', RefInput.value.offsetHeight)
     //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
 
   }
 
 
-  console.log('===================== Antes de render ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
+  //console.log('===================== Antes de render ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
   await renderComboBox(true) // lee los datos del combo
 
-  console.log('================= Despues de render  ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
+  //console.log('================= Despues de render  ComboBox onMounted  Name=', This.prop.Name, 'prop.Value=', This.prop.Value)
 
   //    This.Form.eventos.push(This.prop.Map + '.afterMounted()')
 

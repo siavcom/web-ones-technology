@@ -542,7 +542,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
         const newValue = This.prop.Value
 
-        //  console.log('=====>  editText update campo=', props.prop.ControlSource, 'readOnly=', This.prop.ReadOnly, 'no Validado ')
+        console.log('1) emitValue editText  This.prop.Valid = false Name=', This.prop.Name)
         This.prop.Valid = false
         if (!This.prop.ReadOnly && !await This.valid()) {
 
@@ -649,6 +649,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
 
           if (campo != 'key_pri') {
             sw_dat = true
+            // This.prop.Valid = true
 
             if (Type == 'number')
               Value.value = +data[campo] // se regresaraq el valor con emi al v-model:Value
@@ -660,7 +661,11 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
             if (!isValid) {
               readValid = true
             }
+
           } else {
+
+            This.prop.Valid = data.key_pri > 0 ? true : false
+            console.log('2) emitValue editText  Name=', This.prop.Name, 'This.prop.Valid = ', This.prop.Valid)
             /*  se quito 23/Feb/2026
                         if (data.key_pri > 0)
                           This.prop.Valid = true
@@ -697,7 +702,7 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
       }
     }
 
-  }
+  } // Fin lectura de campo
 
   //console.log('>>>>>2.2.5) editText emitValue Name=', props.prop.Name, props.prop.ControlSource, '!isValid=', isValid, 'Value=', Value.value, 'Recno=', props.Registro)
   switch (Type) {
@@ -1059,6 +1064,7 @@ const keyDown = ($event: { charCode: number; preventDefault: () => void; keycode
     console.log('Tab or Enter pressed Name', This.prop.Name, 'Value=', Value.value)
     return
   }
+  console.log('EditText  This.prop.Valid = false  Name=', This.prop.Name,)
   This.prop.Valid = false // comenzo a teclear. Apagamos validacion
   if (displayError.value) {
     displayError.value = false

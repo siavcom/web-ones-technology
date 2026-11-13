@@ -625,6 +625,7 @@ export const requery = async (alias?: string, key_pri?: number, currentRow?: boo
         m = await currentValue('*', alias)
     else {
         const data = await localAlaSql(`select * from ${alias} where key_pri=${key_pri}`)
+        console.log('requery data=', data)
         m = data[0]
     }
 
@@ -3049,7 +3050,8 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
             recno
         );
         */
-    const all_data = await localAlaSql(`USE ${DataBase} ; SELECT ${campo} FROM ${tabla}  WHERE recno=${recno}`);
+    //const all_data = await localAlaSql(`USE ${DataBase} ; SELECT ${campo} FROM ${tabla}  WHERE recno=${recno}`);
+    const all_data = await localAlaSql(`USE ${DataBase} ; SELECT * FROM ${tabla}  WHERE recno=${recno}`);
     alasql('USE now ;')
     // probar  
     //  console.log('readCampo all_data=', data, 'Recno:', recno)
@@ -3058,6 +3060,7 @@ export const readCampo = async (ControlSource: string, recno: number, DataBase?:
         const data = {}
         //        console.log('readCampo all_data=', all_data[1][0])
         data[campo] = all_data[1][0][campo]
+        data.key_pri = all_data[1][0].key_pri ? all_data[1][0].key_pri : 0
 
         if (typeof data[campo] === "string")
             data[campo] = data[campo].trim();
@@ -3468,7 +3471,7 @@ export const oldValue = async (field: string | Array<string>, aliasTable?: strin
     }
 
     if (punto >= 0)
-        field = field.replaceAll(aliasTable + '.', ' ')
+        field = field.replaceAll(aliasTable + '.', '').trim()
     //slice(punto + 1)
 
     const res = await currentValue(field, aliasTable, true)
