@@ -2212,9 +2212,6 @@ onMounted(async () => {
       toggleStyle.maxHeight = toggleStyle.height
       // console.log('Altura input toggleStyle=', toggleStyle)
     }
-    console.log('Altura input Height=', RefInput.value.offsetHeight)
-    //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
-
   }
 
 
