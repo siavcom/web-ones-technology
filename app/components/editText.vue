@@ -167,8 +167,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-//<script setup lang="ts" vapor>
+<script setup lang="ts" vapor>
 
 /*
 ----------------------------------------------------------------------------------------------
@@ -541,27 +540,30 @@ const emitValue = async (readCam?: boolean, isValid?: boolean, newValor?: string
         //console.log('3.3) editText emitValue() Valid=false update localSQL Name=', props.prop.Name, 'Value=', Value.value, 'This.prop.Value=', This.prop.Value)
 
         const newValue = This.prop.Value
+        //This.prop.Valid = false
+        if (!This.prop.ReadOnly) {
+          if (!await This.valid()) {
+            This.prop.Valid = false
+            //if (This.prop.Valid)
+            //  This.prop.Valid = false
 
-        console.log('1) emitValue editText  This.prop.Valid = false Name=', This.prop.Name)
-        This.prop.Valid = false
-        if (!This.prop.ReadOnly && !await This.valid()) {
+            displayError.value = true
+            This.prop.ShowError = true
 
-          //if (This.prop.Valid)
-          //  This.prop.Valid = false
+            setTimeout(() => {
+              displayError.value = false
+              This.prop.ShowError = false
+            }, 5000)
 
-          displayError.value = true
-          This.prop.ShowError = true
+            ValidStyle()
+            if (Type == 'checkbox')
+              checkValue.value = This.prop.Value == 1 ? true : false
+            This.prop.Status = 'A'
+            return
 
-          setTimeout(() => {
-            displayError.value = false
-            This.prop.ShowError = false
-          }, 5000)
-
-          ValidStyle()
-          if (Type == 'checkbox')
-            checkValue.value = This.prop.Value == 1 ? true : false
-          This.prop.Status = 'A'
-          return
+          } else
+            if (!This.prop.Valid)
+              This.prop.Valid = true
         }
         This.prop.Status = 'A'
         This.prop.Valid = true
@@ -1703,7 +1705,7 @@ watch(
 );
 
 /** 
- Checa los cambio de estuatusn de todos los componentes
+ Checa los cambio de estuatus de todos los componentes
  y si alguno esta en modo edicion, no permite que este componente tome el foco.
  Si el watch se dispara pero no es el componente que tomo el foco, no hace nada
 */

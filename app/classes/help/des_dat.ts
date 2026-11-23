@@ -26,15 +26,16 @@ export class des_dat extends COMPONENT {
     //this.style.zIndex=3  // Profundidad en eje Z. Mientras mas pequeño el objeto esta mas atras, mientras mas grande esta mas enfrente
   }
 
-  async valid() {
+  override async valid() {
     this.prop.Valid = true
     if (this.Parent.cam_dat.Type == 'string') {
       const Value = this.prop.Value.trim()
+      this.prop.Value = Value
       if (Value.length == 0) {
         this.prop.Valid = false
         return false
       }
-      console.log('des_dat Value=', Value, this.prop.MaxLength, Value.length)
+      // console.log('des_dat Value=', Value, this.prop.MaxLength, Value.length)
       if (this.prop.MaxLength - (Value.length) > 0) {
         const ztas = 'z'.repeat(this.prop.MaxLength - (Value.length))
         this.Parent.has_dat.prop.Value = Value + ztas

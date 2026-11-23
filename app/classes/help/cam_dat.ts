@@ -47,7 +47,7 @@ export class cam_dat extends COMPONENT {
 
   override async interactiveChange() {
 
-    console.trace('cam_dat interactiveChange This-prop.Value', this.prop.Value)
+    // console.trace('cam_dat interactiveChange This-prop.Value', this.prop.Value)
     const data = await localAlaSql(`select tip_dat,lon_dat,dec_dat from now.diccionario where cam_dat='${this.prop.Value}'`)
     const tip_dat = data[0].tip_dat
     let Type = 'string'
@@ -91,6 +91,6 @@ export class cam_dat extends COMPONENT {
     this.Parent.has_dat.prop.Decimals = data[0].dec_dat
     this.Parent.has_dat.prop.Value = has_Value
     this.Parent.tip_con.when()
-    return
+    return true
   }
-}
+} 

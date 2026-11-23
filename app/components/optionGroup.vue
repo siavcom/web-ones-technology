@@ -54,24 +54,19 @@ const Value = computed({
     emit('update:Value', This.prop.Value)
   }
 })
-
-
 /*
-const Value = ref(1)
-
-
 watch(
   () => This.prop.Value,
-  () => {
-    Value.value=This.prop.Value
+  (new_val: any, old_val: any) => {
+    console.log('OptionGroup watch Value=', new_val)
+    if (This.OptionList[new_val])
+      This.OptionList[new_val].click()
+    else
+      This.prop.Value = old_val
   },
   { deep: false }
 );
-
 */
-
-
-
 const onChange = () => {
   This.prop.Value = +Value.value
   This.onChangeValue()

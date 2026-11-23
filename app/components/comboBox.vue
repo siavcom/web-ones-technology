@@ -1011,12 +1011,12 @@ const validClick = async (num_ren: number) => {
   activeOptionIndex.value = -1
 
   Value.value = columnas[num_ren].value  // columnas tiene dos campos value y text
-  // console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
+  console.log('ComboBox validClick', This.prop.Name, 'num_ren=', num_ren, 'Value=', Value.value)
   //  await This.interactiveChange()
   emitValue()
+  firstFocus = false
   focusIn = false // Perdio el foco
-  return
-
+  return nextElement()
 };
 
 const validCheck = async (num_ren: number) => {
@@ -1025,7 +1025,6 @@ const validCheck = async (num_ren: number) => {
 
   if (columnas[num_ren].check)
     styleOption.backgroundColor = 'aquamarine'
-
   else
     styleOption.backgroundColor = 'white' //'#e3e6e4'
 
@@ -1047,14 +1046,30 @@ const validCheck = async (num_ren: number) => {
   Value.value = ValResultante
   //console.log('comboBox evalidCheck ', 'Value=', Value.value)
   // This.prop.Value = Value.value
-  This.prop.Valid = false
-  emitValue()
-  //This.prop.Value = ValResultante
-  //
+  // This.prop.Valid = false
+
+  try {
+    await emitValue()
+  } finally {
+    backgroundSelected()
+  }
 
   return
 
 };
+
+const backgroundSelected = () => {
+  const values = String(This.prop.Value || '')
+    .split(',')
+    .map((v: string) => v.trim())
+    .filter((v: string) => v.length > 0)
+
+  for (let i = 0; i < columnas.length; i++) {
+    const element = columnas[i] as any
+    const valor = String(element.value ?? '').trim()
+    element.check = values.includes(valor)
+  }
+}
 
 /////////////////////////////////////////////////////////////////////
 // ValidList (solo MultiSelect)
@@ -2219,9 +2234,6 @@ onMounted(async () => {
       toggleStyle.maxHeight = toggleStyle.height
       // console.log('Altura input toggleStyle=', toggleStyle)
     }
-    // console.log('Altura input Height=', RefInput.value.offsetHeight)
-    //  console.log('1.5) comboBox onMounted  Name=', This.prop.Name, 'toggleStyle.maxHeight=', toggleStyle.maxHeight)
-
   }
 
 

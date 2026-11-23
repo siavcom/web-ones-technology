@@ -16,10 +16,10 @@ export class bt_aceptar extends IMGBUTTON {
 
     this.prop.BaseClass = "imgButton";
     // this.prop.Caption = "Enter/Entrar";
-    this.style.width = "48px";
+    this.style.width = "65px";
     //this.buttonStyle.width = "48px";
-    this.imgButtonStyle.width = "52px";
-    this.imgButtonStyle.height = "52px";
+    this.imgButtonStyle.width = "64px";
+    this.imgButtonStyle.height = "64px";
 
     //this.style.height = "64px";
 

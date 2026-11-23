@@ -24,7 +24,7 @@
     </div>
 
   </div>
-  <div v-else @click.middle.stop="middleClick()" :style="{ 'overflow-y': 'scroll', 'height': 'inherit' }">>
+  <div v-else @click.middle.stop="middleClick()" :style="{ 'overflow-y': 'scroll', 'height': 'inherit' }">
     <transition name='Mainform'>
 
       <div id='ThisForm' class="form form_class1" :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"

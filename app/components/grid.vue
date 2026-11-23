@@ -357,7 +357,7 @@ const loadGrid = async () => {
     await loadData()
 
     if (Sql.View[This.prop.RecordSource].recnoVal.length == 0 && This.prop.ReadOnly == false && This.prop.addRow) { // No hay renglones
-      //console.log('loadGrid appendRow This.prop.RecordSource=', This.prop.RecordSource)
+      console.log('loadGrid appendRow This.prop.RecordSource=', This.prop.RecordSource)
       appendRow()
     }
     /*
@@ -397,6 +397,11 @@ watch(
 watch(
   () => eventos,
   (new_val, old_val) => {
+
+
+    console.log('grid watch eventos This.Row=', This.Row)
+    if (This.Row == -1)
+      return
 
     for (const comp in compStatus.value) {
       //console.log('Watch estatus ===>', comp, compStatus[comp])
@@ -457,7 +462,7 @@ watch(
 watch(
   () => compValid,
   async (new_val, old_val) => {
-    //  console.log('2).0 3.3 -- Grid watch compValid', 'Row=', This.Row)
+    console.log('Grid watch compValid', 'Row=', This.Row)
 
     if (This.Row < 0) return  // No hay renglon posicionado
 
@@ -496,7 +501,7 @@ watch(
 
     // Busca que Recno tiene el This.Row donde esta posicionado el grid
     const res = scroll.dataPage.find((ele) => ele.id == This.Row)
-    debugger
+
     console.log('========================Grid todo Validado     res=', res)
 
     const Recno = res.recno
@@ -516,7 +521,7 @@ watch(
           }
     */
       if (LastRecno === Recno && This.prop.addRow) { // Si esta en el ultimo renglon de la tabla de captura
-        This.appendRow()
+        // This.appendRow()  ** Aqui me quede (inserta renglon si se posiciona en ultimo renglo )
 
         // Es el último registro, no hacer nada
       }
@@ -737,7 +742,7 @@ const asignaRenglon = async (Row: number, ColumnName: string) => {
           if (First == '') {
             First = columna.Name
           }
-          This[columna.Name].prop.Valid = false
+          // This[columna.Name].prop.Valid = false
           return
         }
       }
@@ -1045,27 +1050,7 @@ const appendRow = async () => {
   This.appendRow()
   return
 
-  /*
-    await last()
-    scroll.controls = false
-  
-    if (Sql.View[props.prop.RecordSource].recnoVal.length > 0 && This.Row >= 0) {
-      for (let i = 0; i < This.main.length; i++) { // Recorre todos los estatus del grid
-        const comp = This.main[i]
-  
-        if (This[comp].prop.Capture && !This[comp].prop.Valid) { // Si alguno no esta Validado
-          if (!This[comp].valid()) {
-            //  console.log('before appendRow Not valid', comp, This[comp].prop.Valid)
-            This[comp].prop.Focus = true
-            return
-          }
-        }
-      }
-    }
-    //await last()
-    if (!This.prop.addRow)
-      await This.appendRow()  // Llama en la clase grid.ts y pondra This.Row=-10
-  */
+
 }
 
 //  await last(true) 
@@ -1094,9 +1079,21 @@ const deleteRow = async (recno?: number) => {
 
   }
 
-  eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
+  //  eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
+  await This.deleteRow(recno)
+  for (const comp in compValid) { // Recorre todos los estatus del grid
+    if (This[comp].prop.BaseClass.toUpperCase() == 'EDITTEXT' || This[comp].prop.BaseClass.toUpperCase() == 'COMBOBOX')
+      This[comp].prop.Valid == true
+
+    //  This.prop.Valid = true
+  }
+
+
+
 
 }
+
+
 
 const saveTable = async () => {
   if (This.prop.ReadOnly)

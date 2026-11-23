@@ -176,7 +176,7 @@ export class reportForm extends FORM {
   for_ori: string = ""; // forma JASPER original
 
   fields: string[][]; // Campos que indica par alas variables des_dat y has_dat
-
+  tip_cap = ''
   data_detailBlock: number = 0;
   blockResultado: any = null;
   constructor(num_blocks: number) {
@@ -283,6 +283,7 @@ export class reportForm extends FORM {
     this.block[i].prop.Visible = false
 
   }
+
 
   public async init_new() {
 

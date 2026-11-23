@@ -330,6 +330,14 @@ const session = Session()
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
+const This = ref()
+/* 
+await initSql(ref(This))  // Inicializa la conexion al SQLServer
+
+debugger
+console.log(id_con, nom_emp)
+console.log(await SQLExec('select * from publicvar'))
+*/
 /*
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))

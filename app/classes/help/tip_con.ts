@@ -61,12 +61,12 @@ export class tip_con extends COMPONENT {
       if (this.prop.Value == 'C') {
         this.Parent.des_dat.prop.Caption = ''
         this.Parent.has_dat.prop.Visible = false
-        return
+        return true
       }
     this.prop.Value = 'E'
     this.Parent.des_dat.prop.Caption = '' //'Desde '
     this.Parent.has_dat.prop.Visible = true
-
+    return true
   }
 
 }
