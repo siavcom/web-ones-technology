@@ -5,8 +5,8 @@
       {{ This.prop.Caption }}
     </span>
     <div :id="Id + '_options'" class="radio radio_class3" :style="This.containerStyle">
-      <label v-for="opt in optionList" :key="opt.prop.OptionNumber" class="radio radio_class4"
-        :style="Styles.inputStyle">
+      <label v-for="opt in optionList.filter((e) => e.prop.Visible)" :key="opt.prop.OptionNumber"
+        class="radio radio_class4" :style="Styles.inputStyle">
         <input :id="Id + '_opt_' + opt.prop.OptionNumber" :name="Id + opt.prop.OptionNumber" type="radio"
           :value="opt.prop.OptionNumber" v-model="Value" :disabled="This.prop.ReadOnly || This.prop.Disabled"
           class="radio radio_class5" @change="onChange" @click="opt.click()" />
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
 const emit = defineEmits(["update", "update:Value", "update:Status"])
 

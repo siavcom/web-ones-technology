@@ -2759,7 +2759,7 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
     const signal = controller.signal;
     // cancel the request,  controller.abort()
     // el signal en la llamada no llevara nada  signal
-    // console.log('Db Axios call llamada  ======>>>', dat_lla, This.value.url)
+    console.log('Db Axios call llamada  ======>>>', JSON.stringify(dat_lla))
     // This.value.axiosActive = true;
     setTimeout(() => controller.abort(), 60000); // 60 segundos
 
@@ -4125,4 +4125,3 @@ export const errorAlert = async (message: string) => {
     //alert(message);
 }
 // Fin de la clase================================
-

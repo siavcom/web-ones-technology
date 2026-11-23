@@ -33,6 +33,7 @@ export class OPTIONGROUP extends COMPONENT {
     this.style.border = "none"
   }
 
+
   addOption() {
 
     for (let index = 3; index <= this.prop.BottonCount; index++) {
@@ -47,7 +48,6 @@ export class OPTIONGROUP extends COMPONENT {
   }
 
   public override async onChangeValue() {
-
     for (let i = 1; i < this.options.length; i++) {   // apaga los demas checkbox
       const item = this.options[i]
       item.prop.Value = 0;  // marca el seleccionado     
