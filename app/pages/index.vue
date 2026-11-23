@@ -1,134 +1,8 @@
 <template>
   <div class="Main">
     <!--img class="logoVue" src="@/assets/logo.png" contain-->
-    
-    <template v-if="userLogged">
-      <div class="dashboard">
-        <div class="welcome">
-          Bienvenido(a), <b>{{ userLogged }}</b>
-        </div>
 
-        <!-- ====== 1) Tablero de control (3ra imagen) ====== -->
-        <h2 class="section-title">Tablero de control</h2>
-
-        <div class="card filtros-card">
-          <div class="filtros-grid">
-            <div class="field">
-              <label>Buscar</label>
-              <div class="input-wrap">
-                <svg class="input-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round">
-                  <circle cx="11" cy="11" r="7" />
-                  <line x1="21" y1="21" x2="16.5" y2="16.5" />
-                </svg>
-                <input v-model="buscar" type="text" class="input has-ico"
-                  placeholder="Vendedor, cliente_id, nombre, nombre" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label>Vendedor</label>
-              <div ref="vendRef" class="ms">
-                <button type="button" class="ms-toggle" @click="vendOpen = !vendOpen">
-                  <span class="ms-text">{{ vendLabel }}</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </button>
-                <div v-if="vendOpen" class="ms-list">
-                  <label v-for="v in vendedores" :key="v" class="ms-opt">
-                    <input type="checkbox" :checked="vendedoresSel.includes(v)" @change="toggleVend(v)" />
-                    <span>{{ v }}</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>Desde</label>
-              <input v-model="fechaDesde" type="date" class="input" />
-            </div>
-
-            <div class="field">
-              <label>Hasta</label>
-              <input v-model="fechaHasta" type="date" class="input" />
-            </div>
-          </div>
-
-          <div class="filtros-actions">
-            <button type="button" class="btn btn-primary" @click="aplicarFiltros">Aplicar filtros</button>
-            <button type="button" class="btn btn-outline" @click="limpiarFiltros">Limpiar filtros</button>
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div v-for="s in stats" :key="s.label" class="card stat">
-            <span class="stat-num">{{ s.value }}</span>
-            <span class="stat-label">{{ s.label }}</span>
-          </div>
-        </div>
-
-        <!-- ====== 2) Tarjetas KPI (1ra imagen) ====== -->
-        <div class="kpi-grid">
-          <div v-for="k in kpis" :key="k.title" class="card kpi">
-            <div class="kpi-head">
-              <span class="kpi-ico" :style="{ background: k.bg, color: k.fg }" v-html="k.icon"></span>
-              <span class="kpi-title">{{ k.title }}</span>
-            </div>
-            <div class="kpi-value">{{ k.value }}</div>
-            <div class="kpi-sub">{{ k.sub }}</div>
-          </div>
-        </div>
-
-        <!-- ====== 3) Gráficas (4ta imagen) ====== -->
-        <div class="charts-row">
-          <div class="card chart-card">
-            <div class="card-title">Actividad por fecha</div>
-            <div class="card-sub">Notas de pedido por día (fecha de emisión)</div>
-            <div class="bars">
-              <div v-for="(b, i) in actividad" :key="i" class="bar-col">
-                <span class="bar-val">{{ b.v }}</span>
-                <div class="bar" :style="{ height: barH(b.v) + 'px' }"></div>
-              </div>
-            </div>
-            <div class="dates">
-              <span v-for="(b, i) in actividad" :key="'d' + i" class="bar-date">{{ b.d }}</span>
-            </div>
-            <div class="fake-scroll">
-              <div class="fake-thumb"></div>
-            </div>
-          </div>
-
-          <div class="card metrics-card">
-            <div class="card-title">Métricas cobradas por cliente</div>
-            <div class="card-sub">Totales</div>
-            <div v-for="m in metricas" :key="m.name" class="metric">
-              <div class="metric-row">
-                <span class="metric-name">{{ m.name }}</span>
-                <span class="metric-amount">{{ m.amount }}</span>
-              </div>
-              <div class="metric-track">
-                <div class="metric-fill" :style="{ width: metW(m.v) }"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ====== 4) Saldos (2da imagen) ====== -->
-        <div class="saldos-row">
-          <div class="card saldo">
-            <div class="saldo-label danger">Saldo vencido</div>
-            <div class="saldo-value">$840.054.449,86</div>
-          </div>
-          <div class="card saldo">
-            <div class="saldo-label">Saldo total</div>
-            <div class="saldo-value">$1.652.312.511,01</div>
-          </div>
-        </div>
-      </div>
-    </template>
-    <template v-else>
+    <template v-if="!userLogged">
       <div>
         AMAZING WEB SOFTWARE BY
       </div>
@@ -212,10 +86,20 @@
         <a href="https://www.npmjs.com/package/node-jasper-report">node jasper</a>
       </div>
     </template>
+    <Direccion v-else v-bind:ThisForm="Form">
+    </Direccion>
   </div>
 </template>
 
 <script setup lang="ts">
+/////////////////////
+
+import Direccion from "@/components/Siavcom/Direccion/DashBoard.vue";
+import { FORM as ThisForm } from '@/classes/DashBoard'
+const Form = reactive(new ThisForm) //no quitar el new 
+
+/////////////
+
 import { version } from 'vue';
 import { version as nuxtVersion } from 'nuxt/package.json'
 const session = Session()

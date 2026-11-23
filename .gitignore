@@ -31,18 +31,16 @@ app/classes/Siavcom
 app/composables/comeutl.ts
 app/composables/contutl.ts
 
-app/pages/INV
+app/pages/COM
 app/pages/CXC
 app/pages/CXP
 
+app/pages/INV
+app/pages/PRY
 
 app/pages/UTL
 app/pages/VEN
-app/pages/PRY
-
 app/pages/VTA
-app/pages/COM
-app/pages/LOG
 
 app/pages/PGE/MTO
 
