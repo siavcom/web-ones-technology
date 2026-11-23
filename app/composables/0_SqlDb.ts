@@ -1198,7 +1198,7 @@ export const tableUpdate = async (
 export const appendBlank = async (alias?: string, m?: {}) => {
     const { This } = toRefs(state) // Hace referencia al valor inicial
     const ThisForm = This.value.Form;
-    //   console.log("3) Db appendBlank alias=", alias, 'm', m);
+    console.log("3) Db appendBlank alias=", alias, 'ThisForm=', ThisForm);
     if (!alias) {
         // si no se da el alias
         alias = This.value.are_tra[This.value.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
@@ -1235,7 +1235,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
         key_pri: 0,
     };
     const vis_act = This.value.View[alias].tablaSql.trim();
-
+    // console.log('AppendBlank alias=', This.value.View[alias])
     for (const campo in This.value.View[vis_act].val_def) {
         // const val_eval="`"+This.value.View[alias].val_def[valor]+"`"
         if (
@@ -1255,6 +1255,7 @@ export const appendBlank = async (alias?: string, m?: {}) => {
                 val_eval = val_eval.replaceAll('this.Form', 'ThisForm')
 
                 val_defa = eval(val_eval);
+
             } catch (error) {
                 errorAlert(
                     " appendBlank can't eval(" +
@@ -2386,7 +2387,7 @@ const genera_tabla = async (respuesta: any, alias: string, noData?: boolean) => 
             //  await localAlaSql('USE now ; DROP TABLE IF EXISTS now.' + alias + '; ')
 
             // 19/Ene/2026
-            console.log('genera tabla alias', alias, 'des_tab=', des_tab)
+            //  console.log('genera tabla alias', alias, 'des_tab=', des_tab)
             await localAlaSql("DROP TABLE IF EXISTS last." + alias + ";");
             await localAlaSql("DROP TABLE IF EXISTS now." + alias + ";");
             await localAlaSql("USE last ;" + des_tab);
