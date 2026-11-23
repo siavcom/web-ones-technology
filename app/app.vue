@@ -310,8 +310,7 @@ Props.menuItems.push(
     path: { path: '/Login' },
     type: 'P',
     system: ''
-  })
-Props.menuItems.push(
+  },
   {
     link: '#',
     name: 'Messages',
@@ -463,6 +462,15 @@ const obtMenu = () => {
   if (user.value.trim() == 'sa' || user.value.slice(0, 3) == 'sa@') {
 
     Items.push(
+
+      {
+        name: 'Dashboard',
+        tooltip: 'Dashboard',
+        icon: '/Iconos/svg/DashBoard.svg',
+        path: { path: '/' },
+        type: 'L',
+        system: ''
+      },
       {
         link: '#',
         name: 'SQL data diccionary',
