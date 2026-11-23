@@ -50,7 +50,7 @@
 
                       <li @click="toggleSubMenu('maintenance')">
                         <span class="links_options">{{ Props.maintenance
-                        }}</span>
+                          }}</span>
                         <nuxt-img class="ico"
                           :src="activeSubMenu === 'maintenance' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
@@ -330,6 +330,14 @@ const session = Session()
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
 
+const This = ref()
+/* 
+await initSql(ref(This))  // Inicializa la conexion al SQLServer
+
+debugger
+console.log(id_con, nom_emp)
+console.log(await SQLExec('select * from publicvar'))
+*/
 /*
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
 await useAsyncData('logoEmp', () => session.fetchUser().then(() => true))
@@ -359,7 +367,7 @@ const isLoggedIn = ref(Props.isLoggedIn)
 const isOpen = ref(Props.isOpened)
 isOpen.value = false
 
-/* ***********Titulos en las pestaÃ±as****************** */
+/* ***********Titulos en las pestañas****************** */
 const titleName = ref('')
 titleName.value = 'Web-Ones Technologies'
 

@@ -1685,7 +1685,6 @@ export const SQLExec = async (query: string, alias?: string, tip_res?: string) =
         alias = "sqlresult";
     }
     This.value.View ??= {};
-
     if (!tip_res) {
         tip_res = "D";
     } else {
@@ -3574,6 +3573,17 @@ export const eof = async (alias?: string) => {
     alasql('USE now;')
     return eof
 }
+/**
+ * @description: Indica si existe una tabla en el SQL local
+ * @param {string} alias : nombre del alias
+ * @returns {boolean}
+ */
+export const tableExist = async (alias?: string) => {
+    const tables = await localAlaSql('show tables');
+    const existeTabla = tables.some(t => t.tableid === alias);
+    return existeTabla
+}
+
 /**
  * @description: Devuelve la estructura de una vista local
  * @param {string} alias : nombre del alias

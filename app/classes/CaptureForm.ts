@@ -515,9 +515,9 @@ export class captureForm extends FORM {
     this.bt_modify.prop.Visible = false
 
     for (const comp of this.Form.main) {
-      if (this[comp].prop.Capture && !this[comp].prop.updateKey) {
+      if (!this[comp].prop.updateKey) {  //this[comp].prop.Capture &&
         this[comp].prop.ReadOnly = false
-        console.log('bt_modifyClick comp=', comp, '=', this[comp])
+        //console.log('bt_modifyClick comp=', comp, '=', this[comp])
       }
     }
     await nextTick()

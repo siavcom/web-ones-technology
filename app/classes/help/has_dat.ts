@@ -27,10 +27,11 @@ export class has_dat extends COMPONENT {
     this.prop.ErrorMessage = "Valor menor al valor anterior";
   }
 
-  async valid() {
-    if (this.prop.Value < this.Parent.des_dat.prop.Value)
+  override async valid() {
+    if (this.prop.Value.toUpperCase() < this.Parent.des_dat.prop.Value.toUpperCase()) {
+      console.log('Has_dat ', this.prop.Value, this.Parent.des_dat.prop.Value)
       return false
-
+    }
     return true
   }
 }

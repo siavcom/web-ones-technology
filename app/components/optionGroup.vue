@@ -5,8 +5,8 @@
       {{ This.prop.Caption }}
     </span>
     <div :id="Id + '_options'" class="radio radio_class3" :style="This.containerStyle">
-      <label v-for="opt in optionList.filter((e) => e.prop.Visible)" :key="opt.prop.OptionNumber" class="radio radio_class4"
-        :style="Styles.inputStyle">
+      <label v-for="opt in optionList.filter((e) => e.prop.Visible)" :key="opt.prop.OptionNumber"
+        class="radio radio_class4" :style="Styles.inputStyle">
         <input :id="Id + '_opt_' + opt.prop.OptionNumber" :name="Id + opt.prop.OptionNumber" type="radio"
           :value="opt.prop.OptionNumber" v-model="Value" :disabled="This.prop.ReadOnly || This.prop.Disabled"
           class="radio radio_class5" @change="onChange" @click="opt.click()" />
@@ -47,26 +47,26 @@ This.prop.htmlId = Id
 const optionList = computed(() => This.options.filter((o: any) => o && o.prop))
 
 
-const Value = ref(This.prop.Value)
-
+const Value = computed({
+  get: () => This.prop.Value,
+  set: (val: string | number) => {
+    This.prop.Value = +val
+    emit('update:Value', This.prop.Value)
+  }
+})
+/*
 watch(
   () => This.prop.Value,
-  (val: any) => {
-    This.onChangeValue()  
-    
-    const optionSelected = This.options.filter((e: any) => e && e.prop)
-    .find((e: any) => e.prop.OptionNumber == val)
-
-    if (optionSelected) {
-      optionSelected.click()
-    }
+  (new_val: any, old_val: any) => {
+    console.log('OptionGroup watch Value=', new_val)
+    if (This.OptionList[new_val])
+      This.OptionList[new_val].click()
+    else
+      This.prop.Value = old_val
   },
-
   { deep: false }
-)
-
-
-
+);
+*/
 const onChange = () => {
   This.prop.Value = +Value.value
   This.onChangeValue()

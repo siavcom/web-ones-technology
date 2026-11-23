@@ -18,7 +18,7 @@ export class nom_tab extends COMPONENT {
     this.prop.Tooltip = "Tablas del SQL Server";
 
     this.prop.Value = "COMETAB";
-    this.prop.RowSourceType = 0; // 3   1-Value, 2-Alias,3-sql 5-Array
+    this.prop.RowSourceType = 0; // 3   1-Value, 2-Alias,3-sql ,4-Local SQL, 5-Array
     this.prop.ColumnCount = 3;
     this.prop.BoundColumn = 2;
     this.prop.ColumnWidths = "200px,150px,150px";

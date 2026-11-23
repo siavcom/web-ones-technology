@@ -35,6 +35,7 @@ export class bt_aceptar extends IMGBUTTON {
    * Luego llama al metodo when() del componente tip_con.
    */
   override async click() {
+
     if (this.Parent.des_dat.prop.Visible) {
       if (!await this.Parent.des_dat.valid()) {
         this.Parent.des_dat.prop.Focus = true
@@ -42,7 +43,7 @@ export class bt_aceptar extends IMGBUTTON {
       }
     }
 
-    if (this.Parent.has_dat.prop.Visible && this.Parent.has_dat.valid()) {
+    if (this.Parent.has_dat.prop.Visible && !await this.Parent.has_dat.valid()) {
       this.Parent.has_dat.prop.Focus = true
       return
     }
@@ -60,8 +61,9 @@ export class bt_aceptar extends IMGBUTTON {
 
     let Type = this.Parent.cam_dat.Type
     if (this.Parent.tip_con.prop.Value == 'C') {  // contenga
+      const like = Public.value.dialect == 'mssql' ? 'like' : 'ILIKE'
       if (this.Parent.des_dat.prop.Value.trim().length > 0) {
-        where = ` ${this.Parent.cam_dat.prop.Value} like '%${this.Parent.des_dat.prop.Value.trim()}%'`
+        where = ` ${this.Parent.cam_dat.prop.Value} ${like} '%${this.Parent.des_dat.prop.Value.trim()}%'`
       }
     } else {
       where = ` ${this.Parent.cam_dat.prop.Value} >= ${this.Parent.des_dat.prop.Value} and \

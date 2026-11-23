@@ -26,7 +26,7 @@ export class sis_sis extends COMPONENT {
     this.prop.RowSource =
       "select des_prg,sis_sis from vi_cap_prg where sis_sis > '    ' and  tpr_prg = 'S'  union \
        select '~ SQL Dictionary ~' as des_prg,'CFG' as sis_sis union \
-       select '~ without classification ~' as des_prg,'   ' as sis_sis ";
+       select '~ without classification ~' as des_prg,'   ' as sis_sis order by des_prg ";
     this.prop.RowSourceType = 3; //1-Value, 2-Alias,3-sql, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
@@ -71,7 +71,7 @@ export class sis_sis extends COMPONENT {
 
       if (await recCount('cap_cometab') > 0) {
         // if (this.Sql.View.cap_cometab && this.Sql.View.cap_cometab.recnoVal.length > 0) {
-        this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from cap_cometab `
+        this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from cap_cometab order by nom_tab`
         //this.Form.nom_tab.prop.RowSource = `select des_tab,nom_tab,sis_sis from vi_cap_cometab ${where} order by nom_tab`
         this.Form.nom_tab.prop.RowSourceType = 4; //1-Value, 2-Alias,3-sql 4-LocalSql 5-Array
         //    this.Form.bt_aceptar.prop.Visible = true;
