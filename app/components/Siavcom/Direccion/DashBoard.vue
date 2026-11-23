@@ -235,11 +235,11 @@ const kpis = ref([
     icon: ico('<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
   },
   {
-    title: 'Producto total', value: '0', sub: '', bg: '#f4f8e6', fg: '#8aa624',
+    title: 'Productos totales', value: '0', sub: '', bg: '#f4f8e6', fg: '#8aa624',
     icon: ico('<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'),
   },
   {
-    title: 'Producto surtido', value: '0', sub: '', bg: '#efedfb', fg: '#7b6fd0',
+    title: 'Productos surtidos', value: '0', sub: '', bg: '#efedfb', fg: '#7b6fd0',
     icon: ico('<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M22 8l-7 4 7 4V8z"/>'),
   },
   {
@@ -251,11 +251,11 @@ const kpis = ref([
     icon: ico('<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>'),
   },
   {
-    title: 'Ticket promedio', value: '$0', sub: '', bg: '#e8f1fb', fg: '#3d74b8',
+    title: 'Venta promedio', value: '$0', sub: '', bg: '#e8f1fb', fg: '#3d74b8',
     icon: ico('<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>'),
   },
   {
-    title: 'Monto total', value: '$0', sub: '', bg: '#f4f6e4', fg: '#8f9a2e',
+    title: 'Monto total de pedidos', value: '$0', sub: '', bg: '#f4f6e4', fg: '#8f9a2e',
     icon: ico('<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>'),
   },
 ]
@@ -288,10 +288,10 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
         case 'Pedidos tomados':
           element.value = String(data1[0].pedidos_tomados || 0)
           break
-        case 'Producto total':
+        case 'Productos totales':
           element.value = String(data1[0].producto_total || 0)
           break
-        case 'Producto surtido':
+        case 'Productos surtidos':
           element.value = String(data1[0].producto_surtido || 0)
           break
         case 'Productos por surtir':
@@ -300,10 +300,10 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
         case 'Prom. productos por pedido':
           element.value = String(data1[0].promedio_pro_x_pedido || 0)
           break
-        case 'Ticket promedio':
+        case 'Venta promedio':
           element.value = formatoMoneda(data1[0].promedio_ticket || 0)
           break
-        case 'Monto total':
+        case 'Monto total de pedidos':
           element.value = formatoMoneda(data1[0].monto_total || 0)
           break
       }
@@ -311,7 +311,7 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
 
     stats.value.forEach(element => {
       switch (element.label) {
-        case 'Clientes en nómina':
+        case 'Clientes':
           element.value = String(data1[0].total_clientes || 0)
           break
         case 'Clientes activos':
