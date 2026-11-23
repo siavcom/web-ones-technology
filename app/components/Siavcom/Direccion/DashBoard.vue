@@ -151,8 +151,9 @@ ThisForm.cargaDatos()
    Dashboard - datos estáticos (maqueta)
    ============================================================ */
 
-const fechaDesde = ref('2026-08-12')
-const fechaHasta = ref('2026-11-10')
+const flag = Public.value.nem_pge.trim() == 'EMPRESA DEMO'.trim()
+const fechaDesde = flag ? ref('2023-01-01') : ref('2026-08-12')
+const fechaHasta = flag ? ref('2023-12-31') : ref('2026-11-10')
 const bbdd = Public.value.dialect
 
 /* Multi-select de vendedores */
@@ -210,8 +211,8 @@ const aplicarFiltros = () => {
 
 const limpiarFiltros = () => {
   vendedoresSel.value = []
-  fechaDesde.value = '2026-08-12'
-  fechaHasta.value = '2026-11-10'
+  fechaDesde.value = flag ? '2023-01-01' : '2026-08-12'
+  fechaHasta.value = flag ? '2023-12-31' : '2026-11-10'
   ejecutarQuery([], fechaDesde.value, fechaHasta.value)
 }
 
