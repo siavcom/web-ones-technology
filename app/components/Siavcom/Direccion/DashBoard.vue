@@ -219,7 +219,7 @@ const limpiarFiltros = () => {
 
 /* Stats de clientes */
 const stats = ref([
-  { value: '0', label: 'Clientes en nómina' },
+  { value: '0', label: 'Clientes' },
   { value: '0', label: 'Clientes activos' },
   { value: '0', label: 'Clientes inactivos' },
 ])
@@ -300,10 +300,10 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
           element.value = String(data1[0].promedio_pro_x_pedido || 0)
           break
         case 'Ticket promedio':
-          element.value = String(data1[0].promedio_ticket || 0)
+          element.value = formatoMoneda(data1[0].promedio_ticket || 0)
           break
         case 'Monto total':
-          element.value = String(data1[0].monto_total || 0)
+          element.value = formatoMoneda(data1[0].monto_total || 0)
           break
       }
     });
