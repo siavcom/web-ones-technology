@@ -24,7 +24,7 @@
     </div>
 
   </div>
-  <div v-else @click.middle.stop="middleClick()">
+  <div v-else @click.middle.stop="middleClick()" :style="{ 'overflow-y': 'scroll', 'height': 'inherit' }">>
     <transition name='Mainform'>
 
       <div id='ThisForm' class="form form_class1" :class="ThisForm.prop.Status != 'A' ? 'disabled' : 'ThisForm'"
@@ -361,7 +361,7 @@ const ThisForm = Component.value
 
 const Este = ref(ThisForm)
 const Estatus = ref(ThisForm.estatus)
-const Valid = reactive(ThisForm.Valid)
+const Valid = reactive([])
 //const Id = ThisForm.prop.Name
 
 const Id = ThisForm.prop.Name + '_' + Math.floor(Math.random() * 1000).toString()
@@ -467,73 +467,95 @@ watch(
       }
     }
     console.log('Proceso watch Estatus de componentes ')
+
+
+
     ejeEventos()
+
   },
   { deep: true }
 );
 
 // Checa todas las validaciones que tienen todos los componentes el form 
 
-watch(ThisForm.Valid, async (new_val) => {
+watch(Valid, async (new_val) => {
 
-  // console.warn('============ Watch Valid=========> ', ThisForm.prop.Name, 'bt save=', ThisForm.bt_save.prop.Visible)
+
   if (ThisForm.prop.BaseClass.toLowerCase() !== 'captureform')
     return
 
-  if (ThisForm.bt_modify.prop.Visible)
-    return
+
+  if (ThisForm.bt_save.prop.Visible)
+    ThisForm.bt_save.prop.Visible = false
 
   //if (ThisForm.Recno>0 && !ThisForm.bt_save.prop.Visible)
   //  return
-
+  let readOnly = true
   for (const i in ThisForm.main) {
     const comp = ThisForm.main[i]
     const Componente = ThisForm[comp]
-    if (!Componente.prop.Valid && Componente.prop.Capture &&
-      !Componente.prop.ReadOnly && Componente.prop.Visible == true &&
-      (Componente.prop.BaseClass.toUpperCase() == 'EDITTEXT' ||
+
+    if (!Componente.prop.Disabled && Componente.prop.Visible) {
+
+      if (Componente.prop.ReadOnly == false && Componente.prop.updateKey == false) {
+        readOnly = false
+      }
+      if (!Componente.prop.Valid && (Componente.prop.BaseClass.toUpperCase() == 'EDITTEXT' ||
         Componente.prop.BaseClass.toUpperCase() == 'COMBOBOX')) {
-      ///////////////
-      let sw_found = false
 
-      for (let I = 0; I < ThisForm.block.length && !sw_found; I++) {
 
-        if (ThisForm.block[I].component) { // bloques horizontales
+        console.log('============ Watch Valid========= Block Componente no validado =========> ', Componente.prop.Name, Componente.prop.Visible)
 
-          for (let J = 0; J < ThisForm.block[I].component.length && !sw_found; J++) {
-            console.log('============Block Componente no validado invisible =========> ', ThisForm.block[I].component[J])
-            if (ThisForm.block[I].component[J].prop.Visible == false && ThisForm.block[I].component[J].prop.Name == Componente.prop.Name) { // Aqui se podria hacer algo con el block
+        return
+
+
+        ///////////////
+        let sw_found = false
+
+        for (let I = 0; I < ThisForm.block.length && !sw_found; I++) {
+
+          if (ThisForm.block[I].component) { // bloques horizontales
+
+            for (let J = 0; J < ThisForm.block[I].component.length && !sw_found; J++) {
+              console.log('============ Watch Valid========= Block Componente no validado invisible =========> ', ThisForm.block[I].component[J])
+              if (ThisForm.block[I].component[J].prop.Visible == false && ThisForm.block[I].component[J].prop.Name == Componente.prop.Name) { // Aqui se podria hacer algo con el block
+                sw_found = true
+                console.log('============ Watch Valid========= Block Componente no validado invisible =========> ', comp, I, J)
+
+                return
+              }
+            }
+
+          } else {
+            // bloques verticales
+            if (ThisForm.block[I].prop.Visible == false && ThisForm.block[I].prop.Name == Componente.prop.Name) {
+              console.log('============  Block Componente no validado invisible =========> bloque=', I)
               sw_found = true
-              console.log('============ Block Componente no validado invisible =========> ', comp, I, J)
-
               return
             }
           }
 
-        } else {
-          // bloques verticales
-          if (ThisForm.block[I].prop.Visible == false && ThisForm.block[I].prop.Name == Componente.prop.Name) {
-            console.log('============  Block Componente no validado invisible =========> bloque=', I)
-            sw_found = true
-            return
-          }
+
         }
-
-
+        console.warn('============Main Componente no validado =========> ', comp, Componente.prop.Valid)
+        return
+        /* if (!sw_found) {
+   
+           ////////////////////
+           console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
+           //      ThisForm.bt_modify.prop.Visible = false
+           ThisForm.bt_delete.prop.Visible = false
+   
+           return
+         }*/
       }
-      console.warn('============Main Componente no validado =========> ', comp, Componente.prop.Valid)
-      return
-      /* if (!sw_found) {
- 
-         ////////////////////
-         console.warn('============ Componente no validado =========> ', comp, Componente.prop.Valid)
-         //      ThisForm.bt_modify.prop.Visible = false
-         ThisForm.bt_delete.prop.Visible = false
- 
-         return
-       }*/
     }
   }
+  console.log('============ Watch Valid=========> ReadOnly=', readOnly)
+  if (readOnly)
+    return
+
+
   /*
     const lon = Valid.length
     const This = this
@@ -547,6 +569,7 @@ watch(ThisForm.Valid, async (new_val) => {
   */
   // if (ThisForm.prop.Status == 'A')
   //ThisForm.bt_save.prop.Visible = true
+  console.log('============ Watch Valid========= TODO VALIDADO =========> ')
 
   nextTick(() => {
     if (ThisForm.prop.autoUpdate == true)
@@ -658,6 +681,8 @@ onBeforeMount(async () => {
         // if (ThisForm[componente].Ref)
         // console.log('RefHtml===>', componente, ThisForm[componente].Ref.$el)
         ThisForm.estatus[componente] = toRef(ThisForm[componente].prop, "Status"); // stack de estatus de componentes
+        Valid.push(toRef(ThisForm[componente].prop, "Valid"))  // stack de validaciones de componentes
+
         // Se quita el toRef para que quede con reactividad
         //ThisForm.estatus[componente] = ThisForm[componente].prop.Status // stack de estatus de componentes
       }

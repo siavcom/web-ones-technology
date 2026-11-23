@@ -556,12 +556,21 @@ const obtMenu = () => {
 
   console.log('Fin obtMenu Items=', Items)
 }
+// true en vista telefono/tablet (mismo breakpoint del CSS)
+const isMobileView = () => {
+  if (typeof window === 'undefined' || !window.matchMedia)
+    return false
+  return window.matchMedia('(max-width: 768px)').matches
+}
+
 /// //////////////////////////////////////
 // Obten subMenu
 /// ///////////////////////////////////////
 const obtSubMenu = (system: string) => {
   // console.log('SubMenu Menu=', usrMenu.value)
-  isOpen.value = true
+  const mobile = isMobileView()
+  if (!mobile)
+    isOpen.value = true
   // console.log('SubMenu menu ====> system=', system)
   subMen.value = false
   activeSubMenu.value = null
@@ -633,6 +642,7 @@ const obtSubMenu = (system: string) => {
     isOpen.value = true
     // console.log('SubMenu menu ====> subMen=', Man, Rep.Pro)
   }
+  // Movil y sin submenu: queda cerrado (handleMenuNavigate ya puso isOpen=false)
 }
 
 const toggleSubMenu = (subMenu: 'maintenance' | 'reports' | 'process') => {
@@ -671,12 +681,14 @@ const navigateToPath = (path: any) => {
 
 const handleMenuNavigate = (menuItem: any) => {
   titleName.value = menuItem.name;
-  isOpen.value = menuItem.name == 'Login' ? true : false;
+  isOpen.value = menuItem.name == 'Login' && !isMobileView() ? true : false;
   navigateToPath(menuItem.path);
 }
 
 const handleSubMenuNavigate = (menuItem: any) => {
   titleName.value = menuItem.name;
+  subMen.value = false;
+  activeSubMenu.value = null;
   isOpen.value = false;
   navigateToPath(menuItem.path);
 }

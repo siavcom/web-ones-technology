@@ -183,17 +183,21 @@ export class captureForm extends FORM {
    *              modificacion
    */
   async validKeyComponent(Comp: undefined, mem?: {}) {
+
+
     // console.log('validKey meme=', mem)
     if (this.Recno != 0)
       this.Recno = 0
 
-    if (this.sw_update && this.Form.bt_save.prop.Visible)
-      await this.Form.bt_save.click()
+    //  if (this.sw_update && this.Form.bt_save.prop.Visible)
+    //    await this.Form.bt_save.click()
 
     if (this.prop.RecordSource.trim().length < 2) {
       MessageBox('No hay vista de actualizacion en el Form')
       return false
     }
+    const autoUpdate = this.prop.autoUpdate
+    this.prop.autoUpdate = false
     this.sw_update = false
     const thisComp = Comp.value
     //console.log('validKeyComponent Este=', thisComp.prop.Name)
@@ -226,6 +230,7 @@ export class captureForm extends FORM {
 
     }
     if (!sw_act) {
+      this.prop.autoUpdate = autoUpdate
       return true;
     }
 
@@ -245,6 +250,7 @@ export class captureForm extends FORM {
 
     let key_pri = 0;
 
+
     if (data === null) {       // No hay datos
       for (const comp of this.main) {
         if (this.Form[comp].prop.Capture && !this.Form[comp].prop.updateKey && this.Form[comp].prop.BaseClass.toLowerCase() !== 'textlabel') {
@@ -261,6 +267,7 @@ export class captureForm extends FORM {
       if (result == false) {
         // hubo error al leer datos
         this.noData = false;
+        this.prop.autoUpdate = autoUpdate
         return false;
       }
 
@@ -284,12 +291,15 @@ export class captureForm extends FORM {
       
             */
       // console.log('ValidComponent appendBlank Return')
+      this.prop.autoUpdate = autoUpdate
       return true
 
-    }   // Hay datos
+    }
+    // Hay datos
+
 
     //this.sw_update = false
-    console.log('validKeyComponent data=', data)
+
     //debugger
     this.Recno = data.recno;
     this.prop.Status = 'P'
@@ -297,7 +307,7 @@ export class captureForm extends FORM {
       const CompCap = this[comp]
 
       CompCap.prop.ShowError = false
-      CompCap.prop.Valid = true
+      // CompCap.prop.Valid = true
       if (!CompCap.prop.updateKey && CompCap.prop.BaseClass.toLowerCase() != 'textlabel')
         CompCap.prop.ReadOnly = true
 
@@ -307,7 +317,7 @@ export class captureForm extends FORM {
     await nextTick(() => {
 
       this.bt_modify.prop.Visible = true;
-
+      this.prop.autoUpdate = autoUpdate
       if (this.prop.showDelete)
         this.bt_delete.prop.Visible = true;
       //this.bt_modify.prop.Focus = true;
@@ -602,8 +612,8 @@ export class captureForm extends FORM {
         this.sw_update = false
       } else {
         // actualiza datos porque hubo error de grabacion
-        console.error('Save error bt_saveClick',)
-        const m = await scatter(['key_pri', 'recno'], this.prop.RecordSource)
+        console.error('Save error bt_saveClick')
+        const m = await currentValue('key_pri, recno', this.prop.RecordSource)
         if (m.key_pri > 0) { // si es un registro existente 
           await requery(this.prop.RecordSource, m.key_pri)
 
@@ -614,7 +624,7 @@ export class captureForm extends FORM {
     }
     this.Form.bt_save.prop.Visible = true;
 
-    const key_pri = await scatter(['key_pri'], this.prop.RecordSource)
+    const key_pri = await currentValue('key_pri', this.prop.RecordSource)
     if (key_pri > 0)
       this.Form.bt_delete.prop.Visible = true
     return resultado;

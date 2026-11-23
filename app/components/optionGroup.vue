@@ -5,7 +5,7 @@
       {{ This.prop.Caption }}
     </span>
     <div :id="Id + '_options'" class="radio radio_class3" :style="This.containerStyle">
-      <label v-for="opt in optionList" :key="opt.prop.OptionNumber" class="radio radio_class4"
+      <label v-for="opt in optionList.filter((e) => e.prop.Visible)" :key="opt.prop.OptionNumber" class="radio radio_class4"
         :style="Styles.inputStyle">
         <input :id="Id + '_opt_' + opt.prop.OptionNumber" :name="Id + opt.prop.OptionNumber" type="radio"
           :value="opt.prop.OptionNumber" v-model="Value" :disabled="This.prop.ReadOnly || This.prop.Disabled"
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
 const emit = defineEmits(["update", "update:Value", "update:Status"])
 
@@ -47,28 +47,23 @@ This.prop.htmlId = Id
 const optionList = computed(() => This.options.filter((o: any) => o && o.prop))
 
 
-const Value = computed({
-  get: () => This.prop.Value,
-  set: (val: string | number) => {
-    This.prop.Value = +val
-    emit('update:Value', This.prop.Value)
-  }
-})
-
-
-/*
-const Value = ref(1)
-
+const Value = ref(This.prop.Value)
 
 watch(
   () => This.prop.Value,
-  () => {
-    Value.value=This.prop.Value
-  },
-  { deep: false }
-);
+  (val: any) => {
+    This.onChangeValue()  
+    
+    const optionSelected = This.options.filter((e: any) => e && e.prop)
+    .find((e: any) => e.prop.OptionNumber == val)
 
-*/
+    if (optionSelected) {
+      optionSelected.click()
+    }
+  },
+
+  { deep: false }
+)
 
 
 
