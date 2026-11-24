@@ -771,6 +771,19 @@ export const strtran = (stringSource: string, stringSearch: string, stringReplac
 ////////////////////////////////////
 
 /**
+ * Obtiene el número del último día (28, 29, 30 o 31) de un mes
+ * @param {string} year - Año
+ * @param {string} month - Mes
+ * @returns {string} - ultimo dia del mes
+ */
+
+function monthLastDay(year: string, month: string) {
+  const dateYear = +year
+  const dateMonth = +month
+  return new Date(dateYear, dateMonth, 0).getDate().toString;
+}
+
+/**
  * Convierte una fecha tipo string en formato AAAA-MM-DD a tipo string en formato AAAAMMDD para SQL Server.
  * @param {string} fecha - Texto a convertir. Si no se pasa parametro, se devuelve la fecha actual.
  * @returns {string} - La fecha convertida a AAAAMMDD.
