@@ -301,33 +301,28 @@ const validarStoreProcedure = async () => {
   if (bbdd == 'mssql') {
     for (const procedure of procedures) {
       data = await SQLExec(`IF OBJECT_ID('dbo.${procedure}', 'P') IS NOT NULL SELECT 1 as existe `)
-      if (!data)
+      if (!data[0].existe)
         return false
-
-
     }
   } else {
     for (const procedure of procedures) {
       data = await SQLExec(`SELECT EXISTS ( SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace   WHERE n.nspname = 'public' \
        AND p.proname = '${procedure}') as existe`)
-      if (!data)
+      if (!data[0].existe)
         return false
-
     }
   }
 
-
-  console.log(['hola mundo', data])
   return true
 }
 
 const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
+  cargando.value = true;
 
   if (!await validarStoreProcedure()) {
     cargando.value = false
-    return
+    return false
   }
-  cargando.value = true;
 
   let data1
   let pedidosPorDia
