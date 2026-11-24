@@ -777,10 +777,12 @@ export const strtran = (stringSource: string, stringSearch: string, stringReplac
  * @returns {string} - ultimo dia del mes
  */
 
-function monthLastDay(year: string, month: string) {
+export const monthLastDay = (year: string, month: string) => {
   const dateYear = +year
   const dateMonth = +month
-  return new Date(dateYear, dateMonth, 0).getDate().toString;
+  const lastDay = new Date(dateYear, dateMonth, 0).getDate()
+  return lastDay.toString()
+
 }
 
 /**

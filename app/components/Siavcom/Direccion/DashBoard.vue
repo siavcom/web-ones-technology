@@ -123,6 +123,8 @@
 import { Public } from '#imports';
 import { storeToRefs } from 'pinia'
 
+//import {monthLastDay} from '@/composables/Functions'
+
 const session = Session()
 const { id_con, url, dialect, nom_emp, user, fpo_pge, pass } = storeToRefs(session)
 
@@ -159,7 +161,7 @@ const flag = empresa == 'DEMO-SIAVCOM'
 
 
 const fechaDesde = flag ? ref('2023-01-01') : ref(`${fecha[0]}-${fecha[1]}-01`)
-const fechaHasta = flag ? ref('2023-01-31') : ref(`${fecha[0]}-${fecha[1]}-28`)
+const fechaHasta = flag ? ref('2023-01-31') : ref(`${fecha[0]}-${fecha[1]}-${monthLastDay(fecha[0], fecha[1])}`)
 
 //const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','${fechaDesde}','${fechaHasta}'`)
 
@@ -302,16 +304,26 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
   let cobranzaPorCliente
   let saldosData
 
+  /*
+  
+  MSSQL = await SQLExec(`IF OBJECT_ID('dbo.p_inf_pedidos', 'P') IS NOT NULL SELECT 1 as existe `)
+ 
+  POSTGRES = await SQLExec(`SELECT EXISTS ( SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace   WHERE n.nspname = 'public' \
+       AND p.proname = 'p_inf_pedidos') as existe`)
+  
+  
+   */
+
   if (bbdd == 'mssql') {
     data1 = await SQLExec(`exec p_inf_pedidos '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
     pedidosPorDia = await SQLExec(`exec p_pedidos_dia '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
     cobranzaPorCliente = await SQLExec(`exec p_cobranza_cte '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
     saldosData = await SQLExec(`exec p_inf_cobranza '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
   } else {
-    data1 = await SQLExec(`exec p_inf_pedidos('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
-    pedidosPorDia = await SQLExec(`exec p_pedidos_dia('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
-    cobranzaPorCliente = await SQLExec(`exec p_cobranza_cte('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
-    saldosData = await SQLExec(`exec p_inf_cobranza('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    data1 = await SQLExec(`select p_inf_pedidos('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    pedidosPorDia = await SQLExec(`select p_pedidos_dia('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    cobranzaPorCliente = await SQLExec(`select p_cobranza_cte('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    saldosData = await SQLExec(`select p_inf_cobranza('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
   }
 
   kpis.value.forEach((element: any) => {

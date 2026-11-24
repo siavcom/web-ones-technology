@@ -50,7 +50,7 @@
 
                       <li @click="toggleSubMenu('maintenance')">
                         <span class="links_options">{{ Props.maintenance
-                          }}</span>
+                        }}</span>
                         <nuxt-img class="ico"
                           :src="activeSubMenu === 'maintenance' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
@@ -328,7 +328,7 @@ const session = Session()
 //const { data } = await useAsyncData('id', () => session.id_con)
 
 const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
-
+console.log('Main app.vue logoEmp=', logoEmp)
 const This = ref()
 /* 
 await initSql(ref(This))  // Inicializa la conexion al SQLServer
@@ -414,6 +414,7 @@ const exit = () => {
   // app.$sessionStorage.removeItem('id_con')
   id_con.value = ''
   nom_emp.value = ''
+  logoEmp.value = ''
   const tam_act = Items.length
   Items.splice(itemLength, tam_act - itemLength)
   isLoggedIn.value = false

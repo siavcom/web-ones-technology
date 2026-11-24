@@ -124,6 +124,7 @@ export default defineEventHandler(async (event) => {
     let result
 
     if (connections[id_con].dialect == 'mssql') {
+      //console.log('1) ======> Nitro MSSQL exec sqlQuery', sqlQuery)
       //(async () => {
 
       try {
@@ -135,7 +136,7 @@ export default defineEventHandler(async (event) => {
         //const result = await sqlPool[id_con].request().query(sqlQuery);
 
         // const result = await request.query(sqlQuery);
-        // console.log('1) ========================SQLExec ====================== result=', result.recordsets[0][0])
+        //console.log('2) ========================SQLExec ====================== result=', result.recordsets[0][0])
         return result.recordsets;
       } catch (err) {
 
@@ -321,7 +322,7 @@ export default defineEventHandler(async (event) => {
             if ((data[0][0] && data[0][0].arc_doi && data[0][0].arc_doi.length >= 10)) {
               const tipArchivo = data[0][0].arc_doi.trim().slice(-3)
               result.logoEmp = `data:image/${tipArchivo};base64,` + data[0][0].arc_doi
-              // console.log('2) Return >>>>>>>>>>iniEmp Executa query=', query, 'result=', result)
+              //  console.log('2) Siavcom Return  >>>>>>>>>>iniEmp Executa query=', query, 'result=', result)
               return result
             }
           }
