@@ -293,9 +293,29 @@ const metricas = ref([
 const maxMet = computed(() => Math.max(0, ...metricas.value.map(m => m.v)))
 const metW = (v: number) => maxMet.value > 0 ? `${(v / maxMet.value) * 100}%` : '0%'
 
+const validarStoreProcedure = async () => {
+  const procedures = ['p_inf_pedidos', 'p_pedidos_dia', 'p_cobranza_cte', 'p_inf_cobranza']
 
+
+  let data
+  if (bbdd == 'mssql') {
+    for (const procedure of procedures) {
+      data = await SQLExec(`IF OBJECT_ID('dbo.${procedure}', 'P') IS NOT NULL SELECT 1 as existe `)
+    }
+  } else {
+    for (const procedure of procedures) {
+      data = await SQLExec(`SELECT EXISTS ( SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace   WHERE n.nspname = 'public' \
+       AND p.proname = '${procedure}') as existe`)
+    }
+  }
+
+
+  console.log(['hola mundo', data])
+}
 
 const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
+
+  await validarStoreProcedure()
 
   cargando.value = true;
 
@@ -303,16 +323,6 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
   let pedidosPorDia
   let cobranzaPorCliente
   let saldosData
-
-  /*
-  
-  MSSQL = await SQLExec(`IF OBJECT_ID('dbo.p_inf_pedidos', 'P') IS NOT NULL SELECT 1 as existe `)
- 
-  POSTGRES = await SQLExec(`SELECT EXISTS ( SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace   WHERE n.nspname = 'public' \
-       AND p.proname = 'p_inf_pedidos') as existe`)
-  
-  
-   */
 
   if (bbdd == 'mssql') {
     data1 = await SQLExec(`exec p_inf_pedidos '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)

@@ -107,8 +107,6 @@ const session = Session()
 const VueVersion = ref(version)
 const NuxtVersion = nuxtVersion
 
-console.log(['hola mundo', Public.value])
-
 
 const { id_con, user, nom_emp } = storeToRefs(session)
 const userLogged = computed(() => (id_con.value ? user.value : ''))
