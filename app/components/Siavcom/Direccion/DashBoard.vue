@@ -142,18 +142,23 @@ useSeoMeta({
 })
 
 ThisForm.user = user.value
-ThisForm.nom_emp = nom_emp.value
-ThisForm.fpo_pge = fpo_pge.value
 
-ThisForm.cargaDatos()
+const empresa = nom_emp.value// Public.value.nem_pge
+const fecha = fpo_pge.value //Public.value.fpo_pge
+console.log('Dashboard fpo_pge=', fecha, empresa, fpo_pge.value, nom_emp.value)
+const flag = empresa == 'DEMO-SIAVCOM'
+
+const fechaDesde = flag ? ref('2023-01-01') : ref('2026-01-01')
+const fechaHasta = flag ? ref('2023-12-31') : ref('2026-12-31')
+
+//const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','${fechaDesde}','${fechaHasta}'`)
+
+//ThisForm.cargaDatos(fechaDesde, fechaHasta)
 
 /* ============================================================
    Dashboard - datos estáticos (maqueta)
    ============================================================ */
 
-const flag = Public.value.nem_pge.trim() == 'EMPRESA DEMO'.trim()
-const fechaDesde = flag ? ref('2023-01-01') : ref('2026-08-12')
-const fechaHasta = flag ? ref('2023-12-31') : ref('2026-11-10')
 const bbdd = Public.value.dialect
 
 /* Multi-select de vendedores */

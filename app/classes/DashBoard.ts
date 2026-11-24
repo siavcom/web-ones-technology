@@ -77,6 +77,7 @@ export class FORM extends COMPONENT {
 
   }
 
+
   //messageBox = MessageBox
   //  constructor(parent: Record<string, never>) {
   constructor() {
@@ -110,10 +111,10 @@ export class FORM extends COMPONENT {
 
   }
 
-  async cargaDatos() {
+  async cargaDatos_old(fechaDesde: string, fechaHasta: string) {
 
-    const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','2023-01-01','2023-05-31'`)
-    console.log('Dashboard data=', data)
+    const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','${fechaDesde}','${fechaHasta}'`)
+    // console.log('Dashboard data=', data)
   }
 
 
