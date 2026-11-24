@@ -94,8 +94,8 @@
         <div class="card-sub">Totales</div>
         <div v-for="m in metricas" :key="m.name" class="metric">
           <div class="metric-row">
-            <span class="metric-name">{{ m.name }} | {{ m.percentage }}%</span>
-            <span class="metric-amount">{{ m.amount }}</span>
+            <span class="metric-name">{{ m.name }}</span>
+            <span class="metric-amount">{{ m.amount }} | {{ m.percentage }}% | {{ m.accumulated }}%</span>
           </div>
           <div class="metric-track">
             <div class="metric-fill" :style="{ width: metW(m.v) }"></div>
@@ -159,7 +159,7 @@ const flag = empresa == 'DEMO-SIAVCOM'
 
 
 const fechaDesde = flag ? ref('2023-01-01') : ref(`${fecha[0]}-${fecha[1]}-01`)
-const fechaHasta = flag ? ref('2023-01-31') : ref(`${fecha[0]}-${fecha[1]}-31`)
+const fechaHasta = flag ? ref('2023-01-31') : ref(`${fecha[0]}-${fecha[1]}-28`)
 
 //const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','${fechaDesde}','${fechaHasta}'`)
 
@@ -227,8 +227,8 @@ const aplicarFiltros = () => {
 
 const limpiarFiltros = () => {
   vendedoresSel.value = []
-  fechaDesde.value = flag ? '2023-01-01' : '2026-08-12'
-  fechaHasta.value = flag ? '2023-12-31' : '2026-11-10'
+  fechaDesde.value = flag ? '2023-01-01' : `${fecha[0]}-${fecha[1]}-01`
+  fechaHasta.value = flag ? '2023-01-31' : `${fecha[0]}-${fecha[1]}-28`
   ejecutarQuery([], fechaDesde.value, fechaHasta.value)
 }
 
@@ -363,12 +363,20 @@ const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
     console.error('No se pudieron cargar los pedidos por día')
   }
 
-  metricas.value = cobranzaPorCliente.map(item => ({
-    name: item.nom_nom || '',
-    amount: `$ ${formatoNumero(item.imp_tot || 0)}`,
-    v: Math.trunc(item.imp_tot || 0),
-    percentage: item.por_s_tot
-  }))
+  let accumulated = 0
+
+  metricas.value = cobranzaPorCliente.map(item => {
+
+    accumulated = accumulated + (item.por_s_tot || 0)
+
+    return {
+      name: item.nom_nom || '',
+      amount: `$ ${formatoNumero(item.imp_tot || 0)}`,
+      v: Math.trunc(item.imp_tot || 0),
+      percentage: item.por_s_tot,
+      accumulated: Math.trunc(accumulated)
+    }
+  })
 
   if (Array.isArray(saldosData) && saldosData.length > 0) {
     saldos.value.saldo_vencido = formatoNumero(saldosData[0].saldo_vencido || 0)
@@ -800,6 +808,7 @@ div.imagen {
   font-weight: 600;
   letter-spacing: .3px;
   color: #4b5563;
+  width: 200px;
 }
 
 .metric-amount {
