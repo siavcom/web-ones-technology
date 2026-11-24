@@ -151,13 +151,15 @@ useSeoMeta({
 ThisForm.user = user.value
 
 const empresa = nom_emp.value// Public.value.nem_pge
-const fecha = fpo_pge.value //Public.value.fpo_pge
+const fecha = fpo_pge.value.split('-') //Public.value.fpo_pge  EL SPLIT TE GENERA UN ARREGLO DONDE CADA '-' ES EL SEPARADOR
 
-const company = 'ShelPrueba'
-const flag = empresa == company
+//const company = 'ShelPrueba'
+console.log('Dashboat empresad', empresa, fecha)
+const flag = empresa == 'DEMO-SIAVCOM'
 
-const fechaDesde = flag ? ref('2023-01-01') : ref(fecha.split('-')[0] + '-01-01')
-const fechaHasta = flag ? ref('2023-12-31') : ref(fecha.split('-')[0] + '-12-31')
+
+const fechaDesde = flag ? ref('2023-01-01') : ref(`${fecha[0]}-${fecha[1]}-01`)
+const fechaHasta = flag ? ref('2023-01-31') : ref(`${fecha[0]}-${fecha[1]}-31`)
 
 //const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','${fechaDesde}','${fechaHasta}'`)
 
