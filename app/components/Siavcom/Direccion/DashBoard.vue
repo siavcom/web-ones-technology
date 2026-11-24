@@ -1,5 +1,12 @@
 <template>
-  <div class="dashboard" :id="Id">
+  <template v-if="cargando">
+    <div style="margin: 100px auto;">
+      <img src="/Iconos/svg/Loading.gif" alt="Cargando..." style="display: block; margin: 0 auto;">
+      <div class="loading" style="text-align: center;">Cargando...</div>
+    </div>
+
+  </template>
+  <div v-else class="dashboard" :id="Id">
     <div class="welcome">
       Bienvenido(a), <b>{{ user }}</b>
     </div>
@@ -87,7 +94,7 @@
         <div class="card-sub">Totales</div>
         <div v-for="m in metricas" :key="m.name" class="metric">
           <div class="metric-row">
-            <span class="metric-name">{{ m.name }}</span>
+            <span class="metric-name">{{ m.name }} | {{ m.percentage }}%</span>
             <span class="metric-amount">{{ m.amount }}</span>
           </div>
           <div class="metric-track">
@@ -101,11 +108,11 @@
     <div class="saldos-row">
       <div class="card saldo">
         <div class="saldo-label danger">Saldo vencido</div>
-        <div class="saldo-value">{{ saldos.saldo_vencido }}</div>
+        <div class="saldo-value">$ {{ saldos.saldo_vencido }}</div>
       </div>
       <div class="card saldo">
         <div class="saldo-label">Saldo total</div>
-        <div class="saldo-value">{{ saldos.saldo_total }}</div>
+        <div class="saldo-value">$ {{ saldos.saldo_total }}</div>
       </div>
     </div>
   </div>
@@ -145,11 +152,12 @@ ThisForm.user = user.value
 
 const empresa = nom_emp.value// Public.value.nem_pge
 const fecha = fpo_pge.value //Public.value.fpo_pge
-console.log('Dashboard fpo_pge=', fecha, empresa, fpo_pge.value, nom_emp.value)
-const flag = empresa == 'DEMO-SIAVCOM'
 
-const fechaDesde = flag ? ref('2023-01-01') : ref('2026-01-01')
-const fechaHasta = flag ? ref('2023-12-31') : ref('2026-12-31')
+const company = 'ShelPrueba'
+const flag = empresa == company
+
+const fechaDesde = flag ? ref('2023-01-01') : ref(fecha.split('-')[0] + '-01-01')
+const fechaHasta = flag ? ref('2023-12-31') : ref(fecha.split('-')[0] + '-12-31')
 
 //const data = await SQLExec(`exec p_pedidos_dia '[1,12,33]','${fechaDesde}','${fechaHasta}'`)
 
@@ -160,6 +168,7 @@ const fechaHasta = flag ? ref('2023-12-31') : ref('2026-12-31')
    ============================================================ */
 
 const bbdd = Public.value.dialect
+const cargando = ref(false);
 
 /* Multi-select de vendedores */
 type Vendedor = { ven_ven: number; nom_usu: string }
@@ -274,7 +283,7 @@ const barH = (v: number) => maxAct.value > 0 && v > 0
 
 /* Métricas cobradas por cliente */
 const metricas = ref([
-  // { name: 'HYD EMPRENDIMIENTOS SAS', amount: '$0', v: 0 },
+  // { name: 'HYD EMPRENDIMIENTOS SAS', amount: '$0', v: 0, percentage: 0 },
 ])
 
 const maxMet = computed(() => Math.max(0, ...metricas.value.map(m => m.v)))
@@ -284,93 +293,96 @@ const metW = (v: number) => maxMet.value > 0 ? `${(v / maxMet.value) * 100}%` : 
 
 const ejecutarQuery = async (vendedores, fechaDesde, fechaHasta) => {
 
+  cargando.value = true;
+
+  let data1
+  let pedidosPorDia
+  let cobranzaPorCliente
+  let saldosData
+
   if (bbdd == 'mssql') {
-    const data1 = await SQLExec(`exec p_inf_pedidos '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
-
-
-    kpis.value.forEach((element: any) => {
-      switch (element.title) {
-        case 'Pedidos tomados':
-          element.value = String(data1[0].pedidos_tomados || 0)
-          break
-        case 'Productos totales':
-          element.value = String(data1[0].producto_total || 0)
-          break
-        case 'Productos surtidos':
-          element.value = String(data1[0].producto_surtido || 0)
-          break
-        case 'Productos por surtir':
-          element.value = String(data1[0].producto_x_surtir || 0)
-          break
-        case 'Prom. productos por pedido':
-          element.value = String(data1[0].promedio_pro_x_pedido || 0)
-          break
-        case 'Venta promedio':
-          element.value = formatoMoneda(data1[0].promedio_ticket || 0)
-          break
-        case 'Monto total de pedidos':
-          element.value = formatoMoneda(data1[0].monto_total || 0)
-          break
-      }
-    });
-
-    stats.value.forEach(element => {
-      switch (element.label) {
-        case 'Clientes':
-          element.value = String(data1[0].total_clientes || 0)
-          break
-        case 'Clientes activos':
-          element.value = String(data1[0].clientes_activos || 0)
-          break
-        case 'Clientes inactivos':
-          element.value = String(data1[0].clietes_inactivos || 0)
-          break
-      }
-    })
-
-    const pedidosPorDia = await SQLExec(`exec p_pedidos_dia '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
-
-    console.log(['pedidosPorDia', pedidosPorDia])
-
-    if (Array.isArray(pedidosPorDia)) {
-      actividad.value = pedidosPorDia.map(item => ({
-        v: item.tot_pedidos ?? 0,
-        d: formatoFecha(item.fecha)
-      }))
-    } else {
-      console.error('No se pudieron cargar los pedidos por día')
-    }
-
-    //metricas cobradas por cliente de mayor a menor
-    const cobranzaPorCliente = await SQLExec(`exec p_cobranza_cte '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
-    metricas.value = cobranzaPorCliente.map(item => ({
-      name: item.nom_nom || '',
-      amount: formatoMoneda(item.imp_tot || 0),
-      v: Math.trunc(item.imp_tot || 0)
-    }))
-
-    console.log(['metricas', metricas.value])
-
-
-    //informacion de saldo vencido y saldo total
-    const saldosData = await SQLExec(`exec p_inf_cobranza '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
-
-    if (Array.isArray(saldosData) && saldosData.length > 0) {
-      saldos.value.saldo_vencido = formatoMoneda(saldosData[0].saldo_vencido || 0)
-      saldos.value.saldo_total = formatoMoneda(saldosData[0].saldo_total || 0)
-    }
-
+    data1 = await SQLExec(`exec p_inf_pedidos '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
+    pedidosPorDia = await SQLExec(`exec p_pedidos_dia '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
+    cobranzaPorCliente = await SQLExec(`exec p_cobranza_cte '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
+    saldosData = await SQLExec(`exec p_inf_cobranza '${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}'`)
   } else {
-
+    data1 = await SQLExec(`exec p_inf_pedidos('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    pedidosPorDia = await SQLExec(`exec p_pedidos_dia('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    cobranzaPorCliente = await SQLExec(`exec p_cobranza_cte('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
+    saldosData = await SQLExec(`exec p_inf_cobranza('${JSON.stringify(vendedores)}','${fechaDesde}','${fechaHasta}')`)
   }
+
+  kpis.value.forEach((element: any) => {
+    switch (element.title) {
+      case 'Pedidos tomados':
+        element.value = `${formatoNumero(data1[0].pedidos_tomados || 0)}`
+        break
+      case 'Productos totales':
+        element.value = `${formatoNumero(data1[0].producto_total || 0)}`
+        break
+      case 'Productos surtidos':
+        element.value = `${formatoNumero(data1[0].producto_surtido || 0)}`
+        break
+      case 'Productos por surtir':
+        element.value = `${formatoNumero(data1[0].producto_x_surtir || 0)}`
+        break
+      case 'Prom. productos por pedido':
+        element.value = `${formatoNumero(data1[0].promedio_pro_x_pedido || 0)}`
+        break
+      case 'Venta promedio':
+        element.value = `$ ${formatoNumero(data1[0].promedio_ticket || 0)}`
+        break
+      case 'Monto total de pedidos':
+        element.value = `$ ${formatoNumero(data1[0].monto_total || 0)}`
+        break
+    }
+  });
+
+  stats.value.forEach(element => {
+    switch (element.label) {
+      case 'Clientes':
+        element.value = `${formatoNumero(data1[0].total_clientes || 0)}`
+        break
+      case 'Clientes activos':
+        element.value = `${formatoNumero(data1[0].clientes_activos || 0)}`
+        break
+      case 'Clientes inactivos':
+        element.value = `${formatoNumero(data1[0].clietes_inactivos || 0)}`
+        break
+    }
+  })
+
+  if (Array.isArray(pedidosPorDia)) {
+    actividad.value = pedidosPorDia.map(item => ({
+      v: item.tot_pedidos ?? 0,
+      d: formatoFecha(item.fecha)
+    }))
+  } else {
+    console.error('No se pudieron cargar los pedidos por día')
+  }
+
+  metricas.value = cobranzaPorCliente.map(item => ({
+    name: item.nom_nom || '',
+    amount: `$ ${formatoNumero(item.imp_tot || 0)}`,
+    v: Math.trunc(item.imp_tot || 0),
+    percentage: item.por_s_tot
+  }))
+
+  if (Array.isArray(saldosData) && saldosData.length > 0) {
+    saldos.value.saldo_vencido = formatoNumero(saldosData[0].saldo_vencido || 0)
+    saldos.value.saldo_total = formatoNumero(saldosData[0].saldo_total || 0)
+  }
+
+  cargando.value = false;
 }
 
 
-const formatoMoneda = (cantidad) => {
+const formatoNumero = (cantidad) => {
   return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN',
-  }).format(cantidad); // "$1,250.50"
+    style: 'decimal',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(cantidad); // "1,250"
 }
 
 const formatoFecha = (fechaStr) => {
