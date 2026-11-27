@@ -1,0 +1,54 @@
+// sincroniza todas las pestañas del navegador 
+export default defineNuxtPlugin(() => {
+    const miStore = Session()
+    const canal = new BroadcastChannel('sincronizar_pinia')
+    let ignorarCambio = false
+    let inicio = true
+
+    // 1. Cuando el store cambia en esta pestaña, avisa a las demás
+    miStore.$subscribe((_mutation, state) => {
+        console.log('datosParaSincronizar shareSession=', miStore.shareSession)
+        if (ignorarCambio || !miStore.shareSession) return
+
+        //  const valores = Object.values(state)
+
+        // Selecciona explícitamente solo los datos serializables (ignora sockets y socketIo)
+        const datosParaSincronizar = {
+            id_con: miStore.id_con,
+            user: miStore.user,
+            pass: miStore.pass,
+            nom_emp: miStore.nom_emp,
+            url: miStore.url,
+            dialect: miStore.dialect,
+            fpo_pge: miStore.fpo_pge,
+            logoEmp: miStore.logoEmp,
+            fileLogoEmp: miStore.fileLogoEmp,
+            Var: toRaw(miStore.Var),
+            menu: toRaw(miStore.menu),
+            socketIo: miStore.socketIo,
+            shareSession: miStore.shareSession
+        }
+        console.log('datosParaSincronizar=', datosParaSincronizar)
+        try {
+            canal.postMessage(JSON.parse(JSON.stringify(datosParaSincronizar)))
+        } catch (error) {
+            console.error('Error al serializar datos para BroadcastChannel:', error)
+        }
+
+        //  canal.postMessage(JSON.parse(JSON.stringify(state)))
+    })
+
+    // 2. Cuando otra pestaña envía cambios, actualiza este store
+    canal.onmessage = (event) => {
+        if (inicio) {
+            inicio = false
+            return
+        }
+
+        ignorarCambio = true
+        miStore.$patch(event.data)
+        nextTick(() => {
+            ignorarCambio = false
+        })
+    }
+})

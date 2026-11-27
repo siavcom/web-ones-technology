@@ -50,7 +50,7 @@
 
                       <li @click="toggleSubMenu('maintenance')">
                         <span class="links_options">{{ Props.maintenance
-                        }}</span>
+                          }}</span>
                         <nuxt-img class="ico"
                           :src="activeSubMenu === 'maintenance' ? '/Iconos/svg/minus.svg' : '/Iconos/svg/plus.svg'" />
                       </li>
@@ -112,6 +112,11 @@
                   </li>
                 </template>
                 <li>
+                  <button v-if="!shareSession && Props.isExitButton && isLoggedIn" @click.stop="extenderSesion()"
+                    class="logout-btn" title="Extender sesion">
+                    <nuxt-img src="/Iconos/svg/bx-log-out.svg" class="logout-icon" width="20" />
+                    <span class="logout-text">Extender sesion</span>
+                  </button>
                   <button v-if="Props.isExitButton && isLoggedIn" @click.stop="exit()" class="logout-btn"
                     title="Cerrar sesion">
                     <nuxt-img src="/Iconos/svg/bx-log-out.svg" class="logout-icon" width="20" />
@@ -219,7 +224,7 @@ interface Props_interface {
 
 const Props = reactive({ //   withDefaults(defineProps<Props_interface>(), {
 
-  isOpened: false,
+  isOpened: true,
   //isMenuOpen: true,
   // menuTitle: 'KilloSoftware',
   menuLogo: '/logos/Siavcom.png',
@@ -327,8 +332,8 @@ const menuTitle = 'KilloSoft'
 const session = Session()
 //const { data } = await useAsyncData('id', () => session.id_con)
 
-const { id_con, user, nom_emp, menu, fpo_pge, logoEmp } = storeToRefs(session)  //pasa los elementos por referencia al Global
-console.log('Main app.vue logoEmp=', logoEmp)
+const { id_con, user, nom_emp, menu, fpo_pge, logoEmp, shareSession } = storeToRefs(session)  //pasa los elementos por referencia al Global
+console.log('Main app.vue session=', session)
 const This = ref()
 /* 
 await initSql(ref(This))  // Inicializa la conexion al SQLServer
@@ -364,7 +369,7 @@ const activeSubMenu = ref<'maintenance' | 'reports' | 'process' | null>(null)
 const isLoggedIn = ref(Props.isLoggedIn)
 
 const isOpen = ref(Props.isOpened)
-isOpen.value = false
+
 
 /* ***********Titulos en las pestañas****************** */
 const titleName = ref('')
@@ -410,11 +415,20 @@ const mainFormLeft = computed(() => {
   return isOpen.value ? '250px' : '0px'
 })
 // removeState
+
+const extenderSesion = () => {
+
+  shareSession.value = true
+
+}
+
+
 const exit = () => {
   // app.$sessionStorage.removeItem('id_con')
   id_con.value = ''
   nom_emp.value = ''
   logoEmp.value = ''
+  shareSession.value = false
   const tam_act = Items.length
   Items.splice(itemLength, tam_act - itemLength)
   isLoggedIn.value = false
@@ -687,10 +701,12 @@ const navigateToPath = (path: any) => {
 
   // Si es el mismo path, forzar recarga completa
   if (route.path === fullPath.path) {
+    /* se quito el 27 Noviembe 2026
     const url = fullPath.path + (Object.keys(fullPath.query || {}).length > 0
       ? '?' + new URLSearchParams(fullPath.query as any).toString()
       : '');
     window.location.href = url;
+    */
   } else {
     router.push(fullPath);
   }
@@ -715,19 +731,6 @@ const handleSubMenuNavigate = (menuItem: any) => {
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
 //          Componente
 /// ///////////////////////////////////////
-
-watch(
-  () => isOpen.value,
-  () => {
-    if (!Props.isPaddingLeft || !isOpen.value) {
-      window.document.body.style.paddingLeft = '0px'
-      return
-    }
-
-    window.document.body.style.paddingLeft = Props.menuOpenedPaddingLeftBody
-  },
-  { deep: false }
-)
 
 watch(
   () => menu.value, // usrMenu.value,
@@ -761,11 +764,16 @@ watch(
 // Init
 /////////////////////////////////////////////////
 
-onMounted(async () => {
-
-  //console.log('onMounted app.vue init obtMenu', id_con.value, menu.value)
-  //if (id_con.value > '')// && Items.length < 3)
-  //  obtMenu()
+onMounted(() => {
+  watch(
+    () => isOpen.value,
+    (open) => {
+      document.body.style.paddingLeft = Props.isPaddingLeft && open
+        ? Props.menuOpenedPaddingLeftBody
+        : '0px'
+    },
+    { immediate: true }
+  )
 })
 
 </script>

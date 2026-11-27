@@ -113,7 +113,7 @@ export class HELP extends CONTAINER {
     this.Parent.prop.ShowError = false
     this.Parent.prop.ReadOnly = true
     this.Parent.prop.Valid = true
-    this.Parent.Help = true
+    this.Parent.Help = false
 
     this.tip_con.when()
     this.des_dat.prop.Value = ''
@@ -157,7 +157,7 @@ export class HELP extends CONTAINER {
       this.prop.Visible = false
       this.cam_dat.prop.RowSourceType = 0
     }
-    this.Parent.prop.Valid = true
+    // this.Parent.prop.Valid = true
     this.tip_con.when()
 
   }
@@ -166,7 +166,7 @@ export class HELP extends CONTAINER {
     this.browse.prop.RowSource = ''
 
     // regresa el valor al campo principal
-    this.Parent.prop.ReadOnly = false
+
     if ((typeof this.browse.prop.Value == "number" && this.browse.prop.Value > 0) || this.browse.prop.Value > '   ') {
       if (this.Parent.prop.Type == "number")
         this.Parent.prop.Value = +this.browse.prop.Value

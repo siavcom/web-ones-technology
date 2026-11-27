@@ -23,9 +23,13 @@ export class bt_close extends IMGBUTTON {
 
   override async click() {
     this.Parent.browse.prop.RowSource = ''
-    this.Parent.Parent.Help = false
-    this.Parent.prop.Visible = false
-    this.Parent.Parent.prop.ReadOnly = false
     this.Parent.Parent.prop.Focus = true
+    await nextTick(() => {
+      this.Parent.Parent.prop.ReadOnly = false
+      this.Parent.prop.Visible = false
+      this.Parent.Parent.Help = true
+    })
+
+
   }
 }

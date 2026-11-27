@@ -576,7 +576,10 @@ watch(Valid, async (new_val) => {
       ThisForm.bt_saveClick()
     else {
       ThisForm.bt_save.prop.Visible = true
-      console.log('2 Watch Valid bt_save=', ThisForm.bt_save)
+      nextTick(() => {
+        ThisForm.bt_save.prop.Focus = true
+      })
+
     }
   })
 },

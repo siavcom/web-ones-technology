@@ -6,7 +6,7 @@
 /////////////////////////////////////////////
 
 import { COMPONENT } from "@/classes/Component";
-export class FORM extends COMPONENT {
+export class DASHBOARDFORM extends COMPONENT {
 
   //Dom: any = getCurrentInstance();
 

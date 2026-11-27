@@ -248,6 +248,7 @@ watch(
     if (!new_val) {
       return
     }
+    This.prop.Focus = false
     console.log('1)imgButton Watch Focus Name=', This.prop.Name)
 
     // Se pidio desde afuera el setFocus
@@ -262,7 +263,7 @@ watch(
       // thisElement.select();
 
     }, 0);
-    This.prop.Focus = false
+
     return
   },
   { deep: false }

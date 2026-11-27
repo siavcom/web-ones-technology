@@ -1364,10 +1364,10 @@ export const deleteSqlRow = async (recno?: number, alias?: any,) => {
 
     //console.log('deleteSqlRow localAlasql=', await localAlaSql(`select * from now.${alias} `))
 
-    const res = await localAlaSql(`select key_pri from now.${alias}  where recno=${recno}`)
+    const res = await localAlaSql(`select * from now.${alias}  where recno=${recno}`)
     //console.log('deleteSqlRow res=', res)
 
-    if (res && res[0].key_pri > 0) {
+    if (res && res[0].key_pri && res[0].key_pri > 0) {
 
         const key_pri = res[0].key_pri;
 
@@ -2693,10 +2693,10 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
 
     let numInt = 0
 
-    if (
+    while (
         (!(This.value.session?.id_con > " ") ||
             This.value.session?.user == "" ||
-            This.value.session?.nom_emp == "") && numInt < 0
+            This.value.session?.nom_emp == "") && numInt < 3
     ) {
         console.trace(
             "Data bases session =======>",
@@ -2705,12 +2705,12 @@ export const axiosCall = async (dat_lla: Record<string, unknown>) => {
             This.value.session.nom_emp
         );
         numInt++
-        sleep(1000); // espera 1 segundo
+        sleep(500); // espera 1 segundo
     }
 
     if ((!(This.value.session?.id_con > " ") ||
         This.value.session?.user == "" ||
-        This.value.session?.nom_emp == "") || numInt >= 3) {
+        This.value.session?.nom_emp == "")) {
 
         errorAlert("Back End error : Session not active");
         //MessageBox("Back End error", 16, "SQL Error Open");

@@ -1200,7 +1200,9 @@ const onClick = () => {
 // Params: Si se utiliza un parametro, el parametro es el objeto html que lo emitio
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
-
+  if (This.prop.ReadOnly) {
+    return nextElement()
+  }
   ToolTipText.value = false  // apaga tooltip
   //console.clear()
   //console.log('1) onFocus', This.prop.Name, 'firstFocus=', firstFocus)

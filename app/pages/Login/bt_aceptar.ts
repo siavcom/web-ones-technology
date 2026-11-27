@@ -33,20 +33,41 @@ export class bt_aceptar extends IMGBUTTON {
   /////////////////////////////////////////////////////////////////
 
   public override async click() {
+    const ThisForm = this.Form;
+
+    const session = Session();
+    const { id_con, url, pass, user, nom_emp } = storeToRefs(session); //pasa los elementos por referencia al Global
+
+    const dat_emp = this.Form.emp_emp.dat_emp;
+    let empresa = ThisForm.emp_emp.prop.Value;
+
+    for (const nom_emp in dat_emp) {
+      if (empresa == nom_emp) {
+        url.value = dat_emp[nom_emp].url;
+        break;
+      }
+    }
+    // console.log('Empresa seleccionada:', this.Form.emp_emp.prop.Value, 'url:', url.value);
+
+    id_con.value = "";
+    pass.value = "";
+    user.value = '';
 
     console.log("bt_aceptar click num_int=", this.num_int);
     this.num_int++;
 
     if (this.num_int >= 5) {
       alert("Exceeded the maximum number of attempts/ Exedió el maximo numero de intentos");
-      window.close();
-      return;
+      //  window.close();
+      //  return;
     } // numero maximo de intentos = 5
 
-    const ThisForm = this.Form;
+
     let login = ThisForm.log_usu.prop.Value;
-    let empresa = ThisForm.emp_emp.prop.Value;
     const pos_arroba = login.indexOf("@", 0);
+
+    console.log('1) login ========>>>>>>>', login, empresa)
+
 
     if (login.length == pos_arroba + 1) {
       ThisForm.log_usu.prop.ErrorMessage = "Use : username@company/usuario@empresa";
@@ -60,6 +81,7 @@ export class bt_aceptar extends IMGBUTTON {
       empresa = login.substr(-len);
       // login = login.substr(0, pos_arroba);
     }
+    console.log('2) login ========>>>>>>>', login, empresa)
 
     if (empresa.length == 0) {
       ThisForm.emp_emp.prop.ErrorMessage = "Chose a company/Escoja una empresa";
@@ -67,6 +89,7 @@ export class bt_aceptar extends IMGBUTTON {
       ThisForm.emp_emp.prop.ShowError = true;
       return;
     }
+    console.log('3) login ========>>>>>>>', login, empresa)
 
     if (login.length == 0) {
       ThisForm.log_usu.prop.ErrorMessage = "Enter username/Digite usuario";
@@ -75,6 +98,8 @@ export class bt_aceptar extends IMGBUTTON {
     }
 
     ThisForm.pas_usu.prop.Value = ThisForm.pas_usu.prop.Value.trim();
+
+    console.log('4) login ========>>>>>>>', login, empresa)
 
     if (
       !ThisForm.pas_usu.prop.Value ||
@@ -85,20 +110,6 @@ export class bt_aceptar extends IMGBUTTON {
       return;
     }
 
-    const session = Session();
-    const { id_con, url, pass, user, nom_emp } = storeToRefs(session); //pasa los elementos por referencia al Global
-
-    const dat_emp = this.Form.emp_emp.dat_emp;
-    for (const nom_emp in dat_emp) {
-      if (empresa == nom_emp) {
-        url.value = dat_emp[nom_emp].url;
-        break;
-      }
-    }
-    // console.log('Empresa seleccionada:', this.Form.emp_emp.prop.Value, 'url:', url.value);
-
-    id_con.value = "";
-    pass.value = "";
 
     if (nom_emp.value != empresa)
       nom_emp.value = empresa;
@@ -109,8 +120,8 @@ export class bt_aceptar extends IMGBUTTON {
     //   ThisForm.pas_usu.prop.Value = ''
 
     pass.value = password  // We assign the password to the storage
-
-    //console.log('Datos login ========>>>>>>>',id_con.value,nom_emp.value,user.value,pass.value)
+    //console.clear
+    console.log('Fin Salir Datos login ========>>>>>>>', id_con.value, nom_emp.value, user.value, pass.value)
     return;
   }
 }

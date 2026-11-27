@@ -120,7 +120,6 @@
 
 <script lang="ts" setup vapor>
 
-import { Public } from '#imports';
 import { storeToRefs } from 'pinia'
 
 //import {monthLastDay} from '@/composables/Functions'
@@ -171,7 +170,7 @@ const fechaHasta = flag ? ref('2023-01-31') : ref(`${fecha[0]}-${fecha[1]}-${mon
    Dashboard - datos estáticos (maqueta)
    ============================================================ */
 
-const bbdd = Public.value.dialect
+const bbdd = dialect.value
 const cargando = ref(false);
 
 /* Multi-select de vendedores */

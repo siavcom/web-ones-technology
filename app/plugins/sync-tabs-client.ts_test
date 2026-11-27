@@ -1,0 +1,42 @@
+const sessionStorage = Session
+export default defineNuxtPlugin(() => {
+  // Crea un canal con un nombre único para tu app
+  const channel = new BroadcastChannel('pinia_session_sync')
+
+  // 1. Cuando esta pestaña abre y su sessionStorage está vacío, pide la sesión
+  if (Session.length === 0) {
+    channel.postMessage({ type: 'REQUEST_SESSION' })
+  }
+
+  // 2. Escucha mensajes de otras pestañas
+  channel.onmessage = (event) => {
+    const { type, payload } = event.data
+
+    // Si otra pestaña pide datos y esta sí tiene sesión guardada, los envía
+    if (type === 'REQUEST_SESSION' && sessionStorage.length > 0) {
+      const sessionData: Record<string, string> = {}
+
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i)
+        if (key) {
+          sessionData[key] = sessionStorage.getItem(key) || ''
+        }
+      }
+
+      channel.postMessage({
+        type: 'SYNC_SESSION',
+        payload: sessionData,
+      })
+    }
+
+    // Si esta pestaña estaba vacía y recibe los datos, los guarda y recarga/rehidrata
+    if (type === 'SYNC_SESSION' && sessionStorage.length === 0) {
+      Object.entries(payload).forEach(([key, value]) => {
+        sessionStorage.setItem(key, value as string)
+      })
+
+      // Recarga para que pinia-plugin-persistedstate lea el nuevo sessionStorage
+      window.location.reload()
+    }
+  }
+})

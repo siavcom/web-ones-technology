@@ -16,10 +16,14 @@ modules: [
 
 import { acceptHMRUpdate } from "pinia";
 
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 //import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 //import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
+let passStore = ''
+// let socketId = ''
+
+
 
 export const Session = defineStore(
   "currentSession",
@@ -32,14 +36,16 @@ export const Session = defineStore(
     const dialect = ref("postgres");
     const fpo_pge = ref(new Date().toDateString());
     const logoEmp = ref("");
-    const fileLogoEmp = ref(null);
-    const Var = ref();
+    const fileLogoEmp = ref('');
+    const Var = ref([]);
     const menu = ref([]);
     let socket = false; //: any = ref(null);  //  faltaba ref(null). Queda mejor con false
-    let passStore = ''
+    //  let passStore = ''
     const sockets = ref({});
     let socketIo = ref(false);
-    let socketId: string;
+    const shareSession = ref(false)
+    //    let socketId = ''
+
 
     // actions: { // aqui van todas las funciones que uno defina
 
@@ -57,7 +63,7 @@ export const Session = defineStore(
       };
     */
       let force = false;
-      if (sockets.value[nom_emp.value])
+      if (1 == 0 && sockets.value[nom_emp.value])
         sockets.value[nom_emp.value].connect(urlSocket, {
           forceNew: true,
         });
@@ -104,7 +110,7 @@ export const Session = defineStore(
       // Password correcto, leemos datos de la empresa (logo y otros)
       socket.on("loginOk", async (res: {}) => {
         console.log('openSocket loginOk========>', res)
-        socketId = socket.id;
+        // socketId = socket.id;
         //res={ id: name, dialect: options.dialect, fpo_pge }
         // obtenemos datos de conexión
         id_con.value = res.id;
@@ -232,6 +238,7 @@ export const Session = defineStore(
       //await openSocket();
 
       if (await openSocket()) {
+
         const def_con = {
           nom_emp: nom_emp.value,
           user: user.value,
@@ -241,7 +248,7 @@ export const Session = defineStore(
         passStore = password;
 
         const json = JSON.stringify(def_con);
-
+        console.log('Hay socket emit password,json=', json)
         socket.emit("login", json); // hace login
         if (password.length > 0) pass.value = "";
 
@@ -474,7 +481,7 @@ export const Session = defineStore(
      * 
      * 
      */
-
+    /********************************************** */
     watch(
       () => id_con.value,
       (new_id, old_val) => {
@@ -489,11 +496,12 @@ export const Session = defineStore(
       { deep: false }
     );
 
+
     watch(
       () => pass.value,
       (new_pass, old_val) => {
 
-        // console.log("watch password=", new_pass, old_val);
+
         if (new_pass == "") return;
 
         const password = new_pass;
@@ -503,6 +511,7 @@ export const Session = defineStore(
           user.value.length > 0 &&
           nom_emp.value.length > 1
         ) {
+          console.log("watch password=", new_pass, user.value, nom_emp.value);
           // pass.value = "";
 
           open(password);
@@ -609,11 +618,17 @@ export const Session = defineStore(
       openSocket,
       socket,
       sockets,
+      shareSession,
+
     };
   },
   {
     //    persist: { storage: persistedState.sessionStorage },
-    persist: { storage: piniaPluginPersistedstate.sessionStorage(), },
+    persist: {
+      storage: piniaPluginPersistedstate.sessionStorage(),
+      omit: ['sockets', 'socketIo', 'socket'],
+    },
+
   }
 );
 

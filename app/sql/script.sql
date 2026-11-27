@@ -188,7 +188,7 @@ ALTER TRIGGER [dbo].[T_upd_comeapy]
                            usu_cre,
                            tie_cre
                          )
-                         VALUES                   ('', @des_mess, @txt_mess, 4, @usu_usu, GETDATE(), @usu_usu, GETDATE());
+                         VALUES                    ('', @des_mess, @txt_mess, 4, @usu_usu, GETDATE(), @usu_usu, GETDATE());
                          SET @car_mess = @car_mess - 4;
                        END
                      -- Envia mail al vendedor
@@ -208,7 +208,7 @@ ALTER TRIGGER [dbo].[T_upd_comeapy]
                            usu_cre,
                            tie_cre
                          )
-                         VALUES                   ('', @des_mess, @txt_mess, 2, rtrim(@des_tpy) + ': ' + @proyecto, @usu_usu, GETDATE(), @usu_usu, GETDATE());
+                         VALUES                    ('', @des_mess, @txt_mess, 2, rtrim(@des_tpy) + ': ' + @proyecto, @usu_usu, GETDATE(), @usu_usu, GETDATE());
                          SET @car_mess = @car_mess - 2;
                        END
                      -- Envia whatsApp al vendedor
@@ -227,7 +227,7 @@ ALTER TRIGGER [dbo].[T_upd_comeapy]
                            usu_cre,
                            tie_cre
                          )
-                         VALUES                   ('', @des_mess, @txt_mess, 1, @usu_usu, GETDATE(), @usu_usu, GETDATE());
+                         VALUES                    ('', @des_mess, @txt_mess, 1, @usu_usu, GETDATE(), @usu_usu, GETDATE());
                        END
                    END
                END
@@ -249,7 +249,7 @@ ALTER TRIGGER [dbo].[T_upd_comeapy]
                    usu_cre,
                    tie_cre
                  )
-                 VALUES                   ('', @des_mess, @txt_mess, 2, rtrim(@des_tpy) + ': ' + @proyecto, @usu_usu, GETDATE(), @usu_usu, GETDATE());
+                 VALUES                    ('', @des_mess, @txt_mess, 2, rtrim(@des_tpy) + ': ' + @proyecto, @usu_usu, GETDATE(), @usu_usu, GETDATE());
                END
              -- envio de msn
              SELECT @tel_equ = tel_equ
@@ -275,7 +275,7 @@ ALTER TRIGGER [dbo].[T_upd_comeapy]
                            usu_cre,
                            tie_cre
                          )
-                         VALUES                   ('', @des_mess, @txt_mess, 4, @usu_usu, GETDATE(), @usu_usu, GETDATE());
+                         VALUES                    ('', @des_mess, @txt_mess, 4, @usu_usu, GETDATE(), @usu_usu, GETDATE());
                          SET @pos = CHARINDEX(',', @tel_equ, @pos) + 1;
                        END
                      ELSE

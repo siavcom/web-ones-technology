@@ -95,7 +95,7 @@
 /////////////////////
 
 import Direccion from "@/components/Siavcom/Direccion/DashBoard.vue";
-import { FORM as ThisForm } from '@/classes/DashBoard'
+import { DASHBOARDFORM as ThisForm } from '@/classes/DashBoard'
 const Form = reactive(new ThisForm) //no quitar el new 
 
 /////////////
