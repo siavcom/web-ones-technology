@@ -186,7 +186,7 @@ const saldos = ref({ saldo_vencido: 0, saldo_total: 0 })
 
 const getVendedores = async () => {
   const data = await SQLExec(
-    'SELECT ven_ven, nom_usu FROM vi_cap_comeusu WHERE ven_ven > 0 and ven_ven is not null',
+    'SELECT ven_ven, nom_ven as nom_usu FROM man_comeven WHERE ven_ven > 0 and ven_ven is not null',
     'dashboard_vendedores',
   )
 
